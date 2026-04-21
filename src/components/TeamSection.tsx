@@ -11,22 +11,16 @@ type Member = {
 };
 
 const members: Member[] = [
+  // Founder card hidden for now — will be restored once we have a real photo and bio.
   {
-    name: "Founder",
-    role: "Strategy · Landlord relations",
-    location: "Nairobi · London",
-    initials: "GS",
-    gradient: "from-[#3b2a1e] via-[#8a5a2c] to-[#1b3a2d]",
-  },
-  {
-    name: "Head of Operations — Nairobi",
+    name: "Head of Operations, Nairobi",
     role: "On-the-ground property operations",
     location: "Westlands, Nairobi",
     initials: "N",
     gradient: "from-[#2b1a10] via-[#b07a3a] to-[#1c1c1c]",
   },
   {
-    name: "Head of Operations — Accra",
+    name: "Head of Operations, Accra",
     role: "On-the-ground property operations",
     location: "Cantonments, Accra",
     initials: "A",
@@ -51,7 +45,7 @@ export function TeamSection() {
           lede="No outsourced call centres. No agency middlemen. When you message Goldstay, you're speaking to someone who knows your property."
         />
 
-        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {members.map((m, i) => (
             <Reveal key={m.name} delay={i * 0.05}>
               <div className="group relative overflow-hidden rounded-3xl border border-charcoal/10 bg-cream transition-all duration-500 ease-premium hover:border-gold-500/40 hover:shadow-lift">
