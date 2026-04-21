@@ -28,7 +28,7 @@ export function FAQSection() {
                   className="flex w-full items-center justify-between gap-6 py-6 text-left"
                   aria-expanded={isOpen}
                 >
-                  <span className="font-serif text-xl md:text-2xl">
+                  <span className="font-serif text-lg sm:text-xl md:text-2xl">
                     {item.q}
                   </span>
                   <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/70">

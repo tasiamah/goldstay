@@ -18,10 +18,12 @@ export function ServicesSection() {
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
           {featured.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.05}>
-              <article className="group relative flex h-full flex-col rounded-3xl border border-charcoal/10 bg-cream p-10 transition-all duration-500 ease-premium hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lift">
-                <div className="flex items-start justify-between">
-                  <h3 className="font-serif text-3xl md:text-4xl">{s.title}</h3>
-                  <div className="text-right">
+              <article className="group relative flex h-full flex-col rounded-3xl border border-charcoal/10 bg-cream p-6 transition-all duration-500 ease-premium hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lift sm:p-8 md:p-10">
+                <div className="flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+                  <h3 className="font-serif text-2xl sm:text-3xl md:text-4xl">
+                    {s.title}
+                  </h3>
+                  <div className="shrink-0 sm:text-right">
                     <div className="font-serif text-4xl text-gold-600">
                       {s.fee}
                     </div>
@@ -41,7 +43,7 @@ export function ServicesSection() {
                     </li>
                   ))}
                 </ul>
-                <div className="mt-auto flex items-center justify-between gap-4 pt-10">
+                <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-10">
                   <a
                     href={waLink(
                       `Hi Goldstay, I'm interested in ${s.title}`,
