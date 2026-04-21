@@ -22,7 +22,7 @@ export function CTABanner({
         <Reveal>
           <div className="max-w-3xl">
             <div className="eyebrow text-gold-400">Get started</div>
-            <h2 className="mt-5 font-serif text-display-md balance md:text-display-lg">
+            <h2 className="mt-5 font-serif text-display-md balance text-white md:text-display-lg">
               {headline}
             </h2>
             <p className="mt-5 max-w-2xl text-base text-cream/75 pretty md:text-xl">
