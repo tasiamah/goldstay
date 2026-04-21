@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { waLink } from "@/lib/site";
@@ -9,17 +10,22 @@ const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero({
   eyebrow = "Nairobi · Accra",
-  headline = "Premium property management in Nairobi & Accra.",
+  headline = (
+    <>
+      <em className="italic">Premium</em> property management in Nairobi
+      &amp; Accra.
+    </>
+  ),
   subheadline = "We handle everything. You receive monthly USD transfers. Zero headaches.",
   city,
 }: {
   eyebrow?: string;
-  headline?: string;
+  headline?: ReactNode;
   subheadline?: string;
   city?: "nairobi" | "accra";
 }) {
   return (
-    <section className="relative min-h-[100svh] w-full overflow-hidden bg-charcoal text-cream">
+    <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-charcoal text-cream">
       {/* background image */}
       <div
         className="absolute inset-0 -z-10 bg-cover bg-center"
@@ -36,22 +42,22 @@ export function Hero({
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/95" />
       <div className="absolute inset-0 -z-10 grain opacity-40" />
 
-      <div className="container-gs relative flex min-h-[100svh] flex-col justify-end pb-16 pt-40 md:justify-center md:pb-0">
+      <div className="container-gs relative flex min-h-screen min-h-[100svh] flex-col items-center justify-center pb-36 pt-32 text-center sm:pt-40">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease }}
-          className="max-w-4xl"
+          className="mx-auto w-full max-w-4xl"
         >
           <div className="eyebrow text-gold-400">{eyebrow}</div>
           <h1 className="mt-6 font-serif text-display-xl text-cream balance">
             {headline}
           </h1>
-          <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
+          <p className="mx-auto mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
             {subheadline}
           </p>
 
-          <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
+          <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
             <a
               href={waLink(
                 city === "nairobi"
@@ -73,30 +79,34 @@ export function Hero({
             </Link>
           </div>
         </motion.div>
-
-        {/* stat strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.3, ease }}
-          className="mt-16 grid max-w-4xl grid-cols-3 gap-6 border-t border-cream/15 pt-8"
-        >
-          {[
-            { k: "2", label: "Cities" },
-            { k: "USD", label: "Remittance" },
-            { k: "24/7", label: "Landlord Support" },
-          ].map((s) => (
-            <div key={s.label}>
-              <div className="font-serif text-3xl text-cream md:text-4xl">
-                {s.k}
-              </div>
-              <div className="mt-1 font-mono text-[0.7rem] uppercase tracking-widest-xl text-cream/60">
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
       </div>
+
+      {/* stat strip — floats at the bottom without pulling the headline off-centre */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, delay: 0.35, ease }}
+        className="absolute inset-x-0 bottom-6 z-10 sm:bottom-10"
+      >
+        <div className="container-gs">
+          <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 border-t border-cream/15 pt-5 text-center sm:gap-6 sm:pt-8">
+            {[
+              { k: "2", label: "Cities" },
+              { k: "USD", label: "Remittance" },
+              { k: "24/7", label: "Support" },
+            ].map((s) => (
+              <div key={s.label}>
+                <div className="font-serif text-2xl text-cream sm:text-3xl md:text-4xl">
+                  {s.k}
+                </div>
+                <div className="mt-1 font-mono text-[0.6rem] uppercase tracking-widest-xl text-cream/60 sm:text-[0.7rem]">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </motion.div>
     </section>
   );
 }

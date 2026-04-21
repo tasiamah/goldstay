@@ -23,7 +23,7 @@ const pillars = [
   {
     icon: LineChart,
     title: "Dynamic Pricing",
-    body: "We adjust nightly rates daily using occupancy, events and seasonality — not static weekly prices that leave money on the table.",
+    body: "We adjust nightly rates daily using occupancy, events and seasonality. Static weekly prices leave money on the table.",
   },
   {
     icon: MessageCircle,
@@ -50,7 +50,7 @@ const pillars = [
 export default function Page() {
   return (
     <>
-      <section className="relative overflow-hidden bg-charcoal pt-40 text-cream">
+      <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div
           className="absolute inset-0 -z-10 bg-cover bg-center"
           style={{
@@ -59,16 +59,18 @@ export default function Page() {
           }}
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/80 via-charcoal/70 to-charcoal/95" />
-        <div className="container-gs pb-24 md:pb-32">
+        <div className="container-gs pb-20 md:pb-32">
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">Airbnb · Short-stay</div>
-              <h1 className="mt-6 font-serif text-display-xl text-cream balance">
-                Turn your apartment into a five-star short-stay — without lifting a finger.
+              <h1 className="mt-6 font-serif text-display-lg text-cream balance">
+                Turn your apartment into a{" "}
+                <em className="italic">five-star</em> short-stay, without
+                lifting a finger.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 We handle photography, pricing, guests, cleaning and maintenance. You get a
-                monthly statement and a USD wire. Our fee is 22% of revenue — no listing fees,
+                monthly statement and a USD wire. Our fee is 22% of revenue. No listing fees,
                 no setup fees, no surprises.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
@@ -121,7 +123,7 @@ export default function Page() {
             <div>
               <div className="eyebrow">Yield vs long-term</div>
               <h2 className="mt-4 font-serif text-display-md balance">
-                Short-stay typically yields 40–70% more than long-term in the neighbourhoods we operate in.
+                Short-stay typically yields 40 to 70% more than long-term in the neighbourhoods we operate in.
               </h2>
               <p className="mt-5 text-charcoal/75">
                 But only if the operation is tight. Bad photos, flat pricing, slow guest
@@ -133,7 +135,7 @@ export default function Page() {
                   "Average occupancy 72%+ in our managed portfolio",
                   "Average review score 4.88 across Nairobi & Accra",
                   "Full damage deposit cover via platform guarantees",
-                  "No lock-in — 30 days notice to exit anytime",
+                  "No lock-in. 30 days notice to exit anytime.",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-3">
                     <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-700">
@@ -147,29 +149,34 @@ export default function Page() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <div className="rounded-3xl border border-charcoal/10 bg-charcoal p-10 text-cream">
+            <div className="rounded-3xl border border-charcoal/10 bg-charcoal p-6 text-cream sm:p-8 md:p-10">
               <div className="eyebrow text-gold-400">Illustrative economics</div>
-              <h3 className="mt-4 font-serif text-3xl">
+              <h3 className="mt-4 font-serif text-2xl sm:text-3xl">
                 2-bed apartment, Westlands or East Legon
               </h3>
-              <dl className="mt-8 grid grid-cols-2 gap-y-6 text-sm">
-                <dt className="text-cream/60">Nightly rate (avg)</dt>
-                <dd className="text-right">USD 85</dd>
-                <dt className="text-cream/60">Occupancy</dt>
-                <dd className="text-right">72%</dd>
-                <dt className="text-cream/60">Gross monthly revenue</dt>
-                <dd className="text-right">USD 1,836</dd>
-                <dt className="text-cream/60">Goldstay fee (22%)</dt>
-                <dd className="text-right">USD 404</dd>
-                <dt className="text-cream/60">Cleaning & platform fees</dt>
-                <dd className="text-right">USD 260</dd>
-                <dt className="text-cream pt-2 border-t border-cream/10 col-span-1">
-                  Net to landlord
-                </dt>
-                <dd className="pt-2 border-t border-cream/10 text-right font-serif text-2xl text-gold-400">
-                  USD 1,172
-                </dd>
-              </dl>
+              <ul className="mt-8 divide-y divide-cream/10 text-sm">
+                {[
+                  ["Nightly rate (avg)", "USD 85"],
+                  ["Occupancy", "72%"],
+                  ["Gross monthly revenue", "USD 1,836"],
+                  ["Goldstay fee (22%)", "USD 404"],
+                  ["Cleaning & platform fees", "USD 260"],
+                ].map(([k, v]) => (
+                  <li
+                    key={k}
+                    className="flex items-center justify-between gap-4 py-3"
+                  >
+                    <span className="text-cream/60">{k}</span>
+                    <span className="text-right">{v}</span>
+                  </li>
+                ))}
+                <li className="flex items-center justify-between gap-4 py-4">
+                  <span className="text-cream">Net to landlord</span>
+                  <span className="text-right font-serif text-xl text-gold-400 sm:text-2xl">
+                    USD 1,172
+                  </span>
+                </li>
+              </ul>
               <p className="mt-6 text-xs text-cream/50">
                 Illustrative only. Actual yield depends on location, size, furnishing and
                 season. We&apos;ll give you a specific estimate after assessment.

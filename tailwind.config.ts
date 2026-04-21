@@ -47,14 +47,14 @@ const config: Config = {
         },
       },
       fontFamily: {
-        serif: ["var(--font-playfair)", "Georgia", "serif"],
-        sans: ["var(--font-inter)", "ui-sans-serif", "system-ui"],
-        mono: ["var(--font-dm-mono)", "ui-monospace", "monospace"],
+        serif: ["var(--font-serif)", "ui-serif", "Georgia", "serif"],
+        sans: ["var(--font-geist-sans)", "ui-sans-serif", "system-ui", "-apple-system", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "ui-monospace", "SFMono-Regular", "monospace"],
       },
       fontSize: {
-        "display-xl": ["clamp(3rem, 7vw, 6rem)", { lineHeight: "1.05", letterSpacing: "-0.02em" }],
-        "display-lg": ["clamp(2.5rem, 5vw, 4.5rem)", { lineHeight: "1.08", letterSpacing: "-0.02em" }],
-        "display-md": ["clamp(2rem, 4vw, 3rem)", { lineHeight: "1.15", letterSpacing: "-0.015em" }],
+        "display-xl": ["clamp(3.25rem, 7.5vw, 6.5rem)", { lineHeight: "0.98", letterSpacing: "-0.04em" }],
+        "display-lg": ["clamp(2.75rem, 5.5vw, 5rem)", { lineHeight: "1.0", letterSpacing: "-0.035em" }],
+        "display-md": ["clamp(2.25rem, 4.2vw, 3.25rem)", { lineHeight: "1.05", letterSpacing: "-0.03em" }],
       },
       letterSpacing: {
         "widest-xl": "0.22em",

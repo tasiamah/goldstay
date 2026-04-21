@@ -14,10 +14,11 @@ import { cities, waLink } from "@/lib/site";
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
   const cityName = city === "nairobi" ? "Nairobi" : "Accra";
-  const headline =
-    city === "nairobi"
-      ? "Premium property management in Nairobi."
-      : "Premium property management in Accra.";
+  const headline = (
+    <>
+      <em className="italic">Premium</em> property management in {cityName}.
+    </>
+  );
   const subheadline =
     city === "nairobi"
       ? "Built for Kenyans abroad. Tenants vetted. Maintenance handled. Rent wired to you in USD every month."
@@ -57,7 +58,7 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
               <span>Own property elsewhere in {c.country}?</span>
               <a
                 href={waLink(
-                  `Hi Goldstay, I own property outside the listed neighbourhoods in ${cityName} — can you help?`,
+                  `Hi Goldstay, I own property outside the listed neighbourhoods in ${cityName}. Can you help?`,
                   city,
                 )}
                 target="_blank"
@@ -118,10 +119,10 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       <section className="section bg-white/50">
         <div className="container-gs">
           <Reveal>
-            <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-charcoal/10 bg-cream p-10 md:flex-row md:items-center">
+            <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-charcoal/10 bg-cream p-6 sm:p-8 md:flex-row md:items-center md:p-10">
               <div>
                 <div className="eyebrow">Other market</div>
-                <h3 className="mt-3 font-serif text-3xl">
+                <h3 className="mt-3 font-serif text-2xl sm:text-3xl">
                   Own property in {city === "nairobi" ? "Accra" : "Nairobi"} too?
                 </h3>
                 <p className="mt-2 text-charcoal/70">
@@ -130,7 +131,7 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
               </div>
               <Link
                 href={city === "nairobi" ? "/accra" : "/nairobi"}
-                className="btn-secondary"
+                className="btn-secondary shrink-0"
               >
                 Visit {city === "nairobi" ? "Accra" : "Nairobi"}
                 <ArrowUpRight className="h-4 w-4" />

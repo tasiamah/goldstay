@@ -13,14 +13,15 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <section className="relative overflow-hidden bg-charcoal pt-40 text-cream">
+      <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
-        <div className="container-gs pb-20 md:pb-28">
+        <div className="container-gs pb-16 md:pb-28">
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">List your property</div>
               <h1 className="mt-6 font-serif text-display-lg balance">
-                Tell us about your property. We&apos;ll take it from there.
+                Tell us about your property. <em className="italic">We&apos;ll</em>{" "}
+                take it from there.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/75 pretty md:text-xl">
                 Fill in the form and we&apos;ll call you within two hours during

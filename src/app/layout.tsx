@@ -1,5 +1,7 @@
-import type { Metadata } from "next";
-import { Inter, Playfair_Display, DM_Mono } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Instrument_Serif } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -8,30 +10,19 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { Analytics } from "@/components/Analytics";
 import { site } from "@/lib/site";
 
-const inter = Inter({
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-serif",
   display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-  display: "swap",
-});
-
-const dmMono = DM_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-dm-mono",
-  display: "swap",
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://goldstay.com"),
   title: {
-    default: `${site.name} — Premium Property Management in Nairobi & Accra`,
-    template: `%s — ${site.name}`,
+    default: `${site.name} | Premium Property Management in Nairobi & Accra`,
+    template: `%s | ${site.name}`,
   },
   description: site.description,
   keywords: [
@@ -45,7 +36,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Goldstay" }],
   openGraph: {
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} | ${site.tagline}`,
     description: site.description,
     url: "https://goldstay.com",
     siteName: site.name,
@@ -54,10 +45,17 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: `${site.name} — ${site.tagline}`,
+    title: `${site.name} | ${site.tagline}`,
     description: site.description,
   },
   robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FAF8F3",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -68,7 +66,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${playfair.variable} ${dmMono.variable}`}
+      className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
         <Analytics />
