@@ -10,7 +10,7 @@ import { waLink } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Airbnb & Short-Stay Management",
   description:
-    "Full Airbnb and short-stay management in Nairobi and Accra. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 22% of revenue.",
+    "Full Airbnb and short-stay management in Nairobi and Accra. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.",
   alternates: { canonical: "/airbnb-management" },
 };
 
@@ -70,7 +70,7 @@ export default function Page() {
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 We handle photography, pricing, guests, cleaning and maintenance. You get a
-                monthly statement and a USD wire. Our fee is 22% of revenue. No listing fees,
+                monthly statement and a USD wire. Our fee is 20% of revenue. No listing fees,
                 no setup fees, no surprises.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
@@ -159,7 +159,7 @@ export default function Page() {
                   ["Nightly rate (avg)", "USD 85"],
                   ["Occupancy", "72%"],
                   ["Gross monthly revenue", "USD 1,836"],
-                  ["Goldstay fee (22%)", "USD 404"],
+                  ["Goldstay fee (20%)", "USD 367"],
                   ["Cleaning & platform fees", "USD 260"],
                 ].map(([k, v]) => (
                   <li
@@ -173,7 +173,7 @@ export default function Page() {
                 <li className="flex items-center justify-between gap-4 py-4">
                   <span className="text-cream">Net to landlord</span>
                   <span className="text-right font-serif text-xl text-gold-400 sm:text-2xl">
-                    USD 1,172
+                    USD 1,209
                   </span>
                 </li>
               </ul>

@@ -59,14 +59,15 @@ export function YieldCalculator() {
 
     if (mode === "long-term") {
       const gross = base.rent * mult;
-      const fee = gross * 0.18;
+      // Flat fee: one month's rent per year, spread across 12 months.
+      const fee = gross / 12;
       const net = gross - fee;
       return {
         gross,
         fee,
         netMonth: net,
         netYear: net * 12,
-        feeLabel: "18%",
+        feeLabel: "1 month rent / yr",
       };
     }
     // short-stay
@@ -75,7 +76,7 @@ export function YieldCalculator() {
     const gross = nightly * nightsBooked;
     const platformFees = gross * 0.14; // platform + payment processing ~14%
     const cleaning = 260; // avg cleaning per month
-    const fee = gross * 0.22;
+    const fee = gross * 0.20;
     const net = gross - fee - platformFees - cleaning;
     return {
       gross,
@@ -84,7 +85,7 @@ export function YieldCalculator() {
       cleaning,
       netMonth: net,
       netYear: net * 12,
-      feeLabel: "22%",
+      feeLabel: "20%",
       nightly,
       occupancy: base.occupancy,
     };

@@ -7,10 +7,10 @@ const rows = [
   { label: "Platform fees", value: "- $343.00", muted: true },
   { label: "Cleaning (3 turnovers)", value: "- $195.00", muted: true },
   { label: "Minor maintenance", value: "- $60.00", muted: true },
-  { label: "Goldstay management fee (22%)", value: "- $539.00", muted: true },
+  { label: "Goldstay management fee (20%)", value: "- $490.00", muted: true },
 ];
 
-const net = "$1,313.00";
+const net = "$1,362.00";
 
 export function StatementPreview() {
   return (

@@ -41,8 +41,8 @@ export const services = [
   {
     slug: "long-term",
     title: "Long-Term Management",
-    fee: "18%",
-    feeLabel: "of monthly rent",
+    fee: "1 month",
+    feeLabel: "rent / year",
     blurb:
       "End-to-end management for landlords who want stable, long-term tenants in Nairobi or Accra.",
     features: [
@@ -57,7 +57,7 @@ export const services = [
   {
     slug: "short-stay",
     title: "Airbnb / Short-Stay Management",
-    fee: "22%",
+    fee: "20%",
     feeLabel: "of revenue",
     blurb:
       "Full Airbnb operations for landlords who want maximum yield without lifting a finger.",
@@ -120,7 +120,7 @@ export const cities = {
 export const faq = [
   {
     q: "What is your management fee?",
-    a: "18% of monthly rent for long-term management and 22% of revenue for Airbnb / short-stay. Tenant finding only is a one-time fee equivalent to one month's rent. No hidden charges, no surprise deductions.",
+    a: "For long-term management we charge a flat fee equivalent to one month's rent per year. For Airbnb and short-stay we charge 20% of revenue. Tenant finding only is a one-time fee equivalent to one month's rent. No hidden charges, no surprise deductions.",
   },
   {
     q: "How do you remit rent to my foreign account?",
