@@ -3,13 +3,18 @@ import { ArrowUpRight } from "lucide-react";
 import { Hero } from "./Hero";
 import { ProblemSection } from "./ProblemSection";
 import { ServicesSection } from "./ServicesSection";
+import { CompareSection } from "./CompareSection";
+import { CalculatorTeaser } from "./CalculatorTeaser";
 import { WhySection } from "./WhySection";
+import { GuaranteesSection } from "./GuaranteesSection";
+import { StatementPreview } from "./StatementPreview";
+import { NeighbourhoodEconomics } from "./NeighbourhoodEconomics";
 import { HowItWorks } from "./HowItWorks";
 import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
-import { cities, waLink } from "@/lib/site";
+import { cities, cityFaq, waLink } from "@/lib/site";
 
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
@@ -19,17 +24,13 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       <em className="italic">Premium</em> property management in {cityName}.
     </>
   );
-  const subheadline =
-    city === "nairobi"
-      ? "Built for Kenyans abroad. Tenants vetted. Maintenance handled. Rent wired to you in USD every month."
-      : "Built for Ghanaians abroad. Tenants vetted. Maintenance handled. Rent wired to you in USD every month.";
 
   return (
     <>
       <Hero
         eyebrow={`${c.country} · ${cityName}`}
         headline={headline}
-        subheadline={subheadline}
+        subheadline={c.heroRentClaim}
         city={city}
       />
 
@@ -42,9 +43,9 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
           />
           <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {c.neighbourhoods.map((n, i) => (
-              <Reveal key={n} delay={i * 0.04}>
+              <Reveal key={n.name} delay={i * 0.04}>
                 <div className="flex items-center justify-between rounded-2xl border border-charcoal/10 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40">
-                  <span className="font-serif text-xl">{n}</span>
+                  <span className="font-serif text-xl">{n.name}</span>
                   <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50">
                     {cityName}
                   </span>
@@ -72,9 +73,15 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
         </div>
       </section>
 
+      <NeighbourhoodEconomics city={city} />
+
       <ProblemSection />
       <ServicesSection />
+      <CompareSection />
+      <CalculatorTeaser />
       <WhySection />
+      <GuaranteesSection />
+      <StatementPreview />
 
       <section className="section">
         <div className="container-gs">
@@ -114,6 +121,15 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       </section>
 
       <HowItWorks />
+
+      <FAQSection
+        id="city-faq"
+        eyebrow={`${c.country} specifics`}
+        title={`Tax, licensing and the bits of ${c.country} law you need to know.`}
+        items={cityFaq[city]}
+        initialOpen={null}
+      />
+
       <FAQSection />
 
       <section className="section bg-white/50">
