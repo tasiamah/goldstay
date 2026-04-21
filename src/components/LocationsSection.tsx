@@ -10,16 +10,20 @@ import { Reveal } from "./Reveal";
 
 const cityImage = {
   nairobi: {
-    // Nairobi skyline, Kenyatta International Conference Centre & UAP towers
-    src: "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=1800&q=80",
-    alt: "Nairobi skyline at dusk, Kenya",
+    // Nairobi Upper Hill skyline: Britam Tower + UAP Old Mutual Tower at golden hour.
+    // Photo: Amani Nation on Unsplash. Stored locally so it can never break.
+    src: "/images/locations/nairobi.jpg",
+    alt: "Nairobi Upper Hill skyline at golden hour, Kenya",
     gradient: "from-[#3b2a1e] via-[#6b4a2d] to-[#1b3a2d]",
+    position: "center",
   },
   accra: {
-    // Accra waterfront / Jamestown at golden hour
-    src: "https://images.unsplash.com/photo-1580745294621-26a2b2f15cef?auto=format&fit=crop&w=1800&q=80",
-    alt: "Accra, Ghana — Atlantic coast",
+    // Accra downtown rooftop view, Ridge / CBD modern buildings visible.
+    // Photo: Unsplash contributor in Accra, Ghana. Stored locally.
+    src: "/images/locations/accra.jpg",
+    alt: "Accra downtown skyline from a rooftop, Ghana",
     gradient: "from-[#4a2a1a] via-[#b07a3a] to-[#1c1c1c]",
+    position: "center 38%",
   },
 } as const;
 
@@ -50,6 +54,7 @@ function CityCard({ cityKey, index }: { cityKey: "nairobi" | "accra"; index: num
               alt={img.alt}
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
+              style={{ objectPosition: img.position }}
               className={`object-cover transition-all duration-[1200ms] ease-premium group-hover:scale-[1.04] ${loaded ? "opacity-100" : "opacity-0"}`}
               onLoad={() => setLoaded(true)}
               onError={() => setErrored(true)}
