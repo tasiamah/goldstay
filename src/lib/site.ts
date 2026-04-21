@@ -128,19 +128,39 @@ export const faq = [
   },
   {
     q: "What currency do you collect and remit in?",
-    a: "We collect in local currency (KES in Nairobi, GHS in Accra) and remit in US dollars by default. We can also remit in EUR, GBP or AED on request.",
+    a: "We collect in local currency (KES in Nairobi, GHS in Accra) and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement.",
+  },
+  {
+    q: "Do I need to be in Kenya or Ghana to sign you on?",
+    a: "No. Everything from the first call to contract signing happens remotely. Documents are signed electronically and witnessed under Kenyan or Ghanaian law where required. Your first visit to the property can be long after you've started earning.",
   },
   {
     q: "How do you vet tenants?",
-    a: "Every applicant goes through ID verification, employer confirmation, income verification, referee checks and a face-to-face interview. For corporate tenants we verify the entity and signatory. We only present shortlisted tenants to you for final approval.",
+    a: "Every applicant goes through ID verification, employer confirmation, income verification, referee checks and a face-to-face interview. For corporate tenants we verify the entity and signatory. We only present shortlisted tenants to you for final approval, and nothing is signed without you.",
   },
   {
     q: "What happens if a tenant doesn't pay?",
-    a: "We chase on day one, not day thirty. Our lease agreements are enforceable and we have legal partners in both Nairobi and Accra. In 6 years of operation our default-to-eviction rate is under 2%.",
+    a: "We chase on day one, not day thirty. Our lease agreements are enforceable and we have legal partners in both Nairobi and Accra who can serve notice and begin eviction proceedings within the statutory window. You'll know within 48 hours of the first missed payment.",
+  },
+  {
+    q: "What happens to my property if Goldstay closes?",
+    a: "Your property is yours. Your tenant relationship is yours. Your bank details stay on your own accounts. If we ever wound down, every landlord would receive a full onboarding pack within 14 days: tenant contact, lease, statements, vendor list, keys. No lock-in is built into our operating model.",
   },
   {
     q: "Do you manage Airbnb properties?",
-    a: "Yes. We run full short-stay operations including listing creation, dynamic pricing, guest communication, cleaning and maintenance. Airbnb typically yields 40 to 70% more than long-term let in the neighbourhoods we operate in.",
+    a: "Yes. We run full short-stay operations including listing creation, dynamic pricing, guest communication, cleaning and maintenance. We pay only the portion of our fee that corresponds to revenue actually collected. We do not guarantee a specific revenue number, we guarantee the execution.",
+  },
+  {
+    q: "Can I use Goldstay for a property I haven't bought yet?",
+    a: "Yes. We regularly advise diaspora clients before they buy. We can inspect the property, validate achievable rent, flag red flags, and estimate running costs. This service is free for properties we subsequently manage.",
+  },
+  {
+    q: "Who pays for repairs and maintenance?",
+    a: "The landlord. We coordinate, quote and supervise, but every repair is paid from your collected rent with your approval. Anything over USD 250 is pre-approved in writing. Anything under USD 50 appears in your monthly statement with a receipt.",
+  },
+  {
+    q: "How is Goldstay different from my current local agent?",
+    a: "Three things: we live on the ground full time, our entire operating model is built around diaspora reporting and USD remittance, and we take zero commissions from contractors or listing platforms. If your current agent offers all three of those and you're happy, we'd genuinely tell you to stay.",
   },
 ];
 
