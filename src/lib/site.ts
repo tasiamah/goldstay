@@ -182,7 +182,7 @@ export const cityFaq = {
   nairobi: [
     {
       q: "Do I need a KRA PIN to rent out my property in Kenya?",
-      a: "Yes. Every property owner earning rental income in Kenya needs a KRA PIN. If you don't have one we'll connect you with a tax agent who can register you remotely in about a week, using a scanned passport and proof of ownership. We cannot legally collect rent on behalf of a non-registered owner.",
+      a: "By Kenyan law, yes - but if you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and proof of ownership and your KRA PIN is live in roughly a week, with no visit to Kenya required. The reason we insist on this isn't paperwork - it's to protect your title from any future KRA action on undeclared income.",
     },
     {
       q: "Who handles the 7.5% monthly residential rental income tax?",
@@ -200,7 +200,7 @@ export const cityFaq = {
   accra: [
     {
       q: "Do I need a Ghana TIN to rent out my property?",
-      a: "Yes. Ghana Revenue Authority requires every landlord to have a Tax Identification Number. We'll connect you with a Ghanaian tax agent who can register you remotely in under two weeks using a scanned passport and title documents. Without a TIN we cannot legally remit rental income to you.",
+      a: "By Ghanaian law, yes - but if you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and your title documents and your TIN is live in under two weeks, with no visit to Ghana required. The reason we insist on this isn't paperwork - it's to keep your title clean of any future GRA action on undeclared income.",
     },
     {
       q: "Who handles the 8% rental income tax?",
