@@ -9,6 +9,8 @@ import { waLink } from "@/lib/site";
 import clsx from "./clsx";
 
 // Pages that open on a dark hero. The navbar starts in light mode on these.
+// Pages with a light/cream hero background — navbar should use dark content there from load.
+// Pages NOT in this set will start transparent-over-dark (light content).
 const DARK_HERO_PATHS = new Set([
   "/",
   "/nairobi",
@@ -17,8 +19,12 @@ const DARK_HERO_PATHS = new Set([
   "/list-your-property",
 ]);
 
+// Pages whose hero is on a light background. Navbar should pin to dark content from the start.
+const LIGHT_HERO_PATHS = new Set(["/yield-calculator"]);
+
 const navLinks = [
   { href: "/#services", label: "Services" },
+  { href: "/yield-calculator", label: "Yield" },
   { href: "/nairobi", label: "Nairobi" },
   { href: "/accra", label: "Accra" },
   { href: "/airbnb-management", label: "Airbnb" },
@@ -30,6 +36,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
   const hasDarkHero = DARK_HERO_PATHS.has(pathname);
+  const hasLightHero = LIGHT_HERO_PATHS.has(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -49,7 +56,7 @@ export function Navbar() {
   // At top of a dark-hero page the nav sits over charcoal → light content.
   // On light-background pages, or once scrolled anywhere, the nav pins to a cream backdrop → dark content.
   const onDark = hasDarkHero && !scrolled;
-  const pinned = scrolled || !hasDarkHero;
+  const pinned = scrolled || !hasDarkHero || hasLightHero;
 
   return (
     <header

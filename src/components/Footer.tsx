@@ -55,6 +55,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/yield-calculator" className="link-underline">
+                  Yield calculator
+                </Link>
+              </li>
+              <li>
                 <Link href="/list-your-property" className="link-underline">
                   List your property
                 </Link>
