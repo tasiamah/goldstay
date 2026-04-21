@@ -182,7 +182,7 @@ export const cityFaq = {
   nairobi: [
     {
       q: "Do I need a KRA PIN to rent out my property in Kenya?",
-      a: "By Kenyan law, yes - but if you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and proof of ownership and your KRA PIN is live in roughly a week, with no visit to Kenya required. The reason we insist on this isn't paperwork - it's to protect your title from any future KRA action on undeclared income.",
+      a: "By Kenyan law, yes. If you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and proof of ownership and your KRA PIN is live in roughly a week, with no visit to Kenya required. The reason we insist on this isn't paperwork. It's to protect your title from any future KRA action on undeclared income.",
     },
     {
       q: "Who handles the 7.5% monthly residential rental income tax?",
@@ -190,7 +190,7 @@ export const cityFaq = {
     },
     {
       q: "What about land rates, service charge and SRA levies?",
-      a: "All paid from your collected rent, all handled by us. Recurring charges like service charge to your apartment committee, annual land rates to Nairobi City County and any SRA (Special Rating Area) levies such as Karen or Westlands are set up once at onboarding and run on auto-pilot after that - you're not approving the same bill every month. Anything new, one-off or above USD 250 comes to you in writing first. Every payment lands on your monthly statement with the receipt attached.",
+      a: "All paid from your collected rent, all handled by us. Recurring charges like service charge to your apartment committee, annual land rates to Nairobi City County and any SRA (Special Rating Area) levies such as Karen or Westlands are set up once at onboarding and run on auto-pilot after that, so you're not approving the same bill every month. Anything new, one-off or above USD 250 comes to you in writing first. Every payment lands on your monthly statement with the receipt attached.",
     },
     {
       q: "Do I need NEMA or county licences to run my property as an Airbnb?",
@@ -200,7 +200,7 @@ export const cityFaq = {
   accra: [
     {
       q: "Do I need a Ghana TIN to rent out my property?",
-      a: "By Ghanaian law, yes - but if you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and your title documents and your TIN is live in under two weeks, with no visit to Ghana required. The reason we insist on this isn't paperwork - it's to keep your title clean of any future GRA action on undeclared income.",
+      a: "By Ghanaian law, yes. If you don't already have one, we handle the registration for you end-to-end. Send us a scanned passport and your title documents and your TIN is live in under two weeks, with no visit to Ghana required. The reason we insist on this isn't paperwork. It's to keep your title clean of any future GRA action on undeclared income.",
     },
     {
       q: "Who handles the 8% rental income tax?",
@@ -208,7 +208,7 @@ export const cityFaq = {
     },
     {
       q: "What about property rates and ground rent?",
-      a: "All paid from your collected rent, all handled by us. Accra property rates to AMA (or your relevant municipal assembly) and annual ground rent to the Lands Commission are set up once at onboarding and run on auto-pilot after that - you're not approving the same bill every year. Anything new, one-off or above USD 250 comes to you in writing first. Every payment lands on your monthly statement with the official receipt attached.",
+      a: "All paid from your collected rent, all handled by us. Accra property rates to AMA (or your relevant municipal assembly) and annual ground rent to the Lands Commission are set up once at onboarding and run on auto-pilot after that, so you're not approving the same bill every year. Anything new, one-off or above USD 250 comes to you in writing first. Every payment lands on your monthly statement with the official receipt attached.",
     },
     {
       q: "Do I need a GTA licence to list my property on Airbnb?",
@@ -256,7 +256,7 @@ export const faq = [
   },
   {
     q: "Who pays for repairs and maintenance?",
-    a: "You do - it's your asset - but the job is entirely ours. We source quotes, supervise the work, pay vendors directly from your collected rent, and send you the receipts. Anything under USD 50 is handled without disturbing you. Anything between USD 50 and USD 250 appears on your statement with a photo receipt. Anything above USD 250 is pre-approved with you in writing before we spend a shilling.",
+    a: "You do. It's your asset, after all. But the job is entirely ours. We source quotes, supervise the work, pay vendors directly from your collected rent, and send you the receipts. Anything under USD 50 is handled without disturbing you. Anything between USD 50 and USD 250 appears on your statement with a photo receipt. Anything above USD 250 is pre-approved with you in writing before we spend a shilling.",
   },
   {
     q: "How is Goldstay different from my current local agent?",
