@@ -103,7 +103,7 @@ export const cities = {
     currency: "KES",
     tenantProfile: "UN, diplomats, corporates, international NGOs and expats",
     heroRentClaim:
-      "Typical 2BR in Kilimani or Westlands nets USD 1,400 - 1,900 a month, wired to your account on the 5th.",
+      "Typical 2BR in Kilimani or Westlands nets USD 1,400 to 1,900 a month, wired to your account on the 5th.",
     neighbourhoods: [
       {
         name: "Westlands",
@@ -143,7 +143,7 @@ export const cities = {
     currency: "GHS",
     tenantProfile: "NGOs, embassies, oil & gas executives and expat professionals",
     heroRentClaim:
-      "Typical 2BR in East Legon or Airport Residential nets USD 1,300 - 1,900 a month, wired to your account on the 5th.",
+      "Typical 2BR in East Legon or Airport Residential nets USD 1,300 to 1,900 a month, wired to your account on the 5th.",
     neighbourhoods: [
       {
         name: "East Legon",
