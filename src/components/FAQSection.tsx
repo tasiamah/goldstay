@@ -3,22 +3,34 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { faq } from "@/lib/site";
+import { faq as defaultFaq } from "@/lib/site";
 import { SectionHeader } from "./SectionHeader";
 
-export function FAQSection() {
-  const [open, setOpen] = useState<number | null>(0);
+type FaqItem = { q: string; a: string };
+
+export function FAQSection({
+  items,
+  eyebrow = "FAQ",
+  title = "Straightforward answers to the questions we get most.",
+  id = "faq",
+  initialOpen = 0,
+}: {
+  items?: readonly FaqItem[];
+  eyebrow?: string;
+  title?: string;
+  id?: string;
+  initialOpen?: number | null;
+} = {}) {
+  const [open, setOpen] = useState<number | null>(initialOpen);
+  const list = items ?? defaultFaq;
 
   return (
-    <section id="faq" className="section bg-white/50">
+    <section id={id} className="section bg-white/50">
       <div className="container-gs max-w-5xl">
-        <SectionHeader
-          eyebrow="FAQ"
-          title="Straightforward answers to the questions we get most."
-        />
+        <SectionHeader eyebrow={eyebrow} title={title} />
 
         <div className="mt-14 divide-y divide-charcoal/10 border-y border-charcoal/10">
-          {faq.map((item, i) => {
+          {list.map((item, i) => {
             const isOpen = open === i;
             return (
               <div key={item.q}>
