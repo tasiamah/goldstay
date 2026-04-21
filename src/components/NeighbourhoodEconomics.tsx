@@ -40,7 +40,7 @@ export function NeighbourhoodEconomics({
                     <span className="font-serif text-xl text-charcoal md:text-2xl">
                       {formatUsd(n.twoBrUsd.min)}
                     </span>
-                    <span className="text-charcoal/40">–</span>
+                    <span className="font-mono text-xs text-charcoal/40">to</span>
                     <span className="font-serif text-xl text-charcoal md:text-2xl">
                       {formatUsd(n.twoBrUsd.max)}
                     </span>

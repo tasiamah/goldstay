@@ -52,15 +52,15 @@ const rows: Row[] = [
     goldstay: { kind: "yes" },
   },
   {
-    feature: "Transparent fee — no kickbacks, no surprise deductions",
+    feature: "Transparent fee with no kickbacks or surprise deductions",
     self: { kind: "yes" },
     agent: { kind: "no", label: "Opaque" },
     goldstay: { kind: "yes" },
   },
   {
     feature: "Your time spent every month",
-    self: { kind: "no", label: "10 - 20 hrs" },
-    agent: { kind: "partial", label: "5 - 10 hrs" },
+    self: { kind: "no", label: "10 to 20 hrs" },
+    agent: { kind: "partial", label: "5 to 10 hrs" },
     goldstay: { kind: "yes", label: "Under 30 min" },
   },
 ];
