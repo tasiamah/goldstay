@@ -185,8 +185,8 @@ export const cityFaq = {
       a: "Yes. Every property owner earning rental income in Kenya needs a KRA PIN. If you don't have one we'll connect you with a tax agent who can register you remotely in about a week, using a scanned passport and proof of ownership. We cannot legally collect rent on behalf of a non-registered owner.",
     },
     {
-      q: "Who handles the 10% monthly residential rental income tax?",
-      a: "Kenya charges a 10% MRI (Monthly Rental Income) tax on gross rent for residential landlords. We calculate it, withhold it from each month's collection, and remit it to KRA by the 20th on your behalf. The tax line appears on your monthly statement with the KRA receipt reference.",
+      q: "Who handles the 7.5% monthly residential rental income tax?",
+      a: "Kenya charges a 7.5% MRI (Monthly Rental Income) tax on gross rent for residential landlords (reduced from 10% under the Finance Act 2023). We calculate it, withhold it from each month's collection, and remit it to KRA by the 20th on your behalf. The tax line appears on your monthly statement with the KRA receipt reference.",
     },
     {
       q: "What about land rates, service charge and SRA levies?",
