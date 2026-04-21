@@ -7,15 +7,19 @@ type Stat = {
   value: number;
   suffix?: string;
   prefix?: string;
+  display?: string;
   label: string;
   note?: string;
 };
 
+// Service commitments, not made-up inventory numbers. Everything here is a
+// promise we operate against, which means it's defensible in front of any
+// diaspora landlord who asks us to prove it.
 const stats: Stat[] = [
-  { value: 120, suffix: "+", label: "Properties under management" },
-  { value: 2, label: "Cities on the ground", note: "Nairobi · Accra" },
-  { value: 96, suffix: "%", label: "Landlord retention", note: "Year on year" },
-  { value: 48, suffix: "h", label: "Response time", note: "Tenant issues resolved" },
+  { value: 48, suffix: "h", label: "Response SLA", note: "Anything urgent, same day" },
+  { value: 5, suffix: "th", label: "Paid on the", note: "Of every month, without fail" },
+  { display: "USD", value: 0, label: "Wired directly", note: "EUR · GBP · AED on request" },
+  { value: 2, label: "Cities, on the ground", note: "Nairobi · Accra" },
 ];
 
 function useCountUp(target: number, trigger: boolean, duration = 1400) {
@@ -37,13 +41,19 @@ function useCountUp(target: number, trigger: boolean, duration = 1400) {
 }
 
 function StatBlock({ stat, inView }: { stat: Stat; inView: boolean }) {
-  const n = useCountUp(stat.value, inView);
+  const n = useCountUp(stat.value, inView && !stat.display);
   return (
     <div className="relative">
       <div className="font-serif text-5xl text-charcoal md:text-6xl">
-        {stat.prefix ?? ""}
-        {n}
-        {stat.suffix ?? ""}
+        {stat.display ? (
+          stat.display
+        ) : (
+          <>
+            {stat.prefix ?? ""}
+            {n}
+            {stat.suffix ?? ""}
+          </>
+        )}
       </div>
       <div className="mt-3 text-sm text-charcoal/75">{stat.label}</div>
       {stat.note ? (
@@ -80,13 +90,14 @@ export function TrustStrip() {
         <Reveal>
           <div className="mb-10 flex flex-wrap items-end justify-between gap-4">
             <div>
-              <div className="eyebrow">Operating at scale</div>
+              <div className="eyebrow">How we operate</div>
               <h2 className="mt-4 max-w-xl font-serif text-3xl md:text-4xl">
-                The numbers behind the standard.
+                Four promises we run the business against.
               </h2>
             </div>
             <p className="max-w-sm text-sm text-charcoal/60">
-              A focused portfolio. Two cities. Zero shortcuts. Updated quarterly.
+              Not marketing. These are the operational standards every landlord
+              contract is written to. If we miss, you hear it from us first.
             </p>
           </div>
         </Reveal>
