@@ -76,7 +76,7 @@ function CityCard({ cityKey, index }: { cityKey: "nairobi" | "accra"; index: num
             <ArrowUpRight className="h-6 w-6 shrink-0 transition-transform duration-500 ease-premium group-hover:-translate-y-1 group-hover:translate-x-1" />
           </div>
           <p className="mt-4 max-w-md text-sm text-cream/80">
-            {c.neighbourhoods.join(" · ")}
+            {c.neighbourhoods.map((n) => n.name).join(" · ")}
           </p>
         </div>
       </Link>

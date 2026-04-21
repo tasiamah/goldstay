@@ -87,34 +87,134 @@ export const services = [
   },
 ];
 
+// Neighbourhood-level economics. Ranges are indicative monthly rent in USD
+// for a recently let, well-finished 2-bedroom apartment. They're directional,
+// not guarantees, and explicitly framed as such on the page. Sourced from
+// publicly available listings and our own managed/advised stock.
+export type Neighbourhood = {
+  name: string;
+  twoBrUsd: { min: number; max: number };
+  tenant: string;
+};
+
 export const cities = {
   nairobi: {
     country: "Kenya",
     currency: "KES",
     tenantProfile: "UN, diplomats, corporates, international NGOs and expats",
+    heroRentClaim:
+      "Typical 2BR in Kilimani or Westlands nets USD 1,400 - 1,900 a month, wired to your account on the 5th.",
     neighbourhoods: [
-      "Westlands",
-      "Kilimani",
-      "Kileleshwa",
-      "Lavington",
-      "Parklands",
-      "Brookside",
-    ],
+      {
+        name: "Westlands",
+        twoBrUsd: { min: 1400, max: 2000 },
+        tenant: "Corporate, UN, NGO",
+      },
+      {
+        name: "Kilimani",
+        twoBrUsd: { min: 1300, max: 1800 },
+        tenant: "Young professionals, expats",
+      },
+      {
+        name: "Kileleshwa",
+        twoBrUsd: { min: 1400, max: 1900 },
+        tenant: "Families, diplomats",
+      },
+      {
+        name: "Lavington",
+        twoBrUsd: { min: 1500, max: 2200 },
+        tenant: "Diplomats, corporate executives",
+      },
+      {
+        name: "Parklands",
+        twoBrUsd: { min: 1000, max: 1500 },
+        tenant: "Mixed corporate, mid-tier expat",
+      },
+      {
+        name: "Brookside",
+        twoBrUsd: { min: 1700, max: 2500 },
+        tenant: "Premium families, embassies",
+      },
+    ] satisfies Neighbourhood[],
     domain: "goldstay.co.ke",
   },
   accra: {
     country: "Ghana",
     currency: "GHS",
     tenantProfile: "NGOs, embassies, oil & gas executives and expat professionals",
+    heroRentClaim:
+      "Typical 2BR in East Legon or Airport Residential nets USD 1,300 - 1,900 a month, wired to your account on the 5th.",
     neighbourhoods: [
-      "East Legon",
-      "Adjiringanor",
-      "Airport Residential",
-      "Cantonments",
-      "Labone",
-    ],
+      {
+        name: "East Legon",
+        twoBrUsd: { min: 1200, max: 1800 },
+        tenant: "Oil & gas execs, embassies",
+      },
+      {
+        name: "Adjiringanor",
+        twoBrUsd: { min: 1300, max: 1900 },
+        tenant: "Corporate executives, NGOs",
+      },
+      {
+        name: "Airport Residential",
+        twoBrUsd: { min: 1400, max: 2200 },
+        tenant: "Diplomats, senior expats",
+      },
+      {
+        name: "Cantonments",
+        twoBrUsd: { min: 1800, max: 2800 },
+        tenant: "Embassies, premium expats",
+      },
+      {
+        name: "Labone",
+        twoBrUsd: { min: 1000, max: 1500 },
+        tenant: "Young professionals, corporate mid-tier",
+      },
+    ] satisfies Neighbourhood[],
     domain: "goldstay.com.gh",
   },
+} as const;
+
+// City-specific FAQ that sits on top of the global FAQ on each city page.
+// These are the questions every diaspora landlord in that specific market
+// actually asks in month one of ownership.
+export const cityFaq = {
+  nairobi: [
+    {
+      q: "Do I need a KRA PIN to rent out my property in Kenya?",
+      a: "Yes. Every property owner earning rental income in Kenya needs a KRA PIN. If you don't have one we'll connect you with a tax agent who can register you remotely in about a week, using a scanned passport and proof of ownership. We cannot legally collect rent on behalf of a non-registered owner.",
+    },
+    {
+      q: "Who handles the 10% monthly residential rental income tax?",
+      a: "Kenya charges a 10% MRI (Monthly Rental Income) tax on gross rent for residential landlords. We calculate it, withhold it from each month's collection, and remit it to KRA by the 20th on your behalf. The tax line appears on your monthly statement with the KRA receipt reference.",
+    },
+    {
+      q: "What about land rates, service charge and SRA levies?",
+      a: "Land rates to Nairobi City County and any SRA (Special Rating Area) levies such as Karen or Westlands are paid from your collected rent with your pre-approval. Service charge to your apartment's management committee is handled the same way. Every payment arrives in your statement with a receipt.",
+    },
+    {
+      q: "Do I need NEMA or county licences to run my property as an Airbnb?",
+      a: "Short-stay units in Nairobi typically need a county single business permit and, for buildings with shared systems, a NEMA EIA clearance. We handle both applications, pay the fees from your account with your approval, and keep copies on file for you.",
+    },
+  ],
+  accra: [
+    {
+      q: "Do I need a Ghana TIN to rent out my property?",
+      a: "Yes. Ghana Revenue Authority requires every landlord to have a Tax Identification Number. We'll connect you with a Ghanaian tax agent who can register you remotely in under two weeks using a scanned passport and title documents. Without a TIN we cannot legally remit rental income to you.",
+    },
+    {
+      q: "Who handles the 8% rental income tax?",
+      a: "Ghana applies an 8% final withholding tax on gross residential rental income. We deduct it from each month's collection and remit it to GRA by the 15th of the following month on your behalf. You receive the GRA acknowledgement reference on every monthly statement.",
+    },
+    {
+      q: "What about property rates and ground rent?",
+      a: "Accra property rates to AMA (or your relevant municipal assembly) and ground rent to the Lands Commission are paid from your collected rent with your pre-approval. Both appear as line items on your statement with the official receipt attached.",
+    },
+    {
+      q: "Do I need a GTA licence to list my property on Airbnb?",
+      a: "Short-stay units in Accra are regulated under the Ghana Tourism Authority (GTA) licensing regime. We apply on your behalf, handle the annual renewal, and maintain the licence on file. The first year's fee is paid from your collected rent with your approval.",
+    },
+  ],
 } as const;
 
 export const faq = [

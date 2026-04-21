@@ -88,7 +88,7 @@ export function JsonLd() {
     },
     areaServed: cities.nairobi.neighbourhoods.map((n) => ({
       "@type": "Place",
-      name: n,
+      name: n.name,
     })),
   };
 
@@ -106,7 +106,7 @@ export function JsonLd() {
     },
     areaServed: cities.accra.neighbourhoods.map((n) => ({
       "@type": "Place",
-      name: n,
+      name: n.name,
     })),
   };
 
