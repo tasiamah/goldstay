@@ -17,7 +17,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Goldstay on WhatsApp"
-      className={`fixed bottom-5 right-5 z-40 inline-flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lift ring-1 ring-black/5 transition-all duration-500 ease-premium hover:scale-105 hover:bg-[#1ebe5b] md:bottom-6 md:right-6 ${mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+      className={`fixed bottom-5 right-5 z-40 hidden h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-lift ring-1 ring-black/5 transition-all duration-500 ease-premium hover:scale-105 hover:bg-[#1ebe5b] md:inline-flex md:bottom-6 md:right-6 ${mounted ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
     >
       <span
         aria-hidden

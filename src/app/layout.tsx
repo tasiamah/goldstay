@@ -8,6 +8,8 @@ import { Footer } from "@/components/Footer";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { CookieConsent } from "@/components/CookieConsent";
 import { Analytics } from "@/components/Analytics";
+import { JsonLd } from "@/components/JsonLd";
+import { MobileStickyCTA } from "@/components/MobileStickyCTA";
 import { site } from "@/lib/site";
 
 const instrumentSerif = Instrument_Serif({
@@ -69,11 +71,13 @@ export default function RootLayout({
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
     >
       <body>
+        <JsonLd />
         <Analytics />
         <Navbar />
         <main>{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <MobileStickyCTA />
         <CookieConsent />
       </body>
     </html>
