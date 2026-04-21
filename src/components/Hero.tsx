@@ -26,17 +26,21 @@ export function Hero({
 }) {
   return (
     <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-charcoal text-cream">
-      {/* background image */}
+      {/* background image - reuse the same locally-hosted, verified city
+          photos the homepage LocationsSection cards use, so the hero on
+          /nairobi and /accra feels continuous with the rest of the site. */}
       <div
-        className="absolute inset-0 -z-10 bg-cover bg-center"
+        className="absolute inset-0 -z-10 bg-cover"
         style={{
           backgroundImage: `url('${
             city === "accra"
-              ? "https://images.unsplash.com/photo-1580745294621-26a2b2f15cef?auto=format&fit=crop&w=2400&q=80"
+              ? "/images/locations/accra.jpg"
               : city === "nairobi"
-                ? "https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&w=2400&q=80"
+                ? "/images/locations/nairobi.jpg"
                 : "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2400&q=80"
           }')`,
+          backgroundPosition:
+            city === "accra" ? "center 38%" : "center",
         }}
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/95" />
