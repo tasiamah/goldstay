@@ -194,7 +194,7 @@ export const cityFaq = {
     },
     {
       q: "Do I need NEMA or county licences to run my property as an Airbnb?",
-      a: "Short-stay units in Nairobi typically need a county single business permit and, for buildings with shared systems, a NEMA EIA clearance. We handle both applications, pay the fees from your account with your approval, and keep copies on file for you.",
+      a: "No. When we operate your short-stay, the licensing sits with us, not with you. Goldstay holds the Nairobi City County single business permit, the Tourism Regulatory Authority registration and any NEMA clearance required for the building. You hold ownership; we hold every operating permit the property needs. Nothing for you to file, renew or worry about.",
     },
   ],
   accra: [
@@ -212,7 +212,7 @@ export const cityFaq = {
     },
     {
       q: "Do I need a GTA licence to list my property on Airbnb?",
-      a: "Short-stay units in Accra are regulated under the Ghana Tourism Authority (GTA) licensing regime. We apply on your behalf, handle the annual renewal, and maintain the licence on file. The first year's fee is paid from your collected rent with your approval.",
+      a: "No. When we operate your short-stay, the Ghana Tourism Authority (GTA) licensing sits with us, not with you. Goldstay holds the GTA operator licence, the municipal business operating permit and any other short-stay permits the property needs. You hold ownership; we hold every operating permit. Nothing for you to file or renew.",
     },
   ],
 } as const;
