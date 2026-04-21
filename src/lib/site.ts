@@ -256,7 +256,7 @@ export const faq = [
   },
   {
     q: "Who pays for repairs and maintenance?",
-    a: "The landlord. We coordinate, quote and supervise, but every repair is paid from your collected rent with your approval. Anything over USD 250 is pre-approved in writing. Anything under USD 50 appears in your monthly statement with a receipt.",
+    a: "You do - it's your asset - but the job is entirely ours. We source quotes, supervise the work, pay vendors directly from your collected rent, and send you the receipts. Anything under USD 50 is handled without disturbing you. Anything between USD 50 and USD 250 appears on your statement with a photo receipt. Anything above USD 250 is pre-approved with you in writing before we spend a shilling.",
   },
   {
     q: "How is Goldstay different from my current local agent?",
