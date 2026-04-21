@@ -26,8 +26,8 @@ export default function Page() {
           </p>
           <h2 className="font-serif">How we use it</h2>
           <p>
-            To reply to your enquiry, to arrange a property assessment, and —
-            where you&apos;ve consented — to send occasional updates. We never
+            To reply to your enquiry, to arrange a property assessment, and,
+            where you&apos;ve consented, to send occasional updates. We never
             sell your data and we don&apos;t share it with advertisers.
           </p>
           <h2 className="font-serif">Your rights</h2>

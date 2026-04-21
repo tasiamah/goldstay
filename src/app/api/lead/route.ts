@@ -35,7 +35,7 @@ export async function POST(req: Request) {
         from: "Goldstay <leads@goldstay.com>",
         to: [inbox],
         replyTo: (data.email as string) || undefined,
-        subject: `New property enquiry — ${data.name ?? "Unnamed"} (${data.city ?? ""})`,
+        subject: `New property enquiry: ${data.name ?? "Unnamed"} (${data.city ?? ""})`,
         text: body,
       });
     } catch (e) {

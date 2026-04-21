@@ -12,7 +12,7 @@ export function Logo({
   return (
     <Link
       href="/"
-      aria-label="Goldstay — home"
+      aria-label="Goldstay, home"
       className={clsx("group inline-flex items-baseline gap-1.5", className)}
     >
       <span

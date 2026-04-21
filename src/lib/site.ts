@@ -140,7 +140,7 @@ export const faq = [
   },
   {
     q: "Do you manage Airbnb properties?",
-    a: "Yes — we run full short-stay operations including listing creation, dynamic pricing, guest communication, cleaning and maintenance. Airbnb typically yields 40–70% more than long-term let in the neighbourhoods we operate in.",
+    a: "Yes. We run full short-stay operations including listing creation, dynamic pricing, guest communication, cleaning and maintenance. Airbnb typically yields 40 to 70% more than long-term let in the neighbourhoods we operate in.",
   },
 ];
 

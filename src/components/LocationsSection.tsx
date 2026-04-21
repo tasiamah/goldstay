@@ -16,7 +16,7 @@ export function LocationsSection() {
         <SectionHeader
           eyebrow="Locations"
           title="Two cities. One standard."
-          lede="We focus deeply on the neighbourhoods diaspora landlords actually own property in — and tenant demand is strongest."
+          lede="We focus deeply on the neighbourhoods diaspora landlords actually own property in, where tenant demand is strongest."
         />
 
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
