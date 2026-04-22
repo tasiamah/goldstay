@@ -37,8 +37,7 @@ export function JsonLd() {
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
-          description:
-            "Equivalent to one month's rent per year of management",
+          description: "10% of collected rent",
         },
       },
       {
