@@ -14,7 +14,12 @@ type FormValues = {
   propertyType: string;
   bedrooms: string;
   furnished: "Furnished" | "Unfurnished" | "Part-furnished";
-  service: "Long-term" | "Short-stay / Airbnb" | "Tenant finding only" | "Not sure";
+  service:
+    | "Long-term"
+    | "Short-stay / Airbnb"
+    | "Help me buy a property"
+    | "Tenant finding only"
+    | "Not sure";
   availability: string;
   notes?: string;
   consent: boolean;
@@ -172,6 +177,7 @@ export function ListPropertyForm() {
           <select className={field} {...register("service")}>
             <option>Long-term</option>
             <option>Short-stay / Airbnb</option>
+            <option>Help me buy a property</option>
             <option>Tenant finding only</option>
             <option>Not sure</option>
           </select>

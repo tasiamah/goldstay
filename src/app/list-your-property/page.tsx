@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
 import { Reveal } from "@/components/Reveal";
 import { waLink } from "@/lib/site";
@@ -73,6 +74,21 @@ export default function Page() {
                 neighbour is the better tenant. We only want you on board if
                 we&apos;re genuinely the best option for you.
               </p>
+            </div>
+            <div className="rounded-3xl border border-gold-500/30 bg-gold-500/5 p-8">
+              <div className="eyebrow text-gold-700">Haven&apos;t bought yet?</div>
+              <p className="mt-4 text-charcoal/75">
+                If you&apos;re still looking for the right property in Nairobi
+                or Accra, start with our Property Sourcing service. 1.5% of
+                purchase price, fully refunded if we manage it for 12 months
+                afterwards.
+              </p>
+              <Link
+                href="/property-sourcing"
+                className="mt-5 inline-block link-underline text-charcoal"
+              >
+                See how sourcing works →
+              </Link>
             </div>
           </aside>
         </div>
