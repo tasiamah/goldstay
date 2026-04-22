@@ -1,4 +1,4 @@
-import { site, cities } from "@/lib/site";
+import { site, cities, offices } from "@/lib/site";
 
 // Keep JSON-LD narrow and accurate. We declare who we are, what we do, where,
 // and how to reach us. Nothing here claims revenue, headcount or client lists.
@@ -84,6 +84,7 @@ export function JsonLd() {
     ],
   };
 
+  const nairobiOffice = offices.nairobi;
   const nairobi = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
@@ -91,11 +92,21 @@ export function JsonLd() {
     name: `${site.name} Nairobi`,
     url: `${baseUrl}/nairobi`,
     parentOrganization: { "@type": "Organization", name: site.name },
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Nairobi",
-      addressCountry: cities.nairobi.country,
-    },
+    address: nairobiOffice
+      ? {
+          "@type": "PostalAddress",
+          streetAddress: `${nairobiOffice.building}, ${nairobiOffice.street}`,
+          addressLocality: nairobiOffice.locality,
+          addressRegion: nairobiOffice.district,
+          postalCode: nairobiOffice.postalCode,
+          addressCountry: nairobiOffice.countryCode,
+          postOfficeBoxNumber: nairobiOffice.postalBox,
+        }
+      : {
+          "@type": "PostalAddress",
+          addressLocality: "Nairobi",
+          addressCountry: cities.nairobi.country,
+        },
     areaServed: cities.nairobi.neighbourhoods.map((n) => ({
       "@type": "Place",
       name: n.name,
