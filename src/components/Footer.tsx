@@ -3,6 +3,7 @@ import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
 import { site, waLink } from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
+import { FooterOffice } from "./FooterOffice";
 
 export function Footer() {
   return (
@@ -98,8 +99,8 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-3">
-            <div className="eyebrow mb-4">Local Sites</div>
-            <ul className="space-y-3 text-sm text-charcoal/70">
+            <FooterOffice />
+            <ul className="mt-8 space-y-3 text-sm text-charcoal/70">
               <li>
                 <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50">
                   Kenya
