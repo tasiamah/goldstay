@@ -5,17 +5,17 @@ import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
 
 export function ServicesSection() {
-  const featured = services.slice(0, 2);
+  const featured = services.slice(0, 3);
   return (
     <section id="services" className="section bg-white/50">
       <div className="container-gs">
         <SectionHeader
           eyebrow="Services"
-          title="Two ways to put your property to work."
-          lede="Choose long-term rental income or short-stay yield. We run both, end-to-end."
+          title="From finding the property to wiring you the rent."
+          lede="Three services covering the full diaspora landlord lifecycle. Buy well, rent smart, collect in USD."
         />
 
-        <div className="mt-16 grid gap-6 lg:grid-cols-2">
+        <div className="mt-16 grid gap-6 lg:grid-cols-3">
           {featured.map((s, i) => (
             <Reveal key={s.slug} delay={i * 0.05}>
               <article className="group relative flex h-full flex-col rounded-3xl border border-charcoal/10 bg-cream p-6 transition-all duration-500 ease-premium hover:-translate-y-1 hover:border-gold-500/50 hover:shadow-lift sm:p-8 md:p-10">
@@ -68,11 +68,11 @@ export function ServicesSection() {
 
         <Reveal delay={0.1}>
           <p className="mt-10 text-center text-sm text-charcoal/60">
-            Not sure which is right for your property?{" "}
+            Not sure which of these fits your situation?{" "}
             <a
               className="link-underline text-charcoal"
               href={waLink(
-                "Hi Goldstay, I'd like advice on long-term vs short-stay for my property",
+                "Hi Goldstay, I'd like advice on which of your services fits my situation",
               )}
               target="_blank"
               rel="noopener noreferrer"
