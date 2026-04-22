@@ -55,8 +55,13 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/property-sourcing" className="link-underline">
-                  Property sourcing
+                <Link href="/nairobi/buy" className="link-underline">
+                  Buy in Nairobi
+                </Link>
+              </li>
+              <li>
+                <Link href="/accra/buy" className="link-underline">
+                  Buy in Accra
                 </Link>
               </li>
               <li>
