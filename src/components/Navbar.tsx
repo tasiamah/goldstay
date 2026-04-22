@@ -16,6 +16,7 @@ const DARK_HERO_PATHS = new Set([
   "/nairobi",
   "/accra",
   "/airbnb-management",
+  "/property-sourcing",
   "/list-your-property",
 ]);
 
@@ -28,6 +29,7 @@ const navLinks = [
   { href: "/nairobi", label: "Nairobi" },
   { href: "/accra", label: "Accra" },
   { href: "/airbnb-management", label: "Airbnb" },
+  { href: "/property-sourcing", label: "Buy" },
   { href: "/#faq", label: "FAQ" },
 ];
 

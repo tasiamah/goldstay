@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/nairobi",
     "/accra",
     "/airbnb-management",
+    "/property-sourcing",
     "/yield-calculator",
     "/list-your-property",
     "/privacy",
