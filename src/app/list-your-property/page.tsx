@@ -79,9 +79,9 @@ export default function Page() {
               <div className="eyebrow text-gold-700">Haven&apos;t bought yet?</div>
               <p className="mt-4 text-charcoal/75">
                 If you&apos;re still looking for the right property in Nairobi
-                or Accra, start with our Property Sourcing service. 1.5% of
-                purchase price, fully refunded if we manage it for 12 months
-                afterwards.
+                or Accra, start with our Property Sourcing service. On-the-ground
+                search, inspection, negotiation and title verification, free
+                for you as the buyer.
               </p>
               <Link
                 href="/property-sourcing"

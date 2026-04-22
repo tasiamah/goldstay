@@ -61,14 +61,9 @@ export function JsonLd() {
           "@type": "Service",
           name: "Property Sourcing",
           description:
-            "Buy-side property sourcing and acquisition advisory for diaspora buyers in Nairobi and Accra. Search, negotiation, title verification, inspection and handover.",
+            "Buy-side property sourcing for diaspora buyers in Nairobi and Accra. Search, negotiation, title verification, inspection and handover. Free for the buyer.",
           areaServed: ["Nairobi", "Accra"],
           provider: { "@type": "Organization", name: site.name },
-        },
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          description:
-            "1.5% of purchase price, refundable if Goldstay manages the property for 12 months after completion",
         },
       },
       {

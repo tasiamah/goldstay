@@ -18,7 +18,7 @@ import { waLink } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Property Sourcing for Diaspora Buyers",
   description:
-    "Buy-side property sourcing in Nairobi and Accra. We find the right property, negotiate the price, verify the title and hand you a turnkey asset. 1.5% of purchase price, refundable if we manage it afterwards.",
+    "Buy-side property sourcing in Nairobi and Accra. We find the right property, negotiate the price, verify the title and hand you a turnkey asset ready to rent. Free for buyers.",
   alternates: { canonical: "/property-sourcing" },
 };
 
@@ -79,7 +79,7 @@ const steps = [
   {
     k: "05",
     title: "Handover, rent-ready",
-    body: "At completion we hand you a turnkey property. If you want us to manage it afterwards, the 1.5% fee is refunded in full over the first 12 months of management.",
+    body: "At completion we hand you a turnkey property: keys, title documents, snagging list, utilities in your name and management committee contacts. You're ready to rent the day you receive it.",
   },
 ];
 
@@ -105,10 +105,9 @@ export default function Page() {
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 We do the running around you would have done if you still lived
-                here. Search, inspection, negotiation, title verification and
-                handover. Our fee is 1.5% of the purchase price, refunded in
-                full if we manage the property for the 12 months after
-                completion.
+                here. On-the-ground search, in-person inspection, price
+                negotiation, title verification and handover. All of it, free
+                for you as the buyer.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a
@@ -176,24 +175,24 @@ export default function Page() {
         <div className="container-gs grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <div>
-              <div className="eyebrow">Fees and incentives</div>
+              <div className="eyebrow">How we work</div>
               <h2 className="mt-4 font-serif text-display-md balance">
-                1.5% of purchase price. Refunded if we manage what we find you.
+                Free for you. Designed to find a property you will actually keep.
               </h2>
               <p className="mt-5 text-charcoal/75">
-                Most buyers&apos; agents are paid by the seller, which makes their
-                advice worth exactly what the seller pays for. We are paid by
-                you, and only you. And if you go on to have us manage the
-                property, our fee is refunded in full over the first 12 months
-                of management, because by that point we&apos;re earning on the
-                rental, not the transaction.
+                The service is free for you as the buyer. That means we can
+                only succeed by finding you a property good enough that you
+                want us to manage it afterwards, or good enough that you
+                recommend us to the next diaspora buyer in your circle. The
+                incentive is to find the right property, not to close the
+                first one.
               </p>
               <ul className="mt-8 space-y-3 text-sm">
                 {[
-                  "No commissions from sellers, developers or agents",
-                  "Written brief and written disqualifications, so we don't drift",
-                  "Walk away fee is zero if no property meets the brief in 90 days",
-                  "Fully refundable against future management for 12 months",
+                  "On-the-ground search covering listed and off-market inventory",
+                  "Written brief up front, written rationale for every shortlist",
+                  "Walk away at any time, with no obligation",
+                  "Seamless handover into Goldstay management when you're ready",
                 ].map((t) => (
                   <li key={t} className="flex items-start gap-3">
                     <span className="mt-0.5 inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-gold-500/15 text-gold-700">
@@ -208,16 +207,16 @@ export default function Page() {
 
           <Reveal delay={0.1}>
             <div className="rounded-3xl border border-charcoal/10 bg-charcoal p-6 text-cream sm:p-8 md:p-10">
-              <div className="eyebrow text-gold-400">Illustrative economics</div>
+              <div className="eyebrow text-gold-400">Indicative yield</div>
               <h3 className="mt-4 font-serif text-2xl sm:text-3xl">
                 2-bed apartment, Kilimani or East Legon
               </h3>
               <ul className="mt-8 divide-y divide-cream/10 text-sm">
                 {[
-                  ["Purchase price", "USD 185,000"],
-                  ["Property sourcing fee (1.5%)", "USD 2,775"],
-                  ["Expected gross rent (long-term)", "USD 1,500 / month"],
-                  ["If Goldstay manages for 12 months", "Fee fully refunded"],
+                  ["Indicative purchase price", "USD 180,000 to 220,000"],
+                  ["Long-term rent (gross)", "USD 1,400 to 1,900 / month"],
+                  ["Short-stay potential (gross)", "USD 2,200 to 2,800 / month"],
+                  ["Typical long-term net yield", "7 to 8.5% per year"],
                 ].map(([k, v]) => (
                   <li
                     key={k}
@@ -228,16 +227,16 @@ export default function Page() {
                   </li>
                 ))}
                 <li className="flex items-center justify-between gap-4 py-4">
-                  <span className="text-cream">Net cost after 12 months</span>
+                  <span className="text-cream">Paid to you in</span>
                   <span className="text-right font-serif text-xl text-gold-400 sm:text-2xl">
-                    USD 0
+                    USD
                   </span>
                 </li>
               </ul>
               <p className="mt-6 text-xs text-cream/50">
-                Illustrative only. Actual purchase price, rent and refund
-                eligibility depend on the specific property and management
-                agreement signed after completion.
+                Indicative only. Actual price and yield depend on the specific
+                unit, building, finishing and market conditions. We give you a
+                specific estimate after the first shortlist.
               </p>
             </div>
           </Reveal>

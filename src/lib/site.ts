@@ -73,14 +73,14 @@ export const services = [
   {
     slug: "property-sourcing",
     title: "Property Sourcing",
-    fee: "1.5%",
-    feeLabel: "of purchase price",
+    fee: "Free",
+    feeLabel: "for buyers",
     blurb:
-      "For diaspora landlords buying remotely. We find the right property, negotiate the price, verify the title and hand you a turnkey asset. Refunded in full if we manage the property for 12 months after completion.",
+      "For diaspora landlords buying remotely. We find the right property, run the inspections, negotiate the price, verify the title and hand you a turnkey asset ready to rent.",
     features: [
       "On-the-ground property search to your investment brief",
       "Remote video walk-through and in-person inspection",
-      "Price negotiation on your behalf, not the seller's",
+      "Price negotiation on your behalf",
       "Legal and title verification with our property lawyers",
       "Due diligence on the developer, building and service charge history",
       "Full handover pack at completion: keys, documents, inventory, utilities",
@@ -269,7 +269,7 @@ export const faq = [
   },
   {
     q: "Can Goldstay help me buy a property I don't own yet?",
-    a: "Yes. Our Property Sourcing service is built for diaspora buyers who want to buy remotely without getting burned. We search to your brief, run in-person inspections, negotiate the price, verify the title with our property lawyers, and hand you a turnkey asset at completion. Our fee is 1.5% of purchase price, and we refund it in full if we manage the property for the 12 months after completion.",
+    a: "Yes. Our Property Sourcing service is built for diaspora buyers who want to buy remotely without getting burned. We search to your brief, run in-person inspections, negotiate the price, verify the title with our property lawyers, and hand you a turnkey asset at completion. The service is free for you as the buyer.",
   },
   {
     q: "Who pays for repairs and maintenance?",
