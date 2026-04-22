@@ -12,7 +12,14 @@ const rows = [
 
 const net = "$1,362.00";
 
-export function StatementPreview() {
+export function StatementPreview({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+}) {
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : "Nairobi";
+  const neighbourhood = city === "accra" ? "East Legon" : "Westlands";
   return (
     <section className="section bg-cream">
       <div className="container-gs">
@@ -87,10 +94,10 @@ export function StatementPreview() {
                     <div>
                       <div className="eyebrow text-gold-400">Property</div>
                       <div className="mt-2 font-serif text-xl text-cream">
-                        Westlands 2-bed · Short-stay
+                        {neighbourhood} 2-bed · Short-stay
                       </div>
                       <div className="font-mono text-xs text-cream/55">
-                        Nairobi · Unit GS-0142
+                        {cityName} · Unit GS-0142
                       </div>
                     </div>
                     <div className="text-right">

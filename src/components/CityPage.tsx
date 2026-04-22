@@ -77,11 +77,11 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
 
       <ProblemSection />
       <ServicesSection />
-      <CompareSection />
-      <CalculatorTeaser />
-      <WhySection />
+      <CompareSection city={city} />
+      <CalculatorTeaser city={city} />
+      <WhySection city={city} />
       <GuaranteesSection />
-      <StatementPreview />
+      <StatementPreview city={city} />
 
       <section className="section">
         <div className="container-gs">

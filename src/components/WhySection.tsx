@@ -10,7 +10,23 @@ import { Reveal } from "./Reveal";
 
 const icons = [MapPin, DollarSign, LineChart, Globe2];
 
-export function WhySection() {
+export function WhySection({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+}) {
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+  const items = cityName
+    ? differentiators.map((d, i) =>
+        i === 0
+          ? {
+              ...d,
+              body: `We are physically present in ${cityName}. Not remote agents who've never seen your property.`,
+            }
+          : d,
+      )
+    : differentiators;
   return (
     <section className="section">
       <div className="container-gs">
@@ -21,7 +37,7 @@ export function WhySection() {
         />
 
         <div className="mt-16 grid gap-12 md:grid-cols-2 lg:grid-cols-4">
-          {differentiators.map((d, i) => {
+          {items.map((d, i) => {
             const Icon = icons[i];
             return (
               <Reveal key={d.title} delay={i * 0.05}>

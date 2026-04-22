@@ -2,7 +2,17 @@ import Link from "next/link";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-export function CalculatorTeaser() {
+export function CalculatorTeaser({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+}) {
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+  const portfolioPhrase = cityName
+    ? `in ${cityName}`
+    : "in Nairobi and Accra";
+  const sampleCity = cityName ?? "Nairobi";
   return (
     <section className="relative overflow-hidden bg-charcoal py-20 text-cream md:py-24">
       <div className="pointer-events-none absolute -left-24 top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-gold-500/20 blur-3xl" />
@@ -19,8 +29,8 @@ export function CalculatorTeaser() {
                 <em className="italic text-gold-400">real</em> yield.
               </h2>
               <p className="mt-5 max-w-xl text-base text-cream/75 pretty md:text-lg">
-                Two minutes. No sign-up. Based on what our managed portfolio actually earns
-                in Nairobi and Accra. Get a working estimate now, a specific one within 48 hours.
+                Two minutes. No sign-up. Based on what our managed portfolio actually earns{" "}
+                {portfolioPhrase}. Get a working estimate now, a specific one within 48 hours.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/yield-calculator" className="btn-primary">
@@ -49,7 +59,7 @@ export function CalculatorTeaser() {
               <div className="mt-6 h-px w-full bg-cream/10" />
               <div className="mt-6 space-y-2 text-sm">
                 <Row k="Mode" v="Short-stay" />
-                <Row k="City" v="Nairobi" />
+                <Row k="City" v={sampleCity} />
                 <Row k="Bedrooms" v="2" />
                 <Row k="Tier" v="Premium" />
                 <Row k="Occupancy" v="72%" />

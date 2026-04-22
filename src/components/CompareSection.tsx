@@ -14,9 +14,9 @@ type Row = {
   goldstay: Cell;
 };
 
-const rows: Row[] = [
+const buildRows = (cityName: string): Row[] => [
   {
-    feature: "Lives in Nairobi or Accra, visits your property in person",
+    feature: `Lives in ${cityName}, visits your property in person`,
     self: { kind: "no", label: "You're abroad" },
     agent: { kind: "partial", label: "Sometimes" },
     goldstay: { kind: "yes" },
@@ -104,14 +104,21 @@ function CellBadge({ cell }: { cell: Cell }) {
   );
 }
 
-export function CompareSection() {
+export function CompareSection({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+}) {
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : "Nairobi or Accra";
+  const rows = buildRows(cityName);
   return (
     <section className="section bg-cream">
       <div className="container-gs">
         <SectionHeader
           eyebrow="Compared honestly"
           title="Self-manage, local agent, or Goldstay?"
-          lede="An honest look at how the three options stack up against each other for a diaspora landlord with property in Nairobi or Accra."
+          lede={`An honest look at how the three options stack up against each other for a diaspora landlord with property in ${cityName}.`}
         />
 
         {/* Desktop / tablet: proper table */}
