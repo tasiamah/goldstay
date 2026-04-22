@@ -22,6 +22,35 @@ export const site = {
   },
 };
 
+export type Office = {
+  city: string;
+  country: string;
+  countryCode: string;
+  building: string;
+  street: string;
+  locality: string;
+  district?: string;
+  postalCode: string;
+  postalBox?: string;
+};
+
+// Physical offices on display in the footer and JSON-LD. Only include a
+// market here once we have a real, registered address in that city;
+// phantom addresses are a trust killer.
+export const offices: Partial<Record<"nairobi" | "accra", Office>> = {
+  nairobi: {
+    city: "Nairobi",
+    country: "Kenya",
+    countryCode: "KE",
+    building: "Pinetree Plaza",
+    street: "Kindaruma Road",
+    locality: "Kilimani",
+    district: "Westlands",
+    postalCode: "00606",
+    postalBox: "P.O. Box 1730, Sarit Centre",
+  },
+};
+
 export function emailFor(city?: "nairobi" | "accra" | null) {
   if (city === "nairobi") return site.emails.nairobi;
   if (city === "accra") return site.emails.accra;
