@@ -40,6 +40,12 @@ NEXT_PUBLIC_GA_MEASUREMENT_ID=          # e.g. G-XXXXXXX — omit to disable
 NEXT_PUBLIC_META_PIXEL_ID=              # Meta Pixel ID — omit to disable
 RESEND_API_KEY=                         # from resend.com — omit to log to console instead
 CONTACT_INBOX=hello@goldstay.com        # where form submissions get sent
+TENANT_OPS_INBOX=ops@goldstay.com       # where tenant applications get sent
+AIRTABLE_API_KEY=                       # Airtable PAT, omit to disable CRM mirror
+AIRTABLE_BASE_ID=                       # base id from airtable.com/api
+AIRTABLE_LEADS_TABLE=Leads              # table name, override if renamed
+AIRTABLE_TENANTS_TABLE=Tenant Applications
+AIRTABLE_VACANCY_TABLE=Vacancy Leads
 ```
 
 All analytics and the Meta Pixel only load when their IDs are set, so the site is clean by default.
@@ -70,6 +76,88 @@ The site is designed for **Vercel** — zero config deploy. Set the environment 
 - `goldstay.com.gh` → 301 redirect → `goldstay.com/accra` (set up in your Ghanaian registrar).
 
 One codebase, multiple local-feeling domains. SEO authority stays on `goldstay.com`.
+
+## Airtable CRM (optional)
+
+Every landlord lead and tenant application is mirrored to an Airtable base so the ops team can manage pipelines without living in the inbox. Email remains the primary channel; if Airtable is unconfigured or unreachable, the form still succeeds and the email still sends.
+
+### One-time base setup
+
+Create a base named **Goldstay CRM** (any name works, the app uses the `AIRTABLE_BASE_ID` not the name) with three tables. Field names are case-sensitive and must match exactly, otherwise Airtable drops the values silently.
+
+**Table: `Leads`** (landlord enquiries from `/list-your-property`)
+
+| Field | Type |
+| --- | --- |
+| Name | Single line text (primary) |
+| Email | Email |
+| Phone | Phone number |
+| Country | Single line text |
+| City | Single select (Nairobi, Accra, Other) |
+| Neighbourhood | Single line text |
+| Property type | Single line text |
+| Bedrooms | Single line text |
+| Furnished | Single select (Furnished, Unfurnished, Part-furnished) |
+| Service | Single select (Long-term, Short-stay / Airbnb, Help me buy a property, Tenant finding only, Not sure) |
+| Availability | Single line text |
+| Notes | Long text |
+| Submitted | Date with time |
+| Source | Single line text |
+| Status | Single select (New, Contacted, Onboarded, Lost) — default New |
+
+**Table: `Tenant Applications`** (from `/apply`)
+
+| Field | Type |
+| --- | --- |
+| Full name | Single line text (primary) |
+| Email | Email |
+| Phone | Phone number |
+| WhatsApp | Phone number |
+| City | Single line text |
+| Applying for | Single line text |
+| Referred by | Single line text |
+| Grade | Single select (A, B, C, D) |
+| Score | Number (integer) |
+| Income/rent ratio | Number (2 decimals) |
+| Monthly income USD | Currency (USD) |
+| Target rent USD | Currency (USD) |
+| Employment type | Single select (salaried, self-employed, contract, business-owner, unemployed, student, other) |
+| Employer | Single line text |
+| Months in role | Number (integer) |
+| Has previous landlord | Checkbox |
+| Previous landlord name | Single line text |
+| Previous landlord phone | Phone number |
+| Evicted before | Checkbox |
+| Scoring rationale | Long text |
+| Token | Single line text |
+| Submitted | Date with time |
+| Status | Single select (New, Verified, Placed, Rejected) — default New |
+
+**Table: `Vacancy Leads`** (landlords to pitch, auto-created from tenant applications)
+
+| Field | Type |
+| --- | --- |
+| Landlord name | Single line text (primary) |
+| Phone | Phone number |
+| Property | Long text |
+| Tenant leaving | Single line text |
+| Leaving around | Single line text |
+| Referred via | Single line text |
+| Submitted | Date with time |
+| Status | Single select (New, Contacted, Pitched, Signed, Not interested) — default New |
+
+### Credentials
+
+1. Go to [airtable.com/create/tokens](https://airtable.com/create/tokens), create a Personal Access Token scoped to the Goldstay CRM base with the `data.records:write` scope (and `data.records:read` if you want ops tools to read back later).
+2. Grab the base id from [airtable.com/api](https://airtable.com/api) (opens the base's REST docs). The id starts with `app...`.
+3. Set `AIRTABLE_API_KEY` and `AIRTABLE_BASE_ID` in Vercel → Project → Settings → Environment Variables, for Production and Preview.
+4. Redeploy (or push any commit) so the new env vars are picked up.
+
+### How writes happen
+
+- Writes run in parallel with the Resend email via `Promise.allSettled`, so total latency is max(email, airtable) not sum.
+- Failures are logged and swallowed: a broken CRM never breaks the public form.
+- `typecast: true` is enabled, so adding new single-select options (for example a new status) can be done from Airtable without a code change.
 
 ## Brand guardrails (baked into the design system)
 
