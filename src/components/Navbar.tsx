@@ -14,7 +14,9 @@ import clsx from "./clsx";
 const DARK_HERO_PATHS = new Set([
   "/",
   "/nairobi",
+  "/nairobi/buy",
   "/accra",
+  "/accra/buy",
   "/airbnb-management",
   "/property-sourcing",
   "/list-your-property",
@@ -23,15 +25,41 @@ const DARK_HERO_PATHS = new Set([
 // Pages whose hero is on a light background. Navbar should pin to dark content from the start.
 const LIGHT_HERO_PATHS = new Set(["/yield-calculator"]);
 
-const navLinks = [
-  { href: "/#services", label: "Services" },
-  { href: "/yield-calculator", label: "Yield" },
-  { href: "/nairobi", label: "Nairobi" },
-  { href: "/accra", label: "Accra" },
-  { href: "/airbnb-management", label: "Airbnb" },
-  { href: "/property-sourcing", label: "Buy" },
-  { href: "/#faq", label: "FAQ" },
-];
+type NavLink = { href: string; label: string };
+
+// Nav links are pathname-aware. On city pages we drop the two city picker
+// links (you're already in a city context, scrolling past a city switcher in
+// the chrome adds nothing) and retarget Services, Buy and FAQ at the current
+// city so those verbs always mean "this city" for the reader.
+function getNavLinks(pathname: string): NavLink[] {
+  const city: "nairobi" | "accra" | null =
+    pathname === "/nairobi" || pathname.startsWith("/nairobi/")
+      ? "nairobi"
+      : pathname === "/accra" || pathname.startsWith("/accra/")
+        ? "accra"
+        : null;
+
+  if (city) {
+    const base = `/${city}`;
+    return [
+      { href: `${base}#services`, label: "Services" },
+      { href: "/yield-calculator", label: "Yield" },
+      { href: "/airbnb-management", label: "Airbnb" },
+      { href: `${base}/buy`, label: "Buy" },
+      { href: `${base}#faq`, label: "FAQ" },
+    ];
+  }
+
+  return [
+    { href: "/#services", label: "Services" },
+    { href: "/yield-calculator", label: "Yield" },
+    { href: "/nairobi", label: "Nairobi" },
+    { href: "/accra", label: "Accra" },
+    { href: "/airbnb-management", label: "Airbnb" },
+    { href: "/property-sourcing", label: "Buy" },
+    { href: "/#faq", label: "FAQ" },
+  ];
+}
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -39,6 +67,7 @@ export function Navbar() {
   const pathname = usePathname() || "/";
   const hasDarkHero = DARK_HERO_PATHS.has(pathname);
   const hasLightHero = LIGHT_HERO_PATHS.has(pathname);
+  const navLinks = getNavLinks(pathname);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
