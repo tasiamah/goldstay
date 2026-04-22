@@ -3,6 +3,11 @@ import {
   scoreTenantApplication,
   type TenantApplicationInput,
 } from "@/lib/tenantScore";
+import {
+  airtableTables,
+  createAirtableRecord,
+  isAirtableConfigured,
+} from "@/lib/airtable";
 
 export const runtime = "nodejs";
 
@@ -216,7 +221,11 @@ export async function POST(req: Request) {
   const inbox = process.env.TENANT_OPS_INBOX || process.env.CONTACT_INBOX || "hello@goldstay.com";
   const apiKey = process.env.RESEND_API_KEY;
 
-  if (apiKey) {
+  const sendEmail = async () => {
+    if (!apiKey) {
+      console.log("[goldstay tenant-application]\n" + finalBody);
+      return;
+    }
     try {
       const { Resend } = await import("resend");
       const resend = new Resend(apiKey);
@@ -230,9 +239,70 @@ export async function POST(req: Request) {
     } catch (e) {
       console.error("Tenant application email failed", e);
     }
-  } else {
-    console.log("[goldstay tenant-application]\n" + finalBody);
-  }
+  };
+
+  // Push the application itself to the CRM, then, separately, push a
+  // vacancy-lead row when a previous landlord phone is on file. Two rows in
+  // two tables means ops can work the tenant and the landlord pitch as
+  // independent pipelines with independent statuses. Both writes are best
+  // effort and run in parallel with the email.
+  const pushAirtable = async () => {
+    if (!isAirtableConfigured()) return;
+
+    const applicationWrite = createAirtableRecord(airtableTables.tenants, {
+      "Full name": str(data.fullName),
+      Email: str(data.email),
+      Phone: str(data.phone),
+      WhatsApp: str(data.whatsapp),
+      City: str(data.currentCity),
+      "Applying for": str(data.applyingFor),
+      "Referred by": str(data.referredBy),
+      Grade: score.grade,
+      Score: score.total,
+      "Income/rent ratio": Number(score.incomeRatio.toFixed(2)),
+      "Monthly income USD": Number(data.monthlyIncomeUsd ?? 0) || undefined,
+      "Target rent USD": Number(data.targetRentUsd ?? 0) || undefined,
+      "Employment type": str(data.employmentType),
+      Employer: str(data.employer),
+      "Months in role": Number(data.employmentMonths ?? 0) || undefined,
+      "Has previous landlord": Boolean(data.hasPreviousLandlord),
+      "Previous landlord name": str(data.previousLandlordName),
+      "Previous landlord phone": str(data.previousLandlordPhone),
+      "Evicted before": Boolean(data.evictedBefore),
+      "Scoring rationale": score.rationale.join("\n"),
+      Token: str(data.token),
+      Submitted: submittedAt,
+      Status: "New",
+    });
+
+    const writes: Promise<void>[] = [applicationWrite];
+
+    if (data.hasPreviousLandlord && data.previousLandlordPhone) {
+      writes.push(
+        createAirtableRecord(airtableTables.vacancy, {
+          "Landlord name": str(data.previousLandlordName) || "(unknown)",
+          Phone: str(data.previousLandlordPhone),
+          Property: str(data.previousLandlordProperty),
+          "Tenant leaving": str(data.fullName),
+          "Leaving around": str(data.moveInDate),
+          "Referred via": "tenant-application",
+          Submitted: submittedAt,
+          Status: "New",
+        }),
+      );
+    }
+
+    await Promise.allSettled(writes);
+  };
+
+  await Promise.allSettled([sendEmail(), pushAirtable()]);
 
   return NextResponse.json({ ok: true });
+}
+
+// Small string coercion helper, duplicated from /api/lead on purpose so each
+// route stays self-contained and easy to read in isolation.
+function str(v: unknown): string | undefined {
+  if (v === undefined || v === null) return undefined;
+  return String(v);
 }
