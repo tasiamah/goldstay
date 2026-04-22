@@ -83,7 +83,26 @@ Every landlord lead and tenant application is mirrored to an Airtable base so th
 
 ### One-time base setup
 
-Create a base named **Goldstay CRM** (any name works, the app uses the `AIRTABLE_BASE_ID` not the name) with three tables. Field names are case-sensitive and must match exactly, otherwise Airtable drops the values silently.
+You have two options. The script is the fast path and is idempotent, so you can also re-run it later if you ever need to extend the schema.
+
+#### Option A — provision the schema via script (recommended)
+
+1. Create an empty base in Airtable called **Goldstay CRM** (or any name, the script only needs the base id).
+2. Grab the base id from the URL (`https://airtable.com/appXXXXXXXXXXXXXX/...`).
+3. Create a **setup-only** PAT at [airtable.com/create/tokens](https://airtable.com/create/tokens) scoped to the Goldstay CRM base with `schema.bases:read` and `schema.bases:write`. This is separate from the runtime token and should be revoked once the schema is provisioned.
+4. Run the provisioner:
+
+   ```bash
+   AIRTABLE_API_KEY=pat... AIRTABLE_BASE_ID=app... npm run airtable:setup
+   ```
+
+   It creates `Leads`, `Tenant Applications` and `Vacancy Leads` with the exact fields and single-select options the API routes expect. Idempotent — re-running it adds any new fields without touching existing data.
+
+5. Revoke the setup PAT. For runtime, create a new PAT with only `data.records:write` and drop it into `AIRTABLE_API_KEY` in Vercel.
+
+#### Option B — create the three tables manually
+
+Create the three tables described below. Field names are case-sensitive and must match exactly, otherwise Airtable drops the values silently at write time.
 
 **Table: `Leads`** (landlord enquiries from `/list-your-property`)
 
