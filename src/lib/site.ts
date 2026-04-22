@@ -15,7 +15,18 @@ export const site = {
     nairobi: "goldstay.co.ke",
     accra: "goldstay.com.gh",
   },
+  emails: {
+    default: "hello@goldstay.com",
+    nairobi: "hello@goldstay.co.ke",
+    accra: "hello@goldstay.com.gh",
+  },
 };
+
+export function emailFor(city?: "nairobi" | "accra" | null) {
+  if (city === "nairobi") return site.emails.nairobi;
+  if (city === "accra") return site.emails.accra;
+  return site.emails.default;
+}
 
 export const whatsapp = {
   number:

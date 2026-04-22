@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
 import { site, waLink } from "@/lib/site";
+import { FooterContactEmail } from "./FooterContactEmail";
 
 export function Footer() {
   return (
@@ -81,12 +82,7 @@ export function Footer() {
             <div className="eyebrow mb-4">Contact</div>
             <ul className="space-y-3 text-sm">
               <li>
-                <a
-                  href={`mailto:${site.email}`}
-                  className="link-underline"
-                >
-                  {site.email}
-                </a>
+                <FooterContactEmail />
               </li>
               <li>
                 <a
