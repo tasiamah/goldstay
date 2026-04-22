@@ -10,6 +10,7 @@ import { CookieConsent } from "@/components/CookieConsent";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
 import { MobileStickyCTA } from "@/components/MobileStickyCTA";
+import { Toaster } from "@/components/Toaster";
 import { site } from "@/lib/site";
 
 const instrumentSerif = Instrument_Serif({
@@ -78,6 +79,7 @@ export default function RootLayout({
         <Footer />
         <WhatsAppFloat />
         <MobileStickyCTA />
+        <Toaster />
         <CookieConsent />
       </body>
     </html>
