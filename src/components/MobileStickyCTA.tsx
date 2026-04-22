@@ -4,12 +4,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { MessageCircle, ArrowRight } from "lucide-react";
 import { waLink } from "@/lib/site";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 
 // Appears after the user has scrolled past the hero on mobile only. Keeps the
 // two primary CTAs (WhatsApp · send property details) always within thumb reach
 // without competing with the floating WhatsApp circle or the top nav.
 export function MobileStickyCTA() {
   const [visible, setVisible] = useState(false);
+  const city = useCurrentCity();
 
   useEffect(() => {
     const onScroll = () => {
@@ -36,6 +38,7 @@ export function MobileStickyCTA() {
         <a
           href={waLink(
             "Hi Goldstay, I'd like to chat about managing my property",
+            city ?? undefined,
           )}
           target="_blank"
           rel="noopener noreferrer"

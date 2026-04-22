@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { waLink } from "@/lib/site";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 
 export function WhatsAppFloat() {
   const [mounted, setMounted] = useState(false);
+  const city = useCurrentCity();
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 400);
@@ -13,7 +15,10 @@ export function WhatsAppFloat() {
 
   return (
     <a
-      href={waLink("Hi Goldstay, I'd like to discuss managing my property")}
+      href={waLink(
+        "Hi Goldstay, I'd like to discuss managing my property",
+        city ?? undefined,
+      )}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Goldstay on WhatsApp"
