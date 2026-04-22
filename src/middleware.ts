@@ -26,8 +26,14 @@ export function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
-    // Skip Next.js internals, API, file-based metadata and static
-    // images. Middleware only needs to see page requests.
+    // The root path has to be listed explicitly because the negative
+    // lookahead pattern below does not reliably match "/" on its own in
+    // Next.js path-to-regexp. Without this line the homepage would skip
+    // middleware and goldstay.co.ke/ would serve the .com homepage.
+    "/",
+    // Everything else, skipping Next.js internals, API, file-based
+    // metadata and static images. Middleware only needs to see page
+    // requests so this keeps the hot path lean.
     "/((?!_next/|api/|icon\\.svg|apple-icon|favicon\\.ico|robots\\.txt|sitemap\\.xml|images/).*)",
   ],
 };
