@@ -39,6 +39,23 @@ export function waLink(message: string, city?: "nairobi" | "accra") {
 
 export const services = [
   {
+    slug: "property-sourcing",
+    title: "Property Sourcing",
+    fee: "Free",
+    feeLabel: "for buyers",
+    blurb:
+      "For diaspora landlords buying remotely. We find the right property, run the inspections, negotiate the price, verify the title and hand you a turnkey asset ready to rent.",
+    features: [
+      "On-the-ground property search to your investment brief",
+      "Remote video walk-through and in-person inspection",
+      "Price negotiation on your behalf",
+      "Legal and title verification with our property lawyers",
+      "Due diligence on the developer, building and service charge history",
+      "Full handover pack at completion: keys, documents, inventory, utilities",
+      "Seamless transition into Goldstay long-term or short-stay management",
+    ],
+  },
+  {
     slug: "long-term",
     title: "Long-Term Management",
     fee: "10%",
@@ -68,23 +85,6 @@ export const services = [
       "Turnover cleaning coordination",
       "Maintenance management",
       "Monthly revenue statements and USD remittance",
-    ],
-  },
-  {
-    slug: "property-sourcing",
-    title: "Property Sourcing",
-    fee: "Free",
-    feeLabel: "for buyers",
-    blurb:
-      "For diaspora landlords buying remotely. We find the right property, run the inspections, negotiate the price, verify the title and hand you a turnkey asset ready to rent.",
-    features: [
-      "On-the-ground property search to your investment brief",
-      "Remote video walk-through and in-person inspection",
-      "Price negotiation on your behalf",
-      "Legal and title verification with our property lawyers",
-      "Due diligence on the developer, building and service charge history",
-      "Full handover pack at completion: keys, documents, inventory, utilities",
-      "Seamless transition into Goldstay long-term or short-stay management",
     ],
   },
   {
@@ -204,6 +204,8 @@ export const citySourcing = {
     longTermRent: "USD 1,400 to 1,900 / month",
     shortStayRent: "USD 2,200 to 2,800 / month",
     netYield: "7 to 8.5% per year",
+    projectsTracked: 30,
+    projectsLabel: "New-build projects currently on our Nairobi inspection list across Kilimani, Westlands, Riverside, Lavington, Kileleshwa and Karen.",
     titleAuthority: "the Ministry of Lands",
     taxAuthority: "KRA",
     titlePillarBody:
@@ -220,6 +222,8 @@ export const citySourcing = {
     longTermRent: "USD 1,300 to 1,900 / month",
     shortStayRent: "USD 2,000 to 2,600 / month",
     netYield: "6.5 to 8% per year",
+    projectsTracked: 20,
+    projectsLabel: "New-build projects currently on our Accra inspection list across East Legon, Airport Residential, Cantonments, Labone and Ridge.",
     titleAuthority: "the Lands Commission",
     taxAuthority: "GRA",
     titlePillarBody:

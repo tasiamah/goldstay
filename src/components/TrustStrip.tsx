@@ -19,7 +19,7 @@ const stats: Stat[] = [
   { value: 48, suffix: "h", label: "Response SLA", note: "Anything urgent, same day" },
   { value: 5, suffix: "th", label: "Paid on the", note: "Of every month, without fail" },
   { display: "USD", value: 0, label: "Wired directly", note: "EUR · GBP · AED on request" },
-  { value: 2, label: "Cities, on the ground", note: "Nairobi · Accra" },
+  { value: 50, suffix: "+", label: "Buildings inspected", note: "Nairobi · Accra inventory tracked monthly" },
 ];
 
 function useCountUp(target: number, trigger: boolean, duration = 1400) {

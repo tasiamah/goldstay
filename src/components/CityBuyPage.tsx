@@ -129,6 +129,38 @@ export function CityBuyPage({ city }: { city: City }) {
                   Or fill in the form →
                 </Link>
               </div>
+
+              <div className="mt-12 grid max-w-2xl grid-cols-1 gap-6 border-t border-cream/15 pt-8 sm:grid-cols-3">
+                <div>
+                  <div className="font-serif text-4xl text-gold-400">
+                    {s.projectsTracked}+
+                  </div>
+                  <div className="mt-2 text-sm text-cream/75">
+                    Projects tracked
+                  </div>
+                  <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-widest-xl text-cream/45">
+                    {cityName} inspection list
+                  </div>
+                </div>
+                <div>
+                  <div className="font-serif text-4xl text-gold-400">14d</div>
+                  <div className="mt-2 text-sm text-cream/75">
+                    First shortlist
+                  </div>
+                  <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-widest-xl text-cream/45">
+                    From brief to 5 to 8 matched properties
+                  </div>
+                </div>
+                <div>
+                  <div className="font-serif text-4xl text-gold-400">0</div>
+                  <div className="mt-2 text-sm text-cream/75">
+                    Fee to you
+                  </div>
+                  <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-widest-xl text-cream/45">
+                    Paid by the developer at completion
+                  </div>
+                </div>
+              </div>
             </div>
           </Reveal>
         </div>
