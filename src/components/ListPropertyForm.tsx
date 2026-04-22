@@ -26,6 +26,56 @@ type FormValues = {
   consent: boolean;
 };
 
+// Diaspora destinations that make up the vast majority of Goldstay's landlord
+// base, plus the two home countries (Kenya, Ghana) for locals who buy-to-let
+// within the region. "Other" catches the long tail without asking the form
+// to become a full ISO country list, which would wreck the layout.
+const COUNTRIES = [
+  "Australia",
+  "Belgium",
+  "Canada",
+  "France",
+  "Germany",
+  "Ghana",
+  "Ireland",
+  "Kenya",
+  "Netherlands",
+  "Qatar",
+  "Saudi Arabia",
+  "South Africa",
+  "Sweden",
+  "Switzerland",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Other",
+] as const;
+
+// Bedrooms is collected separately so these options describe the asset class
+// rather than the room count. Maisonette grouped with townhouse because they
+// are functionally the same for management purposes in Nairobi and Accra.
+const PROPERTY_TYPES = [
+  "Studio",
+  "Apartment",
+  "Townhouse / Maisonette",
+  "Villa / Detached house",
+  "Penthouse",
+  "Commercial / mixed use",
+  "Other",
+] as const;
+
+// Time bands rather than a free-text date because "Q3 2026", "next month" and
+// "when the current tenant leaves" are all useful to ops in the same bucket,
+// and a bucket is easier to filter in Airtable than free text.
+const AVAILABILITY_OPTIONS = [
+  "Immediately",
+  "Within 1 month",
+  "1 to 3 months",
+  "3 to 6 months",
+  "More than 6 months",
+  "Still being built",
+] as const;
+
 export function ListPropertyForm() {
   const {
     register,
@@ -131,11 +181,23 @@ export function ListPropertyForm() {
         </div>
         <div>
           <label className="eyebrow">Country you live in</label>
-          <input
+          <select
             className={field}
-            placeholder="UK, USA, UAE, Canada…"
+            defaultValue=""
             {...register("country", { required: true })}
-          />
+          >
+            <option value="" disabled>
+              Select your country
+            </option>
+            {COUNTRIES.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
+          </select>
+          {errors.country ? (
+            <p className="mt-1 text-xs text-red-700">
+              Please pick the country you live in.
+            </p>
+          ) : null}
         </div>
         <div>
           <label className="eyebrow">Property city</label>
@@ -155,11 +217,23 @@ export function ListPropertyForm() {
         </div>
         <div>
           <label className="eyebrow">Property type</label>
-          <input
+          <select
             className={field}
-            placeholder="Apartment, townhouse, villa…"
+            defaultValue=""
             {...register("propertyType", { required: true })}
-          />
+          >
+            <option value="" disabled>
+              Pick the property type
+            </option>
+            {PROPERTY_TYPES.map((p) => (
+              <option key={p}>{p}</option>
+            ))}
+          </select>
+          {errors.propertyType ? (
+            <p className="mt-1 text-xs text-red-700">
+              Please pick a property type.
+            </p>
+          ) : null}
         </div>
         <div>
           <label className="eyebrow">Bedrooms</label>
@@ -195,11 +269,23 @@ export function ListPropertyForm() {
         </div>
         <div className="md:col-span-2">
           <label className="eyebrow">When is the property available?</label>
-          <input
+          <select
             className={field}
-            placeholder="Immediately, next month, still being built…"
+            defaultValue=""
             {...register("availability", { required: true })}
-          />
+          >
+            <option value="" disabled>
+              Select availability
+            </option>
+            {AVAILABILITY_OPTIONS.map((a) => (
+              <option key={a}>{a}</option>
+            ))}
+          </select>
+          {errors.availability ? (
+            <p className="mt-1 text-xs text-red-700">
+              Please pick when the property is available.
+            </p>
+          ) : null}
         </div>
         <div className="md:col-span-2">
           <label className="eyebrow">Anything else we should know?</label>
