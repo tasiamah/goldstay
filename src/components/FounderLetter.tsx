@@ -23,7 +23,7 @@ export function FounderLetter() {
               </p>
               <p>
                 We&apos;re a diaspora family. Our apartments were in
-                Nairobi. We were in London and Dubai. Every property we owned
+                Nairobi. We were in Dubai. Every property we owned
                 was someone else&apos;s excuse to stop replying on WhatsApp.
               </p>
               <p>
@@ -51,7 +51,7 @@ export function FounderLetter() {
                   The Goldstay Founding Team
                 </div>
                 <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-widest-xl text-charcoal/55">
-                  Nairobi · Accra · London
+                  Nairobi · Accra
                 </div>
               </div>
               <div className="flex flex-wrap gap-3">
