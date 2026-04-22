@@ -14,7 +14,7 @@ import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
-import { cities, cityFaq, waLink } from "@/lib/site";
+import { cities, cityFaq, localizedFaq, waLink } from "@/lib/site";
 
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
@@ -130,7 +130,11 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
         initialOpen={null}
       />
 
-      <FAQSection />
+      <FAQSection
+        eyebrow="FAQ"
+        title={`Straightforward answers for ${cityName} landlords.`}
+        items={localizedFaq(city)}
+      />
 
       <section className="section bg-white/50">
         <div className="container-gs">

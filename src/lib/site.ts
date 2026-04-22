@@ -324,6 +324,55 @@ export const faq = [
   },
 ];
 
+// Returns the operational FAQ with cross-city references swapped out so
+// a reader on /nairobi only sees Nairobi/Kenya phrasing and a reader on
+// /accra only sees Accra/Ghana phrasing. The homepage still uses the
+// unscoped `faq` because it serves both markets.
+export function localizedFaq(city: "nairobi" | "accra") {
+  const cityName = city === "nairobi" ? "Nairobi" : "Accra";
+  const country = city === "nairobi" ? "Kenya" : "Ghana";
+  const countryAdj = city === "nairobi" ? "Kenyan" : "Ghanaian";
+  const currency = city === "nairobi" ? "KES" : "GHS";
+  const currencyWord = city === "nairobi" ? "shilling" : "cedi";
+  const currencyFull =
+    city === "nairobi" ? "Kenyan shillings (KES)" : "Ghanaian cedis (GHS)";
+
+  return [
+    faq[0],
+    {
+      q: "How do you remit rent to my foreign account?",
+      a: `We collect rent in ${cityName} in ${currency}, convert at a transparent wholesale FX rate, and wire USD to your bank account in Europe, the UK, USA, UAE or Canada. You receive a statement every month showing every ${currencyWord} collected and every cent remitted.`,
+    },
+    {
+      q: "What currency do you collect and remit in?",
+      a: `In ${cityName} we collect in ${currencyFull} and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement.`,
+    },
+    {
+      q: `Do I need to be in ${country} to sign you on?`,
+      a: `No. Everything from the first call to contract signing happens remotely. Documents are signed electronically and witnessed under ${countryAdj} law where required. Your first visit to the property can be long after you've started earning.`,
+    },
+    faq[4],
+    {
+      q: "What happens if a tenant doesn't pay?",
+      a: `We chase on day one, not day thirty. Our lease agreements are enforceable and we have ${countryAdj} legal partners in ${cityName} who can serve notice and begin eviction proceedings within the statutory window. You'll know within 48 hours of the first missed payment.`,
+    },
+    faq[6],
+    faq[7],
+    {
+      q: `Can Goldstay help me buy a property in ${cityName}?`,
+      a: `Yes. Our Property Sourcing service is built for diaspora buyers who want to buy in ${cityName} remotely without getting burned. We search to your brief, run in-person inspections, negotiate the price, verify the title with our ${countryAdj} property lawyers, and hand you a turnkey asset at completion. The service is free for you as the buyer.`,
+    },
+    {
+      q: "Who pays for repairs and maintenance?",
+      a: `You do. It's your asset, after all. But the job is entirely ours. We source quotes, supervise the work, pay vendors directly from your collected rent, and send you the receipts. Anything under USD 50 is handled without disturbing you. Anything between USD 50 and USD 250 appears on your statement with a photo receipt. Anything above USD 250 is pre-approved with you in writing before we spend a ${currencyWord}.`,
+    },
+    {
+      q: `How is Goldstay different from my current ${cityName} agent?`,
+      a: `Three things: we live in ${cityName} full time, our entire operating model is built around diaspora reporting and USD remittance, and we take zero commissions from contractors or listing platforms. If your current ${cityName} agent offers all three of those and you're happy, we'd genuinely tell you to stay.`,
+    },
+  ];
+}
+
 export const painPoints = [
   {
     title: "Unreliable Agents",
