@@ -59,15 +59,15 @@ export function YieldCalculator() {
 
     if (mode === "long-term") {
       const gross = base.rent * mult;
-      // Flat fee: one month's rent per year, spread across 12 months.
-      const fee = gross / 12;
+      // Long-term management fee: 10% of collected rent.
+      const fee = gross * 0.10;
       const net = gross - fee;
       return {
         gross,
         fee,
         netMonth: net,
         netYear: net * 12,
-        feeLabel: "1 month rent / yr",
+        feeLabel: "10%",
       };
     }
     // short-stay
