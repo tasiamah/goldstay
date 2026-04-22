@@ -71,6 +71,23 @@ export const services = [
     ],
   },
   {
+    slug: "property-sourcing",
+    title: "Property Sourcing",
+    fee: "1.5%",
+    feeLabel: "of purchase price",
+    blurb:
+      "For diaspora landlords buying remotely. We find the right property, negotiate the price, verify the title and hand you a turnkey asset. Refunded in full if we manage the property for 12 months after completion.",
+    features: [
+      "On-the-ground property search to your investment brief",
+      "Remote video walk-through and in-person inspection",
+      "Price negotiation on your behalf, not the seller's",
+      "Legal and title verification with our property lawyers",
+      "Due diligence on the developer, building and service charge history",
+      "Full handover pack at completion: keys, documents, inventory, utilities",
+      "Seamless transition into Goldstay long-term or short-stay management",
+    ],
+  },
+  {
     slug: "tenant-finding",
     title: "Tenant Finding Only",
     fee: "1 month",
@@ -251,8 +268,8 @@ export const faq = [
     a: "Yes. We run full short-stay operations including listing creation, dynamic pricing, guest communication, cleaning and maintenance. We pay only the portion of our fee that corresponds to revenue actually collected. We do not guarantee a specific revenue number, we guarantee the execution.",
   },
   {
-    q: "Can I use Goldstay for a property I haven't bought yet?",
-    a: "Yes. We regularly advise diaspora clients before they buy. We can inspect the property, validate achievable rent, flag red flags, and estimate running costs. This service is free for properties we subsequently manage.",
+    q: "Can Goldstay help me buy a property I don't own yet?",
+    a: "Yes. Our Property Sourcing service is built for diaspora buyers who want to buy remotely without getting burned. We search to your brief, run in-person inspections, negotiate the price, verify the title with our property lawyers, and hand you a turnkey asset at completion. Our fee is 1.5% of purchase price, and we refund it in full if we manage the property for the 12 months after completion.",
   },
   {
     q: "Who pays for repairs and maintenance?",
