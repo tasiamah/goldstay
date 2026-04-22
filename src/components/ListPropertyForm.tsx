@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Check, Loader2 } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 type FormValues = {
   name: string;
@@ -52,13 +53,23 @@ export function ListPropertyForm() {
       if (!res.ok) throw new Error(await res.text());
       setSent(true);
       reset();
+      toast.success("Enquiry sent. We'll call you within 2 hours.");
     } catch (e: unknown) {
-      setError(
+      const message =
         e instanceof Error
           ? e.message
-          : "Something went wrong. Please try again or WhatsApp us.",
-      );
+          : "Something went wrong. Please try again or WhatsApp us.";
+      setError(message);
+      toast.error(message);
     }
+  };
+
+  // Surfaces validation errors that would otherwise fail silently (most
+  // commonly the consent checkbox, which react-hook-form blocks on without
+  // firing onSubmit). Shows a toast so the user always gets feedback on
+  // every submit click.
+  const onInvalid = () => {
+    toast.error("Please fill the required fields and tick the consent box.");
   };
 
   if (sent) {
@@ -82,7 +93,7 @@ export function ListPropertyForm() {
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
       className="grid gap-6 rounded-3xl border border-charcoal/10 bg-cream p-6 md:p-10"
       noValidate
     >
@@ -201,18 +212,25 @@ export function ListPropertyForm() {
         </div>
       </div>
 
-      <label className="flex items-start gap-3 text-sm text-charcoal/70">
-        <input
-          type="checkbox"
-          className="mt-1 h-4 w-4 rounded border-charcoal/30 text-gold-600 focus:ring-gold-500"
-          {...register("consent", { required: true })}
-        />
-        <span>
-          I&apos;m happy for Goldstay to contact me about my property enquiry.
-          We won&apos;t share your details and we don&apos;t send marketing
-          spam.
-        </span>
-      </label>
+      <div>
+        <label className="flex items-start gap-3 text-sm text-charcoal/70">
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4 rounded border-charcoal/30 text-gold-600 focus:ring-gold-500"
+            {...register("consent", { required: true })}
+          />
+          <span>
+            I&apos;m happy for Goldstay to contact me about my property
+            enquiry. We won&apos;t share your details and we don&apos;t send
+            marketing spam.
+          </span>
+        </label>
+        {errors.consent ? (
+          <p className="mt-2 pl-7 text-xs text-red-700">
+            Please tick this box so we can reply to you.
+          </p>
+        ) : null}
+      </div>
 
       {error ? (
         <div className="rounded-xl border border-red-300 bg-red-50 p-4 text-sm text-red-800">

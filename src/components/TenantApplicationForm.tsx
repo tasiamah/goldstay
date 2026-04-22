@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Loader2, ArrowRight, ArrowLeft, ShieldCheck } from "lucide-react";
+import { toast } from "@/lib/toast";
 
 // Fields intentionally mirror what Goldstay asks for in a verbal reference
 // call today, so the human check after submission is a confirmation exercise
@@ -195,14 +196,23 @@ export function TenantApplicationForm({
         const msg = await res.text();
         throw new Error(msg || "Submission failed");
       }
+      toast.success("Application received. Goldstay will be in touch.");
       router.push("/apply/thank-you");
     } catch (e: unknown) {
-      setError(
+      const message =
         e instanceof Error
           ? e.message
-          : "Something went wrong. Please try again, or WhatsApp your Goldstay contact.",
-      );
+          : "Something went wrong. Please try again, or WhatsApp your Goldstay contact.";
+      setError(message);
+      toast.error(message);
     }
+  };
+
+  // Mirrors the ListPropertyForm pattern: surface a toast whenever
+  // validation blocks a submit. Most common case here is the three
+  // consent checkboxes on the last step.
+  const onInvalid = () => {
+    toast.error("Please complete the required fields before submitting.");
   };
 
   const field =
@@ -214,7 +224,7 @@ export function TenantApplicationForm({
 
   return (
     <form
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmit, onInvalid)}
       className="grid gap-8 rounded-3xl border border-charcoal/10 bg-cream p-6 shadow-soft md:p-10"
       noValidate
     >
