@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
 import { waLink } from "@/lib/site";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 import clsx from "./clsx";
 
 // Pages that open on a dark hero. The navbar starts in light mode on these.
@@ -27,18 +28,12 @@ const LIGHT_HERO_PATHS = new Set(["/yield-calculator"]);
 
 type NavLink = { href: string; label: string };
 
-// Nav links are pathname-aware. On city pages we drop the two city picker
-// links (you're already in a city context, scrolling past a city switcher in
-// the chrome adds nothing) and retarget Services, Buy and FAQ at the current
-// city so those verbs always mean "this city" for the reader.
-function getNavLinks(pathname: string): NavLink[] {
-  const city: "nairobi" | "accra" | null =
-    pathname === "/nairobi" || pathname.startsWith("/nairobi/")
-      ? "nairobi"
-      : pathname === "/accra" || pathname.startsWith("/accra/")
-        ? "accra"
-        : null;
-
+// Nav links are city-aware. On city pages (either /nairobi, /accra or a
+// country domain that rewrites to one of those) we drop the two city picker
+// links, you are already in a city context, and retarget Services, Buy and
+// FAQ at the current city so those verbs always mean "this city" for the
+// reader. On the neutral .com homepage we keep the city picker.
+function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
   if (city) {
     const base = `/${city}`;
     return [
@@ -65,9 +60,10 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
+  const city = useCurrentCity();
   const hasDarkHero = DARK_HERO_PATHS.has(pathname);
   const hasLightHero = LIGHT_HERO_PATHS.has(pathname);
-  const navLinks = getNavLinks(pathname);
+  const navLinks = getNavLinks(city);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -131,7 +127,10 @@ export function Navbar() {
             List Your Property
           </Link>
           <a
-            href={waLink("Hi Goldstay, I'd like to discuss managing my property")}
+            href={waLink(
+              "Hi Goldstay, I'd like to discuss managing my property",
+              city ?? undefined,
+            )}
             target="_blank"
             rel="noopener noreferrer"
             className="btn-primary"
@@ -195,6 +194,7 @@ export function Navbar() {
             <a
               href={waLink(
                 "Hi Goldstay, I'd like to discuss managing my property",
+                city ?? undefined,
               )}
               target="_blank"
               rel="noopener noreferrer"
