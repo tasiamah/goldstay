@@ -192,6 +192,45 @@ export const cities = {
   },
 } as const;
 
+// Per-city content for the "Buy" page at /nairobi/buy and /accra/buy.
+// Kept here so the page itself stays purely presentational and new
+// claims (price ranges, yield bands, registry references) are updated
+// in one place when the market moves.
+export const citySourcing = {
+  nairobi: {
+    heroNeighbourhoods: "Kilimani, Westlands, Lavington or Karen",
+    yieldAreaName: "Kilimani or Westlands",
+    priceRange: "USD 180,000 to 220,000",
+    longTermRent: "USD 1,400 to 1,900 / month",
+    shortStayRent: "USD 2,200 to 2,800 / month",
+    netYield: "7 to 8.5% per year",
+    titleAuthority: "the Ministry of Lands",
+    taxAuthority: "KRA",
+    titlePillarBody:
+      "Our Kenyan property lawyers pull the title at Ardhi House, verify there are no undisclosed caveats or charges, confirm service charge arrears and draft a watertight sale agreement in your name.",
+    buildingPillarBody:
+      "For apartments, we pull service charge history, reserve fund health, AGM minutes and developer track record. For standalone homes, we run the physical survey against the title deed.",
+    riskNote:
+      "In Nairobi the most common buyer trap is a clean-looking title that hides a charge against the property, a survey discrepancy or a service charge in arrears. We catch all three before you wire a cent.",
+  },
+  accra: {
+    heroNeighbourhoods: "East Legon, Airport Residential, Cantonments or Labone",
+    yieldAreaName: "East Legon or Airport Residential",
+    priceRange: "USD 160,000 to 210,000",
+    longTermRent: "USD 1,300 to 1,900 / month",
+    shortStayRent: "USD 2,000 to 2,600 / month",
+    netYield: "6.5 to 8% per year",
+    titleAuthority: "the Lands Commission",
+    taxAuthority: "GRA",
+    titlePillarBody:
+      "Our Ghanaian property lawyers trace the full title chain at the Lands Commission, confirm it is not stool, family or disputed land, and draft a sale agreement registered in your name.",
+    buildingPillarBody:
+      "For apartments, we pull service charge history, reserve fund health and developer track record. For standalone homes, we run the physical survey and confirm the building matches the registered plot.",
+    riskNote:
+      "In Accra the single biggest buyer trap is a title that looks clean on the deed but sits on stool or family land with a disputed chain. We verify the full chain at the Lands Commission before you wire a cent.",
+  },
+} as const;
+
 // City-specific FAQ that sits on top of the global FAQ on each city page.
 // These are the questions every diaspora landlord in that specific market
 // actually asks in month one of ownership.
