@@ -3,9 +3,6 @@
   "framework": "nextjs",
   "cleanUrls": true,
   "trailingSlash": false,
-  "git": {
-    "deploymentEnabled": false
-  },
   "headers": [
     {
       "source": "/(.*)",
