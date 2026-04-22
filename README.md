@@ -43,7 +43,7 @@ CONTACT_INBOX=hello@goldstay.com        # where form submissions get sent
 TENANT_OPS_INBOX=ops@goldstay.com       # where tenant applications get sent
 AIRTABLE_API_KEY=                       # Airtable PAT, omit to disable CRM mirror
 AIRTABLE_BASE_ID=                       # base id from airtable.com/api
-AIRTABLE_LEADS_TABLE=Leads              # table name, override if renamed
+AIRTABLE_LEADS_TABLE=Landlord leads     # table name, override if renamed
 AIRTABLE_TENANTS_TABLE=Tenant Applications
 AIRTABLE_VACANCY_TABLE=Vacancy Leads
 ```
@@ -104,7 +104,7 @@ You have two options. The script is the fast path and is idempotent, so you can 
 
 Create the three tables described below. Field names are case-sensitive and must match exactly, otherwise Airtable drops the values silently at write time.
 
-**Table: `Leads`** (landlord enquiries from `/list-your-property`)
+**Table: `Landlord leads`** (landlord enquiries from `/list-your-property`)
 
 | Field | Type |
 | --- | --- |

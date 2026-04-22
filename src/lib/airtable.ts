@@ -12,7 +12,7 @@ export type AirtableFields = Record<string, unknown>;
 // renames a table in their base, they override the name with an env var
 // rather than touching the code.
 export const airtableTables = {
-  leads: process.env.AIRTABLE_LEADS_TABLE || "Leads",
+  leads: process.env.AIRTABLE_LEADS_TABLE || "Landlord leads",
   tenants: process.env.AIRTABLE_TENANTS_TABLE || "Tenant Applications",
   vacancy: process.env.AIRTABLE_VACANCY_TABLE || "Vacancy Leads",
 } as const;
