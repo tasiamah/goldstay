@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, MapPin, Languages, Building2 } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
@@ -189,6 +190,7 @@ type TeamMember = {
   initials: string;
   bio: string[];
   meta?: Array<{ icon: "location" | "lang" | "role"; label: string }>;
+  photo?: { src: string; alt: string };
 };
 
 function TeamGrid({
@@ -219,6 +221,10 @@ function TeamGrid({
       { icon: "lang", label: "English · Kiswahili · Hindi · Gujarati" },
       { icon: "location", label: "Based in Parklands, Nairobi" },
     ],
+    photo: {
+      src: "/images/team/poonam.png",
+      alt: "Poonam Arora, General Manager for Goldstay in Nairobi",
+    },
   };
 
   const accraLead: TeamMember = {
@@ -252,9 +258,9 @@ function TeamGrid({
         </div>
 
         <p className="mt-16 max-w-3xl text-sm text-charcoal/60">
-          Real photographs replace these portrait tiles as each team member is
-          onboarded. Founder bio reinstated once we have a final headshot and
-          voice-approved letter.
+          Placeholder portrait tiles are replaced with real photographs as
+          each team member is onboarded. Founder bio reinstated once we have
+          a final headshot and voice-approved letter.
         </p>
       </div>
     </section>
@@ -271,14 +277,29 @@ function TeamCard({ member, flip }: { member: TeamMember; flip: boolean }) {
       >
         <div className="relative overflow-hidden rounded-2xl lg:col-span-2">
           <div className="relative aspect-[4/5] w-full">
-            <div className={`absolute inset-0 bg-gradient-to-br ${member.gradient}`} />
-            <div className="absolute inset-0 opacity-70 mix-blend-overlay grain" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-serif text-7xl italic text-cream/90">
-                {member.initials}
-              </span>
-            </div>
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+            {member.photo ? (
+              <>
+                <Image
+                  src={member.photo.src}
+                  alt={member.photo.alt}
+                  fill
+                  sizes="(min-width: 1024px) 320px, (min-width: 640px) 45vw, 90vw"
+                  className="object-cover"
+                />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent" />
+              </>
+            ) : (
+              <>
+                <div className={`absolute inset-0 bg-gradient-to-br ${member.gradient}`} />
+                <div className="absolute inset-0 opacity-70 mix-blend-overlay grain" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="font-serif text-7xl italic text-cream/90">
+                    {member.initials}
+                  </span>
+                </div>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+              </>
+            )}
           </div>
         </div>
         <div className="lg:col-span-3">

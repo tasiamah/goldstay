@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
@@ -9,6 +10,7 @@ type Member = {
   location: string;
   initials: string;
   gradient: string;
+  photo?: { src: string; alt: string };
 };
 
 // Homepage teaser of the team. Full bios and photo blocks live on /about.
@@ -23,6 +25,10 @@ function buildMembers(city: "nairobi" | "accra" | null): Member[] {
     location: "Parklands, Nairobi",
     initials: "PA",
     gradient: "from-[#2b1a10] via-[#b07a3a] to-[#1c1c1c]",
+    photo: {
+      src: "/images/team/poonam.png",
+      alt: "Poonam Arora, General Manager for Goldstay in Nairobi",
+    },
   };
 
   const accra: Member = {
@@ -56,14 +62,29 @@ export function TeamSection() {
             <Reveal key={m.name} delay={i * 0.05}>
               <div className="group relative overflow-hidden rounded-3xl border border-charcoal/10 bg-cream transition-all duration-500 ease-premium hover:border-gold-500/40 hover:shadow-lift">
                 <div className="relative aspect-[4/5] w-full">
-                  <div className={`absolute inset-0 bg-gradient-to-br ${m.gradient}`} />
-                  <div className="absolute inset-0 opacity-70 mix-blend-overlay grain" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-serif text-7xl italic text-cream/90">
-                      {m.initials}
-                    </span>
-                  </div>
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+                  {m.photo ? (
+                    <>
+                      <Image
+                        src={m.photo.src}
+                        alt={m.photo.alt}
+                        fill
+                        sizes="(min-width: 1024px) 360px, (min-width: 640px) 45vw, 90vw"
+                        className="object-cover"
+                      />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/40 via-transparent to-transparent" />
+                    </>
+                  ) : (
+                    <>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${m.gradient}`} />
+                      <div className="absolute inset-0 opacity-70 mix-blend-overlay grain" />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-serif text-7xl italic text-cream/90">
+                          {m.initials}
+                        </span>
+                      </div>
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-charcoal/70 via-transparent to-transparent" />
+                    </>
+                  )}
                 </div>
                 <div className="p-5 sm:p-6">
                   <div className="font-serif text-xl">{m.name}</div>
