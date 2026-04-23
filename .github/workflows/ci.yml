@@ -17,14 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # We use pnpm for all local installs (see pnpm-lock.yaml), so CI has
-      # to match or the two lockfiles drift the moment anyone runs
-      # `pnpm add` without also running `npm install`. Pin to the same
-      # major as `pnpm --version` locally (10.x).
+      # We use pnpm for all local installs (see pnpm-lock.yaml), so CI
+      # has to match or the two lockfiles drift the moment anyone runs
+      # `pnpm add` without also running `npm install`. Version is read
+      # from the `packageManager` field in package.json so corepack,
+      # Vercel and this action all agree on a single pinned pnpm.
       - name: Set up pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
 
       - name: Set up Node
         uses: actions/setup-node@v4
