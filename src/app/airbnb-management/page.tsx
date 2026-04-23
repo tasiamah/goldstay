@@ -217,6 +217,7 @@ export default function Page() {
       <CTABanner
         headline="Ready to turn it into a short-stay?"
         subheadline="Get a specific yield estimate for your apartment within 48 hours."
+        city={city ?? undefined}
       />
     </>
   );

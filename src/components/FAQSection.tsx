@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
-import { faq as defaultFaq } from "@/lib/site";
+import { faq as defaultFaq, localizedFaq } from "@/lib/site";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 import { SectionHeader } from "./SectionHeader";
 
 type FaqItem = { q: string; a: string };
@@ -22,7 +23,15 @@ export function FAQSection({
   initialOpen?: number | null;
 } = {}) {
   const [open, setOpen] = useState<number | null>(initialOpen);
-  const list = items ?? defaultFaq;
+  // If the caller passed an explicit list (city pages, service-specific FAQs)
+  // we respect it. Otherwise we pick the list by the current surface: on
+  // goldstay.co.ke or any /nairobi route we show the Nairobi-scoped answers
+  // (no KES/GHS duality, no "Kenya or Ghana" references), on goldstay.com.gh
+  // or /accra the Accra-scoped ones, and on the neutral .com homepage the
+  // dual-market default. This is what keeps /airbnb-management on .co.ke
+  // from leaking Ghana copy.
+  const currentCity = useCurrentCity();
+  const list = items ?? (currentCity ? localizedFaq(currentCity) : defaultFaq);
 
   return (
     <section id={id} className="section bg-white/50">
