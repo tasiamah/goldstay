@@ -24,6 +24,29 @@ export function Hero({
   subheadline?: string;
   city?: "nairobi" | "accra";
 }) {
+  // On the neutral homepage the "2 Cities" stat is a truthful scope claim.
+  // On a single-market city surface it reads as a contradiction ("this is a
+  // Nairobi site, but we list 2 cities"), so we swap it for a city-relevant
+  // number instead. Counts are intentionally hardcoded to keep the Hero a
+  // pure client component without pulling the full `cities` map.
+  const stats =
+    city === "nairobi"
+      ? [
+          { k: "6", label: "Neighbourhoods" },
+          { k: "USD", label: "Remittance" },
+          { k: "24/7", label: "Support" },
+        ]
+      : city === "accra"
+        ? [
+            { k: "5", label: "Neighbourhoods" },
+            { k: "USD", label: "Remittance" },
+            { k: "24/7", label: "Support" },
+          ]
+        : [
+            { k: "2", label: "Cities" },
+            { k: "USD", label: "Remittance" },
+            { k: "24/7", label: "Support" },
+          ];
   return (
     <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-charcoal text-cream">
       {/* background image - reuse the same locally-hosted, verified city
@@ -94,11 +117,7 @@ export function Hero({
       >
         <div className="container-gs">
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 border-t border-cream/15 pt-5 text-center sm:gap-6 sm:pt-8">
-            {[
-              { k: "2", label: "Cities" },
-              { k: "USD", label: "Remittance" },
-              { k: "24/7", label: "Support" },
-            ].map((s) => (
+            {stats.map((s) => (
               <div key={s.label}>
                 <div className="font-serif text-2xl text-cream sm:text-3xl md:text-4xl">
                   {s.k}

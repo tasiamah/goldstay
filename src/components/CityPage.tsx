@@ -15,10 +15,18 @@ import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
 import { cities, cityFaq, localizedFaq, waLink } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
 
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
   const cityName = city === "nairobi" ? "Nairobi" : "Accra";
+  // On a localized domain (goldstay.co.ke, goldstay.com.gh) the "own
+  // property in the other city too?" cross-sell block contradicts the
+  // single-market narrative we enforce everywhere else. Hide it there.
+  // goldstay.com (no domainCity) still shows the cross-sell, because the
+  // .com surface is explicitly dual-market.
+  const domainCity = getServerCity();
+  const showOtherMarket = domainCity === null;
   const headline = (
     <>
       <em className="italic">Premium</em> property management in {cityName}.
@@ -75,8 +83,8 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
 
       <NeighbourhoodEconomics city={city} />
 
-      <ProblemSection />
-      <ServicesSection />
+      <ProblemSection city={city} />
+      <ServicesSection city={city} />
       <CompareSection city={city} />
       <CalculatorTeaser city={city} />
       <WhySection city={city} />
@@ -136,30 +144,32 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
         items={localizedFaq(city)}
       />
 
-      <section className="section bg-white/50">
-        <div className="container-gs">
-          <Reveal>
-            <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-charcoal/10 bg-cream p-6 sm:p-8 md:flex-row md:items-center md:p-10">
-              <div>
-                <div className="eyebrow">Other market</div>
-                <h3 className="mt-3 font-serif text-2xl sm:text-3xl">
-                  Own property in {city === "nairobi" ? "Accra" : "Nairobi"} too?
-                </h3>
-                <p className="mt-2 text-charcoal/70">
-                  We operate in both cities with one team and one account.
-                </p>
+      {showOtherMarket ? (
+        <section className="section bg-white/50">
+          <div className="container-gs">
+            <Reveal>
+              <div className="flex flex-col items-start justify-between gap-6 rounded-3xl border border-charcoal/10 bg-cream p-6 sm:p-8 md:flex-row md:items-center md:p-10">
+                <div>
+                  <div className="eyebrow">Other market</div>
+                  <h3 className="mt-3 font-serif text-2xl sm:text-3xl">
+                    Own property in {city === "nairobi" ? "Accra" : "Nairobi"} too?
+                  </h3>
+                  <p className="mt-2 text-charcoal/70">
+                    We operate in both cities with one team and one account.
+                  </p>
+                </div>
+                <Link
+                  href={city === "nairobi" ? "/accra" : "/nairobi"}
+                  className="btn-secondary shrink-0"
+                >
+                  Visit {city === "nairobi" ? "Accra" : "Nairobi"}
+                  <ArrowUpRight className="h-4 w-4" />
+                </Link>
               </div>
-              <Link
-                href={city === "nairobi" ? "/accra" : "/nairobi"}
-                className="btn-secondary shrink-0"
-              >
-                Visit {city === "nairobi" ? "Accra" : "Nairobi"}
-                <ArrowUpRight className="h-4 w-4" />
-              </Link>
-            </div>
-          </Reveal>
-        </div>
-      </section>
+            </Reveal>
+          </div>
+        </section>
+      ) : null}
 
       <CTABanner city={city} />
     </>
