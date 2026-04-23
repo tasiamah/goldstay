@@ -57,12 +57,20 @@ export function emailFor(city?: "nairobi" | "accra" | null) {
   return site.emails.default;
 }
 
+// TEMPORARY: until a Kenyan WhatsApp Business number is live, the Nairobi
+// surface (and the neutral .com fallback) route to the founder's UAE
+// WhatsApp so inbound leads reach a real human instead of a dead
+// placeholder. Override with NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI in Vercel
+// the moment the Kenyan number is provisioned. Accra still uses its
+// placeholder because .com.gh is not live yet.
+const TEMP_UAE_FOUNDER_NUMBER = "971504833050";
 export const whatsapp = {
   number:
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI ||
-    "254700000000",
-  nairobi: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI || "254700000000",
+    TEMP_UAE_FOUNDER_NUMBER,
+  nairobi:
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI || TEMP_UAE_FOUNDER_NUMBER,
   accra: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_ACCRA || "233500000000",
 };
 
