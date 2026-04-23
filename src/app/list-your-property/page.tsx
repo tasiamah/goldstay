@@ -3,15 +3,38 @@ import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
 import { Reveal } from "@/components/Reveal";
 import { waLink } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
 
-export const metadata: Metadata = {
-  title: "List Your Property",
-  description:
-    "Tell us about your property in Nairobi or Accra. We'll call you within 2 hours and take it from there.",
-  alternates: { canonical: "/list-your-property" },
-};
+// Per-domain metadata so goldstay.co.ke reads as a Kenya-only brand in search
+// results, link previews and tab titles. Keeps goldstay.com neutral.
+export function generateMetadata(): Metadata {
+  const city = getServerCity();
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+
+  const description = cityName
+    ? `Tell us about your property in ${cityName}. We'll call you within 2 hours and take it from there.`
+    : "Tell us about your property in Nairobi or Accra. We'll call you within 2 hours and take it from there.";
+
+  return {
+    title: "List Your Property",
+    description,
+    alternates: { canonical: "/list-your-property" },
+  };
+}
 
 export default function Page() {
+  const city = getServerCity();
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+
+  // Copy in the right-hand "Haven't bought yet?" card drops the cross-market
+  // phrasing on a localized domain. The Property Sourcing link still works on
+  // both domains because that page also filters cards by city.
+  const sourcingCopy = cityName
+    ? `If you're still looking for the right property in ${cityName}, start with our Property Sourcing service. On-the-ground search, inspection, negotiation and title verification, free for you as the buyer.`
+    : "If you're still looking for the right property in Nairobi or Accra, start with our Property Sourcing service. On-the-ground search, inspection, negotiation and title verification, free for you as the buyer.";
+
   return (
     <>
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
@@ -30,6 +53,7 @@ export default function Page() {
                 <a
                   href={waLink(
                     "Hi Goldstay, I'd like to list my property for management",
+                    city ?? undefined,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -77,14 +101,9 @@ export default function Page() {
             </div>
             <div className="rounded-3xl border border-gold-500/30 bg-gold-500/5 p-8">
               <div className="eyebrow text-gold-700">Haven&apos;t bought yet?</div>
-              <p className="mt-4 text-charcoal/75">
-                If you&apos;re still looking for the right property in Nairobi
-                or Accra, start with our Property Sourcing service. On-the-ground
-                search, inspection, negotiation and title verification, free
-                for you as the buyer.
-              </p>
+              <p className="mt-4 text-charcoal/75">{sourcingCopy}</p>
               <Link
-                href="/property-sourcing"
+                href={city === "nairobi" ? "/nairobi/buy" : city === "accra" ? "/accra/buy" : "/property-sourcing"}
                 className="mt-5 inline-block link-underline text-charcoal"
               >
                 See how sourcing works →

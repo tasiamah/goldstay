@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "@/lib/toast";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 
 type FormValues = {
   name: string;
@@ -29,8 +30,11 @@ type FormValues = {
 // Diaspora destinations that make up the vast majority of Goldstay's landlord
 // base, plus the two home countries (Kenya, Ghana) for locals who buy-to-let
 // within the region. "Other" catches the long tail without asking the form
-// to become a full ISO country list, which would wreck the layout.
-const COUNTRIES = [
+// to become a full ISO country list, which would wreck the layout. On a
+// localized domain we drop the other home country (goldstay.co.ke shouldn't
+// advertise Ghana; goldstay.com.gh shouldn't advertise Kenya) because that
+// surface is marketed as a single-market brand.
+const BASE_COUNTRIES = [
   "Australia",
   "Belgium",
   "Canada",
@@ -77,6 +81,37 @@ const AVAILABILITY_OPTIONS = [
 ] as const;
 
 export function ListPropertyForm() {
+  const currentCity = useCurrentCity();
+
+  // On goldstay.co.ke we hide Ghana (the other home market), and on
+  // goldstay.com.gh we hide Kenya. "Other" stays as the escape hatch for any
+  // landlord whose residence country we didn't list.
+  const countries = BASE_COUNTRIES.filter((c) => {
+    if (currentCity === "nairobi" && c === "Ghana") return false;
+    if (currentCity === "accra" && c === "Kenya") return false;
+    return true;
+  });
+
+  // Only show the current market's city (plus "Other") when the visitor is on
+  // a localized domain or a city path. On the neutral .com homepage we keep
+  // both as first-class options.
+  const cityOptions =
+    currentCity === "nairobi"
+      ? (["Nairobi", "Other"] as const)
+      : currentCity === "accra"
+        ? (["Accra", "Other"] as const)
+        : (["Nairobi", "Accra", "Other"] as const);
+
+  const defaultCity: FormValues["city"] =
+    currentCity === "accra" ? "Accra" : "Nairobi";
+
+  const neighbourhoodPlaceholder =
+    currentCity === "nairobi"
+      ? "e.g. Westlands, Kilimani, Lavington"
+      : currentCity === "accra"
+        ? "e.g. East Legon, Airport Residential, Cantonments"
+        : "e.g. Westlands, Kilimani";
+
   const {
     register,
     handleSubmit,
@@ -84,7 +119,7 @@ export function ListPropertyForm() {
     reset,
   } = useForm<FormValues>({
     defaultValues: {
-      city: "Nairobi",
+      city: defaultCity,
       furnished: "Furnished",
       service: "Not sure",
     },
@@ -189,7 +224,7 @@ export function ListPropertyForm() {
             <option value="" disabled>
               Select your country
             </option>
-            {COUNTRIES.map((c) => (
+            {countries.map((c) => (
               <option key={c}>{c}</option>
             ))}
           </select>
@@ -202,16 +237,16 @@ export function ListPropertyForm() {
         <div>
           <label className="eyebrow">Property city</label>
           <select className={field} {...register("city", { required: true })}>
-            <option>Nairobi</option>
-            <option>Accra</option>
-            <option>Other</option>
+            {cityOptions.map((c) => (
+              <option key={c}>{c}</option>
+            ))}
           </select>
         </div>
         <div>
           <label className="eyebrow">Neighbourhood</label>
           <input
             className={field}
-            placeholder="e.g. Westlands, East Legon"
+            placeholder={neighbourhoodPlaceholder}
             {...register("neighbourhood")}
           />
         </div>
