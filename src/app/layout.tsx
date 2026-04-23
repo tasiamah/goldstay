@@ -5,12 +5,9 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { WhatsAppFloat } from "@/components/WhatsAppFloat";
-import { CookieConsent } from "@/components/CookieConsent";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
-import { MobileStickyCTA } from "@/components/MobileStickyCTA";
-import { Toaster } from "@/components/Toaster";
+import { LayoutClientExtras } from "@/components/LayoutClientExtras";
 import { site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
@@ -110,16 +107,24 @@ export default function RootLayout({
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
     >
+      <head>
+        {/* Preconnect to the image CDNs the hero and location cards pull
+            from, so the TLS handshake and DNS lookup happen in parallel
+            with HTML parsing instead of blocking the LCP image. */}
+        <link
+          rel="preconnect"
+          href="https://images.unsplash.com"
+          crossOrigin="anonymous"
+        />
+        <link rel="dns-prefetch" href="https://images.unsplash.com" />
+      </head>
       <body>
         <JsonLd />
         <Analytics />
         <Navbar />
         <main>{children}</main>
         <Footer />
-        <WhatsAppFloat />
-        <MobileStickyCTA />
-        <Toaster />
-        <CookieConsent />
+        <LayoutClientExtras />
       </body>
     </html>
   );
