@@ -217,6 +217,83 @@ const tablesSpec = [
       },
     ],
   },
+  {
+    name: "Units",
+    description:
+      "Live inventory, read by /find-a-home search. Only rows with Status=Available appear publicly.",
+    fields: [
+      { name: "Unit ID", ...text() },
+      { name: "Title", ...text() },
+      { name: "City", ...singleSelect(["Nairobi", "Accra"]) },
+      { name: "Neighbourhood", ...text() },
+      { name: "Bedrooms", ...numberInt() },
+      {
+        name: "Stay type",
+        ...singleSelect(["Long-term", "Short-stay", "Both"]),
+      },
+      {
+        name: "Status",
+        ...singleSelect(["Available", "Reserved", "Hidden"]),
+      },
+      { name: "Monthly rent USD", ...currency() },
+      { name: "Nightly rate USD", ...currency() },
+      { name: "Min stay nights", ...numberInt() },
+      { name: "Max guests", ...numberInt() },
+      {
+        name: "Earliest available",
+        type: "date",
+        options: { dateFormat: { name: "iso" } },
+      },
+      { name: "Description", ...longText() },
+      { name: "Photo URL", type: "url" },
+      { name: "Internal notes", ...longText() },
+    ],
+  },
+  {
+    name: "Tenant waitlist",
+    description:
+      "Public lightweight tenant captures from /find-a-home. Different from Tenant Applications, which is the private deep-dossier form.",
+    fields: [
+      { name: "Name", ...text() },
+      { name: "Email", ...email() },
+      { name: "Phone", ...phone() },
+      { name: "City", ...singleSelect(["Nairobi", "Accra", "Other"]) },
+      {
+        name: "Stay type",
+        ...singleSelect(["Long-term", "Short-stay"]),
+      },
+      { name: "Budget USD", ...currency() },
+      { name: "Bedrooms wanted", ...text() },
+      {
+        name: "Move-in window",
+        ...singleSelect([
+          "Immediately",
+          "1 to 3 months",
+          "3 to 6 months",
+          "6+ months",
+          "Flexible",
+        ]),
+      },
+      {
+        name: "Check-in",
+        type: "date",
+        options: { dateFormat: { name: "iso" } },
+      },
+      {
+        name: "Check-out",
+        type: "date",
+        options: { dateFormat: { name: "iso" } },
+      },
+      { name: "Guests", ...numberInt() },
+      { name: "Area preference", ...text() },
+      { name: "Notes", ...longText() },
+      { name: "Submitted", ...dateTime() },
+      {
+        name: "Status",
+        ...singleSelect(["New", "Contacted", "Matched", "Dormant"]),
+      },
+    ],
+  },
 ];
 
 async function api(path, init = {}) {
