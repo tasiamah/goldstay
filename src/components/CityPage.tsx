@@ -9,6 +9,7 @@ import { WhySection } from "./WhySection";
 import { GuaranteesSection } from "./GuaranteesSection";
 import { StatementPreview } from "./StatementPreview";
 import { NeighbourhoodEconomics } from "./NeighbourhoodEconomics";
+import { CityShowcase } from "./CityShowcase";
 import { HowItWorks } from "./HowItWorks";
 import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
@@ -41,6 +42,8 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
         subheadline={c.heroRentClaim}
         city={city}
       />
+
+      <CityShowcase city={city} />
 
       <section className="section bg-white/50">
         <div className="container-gs">
