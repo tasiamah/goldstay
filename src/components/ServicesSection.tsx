@@ -4,8 +4,26 @@ import { services, waLink } from "@/lib/site";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
 
-export function ServicesSection() {
-  const featured = services.slice(0, 3);
+export function ServicesSection({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+} = {}) {
+  // The shared service catalog says "long-term tenants in Nairobi or Accra",
+  // which is correct for the neutral .com homepage but leaks the other
+  // market onto city surfaces (/nairobi on goldstay.co.ke, /accra on
+  // goldstay.com.gh). When a city is known we rewrite that one blurb so
+  // the page stays single-market end to end.
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+  const featured = services.slice(0, 3).map((s) =>
+    cityName && s.slug === "long-term"
+      ? {
+          ...s,
+          blurb: `End-to-end management for landlords who want stable, long-term tenants in ${cityName}.`,
+        }
+      : s,
+  );
   return (
     <section id="services" className="section bg-white/50">
       <div className="container-gs">

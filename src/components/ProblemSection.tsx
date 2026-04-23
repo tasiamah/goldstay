@@ -10,7 +10,35 @@ import {
 
 const icons = [PhoneOff, Clock, AlertTriangle, ArrowRightLeft];
 
-export function ProblemSection() {
+export function ProblemSection({
+  city,
+}: {
+  city?: "nairobi" | "accra";
+}) {
+  // The default "Currency Friction" pain point talks about KES or GHS, which
+  // leaks Ghana onto Kenya-scoped surfaces (/nairobi, goldstay.co.ke). When
+  // a city is known, swap that single body for the market's own currency.
+  const localPainPoints =
+    city === "nairobi"
+      ? painPoints.map((p) =>
+          p.title === "Currency Friction"
+            ? {
+                ...p,
+                body: "Collecting rent in KES and wrestling with conversion, wire fees and timing every single month.",
+              }
+            : p,
+        )
+      : city === "accra"
+        ? painPoints.map((p) =>
+            p.title === "Currency Friction"
+              ? {
+                  ...p,
+                  body: "Collecting rent in GHS and wrestling with conversion, wire fees and timing every single month.",
+                }
+              : p,
+          )
+        : painPoints;
+
   return (
     <section className="section relative">
       <div className="container-gs">
@@ -21,7 +49,7 @@ export function ProblemSection() {
         />
 
         <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {painPoints.map((p, i) => {
+          {localPainPoints.map((p, i) => {
             const Icon = icons[i];
             return (
               <Reveal key={p.title} delay={i * 0.05}>

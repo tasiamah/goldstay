@@ -14,7 +14,7 @@ type Row = {
   goldstay: Cell;
 };
 
-const buildRows = (cityName: string): Row[] => [
+const buildRows = (cityName: string, localCurrency: string): Row[] => [
   {
     feature: `Lives in ${cityName}, visits your property in person`,
     self: { kind: "no", label: "You're abroad" },
@@ -24,7 +24,7 @@ const buildRows = (cityName: string): Row[] => [
   {
     feature: "Paid to you in USD, wired to your overseas account",
     self: { kind: "no", label: "Manual FX" },
-    agent: { kind: "no", label: "KES / GHS only" },
+    agent: { kind: "no", label: `${localCurrency} only` },
     goldstay: { kind: "yes" },
   },
   {
@@ -111,7 +111,9 @@ export function CompareSection({
 }) {
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : "Nairobi or Accra";
-  const rows = buildRows(cityName);
+  const localCurrency =
+    city === "nairobi" ? "KES" : city === "accra" ? "GHS" : "KES / GHS";
+  const rows = buildRows(cityName, localCurrency);
   return (
     <section className="section bg-cream">
       <div className="container-gs">
