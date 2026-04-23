@@ -256,12 +256,6 @@ function TeamGrid({
             <TeamCard key={m.name} member={m} flip={i % 2 === 1} />
           ))}
         </div>
-
-        <p className="mt-16 max-w-3xl text-sm text-charcoal/60">
-          Placeholder portrait tiles are replaced with real photographs as
-          each team member is onboarded. Founder bio reinstated once we have
-          a final headshot and voice-approved letter.
-        </p>
       </div>
     </section>
   );
