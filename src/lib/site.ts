@@ -209,6 +209,21 @@ export const cities = {
         twoBrUsd: { min: 1700, max: 2500 },
         tenant: "Premium families, embassies",
       },
+      {
+        name: "Karen",
+        twoBrUsd: { min: 1500, max: 2000 },
+        tenant: "Expat families, diplomats, school faculty",
+      },
+      {
+        name: "Runda",
+        twoBrUsd: { min: 1800, max: 2500 },
+        tenant: "Corporate executives, embassies",
+      },
+      {
+        name: "Rosslyn",
+        twoBrUsd: { min: 1600, max: 2300 },
+        tenant: "UN, diplomats, international school families",
+      },
     ] satisfies Neighbourhood[],
     domain: "goldstay.co.ke",
   },
