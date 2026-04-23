@@ -9,6 +9,7 @@ import { WhySection } from "./WhySection";
 import { GuaranteesSection } from "./GuaranteesSection";
 import { StatementPreview } from "./StatementPreview";
 import { NeighbourhoodEconomics } from "./NeighbourhoodEconomics";
+import { NeighbourhoodCard } from "./NeighbourhoodCard";
 import { HowItWorks } from "./HowItWorks";
 import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
@@ -49,15 +50,10 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
             title={`We focus on the ${cityName} neighbourhoods with the strongest diaspora tenant demand.`}
             lede={`Our tenant base includes ${c.tenantProfile}. We know what they expect, what they pay, and how to keep them.`}
           />
-          <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {c.neighbourhoods.map((n, i) => (
               <Reveal key={n.name} delay={i * 0.04}>
-                <div className="flex items-center justify-between rounded-2xl border border-charcoal/10 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40">
-                  <span className="font-serif text-xl">{n.name}</span>
-                  <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50">
-                    {cityName}
-                  </span>
-                </div>
+                <NeighbourhoodCard n={n} cityLabel={cityName} />
               </Reveal>
             ))}
           </div>

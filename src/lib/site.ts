@@ -148,10 +148,18 @@ export const services = [
 // for a recently let, well-finished 2-bedroom apartment. They're directional,
 // not guarantees, and explicitly framed as such on the page. Sourced from
 // publicly available listings and our own managed/advised stock.
+//
+// `image` is an optional hero photo for the neighbourhood card. It can be
+// any absolute URL (Unsplash is whitelisted in next.config.mjs) or a local
+// path under /public, e.g. "/images/neighbourhoods/westlands.jpg". The
+// current URLs are curated stock photos chosen for visual variety — not
+// claims that this is literally that neighbourhood. Swap to a real photo
+// of the area whenever one is available.
 export type Neighbourhood = {
   name: string;
   twoBrUsd: { min: number; max: number };
   tenant: string;
+  image?: string;
 };
 
 export const cities = {
@@ -166,31 +174,43 @@ export const cities = {
         name: "Westlands",
         twoBrUsd: { min: 1400, max: 2000 },
         tenant: "Corporate, UN, NGO",
+        image:
+          "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Kilimani",
         twoBrUsd: { min: 1300, max: 1800 },
         tenant: "Young professionals, expats",
+        image:
+          "https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Kileleshwa",
         twoBrUsd: { min: 1400, max: 1900 },
         tenant: "Families, diplomats",
+        image:
+          "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Lavington",
         twoBrUsd: { min: 1500, max: 2200 },
         tenant: "Diplomats, corporate executives",
+        image:
+          "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Parklands",
         twoBrUsd: { min: 1000, max: 1500 },
         tenant: "Mixed corporate, mid-tier expat",
+        image:
+          "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Brookside",
         twoBrUsd: { min: 1700, max: 2500 },
         tenant: "Premium families, embassies",
+        image:
+          "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=75",
       },
     ] satisfies Neighbourhood[],
     domain: "goldstay.co.ke",
@@ -206,26 +226,36 @@ export const cities = {
         name: "East Legon",
         twoBrUsd: { min: 1200, max: 1800 },
         tenant: "Oil & gas execs, embassies",
+        image:
+          "https://images.unsplash.com/photo-1564078516393-cf04bd966897?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Adjiringanor",
         twoBrUsd: { min: 1300, max: 1900 },
         tenant: "Corporate executives, NGOs",
+        image:
+          "https://images.unsplash.com/photo-1568605114967-8130f3a36994?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Airport Residential",
         twoBrUsd: { min: 1400, max: 2200 },
         tenant: "Diplomats, senior expats",
+        image:
+          "https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Cantonments",
         twoBrUsd: { min: 1800, max: 2800 },
         tenant: "Embassies, premium expats",
+        image:
+          "https://images.unsplash.com/photo-1502005097973-6a7082348e28?auto=format&fit=crop&w=1200&q=75",
       },
       {
         name: "Labone",
         twoBrUsd: { min: 1000, max: 1500 },
         tenant: "Young professionals, corporate mid-tier",
+        image:
+          "https://images.unsplash.com/photo-1613977257363-707ba9348227?auto=format&fit=crop&w=1200&q=75",
       },
     ] satisfies Neighbourhood[],
     domain: "goldstay.com.gh",
