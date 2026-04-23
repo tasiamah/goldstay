@@ -13,7 +13,10 @@ export const site = {
   parent: "A TADCO Company",
   socials: {
     instagram: "https://instagram.com/goldstay",
-    linkedin: "https://www.linkedin.com/company/goldstay",
+    // This is the Goldstay Kenya personal/brand profile (not a LinkedIn
+    // Company Page yet). Flip to the /company/... URL once the Company
+    // Page is created and claimed so JSON-LD sameAs signals stay clean.
+    linkedin: "https://www.linkedin.com/in/goldstay-kenya",
   },
   domains: {
     main: "goldstay.com",
