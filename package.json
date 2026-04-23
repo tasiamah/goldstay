@@ -10,6 +10,7 @@
     "airtable:setup": "node scripts/setup-airtable.mjs"
   },
   "dependencies": {
+    "@sentry/nextjs": "^10.49.0",
     "@upstash/ratelimit": "^2.0.8",
     "@upstash/redis": "^1.37.0",
     "framer-motion": "^11.11.1",

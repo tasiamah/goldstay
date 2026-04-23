@@ -1,3 +1,5 @@
+import { withSentryConfig } from "@sentry/nextjs";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -41,4 +43,27 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+// Wrap the Next config with Sentry's webpack plugin. When SENTRY_AUTH_TOKEN
+// is set in the environment, this uploads source maps on every build so
+// stack traces in Sentry point to real TS lines. When it is missing (local
+// dev, PR preview without the secret), the plugin detects that and skips
+// upload with a log warning: the app still builds and ships just fine.
+//
+// widenClientFileUpload: true tells the plugin to also upload client
+// chunks under _next/static/chunks/* so breadcrumbs in deferred bundles
+// (WhatsAppFloat, CookieConsent, etc.) symbolicate correctly.
+//
+// tunnelRoute: a /monitoring route that proxies Sentry ingest through our
+// domain so ad blockers don't swallow client errors. Opt-in per-project;
+// we leave it on because the cost is negligible and the signal loss from
+// blockers is real.
+export default withSentryConfig(nextConfig, {
+  org: process.env.SENTRY_ORG,
+  project: process.env.SENTRY_PROJECT,
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  silent: !process.env.CI,
+  widenClientFileUpload: true,
+  tunnelRoute: "/monitoring",
+  disableLogger: true,
+  automaticVercelMonitors: true,
+});
