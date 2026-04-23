@@ -10,10 +10,11 @@ import clsx from "./clsx";
 
 // The search surface on /find-a-home. Two stay types switch the filter row
 // (long-term cares about monthly budget and move-in; short-stay cares about
-// dates, guests and nightly budget). On first render we auto-submit with
-// the current filters so the results grid never sits empty — an empty grid
-// on a search page reads as "nothing to rent", which is the opposite of
-// what we want when we're growing inventory.
+// dates, guests and nightly budget). We deliberately do NOT auto-run a
+// search on mount. A tenant should first tell us what they're looking for;
+// only after they hit Search do we show results, an empty state, or the
+// waitlist prompt. Otherwise a visitor lands on the page, sees "no homes"
+// plus a waitlist form, and bounces before even trying.
 
 type StayType = "Long-term" | "Short-stay";
 
@@ -95,15 +96,9 @@ export function FindHomeSearch() {
     }
   };
 
-  // Run the first search on mount so the grid populates immediately.
-  // Subsequent searches are user-triggered via the Search button so the
-  // page doesn't hammer the API on every keystroke.
-  useEffect(() => {
-    runSearch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
+  const showIdle = !searched && !loading;
   const showEmpty = searched && !loading && units.length === 0;
+  const showResults = searched && !loading && units.length > 0;
 
   return (
     <div>
@@ -266,7 +261,7 @@ export function FindHomeSearch() {
 
       {/* Results */}
       <div className="mt-10">
-        {loading ? (
+        {loading && (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {[0, 1, 2].map((i) => (
               <div
@@ -275,7 +270,11 @@ export function FindHomeSearch() {
               />
             ))}
           </div>
-        ) : showEmpty ? (
+        )}
+
+        {showIdle && <IdleHint stayType={filters.stayType} />}
+
+        {showEmpty && (
           <EmptyState
             stayType={filters.stayType}
             city={filters.city}
@@ -283,7 +282,9 @@ export function FindHomeSearch() {
             checkOut={filters.checkOut}
             guests={filters.guests}
           />
-        ) : (
+        )}
+
+        {showResults && (
           <>
             <div className="mb-6 flex items-baseline justify-between">
               <p className="text-sm text-charcoal/60">
@@ -300,10 +301,11 @@ export function FindHomeSearch() {
         )}
       </div>
 
-      {/* Always-on waitlist below results. A tenant who found nothing they
-          liked still leaves something useful; a tenant who did find
-          something ignores this block. */}
-      {!showEmpty && units.length > 0 ? (
+      {/* Waitlist below results, only after a successful search that
+          returned something. The empty state above renders its own
+          waitlist; the idle state deliberately doesn't, because we want
+          the tenant to try a search first. */}
+      {showResults ? (
         <div className="mt-16">
           <WaitlistForm
             defaultStayType={filters.stayType}
@@ -321,6 +323,24 @@ export function FindHomeSearch() {
           />
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function IdleHint({ stayType }: { stayType: StayType }) {
+  return (
+    <div className="rounded-3xl border border-dashed border-charcoal/15 bg-cream/70 p-10 text-center sm:p-12">
+      <div className="mx-auto max-w-lg">
+        <div className="eyebrow">Ready when you are</div>
+        <h3 className="mt-3 font-serif text-2xl sm:text-3xl">
+          Tell us what you&apos;re looking for.
+        </h3>
+        <p className="mt-3 text-charcoal/70">
+          {stayType === "Long-term"
+            ? "Set a city, a bedroom count and your monthly budget, then hit Search."
+            : "Pick your check-in, check-out and guest count, then hit Search."}
+        </p>
+      </div>
     </div>
   );
 }
@@ -347,7 +367,7 @@ function EmptyState({
         </h3>
         <p className="mt-3 text-charcoal/70">
           New inventory arrives every week. Join the waitlist and we&apos;ll
-          match you to the next home that fits — before it goes public.
+          match you to the next home that fits, before it goes public.
         </p>
       </div>
       <div className="mt-8">
