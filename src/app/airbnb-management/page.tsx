@@ -6,13 +6,23 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { FAQSection } from "@/components/FAQSection";
 import { waLink } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
 
-export const metadata: Metadata = {
-  title: "Airbnb & Short-Stay Management",
-  description:
-    "Full Airbnb and short-stay management in Nairobi and Accra. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.",
-  alternates: { canonical: "/airbnb-management" },
-};
+export function generateMetadata(): Metadata {
+  const city = getServerCity();
+  const cityPhrase =
+    city === "nairobi"
+      ? "Nairobi"
+      : city === "accra"
+        ? "Accra"
+        : "Nairobi and Accra";
+
+  return {
+    title: "Airbnb & Short-Stay Management",
+    description: `Full Airbnb and short-stay management in ${cityPhrase}. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.`,
+    alternates: { canonical: "/airbnb-management" },
+  };
+}
 
 const pillars = [
   {
@@ -48,6 +58,22 @@ const pillars = [
 ];
 
 export default function Page() {
+  const city = getServerCity();
+  const cityName =
+    city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+
+  // Swap the two cross-market phrases that leak into the Accra/Kenya narrative
+  // when viewed on a localized domain. Neutral .com still says "Nairobi & Accra".
+  const reviewLine = cityName
+    ? `Average review score 4.88 across our ${cityName} portfolio`
+    : "Average review score 4.88 across Nairobi & Accra";
+  const exampleUnit =
+    city === "accra"
+      ? "2-bed apartment, East Legon"
+      : city === "nairobi"
+        ? "2-bed apartment, Westlands"
+        : "2-bed apartment, Westlands or East Legon";
+
   return (
     <>
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
@@ -77,6 +103,7 @@ export default function Page() {
                 <a
                   href={waLink(
                     "Hi Goldstay, I'd like to discuss Airbnb / short-stay management for my property",
+                    city ?? undefined,
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -133,7 +160,7 @@ export default function Page() {
               <ul className="mt-8 space-y-3 text-sm">
                 {[
                   "Average occupancy 72%+ in our managed portfolio",
-                  "Average review score 4.88 across Nairobi & Accra",
+                  reviewLine,
                   "Full damage deposit cover via platform guarantees",
                   "No lock-in. 30 days notice to exit anytime.",
                 ].map((t) => (
@@ -152,7 +179,7 @@ export default function Page() {
             <div className="rounded-3xl border border-charcoal/10 bg-charcoal p-6 text-cream sm:p-8 md:p-10">
               <div className="eyebrow text-gold-400">Illustrative economics</div>
               <h3 className="mt-4 font-serif text-2xl sm:text-3xl">
-                2-bed apartment, Westlands or East Legon
+                {exampleUnit}
               </h3>
               <ul className="mt-8 divide-y divide-cream/10 text-sm">
                 {[

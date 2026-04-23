@@ -2,16 +2,27 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { getServerCity } from "@/lib/getServerCity";
 
-export const metadata: Metadata = {
-  title: "Buy Property with Goldstay",
-  description:
-    "Buy-side property sourcing for diaspora buyers in Nairobi and Accra. Search, inspection, negotiation, title verification and handover. Free for buyers. Pick the city you want to buy in.",
-  alternates: { canonical: "/property-sourcing" },
-};
+export function generateMetadata(): Metadata {
+  const city = getServerCity();
+  const cityPhrase =
+    city === "nairobi"
+      ? "Nairobi"
+      : city === "accra"
+        ? "Accra"
+        : "Nairobi and Accra";
 
-const cards = [
+  return {
+    title: "Buy Property with Goldstay",
+    description: `Buy-side property sourcing for diaspora buyers in ${cityPhrase}. Search, inspection, negotiation, title verification and handover. Free for buyers.`,
+    alternates: { canonical: "/property-sourcing" },
+  };
+}
+
+const allCards = [
   {
+    key: "nairobi" as const,
     href: "/nairobi/buy",
     city: "Nairobi",
     country: "Kenya",
@@ -20,6 +31,7 @@ const cards = [
       "Kilimani, Westlands, Lavington and Karen. Title work at the Ministry of Lands.",
   },
   {
+    key: "accra" as const,
     href: "/accra/buy",
     city: "Accra",
     country: "Ghana",
@@ -30,6 +42,17 @@ const cards = [
 ];
 
 export default function Page() {
+  const city = getServerCity();
+
+  // On a localized domain, only show that city's card. On neutral .com we
+  // keep the full chooser so a diaspora buyer who hasn't decided yet can pick.
+  const cards = city ? allCards.filter((c) => c.key === city) : allCards;
+
+  const headline = city ? "Where in the city?" : "Where do you want to buy?";
+  const lede = city
+    ? "Property sourcing is a city-level service. Tap through for the neighbourhoods, the title process and the legal paperwork specific to your market."
+    : "Property sourcing is a city-level service. The neighbourhoods, the title process and the legal paperwork are different in Nairobi and Accra, so the page you want is different too. Pick your city.";
+
   return (
     <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
       <div className="absolute inset-0 -z-10 grain opacity-40" />
@@ -38,18 +61,17 @@ export default function Page() {
           <div className="max-w-3xl">
             <div className="eyebrow text-gold-400">Property sourcing</div>
             <h1 className="mt-6 font-serif text-display-lg balance">
-              Where do you want to buy?
+              {headline}
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-              Property sourcing is a city-level service. The neighbourhoods,
-              the title process and the legal paperwork are different in
-              Nairobi and Accra, so the page you want is different too. Pick
-              your city.
+              {lede}
             </p>
           </div>
         </Reveal>
 
-        <div className="mt-14 grid gap-6 md:grid-cols-2">
+        <div
+          className={`mt-14 grid gap-6 ${cards.length > 1 ? "md:grid-cols-2" : ""}`}
+        >
           {cards.map((c, i) => (
             <Reveal key={c.city} delay={i * 0.05}>
               <Link

@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { waLink } from "@/lib/site";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 
 type City = "nairobi" | "accra";
 type Bedrooms = "studio" | "1" | "2" | "3" | "4+";
@@ -47,7 +48,14 @@ const currency = (n: number) =>
   }).format(Math.max(0, Math.round(n)));
 
 export function YieldCalculator() {
-  const [city, setCity] = useState<City>("nairobi");
+  // If the visitor is on goldstay.co.ke or on /nairobi (or the Ghana
+  // equivalent), the city is locked. The market is already narrowed by the
+  // surface they arrived on, and offering the other city as a tab conflicts
+  // with the "no Ghana on .co.ke" rule. On neutral .com the dropdown shows
+  // both cities as before.
+  const currentCity = useCurrentCity();
+  const lockedCity: City | null = currentCity;
+  const [city, setCity] = useState<City>(lockedCity ?? "nairobi");
   const [bedrooms, setBedrooms] = useState<Bedrooms>("2");
   const [tier, setTier] =
     useState<"standard" | "premium" | "luxury">("premium");
@@ -105,8 +113,14 @@ export function YieldCalculator() {
           Estimate what your property could earn.
         </h2>
         <p className="mt-4 text-charcoal/70">
-          Based on real market data from our managed portfolio in Nairobi and Accra.
-          Numbers are illustrative. We&apos;ll send you a specific estimate within 48 hours.
+          Based on real market data from our managed portfolio in
+          {" "}
+          {lockedCity === "nairobi"
+            ? "Nairobi"
+            : lockedCity === "accra"
+              ? "Accra"
+              : "Nairobi and Accra"}
+          . Numbers are illustrative. We&apos;ll send you a specific estimate within 48 hours.
         </p>
 
         {/* Mode toggle */}
@@ -139,14 +153,20 @@ export function YieldCalculator() {
         <div className="mt-8 grid gap-6 sm:grid-cols-2">
           <div>
             <label className="eyebrow">City</label>
-            <select
-              value={city}
-              onChange={(e) => setCity(e.target.value as City)}
-              className="mt-3 block w-full rounded-xl border border-charcoal/15 bg-white px-4 py-3 text-sm focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/30"
-            >
-              <option value="nairobi">Nairobi</option>
-              <option value="accra">Accra</option>
-            </select>
+            {lockedCity ? (
+              <div className="mt-3 block w-full rounded-xl border border-charcoal/15 bg-white/70 px-4 py-3 text-sm text-charcoal">
+                {lockedCity === "nairobi" ? "Nairobi" : "Accra"}
+              </div>
+            ) : (
+              <select
+                value={city}
+                onChange={(e) => setCity(e.target.value as City)}
+                className="mt-3 block w-full rounded-xl border border-charcoal/15 bg-white px-4 py-3 text-sm focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/30"
+              >
+                <option value="nairobi">Nairobi</option>
+                <option value="accra">Accra</option>
+              </select>
+            )}
           </div>
           <div>
             <label className="eyebrow">Bedrooms</label>

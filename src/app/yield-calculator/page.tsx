@@ -1,14 +1,32 @@
 import type { Metadata } from "next";
 import { YieldCalculator } from "@/components/YieldCalculator";
 import { CTABanner } from "@/components/CTABanner";
+import { getServerCity } from "@/lib/getServerCity";
 
-export const metadata: Metadata = {
-  title: "Yield Calculator",
-  description:
-    "Estimate what your Nairobi or Accra property could earn under Goldstay management. Long-term rent or short-stay revenue, in USD.",
-};
+export function generateMetadata(): Metadata {
+  const city = getServerCity();
+  const cityPhrase =
+    city === "nairobi"
+      ? "Nairobi"
+      : city === "accra"
+        ? "Accra"
+        : "Nairobi or Accra";
+
+  return {
+    title: "Yield Calculator",
+    description: `Estimate what your ${cityPhrase} property could earn under Goldstay management. Long-term rent or short-stay revenue, in USD.`,
+  };
+}
 
 export default function YieldCalculatorPage() {
+  const city = getServerCity();
+  const cityPhrase =
+    city === "nairobi"
+      ? "Nairobi"
+      : city === "accra"
+        ? "Accra"
+        : "Nairobi and Accra";
+
   return (
     <>
       <section className="relative bg-cream pt-32 sm:pt-36 md:pt-40">
@@ -20,7 +38,7 @@ export default function YieldCalculatorPage() {
             </h1>
             <p className="mt-6 max-w-2xl text-lg text-charcoal/75 pretty">
               Two minutes. No sign-up. Based on real market data from our managed
-              portfolio in Nairobi and Accra. Get an illustrative number now, a
+              portfolio in {cityPhrase}. Get an illustrative number now, a
               specific one from our team within 48 hours.
             </p>
           </div>
