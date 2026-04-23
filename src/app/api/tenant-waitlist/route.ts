@@ -4,6 +4,7 @@ import {
   createAirtableRecord,
   isAirtableConfigured,
 } from "@/lib/airtable";
+import { rateLimitOr429 } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 
@@ -38,6 +39,9 @@ function num(v: unknown): number | undefined {
 }
 
 export async function POST(req: Request) {
+  const limited = await rateLimitOr429(req, "tenantWaitlist");
+  if (limited) return limited;
+
   let data: Waitlist;
   try {
     data = (await req.json()) as Waitlist;

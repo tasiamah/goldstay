@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { searchUnits, type UnitSearchParams } from "@/lib/airtable";
+import { rateLimitOr429 } from "@/lib/rateLimit";
 
 export const runtime = "nodejs";
 // Inventory is dynamic; never cache responses here. The Airtable client
@@ -39,6 +40,9 @@ function parseIsoDate(v: string | null): string | undefined {
 }
 
 export async function GET(req: Request) {
+  const limited = await rateLimitOr429(req, "unitsSearch");
+  if (limited) return limited;
+
   const url = new URL(req.url);
   const stayType = parseStayType(url.searchParams.get("stayType"));
   if (!stayType) {
