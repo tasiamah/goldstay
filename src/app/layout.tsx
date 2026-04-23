@@ -5,6 +5,7 @@ import { GeistMono } from "geist/font/mono";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
@@ -125,6 +126,10 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <LayoutClientExtras />
+        {/* Vercel Speed Insights: captures real-user web vitals (LCP, CLS,
+            INP) on production only. Self-hosts a tiny client script, no
+            extra env vars needed, no-op on local dev and preview. */}
+        <SpeedInsights />
       </body>
     </html>
   );
