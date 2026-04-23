@@ -71,8 +71,13 @@ export function Hero({
         className="-z-10 object-cover"
         style={{ objectPosition: heroPosition }}
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/95" />
-      <div className="absolute inset-0 -z-10 grain opacity-40" />
+      {/* Legibility wash. Bottom-weighted so the skyline actually reads
+          in the upper third while the headline and stats strip still
+          have enough contrast in the lower two-thirds. The previous
+          70→60→95 uniform wash turned the image into a brown blur and
+          defeated the point of using a real skyline photo. */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/25 via-charcoal/55 to-charcoal/90" />
+      <div className="absolute inset-0 -z-10 grain opacity-30" />
 
       <div className="container-gs relative flex min-h-screen min-h-[100svh] flex-col items-center justify-center pb-36 pt-32 text-center sm:pt-40">
         <div className="hero-fade-up mx-auto w-full max-w-4xl">
