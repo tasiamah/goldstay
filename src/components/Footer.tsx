@@ -54,20 +54,6 @@ export function Footer() {
           <div className="md:col-span-2">
             <div className="eyebrow mb-4">Company</div>
             <ul className="space-y-3 text-sm">
-              {showNairobi ? (
-                <li>
-                  <Link href="/nairobi" className="link-underline">
-                    Nairobi
-                  </Link>
-                </li>
-              ) : null}
-              {showAccra ? (
-                <li>
-                  <Link href="/accra" className="link-underline">
-                    Accra
-                  </Link>
-                </li>
-              ) : null}
               <li>
                 <Link href="/airbnb-management" className="link-underline">
                   Airbnb
