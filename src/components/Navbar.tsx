@@ -39,22 +39,20 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     const base = `/${city}`;
     return [
       { href: `${base}#services`, label: "Services" },
-      { href: "/yield-calculator", label: "Yield" },
-      { href: "/airbnb-management", label: "Airbnb" },
       { href: `${base}/buy`, label: "Buy" },
-      { href: "/find-a-home", label: "Find a home" },
+      { href: "/find-a-home", label: "Rent" },
+      { href: "/yield-calculator", label: "Yield" },
       { href: `${base}#faq`, label: "FAQ" },
     ];
   }
 
   return [
     { href: "/#services", label: "Services" },
-    { href: "/yield-calculator", label: "Yield" },
     { href: "/nairobi", label: "Nairobi" },
     { href: "/accra", label: "Accra" },
-    { href: "/airbnb-management", label: "Airbnb" },
     { href: "/property-sourcing", label: "Buy" },
-    { href: "/find-a-home", label: "Find a home" },
+    { href: "/find-a-home", label: "Rent" },
+    { href: "/yield-calculator", label: "Yield" },
     { href: "/#faq", label: "FAQ" },
   ];
 }

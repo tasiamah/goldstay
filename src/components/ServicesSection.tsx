@@ -72,12 +72,21 @@ export function ServicesSection({
                   >
                     Enquire
                   </a>
-                  <Link
-                    href="/list-your-property"
-                    className="text-sm link-underline text-charcoal/70"
-                  >
-                    Or list your property →
-                  </Link>
+                  {"detailHref" in s && s.detailHref ? (
+                    <Link
+                      href={s.detailHref}
+                      className="text-sm link-underline text-charcoal/70"
+                    >
+                      Learn more →
+                    </Link>
+                  ) : (
+                    <Link
+                      href="/list-your-property"
+                      className="text-sm link-underline text-charcoal/70"
+                    >
+                      Or list your property →
+                    </Link>
+                  )}
                 </div>
               </article>
             </Reveal>

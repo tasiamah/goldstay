@@ -100,6 +100,7 @@ export const services = [
     title: "Property Sourcing",
     fee: "Free",
     feeLabel: "for buyers",
+    detailHref: "/property-sourcing",
     blurb:
       "For diaspora landlords buying remotely. We find the right property, run the inspections, negotiate the price, verify the title and hand you a turnkey asset ready to rent.",
     features: [
@@ -133,6 +134,7 @@ export const services = [
     title: "Airbnb / Short-Stay Management",
     fee: "20%",
     feeLabel: "of revenue",
+    detailHref: "/airbnb-management",
     blurb:
       "Full Airbnb operations for landlords who want maximum yield without lifting a finger.",
     features: [
