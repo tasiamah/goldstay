@@ -28,7 +28,7 @@ export function Hero({
   const stats =
     city === "nairobi"
       ? [
-          { k: "6", label: "Neighbourhoods" },
+          { k: "9", label: "Neighbourhoods" },
           { k: "USD", label: "Remittance" },
           { k: "24/7", label: "Support" },
         ]
