@@ -98,10 +98,12 @@ const stepTitles = [
 
 export function TenantApplicationForm({
   token,
+  accessKey,
   prefillProperty,
   prefillCity,
 }: {
   token?: string;
+  accessKey?: string;
   prefillProperty?: string;
   prefillCity?: string;
 }) {
@@ -212,7 +214,10 @@ export function TenantApplicationForm({
     try {
       const res = await fetch("/api/tenant-application", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(accessKey ? { "x-apply-key": accessKey } : {}),
+        },
         body: JSON.stringify({ ...data, token }),
       });
       if (!res.ok) {

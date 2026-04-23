@@ -1,12 +1,20 @@
 import type { Metadata } from "next";
 import { TenantApplicationForm } from "@/components/TenantApplicationForm";
 import { getServerCity } from "@/lib/getServerCity";
+import { emailFor } from "@/lib/site";
+import { isApplyAccessValid } from "@/lib/applyAccess";
 
 // Unlisted tenant application page. Not in the nav, not in the sitemap, and
 // explicitly blocked from search indexing below. Ops share the link with a
-// prospective tenant privately (WhatsApp, email), optionally with query
-// params to prefill property and city:
-//   https://goldstay.com/apply?property=Gemini%201-bed&city=Nairobi&ref=TED
+// prospective tenant privately (WhatsApp, email) with the shared access
+// key appended as ?key=..., optionally with params to prefill property and
+// tracking ref:
+//   https://goldstay.com/apply?key=SECRET&property=Gemini%201-bed&city=Nairobi&ref=TED
+//
+// The `key` is checked server-side against APPLY_ACCESS_TOKEN. Any request
+// without it, or with a wrong value, is shown the private-link stub and
+// cannot reach the form. The API route /api/tenant-application re-checks
+// the same header so direct POSTs to the API are also blocked.
 export const metadata: Metadata = {
   title: "Tenant application · Goldstay",
   description:
@@ -23,6 +31,7 @@ type SearchParams = Promise<{
   city?: string;
   ref?: string;
   token?: string;
+  key?: string;
 }>;
 
 export default async function ApplyPage({
@@ -30,8 +39,40 @@ export default async function ApplyPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const { property, city, token } = await searchParams;
+  const { property, city, token, key } = await searchParams;
   const domainCity = getServerCity();
+  const contactEmail = emailFor(domainCity ?? undefined);
+
+  if (!isApplyAccessValid(key)) {
+    return (
+      <main className="section bg-cream pt-32 md:pt-40">
+        <div className="container-gs">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="eyebrow">Private link required</div>
+            <h1 className="mt-5 font-serif text-display-md text-charcoal balance md:text-display-lg">
+              This page is by invitation only.
+            </h1>
+            <p className="mt-5 text-lg text-charcoal/75 pretty">
+              The Goldstay tenant application is shared privately with
+              applicants we&apos;ve invited to a specific property. If you were
+              expecting to see a form here, the link you&apos;ve been given is
+              either expired or missing the access key.
+            </p>
+            <p className="mt-3 text-lg text-charcoal/75 pretty">
+              Please reply to the message you received from us, or write to{" "}
+              <a
+                href={`mailto:${contactEmail}`}
+                className="text-gold-700 underline"
+              >
+                {contactEmail}
+              </a>{" "}
+              and we&apos;ll send you a fresh invitation.
+            </p>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   // Footer references to data protection laws are dropped when the applicant
   // is on a localized domain where only one law applies.
@@ -61,6 +102,7 @@ export default async function ApplyPage({
           <div className="mt-12">
             <TenantApplicationForm
               token={token}
+              accessKey={key}
               prefillProperty={property}
               prefillCity={city}
             />

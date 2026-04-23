@@ -8,6 +8,8 @@ import {
   createAirtableRecord,
   isAirtableConfigured,
 } from "@/lib/airtable";
+import { rateLimitOr429 } from "@/lib/rateLimit";
+import { isApplyAccessValid } from "@/lib/applyAccess";
 
 export const runtime = "nodejs";
 
@@ -65,6 +67,20 @@ function formatSection(title: string, rows: [string, unknown][]) {
 }
 
 export async function POST(req: Request) {
+  const limited = await rateLimitOr429(req, "tenantApplication");
+  if (limited) return limited;
+
+  // Gate with the same shared secret that protects the /apply page. Matches
+  // the header the form sends; an attacker hitting the API directly without
+  // a valid key is rejected before any Airtable / email work happens.
+  const accessKey = req.headers.get("x-apply-key");
+  if (!isApplyAccessValid(accessKey)) {
+    return NextResponse.json(
+      { error: "This endpoint requires a valid invitation key." },
+      { status: 403 },
+    );
+  }
+
   let data: Payload;
   try {
     data = (await req.json()) as Payload;
