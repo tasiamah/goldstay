@@ -251,7 +251,7 @@ export default function Page() {
             </li>
             <li>
               Access inside Goldstay is restricted to the small team that does
-              tenant vetting. Our Head of Operations reviews access monthly.
+              tenant vetting. Our General Manager reviews access monthly.
             </li>
             <li>
               The data is retained for 24 months after your application

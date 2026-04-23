@@ -19,7 +19,7 @@ type Member = {
 function buildMembers(city: "nairobi" | "accra" | null): Member[] {
   const nairobi: Member = {
     name: "Poonam Arora",
-    role: "Head of Operations, Nairobi",
+    role: "General Manager, Nairobi",
     location: "Parklands, Nairobi",
     initials: "PA",
     gradient: "from-[#2b1a10] via-[#b07a3a] to-[#1c1c1c]",
@@ -33,17 +33,9 @@ function buildMembers(city: "nairobi" | "accra" | null): Member[] {
     gradient: "from-[#4a2a1a] via-[#a8783e] to-[#1b3a2d]",
   };
 
-  const guest: Member = {
-    name: "Guest Experience",
-    role: "Short-stay · 24/7 support",
-    location: "Remote · Nairobi",
-    initials: "GE",
-    gradient: "from-[#1f1a10] via-[#6b4a2d] to-[#1c1c1c]",
-  };
-
-  if (city === "nairobi") return [nairobi, guest];
-  if (city === "accra") return [accra, guest];
-  return [nairobi, accra, guest];
+  if (city === "nairobi") return [nairobi];
+  if (city === "accra") return [accra];
+  return [nairobi, accra];
 }
 
 export function TeamSection() {

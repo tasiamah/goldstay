@@ -206,7 +206,7 @@ function TeamGrid({
   // Goldstay WhatsApp surfaces, which route to her on the ops side.
   const poonam: TeamMember = {
     name: "Poonam Arora",
-    role: "Head of Operations, Nairobi",
+    role: "General Manager, Nairobi",
     location: "Parklands, Nairobi",
     gradient: "from-[#2b1a10] via-[#b07a3a] to-[#1c1c1c]",
     initials: "PA",
@@ -233,21 +233,9 @@ function TeamGrid({
     meta: [{ icon: "location", label: "Accra, Ghana" }],
   };
 
-  const guest: TeamMember = {
-    name: "Guest Experience",
-    role: "Short-stay · 24/7 support",
-    location: "Remote · Nairobi",
-    gradient: "from-[#1f1a10] via-[#6b4a2d] to-[#1c1c1c]",
-    initials: "GE",
-    bio: [
-      "A small guest-experience pod handles every Airbnb and short-stay inquiry, coordinates turnovers and cleans, and takes the 2am call when a guest cannot figure out the lock. Permanent, in-house, no outsourcing.",
-    ],
-  };
-
   const members: TeamMember[] = [];
   if (showNairobi) members.push(poonam);
   if (showAccra) members.push(accraLead);
-  members.push(guest);
 
   return (
     <section id="team" className="section bg-white/60">
