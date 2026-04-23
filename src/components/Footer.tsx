@@ -97,6 +97,11 @@ export function Footer() {
                   List your property
                 </Link>
               </li>
+              <li>
+                <Link href="/find-a-home" className="link-underline">
+                  Find a home
+                </Link>
+              </li>
             </ul>
           </div>
 

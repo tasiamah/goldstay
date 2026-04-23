@@ -21,6 +21,7 @@ const DARK_HERO_PATHS = new Set([
   "/airbnb-management",
   "/property-sourcing",
   "/list-your-property",
+  "/find-a-home",
 ]);
 
 // Pages whose hero is on a light background. Navbar should pin to dark content from the start.
@@ -41,6 +42,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
       { href: "/yield-calculator", label: "Yield" },
       { href: "/airbnb-management", label: "Airbnb" },
       { href: `${base}/buy`, label: "Buy" },
+      { href: "/find-a-home", label: "Find a home" },
       { href: `${base}#faq`, label: "FAQ" },
     ];
   }
@@ -52,6 +54,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     { href: "/accra", label: "Accra" },
     { href: "/airbnb-management", label: "Airbnb" },
     { href: "/property-sourcing", label: "Buy" },
+    { href: "/find-a-home", label: "Find a home" },
     { href: "/#faq", label: "FAQ" },
   ];
 }

@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/accra/buy",
     "/yield-calculator",
     "/list-your-property",
+    "/find-a-home",
     "/privacy",
     "/terms",
   ];
