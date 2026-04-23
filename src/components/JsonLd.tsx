@@ -1,9 +1,39 @@
 import { site, cities, offices } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
 
 // Keep JSON-LD narrow and accurate. We declare who we are, what we do, where,
 // and how to reach us. Nothing here claims revenue, headcount or client lists.
+// Per-domain: on goldstay.co.ke we emit Kenya/Nairobi structured data only,
+// on goldstay.com.gh we emit Ghana/Accra only. Goldstay.com stays dual-market.
 export function JsonLd() {
-  const baseUrl = `https://${site.domain}`;
+  const domainCity = getServerCity();
+  const baseUrl =
+    domainCity === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : domainCity === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+
+  const includeNairobi = domainCity !== "accra";
+  const includeAccra = domainCity !== "nairobi";
+
+  const areaServed = [
+    includeNairobi
+      ? { "@type": "City", name: "Nairobi", sameAs: "https://en.wikipedia.org/wiki/Nairobi" }
+      : null,
+    includeAccra
+      ? { "@type": "City", name: "Accra", sameAs: "https://en.wikipedia.org/wiki/Accra" }
+      : null,
+  ].filter(Boolean);
+
+  const offerAreas = [
+    includeNairobi ? "Nairobi" : null,
+    includeAccra ? "Accra" : null,
+  ].filter((v): v is string => Boolean(v));
+
+  const currencies = ["USD", includeNairobi ? "KES" : null, includeAccra ? "GHS" : null]
+    .filter(Boolean)
+    .join(", ");
 
   const organization = {
     "@context": "https://schema.org",
@@ -11,18 +41,20 @@ export function JsonLd() {
     name: site.name,
     description: site.description,
     url: baseUrl,
-    email: site.email,
+    email:
+      domainCity === "nairobi"
+        ? site.emails.nairobi
+        : domainCity === "accra"
+          ? site.emails.accra
+          : site.email,
     parentOrganization: {
       "@type": "Organization",
       name: "TADCO",
     },
-    areaServed: [
-      { "@type": "City", name: "Nairobi", sameAs: "https://en.wikipedia.org/wiki/Nairobi" },
-      { "@type": "City", name: "Accra", sameAs: "https://en.wikipedia.org/wiki/Accra" },
-    ],
+    areaServed,
     sameAs: [site.socials.instagram, site.socials.linkedin],
     knowsLanguage: ["en"],
-    currenciesAccepted: "USD, KES, GHS",
+    currenciesAccepted: currencies,
     paymentAccepted: "Bank transfer, mobile money",
     makesOffer: [
       {
@@ -32,7 +64,7 @@ export function JsonLd() {
           name: "Long-Term Property Management",
           description:
             "End-to-end management of residential rental properties for long-term tenants, with monthly USD remittance to overseas accounts.",
-          areaServed: ["Nairobi", "Accra"],
+          areaServed: offerAreas,
           provider: { "@type": "Organization", name: site.name },
         },
         priceSpecification: {
@@ -47,7 +79,7 @@ export function JsonLd() {
           name: "Short-Stay / Airbnb Management",
           description:
             "Full short-stay operations including listing, pricing, guest communication, cleaning and maintenance, with monthly USD remittance.",
-          areaServed: ["Nairobi", "Accra"],
+          areaServed: offerAreas,
           provider: { "@type": "Organization", name: site.name },
         },
         priceSpecification: {
@@ -60,9 +92,8 @@ export function JsonLd() {
         itemOffered: {
           "@type": "Service",
           name: "Property Sourcing",
-          description:
-            "Buy-side property sourcing for diaspora buyers in Nairobi and Accra. Search, negotiation, title verification, inspection and handover. Free for the buyer.",
-          areaServed: ["Nairobi", "Accra"],
+          description: `Buy-side property sourcing for diaspora buyers in ${offerAreas.join(" and ")}. Search, negotiation, title verification, inspection and handover. Free for the buyer.`,
+          areaServed: offerAreas,
           provider: { "@type": "Organization", name: site.name },
         },
       },
@@ -73,7 +104,7 @@ export function JsonLd() {
           name: "Tenant Finding",
           description:
             "Targeted sourcing, referencing and vetting of tenants with lease execution, for landlords managing their own property.",
-          areaServed: ["Nairobi", "Accra"],
+          areaServed: offerAreas,
           provider: { "@type": "Organization", name: site.name },
         },
         priceSpecification: {
@@ -140,7 +171,12 @@ export function JsonLd() {
     publisher: { "@type": "Organization", name: site.name },
   };
 
-  const jsonld = [organization, nairobi, accra, website];
+  const jsonld = [
+    organization,
+    includeNairobi ? nairobi : null,
+    includeAccra ? accra : null,
+    website,
+  ].filter(Boolean);
 
   return (
     <script
