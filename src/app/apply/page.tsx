@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { TenantApplicationForm } from "@/components/TenantApplicationForm";
+import { getServerCity } from "@/lib/getServerCity";
 
 // Unlisted tenant application page. Not in the nav, not in the sitemap, and
 // explicitly blocked from search indexing below. Ops share the link with a
@@ -30,6 +31,16 @@ export default async function ApplyPage({
   searchParams: SearchParams;
 }) {
   const { property, city, token } = await searchParams;
+  const domainCity = getServerCity();
+
+  // Footer references to data protection laws are dropped when the applicant
+  // is on a localized domain where only one law applies.
+  const privacyCopy =
+    domainCity === "nairobi"
+      ? "Application data handled under Kenya Data Protection Act 2019"
+      : domainCity === "accra"
+        ? "Application data handled under Ghana Data Protection Act 2012"
+        : "Application data handled under Kenya Data Protection Act 2019 and Ghana Data Protection Act 2012";
 
   return (
     <main className="section bg-cream pt-32 md:pt-40">
@@ -56,8 +67,7 @@ export default async function ApplyPage({
           </div>
 
           <p className="mt-8 text-center font-mono text-[0.65rem] uppercase tracking-widest-xl text-charcoal/45">
-            Goldstay, a TADCO company · Application data handled under Kenya
-            Data Protection Act 2019 and Ghana Data Protection Act 2012
+            Goldstay, a TADCO company · {privacyCopy}
           </p>
         </div>
       </div>

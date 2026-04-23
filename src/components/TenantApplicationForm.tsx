@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { Loader2, ArrowRight, ArrowLeft, ShieldCheck } from "lucide-react";
 import { toast } from "@/lib/toast";
+import { useCurrentCity } from "@/lib/useCurrentCity";
 
 // Fields intentionally mirror what Goldstay asks for in a verbal reference
 // call today, so the human check after submission is a confirmation exercise
@@ -105,6 +106,28 @@ export function TenantApplicationForm({
   prefillCity?: string;
 }) {
   const router = useRouter();
+  const domainCity = useCurrentCity();
+
+  // Placeholders and the consent copy track the domain/path so an applicant
+  // on goldstay.co.ke never sees Ghana prompts or Ghana legal references.
+  const nationalityPlaceholder =
+    domainCity === "nairobi"
+      ? "e.g. Kenyan"
+      : domainCity === "accra"
+        ? "e.g. Ghanaian"
+        : "e.g. Kenyan, Ghanaian";
+  const currentCityPlaceholder =
+    domainCity === "nairobi"
+      ? "e.g. Nairobi"
+      : domainCity === "accra"
+        ? "e.g. Accra"
+        : "e.g. Nairobi, Accra";
+  const dataProtectionCopy =
+    domainCity === "nairobi"
+      ? "the Kenya Data Protection Act 2019"
+      : domainCity === "accra"
+        ? "the Ghana Data Protection Act 2012"
+        : "the Kenya Data Protection Act 2019 or Ghana Data Protection Act 2012, as applicable";
   const {
     register,
     handleSubmit,
@@ -302,7 +325,7 @@ export function TenantApplicationForm({
             <label className={label}>Nationality{req}</label>
             <input
               className={field}
-              placeholder="e.g. Kenyan, Ghanaian"
+              placeholder={nationalityPlaceholder}
               {...register("nationality", { required: true })}
             />
           </div>
@@ -372,7 +395,7 @@ export function TenantApplicationForm({
             <label className={label}>Current city{req}</label>
             <input
               className={field}
-              placeholder="e.g. Nairobi, Accra"
+              placeholder={currentCityPlaceholder}
               {...register("currentCity", { required: true })}
             />
           </div>
@@ -788,9 +811,9 @@ export function TenantApplicationForm({
             />
             <span>
               I consent to Goldstay storing the information on this form for
-              the purpose of processing my rental application under the Kenya
-              Data Protection Act 2019 or Ghana Data Protection Act 2012, as
-              applicable.{req}
+              the purpose of processing my rental application under
+              {" "}
+              {dataProtectionCopy}.{req}
             </span>
           </label>
 
