@@ -82,3 +82,88 @@
     background-size: 3px 3px;
   }
 }
+
+/* Scroll-triggered fade-up reveal. Replaces framer-motion's whileInView
+   helper for the bulk of the site. The element starts hidden and
+   transitions to visible when .reveal-in is added by the tiny client
+   wrapper in src/components/Reveal.tsx. Honour the user's reduced-motion
+   preference by skipping the translate entirely. */
+.reveal {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-y, 16px), 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+.reveal-in {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Hero intro fade-up. Framer-motion handled this on the animate prop; we
+   do it in CSS so the Hero doesn't need a framer-motion client bundle.
+   Two delay tiers match the original staggered feel. */
+@keyframes gs-fade-up {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+.hero-fade-up {
+  animation: gs-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.hero-fade-up-delay {
+  animation: gs-fade-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.35s both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-up,
+  .hero-fade-up-delay {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Native <details>-based FAQ accordion. Replaces framer-motion's
+   AnimatePresence height animation. Works with the browser's built-in
+   disclosure semantics (better a11y) and costs zero JS. */
+.gs-faq[open] .gs-faq-content {
+  animation: gs-faq-expand 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.gs-faq .gs-faq-minus {
+  display: none;
+}
+.gs-faq[open] .gs-faq-plus {
+  display: none;
+}
+.gs-faq[open] .gs-faq-minus {
+  display: block;
+}
+@keyframes gs-faq-expand {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gs-faq[open] .gs-faq-content {
+    animation: none;
+  }
+}

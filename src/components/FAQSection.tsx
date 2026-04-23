@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 import { faq as defaultFaq, localizedFaq } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
@@ -9,6 +7,13 @@ import { SectionHeader } from "./SectionHeader";
 
 type FaqItem = { q: string; a: string };
 
+// FAQ accordion built on the native <details> / <summary> disclosure
+// widget instead of framer-motion's AnimatePresence. That saves the
+// framer-motion import from this page, gives us built-in a11y
+// (keyboard, screen readers, browser find-in-page reaches closed
+// content), and the micro-animation is handled by a small CSS keyframe
+// in globals.css. Still a client component only because we read the
+// current city to pick the localized FAQ list.
 export function FAQSection({
   items,
   eyebrow = "FAQ",
@@ -22,7 +27,6 @@ export function FAQSection({
   id?: string;
   initialOpen?: number | null;
 } = {}) {
-  const [open, setOpen] = useState<number | null>(initialOpen);
   // If the caller passed an explicit list (city pages, service-specific FAQs)
   // we respect it. Otherwise we pick the list by the current surface: on
   // goldstay.co.ke or any /nairobi route we show the Nairobi-scoped answers
@@ -39,46 +43,28 @@ export function FAQSection({
         <SectionHeader eyebrow={eyebrow} title={title} />
 
         <div className="mt-14 divide-y divide-charcoal/10 border-y border-charcoal/10">
-          {list.map((item, i) => {
-            const isOpen = open === i;
-            return (
-              <div key={item.q}>
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-6 py-6 text-left"
-                  aria-expanded={isOpen}
-                >
-                  <span className="font-serif text-lg sm:text-xl md:text-2xl">
-                    {item.q}
-                  </span>
-                  <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/70">
-                    {isOpen ? (
-                      <Minus className="h-4 w-4" />
-                    ) : (
-                      <Plus className="h-4 w-4" />
-                    )}
-                  </span>
-                </button>
-                <AnimatePresence initial={false}>
-                  {isOpen ? (
-                    <motion.div
-                      key="content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-                      className="overflow-hidden"
-                    >
-                      <p className="max-w-3xl pb-6 pr-10 text-charcoal/75">
-                        {item.a}
-                      </p>
-                    </motion.div>
-                  ) : null}
-                </AnimatePresence>
+          {list.map((item, i) => (
+            <details
+              key={item.q}
+              className="gs-faq group"
+              open={initialOpen === i}
+            >
+              <summary className="flex w-full cursor-pointer list-none items-center justify-between gap-6 py-6 text-left [&::-webkit-details-marker]:hidden">
+                <span className="font-serif text-lg sm:text-xl md:text-2xl">
+                  {item.q}
+                </span>
+                <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/70">
+                  <Plus className="gs-faq-plus h-4 w-4" />
+                  <Minus className="gs-faq-minus h-4 w-4" />
+                </span>
+              </summary>
+              <div className="gs-faq-content">
+                <p className="max-w-3xl pb-6 pr-10 text-charcoal/75">
+                  {item.a}
+                </p>
               </div>
-            );
-          })}
+            </details>
+          ))}
         </div>
       </div>
     </section>

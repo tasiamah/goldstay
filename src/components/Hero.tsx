@@ -1,12 +1,8 @@
-"use client";
-
 import Link from "next/link";
+import Image from "next/image";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 import { waLink } from "@/lib/site";
-
-const ease = [0.22, 1, 0.36, 1] as const;
 
 export function Hero({
   eyebrow = "Nairobi · Accra",
@@ -47,35 +43,39 @@ export function Hero({
             { k: "USD", label: "Remittance" },
             { k: "24/7", label: "Support" },
           ];
+
+  // Reuse the same locally-hosted, verified city photos the homepage
+  // LocationsSection cards use, so the hero on /nairobi and /accra feels
+  // continuous with the rest of the site. The neutral homepage still uses
+  // a remote Unsplash hero until we shoot our own dual-market top image.
+  const heroImage =
+    city === "accra"
+      ? "/images/locations/accra.jpg"
+      : city === "nairobi"
+        ? "/images/locations/nairobi.jpg"
+        : "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2400&q=80";
+  const heroPosition = city === "accra" ? "center 38%" : "center";
+
   return (
     <section className="relative min-h-screen min-h-[100svh] w-full overflow-hidden bg-charcoal text-cream">
-      {/* background image - reuse the same locally-hosted, verified city
-          photos the homepage LocationsSection cards use, so the hero on
-          /nairobi and /accra feels continuous with the rest of the site. */}
-      <div
-        className="absolute inset-0 -z-10 bg-cover"
-        style={{
-          backgroundImage: `url('${
-            city === "accra"
-              ? "/images/locations/accra.jpg"
-              : city === "nairobi"
-                ? "/images/locations/nairobi.jpg"
-                : "https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=2400&q=80"
-          }')`,
-          backgroundPosition:
-            city === "accra" ? "center 38%" : "center",
-        }}
+      {/* Background hero image rendered via next/image with priority so it
+          becomes the LCP element on first paint instead of a late-loading
+          CSS background. fill + cover keeps the same visual as before. */}
+      <Image
+        src={heroImage}
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        quality={80}
+        className="-z-10 object-cover"
+        style={{ objectPosition: heroPosition }}
       />
       <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/70 via-charcoal/60 to-charcoal/95" />
       <div className="absolute inset-0 -z-10 grain opacity-40" />
 
       <div className="container-gs relative flex min-h-screen min-h-[100svh] flex-col items-center justify-center pb-36 pt-32 text-center sm:pt-40">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease }}
-          className="mx-auto w-full max-w-4xl"
-        >
+        <div className="hero-fade-up mx-auto w-full max-w-4xl">
           <div className="eyebrow text-gold-400">{eyebrow}</div>
           <h1 className="mt-6 font-serif text-display-xl text-cream balance">
             {headline}
@@ -105,16 +105,11 @@ export function Hero({
               <ArrowDown className="h-4 w-4" />
             </Link>
           </div>
-        </motion.div>
+        </div>
       </div>
 
       {/* stat strip, floats at the bottom without pulling the headline off-centre */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.9, delay: 0.35, ease }}
-        className="absolute inset-x-0 bottom-6 z-10 sm:bottom-10"
-      >
+      <div className="hero-fade-up-delay absolute inset-x-0 bottom-6 z-10 sm:bottom-10">
         <div className="container-gs">
           <div className="mx-auto grid max-w-3xl grid-cols-3 gap-4 border-t border-cream/15 pt-5 text-center sm:gap-6 sm:pt-8">
             {stats.map((s) => (
@@ -129,7 +124,7 @@ export function Hero({
             ))}
           </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }
