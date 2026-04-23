@@ -43,7 +43,6 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
       { href: "/airbnb-management", label: "Airbnb" },
       { href: `${base}/buy`, label: "Buy" },
       { href: "/find-a-home", label: "Find a home" },
-      { href: "/about", label: "About" },
       { href: `${base}#faq`, label: "FAQ" },
     ];
   }
@@ -56,7 +55,6 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     { href: "/airbnb-management", label: "Airbnb" },
     { href: "/property-sourcing", label: "Buy" },
     { href: "/find-a-home", label: "Find a home" },
-    { href: "/about", label: "About" },
     { href: "/#faq", label: "FAQ" },
   ];
 }
