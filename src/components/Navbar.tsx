@@ -87,79 +87,95 @@ export function Navbar() {
   const pinned = scrolled || !hasDarkHero || hasLightHero;
 
   return (
-    <header
-      className={clsx(
-        "fixed inset-x-0 top-0 z-40 transition-all duration-500 ease-premium",
-        pinned
-          ? "bg-cream/90 backdrop-blur-md border-b border-charcoal/5 shadow-[0_1px_0_rgba(28,28,28,0.03)]"
-          : "bg-transparent",
-      )}
-    >
-      <div className="container-gs flex h-20 items-center justify-between">
-        <Logo variant={onDark ? "light" : "dark"} />
+    <>
+      <header
+        className={clsx(
+          "fixed inset-x-0 top-0 z-40 transition-all duration-500 ease-premium",
+          pinned
+            ? "bg-cream/90 backdrop-blur-md border-b border-charcoal/5 shadow-[0_1px_0_rgba(28,28,28,0.03)]"
+            : "bg-transparent",
+        )}
+      >
+        <div className="container-gs flex h-20 items-center justify-between">
+          <Logo variant={onDark ? "light" : "dark"} />
 
-        <nav className="hidden items-center gap-8 lg:flex xl:gap-10">
-          {navLinks.map((l) => (
+          <nav className="hidden items-center gap-8 lg:flex xl:gap-10">
+            {navLinks.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={clsx(
+                  "link-underline text-sm transition-colors duration-300",
+                  onDark
+                    ? "text-cream/85 hover:text-cream"
+                    : "text-charcoal/80 hover:text-charcoal",
+                )}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 lg:flex">
             <Link
-              key={l.href}
-              href={l.href}
+              href="/list-your-property"
               className={clsx(
-                "link-underline text-sm transition-colors duration-300",
+                "btn transition-colors duration-300",
                 onDark
-                  ? "text-cream/85 hover:text-cream"
-                  : "text-charcoal/80 hover:text-charcoal",
+                  ? "border border-cream/30 text-cream hover:border-cream hover:bg-cream hover:text-charcoal"
+                  : "btn-secondary",
               )}
             >
-              {l.label}
+              List Your Property
             </Link>
-          ))}
-        </nav>
+            <a
+              href={waLink(
+                "Hi Goldstay, I'd like to discuss managing my property",
+                city ?? undefined,
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
+              WhatsApp Us
+            </a>
+          </div>
 
-        <div className="hidden items-center gap-3 lg:flex">
-          <Link
-            href="/list-your-property"
+          <button
+            type="button"
+            aria-label="Open menu"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen(true)}
             className={clsx(
-              "btn transition-colors duration-300",
+              "lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300",
               onDark
-                ? "border border-cream/30 text-cream hover:border-cream hover:bg-cream hover:text-charcoal"
-                : "btn-secondary",
+                ? "border-cream/30 text-cream hover:bg-cream/10"
+                : "border-charcoal/15 text-charcoal hover:bg-charcoal/5",
             )}
           >
-            List Your Property
-          </Link>
-          <a
-            href={waLink(
-              "Hi Goldstay, I'd like to discuss managing my property",
-              city ?? undefined,
-            )}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-primary"
-          >
-            WhatsApp Us
-          </a>
+            <Menu className="h-5 w-5" />
+          </button>
         </div>
+      </header>
 
-        <button
-          type="button"
-          aria-label="Open menu"
-          onClick={() => setOpen(true)}
-          className={clsx(
-            "lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors duration-300",
-            onDark
-              ? "border-cream/30 text-cream hover:bg-cream/10"
-              : "border-charcoal/15 text-charcoal hover:bg-charcoal/5",
-          )}
-        >
-          <Menu className="h-5 w-5" />
-        </button>
-      </div>
-
-      {/* Mobile menu */}
+      {/* Mobile menu. Rendered as a SIBLING of <header>, not a child, on
+          purpose. When the header gets `backdrop-blur-md` after scroll,
+          `backdrop-filter` establishes a new containing block for any
+          `position: fixed` descendant (CSS spec), which would trap this
+          overlay inside the 80px-tall header and make it invisible when
+          opened from a scrolled state. Lifting it out keeps the overlay
+          anchored to the real viewport in every scroll position. */}
       <div
+        id="mobile-nav"
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!open}
         className={clsx(
           "fixed inset-0 z-50 overflow-y-auto bg-charcoal text-cream transition-opacity duration-500 ease-premium lg:hidden",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         )}
       >
         <div className="container-gs flex h-20 items-center justify-between">
@@ -206,6 +222,6 @@ export function Navbar() {
           </div>
         </nav>
       </div>
-    </header>
+    </>
   );
 }
