@@ -234,7 +234,12 @@ export async function POST(req: Request) {
 
   const finalBody = body + landlordLead;
 
+  // Tenant applications carry KYC data and require a human to act within
+  // 24h, so they go to ops@ rather than tenants@. OPS_INBOX is the
+  // canonical env var; TENANT_OPS_INBOX and CONTACT_INBOX are honoured
+  // as legacy fallbacks.
   const inbox =
+    process.env.OPS_INBOX ||
     process.env.TENANT_OPS_INBOX ||
     process.env.CONTACT_INBOX ||
     "ops@goldstay.co.ke";

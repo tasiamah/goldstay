@@ -49,15 +49,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
   }
 
-  // Default to the .co.ke inbox because that's the only domain with a
-  // live forwarder at the moment. Override via CONTACT_INBOX in Vercel
-  // once hello@goldstay.com routes somewhere real.
-  const inbox = process.env.CONTACT_INBOX || "hello@goldstay.co.ke";
+  // Landlord enquiries land in the leads@ alias by default. LEADS_INBOX
+  // takes priority; CONTACT_INBOX is honoured as a legacy fallback so
+  // existing Vercel env var values keep working. Final hardcoded default
+  // points at leads@ rather than hello@ because the aliases now exist on
+  // the Workspace mailbox, so routing here is correct out of the box.
+  const inbox =
+    process.env.LEADS_INBOX ||
+    process.env.CONTACT_INBOX ||
+    "leads@goldstay.co.ke";
   const apiKey = process.env.RESEND_API_KEY;
-  // "From" address is env-driven so we can flip to leads@goldstay.com
-  // the moment that domain is verified in Resend, without a code push.
+  // goldstay.co.ke is verified in Resend, so this sender is deliverable
+  // without any further DNS work. Env var remains for future multi-brand
+  // or white-label sends (e.g. landlord-facing monthly statements).
   const fromAddress =
-    process.env.RESEND_FROM_LEADS || "Goldstay <leads@goldstay.co.ke>";
+    process.env.RESEND_FROM_LEADS ||
+    "Goldstay Leads <leads@goldstay.co.ke>";
 
   const body = formatEmail(data);
   const submittedAt = new Date().toISOString();

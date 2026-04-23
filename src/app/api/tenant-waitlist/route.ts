@@ -61,10 +61,20 @@ export async function POST(req: Request) {
     );
   }
 
-  const inbox = process.env.CONTACT_INBOX || "hello@goldstay.co.ke";
+  // Tenant flows are routed to tenants@, separate from landlord leads@,
+  // so the same mailbox never accidentally commingles tenant PII (ID
+  // docs, references) with landlord pipeline notes in a shared thread.
+  // Both aliases forward into the Goldstay Team inbox; the separation is
+  // purely organisational for search, labels and downstream automation.
+  const inbox =
+    process.env.TENANTS_INBOX ||
+    process.env.CONTACT_INBOX ||
+    "tenants@goldstay.co.ke";
   const apiKey = process.env.RESEND_API_KEY;
   const fromAddress =
-    process.env.RESEND_FROM_LEADS || "Goldstay <leads@goldstay.co.ke>";
+    process.env.RESEND_FROM_TENANTS ||
+    process.env.RESEND_FROM_LEADS ||
+    "Goldstay Tenants <tenants@goldstay.co.ke>";
   const body = formatEmail(data);
   const submittedAt = new Date().toISOString();
 
