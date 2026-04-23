@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { FindHomeSearch } from "@/components/FindHomeSearch";
 import { getServerCity } from "@/lib/getServerCity";
@@ -65,6 +66,26 @@ export default function Page() {
       <section className="section">
         <div className="container-gs">
           <FindHomeSearch />
+        </div>
+      </section>
+
+      {/* Quiet landlord nudge at the very bottom. Mirrors the "Own property
+          elsewhere in Kenya?" pattern on the city pages: one line, no big
+          CTA banner, easy to ignore for tenants but visible to the slice of
+          visitors who landed here by mistake or are wearing the other hat. */}
+      <section className="border-t border-charcoal/10 bg-white/40 py-10">
+        <div className="container-gs">
+          <Reveal>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-charcoal/70">
+              <span>Looking to rent out your property instead?</span>
+              <Link
+                href="/list-your-property"
+                className="link-underline text-charcoal"
+              >
+                List your property →
+              </Link>
+            </div>
+          </Reveal>
         </div>
       </section>
     </>
