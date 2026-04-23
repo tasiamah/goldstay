@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
+import { getServerCity } from "@/lib/getServerCity";
 
 type Member = {
   name: string;
@@ -10,32 +11,45 @@ type Member = {
   gradient: string;
 };
 
-const members: Member[] = [
-  // Founder card hidden for now, will be restored once we have a real photo and bio.
-  {
-    name: "Head of Operations, Nairobi",
-    role: "On-the-ground property operations",
-    location: "Westlands, Nairobi",
-    initials: "N",
+// Homepage teaser of the team. Full bios and photo blocks live on /about.
+// On .co.ke (or any /nairobi surface) we show Poonam by name because she
+// is the real on-ground operator in Nairobi and leading with a real human
+// is a stronger trust signal than a placeholder tile. Accra and Guest
+// Experience stay anonymised until those hires are confirmed.
+function buildMembers(city: "nairobi" | "accra" | null): Member[] {
+  const nairobi: Member = {
+    name: "Poonam Arora",
+    role: "Head of Operations, Nairobi",
+    location: "Parklands, Nairobi",
+    initials: "PA",
     gradient: "from-[#2b1a10] via-[#b07a3a] to-[#1c1c1c]",
-  },
-  {
+  };
+
+  const accra: Member = {
     name: "Head of Operations, Accra",
     role: "On-the-ground property operations",
     location: "Cantonments, Accra",
     initials: "A",
     gradient: "from-[#4a2a1a] via-[#a8783e] to-[#1b3a2d]",
-  },
-  {
+  };
+
+  const guest: Member = {
     name: "Guest Experience",
     role: "Short-stay · 24/7 support",
     location: "Remote · Nairobi",
     initials: "GE",
     gradient: "from-[#1f1a10] via-[#6b4a2d] to-[#1c1c1c]",
-  },
-];
+  };
+
+  if (city === "nairobi") return [nairobi, guest];
+  if (city === "accra") return [accra, guest];
+  return [nairobi, accra, guest];
+}
 
 export function TeamSection() {
+  const city = getServerCity();
+  const members = buildMembers(city);
+
   return (
     <section id="team" className="section bg-white/50">
       <div className="container-gs">
@@ -75,10 +89,7 @@ export function TeamSection() {
           <span>
             We&apos;re a small, deliberate team. Real names and faces shared on first call.
           </span>
-          <Link
-            href="/list-your-property"
-            className="link-underline text-charcoal"
-          >
+          <Link href="/about" className="link-underline text-charcoal">
             Meet the team →
           </Link>
         </div>

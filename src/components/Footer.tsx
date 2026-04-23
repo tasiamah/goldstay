@@ -102,6 +102,11 @@ export function Footer() {
                   Find a home
                 </Link>
               </li>
+              <li>
+                <Link href="/about" className="link-underline">
+                  About
+                </Link>
+              </li>
             </ul>
           </div>
 
