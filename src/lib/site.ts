@@ -4,7 +4,12 @@ export const site = {
   tagline: "Your Property. Professionally Managed.",
   description:
     "Premium property management in Nairobi and Accra for diaspora landlords. We handle everything. You receive monthly USD transfers.",
-  email: "hello@goldstay.com",
+  // Display email shown on the neutral .com surface and any page that
+  // renders without a city context. We intentionally use the .co.ke
+  // address as the default until goldstay.com is purchased and its MX
+  // is live, otherwise we'd be printing a dead address on the site.
+  // Flip back to hello@goldstay.com once that domain is configured.
+  email: "hello@goldstay.co.ke",
   parent: "A TADCO Company",
   socials: {
     instagram: "https://instagram.com/goldstay",
@@ -16,7 +21,11 @@ export const site = {
     accra: "goldstay.com.gh",
   },
   emails: {
-    default: "hello@goldstay.com",
+    // Same rationale as `email` above: .co.ke is the only live mailbox
+    // right now, so every city-agnostic surface routes to it. The
+    // Ghana entry is kept as a placeholder so when the .com.gh domain
+    // and inbox are provisioned, only this file needs to change.
+    default: "hello@goldstay.co.ke",
     nairobi: "hello@goldstay.co.ke",
     accra: "hello@goldstay.com.gh",
   },

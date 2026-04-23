@@ -234,8 +234,13 @@ export async function POST(req: Request) {
 
   const finalBody = body + landlordLead;
 
-  const inbox = process.env.TENANT_OPS_INBOX || process.env.CONTACT_INBOX || "hello@goldstay.com";
+  const inbox =
+    process.env.TENANT_OPS_INBOX ||
+    process.env.CONTACT_INBOX ||
+    "ops@goldstay.co.ke";
   const apiKey = process.env.RESEND_API_KEY;
+  const fromAddress =
+    process.env.RESEND_FROM_OPS || "Goldstay Ops <ops@goldstay.co.ke>";
 
   const sendEmail = async () => {
     if (!apiKey) {
@@ -246,7 +251,7 @@ export async function POST(req: Request) {
       const { Resend } = await import("resend");
       const resend = new Resend(apiKey);
       await resend.emails.send({
-        from: "Goldstay Ops <ops@goldstay.com>",
+        from: fromAddress,
         to: [inbox],
         replyTo: (data.email as string) || undefined,
         subject: `Tenant application · ${data.fullName} · Grade ${score.grade} (${score.total}/100)`,

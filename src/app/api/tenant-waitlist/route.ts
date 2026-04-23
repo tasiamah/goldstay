@@ -61,8 +61,10 @@ export async function POST(req: Request) {
     );
   }
 
-  const inbox = process.env.CONTACT_INBOX || "hello@goldstay.com";
+  const inbox = process.env.CONTACT_INBOX || "hello@goldstay.co.ke";
   const apiKey = process.env.RESEND_API_KEY;
+  const fromAddress =
+    process.env.RESEND_FROM_LEADS || "Goldstay <leads@goldstay.co.ke>";
   const body = formatEmail(data);
   const submittedAt = new Date().toISOString();
 
@@ -75,7 +77,7 @@ export async function POST(req: Request) {
       const { Resend } = await import("resend");
       const resend = new Resend(apiKey);
       await resend.emails.send({
-        from: "Goldstay <leads@goldstay.com>",
+        from: fromAddress,
         to: [inbox],
         replyTo: (data.email as string) || undefined,
         subject: `Tenant waitlist: ${data.name ?? "Unnamed"} (${data.city ?? ""} · ${data.stayType ?? ""})`,
