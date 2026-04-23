@@ -7,7 +7,7 @@ import { emailFor, site } from "@/lib/site";
 // services themselves (management, sourcing, tenant placement) are
 // governed by a separate signed management or sourcing agreement, which
 // this document repeatedly defers to. The intention is that nothing on
-// the website can, on its own, create a service obligation — that always
+// the website can, on its own, create a service obligation. That always
 // happens through the bilateral agreement with our lawyers in the loop.
 
 export function generateMetadata(): Metadata {

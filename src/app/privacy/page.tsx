@@ -117,17 +117,17 @@ export default function Page() {
           <p>We only collect what we need to deliver the service you asked for:</p>
           <ul>
             <li>
-              <strong>Contact details</strong> — name, email, phone / WhatsApp
+              <strong>Contact details</strong>: name, email, phone / WhatsApp
               number, country of residence.
             </li>
             <li>
-              <strong>Property information</strong> — address, neighbourhood,
+              <strong>Property information</strong>: address, neighbourhood,
               bedrooms, furnishing, availability, photographs, any notes you
               choose to share.
             </li>
             <li>
               <strong>Tenant application data</strong> (only if you apply to
-              rent a property through us) — employment and income details,
+              rent a property through us): employment and income details,
               previous landlord references, a copy of your government ID or
               passport, and optionally a recent bank or M-Pesa statement. This
               category is treated as more sensitive and is described in more
@@ -135,12 +135,12 @@ export default function Page() {
             </li>
             <li>
               <strong>Financial and settlement data</strong> (only for active
-              landlord clients) — bank account details for USD remittance,
+              landlord clients): bank account details for USD remittance,
               identity documents required by our banking partners for
               know-your-customer checks, and transaction records.
             </li>
             <li>
-              <strong>Website usage data</strong> — pages visited, referrer,
+              <strong>Website usage data</strong>: pages visited, referrer,
               device and browser information, approximate location from IP
               address. This is the ordinary analytics data every website
               collects; we do not use it to build advertising profiles.
@@ -159,25 +159,25 @@ export default function Page() {
           </p>
           <ul>
             <li>
-              <strong>Your consent</strong> — when you submit a form and tick
+              <strong>Your consent</strong>: when you submit a form and tick
               the consent box, or subscribe to any updates. You can withdraw
               this consent at any time (see section 7).
             </li>
             <li>
-              <strong>Performance of a contract</strong> — when you sign a
+              <strong>Performance of a contract</strong>: when you sign a
               management agreement with us, or when you apply to rent a
               property we operate, we process what is necessary to deliver that
               agreement (rent collection, remittance, statements, maintenance,
               licensing, tenant vetting).
             </li>
             <li>
-              <strong>Compliance with a legal obligation</strong> — tax
+              <strong>Compliance with a legal obligation</strong>: tax
               reporting (KRA in Kenya, GRA in Ghana), anti-money-laundering
               checks required by our banking partners, rental income reporting,
               and lawful responses to court orders or regulator requests.
             </li>
             <li>
-              <strong>Our legitimate interests</strong> — replying to your
+              <strong>Our legitimate interests</strong>: replying to your
               enquiry, preventing fraud, securing our systems, and improving
               the service. Where we rely on this basis we balance it against
               your rights and only use the minimum data necessary.
@@ -214,7 +214,7 @@ export default function Page() {
               verified file with you before you sign the lease.
             </li>
             <li>
-              <strong>Tax and regulatory authorities</strong> — KRA
+              <strong>Tax and regulatory authorities</strong>: KRA
               {isNeutral || isGhana ? " and GRA" : ""}, county or municipal
               authorities, the {regulator?.name ?? "relevant data protection regulator"},
               and any court where we are legally required to do so.
@@ -274,20 +274,20 @@ export default function Page() {
               The right to be informed about how we use your data (this notice).
             </li>
             <li>
-              The right of access — ask us for a copy of what we hold.
+              The right of access: ask us for a copy of what we hold.
             </li>
             <li>
-              The right to rectification — ask us to correct anything wrong.
+              The right to rectification: ask us to correct anything wrong.
             </li>
             <li>
-              The right to erasure (to be forgotten) — ask us to delete your
+              The right to erasure (to be forgotten): ask us to delete your
               data, unless we are legally required to keep it.
             </li>
             <li>
               The right to restrict or object to our processing.
             </li>
             <li>
-              The right to data portability — receive your data in a commonly
+              The right to data portability: receive your data in a commonly
               used machine-readable format.
             </li>
             <li>
@@ -313,23 +313,23 @@ export default function Page() {
           <h2 className="font-serif">8. How long we keep your data</h2>
           <ul>
             <li>
-              <strong>Enquiry data (landlord leads, general contact)</strong> —
+              <strong>Enquiry data (landlord leads, general contact)</strong>:
               retained for 24 months from last contact, then deleted or
               anonymised.
             </li>
             <li>
-              <strong>Tenant application data</strong> — retained for 24 months
+              <strong>Tenant application data</strong>: retained for 24 months
               after the application concludes, then deleted.
             </li>
             <li>
-              <strong>Active management clients</strong> — retained for the
+              <strong>Active management clients</strong>: retained for the
               duration of the management agreement plus seven years after
               termination, to meet Kenyan
               {isNeutral || isGhana ? " and Ghanaian" : ""} tax record-keeping
               obligations.
             </li>
             <li>
-              <strong>Website analytics data</strong> — retained for 26
+              <strong>Website analytics data</strong>: retained for 26
               months at the aggregate level, never used to identify you
               personally.
             </li>

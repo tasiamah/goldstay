@@ -108,7 +108,7 @@ export function Hero({
         </motion.div>
       </div>
 
-      {/* stat strip — floats at the bottom without pulling the headline off-centre */}
+      {/* stat strip, floats at the bottom without pulling the headline off-centre */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}

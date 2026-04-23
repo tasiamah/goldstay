@@ -10,7 +10,7 @@ import { useCurrentCity } from "@/lib/useCurrentCity";
 import clsx from "./clsx";
 
 // Pages that open on a dark hero. The navbar starts in light mode on these.
-// Pages with a light/cream hero background — navbar should use dark content there from load.
+// Pages with a light/cream hero background, where the navbar should use dark content from load.
 // Pages NOT in this set will start transparent-over-dark (light content).
 const DARK_HERO_PATHS = new Set([
   "/",

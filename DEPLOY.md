@@ -2,7 +2,7 @@
 
 The site is a standard Next.js 14 App Router project hosted on **Vercel**.
 A GitHub Actions pipeline (`.github/workflows/deploy.yml`) is the single
-source of truth for deployments — every push to `main` builds, lints,
+source of truth for deployments, every push to `main` builds, lints,
 type-checks and then deploys to production automatically. Pull requests
 build a preview deployment and comment the URL on the PR.
 
@@ -15,7 +15,7 @@ PR opened ─────▶ verify ──────────────�
 ```
 
 `vercel.json` sets `"git": { "deploymentEnabled": false }` so Vercel's own
-Git auto-deploys are disabled — GitHub Actions is the only thing that
+Git auto-deploys are disabled, GitHub Actions is the only thing that
 deploys. One source of truth, no double-deploys.
 
 ---
@@ -45,7 +45,7 @@ Or add them in the browser:
 
 ## Environment variables (runtime, optional)
 
-These are **not required to deploy** — the site renders and the form accepts
+These are **not required to deploy**, the site renders and the form accepts
 submissions even without them. Add them in the Vercel dashboard under
 **Project → Settings → Environment Variables** when you're ready to go live.
 
@@ -91,7 +91,7 @@ Once you're ready to point `goldstay.com`, `goldstay.co.ke`, or
 
 ## Sharing the preview link
 
-Any `*.vercel.app` URL is public by default — just paste it into WhatsApp /
+Any `*.vercel.app` URL is public by default, just paste it into WhatsApp /
 email. If you want a password gate for the early feedback phase, enable
 **Project → Settings → Deployment Protection → Password Protection** in
 the Vercel dashboard (Pro plan feature).

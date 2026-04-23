@@ -139,7 +139,7 @@ export async function listAirtableRecords<T extends AirtableFields>(
   }
 }
 
-// Public-facing unit shape. Deliberately a subset of the Airtable schema —
+// Public-facing unit shape. Deliberately a subset of the Airtable schema;
 // we don't leak Internal notes to the browser.
 export type PublicUnit = {
   id: string;

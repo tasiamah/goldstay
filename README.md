@@ -1,6 +1,6 @@
 # Goldstay
 
-Premium property management in Nairobi & Accra — marketing site for diaspora landlords.
+Premium property management in Nairobi & Accra: marketing site for diaspora landlords.
 
 Brand: Goldstay · A TADCO Company.
 
@@ -24,7 +24,7 @@ Brand: Goldstay · A TADCO Company.
 | `/airbnb-management` | Detailed Airbnb / short-stay service page with illustrative economics. |
 | `/list-your-property` | Landlord intake form (posts to `/api/lead`). |
 | `/privacy`, `/terms` | Legal placeholders. |
-| `/api/lead` | Server route — delivers form submissions via Resend; logs to console if no API key. |
+| `/api/lead` | Server route: delivers form submissions via Resend; logs to console if no API key. |
 | `/sitemap.xml`, `/robots.txt` | Auto-generated. |
 
 ## Environment variables
@@ -36,9 +36,9 @@ NEXT_PUBLIC_WHATSAPP_NUMBER=            # fallback/primary WhatsApp number in in
 NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI=    # Nairobi-specific number (optional)
 NEXT_PUBLIC_WHATSAPP_NUMBER_ACCRA=      # Accra-specific number (optional)
 NEXT_PUBLIC_CONTACT_EMAIL=hello@goldstay.com
-NEXT_PUBLIC_GA_MEASUREMENT_ID=          # e.g. G-XXXXXXX — omit to disable
-NEXT_PUBLIC_META_PIXEL_ID=              # Meta Pixel ID — omit to disable
-RESEND_API_KEY=                         # from resend.com — omit to log to console instead
+NEXT_PUBLIC_GA_MEASUREMENT_ID=          # e.g. G-XXXXXXX: omit to disable
+NEXT_PUBLIC_META_PIXEL_ID=              # Meta Pixel ID: omit to disable
+RESEND_API_KEY=                         # from resend.com: omit to log to console instead
 CONTACT_INBOX=hello@goldstay.com        # where form submissions get sent
 TENANT_OPS_INBOX=ops@goldstay.com       # where tenant applications get sent
 AIRTABLE_API_KEY=                       # Airtable PAT, omit to disable CRM mirror
@@ -67,11 +67,11 @@ npm run start
 
 ## Deployment
 
-The site is designed for **Vercel** — zero config deploy. Set the environment variables above in the Vercel project dashboard.
+The site is designed for **Vercel**: zero config deploy. Set the environment variables above in the Vercel project dashboard.
 
 ### Domain routing
 
-- `goldstay.com` — primary.
+- `goldstay.com`: primary.
 - `goldstay.co.ke` → 301 redirect → `goldstay.com/nairobi` (set up in your Kenyan registrar).
 - `goldstay.com.gh` → 301 redirect → `goldstay.com/accra` (set up in your Ghanaian registrar).
 
@@ -85,7 +85,7 @@ Every landlord lead and tenant application is mirrored to an Airtable base so th
 
 You have two options. The script is the fast path and is idempotent, so you can also re-run it later if you ever need to extend the schema.
 
-#### Option A — provision the schema via script (recommended)
+#### Option A: provision the schema via script (recommended)
 
 1. Create an empty base in Airtable called **Goldstay CRM** (or any name, the script only needs the base id).
 2. Grab the base id from the URL (`https://airtable.com/appXXXXXXXXXXXXXX/...`).
@@ -96,11 +96,11 @@ You have two options. The script is the fast path and is idempotent, so you can 
    AIRTABLE_API_KEY=pat... AIRTABLE_BASE_ID=app... npm run airtable:setup
    ```
 
-   It creates `Leads`, `Tenant Applications` and `Vacancy Leads` with the exact fields and single-select options the API routes expect. Idempotent — re-running it adds any new fields without touching existing data.
+   It creates `Leads`, `Tenant Applications` and `Vacancy Leads` with the exact fields and single-select options the API routes expect. Idempotent: re-running it adds any new fields without touching existing data.
 
 5. Revoke the setup PAT. For runtime, create a new PAT with only `data.records:write` and drop it into `AIRTABLE_API_KEY` in Vercel.
 
-#### Option B — create the three tables manually
+#### Option B: create the three tables manually
 
 Create the three tables described below. Field names are case-sensitive and must match exactly, otherwise Airtable drops the values silently at write time.
 
@@ -122,7 +122,7 @@ Create the three tables described below. Field names are case-sensitive and must
 | Notes | Long text |
 | Submitted | Date with time |
 | Source | Single line text |
-| Status | Single select (New, Contacted, Onboarded, Lost) — default New |
+| Status | Single select (New, Contacted, Onboarded, Lost): default New |
 
 **Table: `Tenant Applications`** (from `/apply`)
 
@@ -150,7 +150,7 @@ Create the three tables described below. Field names are case-sensitive and must
 | Scoring rationale | Long text |
 | Token | Single line text |
 | Submitted | Date with time |
-| Status | Single select (New, Verified, Placed, Rejected) — default New |
+| Status | Single select (New, Verified, Placed, Rejected): default New |
 
 **Table: `Vacancy Leads`** (landlords to pitch, auto-created from tenant applications)
 
@@ -163,7 +163,7 @@ Create the three tables described below. Field names are case-sensitive and must
 | Leaving around | Single line text |
 | Referred via | Single line text |
 | Submitted | Date with time |
-| Status | Single select (New, Contacted, Pitched, Signed, Not interested) — default New |
+| Status | Single select (New, Contacted, Pitched, Signed, Not interested): default New |
 
 ### Credentials
 
@@ -180,21 +180,21 @@ Create the three tables described below. Field names are case-sensitive and must
 
 ## Brand guardrails (baked into the design system)
 
-- Muted **champagne gold** `#C9A84C` — not bright yellow. Used sparingly for accents and CTAs.
-- **Warm off-white** `#FAF8F3` page background — generous white space.
-- **Deep charcoal** `#1C1C1C` body text — strong and readable.
+- Muted **champagne gold** `#C9A84C`: not bright yellow. Used sparingly for accents and CTAs.
+- **Warm off-white** `#FAF8F3` page background: generous white space.
+- **Deep charcoal** `#1C1C1C` body text: strong and readable.
 - **Dark forest green** `#1B3A2D` used only on the big CTA banner and dark panels for contrast.
-- No stock photos of random white people in offices — hero backgrounds use African / Nairobi / Accra contexts via Unsplash URLs you can swap for your own photography.
+- No stock photos of random white people in offices: hero backgrounds use African / Nairobi / Accra contexts via Unsplash URLs you can swap for your own photography.
 - Tone: direct, calm, confident. Never pushy.
 
 ## What to replace before launch
 
-1. **Hero images** — currently Unsplash URLs. Swap for your own photography of real Nairobi/Accra apartments.
-2. **WhatsApp numbers** — set in env vars.
-3. **Domain redirects** — configure `.co.ke` and `.com.gh` at the registrars.
-4. **Email** — add a Resend API key and verify the `leads@goldstay.com` sender domain.
-5. **Analytics IDs** — add GA4 and Meta Pixel IDs.
-6. **Logo mark** — the current logo is a typographic wordmark with a gold dot. Swap `src/components/Logo.tsx` for your designed mark when ready.
+1. **Hero images**: currently Unsplash URLs. Swap for your own photography of real Nairobi/Accra apartments.
+2. **WhatsApp numbers**: set in env vars.
+3. **Domain redirects**: configure `.co.ke` and `.com.gh` at the registrars.
+4. **Email**: add a Resend API key and verify the `leads@goldstay.com` sender domain.
+5. **Analytics IDs**: add GA4 and Meta Pixel IDs.
+6. **Logo mark**: the current logo is a typographic wordmark with a gold dot. Swap `src/components/Logo.tsx` for your designed mark when ready.
 
 ## Accessibility & performance notes
 

@@ -35,8 +35,8 @@ export function UnitCard({
 
   const message =
     stayType === "Long-term"
-      ? `Hi Goldstay, I'm interested in long-term rental of ${unit.unitId} — ${unit.title} in ${unit.neighbourhood}, ${unit.city}. Can we talk?`
-      : `Hi Goldstay, I'm looking at a short stay in ${unit.unitId} — ${unit.title} in ${unit.neighbourhood}, ${unit.city}. Is it available?`;
+      ? `Hi Goldstay, I'm interested in long-term rental of ${unit.unitId}: ${unit.title} in ${unit.neighbourhood}, ${unit.city}. Can we talk?`
+      : `Hi Goldstay, I'm looking at a short stay in ${unit.unitId}: ${unit.title} in ${unit.neighbourhood}, ${unit.city}. Is it available?`;
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-3xl border border-charcoal/10 bg-cream transition-all duration-500 ease-premium hover:-translate-y-0.5 hover:border-gold-500/40 hover:shadow-lift">

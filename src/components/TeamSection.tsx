@@ -11,7 +11,7 @@ type Member = {
 };
 
 const members: Member[] = [
-  // Founder card hidden for now — will be restored once we have a real photo and bio.
+  // Founder card hidden for now, will be restored once we have a real photo and bio.
   {
     name: "Head of Operations, Nairobi",
     role: "On-the-ground property operations",
