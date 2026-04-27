@@ -123,6 +123,9 @@ import PropertyValuation, {
 import SmartHomeFeatures, {
   meta as smartHomeFeaturesMeta,
 } from "./smart-home-features-that-drive-rent-premiums-nairobi";
+import FreeholdLeaseholdCitizenship, {
+  meta as freeholdLeaseholdCitizenshipMeta,
+} from "./freehold-vs-leasehold-kenya-citizenship-rules";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -207,6 +210,10 @@ export const posts: readonly Post[] = [
   { meta: emergingSuburbsMeta, Component: EmergingSuburbs },
   { meta: propertyValuationMeta, Component: PropertyValuation },
   { meta: smartHomeFeaturesMeta, Component: SmartHomeFeatures },
+  {
+    meta: freeholdLeaseholdCitizenshipMeta,
+    Component: FreeholdLeaseholdCitizenship,
+  },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
