@@ -161,6 +161,52 @@ import CitizenshipByInvestment, {
   meta as citizenshipByInvestmentMeta,
 } from "./kenya-citizenship-by-investment-residence-permits-2026";
 
+import HowToBuyPlot, {
+  meta as howToBuyPlotMeta,
+} from "./how-to-buy-plot-of-land-kenya-step-by-step";
+import GatedCommunities, {
+  meta as gatedCommunitiesMeta,
+} from "./best-gated-communities-nairobi-2026";
+import SellingFromAbroad, {
+  meta as sellingFromAbroadMeta,
+} from "./selling-kenyan-property-from-abroad-diaspora-seller-guide";
+import ReturnToKenya, {
+  meta as returnToKenyaMeta,
+} from "./returning-to-kenya-diaspora-move-back-playbook";
+import SectionalProperties, {
+  meta as sectionalPropertiesMeta,
+} from "./sectional-properties-act-2020-kenya-apartment-owners";
+import LcbConsent, {
+  meta as lcbConsentMeta,
+} from "./land-control-board-consent-kenya-when-needed";
+import SpousalConsent, {
+  meta as spousalConsentMeta,
+} from "./spousal-consent-matrimonial-property-act-kenya-transactions";
+import PowerOfAttorney, {
+  meta as powerOfAttorneyMeta,
+} from "./power-of-attorney-kenya-property-diaspora";
+import MpesaPaybill, {
+  meta as mpesaPaybillMeta,
+} from "./mpesa-paybill-rent-collection-nairobi-landlords";
+import RentalInsurance, {
+  meta as rentalInsuranceMeta,
+} from "./insurance-kenya-rental-property-diaspora-landlords";
+import BomaYangu, {
+  meta as bomaYanguMeta,
+} from "./boma-yangu-affordable-housing-programme-diaspora";
+import HospitalityInvestment, {
+  meta as hospitalityInvestmentMeta,
+} from "./hospitality-investment-kenya-holiday-lets-serviced-apartments";
+import AfricanCapitals, {
+  meta as africanCapitalsMeta,
+} from "./nairobi-vs-lagos-vs-cape-town-vs-kigali-property-compared";
+import KenyaVsMauritiusRwanda, {
+  meta as kenyaVsMauritiusRwandaMeta,
+} from "./buying-property-kenya-vs-mauritius-vs-rwanda";
+import CostOfLiving, {
+  meta as costOfLivingMeta,
+} from "./cost-of-living-nairobi-2026-diaspora-returnees";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -259,6 +305,21 @@ export const posts: readonly Post[] = [
   { meta: diplomaticTenantsMeta, Component: DiplomaticTenants },
   { meta: offPlanDelaysMeta, Component: OffPlanDelays },
   { meta: citizenshipByInvestmentMeta, Component: CitizenshipByInvestment },
+  { meta: howToBuyPlotMeta, Component: HowToBuyPlot },
+  { meta: gatedCommunitiesMeta, Component: GatedCommunities },
+  { meta: sellingFromAbroadMeta, Component: SellingFromAbroad },
+  { meta: returnToKenyaMeta, Component: ReturnToKenya },
+  { meta: sectionalPropertiesMeta, Component: SectionalProperties },
+  { meta: lcbConsentMeta, Component: LcbConsent },
+  { meta: spousalConsentMeta, Component: SpousalConsent },
+  { meta: powerOfAttorneyMeta, Component: PowerOfAttorney },
+  { meta: mpesaPaybillMeta, Component: MpesaPaybill },
+  { meta: rentalInsuranceMeta, Component: RentalInsurance },
+  { meta: bomaYanguMeta, Component: BomaYangu },
+  { meta: hospitalityInvestmentMeta, Component: HospitalityInvestment },
+  { meta: africanCapitalsMeta, Component: AfricanCapitals },
+  { meta: kenyaVsMauritiusRwandaMeta, Component: KenyaVsMauritiusRwanda },
+  { meta: costOfLivingMeta, Component: CostOfLiving },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
