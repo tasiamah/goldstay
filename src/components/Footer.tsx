@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
-import { site, waLink } from "@/lib/site";
+import { cities, neighbourhoodSlug, site, waLink } from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
 import { FooterOffice } from "./FooterOffice";
 import { getServerCity } from "@/lib/getServerCity";
@@ -14,6 +14,17 @@ export function Footer() {
   const city = getServerCity();
   const showNairobi = city !== "accra";
   const showAccra = city !== "nairobi";
+
+  // Neighbourhood links surface every static page we ship to the
+  // crawler from every page on the site. Internal linking with
+  // descriptive anchor text is the cheapest ranking lever we own and
+  // each neighbourhood page targets a distinct long-tail query
+  // ("property management Kilimani" etc.).
+  const neighbourhoodLinks = (cityKey: "nairobi" | "accra") =>
+    cities[cityKey].neighbourhoods.map((n) => ({
+      href: `/${cityKey}/${neighbourhoodSlug(n.name)}`,
+      label: n.name,
+    }));
 
   const brandLine =
     city === "nairobi"
@@ -52,30 +63,55 @@ export function Footer() {
           </div>
 
           <div className="md:col-span-2">
-            <div className="eyebrow mb-4">Company</div>
+            <div className="eyebrow mb-4">Services</div>
             <ul className="space-y-3 text-sm">
+              {showNairobi ? (
+                <li>
+                  <Link href="/nairobi" className="link-underline">
+                    Property management Nairobi
+                  </Link>
+                </li>
+              ) : null}
+              {showAccra ? (
+                <li>
+                  <Link href="/accra" className="link-underline">
+                    Property management Accra
+                  </Link>
+                </li>
+              ) : null}
               <li>
                 <Link href="/airbnb-management" className="link-underline">
-                  Airbnb
+                  Airbnb &amp; short-stay management
+                </Link>
+              </li>
+              <li>
+                <Link href="/property-sourcing" className="link-underline">
+                  Property sourcing
                 </Link>
               </li>
               {showNairobi ? (
                 <li>
                   <Link href="/nairobi/buy" className="link-underline">
-                    Buy in Nairobi
+                    Buy property in Nairobi
                   </Link>
                 </li>
               ) : null}
               {showAccra ? (
                 <li>
                   <Link href="/accra/buy" className="link-underline">
-                    Buy in Accra
+                    Buy property in Accra
                   </Link>
                 </li>
               ) : null}
+            </ul>
+          </div>
+
+          <div className="md:col-span-2">
+            <div className="eyebrow mb-4">More</div>
+            <ul className="space-y-3 text-sm">
               <li>
-                <Link href="/yield-calculator" className="link-underline">
-                  Yield calculator
+                <Link href="/find-a-home" className="link-underline">
+                  Find a home
                 </Link>
               </li>
               <li>
@@ -84,21 +120,15 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/find-a-home" className="link-underline">
-                  Find a home
+                <Link href="/yield-calculator" className="link-underline">
+                  Yield calculator
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="link-underline">
-                  About
+                  About Goldstay
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          <div className="md:col-span-2">
-            <div className="eyebrow mb-4">Contact</div>
-            <ul className="space-y-3 text-sm">
               <li>
                 <FooterContactEmail />
               </li>
@@ -135,6 +165,44 @@ export function Footer() {
                 </li>
               ) : null}
             </ul>
+          </div>
+        </div>
+
+        {/* Neighbourhoods strip. Keeps every neighbourhood landing page
+            one click from every other page on the site, which gives
+            them the crawl depth they need to actually rank for
+            "property management <neighbourhood>" queries. Hidden on
+            the localised domains' opposite city to stay on-message. */}
+        <div className="mt-16 border-t border-charcoal/10 pt-10">
+          <div className="grid gap-10 md:grid-cols-2">
+            {showNairobi ? (
+              <div>
+                <div className="eyebrow mb-4">Nairobi neighbourhoods</div>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {neighbourhoodLinks("nairobi").map((n) => (
+                    <li key={n.href}>
+                      <Link href={n.href} className="link-underline text-charcoal/70 hover:text-charcoal">
+                        {n.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {showAccra ? (
+              <div>
+                <div className="eyebrow mb-4">Accra neighbourhoods</div>
+                <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
+                  {neighbourhoodLinks("accra").map((n) => (
+                    <li key={n.href}>
+                      <Link href={n.href} className="link-underline text-charcoal/70 hover:text-charcoal">
+                        {n.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
           </div>
         </div>
 
