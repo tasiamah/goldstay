@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -82,9 +83,16 @@ export default function Page() {
                 href={c.href}
                 className="group relative block h-80 overflow-hidden rounded-3xl border border-white/10 shadow-lift"
               >
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-                  style={{ backgroundImage: `url('${c.image}')` }}
+                {/* next/image with sizes hint so the same asset isn't shipped
+                    full-resolution on mobile, and an alt that names the city
+                    so the image is discoverable in image-search for "buy
+                    property Nairobi" / "buy property Accra". */}
+                <Image
+                  src={c.image}
+                  alt={`${c.city} skyline — Goldstay buy-side property sourcing in ${c.country}`}
+                  fill
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-charcoal/95 via-charcoal/55 to-charcoal/20" />
                 <div className="relative flex h-full flex-col justify-end p-7 sm:p-8">

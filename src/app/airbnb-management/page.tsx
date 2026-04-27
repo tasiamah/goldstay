@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Check, Camera, LineChart, MessageCircle, Sparkles, Wrench, Receipt } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -80,12 +81,18 @@ export default function Page() {
   return (
     <>
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=2400&q=80')",
-          }}
+        {/* Hero image rendered via next/image with priority so it becomes
+            the LCP element on first paint and is discoverable to image
+            search. The previous CSS background-image was invisible to
+            crawlers and skipped Next's image optimisation pipeline. */}
+        <Image
+          src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=2400&q=80"
+          alt={`Sunlit short-stay apartment interior, representative of Goldstay's Airbnb management portfolio in ${cityName ?? "Nairobi and Accra"}`}
+          fill
+          priority
+          sizes="100vw"
+          quality={80}
+          className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/80 via-charcoal/70 to-charcoal/95" />
         <div className="container-gs pb-20 md:pb-32">

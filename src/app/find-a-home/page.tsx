@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { FindHomeSearch } from "@/components/FindHomeSearch";
@@ -41,12 +42,18 @@ export default function Page() {
   return (
     <>
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=2400&q=80')",
-          }}
+        {/* next/image hero so the LCP element loads with priority and
+            the asset is visible to Google Images. The previous CSS
+            background image was crawler-invisible and skipped Next's
+            optimisation pipeline. */}
+        <Image
+          src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=2400&q=80"
+          alt={`Light-filled apartment interior — Goldstay vetted homes in ${cityPhrase.replace(" &", " and")}`}
+          fill
+          priority
+          sizes="100vw"
+          quality={80}
+          className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/85 via-charcoal/70 to-charcoal/95" />
         <div className="container-gs pb-16 md:pb-24">

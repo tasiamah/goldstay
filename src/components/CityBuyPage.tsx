@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Check,
@@ -90,9 +91,17 @@ export function CityBuyPage({ city }: { city: City }) {
   return (
     <>
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
-        <div
-          className="absolute inset-0 -z-10 bg-cover bg-center"
-          style={{ backgroundImage: `url('${image}')` }}
+        {/* next/image hero so the LCP element is the city skyline (with
+            priority + correct sizes) and so it appears in image search
+            for "buy property Nairobi" / "buy property Accra". */}
+        <Image
+          src={image}
+          alt={`${cityName} skyline — Goldstay buy-side property sourcing in ${country}`}
+          fill
+          priority
+          sizes="100vw"
+          quality={80}
+          className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/80 via-charcoal/70 to-charcoal/95" />
         <div className="container-gs pb-20 md:pb-32">
