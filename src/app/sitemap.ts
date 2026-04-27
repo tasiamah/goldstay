@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { site, cities, neighbourhoodSlug } from "@/lib/site";
+import { posts } from "./insights/posts";
 
 // Host-aware sitemap. Each country domain advertises only the routes
 // that actually live on it: goldstay.co.ke skips /accra*, goldstay.com.gh
@@ -21,6 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/list-your-property",
     "/find-a-home",
     "/about",
+    "/insights",
+    ...posts.map((p) => `/insights/${p.meta.slug}`),
     "/privacy",
     "/terms",
   ];

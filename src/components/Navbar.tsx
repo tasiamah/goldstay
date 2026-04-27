@@ -12,7 +12,7 @@ import clsx from "./clsx";
 // Pages that open on a dark hero. The navbar starts in light mode on these.
 // Pages with a light/cream hero background, where the navbar should use dark content from load.
 // Pages NOT in this set will start transparent-over-dark (light content).
-const DARK_HERO_PATHS = new Set([
+const DARK_HERO_EXACT = new Set([
   "/",
   "/nairobi",
   "/nairobi/buy",
@@ -22,7 +22,21 @@ const DARK_HERO_PATHS = new Set([
   "/property-sourcing",
   "/list-your-property",
   "/find-a-home",
+  "/insights",
 ]);
+
+// Path prefixes whose every descendant has a dark hero. Used for
+// dynamic routes like /nairobi/<neighbourhood>, /accra/<neighbourhood>
+// and /insights/<slug> where every concrete URL renders a charcoal
+// hero. Without this the navbar would start in light-content mode
+// over a dark background and the wordmark would disappear on first
+// paint of a neighbourhood or article page.
+const DARK_HERO_PREFIXES = ["/nairobi/", "/accra/", "/insights/"] as const;
+
+function hasDarkHeroFor(pathname: string) {
+  if (DARK_HERO_EXACT.has(pathname)) return true;
+  return DARK_HERO_PREFIXES.some((p) => pathname.startsWith(p));
+}
 
 // Pages whose hero is on a light background. Navbar should pin to dark content from the start.
 const LIGHT_HERO_PATHS = new Set(["/yield-calculator"]);
@@ -42,6 +56,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
       { href: `${base}/buy`, label: "Buy" },
       { href: "/find-a-home", label: "Rent" },
       { href: "/yield-calculator", label: "Yield" },
+      { href: "/insights", label: "Insights" },
       { href: `${base}#faq`, label: "FAQ" },
     ];
   }
@@ -53,6 +68,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     { href: "/property-sourcing", label: "Buy" },
     { href: "/find-a-home", label: "Rent" },
     { href: "/yield-calculator", label: "Yield" },
+    { href: "/insights", label: "Insights" },
     { href: "/#faq", label: "FAQ" },
   ];
 }
@@ -62,7 +78,7 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || "/";
   const city = useCurrentCity();
-  const hasDarkHero = DARK_HERO_PATHS.has(pathname);
+  const hasDarkHero = hasDarkHeroFor(pathname);
   const hasLightHero = LIGHT_HERO_PATHS.has(pathname);
   const navLinks = getNavLinks(city);
 

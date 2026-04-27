@@ -125,6 +125,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/insights" className="link-underline">
+                  Insights
+                </Link>
+              </li>
+              <li>
                 <Link href="/about" className="link-underline">
                   About Goldstay
                 </Link>
