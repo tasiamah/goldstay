@@ -14,7 +14,7 @@ import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
-import { cities, cityFaq, localizedFaq, waLink, site } from "@/lib/site";
+import { cities, cityFaq, localizedFaq, waLink, site, neighbourhoodSlug } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 
@@ -74,16 +74,27 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
             lede={`Our tenant base includes ${c.tenantProfile}. We know what they expect, what they pay, and how to keep them.`}
           />
           <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {c.neighbourhoods.map((n, i) => (
-              <Reveal key={n.name} delay={i * 0.04}>
-                <div className="flex items-center justify-between rounded-2xl border border-charcoal/10 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40">
-                  <span className="font-serif text-xl">{n.name}</span>
-                  <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50">
-                    {cityName}
-                  </span>
-                </div>
-              </Reveal>
-            ))}
+            {c.neighbourhoods.map((n, i) => {
+              // Neighbourhood URLs stay /<city>/<slug> on every host.
+              // The .co.ke / .com.gh root rewrite is scoped to "/" only
+              // (see next.config.mjs), so /<slug> on those domains would
+              // 404. /<city>/<slug> works everywhere because Next.js
+              // serves the same filesystem-routed page on every host.
+              const href = `/${city}/${neighbourhoodSlug(n.name)}`;
+              return (
+                <Reveal key={n.name} delay={i * 0.04}>
+                  <Link
+                    href={href}
+                    className="group flex items-center justify-between rounded-2xl border border-charcoal/10 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40"
+                  >
+                    <span className="font-serif text-xl">{n.name}</span>
+                    <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50 transition-colors group-hover:text-gold-700">
+                      {cityName} →
+                    </span>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
 
           <Reveal delay={0.1}>

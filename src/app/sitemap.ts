@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
-import { site, cities } from "@/lib/site";
+import { site, cities, neighbourhoodSlug } from "@/lib/site";
 
 // Host-aware sitemap. Each country domain advertises only the routes
 // that actually live on it: goldstay.co.ke skips /accra*, goldstay.com.gh
@@ -29,7 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/nairobi",
     "/nairobi/buy",
     ...cities.nairobi.neighbourhoods.map(
-      (n) => `/nairobi/${n.name.toLowerCase().replace(/\s+/g, "-")}`,
+      (n) => `/nairobi/${neighbourhoodSlug(n.name)}`,
     ),
   ];
 
@@ -37,7 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/accra",
     "/accra/buy",
     ...cities.accra.neighbourhoods.map(
-      (n) => `/accra/${n.name.toLowerCase().replace(/\s+/g, "-")}`,
+      (n) => `/accra/${neighbourhoodSlug(n.name)}`,
     ),
   ];
 

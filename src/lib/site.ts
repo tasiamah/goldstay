@@ -63,15 +63,34 @@ export const offices: Partial<Record<"nairobi" | "accra", Office>> = {
   },
 };
 
+// Slug helpers for neighbourhood URLs. Kept here next to the cities
+// map so any place that lists neighbourhoods can build the same URL
+// without re-deriving the slug rule.
+export function neighbourhoodSlug(name: string) {
+  return name.toLowerCase().replace(/\s+/g, "-");
+}
+
+export function findNeighbourhood(
+  city: "nairobi" | "accra",
+  slug: string,
+): Neighbourhood | undefined {
+  return cities[city].neighbourhoods.find((n) => neighbourhoodSlug(n.name) === slug);
+}
+
 // hreflang helper. Returns the alternates.languages map for a given
 // path so each page declares the correct cross-domain equivalents.
 //
 // - Routes that exist on every domain (services, calculators, legal)
 //   get all three language tags.
-// - /nairobi-rooted routes only exist on the neutral .com surface and
-//   on goldstay.co.ke (which rewrites / to /nairobi at the edge), so
-//   they emit en-KE + x-default.
+// - /nairobi-rooted routes are Kenya-relevant: en-KE points at the
+//   equivalent URL on goldstay.co.ke, x-default at the .com URL.
 // - /accra-rooted routes mirror that on goldstay.com.gh.
+//
+// Special case: the .co.ke root rewrites to /nairobi at the edge (see
+// next.config.mjs rewrites), so the .co.ke alias of /nairobi is "/"
+// and not "/nairobi". Same for .com.gh and /accra. Sub-paths like
+// /nairobi/buy or /nairobi/kilimani keep their full prefix on every
+// host because the rewrite is scoped to source "/".
 //
 // Without an explicit map per page Google picks one domain as canonical
 // and treats the other two as duplicates, the opposite of what we want
@@ -89,20 +108,30 @@ export function alternateLanguagesFor(path: string) {
     };
   }
 
-  if (path.startsWith("/nairobi")) {
-    // The Kenyan domain's "/" is a rewrite of "/nairobi" so the
-    // cross-domain equivalent of /nairobi is the .co.ke root.
-    const keUrl = path === "/nairobi" ? ke : `${ke}${path.replace(/^\/nairobi/, "")}`;
+  if (path === "/nairobi") {
     return {
-      "en-KE": keUrl,
+      "en-KE": ke,
+      "x-default": `${main}/nairobi`,
+    };
+  }
+
+  if (path === "/accra") {
+    return {
+      "en-GH": gh,
+      "x-default": `${main}/accra`,
+    };
+  }
+
+  if (path.startsWith("/nairobi/")) {
+    return {
+      "en-KE": `${ke}${path}`,
       "x-default": `${main}${path}`,
     };
   }
 
-  if (path.startsWith("/accra")) {
-    const ghUrl = path === "/accra" ? gh : `${gh}${path.replace(/^\/accra/, "")}`;
+  if (path.startsWith("/accra/")) {
     return {
-      "en-GH": ghUrl,
+      "en-GH": `${gh}${path}`,
       "x-default": `${main}${path}`,
     };
   }
