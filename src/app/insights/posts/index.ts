@@ -87,6 +87,43 @@ import KenyaEmergingMarketThesis, {
   meta as kenyaEmergingMarketThesisMeta,
 } from "./kenya-emerging-market-property-investment-thesis-2026";
 
+import NairobiExpressway, {
+  meta as nairobiExpresswayMeta,
+} from "./nairobi-expressway-effect-on-property-prices";
+import HousingLevy, {
+  meta as housingLevyMeta,
+} from "./kenya-affordable-housing-levy-1-5-percent-explained";
+import Ardhisasa, {
+  meta as ardhisasaMeta,
+} from "./ardhisasa-using-kenya-digital-land-platform-from-abroad";
+import KenyaMortgageRates, {
+  meta as kenyaMortgageRatesMeta,
+} from "./kenya-mortgage-rates-2026-diaspora-buyer-guide";
+import KenyaReits, {
+  meta as kenyaReitsMeta,
+} from "./kenya-reits-acorn-asa-ilam-fahari-vs-direct-property";
+import SmartCities, {
+  meta as smartCitiesMeta,
+} from "./tatu-city-northlands-konza-investing-kenya-smart-cities";
+import CostOfBuilding, {
+  meta as costOfBuildingMeta,
+} from "./cost-of-building-3-bedroom-house-kenya-2026";
+import SolarBackupPower, {
+  meta as solarBackupPowerMeta,
+} from "./solar-and-backup-power-nairobi-rental-property";
+import ElectionCycle, {
+  meta as electionCycleMeta,
+} from "./kenya-property-strategy-2027-election-cycle";
+import EmergingSuburbs, {
+  meta as emergingSuburbsMeta,
+} from "./nairobi-emerging-suburbs-ruiru-kitengela-syokimau-athi-river";
+import PropertyValuation, {
+  meta as propertyValuationMeta,
+} from "./property-valuation-kenya-how-it-works-bank-vs-market";
+import SmartHomeFeatures, {
+  meta as smartHomeFeaturesMeta,
+} from "./smart-home-features-that-drive-rent-premiums-nairobi";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -158,6 +195,18 @@ export const posts: readonly Post[] = [
     meta: kenyaEmergingMarketThesisMeta,
     Component: KenyaEmergingMarketThesis,
   },
+  { meta: nairobiExpresswayMeta, Component: NairobiExpressway },
+  { meta: housingLevyMeta, Component: HousingLevy },
+  { meta: ardhisasaMeta, Component: Ardhisasa },
+  { meta: kenyaMortgageRatesMeta, Component: KenyaMortgageRates },
+  { meta: kenyaReitsMeta, Component: KenyaReits },
+  { meta: smartCitiesMeta, Component: SmartCities },
+  { meta: costOfBuildingMeta, Component: CostOfBuilding },
+  { meta: solarBackupPowerMeta, Component: SolarBackupPower },
+  { meta: electionCycleMeta, Component: ElectionCycle },
+  { meta: emergingSuburbsMeta, Component: EmergingSuburbs },
+  { meta: propertyValuationMeta, Component: PropertyValuation },
+  { meta: smartHomeFeaturesMeta, Component: SmartHomeFeatures },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
