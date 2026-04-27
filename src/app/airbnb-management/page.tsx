@@ -5,7 +5,7 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { FAQSection } from "@/components/FAQSection";
-import { waLink } from "@/lib/site";
+import { waLink, alternateLanguagesFor } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 export function generateMetadata(): Metadata {
@@ -20,7 +20,10 @@ export function generateMetadata(): Metadata {
   return {
     title: "Airbnb & Short-Stay Management",
     description: `Full Airbnb and short-stay management in ${cityPhrase}. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.`,
-    alternates: { canonical: "/airbnb-management" },
+    alternates: {
+      canonical: "/airbnb-management",
+      languages: alternateLanguagesFor("/airbnb-management"),
+    },
   };
 }
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { getServerCity } from "@/lib/getServerCity";
+import { alternateLanguagesFor } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   const city = getServerCity();
@@ -16,7 +17,10 @@ export function generateMetadata(): Metadata {
   return {
     title: "Buy Property with Goldstay",
     description: `Buy-side property sourcing for diaspora buyers in ${cityPhrase}. Search, inspection, negotiation, title verification and handover. Free for buyers.`,
-    alternates: { canonical: "/property-sourcing" },
+    alternates: {
+      canonical: "/property-sourcing",
+      languages: alternateLanguagesFor("/property-sourcing"),
+    },
   };
 }
 

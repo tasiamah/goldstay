@@ -1,21 +1,52 @@
 import type { MetadataRoute } from "next";
+import { headers } from "next/headers";
+import { site, cities } from "@/lib/site";
 
+// Host-aware sitemap. Each country domain advertises only the routes
+// that actually live on it: goldstay.co.ke skips /accra*, goldstay.com.gh
+// skips /nairobi*, and the neutral goldstay.com lists everything. This
+// keeps Google from crawling cross-market URLs that 200 elsewhere but
+// don't represent that domain's offering.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://goldstay.com";
-  const routes = [
+  const host = (headers().get("host") ?? site.domains.main).toLowerCase();
+  const isNairobi = host.endsWith(site.domains.nairobi);
+  const isAccra = host.endsWith(site.domains.accra);
+  const base = `https://${isNairobi ? site.domains.nairobi : isAccra ? site.domains.accra : site.domains.main}`;
+
+  const neutral = [
     "",
-    "/nairobi",
-    "/accra",
     "/airbnb-management",
     "/property-sourcing",
-    "/nairobi/buy",
-    "/accra/buy",
     "/yield-calculator",
     "/list-your-property",
     "/find-a-home",
+    "/about",
     "/privacy",
     "/terms",
   ];
+
+  const nairobiRoutes = [
+    "/nairobi",
+    "/nairobi/buy",
+    ...cities.nairobi.neighbourhoods.map(
+      (n) => `/nairobi/${n.name.toLowerCase().replace(/\s+/g, "-")}`,
+    ),
+  ];
+
+  const accraRoutes = [
+    "/accra",
+    "/accra/buy",
+    ...cities.accra.neighbourhoods.map(
+      (n) => `/accra/${n.name.toLowerCase().replace(/\s+/g, "-")}`,
+    ),
+  ];
+
+  const routes = isNairobi
+    ? [...neutral, ...nairobiRoutes]
+    : isAccra
+      ? [...neutral, ...accraRoutes]
+      : [...neutral, ...nairobiRoutes, ...accraRoutes];
+
   const now = new Date();
   return routes.map((r) => ({
     url: `${base}${r}`,

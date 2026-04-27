@@ -63,6 +63,57 @@ export const offices: Partial<Record<"nairobi" | "accra", Office>> = {
   },
 };
 
+// hreflang helper. Returns the alternates.languages map for a given
+// path so each page declares the correct cross-domain equivalents.
+//
+// - Routes that exist on every domain (services, calculators, legal)
+//   get all three language tags.
+// - /nairobi-rooted routes only exist on the neutral .com surface and
+//   on goldstay.co.ke (which rewrites / to /nairobi at the edge), so
+//   they emit en-KE + x-default.
+// - /accra-rooted routes mirror that on goldstay.com.gh.
+//
+// Without an explicit map per page Google picks one domain as canonical
+// and treats the other two as duplicates, the opposite of what we want
+// for local-pack visibility in Nairobi and Accra.
+export function alternateLanguagesFor(path: string) {
+  const main = `https://${site.domains.main}`;
+  const ke = `https://${site.domains.nairobi}`;
+  const gh = `https://${site.domains.accra}`;
+
+  if (path === "/" || path === "") {
+    return {
+      "en-KE": ke,
+      "en-GH": gh,
+      "x-default": main,
+    };
+  }
+
+  if (path.startsWith("/nairobi")) {
+    // The Kenyan domain's "/" is a rewrite of "/nairobi" so the
+    // cross-domain equivalent of /nairobi is the .co.ke root.
+    const keUrl = path === "/nairobi" ? ke : `${ke}${path.replace(/^\/nairobi/, "")}`;
+    return {
+      "en-KE": keUrl,
+      "x-default": `${main}${path}`,
+    };
+  }
+
+  if (path.startsWith("/accra")) {
+    const ghUrl = path === "/accra" ? gh : `${gh}${path.replace(/^\/accra/, "")}`;
+    return {
+      "en-GH": ghUrl,
+      "x-default": `${main}${path}`,
+    };
+  }
+
+  return {
+    "en-KE": `${ke}${path}`,
+    "en-GH": `${gh}${path}`,
+    "x-default": `${main}${path}`,
+  };
+}
+
 export function emailFor(city?: "nairobi" | "accra" | null) {
   if (city === "nairobi") return site.emails.nairobi;
   if (city === "accra") return site.emails.accra;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { YieldCalculator } from "@/components/YieldCalculator";
 import { CTABanner } from "@/components/CTABanner";
 import { getServerCity } from "@/lib/getServerCity";
+import { alternateLanguagesFor } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   const city = getServerCity();
@@ -15,6 +16,10 @@ export function generateMetadata(): Metadata {
   return {
     title: "Yield Calculator",
     description: `Estimate what your ${cityPhrase} property could earn under Goldstay management. Long-term rent or short-stay revenue, in USD.`,
+    alternates: {
+      canonical: "/yield-calculator",
+      languages: alternateLanguagesFor("/yield-calculator"),
+    },
   };
 }
 

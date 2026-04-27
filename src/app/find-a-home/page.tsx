@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { FindHomeSearch } from "@/components/FindHomeSearch";
 import { getServerCity } from "@/lib/getServerCity";
+import { alternateLanguagesFor } from "@/lib/site";
 
 // Tenant-facing front door. Unlike /list-your-property (which is for
 // landlords signing us on) and /apply (which is the private deep-dossier
@@ -21,7 +22,10 @@ export function generateMetadata(): Metadata {
   return {
     title: "Find a home",
     description: `Search vetted long-term and short-stay homes in ${cityPhrase}, or join the Goldstay tenant waitlist and we'll match you to the next property that fits.`,
-    alternates: { canonical: "/find-a-home" },
+    alternates: {
+      canonical: "/find-a-home",
+      languages: alternateLanguagesFor("/find-a-home"),
+    },
   };
 }
 

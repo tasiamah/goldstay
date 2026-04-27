@@ -5,7 +5,7 @@ import { ArrowRight, MapPin, Languages, Building2 } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Reveal } from "@/components/Reveal";
 import { CTABanner } from "@/components/CTABanner";
-import { waLink, site } from "@/lib/site";
+import { waLink, site, alternateLanguagesFor } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // The About page is an SEO-visible page, so we generate city-scoped
@@ -28,6 +28,10 @@ export function generateMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: {
+      canonical: "/about",
+      languages: alternateLanguagesFor("/about"),
+    },
     openGraph: {
       title: `${title} | ${site.name}`,
       description,

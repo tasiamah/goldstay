@@ -9,7 +9,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@/components/Analytics";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
-import { site } from "@/lib/site";
+import { site, alternateLanguagesFor } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 const instrumentSerif = Instrument_Serif({
@@ -65,6 +65,11 @@ export function generateMetadata(): Metadata {
       ? allKeywords.filter((k) => !/nairobi|kenya/i.test(k))
       : allKeywords;
 
+  // hreflang map for the homepage. Layout-level alternates only apply
+  // when a child page doesn't declare its own; every page that ships a
+  // canonical also re-declares languages via alternateLanguagesFor.
+  const languages = alternateLanguagesFor("/");
+
   return {
     metadataBase,
     title: {
@@ -74,6 +79,10 @@ export function generateMetadata(): Metadata {
     description,
     keywords,
     authors: [{ name: "Goldstay" }],
+    alternates: {
+      canonical: "/",
+      languages,
+    },
     openGraph: {
       title: `${site.name} | ${site.tagline}`,
       description,
@@ -88,6 +97,12 @@ export function generateMetadata(): Metadata {
       description,
     },
     robots: { index: true, follow: true },
+    verification: {
+      google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+      other: process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION
+        ? { "msvalidate.01": process.env.NEXT_PUBLIC_BING_SITE_VERIFICATION }
+        : undefined,
+    },
   };
 }
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
 import { Reveal } from "@/components/Reveal";
-import { waLink } from "@/lib/site";
+import { waLink, alternateLanguagesFor } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Per-domain metadata so goldstay.co.ke reads as a Kenya-only brand in search
@@ -19,7 +19,10 @@ export function generateMetadata(): Metadata {
   return {
     title: "List Your Property",
     description,
-    alternates: { canonical: "/list-your-property" },
+    alternates: {
+      canonical: "/list-your-property",
+      languages: alternateLanguagesFor("/list-your-property"),
+    },
   };
 }
 
