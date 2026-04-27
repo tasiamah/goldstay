@@ -127,6 +127,37 @@ import FreeholdLeaseholdCitizenship, {
   meta as freeholdLeaseholdCitizenshipMeta,
 } from "./freehold-vs-leasehold-kenya-citizenship-rules";
 
+import StampDuty2026, {
+  meta as stampDuty2026Meta,
+} from "./kenya-stamp-duty-2026-buyer-guide";
+import DiasporaScams, {
+  meta as diasporaScamsMeta,
+} from "./how-diaspora-kenyans-get-scammed-buying-property";
+import ApartmentOversupply, {
+  meta as apartmentOversupplyMeta,
+} from "./nairobi-apartment-oversupply-2026-suburbs-to-avoid";
+import FloodRisk, {
+  meta as floodRiskMeta,
+} from "./flood-risk-drainage-buying-property-nairobi";
+import CryptoBuying, {
+  meta as cryptoBuyingMeta,
+} from "./buying-kenyan-property-with-crypto-stablecoins-2026";
+import InternationalSchools, {
+  meta as internationalSchoolsMeta,
+} from "./international-schools-nairobi-rent-premium-isk-brookhouse-banda";
+import EstatePlanning, {
+  meta as estatePlanningMeta,
+} from "./estate-planning-diaspora-kenyans-wills-succession";
+import CoastalProperty, {
+  meta as coastalPropertyMeta,
+} from "./kenya-coastal-property-diani-kilifi-watamu-investment-2026";
+import DiplomaticTenants, {
+  meta as diplomaticTenantsMeta,
+} from "./diplomatic-tenant-market-gigiri-rosslyn-runda-un-embassy-rent";
+import OffPlanDelays, {
+  meta as offPlanDelaysMeta,
+} from "./why-nairobi-off-plan-delivery-dates-slip";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -214,6 +245,16 @@ export const posts: readonly Post[] = [
     meta: freeholdLeaseholdCitizenshipMeta,
     Component: FreeholdLeaseholdCitizenship,
   },
+  { meta: stampDuty2026Meta, Component: StampDuty2026 },
+  { meta: diasporaScamsMeta, Component: DiasporaScams },
+  { meta: apartmentOversupplyMeta, Component: ApartmentOversupply },
+  { meta: floodRiskMeta, Component: FloodRisk },
+  { meta: cryptoBuyingMeta, Component: CryptoBuying },
+  { meta: internationalSchoolsMeta, Component: InternationalSchools },
+  { meta: estatePlanningMeta, Component: EstatePlanning },
+  { meta: coastalPropertyMeta, Component: CoastalProperty },
+  { meta: diplomaticTenantsMeta, Component: DiplomaticTenants },
+  { meta: offPlanDelaysMeta, Component: OffPlanDelays },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
