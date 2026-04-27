@@ -23,7 +23,7 @@ export const meta: PostMeta = {
   author: authors.poonam,
   tags: ["Kenya", "Tax", "Diaspora", "MRI", "KRA", "Compliance"],
   heroImage: "/images/locations/nairobi.jpg",
-  heroAlt: "Nairobi skyline at dusk — Kenyan tax explainer for diaspora landlords",
+  heroAlt: "Nairobi skyline at dusk, Kenyan tax explainer for diaspora landlords",
 };
 
 export default function Article() {
@@ -56,9 +56,9 @@ export default function Article() {
         <em>residential</em> and <em>gross</em>. MRI applies to homes,
         apartments and other residential lettings. It does not apply to
         commercial property; that is taxed under the regular income tax
-        regime. And the 7.5% is applied to gross rent, not net &mdash;
-        you cannot deduct service charge, land rates or repair costs
-        from the figure you tax.
+        regime. The 7.5% is applied to gross rent, not net. You cannot
+        deduct service charge, land rates or repair costs from the
+        figure you tax.
       </P>
 
       <Callout title="What changed in 2023">
@@ -70,7 +70,7 @@ export default function Article() {
       </Callout>
 
       <H2 id="do-i-qualify-as-resident">
-        &ldquo;But I live in London &mdash; am I really a resident landlord?&rdquo;
+        &ldquo;But I live in London. Am I really a resident landlord?&rdquo;
       </H2>
 
       <P>
@@ -224,9 +224,9 @@ export default function Article() {
         The KES 2,000 monthly penalty for a missed nil return looks
         small. It compounds. We have onboarded landlords whose
         accumulated nil-return penalties were enough to wipe out a
-        full year of profit. The fix is trivial &mdash; iTax accepts a
-        nil return in under a minute &mdash; but it has to be done
-        every month, on time, vacant or not.
+        full year of profit. The fix is trivial. iTax accepts a
+        nil return in under a minute. It just has to be done every
+        month, on time, vacant or not.
       </P>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
@@ -258,7 +258,7 @@ export default function Article() {
 
       <P>
         If you do not have a KRA PIN, we register one on your behalf
-        before your first remittance &mdash; passport scan and proof of
+        before your first remittance. Passport scan and proof of
         ownership, no visit to Kenya required, live in roughly a week.
       </P>
 

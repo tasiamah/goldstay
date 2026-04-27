@@ -23,7 +23,7 @@ export const meta: PostMeta = {
   author: authors.poonam,
   tags: ["Buying", "Diaspora", "Property Sourcing", "Inspection", "Due Diligence"],
   heroImage: "/images/locations/accra.jpg",
-  heroAlt: "Apartment interior — why diaspora buyers still need an in-person property viewing",
+  heroAlt: "Apartment interior, why diaspora buyers still need an in-person property viewing",
 };
 
 export default function Article() {
@@ -53,7 +53,7 @@ export default function Article() {
         glance, light at the moment of filming, and gives you a feel
         for whether you can imagine yourself in the rooms. For
         ruling a property{" "}
-        <em>out</em>, it is excellent &mdash; if the kitchen layout is
+        <em>out</em>, it is excellent. If the kitchen layout is
         wrong on video, it is wrong in person.
       </P>
 
@@ -77,8 +77,8 @@ export default function Article() {
 
       <P>
         Damp, mould, sewer gas leaking from a dry trap, paint covering
-        a fire-damage smell &mdash; these do not photograph and they do
-        not film. We have seen luxury-finished apartments in
+        a fire-damage smell. None of it photographs and none of it
+        films. We have seen luxury-finished apartments in
         Cantonments with clear flood damage history that looked
         immaculate on video. The smell told the truth in 30 seconds.
       </P>
@@ -128,8 +128,8 @@ export default function Article() {
 
       <P>
         On new-build handover, the snag list is where the project
-        actually finishes &mdash; and it is the buyer&rsquo;s
-        responsibility to compile it. Hairline cracks, doors out of
+        actually finishes, and it is the buyer&rsquo;s responsibility
+        to compile it. Hairline cracks, doors out of
         plumb, sockets installed but not energised, balcony tiles
         with hollow patches under them, sealant gaps along the
         kitchen splash-back. We typically generate a snag list of 20
@@ -231,8 +231,8 @@ export default function Article() {
           could not cover replacement.
         </LI>
         <LI>
-          The kitchen veneer was lifting on three units &mdash; not
-          visible at the wide-angle filming distance. Quoted repair
+          The kitchen veneer was lifting on three units. None of
+          it was visible at the wide-angle filming distance. Quoted repair
           was KES 320,000.
         </LI>
         <LI>
@@ -262,8 +262,8 @@ export default function Article() {
         buyers who skip the in-person inspection and discover the
         problems three months in, after the wire has cleared,
         typically spend the equivalent of a year of rent absorbing
-        them &mdash; in repairs, lost rent during fix periods, and
-        legal fees if the seller misrepresented the unit. None of
+        them, in repairs, lost rent during fix periods, and legal
+        fees if the seller misrepresented the unit. None of
         that is recoverable in any market we operate in once the
         title has transferred.
       </P>

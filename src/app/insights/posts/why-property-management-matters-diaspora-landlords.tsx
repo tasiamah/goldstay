@@ -24,7 +24,7 @@ export const meta: PostMeta = {
   tags: ["Management", "Diaspora", "Operations", "Tenants", "USD remittance"],
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
-    "Nairobi residential building exterior — the case for professional property management for diaspora landlords",
+    "Nairobi residential building exterior, the case for professional property management for diaspora landlords",
 };
 
 export default function Article() {
@@ -60,8 +60,7 @@ export default function Article() {
         five, so it slides to day fifteen, then day thirty. When the
         landlord finally hears about it, three months are owed and
         the tenant is preparing a sob story instead of a payment.
-        The original problem &mdash; one missed rent &mdash; is
-        manageable. The compounded problem of three months arrears
+        The original problem, one missed rent, is manageable. The compounded problem of three months arrears
         and a tenant who has now figured out that nobody is going to
         evict them is the thing that takes a year to unwind in court.
       </P>
@@ -94,7 +93,7 @@ export default function Article() {
         years and has zero financial paper trail.
       </P>
 
-      <H3 id="failure-four">4. Tax compliance &mdash; or the absence of it</H3>
+      <H3 id="failure-four">4. Tax compliance, or the absence of it</H3>
 
       <P>
         We covered this in detail in{" "}
@@ -180,7 +179,7 @@ export default function Article() {
         fee on a Nairobi long-let typically saves the landlord one to
         two months of vacant rent per turnover, prevents one to
         three small tax penalties a year, and avoids one large
-        repair-vs-replace decision that would cost 15&ndash;30% of
+        repair-vs-replace decision that would cost 15 to 30% of
         annual rent. On honest accounting, a competent manager pays
         for themselves in year one and is net-positive every year
         after.
@@ -263,7 +262,7 @@ export default function Article() {
         every light bulb at 3 AM your time). No cap is a different
         red flag (the manager is spending your money without
         accountability). The honest range for a residential unit is
-        roughly USD 50 for routine, USD 50&ndash;250 for itemised,
+        roughly USD 50 for routine, USD 50 to 250 for itemised,
         anything above with prior written approval.
       </P>
 
@@ -311,17 +310,17 @@ export default function Article() {
         for residential property in Nairobi or Accra. We are not the
         cheapest. We are intentionally boring: we file the tax,
         send the statement, wire USD on the 5th, and tell the truth
-        when something goes wrong. Our fees are flat and disclosed
-        &mdash; 10% of rent collected for long-term, 20% of revenue
-        for Airbnb, one month&rsquo;s rent for tenant-finding only.
-        No setup fees, no hidden deductions.
+        when something goes wrong. Our fees are flat and disclosed:
+        10% of rent collected for long-term, 20% of revenue for
+        Airbnb, one month&rsquo;s rent for tenant-finding only. No
+        setup fees, no hidden deductions.
       </P>
 
       <P>
         If your property is currently self-managed and you want a
-        diagnostic of what is actually happening &mdash; tax filing
-        history, statement quality, tenant lease enforceability
-        &mdash; send us the address on{" "}
+        diagnostic of what is actually happening, tax filing
+        history, statement quality, tenant lease enforceability,
+        send us the address on{" "}
         <Link
           href="/list-your-property"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
