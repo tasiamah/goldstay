@@ -157,6 +157,9 @@ import DiplomaticTenants, {
 import OffPlanDelays, {
   meta as offPlanDelaysMeta,
 } from "./why-nairobi-off-plan-delivery-dates-slip";
+import CitizenshipByInvestment, {
+  meta as citizenshipByInvestmentMeta,
+} from "./kenya-citizenship-by-investment-residence-permits-2026";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -255,6 +258,7 @@ export const posts: readonly Post[] = [
   { meta: coastalPropertyMeta, Component: CoastalProperty },
   { meta: diplomaticTenantsMeta, Component: DiplomaticTenants },
   { meta: offPlanDelaysMeta, Component: OffPlanDelays },
+  { meta: citizenshipByInvestmentMeta, Component: CitizenshipByInvestment },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
