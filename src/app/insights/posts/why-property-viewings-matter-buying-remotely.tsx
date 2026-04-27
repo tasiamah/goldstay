@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Buying", "Diaspora", "Property Sourcing", "Inspection", "Due Diligence"],
+  country: "kenya",
   heroImage: "/images/locations/accra.jpg",
   heroAlt: "Apartment interior, why diaspora buyers still need an in-person property viewing",
 };

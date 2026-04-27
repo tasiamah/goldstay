@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Kenya", "Costs", "Fees", "Management", "Diaspora"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi apartment building, what property management costs in Kenya in 2026",

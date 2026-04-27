@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { headers } from "next/headers";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CTABanner } from "@/components/CTABanner";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
-import { posts } from "./posts";
-import { alternateLanguagesFor, site } from "@/lib/site";
+import { postsForCountry } from "./posts";
+import { alternateLanguagesFor, countryForHost, site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Insights for diaspora landlords",
@@ -24,6 +25,11 @@ export const metadata: Metadata = {
 };
 
 export default function InsightsIndex() {
+  const host = headers().get("host") ?? site.domain;
+  const country = countryForHost(host);
+  const posts = postsForCountry(country);
+  const cityName = country === "ghana" ? "Accra" : "Nairobi";
+
   return (
     <>
       <BreadcrumbJsonLd
@@ -44,10 +50,10 @@ export default function InsightsIndex() {
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 Plain-English notes on tax, buying remotely, the
-                operational reality of running an apartment in Nairobi
-                or Accra from abroad, and the questions our clients
-                actually ask. Written by the team that does it day
-                to day, not a marketing department.
+                operational reality of running an apartment in {cityName}{" "}
+                from abroad, and the questions our clients actually ask.
+                Written by the team that does it day to day, not a
+                marketing department.
               </p>
             </div>
           </Reveal>

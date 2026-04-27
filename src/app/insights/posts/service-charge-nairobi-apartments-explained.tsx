@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "Service Charge", "Apartments", "Costs"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Nairobi apartment building, service charge breakdown explained",
 };

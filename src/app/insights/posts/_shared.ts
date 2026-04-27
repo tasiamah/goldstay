@@ -14,6 +14,8 @@ export type Author = {
   image?: string;
 };
 
+export type Country = "kenya" | "ghana";
+
 export type PostMeta = {
   slug: string;
   title: string;
@@ -23,6 +25,12 @@ export type PostMeta = {
   readingMinutes: number;
   author: Author;
   tags: readonly string[];
+  // Country attribution for host-aware routing. Kenya posts are
+  // canonical on goldstay.com (with goldstay.co.ke as an en-KE
+  // alternate). Ghana posts are canonical on goldstay.com.gh.
+  // Requests to the "wrong" host 308-redirect to the canonical
+  // host so each article ranks under one domain only.
+  country: Country;
   // Hero image is rendered above the title on the post page and as
   // the OpenGraph image when the post is shared. /images/insights/<slug>.jpg
   // by convention; falls back to the city skyline if missing so we

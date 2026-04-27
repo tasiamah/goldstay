@@ -56,10 +56,10 @@ import BuyingPropertyAccra, {
   meta as buyingPropertyAccraMeta,
 } from "./buying-property-accra-diaspora-2026-guide";
 
-export type { Author, PostMeta } from "./_shared";
+export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
-import type { PostMeta } from "./_shared";
+import type { Country, PostMeta } from "./_shared";
 
 export type Post = {
   meta: PostMeta;
@@ -114,17 +114,28 @@ export function getPostBySlug(slug: string): Post | undefined {
   return posts.find((p) => p.meta.slug === slug);
 }
 
+// Filter the catalogue down to one country. Used by the listing page,
+// the sitemap and related-posts logic so each domain (.com / .co.ke
+// for Kenya, .com.gh for Ghana) only ever surfaces articles that
+// belong to it.
+export function postsForCountry(country: Country): Post[] {
+  return posts.filter((p) => p.meta.country === country);
+}
+
 // Pick related posts by tag overlap with the current article. Falls
-// back to recency when no tag overlap is available, so a brand new
-// article on a fresh topic still has neighbours to point at. The
-// scoring is intentionally simple: shared tag count, then recency.
+// back to recency when no tag overlap is available. We constrain the
+// pool to the same country so a Nairobi reader never lands on an
+// Accra-only follow-up, and vice versa.
 export function relatedPosts(slug: string, limit = 2): Post[] {
   const current = getPostBySlug(slug);
   if (!current) return posts.slice(0, limit);
 
   const currentTags = new Set(current.meta.tags);
+  const sameCountry = posts.filter(
+    (p) => p.meta.country === current.meta.country,
+  );
 
-  return posts
+  return sameCountry
     .filter((p) => p.meta.slug !== slug)
     .map((p) => {
       const overlap = p.meta.tags.filter((t) => currentTags.has(t)).length;

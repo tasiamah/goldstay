@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 10,
   author: authors.poonam,
   tags: ["Management", "Diaspora", "Operations", "Tenants", "USD remittance"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi residential building exterior, the case for professional property management for diaspora landlords",

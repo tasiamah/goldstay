@@ -143,6 +143,52 @@ export function alternateLanguagesFor(path: string) {
   };
 }
 
+// Country routing for the /insights hub. The catalogue is split so
+// each domain only ranks for its own market: goldstay.com and
+// goldstay.co.ke serve Kenya articles, goldstay.com.gh serves Ghana
+// articles. Hosts that don't match the requested article 308-redirect
+// to the canonical host (see /insights/[slug]/page.tsx).
+export function countryForHost(host: string): "kenya" | "ghana" {
+  const lower = host.toLowerCase();
+  if (lower.endsWith(site.domains.accra)) return "ghana";
+  return "kenya";
+}
+
+export function canonicalHostForCountry(country: "kenya" | "ghana") {
+  return country === "ghana" ? site.domains.accra : site.domains.main;
+}
+
+// hreflang + canonical for an /insights/<slug> URL. Kenya posts are
+// canonical on .com with .co.ke as the en-KE alternate; Ghana posts
+// are canonical on .com.gh and don't appear on the Kenya hosts at
+// all. Returning absolute URLs for the canonical lets us point Google
+// at the correct host even when the request is served from a
+// different domain (handy if a 308 redirect ever fails to fire).
+export function insightAlternates(slug: string, country: "kenya" | "ghana") {
+  const main = `https://${site.domains.main}`;
+  const ke = `https://${site.domains.nairobi}`;
+  const gh = `https://${site.domains.accra}`;
+  const path = `/insights/${slug}`;
+
+  if (country === "ghana") {
+    return {
+      canonical: `${gh}${path}`,
+      languages: {
+        "en-GH": `${gh}${path}`,
+        "x-default": `${gh}${path}`,
+      },
+    };
+  }
+
+  return {
+    canonical: `${main}${path}`,
+    languages: {
+      "en-KE": `${ke}${path}`,
+      "x-default": `${main}${path}`,
+    },
+  };
+}
+
 export function emailFor(city?: "nairobi" | "accra" | null) {
   if (city === "nairobi") return site.emails.nairobi;
   if (city === "accra") return site.emails.accra;

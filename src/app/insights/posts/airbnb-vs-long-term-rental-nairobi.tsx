@@ -21,6 +21,7 @@ export const meta: PostMeta = {
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Nairobi", "Airbnb", "Rental Strategy", "Yield"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi apartment, Airbnb vs long term rental yield comparison",

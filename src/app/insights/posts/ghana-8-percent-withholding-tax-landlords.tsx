@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Ghana", "Tax", "Withholding", "GRA", "Accra", "Diaspora"],
+  country: "ghana",
   heroImage: "/images/locations/accra.jpg",
   heroAlt: "Accra skyline, Ghana 8% rental withholding tax explained",
 };

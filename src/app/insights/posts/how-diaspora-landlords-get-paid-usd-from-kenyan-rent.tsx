@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Kenya", "FX", "USD", "Remittance", "Diaspora"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "USD wire transfer, how diaspora landlords get paid from Kenyan rent",
 };

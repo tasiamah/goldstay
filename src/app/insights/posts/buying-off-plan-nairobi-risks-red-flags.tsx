@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Nairobi", "Buying", "Off Plan", "Developers", "Risk"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi construction site, off plan apartment buying risks and red flags",

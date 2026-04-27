@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "Pricing", "Strategy", "Comps"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Pricing a Nairobi rental, comparable analysis methodology",
 };

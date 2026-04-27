@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Kenya", "Buying", "Due Diligence", "Title", "Diaspora"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Kenyan title deed, how to verify property ownership from abroad",

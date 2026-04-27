@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "Furnished", "Rental", "ROI", "Strategy"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Furnished Nairobi apartment, rental ROI vs unfurnished comparison",

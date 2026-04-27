@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Kenya", "Tax", "Diaspora", "MRI", "KRA", "Compliance"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Nairobi skyline at dusk, Kenyan tax explainer for diaspora landlords",
 };

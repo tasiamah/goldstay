@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Nairobi", "Tenants", "Screening", "Operations"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Tenant screening Nairobi, how to vet a prospective tenant in Kenya",

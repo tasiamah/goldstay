@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 11,
   author: authors.poonam,
   tags: ["Ghana", "Accra", "Buying", "Diaspora", "Land Title"],
+  country: "ghana",
   heroImage: "/images/locations/accra.jpg",
   heroAlt:
     "Accra residential property, diaspora Ghanaian buying guide 2026",

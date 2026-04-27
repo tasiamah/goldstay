@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Kenya", "Tax", "CGT", "Selling", "Diaspora"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi property sale, capital gains tax for diaspora sellers explained",

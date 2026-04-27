@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Kenya", "Eviction", "Legal", "Tenants", "Nairobi"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Nairobi apartment block, how to legally evict a tenant in Kenya",
 };

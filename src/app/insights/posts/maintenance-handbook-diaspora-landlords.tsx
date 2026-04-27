@@ -21,6 +21,7 @@ export const meta: PostMeta = {
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Maintenance", "Operations", "Diaspora", "Budget"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Maintenance handbook for diaspora landlords managing property remotely",

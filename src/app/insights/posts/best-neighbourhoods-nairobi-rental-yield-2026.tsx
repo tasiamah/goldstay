@@ -22,6 +22,7 @@ export const meta: PostMeta = {
   readingMinutes: 11,
   author: authors.poonam,
   tags: ["Nairobi", "Investment", "Yield", "Neighbourhoods"],
+  country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi neighbourhoods, best areas for rental yield in 2026",
