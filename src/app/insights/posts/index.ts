@@ -56,6 +56,37 @@ import BuyingPropertyAccra, {
   meta as buyingPropertyAccraMeta,
 } from "./buying-property-accra-diaspora-2026-guide";
 
+import LawyerReadSaleAgreement, {
+  meta as lawyerReadSaleAgreementMeta,
+} from "./why-have-a-lawyer-read-your-kenyan-sale-agreement";
+import OfferLetterStage, {
+  meta as offerLetterStageMeta,
+} from "./offer-letter-stage-buying-property-kenya";
+import SaleAgreementStage, {
+  meta as saleAgreementStageMeta,
+} from "./sale-agreement-stage-buying-property-kenya";
+import ReadyVsOffPlan, {
+  meta as readyVsOffPlanMeta,
+} from "./ready-property-vs-off-plan-nairobi-which-to-buy";
+import BuyingVsBuilding, {
+  meta as buyingVsBuildingMeta,
+} from "./buying-vs-building-nairobi-which-makes-sense";
+import VillaVsApartment, {
+  meta as villaVsApartmentMeta,
+} from "./villa-vs-apartment-nairobi-which-rents-better";
+import HoaFeesNairobi, {
+  meta as hoaFeesNairobiMeta,
+} from "./hoa-and-management-company-fees-nairobi-explained";
+import AmenitiesMatterNairobi, {
+  meta as amenitiesMatterNairobiMeta,
+} from "./why-amenities-matter-nairobi-rental-property";
+import PersonalNameVsCompany, {
+  meta as personalNameVsCompanyMeta,
+} from "./personal-name-vs-company-buying-property-kenya";
+import KenyaEmergingMarketThesis, {
+  meta as kenyaEmergingMarketThesisMeta,
+} from "./kenya-emerging-market-property-investment-thesis-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -108,6 +139,25 @@ export const posts: readonly Post[] = [
     Component: HowToPriceNairobiRental,
   },
   { meta: buyingPropertyAccraMeta, Component: BuyingPropertyAccra },
+  {
+    meta: lawyerReadSaleAgreementMeta,
+    Component: LawyerReadSaleAgreement,
+  },
+  { meta: offerLetterStageMeta, Component: OfferLetterStage },
+  { meta: saleAgreementStageMeta, Component: SaleAgreementStage },
+  { meta: readyVsOffPlanMeta, Component: ReadyVsOffPlan },
+  { meta: buyingVsBuildingMeta, Component: BuyingVsBuilding },
+  { meta: villaVsApartmentMeta, Component: VillaVsApartment },
+  { meta: hoaFeesNairobiMeta, Component: HoaFeesNairobi },
+  { meta: amenitiesMatterNairobiMeta, Component: AmenitiesMatterNairobi },
+  {
+    meta: personalNameVsCompanyMeta,
+    Component: PersonalNameVsCompany,
+  },
+  {
+    meta: kenyaEmergingMarketThesisMeta,
+    Component: KenyaEmergingMarketThesis,
+  },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
