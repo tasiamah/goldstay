@@ -6,7 +6,8 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { FAQSection } from "@/components/FAQSection";
-import { waLink, alternateLanguagesFor } from "@/lib/site";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
+import { waLink, alternateLanguagesFor, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 export function generateMetadata(): Metadata {
@@ -66,6 +67,19 @@ export default function Page() {
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+  const areaServed =
+    city === "nairobi"
+      ? ["Nairobi"]
+      : city === "accra"
+        ? ["Accra"]
+        : ["Nairobi", "Accra"];
+
   // Swap the two cross-market phrases that leak into the Accra/Kenya narrative
   // when viewed on a localized domain. Neutral .com still says "Nairobi & Accra".
   const reviewLine = cityName
@@ -80,6 +94,20 @@ export default function Page() {
 
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Airbnb & Short-Stay Management", url: `${baseUrl}/airbnb-management` },
+        ]}
+      />
+      <ServiceJsonLd
+        name="Airbnb & Short-Stay Management"
+        description={`Full short-stay operations in ${areaServed.join(" and ")}: photography, dynamic pricing, guest communication, turnover cleaning and maintenance, with monthly USD remittance to the landlord's foreign account.`}
+        url={`${baseUrl}/airbnb-management`}
+        serviceType="Short-stay property management"
+        areaServed={areaServed}
+        priceDescription="20% of revenue collected"
+      />
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         {/* Hero image rendered via next/image with priority so it becomes
             the LCP element on first paint and is discoverable to image

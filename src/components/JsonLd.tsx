@@ -186,3 +186,100 @@ export function JsonLd() {
     />
   );
 }
+
+// Generic JSON-LD inline emitter. Centralised so every schema block we
+// drop on a page goes through the same dangerouslySetInnerHTML pattern,
+// and so individual page components stay short.
+function JsonLdScript({ data }: { data: object | object[] }) {
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
+    />
+  );
+}
+
+// FAQPage schema. Google has rolled the FAQ rich result back for most
+// sites since 2023 but the structured data still feeds AI Overviews,
+// People Also Ask and Bing's answer cards, and it is essentially free
+// because we already render the same Q&A pairs in the FAQ accordion.
+export function FaqJsonLd({ items }: { items: readonly { q: string; a: string }[] }) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map(({ q, a }) => ({
+      "@type": "Question",
+      name: q,
+      acceptedAnswer: { "@type": "Answer", text: a },
+    })),
+  };
+  return <JsonLdScript data={data} />;
+}
+
+// BreadcrumbList schema. Helps Google render breadcrumb trails in the
+// SERP instead of the raw URL, which lifts CTR on nested pages like
+// /nairobi/buy or /nairobi/kilimani. Caller provides ordered crumbs
+// from root to current page.
+export function BreadcrumbJsonLd({
+  items,
+}: {
+  items: readonly { name: string; url: string }[];
+}) {
+  const data = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.name,
+      item: it.url,
+    })),
+  };
+  return <JsonLdScript data={data} />;
+}
+
+// Per-service Service schema. The homepage Organization block already
+// declares makesOffer for all four services, but Google matches a
+// service-page URL to its own Service entity more reliably than to a
+// nested makesOffer on a different URL. Each service page emits its
+// own Service node here.
+export function ServiceJsonLd({
+  name,
+  description,
+  url,
+  serviceType,
+  areaServed,
+  priceDescription,
+}: {
+  name: string;
+  description: string;
+  url: string;
+  serviceType: string;
+  areaServed: readonly string[];
+  priceDescription?: string;
+}) {
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name,
+    description,
+    url,
+    serviceType,
+    provider: {
+      "@type": "Organization",
+      name: site.name,
+      url: `https://${site.domain}`,
+    },
+    areaServed: areaServed.map((a) => ({ "@type": "City", name: a })),
+  };
+  if (priceDescription) {
+    data.offers = {
+      "@type": "Offer",
+      priceSpecification: {
+        "@type": "UnitPriceSpecification",
+        description: priceDescription,
+      },
+    };
+  }
+  return <JsonLdScript data={data} />;
+}

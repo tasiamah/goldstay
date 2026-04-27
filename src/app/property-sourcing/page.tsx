@@ -3,8 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import { getServerCity } from "@/lib/getServerCity";
-import { alternateLanguagesFor } from "@/lib/site";
+import { alternateLanguagesFor, site } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   const city = getServerCity();
@@ -49,6 +50,19 @@ const allCards = [
 export default function Page() {
   const city = getServerCity();
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+  const areaServed =
+    city === "nairobi"
+      ? ["Nairobi"]
+      : city === "accra"
+        ? ["Accra"]
+        : ["Nairobi", "Accra"];
+
   // On a localized domain, only show that city's card. On neutral .com we
   // keep the full chooser so a diaspora buyer who hasn't decided yet can pick.
   const cards = city ? allCards.filter((c) => c.key === city) : allCards;
@@ -59,7 +73,22 @@ export default function Page() {
     : "Property sourcing is a city-level service. The neighbourhoods, the title process and the legal paperwork are different in Nairobi and Accra, so the page you want is different too. Pick your city.";
 
   return (
-    <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
+    <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Property Sourcing", url: `${baseUrl}/property-sourcing` },
+        ]}
+      />
+      <ServiceJsonLd
+        name="Property Sourcing for Diaspora Buyers"
+        description={`Buy-side property sourcing in ${areaServed.join(" and ")}: on-the-ground search, in-person inspection, price negotiation, title and legal verification, and turnkey handover. Free for the buyer.`}
+        url={`${baseUrl}/property-sourcing`}
+        serviceType="Buy-side property sourcing"
+        areaServed={areaServed}
+        priceDescription="Free for buyers"
+      />
+      <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
       <div className="absolute inset-0 -z-10 grain opacity-40" />
       <div className="container-gs pb-20 md:pb-32">
         <Reveal>
@@ -115,5 +144,6 @@ export default function Page() {
         </div>
       </div>
     </section>
+    </>
   );
 }

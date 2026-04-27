@@ -14,8 +14,9 @@ import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
-import { cities, cityFaq, localizedFaq, waLink } from "@/lib/site";
+import { cities, cityFaq, localizedFaq, waLink, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
@@ -33,8 +34,31 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
     </>
   );
 
+  // FAQ for this city: city-specific tax / compliance Q&A on top of
+  // the localised general FAQ, both already rendered in the accordion
+  // below. Re-emitted here as FAQPage schema so the same content is
+  // eligible for AI Overviews and PAA without duplicating copy.
+  const faqForSchema = [...cityFaq[city], ...localizedFaq(city)];
+
+  // Cross-domain canonical for breadcrumbs: on .co.ke or .com.gh the
+  // city page lives at "/", on .com it lives at "/nairobi" or "/accra".
+  const baseUrl =
+    domainCity === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : domainCity === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+  const cityPath = domainCity ? "" : `/${city}`;
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: cityName, url: `${baseUrl}${cityPath || `/${city}`}` },
+        ]}
+      />
+      <FaqJsonLd items={faqForSchema} />
       <Hero
         eyebrow={`${c.country} · ${cityName}`}
         headline={headline}

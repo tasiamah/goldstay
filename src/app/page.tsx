@@ -1,4 +1,6 @@
 import { Hero } from "@/components/Hero";
+import { FaqJsonLd } from "@/components/JsonLd";
+import { faq } from "@/lib/site";
 import { TrustStrip } from "@/components/TrustStrip";
 import { ProblemSection } from "@/components/ProblemSection";
 import { ServicesSection } from "@/components/ServicesSection";
@@ -18,6 +20,7 @@ import { CTABanner } from "@/components/CTABanner";
 export default function Home() {
   return (
     <>
+      <FaqJsonLd items={faq} />
       <Hero />
       <TrustStrip />
       <ProblemSection />

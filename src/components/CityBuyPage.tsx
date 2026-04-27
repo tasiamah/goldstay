@@ -13,7 +13,9 @@ import { Reveal } from "./Reveal";
 import { SectionHeader } from "./SectionHeader";
 import { CTABanner } from "./CTABanner";
 import { FAQSection } from "./FAQSection";
-import { citySourcing, waLink } from "@/lib/site";
+import { citySourcing, waLink, site } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
+import { BreadcrumbJsonLd } from "./JsonLd";
 
 type City = "nairobi" | "accra";
 
@@ -88,8 +90,27 @@ export function CityBuyPage({ city }: { city: City }) {
     },
   ];
 
+  // Breadcrumb URLs respect the surface: on .co.ke / .com.gh the city
+  // page is "/", on .com it is "/nairobi" or "/accra".
+  const domainCity = getServerCity();
+  const baseUrl =
+    domainCity === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : domainCity === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+  const cityUrl = domainCity ? baseUrl : `${baseUrl}/${city}`;
+  const buyUrl = domainCity ? `${baseUrl}/buy` : `${baseUrl}/${city}/buy`;
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: cityName, url: cityUrl },
+          { name: `Buy in ${cityName}`, url: buyUrl },
+        ]}
+      />
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         {/* next/image hero so the LCP element is the city skyline (with
             priority + correct sizes) and so it appears in image search
