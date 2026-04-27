@@ -56,7 +56,6 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
       { href: `${base}/buy`, label: "Buy" },
       { href: "/find-a-home", label: "Rent" },
       { href: "/yield-calculator", label: "Yield" },
-      { href: "/insights", label: "Insights" },
       { href: `${base}#faq`, label: "FAQ" },
     ];
   }
@@ -68,7 +67,6 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     { href: "/property-sourcing", label: "Buy" },
     { href: "/find-a-home", label: "Rent" },
     { href: "/yield-calculator", label: "Yield" },
-    { href: "/insights", label: "Insights" },
     { href: "/#faq", label: "FAQ" },
   ];
 }
