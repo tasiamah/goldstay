@@ -523,6 +523,172 @@ import DoctorsBuying, {
   meta as doctorsBuyingMeta,
 } from "./buying-property-doctors-nairobi";
 
+import KarenComplete, {
+  meta as karenCompleteMeta,
+} from "./karen-complete-guide-2026";
+import WestlandsComplete, {
+  meta as westlandsCompleteMeta,
+} from "./westlands-complete-guide-2026";
+import SpringValleyComplete, {
+  meta as springValleyCompleteMeta,
+} from "./spring-valley-complete-guide-2026";
+import LowerKabete, {
+  meta as lowerKabeteMeta,
+} from "./lower-kabete-hidden-premium-suburb";
+import HighridgeComplete, {
+  meta as highridgeCompleteMeta,
+} from "./highridge-complete-guide-2026";
+import KasaraniComplete, {
+  meta as kasaraniCompleteMeta,
+} from "./kasarani-complete-guide-2026";
+import KahawaSukariComplete, {
+  meta as kahawaSukariCompleteMeta,
+} from "./kahawa-sukari-complete-guide-2026";
+import DonholmComplete, {
+  meta as donholmCompleteMeta,
+} from "./donholm-complete-guide-2026";
+import LavingtonVsKileleshwa, {
+  meta as lavingtonVsKileleshwaMeta,
+} from "./lavington-vs-kileleshwa-comparison";
+import KilimaniVsHurlingham, {
+  meta as kilimaniVsHurlinghamMeta,
+} from "./kilimani-vs-hurlingham-professionals";
+import KarenVsLavington, {
+  meta as karenVsLavingtonMeta,
+} from "./karen-vs-lavington-for-families";
+import BestRundaCompounds, {
+  meta as bestRundaCompoundsMeta,
+} from "./best-runda-compounds-2026";
+import ThikaRoadCorridor, {
+  meta as thikaRoadCorridorMeta,
+} from "./thika-road-corridor-nairobi-side";
+import MombasaRoadCorridor, {
+  meta as mombasaRoadCorridorMeta,
+} from "./mombasa-road-corridor-nairobi-side";
+
+import StandardCharteredMortgage, {
+  meta as standardCharteredMortgageMeta,
+} from "./standard-chartered-mortgage-2026-review";
+import AbsaMortgage, {
+  meta as absaMortgageMeta,
+} from "./absa-mortgage-2026-review";
+import CoOpBankMortgage, {
+  meta as coOpBankMortgageMeta,
+} from "./co-op-bank-mortgage-2026-review";
+import EquityBankMortgage, {
+  meta as equityBankMortgageMeta,
+} from "./equity-bank-mortgage-2026-review";
+import FamilyBankMortgage, {
+  meta as familyBankMortgageMeta,
+} from "./family-bank-mortgage-2026-review";
+import KmrcAffordableMortgage, {
+  meta as kmrcAffordableMortgageMeta,
+} from "./kmrc-affordable-mortgage-explained";
+import SaccoPropertyLoans, {
+  meta as saccoPropertyLoansMeta,
+} from "./sacco-property-loans-comparison-2026";
+
+import MiVidaHomesReview, {
+  meta as miVidaHomesReviewMeta,
+} from "./mi-vida-homes-review-2026";
+import AcornHoldingsReview, {
+  meta as acornHoldingsReviewMeta,
+} from "./acorn-holdings-review-2026";
+import CentumRealEstateReview, {
+  meta as centumRealEstateReviewMeta,
+} from "./centum-real-estate-review-2026";
+import SuperiorHomesReview, {
+  meta as superiorHomesReviewMeta,
+} from "./superior-homes-review-2026";
+import OptivenReview, {
+  meta as optivenReviewMeta,
+} from "./optiven-review-2026";
+
+import BuyingPropertyTechieNairobi, {
+  meta as buyingPropertyTechieNairobiMeta,
+} from "./buying-property-techie-nairobi";
+import BuyingPropertyTeacherNairobi, {
+  meta as buyingPropertyTeacherNairobiMeta,
+} from "./buying-property-teacher-nairobi";
+import BuyingPropertyLawyerNairobi, {
+  meta as buyingPropertyLawyerNairobiMeta,
+} from "./buying-property-lawyer-nairobi";
+import BuyingPropertyGovernmentProfessional, {
+  meta as buyingPropertyGovernmentProfessionalMeta,
+} from "./buying-property-government-professional-nairobi";
+import BuyingPropertyNgoWorker, {
+  meta as buyingPropertyNgoWorkerMeta,
+} from "./buying-property-ngo-worker-nairobi";
+import BuyingPropertyExpatWorking, {
+  meta as buyingPropertyExpatWorkingMeta,
+} from "./buying-property-expat-working-nairobi";
+import BuyingPropertyUnmarriedCouple, {
+  meta as buyingPropertyUnmarriedCoupleMeta,
+} from "./buying-property-unmarried-couple-kenya";
+import BuyingPropertyNigerian, {
+  meta as buyingPropertyNigerianMeta,
+} from "./buying-property-nigerian-in-nairobi";
+
+import HowToRentForeigner, {
+  meta as howToRentForeignerMeta,
+} from "./how-to-rent-in-nairobi-foreigner";
+import HowToNegotiateRent, {
+  meta as howToNegotiateRentMeta,
+} from "./how-to-negotiate-rent-nairobi";
+import TenantRightsKenya, {
+  meta as tenantRightsKenyaMeta,
+} from "./tenant-rights-kenya-complete-guide";
+import TenantDepositDisputes, {
+  meta as tenantDepositDisputesMeta,
+} from "./tenant-deposit-disputes-nairobi";
+import HowToBreakLeaseEarly, {
+  meta as howToBreakLeaseEarlyMeta,
+} from "./how-to-break-nairobi-lease-early";
+import LandlordEnteredWithoutNotice, {
+  meta as landlordEnteredWithoutNoticeMeta,
+} from "./landlord-entered-without-notice-what-to-do";
+import FurnishedShortLetExpect, {
+  meta as furnishedShortLetExpectMeta,
+} from "./furnished-short-let-nairobi-what-to-expect";
+import HowToRentFreshGraduate, {
+  meta as howToRentFreshGraduateMeta,
+} from "./how-to-rent-nairobi-fresh-graduate";
+
+import HouseHackingNairobi, {
+  meta as houseHackingNairobiMeta,
+} from "./house-hacking-nairobi-strategy";
+import MultiUnitInvestment, {
+  meta as multiUnitInvestmentMeta,
+} from "./multi-unit-property-investment-nairobi";
+import StudentHousingInvestment, {
+  meta as studentHousingInvestmentMeta,
+} from "./student-housing-investment-nairobi";
+import CoLivingNairobi, {
+  meta as coLivingNairobiMeta,
+} from "./co-living-nairobi-emerging-investor-segment";
+import AirbnbArbitrageNairobi, {
+  meta as airbnbArbitrageNairobiMeta,
+} from "./airbnb-arbitrage-nairobi-2026";
+import BtlPortfolioNairobi, {
+  meta as btlPortfolioNairobiMeta,
+} from "./btl-portfolio-building-nairobi";
+
+import StampDutyNairobiCalculator, {
+  meta as stampDutyNairobiCalculatorMeta,
+} from "./stamp-duty-nairobi-calculator-examples-2026";
+import CostOfBuilding2BedNairobi, {
+  meta as costOfBuilding2BedNairobiMeta,
+} from "./cost-of-building-2-bedroom-house-nairobi-2026";
+import CostOfBuilding4BedNairobi, {
+  meta as costOfBuilding4BedNairobiMeta,
+} from "./cost-of-building-4-bedroom-house-nairobi-2026";
+import RentalIncomeTaxCalculator, {
+  meta as rentalIncomeTaxCalculatorMeta,
+} from "./rental-income-tax-calculator-kenya-2026";
+import CgtCalculatorKenya, {
+  meta as cgtCalculatorKenyaMeta,
+} from "./cgt-calculator-kenya-property-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -757,6 +923,114 @@ export const posts: readonly Post[] = [
   { meta: retirementPropertyMeta, Component: RetirementProperty },
   { meta: freshGraduateBuyingMeta, Component: FreshGraduateBuying },
   { meta: doctorsBuyingMeta, Component: DoctorsBuying },
+
+  { meta: karenCompleteMeta, Component: KarenComplete },
+  { meta: westlandsCompleteMeta, Component: WestlandsComplete },
+  { meta: springValleyCompleteMeta, Component: SpringValleyComplete },
+  { meta: lowerKabeteMeta, Component: LowerKabete },
+  { meta: highridgeCompleteMeta, Component: HighridgeComplete },
+  { meta: kasaraniCompleteMeta, Component: KasaraniComplete },
+  { meta: kahawaSukariCompleteMeta, Component: KahawaSukariComplete },
+  { meta: donholmCompleteMeta, Component: DonholmComplete },
+  { meta: lavingtonVsKileleshwaMeta, Component: LavingtonVsKileleshwa },
+  { meta: kilimaniVsHurlinghamMeta, Component: KilimaniVsHurlingham },
+  { meta: karenVsLavingtonMeta, Component: KarenVsLavington },
+  { meta: bestRundaCompoundsMeta, Component: BestRundaCompounds },
+  { meta: thikaRoadCorridorMeta, Component: ThikaRoadCorridor },
+  { meta: mombasaRoadCorridorMeta, Component: MombasaRoadCorridor },
+
+  {
+    meta: standardCharteredMortgageMeta,
+    Component: StandardCharteredMortgage,
+  },
+  { meta: absaMortgageMeta, Component: AbsaMortgage },
+  { meta: coOpBankMortgageMeta, Component: CoOpBankMortgage },
+  { meta: equityBankMortgageMeta, Component: EquityBankMortgage },
+  { meta: familyBankMortgageMeta, Component: FamilyBankMortgage },
+  { meta: kmrcAffordableMortgageMeta, Component: KmrcAffordableMortgage },
+  { meta: saccoPropertyLoansMeta, Component: SaccoPropertyLoans },
+
+  { meta: miVidaHomesReviewMeta, Component: MiVidaHomesReview },
+  { meta: acornHoldingsReviewMeta, Component: AcornHoldingsReview },
+  {
+    meta: centumRealEstateReviewMeta,
+    Component: CentumRealEstateReview,
+  },
+  { meta: superiorHomesReviewMeta, Component: SuperiorHomesReview },
+  { meta: optivenReviewMeta, Component: OptivenReview },
+
+  {
+    meta: buyingPropertyTechieNairobiMeta,
+    Component: BuyingPropertyTechieNairobi,
+  },
+  {
+    meta: buyingPropertyTeacherNairobiMeta,
+    Component: BuyingPropertyTeacherNairobi,
+  },
+  {
+    meta: buyingPropertyLawyerNairobiMeta,
+    Component: BuyingPropertyLawyerNairobi,
+  },
+  {
+    meta: buyingPropertyGovernmentProfessionalMeta,
+    Component: BuyingPropertyGovernmentProfessional,
+  },
+  {
+    meta: buyingPropertyNgoWorkerMeta,
+    Component: BuyingPropertyNgoWorker,
+  },
+  {
+    meta: buyingPropertyExpatWorkingMeta,
+    Component: BuyingPropertyExpatWorking,
+  },
+  {
+    meta: buyingPropertyUnmarriedCoupleMeta,
+    Component: BuyingPropertyUnmarriedCouple,
+  },
+  {
+    meta: buyingPropertyNigerianMeta,
+    Component: BuyingPropertyNigerian,
+  },
+
+  { meta: howToRentForeignerMeta, Component: HowToRentForeigner },
+  { meta: howToNegotiateRentMeta, Component: HowToNegotiateRent },
+  { meta: tenantRightsKenyaMeta, Component: TenantRightsKenya },
+  { meta: tenantDepositDisputesMeta, Component: TenantDepositDisputes },
+  { meta: howToBreakLeaseEarlyMeta, Component: HowToBreakLeaseEarly },
+  {
+    meta: landlordEnteredWithoutNoticeMeta,
+    Component: LandlordEnteredWithoutNotice,
+  },
+  {
+    meta: furnishedShortLetExpectMeta,
+    Component: FurnishedShortLetExpect,
+  },
+  { meta: howToRentFreshGraduateMeta, Component: HowToRentFreshGraduate },
+
+  { meta: houseHackingNairobiMeta, Component: HouseHackingNairobi },
+  { meta: multiUnitInvestmentMeta, Component: MultiUnitInvestment },
+  { meta: studentHousingInvestmentMeta, Component: StudentHousingInvestment },
+  { meta: coLivingNairobiMeta, Component: CoLivingNairobi },
+  { meta: airbnbArbitrageNairobiMeta, Component: AirbnbArbitrageNairobi },
+  { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
+
+  {
+    meta: stampDutyNairobiCalculatorMeta,
+    Component: StampDutyNairobiCalculator,
+  },
+  {
+    meta: costOfBuilding2BedNairobiMeta,
+    Component: CostOfBuilding2BedNairobi,
+  },
+  {
+    meta: costOfBuilding4BedNairobiMeta,
+    Component: CostOfBuilding4BedNairobi,
+  },
+  {
+    meta: rentalIncomeTaxCalculatorMeta,
+    Component: RentalIncomeTaxCalculator,
+  },
+  { meta: cgtCalculatorKenyaMeta, Component: CgtCalculatorKenya },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
