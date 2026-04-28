@@ -446,6 +446,138 @@ import RefinanceMortgage, {
   meta as refinanceMortgageMeta,
 } from "./how-to-refinance-mortgage-kenya-2026";
 
+import BuyingPropertyNakuru, {
+  meta as buyingPropertyNakuruMeta,
+} from "./buying-property-nakuru-complete-guide-2026";
+import BuyingPropertyEldoret, {
+  meta as buyingPropertyEldoretMeta,
+} from "./buying-property-eldoret-complete-guide-2026";
+import BuyingPropertyKisumu, {
+  meta as buyingPropertyKisumuMeta,
+} from "./buying-property-kisumu-complete-guide-2026";
+import BuyingPropertyNaivasha, {
+  meta as buyingPropertyNaivashaMeta,
+} from "./buying-property-naivasha-complete-guide-2026";
+import BuyingPropertyNanyuki, {
+  meta as buyingPropertyNanyukiMeta,
+} from "./buying-property-nanyuki-complete-guide-2026";
+import BuyingPropertyNyeri, {
+  meta as buyingPropertyNyeriMeta,
+} from "./buying-property-nyeri-complete-guide-2026";
+import BuyingPropertyThika, {
+  meta as buyingPropertyThikaMeta,
+} from "./buying-property-thika-complete-guide-2026";
+import BuyingPropertyMachakos, {
+  meta as buyingPropertyMachakosMeta,
+} from "./buying-property-machakos-complete-guide-2026";
+import WeekendNaivashaVsNanyuki, {
+  meta as weekendNaivashaVsNanyukiMeta,
+} from "./buying-weekend-home-naivasha-vs-nanyuki";
+import TigoniLimuru, {
+  meta as tigoniLimuruMeta,
+} from "./tigoni-and-limuru-nairobi-country-edge";
+import BuyingPropertyKiambu, {
+  meta as buyingPropertyKiambuMeta,
+} from "./buying-property-kiambu-complete-guide-2026";
+
+import BuyingPropertyDiani, {
+  meta as buyingPropertyDianiMeta,
+} from "./buying-property-diani-complete-guide-2026";
+import BuyingPropertyWatamu, {
+  meta as buyingPropertyWatamuMeta,
+} from "./buying-property-watamu-complete-guide-2026";
+import BuyingPropertyKilifi, {
+  meta as buyingPropertyKilifiMeta,
+} from "./buying-property-kilifi-complete-guide-2026";
+import BuyingPropertyMombasa, {
+  meta as buyingPropertyMombasaMeta,
+} from "./buying-property-mombasa-complete-guide-2026";
+import BuyingPropertyMalindi, {
+  meta as buyingPropertyMalindiMeta,
+} from "./buying-property-malindi-complete-guide-2026";
+import BuyingPropertyLamu, {
+  meta as buyingPropertyLamuMeta,
+} from "./buying-property-lamu-realistic-2026-guide";
+import DianiVsWatamuVsKilifi, {
+  meta as dianiVsWatamuVsKilifiMeta,
+} from "./diani-vs-watamu-vs-kilifi-investor-comparison";
+import BeachPlotsKenya, {
+  meta as beachPlotsKenyaMeta,
+} from "./beach-plots-kenya-avoiding-the-traps";
+
+import MuthaigaOldMoney, {
+  meta as muthaigaOldMoneyMeta,
+} from "./muthaiga-old-money-quietest-address";
+import KileleshwaComplete, {
+  meta as kileleshwaCompleteMeta,
+} from "./kileleshwa-complete-guide-2026";
+import HurlinghamComplete, {
+  meta as hurlinghamCompleteMeta,
+} from "./hurlingham-complete-guide-2026";
+import LangataComplete, {
+  meta as langataCompleteMeta,
+} from "./langata-complete-guide-2026";
+import SouthBVsSouthC, {
+  meta as southBVsSouthCMeta,
+} from "./south-b-vs-south-c-honest-comparison";
+import EmbakasiExplained, {
+  meta as embakasiExplainedMeta,
+} from "./embakasi-massive-market-explained";
+import BuruburuLegacy, {
+  meta as buruburuLegacyMeta,
+} from "./buruburu-legacy-estates-2026";
+import RidgewaysGardenEstate, {
+  meta as ridgewaysGardenEstateMeta,
+} from "./ridgeways-garden-estate-underrated-north";
+import SyokimauMlolongo, {
+  meta as syokimauMlolongoMeta,
+} from "./syokimau-mlolongo-mass-market-corridor";
+import RuiruTatuCity, {
+  meta as ruiruTatuCityMeta,
+} from "./ruiru-tatu-city-and-beyond";
+import AthiRiverComplete, {
+  meta as athiRiverCompleteMeta,
+} from "./athi-river-complete-guide-2026";
+
+import KcbMortgage, {
+  meta as kcbMortgageMeta,
+} from "./kcb-mortgage-2026-complete-review";
+import NcbaMortgage, {
+  meta as ncbaMortgageMeta,
+} from "./ncba-mortgage-2026-complete-review";
+import StanbicMortgage, {
+  meta as stanbicMortgageMeta,
+} from "./stanbic-mortgage-2026-complete-review";
+import KcbVsNcba, {
+  meta as kcbVsNcbaMeta,
+} from "./kcb-vs-ncba-mortgage-comparison-2026";
+import HfcMortgage, {
+  meta as hfcMortgageMeta,
+} from "./hfc-mortgage-2026-review";
+
+import SalaryNairobiApt, {
+  meta as salaryNairobiAptMeta,
+} from "./salary-needed-buy-nairobi-apartment-2026";
+import SalaryKarenHome, {
+  meta as salaryKarenHomeMeta,
+} from "./salary-needed-buy-karen-home-2026";
+import TotalCostOwnership, {
+  meta as totalCostOwnershipMeta,
+} from "./total-cost-ownership-nairobi-apartment-2026";
+
+import SingleMumBuying, {
+  meta as singleMumBuyingMeta,
+} from "./buying-property-single-mum-kenya";
+import RetirementProperty, {
+  meta as retirementPropertyMeta,
+} from "./property-for-retirement-kenya-full-plan";
+import FreshGraduateBuying, {
+  meta as freshGraduateBuyingMeta,
+} from "./buying-property-fresh-graduate-nairobi";
+import DoctorsBuying, {
+  meta as doctorsBuyingMeta,
+} from "./buying-property-doctors-nairobi";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -648,6 +780,63 @@ export const posts: readonly Post[] = [
   },
   { meta: constructionPerSqmMeta, Component: ConstructionPerSqm },
   { meta: refinanceMortgageMeta, Component: RefinanceMortgage },
+
+  { meta: buyingPropertyNakuruMeta, Component: BuyingPropertyNakuru },
+  { meta: buyingPropertyEldoretMeta, Component: BuyingPropertyEldoret },
+  { meta: buyingPropertyKisumuMeta, Component: BuyingPropertyKisumu },
+  { meta: buyingPropertyNaivashaMeta, Component: BuyingPropertyNaivasha },
+  { meta: buyingPropertyNanyukiMeta, Component: BuyingPropertyNanyuki },
+  { meta: buyingPropertyNyeriMeta, Component: BuyingPropertyNyeri },
+  { meta: buyingPropertyThikaMeta, Component: BuyingPropertyThika },
+  { meta: buyingPropertyMachakosMeta, Component: BuyingPropertyMachakos },
+  {
+    meta: weekendNaivashaVsNanyukiMeta,
+    Component: WeekendNaivashaVsNanyuki,
+  },
+  { meta: tigoniLimuruMeta, Component: TigoniLimuru },
+  { meta: buyingPropertyKiambuMeta, Component: BuyingPropertyKiambu },
+
+  { meta: buyingPropertyDianiMeta, Component: BuyingPropertyDiani },
+  { meta: buyingPropertyWatamuMeta, Component: BuyingPropertyWatamu },
+  { meta: buyingPropertyKilifiMeta, Component: BuyingPropertyKilifi },
+  { meta: buyingPropertyMombasaMeta, Component: BuyingPropertyMombasa },
+  { meta: buyingPropertyMalindiMeta, Component: BuyingPropertyMalindi },
+  { meta: buyingPropertyLamuMeta, Component: BuyingPropertyLamu },
+  {
+    meta: dianiVsWatamuVsKilifiMeta,
+    Component: DianiVsWatamuVsKilifi,
+  },
+  { meta: beachPlotsKenyaMeta, Component: BeachPlotsKenya },
+
+  { meta: muthaigaOldMoneyMeta, Component: MuthaigaOldMoney },
+  { meta: kileleshwaCompleteMeta, Component: KileleshwaComplete },
+  { meta: hurlinghamCompleteMeta, Component: HurlinghamComplete },
+  { meta: langataCompleteMeta, Component: LangataComplete },
+  { meta: southBVsSouthCMeta, Component: SouthBVsSouthC },
+  { meta: embakasiExplainedMeta, Component: EmbakasiExplained },
+  { meta: buruburuLegacyMeta, Component: BuruburuLegacy },
+  {
+    meta: ridgewaysGardenEstateMeta,
+    Component: RidgewaysGardenEstate,
+  },
+  { meta: syokimauMlolongoMeta, Component: SyokimauMlolongo },
+  { meta: ruiruTatuCityMeta, Component: RuiruTatuCity },
+  { meta: athiRiverCompleteMeta, Component: AthiRiverComplete },
+
+  { meta: kcbMortgageMeta, Component: KcbMortgage },
+  { meta: ncbaMortgageMeta, Component: NcbaMortgage },
+  { meta: stanbicMortgageMeta, Component: StanbicMortgage },
+  { meta: kcbVsNcbaMeta, Component: KcbVsNcba },
+  { meta: hfcMortgageMeta, Component: HfcMortgage },
+
+  { meta: salaryNairobiAptMeta, Component: SalaryNairobiApt },
+  { meta: salaryKarenHomeMeta, Component: SalaryKarenHome },
+  { meta: totalCostOwnershipMeta, Component: TotalCostOwnership },
+
+  { meta: singleMumBuyingMeta, Component: SingleMumBuying },
+  { meta: retirementPropertyMeta, Component: RetirementProperty },
+  { meta: freshGraduateBuyingMeta, Component: FreshGraduateBuying },
+  { meta: doctorsBuyingMeta, Component: DoctorsBuying },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
