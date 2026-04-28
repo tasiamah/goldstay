@@ -169,10 +169,10 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/buying-weekend-home-naivasha-vs-nanyuki"
+          href="/insights/kitisuru-nyari-quietest-premium-addresses"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          Naivasha vs Nanyuki for weekend homes
+          Kitisuru and Nyari
         </Link>
         .
       </P>

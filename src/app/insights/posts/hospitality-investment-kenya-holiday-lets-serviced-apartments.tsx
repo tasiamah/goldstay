@@ -3,7 +3,6 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
-  H3,
   LI,
   Lede,
   OL,
@@ -15,261 +14,180 @@ import {
 export const meta: PostMeta = {
   slug: "hospitality-investment-kenya-holiday-lets-serviced-apartments",
   title:
-    "Hospitality investment in Kenya: holiday lets, serviced apartments and the small lodge play",
+    "Nairobi serviced apartments and short-lets: the 2026 investor guide",
   description:
-    "Beyond long-term rentals, Kenyan property has a real hospitality investment market: serviced apartments in Nairobi, Diani holiday lets, Kilifi villas, Naivasha cottages and small Mt Kenya and Maasai Mara lodges. Here is how each segment behaves, the realistic returns, the operational requirements and where diaspora investors fit in.",
+    "Nairobi serviced apartments and short-let Airbnbs sit between long-term rental and hotels, and produce meaningfully higher yields when run professionally. Here is the honest 2026 investor guide on Nairobi serviced apartments, short-let economics, regulation and how diaspora investors realistically enter the segment.",
   publishedAt: "2025-03-03",
-  readingMinutes: 9,
+  readingMinutes: 7,
   author: authors.editors,
   tags: [
-    "Kenya",
+    "Nairobi",
     "Hospitality",
-    "Holiday Let",
     "Serviced Apartment",
-    "Lodges",
+    "Short-Let",
+    "Airbnb",
     "Investment",
     "Diaspora",
   ],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
-    "Hospitality investment Kenya, holiday lets serviced apartments lodges for diaspora investors",
+    "Nairobi serviced apartments short-let Airbnb investment guide 2026",
 };
 
 export default function Article() {
   return (
     <>
       <Lede>
-        Kenyan property does not stop at long-term
-        residential rental. There is a meaningful
-        hospitality investment market that diaspora
-        investors often miss, sitting between hotels and
-        long-term lets. Serviced apartments in Nairobi.
-        Holiday lets on the coast. Cottages in Naivasha
-        and around Mt Kenya. Small conservancy lodges in
-        Maasai Mara and Laikipia. Each segment has
-        different economics, different operational
-        requirements and different risks. This is the
-        practical 2026 picture for diaspora investors who
-        want exposure to the Kenyan tourism and business
-        travel cycle.
+        Nairobi property does not stop at long-term
+        residential rental. There is a real
+        hospitality market sitting between hotels
+        and long-term lets: serviced apartments
+        and short-let Airbnbs. Each behaves
+        differently, has different operational
+        requirements and produces different
+        yields. Here is the practical 2026
+        picture for diaspora investors who want
+        Nairobi hospitality exposure.
       </Lede>
 
-      <H2 id="serviced-apartments">Serviced apartments in Nairobi</H2>
+      <H2 id="serviced-apartments">Nairobi serviced apartments</H2>
 
       <P>
-        Serviced apartments occupy the niche between
-        Airbnb and corporate hotels, targeting business
-        travellers, project staff, returning expatriates
-        and short-stay diplomats who want more space and
-        independence than a hotel offers, with more
-        service than a long-term rental.
+        Serviced apartments occupy the niche
+        between Airbnb and corporate hotels,
+        targeting business travellers, project
+        staff, returning expatriates and
+        short-stay diplomats who want more space
+        and independence than a hotel offers,
+        with more service than a long-term
+        rental.
       </P>
 
       <UL>
         <LI>
-          <strong>Pricing</strong>: USD 80 to USD 250
-          per night for 1 to 3 bed apartments depending
-          on suburb, finish and amenity
+          <strong>Pricing</strong>: USD 80 to
+          USD 250 per night for 1 to 3 bed
+          apartments depending on suburb,
+          finish and amenity
         </LI>
         <LI>
-          <strong>Demand</strong>: Westlands, Kilimani,
-          Lavington and Gigiri are the natural locations.
-          Tenant base is corporate, NGO and diplomatic
+          <strong>Demand</strong>: Westlands,
+          Kilimani, Lavington and Gigiri are
+          the natural locations. Tenant base
+          is corporate, NGO and diplomatic
           short-stay
         </LI>
         <LI>
-          <strong>Occupancy</strong>: 60 to 80 percent on
-          well-managed stock with proper distribution
+          <strong>Occupancy</strong>: 60 to 80
+          percent on well-managed stock with
+          proper distribution
         </LI>
         <LI>
-          <strong>Net yields</strong>: 8 to 12 percent on
-          properly managed serviced apartments versus 6
-          to 8 percent on equivalent long-term rentals
+          <strong>Net yields</strong>: 8 to 12
+          percent on properly managed serviced
+          apartments versus 6 to 8 percent on
+          equivalent long-term rentals
         </LI>
         <LI>
-          <strong>Operational requirement</strong>: full
-          time housekeeping, front office, reservations
-          system, OTA distribution, regulatory licensing
+          <strong>Operational requirement</strong>:
+          full time housekeeping, front office,
+          reservations system, OTA distribution,
+          regulatory licensing
         </LI>
       </UL>
 
       <P>
-        For most diaspora investors the right route into
-        the Nairobi serviced apartment market is to buy
-        a unit in a building that is operated as
-        serviced apartments by a credible operator (Tribe,
-        Sankara, Ole-Sereni residences, the Heron, the
-        Sarova Stanley Embassy, or one of the newer
-        operator-managed developments). Owning a single
-        unit and trying to operate it as a true serviced
-        apartment without operator scale is not normally
-        viable.
+        For most diaspora investors the right
+        route into the Nairobi serviced
+        apartment market is to buy a unit in a
+        building that is operated as serviced
+        apartments by a credible operator
+        (Tribe, Sankara, Ole-Sereni residences,
+        the Heron, the Sarova Stanley Embassy
+        or one of the newer operator-managed
+        developments). Owning a single unit and
+        trying to operate it as a true serviced
+        apartment without operator scale is not
+        normally viable.
       </P>
 
-      <H2 id="holiday-lets">Coastal holiday lets</H2>
+      <H2 id="short-let">Nairobi short-let Airbnb</H2>
 
       <P>
-        Covered in detail in our{" "}
-        <Link
-          href="/insights/kenya-coastal-property-diani-kilifi-watamu-investment-2026"
-          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
-        >
-          coastal property piece
-        </Link>
-        . Quick summary:
+        Short-let Airbnb is the more accessible
+        entry point. Lower scale, no need to
+        slot into an operator network, and a
+        wider tenant pool. The trade-off is
+        more operational involvement and more
+        marketing.
       </P>
 
       <UL>
         <LI>
-          Diani is the deepest holiday let market with
-          the most consistent annual demand
+          <strong>Pricing</strong>: USD 40 to
+          USD 150 per night for studios to
+          3-beds depending on location and
+          finish
         </LI>
         <LI>
-          Kilifi mixes holiday let with long-stay
-          professional and remote-worker demand
+          <strong>Demand</strong>: Westlands,
+          Kilimani, Lavington, Kileleshwa,
+          Riverside Drive, Gigiri-Rosslyn,
+          Karen for premium villas
         </LI>
         <LI>
-          Watamu is higher end villa, Italian-anchored,
-          peak-season concentrated
+          <strong>Occupancy</strong>: 50 to 70
+          percent on well-managed Airbnbs in
+          good locations
         </LI>
         <LI>
-          Net yields 5 to 9 percent on well-managed
-          stock, with significant seasonality
+          <strong>Net yields</strong>: 7 to 11
+          percent on well-located stock with
+          professional management
+        </LI>
+        <LI>
+          <strong>Operational requirement</strong>:
+          cleaning between guests, check-in and
+          check-out, OTA listings, photography,
+          guest communication, repairs response
         </LI>
       </UL>
-
-      <H2 id="naivasha">Naivasha and the Rift Valley cottages</H2>
-
-      <P>
-        Lake Naivasha is the natural weekend destination
-        for Nairobi families. Cottages, small lakefront
-        homes and converted farms support a steady
-        domestic weekend market plus occasional
-        international visitors.
-      </P>
-
-      <UL>
-        <LI>
-          <strong>Pricing</strong>: 3-bed cottages from
-          KES 12m to KES 60m depending on lake access
-          and condition
-        </LI>
-        <LI>
-          <strong>Tenant base</strong>: Nairobi families
-          on weekends, corporates for offsites, occasional
-          foreign tourists
-        </LI>
-        <LI>
-          <strong>Operational economics</strong>: weekend
-          heavy, weekday quiet, requires active marketing
-          and management
-        </LI>
-        <LI>
-          <strong>Title risk</strong>: Naivasha land has
-          a complicated history. Title diligence is
-          essential
-        </LI>
-      </UL>
-
-      <P>
-        For diaspora investors, Naivasha works as a
-        combined personal use and modest commercial play.
-        Pure investment economics are not as strong as
-        coastal stock or serviced apartments.
-      </P>
-
-      <H2 id="mt-kenya">Mt Kenya, Nyeri and Nanyuki</H2>
-
-      <P>
-        The Mt Kenya circuit has been growing steadily
-        as a domestic and international leisure
-        destination. Nanyuki sits at the edge of the
-        ecosystem with a strong expatriate, military and
-        domestic Kenyan tourism base.
-      </P>
-
-      <UL>
-        <LI>
-          Cottages and small lodges in the Nanyuki and
-          Timau corridor
-        </LI>
-        <LI>
-          Conservancy-adjacent properties in Laikipia
-        </LI>
-        <LI>
-          Country home stock in Nyeri and Karatina for
-          domestic upmarket buyers
-        </LI>
-      </UL>
-
-      <P>
-        Operational economics work best where the property
-        either joins a recognised operator network
-        (Fairmont Mount Kenya, Mount Kenya Safari Club
-        adjacent, Lewa or Borana lodges) or is operated by
-        owners with local presence and marketing reach.
-        Pure absentee ownership in this segment rarely
-        produces strong commercial returns.
-      </P>
-
-      <H2 id="conservancy-lodges">Small conservancy lodges</H2>
-
-      <P>
-        At the higher end, the Maasai Mara, Laikipia and
-        Samburu conservancy markets support small luxury
-        lodges. Capital requirements are large (USD 1m to
-        USD 10m for a credible product) and operational
-        complexity is high (licensing, staff, supply,
-        conservation fees, community arrangements). For
-        diaspora investors with experience in hospitality
-        or those participating in syndicated investment
-        vehicles, the segment can produce strong
-        long-term returns and material lifestyle benefit.
-        For pure financial investors with no operating
-        experience, this is the wrong segment to enter
-        directly.
-      </P>
 
       <H2 id="licensing">Licensing and regulatory framework</H2>
 
-      <P>
-        Hospitality investment is regulated. The relevant
-        bodies and licences:
-      </P>
-
       <UL>
         <LI>
-          <strong>Tourism Regulatory Authority (TRA)</strong>:
-          Mandatory registration and classification for
-          properties operating as tourist accommodation,
-          including holiday lets and serviced apartments
-          above defined thresholds
+          <strong>Tourism Regulatory Authority
+          (TRA)</strong>: mandatory registration
+          and classification for serviced
+          apartments and short-lets above
+          defined thresholds
         </LI>
         <LI>
-          <strong>County Government licensing</strong>:
-          Single Business Permit and other county level
-          licences
+          <strong>Nairobi County Single Business
+          Permit</strong>: required for
+          commercial accommodation operations
         </LI>
         <LI>
-          <strong>NEMA approval</strong>: Environmental
-          impact and operating compliance for properties
-          in protected areas or with environmental
-          sensitivity
+          <strong>Health and safety</strong>:
+          public health approval for kitchens
+          and food handling where applicable
         </LI>
         <LI>
-          <strong>Health and safety</strong>: Public
-          Health Department approval for kitchens and
-          guest food handling
+          <strong>VAT registration</strong>: at
+          KES 5m turnover threshold
         </LI>
         <LI>
-          <strong>VAT registration</strong>: At KES 5m
-          turnover threshold
-        </LI>
-        <LI>
-          <strong>Tourism Levy</strong>: 2 percent on
-          accommodation, food and other tourism services
+          <strong>Tourism Levy</strong>: 2
+          percent on accommodation services
           where applicable
+        </LI>
+        <LI>
+          <strong>Sectional title rules</strong>:
+          some compounds restrict short-let
+          via house rules; verify before
+          purchase
         </LI>
       </UL>
 
@@ -277,28 +195,29 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Income tax</strong>: 30 percent on
-          taxable profit for resident companies (lower
-          for SMEs at 25 percent and for those qualifying
-          under specific incentives)
+          <strong>Income tax</strong>: 30
+          percent on taxable profit for
+          resident companies (25 percent for
+          SMEs that qualify)
         </LI>
         <LI>
-          <strong>Withholding tax on rental income</strong>:
-          Different from MRI for residential rental;
-          hospitality income is normally taxed under
-          standard income tax
+          <strong>Hospitality income</strong>:
+          taxed under standard income tax,
+          not under the residential MRI
+          regime
         </LI>
         <LI>
-          <strong>VAT</strong>: 16 percent on most
-          hospitality services above the threshold
+          <strong>VAT</strong>: 16 percent on
+          hospitality services above the
+          threshold
         </LI>
         <LI>
-          <strong>Capital gains tax</strong>: 15 percent
-          on disposal, as for any property
+          <strong>Capital gains tax</strong>:
+          15 percent on disposal
         </LI>
         <LI>
-          <strong>Tourism Levy</strong>: 2 percent on
-          relevant services
+          <strong>Tourism Levy</strong>: 2
+          percent on relevant services
         </LI>
       </UL>
 
@@ -306,93 +225,103 @@ export default function Article() {
 
       <OL>
         <LI>
-          <strong>Buy a unit in an operator-run building</strong>.
-          The cleanest entry into Nairobi serviced
-          apartments. Operator handles all operations and
-          remits a net yield to the owner.
+          <strong>Buy a unit in an
+          operator-run Nairobi serviced
+          apartment building</strong>. The
+          cleanest entry. Operator handles
+          operations and remits a net yield
+          to the owner.
         </LI>
         <LI>
-          <strong>Buy a coastal villa with a local
-          management partner</strong>. Diani and Kilifi
-          have several established managers with track
-          record. The owner&rsquo;s job becomes capital
-          allocation and quality oversight.
+          <strong>Buy a Westlands, Kilimani
+          or Lavington apartment for
+          short-let</strong>. Engage a
+          Nairobi-based property and Airbnb
+          operator from day one. Capital
+          allocation and quality oversight
+          stay with the owner; daily
+          operations are delegated.
         </LI>
         <LI>
-          <strong>Co-invest in a syndicated lodge or
-          conservancy property</strong>. For higher value
-          and more complex segments, a syndicate or
-          fractional model spreads risk and provides
-          operational expertise.
-        </LI>
-        <LI>
-          <strong>Buy a Naivasha or Mt Kenya cottage for
-          combined personal use and modest commercial
-          letting</strong>. Lifestyle anchored, not pure
-          financial investment.
+          <strong>Buy a Karen villa for
+          premium short-let</strong>. Higher
+          ticket, lower volume, premium ADR.
+          Works for owners who use the
+          property occasionally and let it
+          out the rest of the time.
         </LI>
       </OL>
 
-      <H2 id="risks">Hospitality specific risks</H2>
+      <H2 id="risks">Hospitality-specific risks</H2>
 
       <UL>
         <LI>
-          Tourism cycle exposure: travel advisories,
-          security incidents, currency moves and global
-          travel demand all affect occupancy
+          Tourism and business travel cycle
+          exposure: travel advisories,
+          security incidents, currency moves
+          and global travel demand all affect
+          occupancy
         </LI>
         <LI>
-          Seasonality and the cash flow pattern that goes
-          with it
+          Seasonality and cash flow pattern
         </LI>
         <LI>
-          Operational complexity and staff management
+          Operational complexity and staff
+          management
         </LI>
         <LI>
-          Regulatory change (tourism levy adjustments,
-          county licensing, environmental rules)
+          Regulatory change (tourism levy,
+          county licensing, sectional title
+          house rules)
         </LI>
         <LI>
-          Asset depreciation faster than long-term
-          residential due to wear and tear
+          Asset depreciation faster than
+          long-term residential due to wear
+          and tear
         </LI>
         <LI>
-          Marketing cost and distribution dependence on
-          OTAs that take 15 to 25 percent of revenue
+          Marketing cost and OTA dependence
+          (15 to 25 percent of revenue to
+          platforms)
         </LI>
       </UL>
 
-      <Callout title="The diaspora investor&rsquo;s shortcut">
-        For most diaspora investors looking at Kenyan
-        hospitality, the single best entry is a serviced
-        apartment in an operator-run Nairobi building.
-        Yields are higher than long-term rental, the
-        operator handles complexity, and the asset
-        retains long-term residential resale value if the
-        hospitality use ever fails.
+      <Callout title="The diaspora investor's shortcut">
+        For most diaspora investors looking at
+        Nairobi hospitality, the single best
+        entry is a serviced apartment in an
+        operator-run building or a
+        Westlands/Kilimani/Lavington apartment
+        run as a managed short-let. Yields are
+        higher than long-term rental, the
+        operator handles complexity, and the
+        asset retains long-term residential
+        resale value if the hospitality use
+        ever fails.
       </Callout>
 
       <Pullquote>
-        Hospitality property in Kenya can produce
-        meaningfully higher yield than long-term
-        residential. The trade off is operational
-        complexity. Pick segments where you can buy into
-        existing operator scale rather than building it
+        Hospitality property in Nairobi can
+        produce meaningfully higher yield than
+        long-term residential. The trade off
+        is operational complexity. Pick the
+        entry that lets you buy into existing
+        operator scale rather than build it
         yourself from London or New York.
       </Pullquote>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        For diaspora clients targeting hospitality
-        exposure, we work with established operators in
-        Nairobi serviced apartments and with vetted
-        partners in coastal holiday lets. We coordinate
-        the purchase and the operator agreement, and we
-        oversee performance on the owner&rsquo;s behalf.
-        For higher-end conservancy and lodge investments
-        we refer to specialised partners rather than
-        attempt to operate outside our core competence.
+        For diaspora clients targeting Nairobi
+        hospitality exposure we work with
+        established operators in serviced
+        apartments and we run short-let
+        Airbnbs ourselves through our property
+        management business. We coordinate the
+        purchase and the operator agreement
+        and oversee performance on the
+        owner&rsquo;s behalf.
       </P>
 
       <P>
@@ -405,13 +334,12 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/kenya-coastal-property-diani-kilifi-watamu-investment-2026"
+          href="/insights/how-to-start-airbnb-business-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          coastal property
-        </Link>{" "}
-        for two of the segments inside the hospitality
-        category.
+          how to start an Airbnb business
+        </Link>
+        .
       </P>
     </>
   );

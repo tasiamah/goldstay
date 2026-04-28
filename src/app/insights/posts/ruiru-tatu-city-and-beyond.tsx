@@ -183,10 +183,10 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/buying-property-thika-complete-guide-2026"
+          href="/insights/nairobi-emerging-suburbs-ruiru-kitengela-syokimau-athi-river"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          buying in Thika
+          Nairobi emerging suburbs
         </Link>
         .
       </P>
