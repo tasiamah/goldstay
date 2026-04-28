@@ -1,129 +1,103 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { headers } from "next/headers";
+import { notFound } from "next/navigation";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { CTABanner } from "@/components/CTABanner";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
-import { InsightsSearch } from "@/components/InsightsSearch";
-import { postsForCountry, type Post } from "./posts";
-import { categories } from "./categories";
-import { alternateLanguagesFor, countryForHost, site } from "@/lib/site";
+import {
+  categories,
+  getCategoryBySlug,
+  postsForCategory,
+} from "../../categories";
+import {
+  alternateLanguagesFor,
+  countryForHost,
+  site,
+} from "@/lib/site";
 
 const PAGE_SIZE = 10;
 
-type SearchParams = {
-  q?: string;
-  page?: string;
-};
+type SearchParams = { page?: string };
 
-// Pull q and page out of the URL with light validation so the rest of
-// the page can treat them as trusted values.
-function readSearchParams(searchParams: SearchParams) {
-  const q = (searchParams.q ?? "").toString().trim().slice(0, 80);
-  const pageRaw = parseInt(searchParams.page ?? "1", 10);
-  const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 1;
-  return { q, page };
-}
-
-// Lowercase haystack of every searchable text field on a post. Built
-// once per request and reused across the filter loop.
-function searchHaystack(post: Post) {
-  return [
-    post.meta.title,
-    post.meta.description,
-    post.meta.author.name,
-    ...post.meta.tags,
-  ]
-    .join(" ")
-    .toLowerCase();
-}
-
-function applySearch(posts: Post[], q: string) {
-  if (!q) return posts;
-  const needle = q.toLowerCase();
-  return posts.filter((p) => searchHaystack(p).includes(needle));
-}
-
-function sortByDateDesc(posts: Post[]) {
-  return [...posts].sort(
-    (a, b) =>
-      new Date(b.meta.publishedAt).getTime() -
-      new Date(a.meta.publishedAt).getTime(),
-  );
+export function generateStaticParams() {
+  return categories.map((c) => ({ category: c.slug }));
 }
 
 export function generateMetadata({
+  params,
   searchParams,
 }: {
+  params: { category: string };
   searchParams: SearchParams;
 }): Metadata {
-  const { q, page } = readSearchParams(searchParams);
+  const category = getCategoryBySlug(params.category);
+  if (!category) return {};
 
-  // Build a self-referencing canonical that preserves the page number
-  // for paginated views (so each page can be indexed separately) but
-  // strips the search query because search-result pages are noindex
-  // anyway.
-  const params = new URLSearchParams();
-  if (page > 1) params.set("page", String(page));
-  const qs = params.toString();
-  const canonical = qs ? `/insights?${qs}` : "/insights";
+  const pageRaw = parseInt(searchParams.page ?? "1", 10);
+  const page = Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 1;
 
-  const title = q
-    ? `Search: "${q}" — Goldstay Insights`
-    : page > 1
-      ? `Insights for diaspora landlords (page ${page})`
-      : "Insights for diaspora landlords";
+  const qs = page > 1 ? `?page=${page}` : "";
+  const canonical = `/insights/category/${category.slug}${qs}`;
+
+  const title =
+    page > 1
+      ? `${category.name} insights (page ${page}) — Goldstay`
+      : `${category.name} insights for diaspora landlords — Goldstay`;
 
   return {
     title,
-    description:
-      "Plain-English writing on tax, buying remotely and running a property in Nairobi or Accra from abroad. Written by the team that does it day to day.",
+    description: category.description,
     alternates: {
       canonical,
-      // Search-result URLs aren't worth surfacing in hreflang. For the
-      // base index and paginated views we still advertise the cross-
-      // domain equivalents so each market sees its own catalogue.
-      languages: q ? undefined : alternateLanguagesFor("/insights"),
+      languages: alternateLanguagesFor(
+        `/insights/category/${category.slug}`,
+      ),
     },
-    // Search results are thin and infinite. Tell Google to skip them.
-    robots: q ? { index: false, follow: true } : undefined,
     openGraph: {
-      title: q ? title : "Goldstay Insights",
-      description:
-        "Plain-English writing on tax, buying remotely and running a property in Nairobi or Accra from abroad.",
+      title,
+      description: category.description,
       type: "website",
     },
   };
 }
 
-export default function InsightsIndex({
+export default function CategoryIndex({
+  params,
   searchParams,
 }: {
+  params: { category: string };
   searchParams: SearchParams;
 }) {
+  const maybeCategory = getCategoryBySlug(params.category);
+  if (!maybeCategory) notFound();
+  const category = maybeCategory;
+
   const host = headers().get("host") ?? site.domain;
   const country = countryForHost(host);
   const cityName = country === "ghana" ? "Accra" : "Nairobi";
 
-  const { q, page } = readSearchParams(searchParams);
+  const pageRaw = parseInt(searchParams.page ?? "1", 10);
+  const requestedPage =
+    Number.isFinite(pageRaw) && pageRaw > 0 ? pageRaw : 1;
 
-  const all = sortByDateDesc(postsForCountry(country));
-  const filtered = applySearch(all, q);
-  const totalResults = filtered.length;
+  const all = [...postsForCategory(category.slug, country)].sort(
+    (a, b) =>
+      new Date(b.meta.publishedAt).getTime() -
+      new Date(a.meta.publishedAt).getTime(),
+  );
+
+  const totalResults = all.length;
   const totalPages = Math.max(1, Math.ceil(totalResults / PAGE_SIZE));
-  const safePage = Math.min(page, totalPages);
+  const safePage = Math.min(requestedPage, totalPages);
   const start = (safePage - 1) * PAGE_SIZE;
-  const visible = filtered.slice(start, start + PAGE_SIZE);
+  const visible = all.slice(start, start + PAGE_SIZE);
 
-  // Build query strings for the prev/next links so the user's search
-  // term is preserved when paginating through results.
   function pageHref(p: number) {
-    const params = new URLSearchParams();
-    if (q) params.set("q", q);
-    if (p > 1) params.set("page", String(p));
-    const qs = params.toString();
-    return qs ? `/insights?${qs}` : "/insights";
+    return p > 1
+      ? `/insights/category/${category.slug}?page=${p}`
+      : `/insights/category/${category.slug}`;
   }
 
   return (
@@ -132,6 +106,10 @@ export default function InsightsIndex({
         items={[
           { name: "Home", url: `https://${site.domain}` },
           { name: "Insights", url: `https://${site.domain}/insights` },
+          {
+            name: category.name,
+            url: `https://${site.domain}/insights/category/${category.slug}`,
+          },
         ]}
       />
 
@@ -140,16 +118,26 @@ export default function InsightsIndex({
         <div className="container-gs pb-16 md:pb-24">
           <Reveal>
             <div className="max-w-3xl">
-              <div className="eyebrow text-gold-400">Insights</div>
+              <div className="eyebrow text-gold-400">
+                <Link
+                  href="/insights"
+                  className="hover:text-gold-300"
+                >
+                  Insights
+                </Link>{" "}
+                <span className="text-cream/40">/</span>{" "}
+                <span>{category.name}</span>
+              </div>
               <h1 className="mt-6 font-serif text-display-lg balance">
-                Writing for the <em className="italic">diaspora landlord</em>.
+                <em className="italic">{category.name}</em> insights for{" "}
+                {cityName}.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-                Plain-English notes on tax, buying remotely, the
-                operational reality of running an apartment in {cityName}{" "}
-                from abroad, and the questions our clients actually ask.
-                Written by the team that does it day to day, not a
-                marketing department.
+                {category.intro}
+              </p>
+              <p className="mt-4 text-sm text-cream/55">
+                {totalResults} article{totalResults === 1 ? "" : "s"} in this
+                category.
               </p>
             </div>
           </Reveal>
@@ -158,45 +146,21 @@ export default function InsightsIndex({
 
       <section className="section">
         <div className="container-gs max-w-5xl">
-          <div className="mb-8">
-            <InsightsSearch initialQuery={q} totalResults={totalResults} />
-          </div>
-
-          <nav
-            aria-label="Insight categories"
-            className="mb-10 flex flex-wrap gap-2"
-          >
-            <span
-              aria-current="page"
-              className="inline-flex items-center rounded-full bg-charcoal px-4 py-2 text-sm font-medium text-cream"
-            >
-              All
-            </span>
-            {categories.map((c) => (
-              <Link
-                key={c.slug}
-                href={`/insights/category/${c.slug}`}
-                className="inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm text-charcoal/70 transition hover:border-gold-500/50 hover:text-gold-700"
-              >
-                {c.shortName}
-              </Link>
-            ))}
-          </nav>
+          <CategoryStrip current={category.slug} />
 
           {visible.length === 0 ? (
             <div className="rounded-3xl border border-charcoal/10 bg-cream p-10 text-center">
               <h2 className="font-serif text-2xl text-charcoal">
-                Nothing matches that search.
+                Nothing here yet.
               </h2>
               <p className="mt-3 text-charcoal/70">
-                Try a different keyword, a tag, or browse the full
-                library.
+                We will be adding articles to this category soon.
               </p>
               <Link
                 href="/insights"
                 className="mt-6 inline-flex items-center gap-2 rounded-full bg-charcoal px-6 py-3 text-sm font-medium text-cream transition hover:bg-charcoal/90"
               >
-                Clear search
+                Browse all insights
               </Link>
             </div>
           ) : (
@@ -268,9 +232,44 @@ export default function InsightsIndex({
   );
 }
 
-// Pagination control. Rendered with real <Link> elements so each page
-// is a separate, crawlable URL. We show a windowed page list around
-// the current page so the bar stays compact even with a long catalogue.
+// Render every category as a chip row so users can jump between
+// categories without going back to /insights. The current category is
+// rendered as a non-link to make the active state obvious.
+function CategoryStrip({ current }: { current: string }) {
+  return (
+    <nav
+      aria-label="Insight categories"
+      className="mb-10 flex flex-wrap gap-2"
+    >
+      <Link
+        href="/insights"
+        className="inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm text-charcoal/70 transition hover:border-gold-500/50 hover:text-gold-700"
+      >
+        All
+      </Link>
+      {categories.map((c) =>
+        c.slug === current ? (
+          <span
+            key={c.slug}
+            aria-current="page"
+            className="inline-flex items-center rounded-full bg-charcoal px-4 py-2 text-sm font-medium text-cream"
+          >
+            {c.shortName}
+          </span>
+        ) : (
+          <Link
+            key={c.slug}
+            href={`/insights/category/${c.slug}`}
+            className="inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm text-charcoal/70 transition hover:border-gold-500/50 hover:text-gold-700"
+          >
+            {c.shortName}
+          </Link>
+        ),
+      )}
+    </nav>
+  );
+}
+
 function Pagination({
   currentPage,
   totalPages,
@@ -280,9 +279,12 @@ function Pagination({
   totalPages: number;
   hrefForPage: (page: number) => string;
 }) {
-  const pages = pageWindow(currentPage, totalPages);
   const prev = currentPage > 1 ? hrefForPage(currentPage - 1) : null;
-  const next = currentPage < totalPages ? hrefForPage(currentPage + 1) : null;
+  const next =
+    currentPage < totalPages ? hrefForPage(currentPage + 1) : null;
+
+  const pages: number[] = [];
+  for (let i = 1; i <= totalPages; i++) pages.push(i);
 
   return (
     <nav
@@ -306,31 +308,21 @@ function Pagination({
       )}
 
       <ul className="mx-2 flex items-center gap-1">
-        {pages.map((p, i) =>
-          p === "ellipsis" ? (
-            <li
-              key={`e${i}`}
-              aria-hidden
-              className="px-2 text-charcoal/40"
+        {pages.map((p) => (
+          <li key={p}>
+            <Link
+              href={hrefForPage(p)}
+              aria-current={p === currentPage ? "page" : undefined}
+              className={
+                p === currentPage
+                  ? "inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-charcoal px-3 text-sm font-medium text-cream"
+                  : "inline-flex h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm text-charcoal/70 transition hover:bg-charcoal/5 hover:text-charcoal"
+              }
             >
-              ...
-            </li>
-          ) : (
-            <li key={p}>
-              <Link
-                href={hrefForPage(p)}
-                aria-current={p === currentPage ? "page" : undefined}
-                className={
-                  p === currentPage
-                    ? "inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-charcoal px-3 text-sm font-medium text-cream"
-                    : "inline-flex h-9 min-w-9 items-center justify-center rounded-full px-3 text-sm text-charcoal/70 transition hover:bg-charcoal/5 hover:text-charcoal"
-                }
-              >
-                {p}
-              </Link>
-            </li>
-          ),
-        )}
+              {p}
+            </Link>
+          </li>
+        ))}
       </ul>
 
       {next ? (
@@ -350,34 +342,4 @@ function Pagination({
       )}
     </nav>
   );
-}
-
-// Build a compact pagination window: always show first and last, plus
-// the current page and one neighbour each side. Anything skipped is
-// represented by a single "ellipsis" marker.
-function pageWindow(
-  current: number,
-  total: number,
-): Array<number | "ellipsis"> {
-  if (total <= 7) {
-    return Array.from({ length: total }, (_, i) => i + 1);
-  }
-
-  const result: Array<number | "ellipsis"> = [];
-  const window = new Set<number>([
-    1,
-    total,
-    current,
-    current - 1,
-    current + 1,
-  ]);
-
-  let last = 0;
-  for (let i = 1; i <= total; i++) {
-    if (!window.has(i)) continue;
-    if (last && i - last > 1) result.push("ellipsis");
-    result.push(i);
-    last = i;
-  }
-  return result;
 }

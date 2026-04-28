@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { site, cities, neighbourhoodSlug, countryForHost } from "@/lib/site";
 import { postsForCountry } from "./insights/posts";
+import { categories, postsForCategory } from "./insights/categories";
 
 // Host-aware sitemap. Each country domain advertises only the routes
 // that actually live on it: goldstay.co.ke skips /accra*, goldstay.com.gh
@@ -21,6 +22,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (p) => `/insights/${p.meta.slug}`,
   );
 
+  // Only advertise category pages that actually contain articles for
+  // this host's country. Empty categories on the .com.gh surface stay
+  // out of the sitemap until they have content.
+  const categoryRoutes = categories
+    .filter((c) => postsForCategory(c.slug, insightsCountry).length > 0)
+    .map((c) => `/insights/category/${c.slug}`);
+
   const neutral = [
     "",
     "/airbnb-management",
@@ -30,6 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/find-a-home",
     "/about",
     "/insights",
+    ...categoryRoutes,
     ...insightSlugs,
     "/privacy",
     "/terms",

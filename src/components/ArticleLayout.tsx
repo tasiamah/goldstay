@@ -6,6 +6,7 @@ import { CTABanner } from "./CTABanner";
 import { BreadcrumbJsonLd } from "./JsonLd";
 import { site } from "@/lib/site";
 import type { Post, PostMeta } from "@/app/insights/posts";
+import { categoriesForPost } from "@/app/insights/categories";
 
 // Shared shell for every insights post. Renders the hero, byline,
 // JSON-LD (Article + Person + Breadcrumb), prose body and a
@@ -26,6 +27,7 @@ export function ArticleLayout({
     "en-GB",
     { day: "numeric", month: "long", year: "numeric" },
   );
+  const articleCategories = categoriesForPost(meta);
 
   // Article JSON-LD. Treat the post as schema.org/Article with a
   // named author Person. Combined with the existing Organization /
@@ -126,7 +128,26 @@ export function ArticleLayout({
         <div className="container-gs py-16 md:py-24">
           <div className="mx-auto max-w-2xl">{children}</div>
 
-          <div className="mx-auto mt-20 max-w-2xl border-t border-charcoal/10 pt-10">
+          {articleCategories.length > 0 ? (
+            <div className="mx-auto mt-16 max-w-2xl border-t border-charcoal/10 pt-8">
+              <div className="font-mono text-[0.65rem] uppercase tracking-widest-xl text-charcoal/55">
+                Filed under
+              </div>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {articleCategories.map((c) => (
+                  <Link
+                    key={c.slug}
+                    href={`/insights/category/${c.slug}`}
+                    className="inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm text-charcoal/70 transition hover:border-gold-500/50 hover:text-gold-700"
+                  >
+                    {c.shortName}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
+          <div className="mx-auto mt-16 max-w-2xl border-t border-charcoal/10 pt-10">
             <div className="flex items-start gap-5">
               {meta.author.image ? (
                 <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border border-charcoal/10">
