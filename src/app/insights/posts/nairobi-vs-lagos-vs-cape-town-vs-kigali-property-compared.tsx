@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Nairobi vs Lagos vs Cape Town vs Kigali: African capital property markets compared in 2026",
   description:
     "Investors who care about African real estate end up looking at the same shortlist of capital markets. Nairobi, Lagos, Cape Town and Kigali each have very different property economics, regulatory frameworks, currency dynamics and investor experiences. Here is the honest 2026 comparison from a diaspora investor lens.",
-  publishedAt: "2025-05-18",
+  publishedAt: "2025-02-26",
   readingMinutes: 9,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Africa",
     "Nairobi",

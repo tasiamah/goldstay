@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "The best schools in Nairobi 2026: a parent&rsquo;s guide to the rankings, fees and catchment",
   description:
     "Choosing a school in Nairobi shapes the suburb you will live in for years. Here is the honest 2026 guide to the best private and international schools in the city, the realistic fees, the catchment areas, and how the school decision drives the property decision for diaspora returnees.",
-  publishedAt: "2025-02-22",
+  publishedAt: "2024-12-27",
   readingMinutes: 9,
   author: authors.editors,
   tags: [

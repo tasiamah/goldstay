@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Estate planning for diaspora Kenyans: wills, succession and avoiding the family land mess",
   description:
     "Without a Kenyan-recognised will, Kenyan property goes through intestate succession under the Law of Succession Act, often messily and across borders. Here is how a diaspora Kenyan should structure a will, when a Kenyan trust makes sense, the role of dual citizenship and how to avoid the family land disputes that haunt every generation.",
-  publishedAt: "2025-10-23",
+  publishedAt: "2025-06-24",
   readingMinutes: 9,
   author: authors.legal,
   tags: [

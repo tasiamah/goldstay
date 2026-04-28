@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The best time of year to buy property in Kenya in 2026",
   description:
     "Property markets are seasonal even in Kenya. Some months produce better deals than others, and some windows are genuinely better for diaspora buyers. Here is the honest 2026 guide to seasonality in the Kenyan property market and when buyers actually have the most leverage.",
-  publishedAt: "2024-10-20",
+  publishedAt: "2024-09-29",
   readingMinutes: 6,
-  author: authors.editors,
+  author: authors.research,
   tags: [
     "Kenya",
     "Buying",

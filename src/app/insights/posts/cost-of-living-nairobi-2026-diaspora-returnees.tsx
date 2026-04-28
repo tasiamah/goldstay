@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Cost of living in Nairobi in 2026: the honest budget for diaspora returnees",
   description:
     "Diaspora Kenyans planning to return often arrive with a budget calibrated against London, New York or Dubai and discover Nairobi is not as cheap as their parents&rsquo; generation said. Housing, schools, transport, food, healthcare, staff and lifestyle. Here is the honest 2026 budget for a returning Kenyan family.",
-  publishedAt: "2025-04-26",
+  publishedAt: "2025-02-11",
   readingMinutes: 9,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Nairobi",
     "Cost of Living",

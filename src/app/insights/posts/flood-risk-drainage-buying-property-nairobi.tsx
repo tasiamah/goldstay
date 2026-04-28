@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Floods, drainage and climate risk: what to check before buying property in Nairobi",
   description:
     "After the 2024 long-rains floods, climate risk in Nairobi property is no longer abstract. Some compounds flooded, others did not, and the difference came down to specific things any buyer can check before committing. Riparian land, drainage capacity, slope, building elevation and management response.",
-  publishedAt: "2025-11-29",
+  publishedAt: "2025-07-22",
   readingMinutes: 8,
   author: authors.editors,
   tags: [

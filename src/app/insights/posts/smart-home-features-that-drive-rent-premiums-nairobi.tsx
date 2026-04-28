@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Smart home features that actually drive rent premiums in Nairobi",
   description:
     "Smart locks, smart meters, video doorbells, integrated lighting, fibre WiFi and remote-managed gates. Some of these add real rent in Nairobi, others are vanity. Here is what actually pays back as a rental upgrade in 2026, and what tenants now consider the floor not the ceiling.",
-  publishedAt: "2026-02-26",
+  publishedAt: "2025-12-01",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "Smart Home", "Rental", "Upgrades", "Operations", "Technology"],

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Kenyan mortgage rates in 2026: a guide for diaspora buyers",
   description:
     "Where Kenyan mortgage rates actually sit in 2026, who lends to diaspora buyers, the realistic loan-to-value and term you can expect, the KMRC route, and how to think about KES versus USD denominated borrowing for a Nairobi investment property.",
-  publishedAt: "2025-12-20",
+  publishedAt: "2025-08-10",
   readingMinutes: 8,
   author: authors.research,
   tags: ["Kenya", "Mortgage", "Diaspora", "Finance", "KMRC", "Buying"],

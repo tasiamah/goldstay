@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Selling Kenyan property from abroad: the complete diaspora seller&rsquo;s guide",
   description:
     "Selling a Kenyan property from London, New York, Dubai or anywhere else takes more than picking a broker. Pricing, legal preparation, capital gains tax, power of attorney, completion logistics and getting the proceeds out of Kenya cleanly. Here is the full 2026 playbook for diaspora sellers.",
-  publishedAt: "2025-08-08",
+  publishedAt: "2025-05-04",
   readingMinutes: 9,
-  author: authors.legal,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Selling",

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Tenant screening in Nairobi: the checklist we actually use",
   description:
     "How professional tenant screening works in Kenya in 2026, the eight checks we run before any lease is signed, the three patterns that predict bad tenancy, and what to do when somebody offers six months rent up front in cash.",
-  publishedAt: "2025-02-09",
+  publishedAt: "2024-12-18",
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Nairobi", "Tenants", "Screening", "Operations"],

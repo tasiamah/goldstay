@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Kenya stamp duty in 2026: the complete buyer&rsquo;s guide with examples",
   description:
     "Stamp duty rates, who pays, when it is due, the exemptions that actually apply in 2026, the difference between urban and rural rates, how it interacts with valuation and how diaspora buyers should budget for it. Worked examples for typical Nairobi purchases.",
-  publishedAt: "2026-01-26",
+  publishedAt: "2025-09-26",
   readingMinutes: 7,
   author: authors.legal,
   tags: [

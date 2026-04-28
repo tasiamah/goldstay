@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The best neighbourhoods in Nairobi for rental yield in 2026",
   description:
     "Real gross and net yield numbers across Nairobi's main residential neighbourhoods, who the actual tenants are in each area, and the three places we tell diaspora buyers to avoid right now.",
-  publishedAt: "2025-07-03",
+  publishedAt: "2025-04-05",
   readingMinutes: 11,
-  author: authors.research,
+  author: authors.poonam,
   tags: ["Nairobi", "Investment", "Yield", "Neighbourhoods"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Spousal consent in Kenyan property deals: the Matrimonial Property Act in practice",
   description:
     "If the property is matrimonial, the seller&rsquo;s spouse must consent. The Matrimonial Property Act 2013 makes this very clear, and a sale without proper spousal consent can be set aside years later. Here is what counts as matrimonial property, when consent is required, what consent looks like, and how diaspora buyers protect themselves.",
-  publishedAt: "2025-07-11",
+  publishedAt: "2025-04-10",
   readingMinutes: 7,
   author: authors.legal,
   tags: [

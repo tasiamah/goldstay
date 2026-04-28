@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Kilimani is changing: what happened to Nairobi&rsquo;s busiest apartment market",
   description:
     "Kilimani was the apartment story of the 2010s in Nairobi. By 2026 the picture is more complicated. Oversupply, traffic, GenZ preferences and the expressway have all reshaped the suburb. Here is the honest read on what changed, who is still buying there, and what it means for owners and investors.",
-  publishedAt: "2024-10-04",
+  publishedAt: "2024-09-14",
   readingMinutes: 7,
   author: authors.research,
   tags: [

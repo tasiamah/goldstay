@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Villa or apartment in Nairobi: which actually rents better in 2026",
   description:
     "Apartments dominate the Nairobi diaspora portfolio for a reason: faster letting, narrower void risk, simpler operations and predictable yields. Villas can outperform on absolute rent and exit price, but the operational drag is real. Here is how to decide between the two for your first or fifth Nairobi investment.",
-  publishedAt: "2026-03-16",
+  publishedAt: "2026-01-09",
   readingMinutes: 8,
-  author: authors.research,
+  author: authors.editors,
   tags: ["Nairobi", "Villa", "Apartment", "Yield", "Rental Strategy"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

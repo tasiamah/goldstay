@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How much do you actually need to retire in Kenya in 2026?",
   description:
     "Retirement to Kenya is increasingly a real plan rather than a distant dream for diaspora Kenyans, and increasingly attractive to non-Kenyan retirees too. The numbers are not what most people expect. Here is the honest 2026 retirement budget covering housing, healthcare, lifestyle, currency and the things people forget.",
-  publishedAt: "2024-11-11",
+  publishedAt: "2024-10-12",
   readingMinutes: 8,
   author: authors.editors,
   tags: [

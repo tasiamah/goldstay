@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Ghana's 8% rental withholding tax: a complete guide for diaspora landlords",
   description:
     "What the GRA actually expects from residential landlords in Accra in 2026, who is liable to withhold, the filing mechanic, the three traps that catch most diaspora owners, and how a manager handles all of it.",
-  publishedAt: "2025-07-31",
+  publishedAt: "2025-04-24",
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Ghana", "Tax", "Withholding", "GRA", "Accra", "Diaspora"],

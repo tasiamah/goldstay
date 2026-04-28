@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How to verify a Kenyan property developer before buying off-plan",
   description:
     "Off-plan buyers carry the project execution risk on the developer&rsquo;s shoulders. Pick the wrong developer and your deposit funds the next failed Instagram launch. Here is the practical 2026 checklist for verifying a Kenyan property developer before you commit, with the specific questions and the documents that matter.",
-  publishedAt: "2024-11-30",
+  publishedAt: "2024-10-26",
   readingMinutes: 8,
   author: authors.editors,
   tags: [

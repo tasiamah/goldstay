@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Single women buying property in Kenya: the legal and practical guide for 2026",
   description:
     "Single Kenyan women, especially in the diaspora, are buying property in their own names at rates the previous generation never reached. The legal framework supports it cleanly. The practical landscape has its own considerations. Here is the honest 2026 guide written for women buying solo.",
-  publishedAt: "2024-11-21",
+  publishedAt: "2024-10-17",
   readingMinutes: 7,
   author: authors.legal,
   tags: [

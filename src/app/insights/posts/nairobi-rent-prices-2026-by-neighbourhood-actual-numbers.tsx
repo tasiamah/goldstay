@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Nairobi rent prices 2026 by neighbourhood: the actual numbers",
   description:
     "What does it actually cost to rent in Nairobi in 2026? This is the honest neighbourhood by neighbourhood guide to monthly rents for 1-bed, 2-bed, 3-bed and family homes, drawn from achieved rents on managed stock rather than asking prices on listings sites.",
-  publishedAt: "2025-02-26",
+  publishedAt: "2025-01-01",
   readingMinutes: 8,
   author: authors.research,
   tags: [

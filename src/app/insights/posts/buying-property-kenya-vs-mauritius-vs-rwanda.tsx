@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying property in Kenya vs Mauritius vs Rwanda: an East African comparison for 2026",
   description:
     "Diaspora Africans and international investors increasingly compare Kenya, Mauritius and Rwanda as the three serious property markets in or near East Africa. Each has very different rules on foreign ownership, residency, tax and currency. Here is the practical 2026 comparison from a diaspora investor lens.",
-  publishedAt: "2025-05-12",
+  publishedAt: "2025-02-21",
   readingMinutes: 9,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Mauritius",

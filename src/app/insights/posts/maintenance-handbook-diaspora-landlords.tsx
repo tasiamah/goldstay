@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title: "The diaspora landlord's maintenance handbook",
   description:
     "How to keep a Nairobi or Accra apartment in good repair from 6,000 miles away. The four-tier authority structure, the items that should be on planned maintenance, the failures we see most often, and how to budget realistically.",
-  publishedAt: "2025-01-19",
+  publishedAt: "2024-12-03",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Maintenance", "Operations", "Diaspora", "Budget"],

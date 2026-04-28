@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Top 10 property scams in Kenya right now: the 2026 watchlist",
   description:
     "Property scams in Kenya are not random. They run in patterns, and almost every diaspora loss in 2026 fits one of about ten templates. Here is the honest watchlist of the top scams currently active, the warning signs, and the diligence steps that prevent them.",
-  publishedAt: "2025-02-14",
+  publishedAt: "2024-12-22",
   readingMinutes: 9,
-  author: authors.editors,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Scams",

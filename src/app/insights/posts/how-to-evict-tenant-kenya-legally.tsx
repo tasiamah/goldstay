@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How to evict a tenant in Kenya, legally and as quickly as possible",
   description:
     "The exact legal process for evicting a non-paying or breaching tenant in Nairobi in 2026. Notice periods, the right court, the four common mistakes that add six months to a case, and how to avoid ever needing the process at all.",
-  publishedAt: "2025-06-15",
+  publishedAt: "2025-03-22",
   readingMinutes: 9,
   author: authors.legal,
   tags: ["Kenya", "Eviction", "Legal", "Tenants", "Nairobi"],

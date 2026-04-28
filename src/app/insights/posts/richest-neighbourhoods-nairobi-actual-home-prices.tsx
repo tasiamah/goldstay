@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "The richest neighbourhoods in Nairobi 2026: actual home prices, ranked",
   description:
     "Where do the wealthiest Nairobi households actually live, and what do their homes really cost? Forget the rumours. Here is the 2026 ranking of Nairobi&rsquo;s richest suburbs by realistic home prices, who lives there, and how the wealth signal has shifted over the last decade.",
-  publishedAt: "2025-03-13",
+  publishedAt: "2025-01-15",
   readingMinutes: 8,
   author: authors.research,
   tags: [

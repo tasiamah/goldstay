@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying property in Accra as a diaspora Ghanaian: the 2026 guide",
   description:
     "Everything diaspora Ghanaians actually need to know to buy a property in Accra in 2026. The leasehold reality, neighbourhood guide, the legal pitfalls, the cost stack, and how to do it without flying home.",
-  publishedAt: "2024-12-12",
+  publishedAt: "2024-11-05",
   readingMinutes: 11,
-  author: authors.editors,
+  author: authors.legal,
   tags: ["Ghana", "Accra", "Buying", "Diaspora", "Land Title"],
   country: "ghana",
   heroImage: "/images/locations/accra.jpg",

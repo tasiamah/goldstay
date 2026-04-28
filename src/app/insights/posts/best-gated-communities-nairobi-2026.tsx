@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "The best gated communities in Nairobi in 2026: an honest 2026 guide",
   description:
     "Nairobi&rsquo;s premium living happens inside compounds. This is an honest 2026 walk through of the best gated communities in the city, organised by suburb and tenant tier, with what makes each one rent and resell well, who actually lives there, and the trade offs buyers should know before committing.",
-  publishedAt: "2025-08-20",
+  publishedAt: "2025-05-14",
   readingMinutes: 9,
   author: authors.editors,
   tags: [

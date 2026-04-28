@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The cheapest decent suburbs in Nairobi in 2026: where your money still goes far",
   description:
     "Not every Nairobi buyer is shopping in Karen and Runda. Here is the honest 2026 ranking of suburbs where you can still buy a decent home for the price of a Toyota in Westlands. Where to look, what is on offer, the trade offs, and which areas to avoid even at low prices.",
-  publishedAt: "2025-03-08",
+  publishedAt: "2025-01-10",
   readingMinutes: 8,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Nairobi",
     "Affordable",

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How to flip houses in Kenya: the honest 2026 playbook",
   description:
     "House flipping works in Kenya, but not in the YouTube tutorial way. Here is the honest 2026 playbook on how flipping actually pencils out in Nairobi, what kinds of properties are worth flipping, the realistic costs, the timelines, the tax bill at the end, and the mistakes most flippers make.",
-  publishedAt: "2024-10-12",
+  publishedAt: "2024-09-23",
   readingMinutes: 8,
   author: authors.editors,
   tags: [

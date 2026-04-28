@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Nairobi&rsquo;s diplomatic and UN tenant market: Gigiri, Rosslyn, Runda explained",
   description:
     "The single most reliable premium tenant segment in Nairobi is the UN, embassy and international NGO market clustered around Gigiri. Here is how the segment works, what specific compounds command in rent, what tenants actually require, the lease patterns, and how diaspora investors get into it.",
-  publishedAt: "2025-09-23",
+  publishedAt: "2025-05-31",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.research,
   tags: [
     "Nairobi",
     "Diplomatic",

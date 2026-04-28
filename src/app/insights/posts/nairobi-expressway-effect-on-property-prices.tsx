@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How the Nairobi Expressway has actually moved property prices, four years on",
   description:
     "Four years after the Nairobi Expressway opened, the price impact on Westlands, Mlolongo, Syokimau and the JKIA corridor is finally readable. Here is the honest, neighbourhood-by-neighbourhood picture, the locations that gained the most, and where the expressway delivered nothing but louder traffic.",
-  publishedAt: "2026-01-19",
+  publishedAt: "2025-09-13",
   readingMinutes: 8,
   author: authors.research,
   tags: ["Nairobi", "Expressway", "Infrastructure", "Property Prices", "Investment"],

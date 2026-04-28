@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Toyota or a house? The classic Kenyan dilemma in 2026",
   description:
     "Almost every working Kenyan eventually faces the same fork in the road. Buy the Toyota now or save towards the house. The cultural pressure runs one way and the spreadsheet runs the other. Here is the honest 2026 take on which actually serves you better, with the numbers most articles skip.",
-  publishedAt: "2025-03-29",
+  publishedAt: "2025-01-25",
   readingMinutes: 7,
   author: authors.editors,
   tags: [

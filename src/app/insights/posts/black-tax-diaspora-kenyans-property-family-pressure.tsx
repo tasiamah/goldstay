@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Black tax and Kenyan property: how diaspora owners handle family pressure",
   description:
     "Almost every diaspora Kenyan who owns property back home eventually faces some version of black tax. School fees, hospital bills, the family land project, the cousin who needs a deposit. Here is the honest 2026 guide to handling family financial pressure without ruining your investment plan or your relationships.",
-  publishedAt: "2025-04-22",
+  publishedAt: "2025-02-07",
   readingMinutes: 8,
   author: authors.editors,
   tags: [

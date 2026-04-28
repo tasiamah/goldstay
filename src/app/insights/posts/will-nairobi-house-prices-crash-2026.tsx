@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Will Nairobi house prices crash in 2026? An honest assessment",
   description:
     "Headline articles cycle every few months on whether Nairobi property is about to crash. The honest answer is more interesting than the headline. Here is the 2026 assessment of where the risks actually sit, what could trigger a real correction, and what is more likely to happen across different segments.",
-  publishedAt: "2025-02-04",
+  publishedAt: "2024-12-13",
   readingMinutes: 8,
   author: authors.research,
   tags: [

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Kenya&rsquo;s 1.5% Affordable Housing Levy explained for diaspora landlords",
   description:
     "Who pays the 1.5% Affordable Housing Levy, who is exempt, what it actually funds, and what diaspora landlords specifically need to know about how it interacts with rental income, payroll obligations and the Affordable Housing Programme allocation rules.",
-  publishedAt: "2026-01-10",
+  publishedAt: "2025-08-29",
   readingMinutes: 7,
   author: authors.editors,
   tags: ["Kenya", "Tax", "Housing Levy", "AHP", "Compliance", "Diaspora"],

@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "How much does property management actually cost in Kenya in 2026?",
   description:
     "Real numbers on what Kenyan property managers charge in 2026, what's quoted vs what's actually deducted, and the eight hidden line items that determine whether a 10% fee is cheap or expensive.",
-  publishedAt: "2025-10-02",
+  publishedAt: "2025-06-09",
   readingMinutes: 8,
-  author: authors.research,
+  author: authors.poonam,
   tags: ["Kenya", "Costs", "Fees", "Management", "Diaspora"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

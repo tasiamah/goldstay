@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Will Kenya introduce a property tax? The 2026 policy debate explained",
   description:
     "There is recurring noise in Kenyan policy circles about a national property tax. What is actually on the table, who is pushing for it, who is against it, and what would it look like in practice for diaspora landlords and Kenyan owners? The honest 2026 picture.",
-  publishedAt: "2025-01-11",
+  publishedAt: "2024-11-28",
   readingMinutes: 7,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Property Tax",

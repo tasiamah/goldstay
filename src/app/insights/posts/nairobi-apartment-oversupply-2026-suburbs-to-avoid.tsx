@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Nairobi apartment oversupply in 2026: where rents have stopped rising",
   description:
     "Not every Nairobi suburb is a good investment in 2026. Several have absorbed years of new supply faster than tenant demand has grown, and rents have plateaued or fallen. Honest neighbourhood-by-neighbourhood data on where supply has outrun demand and what that means for buyers.",
-  publishedAt: "2025-12-08",
+  publishedAt: "2025-08-01",
   readingMinutes: 8,
   author: authors.research,
   tags: [

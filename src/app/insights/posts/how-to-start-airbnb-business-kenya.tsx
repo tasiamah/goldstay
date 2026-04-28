@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "How to start an Airbnb business in Kenya: the realistic 2026 guide",
   description:
     "Airbnb in Kenya looks like easy passive income on Instagram. The real picture is more interesting and more demanding. Here is the honest 2026 guide to starting an Airbnb business in Nairobi or on the coast, with the realistic numbers, the licensing, the operations and the way most Airbnb hosts actually fail.",
-  publishedAt: "2024-10-10",
+  publishedAt: "2024-09-19",
   readingMinutes: 8,
-  author: authors.editors,
+  author: authors.poonam,
   tags: [
     "Kenya",
     "Airbnb",

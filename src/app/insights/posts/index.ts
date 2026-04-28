@@ -329,6 +329,123 @@ import BritishBuyers, {
   meta as britishBuyersMeta,
 } from "./british-buyers-kenyan-property-complete-guide-2026";
 
+import ParklandsHighridge, {
+  meta as parklandsHighridgeMeta,
+} from "./parklands-highridge-2026-nairobi-deep-dive";
+import LoreshoMountainView, {
+  meta as loreshoMountainViewMeta,
+} from "./loresho-mountain-view-nairobi-underrated-premium";
+import RiversideDrive, {
+  meta as riversideDriveMeta,
+} from "./riverside-drive-nairobi-old-money-corridor";
+import NgongRoadCorridor, {
+  meta as ngongRoadCorridorMeta,
+} from "./ngong-road-corridor-suburb-by-suburb";
+import EastleighRental, {
+  meta as eastleighRentalMeta,
+} from "./eastleigh-rental-machine-investor-guide";
+import LavingtonComplete, {
+  meta as lavingtonCompleteMeta,
+} from "./lavington-complete-guide-2026";
+import SpringValleyVsLavington, {
+  meta as springValleyVsLavingtonMeta,
+} from "./spring-valley-vs-lavington-vs-riverside";
+import GigiriRosslyn, {
+  meta as gigiriRosslynMeta,
+} from "./gigiri-rosslyn-diplomatic-district-guide";
+import KitisuruNyari, {
+  meta as kitisuruNyariMeta,
+} from "./kitisuru-nyari-quietest-premium-addresses";
+import LivingInKaren, {
+  meta as livingInKarenMeta,
+} from "./living-in-karen-returnee-day-in-life";
+import Kitengela2026, {
+  meta as kitengela2026Meta,
+} from "./kitengela-2026-who-is-buying";
+import SouthBSouthC, {
+  meta as southBSouthCMeta,
+} from "./south-b-south-c-underrated-value-belt";
+
+import HiddenCostsBuying, {
+  meta as hiddenCostsBuyingMeta,
+} from "./hidden-costs-buying-property-kenya";
+import HiddenCostsBuilding, {
+  meta as hiddenCostsBuildingMeta,
+} from "./hidden-costs-building-house-kenya-2026";
+import HowToNegotiate, {
+  meta as howToNegotiateMeta,
+} from "./how-to-negotiate-price-kenyan-property";
+import EstateAgentCommission, {
+  meta as estateAgentCommissionMeta,
+} from "./estate-agent-commission-kenya-explained";
+import LandRatesCouncil, {
+  meta as landRatesCouncilMeta,
+} from "./land-rates-council-rates-kenya-explained";
+import CementSteelFinishing, {
+  meta as cementSteelFinishingMeta,
+} from "./cement-steel-finishing-prices-kenya-2026";
+import PropertyTransfer, {
+  meta as propertyTransferMeta,
+} from "./property-transfer-process-step-by-step-kenya";
+
+import WhyPropertyNotSelling, {
+  meta as whyPropertyNotSellingMeta,
+} from "./why-your-kenyan-property-is-not-selling";
+import WhyRentalVacant, {
+  meta as whyRentalVacantMeta,
+} from "./why-your-nairobi-rental-keeps-going-vacant";
+import SellNairobi30Days, {
+  meta as sellNairobi30DaysMeta,
+} from "./how-to-sell-nairobi-property-30-days";
+
+import CountyBuildingApprovals, {
+  meta as countyBuildingApprovalsMeta,
+} from "./county-building-approvals-kenya-roadmap";
+import ArchitectsQs, {
+  meta as architectsQsMeta,
+} from "./architects-quantity-surveyors-kenya-cost-value";
+
+import RentToOwnKenya, {
+  meta as rentToOwnKenyaMeta,
+} from "./rent-to-own-kenya-2026-realistic";
+import CoOwnershipFractional, {
+  meta as coOwnershipFractionalMeta,
+} from "./co-ownership-fractional-kenyan-property-legal";
+import ForeignCompaniesOwning, {
+  meta as foreignCompaniesOwningMeta,
+} from "./foreign-companies-owning-kenyan-property-structures";
+
+import TitleFraudKenya, {
+  meta as titleFraudKenyaMeta,
+} from "./title-fraud-kenya-7-schemes-spot";
+import BestDevelopersRanked, {
+  meta as bestDevelopersRankedMeta,
+} from "./best-property-developers-kenya-2026-ranked";
+import LandCartelsKenya, {
+  meta as landCartelsKenyaMeta,
+} from "./land-cartels-kenya-how-they-operate";
+import SpotFakeTitle, {
+  meta as spotFakeTitleMeta,
+} from "./how-to-spot-fake-kenyan-title-deed";
+import StalledConstruction, {
+  meta as stalledConstructionMeta,
+} from "./stalled-construction-projects-kenya-what-to-do";
+import MarketReviewH1, {
+  meta as marketReviewH1Meta,
+} from "./nairobi-property-market-review-2026-h1";
+import ViewingChecklist, {
+  meta as viewingChecklistMeta,
+} from "./nairobi-viewing-checklist-red-flags";
+import DiasporaTripChecklist, {
+  meta as diasporaTripChecklistMeta,
+} from "./diaspora-property-checklist-before-flying-back-kenya";
+import ConstructionPerSqm, {
+  meta as constructionPerSqmMeta,
+} from "./kenya-construction-cost-per-square-metre-2026";
+import RefinanceMortgage, {
+  meta as refinanceMortgageMeta,
+} from "./how-to-refinance-mortgage-kenya-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -482,6 +599,55 @@ export const posts: readonly Post[] = [
   { meta: lawOfSuccessionMeta, Component: LawOfSuccession },
   { meta: easementsWayleavesMeta, Component: EasementsWayleaves },
   { meta: britishBuyersMeta, Component: BritishBuyers },
+  { meta: parklandsHighridgeMeta, Component: ParklandsHighridge },
+  { meta: loreshoMountainViewMeta, Component: LoreshoMountainView },
+  { meta: riversideDriveMeta, Component: RiversideDrive },
+  { meta: ngongRoadCorridorMeta, Component: NgongRoadCorridor },
+  { meta: eastleighRentalMeta, Component: EastleighRental },
+  { meta: lavingtonCompleteMeta, Component: LavingtonComplete },
+  {
+    meta: springValleyVsLavingtonMeta,
+    Component: SpringValleyVsLavington,
+  },
+  { meta: gigiriRosslynMeta, Component: GigiriRosslyn },
+  { meta: kitisuruNyariMeta, Component: KitisuruNyari },
+  { meta: livingInKarenMeta, Component: LivingInKaren },
+  { meta: kitengela2026Meta, Component: Kitengela2026 },
+  { meta: southBSouthCMeta, Component: SouthBSouthC },
+  { meta: hiddenCostsBuyingMeta, Component: HiddenCostsBuying },
+  { meta: hiddenCostsBuildingMeta, Component: HiddenCostsBuilding },
+  { meta: howToNegotiateMeta, Component: HowToNegotiate },
+  { meta: estateAgentCommissionMeta, Component: EstateAgentCommission },
+  { meta: landRatesCouncilMeta, Component: LandRatesCouncil },
+  { meta: cementSteelFinishingMeta, Component: CementSteelFinishing },
+  { meta: propertyTransferMeta, Component: PropertyTransfer },
+  { meta: whyPropertyNotSellingMeta, Component: WhyPropertyNotSelling },
+  { meta: whyRentalVacantMeta, Component: WhyRentalVacant },
+  { meta: sellNairobi30DaysMeta, Component: SellNairobi30Days },
+  {
+    meta: countyBuildingApprovalsMeta,
+    Component: CountyBuildingApprovals,
+  },
+  { meta: architectsQsMeta, Component: ArchitectsQs },
+  { meta: rentToOwnKenyaMeta, Component: RentToOwnKenya },
+  { meta: coOwnershipFractionalMeta, Component: CoOwnershipFractional },
+  {
+    meta: foreignCompaniesOwningMeta,
+    Component: ForeignCompaniesOwning,
+  },
+  { meta: titleFraudKenyaMeta, Component: TitleFraudKenya },
+  { meta: bestDevelopersRankedMeta, Component: BestDevelopersRanked },
+  { meta: landCartelsKenyaMeta, Component: LandCartelsKenya },
+  { meta: spotFakeTitleMeta, Component: SpotFakeTitle },
+  { meta: stalledConstructionMeta, Component: StalledConstruction },
+  { meta: marketReviewH1Meta, Component: MarketReviewH1 },
+  { meta: viewingChecklistMeta, Component: ViewingChecklist },
+  {
+    meta: diasporaTripChecklistMeta,
+    Component: DiasporaTripChecklist,
+  },
+  { meta: constructionPerSqmMeta, Component: ConstructionPerSqm },
+  { meta: refinanceMortgageMeta, Component: RefinanceMortgage },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {

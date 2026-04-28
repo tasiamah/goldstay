@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "M-Pesa Paybill and bank rent collection for Nairobi landlords: the practical 2026 guide",
   description:
     "Cash and bank deposits are slowly losing ground to M-Pesa Paybill for rent collection in Nairobi. Here is how Paybill actually works for landlords, the cost, the reconciliation realities, the tax exposure and the bank account setup that makes the whole thing work cleanly for diaspora owners.",
-  publishedAt: "2025-06-24",
+  publishedAt: "2025-03-26",
   readingMinutes: 7,
   author: authors.poonam,
   tags: [

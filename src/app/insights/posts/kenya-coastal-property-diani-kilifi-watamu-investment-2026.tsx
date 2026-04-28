@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Kenya&rsquo;s coastal property thesis in 2026: Diani, Kilifi, Watamu and Malindi",
   description:
     "The Kenyan coast is the country&rsquo;s strongest holiday-let market and a real if narrower long-term rental story. Diani, Kilifi, Watamu and Malindi each behave differently. Honest 2026 prices, yields, build quality and the specific risks diaspora investors miss when they extrapolate Nairobi rules to the coast.",
-  publishedAt: "2025-10-08",
+  publishedAt: "2025-06-14",
   readingMinutes: 9,
-  author: authors.research,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Coast",

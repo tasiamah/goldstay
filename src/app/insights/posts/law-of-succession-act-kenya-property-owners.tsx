@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "The Law of Succession Act in Kenya: what every property owner needs to know in 2026",
   description:
     "The Law of Succession Act governs what happens to your Kenyan property when you die. Most property owners do not understand it and the result is family disputes, frozen assets and avoidable costs. Here is the honest 2026 guide for Kenyan property owners and diaspora Kenyans on how the Act actually works.",
-  publishedAt: "2024-07-27",
+  publishedAt: "2024-07-24",
   readingMinutes: 7,
   author: authors.legal,
   tags: [

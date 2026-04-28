@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Power of attorney for Kenyan property: how diaspora buyers and sellers should structure it",
   description:
     "A power of attorney is the cleanest way for a diaspora Kenyan to handle a property purchase, sale or other transaction without flying back. Done well it speeds the file by months. Done badly it opens up serious risk. Here is the full 2026 guide to drafting, executing, registering and revoking a Kenyan property POA.",
-  publishedAt: "2025-06-25",
+  publishedAt: "2025-03-31",
   readingMinutes: 7,
   author: authors.legal,
   tags: [
