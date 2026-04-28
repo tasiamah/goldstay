@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Why amenities matter for Nairobi rental property: gym, pool, backup power, fibre",
   description:
     "Two identical apartments at the same price in the same neighbourhood can let in 14 days versus 90 days entirely on the basis of amenities. Here is what the Nairobi tenant of 2026 actually expects, what they ignore, and how to value an amenity package when comparing buildings.",
-  publishedAt: "2026-04-26",
+  publishedAt: "2026-03-28",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Nairobi", "Amenities", "Rental Strategy", "Tenants", "Yield"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

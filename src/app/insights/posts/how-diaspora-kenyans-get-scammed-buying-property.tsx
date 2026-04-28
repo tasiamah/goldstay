@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The seven most common ways diaspora Kenyans get scammed buying property at home",
   description:
     "Forged titles, the same plot sold twice, deposits to the wrong account, fake developers, family member side deals, ghost service charges and off-plan vanish acts. Real patterns we see every quarter and the specific diligence that catches each one before money moves.",
-  publishedAt: "2026-04-19",
+  publishedAt: "2026-01-02",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Scams",

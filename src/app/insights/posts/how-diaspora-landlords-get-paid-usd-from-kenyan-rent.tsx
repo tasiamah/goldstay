@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "How diaspora landlords actually get paid in USD from Kenyan rent",
   description:
     "The unsexy mechanics of moving rental income out of Kenya without losing 4% to FX spread, 6 weeks to bank delays, or your nerves. A practical guide to wires, mobile money, FX rates, and the rules that actually apply.",
-  publishedAt: "2026-03-18",
+  publishedAt: "2025-08-13",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Kenya", "FX", "USD", "Remittance", "Diaspora"],

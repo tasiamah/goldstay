@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Property valuation in Kenya: how it actually works, and why your number differs from the bank&rsquo;s",
   description:
     "Why a Kenyan bank&rsquo;s mortgage valuation lands 10 to 20 percent below the price you agreed to pay, what the three valuation methods are, when each is used, what an Open Market Value report should include, and how to use a valuation properly when buying or selling.",
-  publishedAt: "2026-04-25",
+  publishedAt: "2026-03-14",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Kenya", "Valuation", "Mortgage", "Buying", "Selling", "Diligence"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

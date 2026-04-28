@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Hospitality investment in Kenya: holiday lets, serviced apartments and the small lodge play",
   description:
     "Beyond long-term rentals, Kenyan property has a real hospitality investment market: serviced apartments in Nairobi, Diani holiday lets, Kilifi villas, Naivasha cottages and small Mt Kenya and Maasai Mara lodges. Here is how each segment behaves, the realistic returns, the operational requirements and where diaspora investors fit in.",
-  publishedAt: "2026-02-18",
+  publishedAt: "2025-05-24",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: [
     "Kenya",
     "Hospitality",

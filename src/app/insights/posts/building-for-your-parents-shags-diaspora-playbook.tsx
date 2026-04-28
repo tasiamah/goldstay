@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Building for your parents in shags: the diaspora playbook for 2026",
   description:
     "One of the most common diaspora projects in Kenya is building a home for parents on family land upcountry. The cultural weight is heavy and the cost overruns are legendary. Here is the practical 2026 playbook for doing it well, with realistic budgets, project structure, and the mistakes diaspora children make most often.",
-  publishedAt: "2026-02-04",
+  publishedAt: "2025-04-12",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Diaspora",

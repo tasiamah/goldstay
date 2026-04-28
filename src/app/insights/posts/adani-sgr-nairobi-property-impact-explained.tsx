@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Adani, the SGR and Nairobi property: what fell through, what stuck, and what it means",
   description:
     "Between 2023 and 2025 Kenya saw a sequence of high-profile infrastructure deals collapse, get renegotiated or quietly proceed. Adani at JKIA, the SGR extension question, the lease of national assets. Here is the honest 2026 read on which deals matter for Nairobi property and which do not.",
-  publishedAt: "2025-12-29",
+  publishedAt: "2024-12-25",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.research,
   tags: [
     "Kenya",
     "Infrastructure",

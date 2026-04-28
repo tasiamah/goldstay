@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Boma Yangu and the Affordable Housing Programme: the diaspora application playbook",
   description:
     "Boma Yangu is the registration platform for Kenya&rsquo;s Affordable Housing Programme. Diaspora Kenyans can apply, qualify and ultimately own under the same scheme as residents, with some important differences. Here is the practical 2026 playbook covering eligibility, the categories, the application process, the price points and the realistic timelines.",
-  publishedAt: "2026-02-21",
+  publishedAt: "2025-06-06",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Boma Yangu",

@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The Sectional Properties Act 2020 explained: what every apartment owner in Kenya needs to know",
   description:
     "Almost every apartment in Nairobi is now governed by the Sectional Properties Act 2020. This is the practical 2026 guide to what it changed, how sectional titles work, what a corporation is, what your unit factor means, what management companies can and cannot do, and the questions every apartment buyer should ask.",
-  publishedAt: "2026-03-10",
+  publishedAt: "2025-07-24",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Sectional Properties",

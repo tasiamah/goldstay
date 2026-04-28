@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "How to tell if your relative back in Kenya is scamming you on a property project",
   description:
     "Most diaspora Kenyans who lose money on Kenyan property do not lose it to strangers. They lose it to relatives or family friends managing the project on the ground. Here are the patterns, the red flags, the ways to verify quietly, and what to do when the suspicion is correct.",
-  publishedAt: "2026-02-01",
+  publishedAt: "2025-04-03",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Diaspora",

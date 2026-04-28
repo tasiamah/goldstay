@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "What to do if your tenant refuses to pay rent in Kenya: the 2026 landlord guide",
   description:
     "Tenant non-payment is the single biggest source of stress for Kenyan landlords. Done right, the process is contained and the loss is limited. Done wrong, it drags for months and the loss compounds. Here is the honest 2026 step-by-step playbook on what to do when a tenant stops paying.",
-  publishedAt: "2025-11-05",
+  publishedAt: "2024-09-01",
   readingMinutes: 7,
   author: authors.poonam,
   tags: [

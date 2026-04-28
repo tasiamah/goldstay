@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying distressed and foreclosed property in Kenya: the 2026 investor playbook",
   description:
     "Distressed property is one of the genuine value pockets of the Kenyan market. The discount is real, and so is the complexity. Here is the honest 2026 playbook on how distressed and foreclosed property actually works in Kenya, where to find it, the realistic margins and the way disciplined investors win.",
-  publishedAt: "2025-10-30",
+  publishedAt: "2024-08-22",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Distressed",

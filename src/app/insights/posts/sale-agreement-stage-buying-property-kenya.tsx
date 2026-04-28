@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The sale agreement stage in Kenya: a step-by-step guide for diaspora buyers",
   description:
     "From offer letter accepted to title in your name. The exact sequence of the sale agreement stage in Kenya, the documents that must change hands, the typical timelines, the KRA tax clearance step everybody underestimates, and where diaspora buyers most commonly get stuck.",
-  publishedAt: "2026-04-24",
+  publishedAt: "2026-02-24",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.legal,
   tags: ["Kenya", "Buying", "Sale Agreement", "Diaspora", "Conveyancing", "KRA"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

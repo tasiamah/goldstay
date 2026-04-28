@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Caveats and cautions on a Kenyan title: what they are and how to deal with them",
   description:
     "Caveats and cautions are the most common reason Kenyan property transactions get stuck. Here is the honest 2026 guide to what they actually are, the differences between them, why they get registered, who can register them, and how to remove them so a transaction can complete.",
-  publishedAt: "2025-10-21",
+  publishedAt: "2024-08-02",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Title",

@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "What it actually costs to build a 3-bedroom house in Kenya in 2026",
   description:
     "Cost ranges for building a 3-bedroom house in Kenya in 2026 across mid, high and luxury finishes. The real cost of land, professional fees, NCA approvals, materials, labour, finishes and contingency, plus the diaspora-specific traps that push budgets 30 percent over plan.",
-  publishedAt: "2026-04-06",
+  publishedAt: "2025-10-31",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Kenya", "Building", "Cost", "Diaspora", "Construction", "Budget"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

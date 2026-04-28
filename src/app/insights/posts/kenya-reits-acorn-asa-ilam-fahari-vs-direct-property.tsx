@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Kenyan REITs in 2026: Acorn ASA, ILAM Fahari and direct property compared",
   description:
     "Real Estate Investment Trusts have been pitched as the easy way for diaspora investors to get Nairobi property exposure. The pitch has merit but the trade-off is real. Here is how Acorn ASA, ILAM Fahari and the other listed Kenyan REITs actually perform versus directly owning a Nairobi apartment.",
-  publishedAt: "2026-04-13",
+  publishedAt: "2025-12-04",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Kenya", "REIT", "Investment", "Acorn", "ILAM Fahari", "Diaspora"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

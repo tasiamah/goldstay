@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The top 10 mistakes Kenyans make when buying property in 2026",
   description:
     "Most Kenyan property losses are not exotic. They follow a small set of recurring mistakes that buyers make again and again. Here is the honest 2026 list of the top 10, with how each one happens and how to avoid it.",
-  publishedAt: "2025-12-05",
+  publishedAt: "2024-11-04",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Buying",

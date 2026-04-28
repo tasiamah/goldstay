@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Tatu City, Northlands and Konza: investing in Kenya&rsquo;s smart cities in 2026",
   description:
     "Tatu City, Northlands and Konza Technopolis are the three master-planned cities being marketed hardest to diaspora investors today. Each is genuinely real, each is materially unfinished, and each rewards a different kind of investor. Here is the honest 2026 picture.",
-  publishedAt: "2026-04-10",
+  publishedAt: "2025-11-22",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Kenya", "Tatu City", "Konza", "Northlands", "Smart Cities", "Investment"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

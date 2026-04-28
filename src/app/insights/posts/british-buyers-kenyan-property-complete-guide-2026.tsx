@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "British buyers of Kenyan property: the complete 2026 guide",
   description:
     "British buyers (UK-resident Kenyans, retirees, second home buyers and expats with East African ties) make up one of the largest international buyer pools in Kenyan property. Here is the honest 2026 guide on what UK-based buyers need to know about title, finance, currency, tax in both jurisdictions and the practical execution of buying Kenyan property from London.",
-  publishedAt: "2025-10-12",
+  publishedAt: "2024-07-17",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "UK Buyers",

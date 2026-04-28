@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "The Westlands transformation: Nairobi&rsquo;s vertical revolution explained",
   description:
     "Westlands has gone from a low-rise suburb of bungalows to Nairobi&rsquo;s most vertical district in 15 years. The transformation has reshaped pricing, tenant pool, lifestyle and the property thesis. Here is the honest 2026 read on what changed, who is buying, who is renting, and where Westlands goes next.",
-  publishedAt: "2025-11-14",
+  publishedAt: "2024-09-17",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Nairobi",
     "Westlands",

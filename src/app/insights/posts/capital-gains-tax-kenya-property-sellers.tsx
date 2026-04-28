@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Capital Gains Tax in Kenya: what diaspora property sellers actually pay",
   description:
     "What CGT in Kenya is, who pays it, the four exemptions that actually apply, the cost base mistakes that inflate your bill by 30%, and the planning moves that cleanly reduce CGT before you sell.",
-  publishedAt: "2026-01-28",
+  publishedAt: "2025-03-20",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: ["Kenya", "Tax", "CGT", "Selling", "Diaspora"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

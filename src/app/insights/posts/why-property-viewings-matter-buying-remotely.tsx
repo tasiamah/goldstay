@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Why a property viewing still matters when you are buying from abroad",
   description:
     "Video walk-throughs feel thorough. They are not. Eight things only a person physically standing in the unit can see, the 14-point inspection checklist we run on every diaspora purchase, and a real example of what we caught.",
-  publishedAt: "2026-04-15",
+  publishedAt: "2025-12-15",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: ["Buying", "Diaspora", "Property Sourcing", "Inspection", "Due Diligence"],
   country: "kenya",
   heroImage: "/images/locations/accra.jpg",

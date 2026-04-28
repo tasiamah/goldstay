@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "How to price a Nairobi rental from scratch (without guessing)",
   description:
     "The methodology we use to price every property we manage in Nairobi: comparable analysis, the four building features that move rent more than location, the pricing mistakes that cost more than they save, and how to test a number before committing to it.",
-  publishedAt: "2025-12-31",
+  publishedAt: "2025-01-02",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Nairobi", "Pricing", "Strategy", "Comps"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

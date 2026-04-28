@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying off plan in Nairobi: when it works and when it ruins you",
   description:
     "A frank look at off plan apartments in Nairobi in 2026. Why developers price them aggressively, the seven red flags that predict a failed project, the protections that actually work, and when off plan is genuinely the right call.",
-  publishedAt: "2026-02-04",
+  publishedAt: "2025-04-15",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.editors,
   tags: ["Nairobi", "Buying", "Off Plan", "Developers", "Risk"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

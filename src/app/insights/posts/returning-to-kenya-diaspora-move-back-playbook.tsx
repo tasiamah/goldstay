@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Returning to Kenya: the diaspora move back playbook for 2026",
   description:
     "Moving back to Kenya after years or decades abroad is the project most diaspora Kenyans underestimate. Housing, schools, citizenship paperwork, work options, healthcare, shipping, banking, taxes and the soft landing. Here is the practical 12 month playbook for a clean relocation home.",
-  publishedAt: "2026-03-13",
+  publishedAt: "2025-08-04",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Diaspora",

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Solar and backup power for Nairobi rental property: what actually pays back",
   description:
     "Power outages in Nairobi are short but routine. Solar PV, inverters and battery backup are increasingly standard in mid-market rentals. Here is what actually pays back, what does not, and what tenants have started expecting from a serious Nairobi rental in 2026.",
-  publishedAt: "2026-04-03",
+  publishedAt: "2025-10-15",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "Solar", "Power", "Rental", "Sustainability", "Operations"],

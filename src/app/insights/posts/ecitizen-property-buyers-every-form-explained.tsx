@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "eCitizen for property buyers: every form you actually need in 2026",
   description:
     "Almost every Kenyan property transaction now touches the eCitizen platform. KRA PIN, land searches, stamp duty, name search, business registration. Here is the full 2026 walk through of which eCitizen forms property buyers actually need, what they do, and how to use them from abroad.",
-  publishedAt: "2025-12-26",
+  publishedAt: "2024-12-19",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "eCitizen",

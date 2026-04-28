@@ -42,7 +42,33 @@ export type PostMeta = {
 // Single source of authors. Keeping bios here means every post page,
 // listing card and Article JSON-LD entity reads from the same
 // canonical record. Add a new author by extending this map.
+//
+// Most articles are bylined to the editorial team rather than to a
+// single individual, so the catalogue reads as a coherent body of
+// work rather than one person's blog. The desk-level bylines
+// (Editors, Research, Legal) cover the bulk of the catalogue;
+// Poonam's name appears on operational pieces where her on-the-
+// ground experience in Nairobi is the actual source of the
+// reporting.
 export const authors: Record<string, Author> = {
+  editors: {
+    name: "Goldstay Editors",
+    role: "Editorial Team",
+    bio: "The Goldstay Editors team writes and reviews the Insights catalogue. Pieces are reported from our Nairobi and Accra offices, drawing on the property advisory, sourcing and management work the firm runs day to day for diaspora and resident clients.",
+    image: "/images/team/editors.png",
+  },
+  research: {
+    name: "Goldstay Research",
+    role: "Market Research Desk",
+    bio: "Goldstay Research covers macro property data, neighbourhood pricing, rental yields and policy across the Kenyan and Ghanaian markets. The desk publishes the firm's view on market trends, oversupply, currency and the longer term direction of property values.",
+    image: "/images/team/research.png",
+  },
+  legal: {
+    name: "Goldstay Legal Desk",
+    role: "Legal & Compliance",
+    bio: "The Goldstay Legal Desk covers Kenyan and Ghanaian property law, title diligence, sale agreements, stamp duty, succession and the regulatory environment that property owners and investors encounter. Pieces are written in collaboration with our advocate partners.",
+    image: "/images/team/legal.png",
+  },
   poonam: {
     name: "Poonam Arora",
     role: "General Manager, Nairobi",

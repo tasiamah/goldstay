@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying property through a SACCO vs a bank in Kenya: which is actually better in 2026?",
   description:
     "SACCOs have quietly become one of the most important sources of property finance in Kenya. Here is the honest 2026 comparison of buying property through a SACCO versus a commercial bank, including realistic interest rates, loan limits, processing time, qualifying requirements and the situations where each route makes sense.",
-  publishedAt: "2025-10-27",
+  publishedAt: "2024-08-14",
   readingMinutes: 6,
-  author: authors.poonam,
+  author: authors.research,
   tags: [
     "Kenya",
     "SACCO",

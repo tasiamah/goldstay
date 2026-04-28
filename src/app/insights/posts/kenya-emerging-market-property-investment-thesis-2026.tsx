@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Kenya as an emerging market: the property investment thesis in 2026",
   description:
     "Why Kenyan residential property still pencils for diaspora investors in 2026, with the demographic, urbanisation, FX and yield numbers behind the thesis. Honest about the risks, specific about where the opportunity sits, and where it does not.",
-  publishedAt: "2026-04-27",
+  publishedAt: "2026-04-19",
   readingMinutes: 10,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Kenya", "Investment Thesis", "Emerging Markets", "Diaspora", "Yield", "FX"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

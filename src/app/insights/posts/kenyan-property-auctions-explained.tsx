@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Kenyan property auctions explained: how they work and whether to buy",
   description:
     "Auction property in Kenya is everywhere in the press but poorly explained in practice. Here is the honest 2026 guide to how Kenyan property auctions actually work, what kinds of properties end up at auction, the realistic discounts, the genuine risks, and how to participate safely as a buyer.",
-  publishedAt: "2025-11-02",
+  publishedAt: "2024-08-25",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Kenya",
     "Auctions",

@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Adverse possession in Kenya: how squatters can claim title and how to prevent it",
   description:
     "Adverse possession is real Kenyan law and absentee landowners lose property to it every year. Here is the honest 2026 guide on how adverse possession works in Kenya, the 12 year clock, what squatters need to prove, and the practical steps absentee owners should take to protect themselves.",
-  publishedAt: "2025-10-24",
+  publishedAt: "2024-08-08",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Adverse Possession",

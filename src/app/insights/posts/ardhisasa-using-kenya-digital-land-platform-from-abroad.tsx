@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Ardhisasa explained: using Kenya&rsquo;s digital land platform from abroad",
   description:
     "Ardhisasa is gradually replacing the Ardhi House paper registry. For diaspora landlords and buyers it changes how title searches, transfers and land rates payments are handled. Here is what works on Ardhisasa today, what still needs the physical registry, and how to set up your account from outside Kenya.",
-  publishedAt: "2026-04-17",
+  publishedAt: "2025-12-26",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.editors,
   tags: ["Kenya", "Ardhisasa", "Land Registry", "Title Deed", "Diaspora", "Digital"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

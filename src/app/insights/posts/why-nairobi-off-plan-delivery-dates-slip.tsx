@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Why Nairobi off-plan delivery dates slip by 18 months on average",
   description:
     "Off-plan handover dates in Nairobi miss almost as a rule. Eighteen months of slippage on a marketed two-year build is the working pattern. Here is why it happens, the structural reasons it is unlikely to change, the early signs that a specific project is heading toward severe delay, and how diaspora buyers should price this risk into off-plan decisions.",
-  publishedAt: "2026-03-26",
+  publishedAt: "2025-09-11",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.editors,
   tags: [
     "Nairobi",
     "Off-plan",

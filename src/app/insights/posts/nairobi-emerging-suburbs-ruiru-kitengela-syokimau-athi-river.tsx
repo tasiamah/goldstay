@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Nairobi&rsquo;s emerging suburbs in 2026: Ruiru, Kitengela, Syokimau and Athi River",
   description:
     "Outside the core Nairobi suburbs, four growth corridors are absorbing most of the city&rsquo;s new mid-market families. Ruiru on the north, Kitengela and Athi River on the south east, and Syokimau on the airport corridor. Honest 2026 prices, rental yields, tenant base and which one fits which investor.",
-  publishedAt: "2026-03-27",
+  publishedAt: "2025-09-18",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Nairobi", "Suburbs", "Ruiru", "Kitengela", "Syokimau", "Athi River", "Investment"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

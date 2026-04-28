@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Buying versus building in Nairobi: which actually makes sense for a diaspora investor",
   description:
     "Self-build looks cheaper per square metre than buying ready, and on a clean spreadsheet it often is. The question is whether the spreadsheet survives contact with reality. Here is the honest comparison for diaspora investors weighing land plus build against simply buying a finished apartment or house in Nairobi.",
-  publishedAt: "2026-04-25",
+  publishedAt: "2026-03-04",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Nairobi", "Buying", "Self Build", "Construction", "Diaspora", "Investment"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

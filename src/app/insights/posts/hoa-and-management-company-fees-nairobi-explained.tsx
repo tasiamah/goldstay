@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "HOA and management company fees in Nairobi: what you actually pay and what you actually get",
   description:
     "Apartment service charge gets most of the airtime, but the second layer of fees that gated communities and townhouse compounds in Nairobi charge through their HOA or management company is just as material. Here is what each layer covers, what good governance looks like, and how to read building accounts before you buy.",
-  publishedAt: "2026-04-26",
+  publishedAt: "2026-03-24",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Nairobi", "HOA", "Management Company", "Service Charge", "Compounds", "Costs"],

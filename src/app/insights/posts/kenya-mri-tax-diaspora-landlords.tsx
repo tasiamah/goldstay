@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Kenya's 7.5% MRI tax for diaspora landlords: the complete 2026 guide",
   description:
     "If you own residential property in Kenya from abroad, KRA is already counting on its 7.5%. A plain-English breakdown of what MRI is, who pays it, the actual filing mechanic, and the three mistakes diaspora landlords make every year.",
-  publishedAt: "2026-04-22",
+  publishedAt: "2026-01-20",
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Kenya", "Tax", "Diaspora", "MRI", "KRA", "Compliance"],

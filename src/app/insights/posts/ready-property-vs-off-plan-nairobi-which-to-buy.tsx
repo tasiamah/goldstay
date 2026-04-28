@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Ready property versus off-plan in Nairobi: which to buy in 2026",
   description:
     "Off-plan in Nairobi often looks 15 to 25 percent cheaper on paper than ready stock, but the real cost gap is much narrower once delivery risk, opportunity cost of cash and finishing variance are priced in. Here is how to think about ready versus off-plan as a diaspora buyer.",
-  publishedAt: "2026-04-24",
+  publishedAt: "2026-02-13",
   readingMinutes: 8,
-  author: authors.poonam,
+  author: authors.research,
   tags: ["Nairobi", "Buying", "Off Plan", "Ready Property", "Diaspora", "Investment"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

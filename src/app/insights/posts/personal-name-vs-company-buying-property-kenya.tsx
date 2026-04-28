@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Personal name or company name: how to hold Kenyan property as a diaspora investor",
   description:
     "Holding Kenyan property in your personal name versus a Kenyan or offshore company has real consequences for tax, succession, exit liquidity and asset protection. Here is the practical comparison for diaspora landlords, when each structure makes sense, and the costs nobody mentions until you are deep into setup.",
-  publishedAt: "2026-04-27",
+  publishedAt: "2026-04-26",
   readingMinutes: 9,
-  author: authors.poonam,
+  author: authors.legal,
   tags: ["Kenya", "Ownership Structure", "Tax", "Estate Planning", "Diaspora", "Legal"],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",

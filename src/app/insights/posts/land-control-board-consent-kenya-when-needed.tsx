@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Land Control Board consent in Kenya: when you need it and how to get it",
   description:
     "If the land you are buying is classified as agricultural, the transaction is void without Land Control Board consent. This is the practical 2026 guide to which transactions need it, how the LCB process works, what it costs, how long it takes, and the mistakes diaspora buyers make most often.",
-  publishedAt: "2026-03-07",
+  publishedAt: "2025-07-17",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.legal,
   tags: [
     "Kenya",
     "Land Control Board",

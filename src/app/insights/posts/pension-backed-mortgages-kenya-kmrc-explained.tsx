@@ -18,9 +18,9 @@ export const meta: PostMeta = {
     "Pension-backed mortgages in Kenya: KMRC and beyond explained for 2026",
   description:
     "Kenya now offers several routes that connect retirement savings to homeownership: KMRC-backed long-term mortgages, the pension-secured mortgage product, and employer-supported home schemes. Here is the practical 2026 explainer for buyers thinking about pension-backed routes to a Nairobi home.",
-  publishedAt: "2025-12-17",
+  publishedAt: "2024-11-26",
   readingMinutes: 7,
-  author: authors.poonam,
+  author: authors.research,
   tags: [
     "Kenya",
     "Pension",
