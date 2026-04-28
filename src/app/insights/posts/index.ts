@@ -207,6 +207,67 @@ import CostOfLiving, {
   meta as costOfLivingMeta,
 } from "./cost-of-living-nairobi-2026-diaspora-returnees";
 
+import BlackTax, {
+  meta as blackTaxMeta,
+} from "./black-tax-diaspora-kenyans-property-family-pressure";
+import BuildingForParents, {
+  meta as buildingForParentsMeta,
+} from "./building-for-your-parents-shags-diaspora-playbook";
+import RelativeScamming, {
+  meta as relativeScammingMeta,
+} from "./how-to-tell-if-relative-kenya-scamming-you";
+import ToyotaOrHouse, {
+  meta as toyotaOrHouseMeta,
+} from "./toyota-or-house-classic-kenyan-dilemma-2026";
+import RichestNeighbourhoods, {
+  meta as richestNeighbourhoodsMeta,
+} from "./richest-neighbourhoods-nairobi-actual-home-prices";
+import CheapestSuburbs, {
+  meta as cheapestSuburbsMeta,
+} from "./cheapest-decent-suburbs-nairobi-2026-buyer-guide";
+import RentByNeighbourhood, {
+  meta as rentByNeighbourhoodMeta,
+} from "./nairobi-rent-prices-2026-by-neighbourhood-actual-numbers";
+import BestSchoolsRanked, {
+  meta as bestSchoolsRankedMeta,
+} from "./best-schools-nairobi-2026-ranked-kcse-international";
+import ScamWatchlist, {
+  meta as scamWatchlistMeta,
+} from "./top-property-scams-kenya-2026-watchlist";
+import PriceCrash, {
+  meta as priceCrashMeta,
+} from "./will-nairobi-house-prices-crash-2026";
+import ShillingOutlook, {
+  meta as shillingOutlookMeta,
+} from "./kenya-shilling-outlook-2026-property-investors";
+import PropertyTaxDebate, {
+  meta as propertyTaxDebateMeta,
+} from "./kenya-property-tax-2026-policy-debate";
+import GenZProperty, {
+  meta as genZPropertyMeta,
+} from "./genz-kenya-property-after-2024-protests";
+import AdaniSgrImpact, {
+  meta as adaniSgrImpactMeta,
+} from "./adani-sgr-nairobi-property-impact-explained";
+import EcitizenForms, {
+  meta as ecitizenFormsMeta,
+} from "./ecitizen-property-buyers-every-form-explained";
+import SendMoneyToKenya, {
+  meta as sendMoneyToKenyaMeta,
+} from "./how-to-send-money-to-kenya-cheaply-2026";
+import VerifyDeveloper, {
+  meta as verifyDeveloperMeta,
+} from "./how-to-verify-kenyan-property-developer";
+import PensionMortgages, {
+  meta as pensionMortgagesMeta,
+} from "./pension-backed-mortgages-kenya-kmrc-explained";
+import SingleWomenBuying, {
+  meta as singleWomenBuyingMeta,
+} from "./single-women-buying-property-kenya";
+import RetireInKenya, {
+  meta as retireInKenyaMeta,
+} from "./how-much-to-retire-in-kenya-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -320,6 +381,26 @@ export const posts: readonly Post[] = [
   { meta: africanCapitalsMeta, Component: AfricanCapitals },
   { meta: kenyaVsMauritiusRwandaMeta, Component: KenyaVsMauritiusRwanda },
   { meta: costOfLivingMeta, Component: CostOfLiving },
+  { meta: blackTaxMeta, Component: BlackTax },
+  { meta: buildingForParentsMeta, Component: BuildingForParents },
+  { meta: relativeScammingMeta, Component: RelativeScamming },
+  { meta: toyotaOrHouseMeta, Component: ToyotaOrHouse },
+  { meta: richestNeighbourhoodsMeta, Component: RichestNeighbourhoods },
+  { meta: cheapestSuburbsMeta, Component: CheapestSuburbs },
+  { meta: rentByNeighbourhoodMeta, Component: RentByNeighbourhood },
+  { meta: bestSchoolsRankedMeta, Component: BestSchoolsRanked },
+  { meta: scamWatchlistMeta, Component: ScamWatchlist },
+  { meta: priceCrashMeta, Component: PriceCrash },
+  { meta: shillingOutlookMeta, Component: ShillingOutlook },
+  { meta: propertyTaxDebateMeta, Component: PropertyTaxDebate },
+  { meta: genZPropertyMeta, Component: GenZProperty },
+  { meta: adaniSgrImpactMeta, Component: AdaniSgrImpact },
+  { meta: ecitizenFormsMeta, Component: EcitizenForms },
+  { meta: sendMoneyToKenyaMeta, Component: SendMoneyToKenya },
+  { meta: verifyDeveloperMeta, Component: VerifyDeveloper },
+  { meta: pensionMortgagesMeta, Component: PensionMortgages },
+  { meta: singleWomenBuyingMeta, Component: SingleWomenBuying },
+  { meta: retireInKenyaMeta, Component: RetireInKenya },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
