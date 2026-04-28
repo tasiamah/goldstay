@@ -268,6 +268,67 @@ import RetireInKenya, {
   meta as retireInKenyaMeta,
 } from "./how-much-to-retire-in-kenya-2026";
 
+import FirstTimeHomeBuyer, {
+  meta as firstTimeHomeBuyerMeta,
+} from "./first-time-home-buyer-kenya-complete-guide-2026";
+import TopMistakes, {
+  meta as topMistakesMeta,
+} from "./top-mistakes-kenyans-make-buying-property";
+import HowLongBuying, {
+  meta as howLongBuyingMeta,
+} from "./how-long-does-buying-property-kenya-take";
+import BestTimeOfYear, {
+  meta as bestTimeOfYearMeta,
+} from "./best-time-of-year-to-buy-property-kenya";
+import FlipHouses, {
+  meta as flipHousesMeta,
+} from "./how-to-flip-houses-kenya-2026-playbook";
+import StartAirbnbBusiness, {
+  meta as startAirbnbBusinessMeta,
+} from "./how-to-start-airbnb-business-kenya";
+import KilimaniChanging, {
+  meta as kilimaniChangingMeta,
+} from "./kilimani-apartment-market-changing-2026";
+import KarenVsRunda, {
+  meta as karenVsRundaMeta,
+} from "./karen-vs-runda-honest-comparison";
+import WestlandsTransformation, {
+  meta as westlandsTransformationMeta,
+} from "./westlands-transformation-nairobi-vertical-revolution";
+import ExpresswayFiveYears, {
+  meta as expresswayFiveYearsMeta,
+} from "./nairobi-expressway-5-years-on";
+import DeveloperBankrupt, {
+  meta as developerBankruptMeta,
+} from "./what-to-do-developer-goes-bankrupt-kenya";
+import TenantNotPaying, {
+  meta as tenantNotPayingMeta,
+} from "./what-to-do-if-tenant-refuses-to-pay-rent";
+import PropertyAuctions, {
+  meta as propertyAuctionsMeta,
+} from "./kenyan-property-auctions-explained";
+import DistressedProperty, {
+  meta as distressedPropertyMeta,
+} from "./buying-distressed-foreclosed-property-kenya";
+import SaccoVsBank, {
+  meta as saccoVsBankMeta,
+} from "./buying-through-sacco-vs-bank-kenya-property";
+import AdversePossession, {
+  meta as adversePossessionMeta,
+} from "./adverse-possession-kenya-squatters-rights";
+import CaveatsCautions, {
+  meta as caveatsCautionsMeta,
+} from "./caveats-and-cautions-on-kenyan-title-removal";
+import LawOfSuccession, {
+  meta as lawOfSuccessionMeta,
+} from "./law-of-succession-act-kenya-property-owners";
+import EasementsWayleaves, {
+  meta as easementsWayleavesMeta,
+} from "./easements-and-wayleaves-kenyan-property";
+import BritishBuyers, {
+  meta as britishBuyersMeta,
+} from "./british-buyers-kenyan-property-complete-guide-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -401,6 +462,26 @@ export const posts: readonly Post[] = [
   { meta: pensionMortgagesMeta, Component: PensionMortgages },
   { meta: singleWomenBuyingMeta, Component: SingleWomenBuying },
   { meta: retireInKenyaMeta, Component: RetireInKenya },
+  { meta: firstTimeHomeBuyerMeta, Component: FirstTimeHomeBuyer },
+  { meta: topMistakesMeta, Component: TopMistakes },
+  { meta: howLongBuyingMeta, Component: HowLongBuying },
+  { meta: bestTimeOfYearMeta, Component: BestTimeOfYear },
+  { meta: flipHousesMeta, Component: FlipHouses },
+  { meta: startAirbnbBusinessMeta, Component: StartAirbnbBusiness },
+  { meta: kilimaniChangingMeta, Component: KilimaniChanging },
+  { meta: karenVsRundaMeta, Component: KarenVsRunda },
+  { meta: westlandsTransformationMeta, Component: WestlandsTransformation },
+  { meta: expresswayFiveYearsMeta, Component: ExpresswayFiveYears },
+  { meta: developerBankruptMeta, Component: DeveloperBankrupt },
+  { meta: tenantNotPayingMeta, Component: TenantNotPaying },
+  { meta: propertyAuctionsMeta, Component: PropertyAuctions },
+  { meta: distressedPropertyMeta, Component: DistressedProperty },
+  { meta: saccoVsBankMeta, Component: SaccoVsBank },
+  { meta: adversePossessionMeta, Component: AdversePossession },
+  { meta: caveatsCautionsMeta, Component: CaveatsCautions },
+  { meta: lawOfSuccessionMeta, Component: LawOfSuccession },
+  { meta: easementsWayleavesMeta, Component: EasementsWayleaves },
+  { meta: britishBuyersMeta, Component: BritishBuyers },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
