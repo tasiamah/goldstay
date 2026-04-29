@@ -689,6 +689,101 @@ import CgtCalculatorKenya, {
   meta as cgtCalculatorKenyaMeta,
 } from "./cgt-calculator-kenya-property-2026";
 
+import LuminaraReview2026, {
+  meta as luminaraReview2026Meta,
+} from "./luminara-review-2026";
+import TheDiplomatOffPlanReview2026, {
+  meta as theDiplomatOffPlanReview2026Meta,
+} from "./the-diplomat-off-plan-review-2026";
+import GeminiOffPlanReview2026, {
+  meta as geminiOffPlanReview2026Meta,
+} from "./gemini-off-plan-review-2026";
+import PandoraOffPlanReview2026, {
+  meta as pandoraOffPlanReview2026Meta,
+} from "./pandora-off-plan-review-2026";
+import BrooksideOakOffPlanReview2026, {
+  meta as brooksideOakOffPlanReview2026Meta,
+} from "./brookside-oak-off-plan-review-2026";
+import BestNairobiOffPlans2026Ranked, {
+  meta as bestNairobiOffPlans2026RankedMeta,
+} from "./best-nairobi-off-plans-2026-ranked";
+
+import WhyNairobiPropertyPricesKeepRising2026, {
+  meta as whyNairobiPropertyPricesKeepRising2026Meta,
+} from "./why-nairobi-property-prices-keep-rising-2026";
+import IsThereNairobiPropertyBubble2026, {
+  meta as isThereNairobiPropertyBubble2026Meta,
+} from "./is-there-nairobi-property-bubble-2026";
+import ChatgptPromptsNairobiPropertyBuyers, {
+  meta as chatgptPromptsNairobiPropertyBuyersMeta,
+} from "./chatgpt-prompts-nairobi-property-buyers";
+import TopNairobiPropertyScamsTrending2026, {
+  meta as topNairobiPropertyScamsTrending2026Meta,
+} from "./top-nairobi-property-scams-trending-2026";
+import WhyDiasporaKenyansLoseMoneyNairobiLand, {
+  meta as whyDiasporaKenyansLoseMoneyNairobiLandMeta,
+} from "./why-diaspora-kenyans-lose-money-nairobi-land";
+import WorstNairobiSuburbsBuyers2026, {
+  meta as worstNairobiSuburbsBuyers2026Meta,
+} from "./worst-nairobi-suburbs-buyers-2026";
+import WhyKarenPricesStalled2026, {
+  meta as whyKarenPricesStalled2026Meta,
+} from "./why-karen-prices-stalled-2026";
+import WhereGenZRentingNairobi2026, {
+  meta as whereGenZRentingNairobi2026Meta,
+} from "./where-gen-z-renting-nairobi-2026";
+import AffordableHousingProgramme2026Delivered, {
+  meta as affordableHousingProgramme2026DeliveredMeta,
+} from "./affordable-housing-programme-2026-delivered";
+import WhyChinesePropertyInvestmentShrinkingNairobi, {
+  meta as whyChinesePropertyInvestmentShrinkingNairobiMeta,
+} from "./why-chinese-property-investment-shrinking-nairobi";
+import HiddenNairobiSuburbsNobodyTalkingAbout, {
+  meta as hiddenNairobiSuburbsNobodyTalkingAboutMeta,
+} from "./hidden-nairobi-suburbs-nobody-talking-about";
+import NairobiVsLagosCapeTownCairo2026, {
+  meta as nairobiVsLagosCapeTownCairo2026Meta,
+} from "./nairobi-vs-lagos-cape-town-cairo-2026";
+import DiasporaPropertyMistakesCostMillions, {
+  meta as diasporaPropertyMistakesCostMillionsMeta,
+} from "./diaspora-property-mistakes-cost-millions";
+import CanYouMake50PercentNairobiProperty3Years, {
+  meta as canYouMake50PercentNairobiProperty3YearsMeta,
+} from "./can-you-make-50-percent-nairobi-property-3-years";
+import WhyNairobiAirbnbHostsLosingMoney2026, {
+  meta as whyNairobiAirbnbHostsLosingMoney2026Meta,
+} from "./why-nairobi-airbnb-hosts-losing-money-2026";
+import SpotNairobiPropertyCartelBeforeScammed, {
+  meta as spotNairobiPropertyCartelBeforeScammedMeta,
+} from "./spot-nairobi-property-cartel-before-scammed";
+import InsideNairobiMostExpensivePenthouse2026, {
+  meta as insideNairobiMostExpensivePenthouse2026Meta,
+} from "./inside-nairobi-most-expensive-penthouse-2026";
+import HiddenCostsNairobiDeveloperDoesntTellYou, {
+  meta as hiddenCostsNairobiDeveloperDoesntTellYouMeta,
+} from "./hidden-costs-nairobi-developer-doesnt-tell-you";
+import WhereNairobiPropertyValuesDoubled5Years, {
+  meta as whereNairobiPropertyValuesDoubled5YearsMeta,
+} from "./where-nairobi-property-values-doubled-5-years";
+import WhySeniorCorporateNairobiansBuyingMultiUnit, {
+  meta as whySeniorCorporateNairobiansBuyingMultiUnitMeta,
+} from "./why-senior-corporate-nairobians-buying-multi-unit";
+import WhyNairobiDevelopersGoBust, {
+  meta as whyNairobiDevelopersGoBustMeta,
+} from "./why-nairobi-developers-go-bust";
+import NairobiSuburbsPeopleClaimVsActuallyLive, {
+  meta as nairobiSuburbsPeopleClaimVsActuallyLiveMeta,
+} from "./nairobi-suburbs-people-claim-vs-actually-live";
+import WhatWealthiestNairobiFamiliesActuallyOwn, {
+  meta as whatWealthiestNairobiFamiliesActuallyOwnMeta,
+} from "./what-wealthiest-nairobi-families-actually-own";
+import PropertyTaxChangesKenya2026, {
+  meta as propertyTaxChangesKenya2026Meta,
+} from "./property-tax-changes-kenya-2026";
+import BestNairobiSuburbsYoungProfessionals2026, {
+  meta as bestNairobiSuburbsYoungProfessionals2026Meta,
+} from "./best-nairobi-suburbs-young-professionals-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1031,6 +1126,120 @@ export const posts: readonly Post[] = [
     Component: RentalIncomeTaxCalculator,
   },
   { meta: cgtCalculatorKenyaMeta, Component: CgtCalculatorKenya },
+
+  { meta: luminaraReview2026Meta, Component: LuminaraReview2026 },
+  {
+    meta: theDiplomatOffPlanReview2026Meta,
+    Component: TheDiplomatOffPlanReview2026,
+  },
+  { meta: geminiOffPlanReview2026Meta, Component: GeminiOffPlanReview2026 },
+  { meta: pandoraOffPlanReview2026Meta, Component: PandoraOffPlanReview2026 },
+  {
+    meta: brooksideOakOffPlanReview2026Meta,
+    Component: BrooksideOakOffPlanReview2026,
+  },
+  {
+    meta: bestNairobiOffPlans2026RankedMeta,
+    Component: BestNairobiOffPlans2026Ranked,
+  },
+
+  {
+    meta: whyNairobiPropertyPricesKeepRising2026Meta,
+    Component: WhyNairobiPropertyPricesKeepRising2026,
+  },
+  {
+    meta: isThereNairobiPropertyBubble2026Meta,
+    Component: IsThereNairobiPropertyBubble2026,
+  },
+  {
+    meta: chatgptPromptsNairobiPropertyBuyersMeta,
+    Component: ChatgptPromptsNairobiPropertyBuyers,
+  },
+  {
+    meta: topNairobiPropertyScamsTrending2026Meta,
+    Component: TopNairobiPropertyScamsTrending2026,
+  },
+  {
+    meta: whyDiasporaKenyansLoseMoneyNairobiLandMeta,
+    Component: WhyDiasporaKenyansLoseMoneyNairobiLand,
+  },
+  {
+    meta: worstNairobiSuburbsBuyers2026Meta,
+    Component: WorstNairobiSuburbsBuyers2026,
+  },
+  { meta: whyKarenPricesStalled2026Meta, Component: WhyKarenPricesStalled2026 },
+  {
+    meta: whereGenZRentingNairobi2026Meta,
+    Component: WhereGenZRentingNairobi2026,
+  },
+  {
+    meta: affordableHousingProgramme2026DeliveredMeta,
+    Component: AffordableHousingProgramme2026Delivered,
+  },
+  {
+    meta: whyChinesePropertyInvestmentShrinkingNairobiMeta,
+    Component: WhyChinesePropertyInvestmentShrinkingNairobi,
+  },
+  {
+    meta: hiddenNairobiSuburbsNobodyTalkingAboutMeta,
+    Component: HiddenNairobiSuburbsNobodyTalkingAbout,
+  },
+  {
+    meta: nairobiVsLagosCapeTownCairo2026Meta,
+    Component: NairobiVsLagosCapeTownCairo2026,
+  },
+  {
+    meta: diasporaPropertyMistakesCostMillionsMeta,
+    Component: DiasporaPropertyMistakesCostMillions,
+  },
+  {
+    meta: canYouMake50PercentNairobiProperty3YearsMeta,
+    Component: CanYouMake50PercentNairobiProperty3Years,
+  },
+  {
+    meta: whyNairobiAirbnbHostsLosingMoney2026Meta,
+    Component: WhyNairobiAirbnbHostsLosingMoney2026,
+  },
+  {
+    meta: spotNairobiPropertyCartelBeforeScammedMeta,
+    Component: SpotNairobiPropertyCartelBeforeScammed,
+  },
+  {
+    meta: insideNairobiMostExpensivePenthouse2026Meta,
+    Component: InsideNairobiMostExpensivePenthouse2026,
+  },
+  {
+    meta: hiddenCostsNairobiDeveloperDoesntTellYouMeta,
+    Component: HiddenCostsNairobiDeveloperDoesntTellYou,
+  },
+  {
+    meta: whereNairobiPropertyValuesDoubled5YearsMeta,
+    Component: WhereNairobiPropertyValuesDoubled5Years,
+  },
+  {
+    meta: whySeniorCorporateNairobiansBuyingMultiUnitMeta,
+    Component: WhySeniorCorporateNairobiansBuyingMultiUnit,
+  },
+  {
+    meta: whyNairobiDevelopersGoBustMeta,
+    Component: WhyNairobiDevelopersGoBust,
+  },
+  {
+    meta: nairobiSuburbsPeopleClaimVsActuallyLiveMeta,
+    Component: NairobiSuburbsPeopleClaimVsActuallyLive,
+  },
+  {
+    meta: whatWealthiestNairobiFamiliesActuallyOwnMeta,
+    Component: WhatWealthiestNairobiFamiliesActuallyOwn,
+  },
+  {
+    meta: propertyTaxChangesKenya2026Meta,
+    Component: PropertyTaxChangesKenya2026,
+  },
+  {
+    meta: bestNairobiSuburbsYoungProfessionals2026Meta,
+    Component: BestNairobiSuburbsYoungProfessionals2026,
+  },
 ];
 
 export function getPostBySlug(slug: string): Post | undefined {
