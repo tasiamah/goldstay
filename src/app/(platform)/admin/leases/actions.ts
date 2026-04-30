@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { LeaseStatus, PropertyStatus, UnitStatus } from "@prisma/client";
+import { LeaseStatus, UnitStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { LeaseInput } from "@/lib/validation/schemas";
@@ -43,10 +43,13 @@ export async function createLeaseAction(
   }
 
   try {
+    // We deliberately do NOT promote the property's status here.
+    // Property lifecycle (Onboarding → Active) is gated by a human
+    // doc-review step on the property detail page, not by lease
+    // creation. A lease can be drafted before paperwork is final.
     const { lease, propertyId } = await prisma.$transaction(async (tx) => {
       const created = await tx.lease.create({ data: parsed.data });
 
-      // Auto-flip the unit to OCCUPIED if the new lease is active.
       if (parsed.data.status === "ACTIVE") {
         await tx.unit.update({
           where: { id: parsed.data.unitId },
@@ -54,22 +57,10 @@ export async function createLeaseAction(
         });
       }
 
-      // Promote a still-ONBOARDING property to ACTIVE on its first
-      // active lease. Anything beyond ONBOARDING (ACTIVE, EXITED) is
-      // a deliberate state — never overwrite it from here.
       const unit = await tx.unit.findUnique({
         where: { id: parsed.data.unitId },
         select: { propertyId: true },
       });
-      if (unit && parsed.data.status === "ACTIVE") {
-        await tx.property.updateMany({
-          where: {
-            id: unit.propertyId,
-            status: PropertyStatus.ONBOARDING,
-          },
-          data: { status: PropertyStatus.ACTIVE },
-        });
-      }
 
       return { lease: created, propertyId: unit?.propertyId ?? null };
     });
