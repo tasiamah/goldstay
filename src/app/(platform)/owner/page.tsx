@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { requireUser } from "@/lib/auth";
+import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import {
   aggregateTransactionsByCurrency,
@@ -9,23 +9,10 @@ import {
 export const dynamic = "force-dynamic";
 
 export default async function OwnerDashboardPage() {
-  const user = await requireUser();
-
-  // Best-effort owner lookup. Match by authUserId first (set on first
-  // login via the magic-link callback) then fall back to email so the
-  // very first sign-in still resolves.
-  const owner = await prisma.owner.findFirst({
-    where: {
-      OR: [
-        { authUserId: user.id },
-        user.email ? { email: user.email } : { id: "__never__" },
-      ],
-    },
-  });
-
-  if (!owner) {
-    return <PendingState email={user.email ?? "your account"} />;
-  }
+  // requireOwner handles the unmatched-user case by redirecting to
+  // /owner/pending, so by the time we get here we always have a real
+  // Owner row to render.
+  const { owner } = await requireOwner();
 
   const twelveMonthsAgo = new Date();
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
@@ -321,19 +308,4 @@ function fmt(n: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
-}
-
-function PendingState({ email }: { email: string }) {
-  return (
-    <div className="rounded-lg border border-stone-200 bg-white p-8">
-      <h2 className="text-xl font-serif text-stone-900">
-        We are still setting up your account
-      </h2>
-      <p className="mt-3 text-stone-600">
-        You are signed in as <strong>{email}</strong>, but we have not linked
-        any properties to this email yet. The Goldstay team will be in touch
-        as soon as your portfolio is live in the portal.
-      </p>
-    </div>
-  );
 }
