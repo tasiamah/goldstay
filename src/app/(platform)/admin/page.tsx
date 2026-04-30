@@ -7,14 +7,12 @@ export default async function AdminOverviewPage() {
   const [
     ownerCount,
     propertyCount,
-    unitCount,
     activeLeaseCount,
     recentOwners,
     recentProperties,
   ] = await Promise.all([
     prisma.owner.count(),
     prisma.property.count(),
-    prisma.unit.count(),
     prisma.lease.count({ where: { status: "ACTIVE" } }),
     prisma.owner.findMany({
       orderBy: { createdAt: "desc" },
@@ -30,14 +28,13 @@ export default async function AdminOverviewPage() {
 
   return (
     <div className="space-y-10">
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <section className="grid grid-cols-3 gap-4">
         <Stat label="Owners" value={ownerCount} href="/admin/owners" />
         <Stat
           label="Properties"
           value={propertyCount}
           href="/admin/properties"
         />
-        <Stat label="Units" value={unitCount} />
         <Stat label="Active leases" value={activeLeaseCount} />
       </section>
 

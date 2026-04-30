@@ -32,8 +32,26 @@ export default async function PropertyDetailPage({
       owner: {
         select: { id: true, fullName: true, country: true },
       },
+      // We don't surface units in the UI any more (one property is
+      // one rental) but we still walk them to find the active lease,
+      // because Lease FKs into Unit, not Property.
       units: {
         orderBy: { createdAt: "asc" },
+        include: {
+          leases: {
+            where: { status: "ACTIVE" },
+            orderBy: { startDate: "desc" },
+            take: 1,
+            select: {
+              id: true,
+              tenantName: true,
+              startDate: true,
+              endDate: true,
+              monthlyRent: true,
+              currency: true,
+            },
+          },
+        },
       },
       documents: {
         orderBy: { createdAt: "desc" },
@@ -42,6 +60,8 @@ export default async function PropertyDetailPage({
   });
 
   if (!property) notFound();
+
+  const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
 
   const boundUpdate = updatePropertyAction.bind(null, property.id);
 
@@ -106,42 +126,55 @@ export default async function PropertyDetailPage({
 
         <div className="space-y-6">
           <div className="rounded-lg border border-stone-200 bg-white p-6">
-            <div className="flex items-center justify-between">
-              <h3 className="text-base font-medium text-stone-900">Units</h3>
-              <Link
-                href={`/admin/properties/${property.id}/units/new`}
-                className="text-sm font-medium text-stone-900 hover:underline"
-              >
-                + Add unit
-              </Link>
+            <div className="flex items-center justify-between gap-4">
+              <h3 className="text-base font-medium text-stone-900">
+                Tenancy
+              </h3>
+              {activeLease ? (
+                <Link
+                  href={`/admin/leases/${activeLease.id}`}
+                  className="text-sm text-stone-600 hover:text-stone-900"
+                >
+                  Manage lease
+                </Link>
+              ) : (
+                <Link
+                  href={`/admin/properties/${property.id}/leases/new`}
+                  className="inline-flex items-center rounded-md bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-800"
+                >
+                  + Start lease
+                </Link>
+              )}
             </div>
-            <p className="mt-1 text-sm text-stone-500">
-              Add the rentable subdivisions of this property. A single-family
-              home is one unit; a building has many.
-            </p>
-            {property.units.length === 0 ? (
-              <p className="mt-4 text-sm text-stone-500">
-                No units yet. Click <span className="font-medium text-stone-700">Add unit</span> above to create the first one.
-              </p>
+            {activeLease ? (
+              <div className="mt-4 space-y-1">
+                <p className="font-medium text-stone-900">
+                  {activeLease.tenantName}
+                </p>
+                <p className="text-sm text-stone-500">
+                  {activeLease.currency}{" "}
+                  {Number(activeLease.monthlyRent).toLocaleString("en-GB")}/mo
+                  {" · since "}
+                  {activeLease.startDate.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                  {activeLease.endDate
+                    ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}`
+                    : " · ongoing"}
+                </p>
+              </div>
             ) : (
-              <ul className="mt-4 divide-y divide-stone-100">
-                {property.units.map((u) => (
-                  <li
-                    key={u.id}
-                    className="flex items-center justify-between py-3"
-                  >
-                    <Link
-                      href={`/admin/units/${u.id}`}
-                      className="font-medium text-stone-900 hover:underline"
-                    >
-                      {u.label}
-                    </Link>
-                    <span className="text-xs uppercase tracking-wider text-stone-500">
-                      {u.status}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <p className="mt-4 text-sm text-stone-500">
+                No active lease. Click{" "}
+                <span className="font-medium text-stone-700">Start lease</span>{" "}
+                to record a new tenant.
+              </p>
             )}
           </div>
 

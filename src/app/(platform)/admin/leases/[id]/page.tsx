@@ -57,10 +57,10 @@ export default async function LeaseDetailPage({
     <div className="space-y-8">
       <div>
         <Link
-          href={`/admin/units/${lease.unit.id}`}
+          href={`/admin/properties/${lease.unit.property.id}`}
           className="text-sm text-stone-500 hover:text-stone-900"
         >
-          ← {lease.unit.label} · {lease.unit.property.name}
+          ← {lease.unit.property.name}
         </Link>
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>
