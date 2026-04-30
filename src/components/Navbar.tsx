@@ -131,6 +131,23 @@ export function Navbar() {
           </nav>
 
           <div className="hidden items-center gap-3 lg:flex">
+            {/* Subtle "Log in" link for existing landlords. Sits to the
+                left of the lead-gen CTAs so visitors who came to convert
+                still see WhatsApp Us as the loudest button on the page;
+                visitors who already have a portfolio in our portal can
+                spot Log in without scanning. Standard SaaS marketing
+                pattern (Stripe, Mercury, Linear). */}
+            <Link
+              href="/login"
+              className={clsx(
+                "link-underline text-sm transition-colors duration-300",
+                onDark
+                  ? "text-cream/85 hover:text-cream"
+                  : "text-charcoal/80 hover:text-charcoal",
+              )}
+            >
+              Log in
+            </Link>
             <Link
               href="/list-your-property"
               className={clsx(
@@ -233,6 +250,13 @@ export function Navbar() {
             >
               WhatsApp Us
             </a>
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="mt-2 self-center text-sm text-cream/70 underline-offset-4 hover:text-cream hover:underline"
+            >
+              Existing landlord? Log in
+            </Link>
           </div>
         </nav>
       </div>
