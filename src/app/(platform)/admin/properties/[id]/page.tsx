@@ -60,11 +60,18 @@ export default async function PropertyDetailPage({
       documents: {
         orderBy: { createdAt: "desc" },
       },
+      // Recent bookings for short-term rentals. Capped at 25 here for
+      // the card; the full history will live behind a paginated page.
+      bookings: {
+        orderBy: { checkIn: "desc" },
+        take: 25,
+      },
     },
   });
 
   if (!property) notFound();
 
+  const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
 
   const boundUpdate = updatePropertyAction.bind(null, property.id);
@@ -140,58 +147,65 @@ export default async function PropertyDetailPage({
         </div>
 
         <div className="space-y-6">
-          <div className="rounded-lg border border-stone-200 bg-white p-6">
-            <div className="flex items-center justify-between gap-4">
-              <h3 className="text-base font-medium text-stone-900">
-                Tenancy
-              </h3>
+          {isShortTerm ? (
+            <BookingsCard
+              propertyId={property.id}
+              bookings={property.bookings}
+            />
+          ) : (
+            <div className="rounded-lg border border-stone-200 bg-white p-6">
+              <div className="flex items-center justify-between gap-4">
+                <h3 className="text-base font-medium text-stone-900">
+                  Tenancy
+                </h3>
+                {activeLease ? (
+                  <Link
+                    href={`/admin/leases/${activeLease.id}`}
+                    className="text-sm text-stone-600 hover:text-stone-900"
+                  >
+                    Manage lease
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/admin/properties/${property.id}/leases/new`}
+                    className="inline-flex items-center rounded-md bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-800"
+                  >
+                    + Start lease
+                  </Link>
+                )}
+              </div>
               {activeLease ? (
-                <Link
-                  href={`/admin/leases/${activeLease.id}`}
-                  className="text-sm text-stone-600 hover:text-stone-900"
-                >
-                  Manage lease
-                </Link>
+                <div className="mt-4 space-y-1">
+                  <p className="font-medium text-stone-900">
+                    {activeLease.tenantName}
+                  </p>
+                  <p className="text-sm text-stone-500">
+                    {activeLease.currency}{" "}
+                    {Number(activeLease.monthlyRent).toLocaleString("en-GB")}/mo
+                    {" · since "}
+                    {activeLease.startDate.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                    {activeLease.endDate
+                      ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}`
+                      : " · ongoing"}
+                  </p>
+                </div>
               ) : (
-                <Link
-                  href={`/admin/properties/${property.id}/leases/new`}
-                  className="inline-flex items-center rounded-md bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-800"
-                >
-                  + Start lease
-                </Link>
+                <p className="mt-4 text-sm text-stone-500">
+                  No active lease. Click{" "}
+                  <span className="font-medium text-stone-700">Start lease</span>{" "}
+                  to record a new tenant.
+                </p>
               )}
             </div>
-            {activeLease ? (
-              <div className="mt-4 space-y-1">
-                <p className="font-medium text-stone-900">
-                  {activeLease.tenantName}
-                </p>
-                <p className="text-sm text-stone-500">
-                  {activeLease.currency}{" "}
-                  {Number(activeLease.monthlyRent).toLocaleString("en-GB")}/mo
-                  {" · since "}
-                  {activeLease.startDate.toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                  {activeLease.endDate
-                    ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}`
-                    : " · ongoing"}
-                </p>
-              </div>
-            ) : (
-              <p className="mt-4 text-sm text-stone-500">
-                No active lease. Click{" "}
-                <span className="font-medium text-stone-700">Start lease</span>{" "}
-                to record a new tenant.
-              </p>
-            )}
-          </div>
+          )}
 
           <div className="rounded-lg border border-stone-200 bg-white p-6">
             <h3 className="text-base font-medium text-stone-900">
@@ -259,4 +273,87 @@ function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+
+const SOURCE_LABEL: Record<string, string> = {
+  AIRBNB: "Airbnb",
+  BOOKING_COM: "Booking.com",
+  VRBO: "Vrbo",
+  DIRECT: "Direct",
+};
+
+function BookingsCard({
+  propertyId,
+  bookings,
+}: {
+  propertyId: string;
+  bookings: Array<{
+    id: string;
+    source: string;
+    guestName: string;
+    checkIn: Date;
+    checkOut: Date;
+    nights: number;
+    grossAmount: unknown;
+    netPayout: unknown;
+    currency: string;
+    status: string;
+  }>;
+}) {
+  return (
+    <div className="rounded-lg border border-stone-200 bg-white p-6">
+      <div className="flex items-center justify-between gap-4">
+        <h3 className="text-base font-medium text-stone-900">Bookings</h3>
+        <Link
+          href={`/admin/properties/${propertyId}/bookings/new`}
+          className="inline-flex items-center rounded-md bg-stone-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-stone-800"
+        >
+          + Add booking
+        </Link>
+      </div>
+      <p className="mt-1 text-sm text-stone-500">
+        Bookings synced from Hostaway land here automatically. You can also
+        record direct bookings manually.
+      </p>
+      {bookings.length === 0 ? (
+        <p className="mt-4 text-sm text-stone-500">
+          No bookings yet for this property.
+        </p>
+      ) : (
+        <ul className="mt-4 divide-y divide-stone-100">
+          {bookings.map((b) => (
+            <li
+              key={b.id}
+              className="flex items-start justify-between gap-4 py-3"
+            >
+              <div className="min-w-0">
+                <p className="font-medium text-stone-900">{b.guestName}</p>
+                <p className="mt-0.5 text-xs text-stone-500">
+                  {SOURCE_LABEL[b.source] ?? b.source} ·{" "}
+                  {b.checkIn.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                  })}{" "}
+                  →{" "}
+                  {b.checkOut.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}{" "}
+                  · {b.nights} {b.nights === 1 ? "night" : "nights"}
+                  {b.status !== "CONFIRMED" ? ` · ${b.status.toLowerCase()}` : ""}
+                </p>
+              </div>
+              <p className="shrink-0 text-right text-sm tabular-nums text-stone-900">
+                {b.currency}{" "}
+                {Number(b.grossAmount).toLocaleString("en-GB", {
+                  maximumFractionDigits: 0,
+                })}
+              </p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
 }
