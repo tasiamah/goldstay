@@ -87,14 +87,22 @@ export default async function PropertyDetailPage({
 
         <div className="space-y-6">
           <div className="rounded-lg border border-stone-200 bg-white p-6">
-            <h3 className="text-base font-medium text-stone-900">Units</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-base font-medium text-stone-900">Units</h3>
+              <Link
+                href={`/admin/properties/${property.id}/units/new`}
+                className="text-sm font-medium text-stone-900 hover:underline"
+              >
+                + Add unit
+              </Link>
+            </div>
             <p className="mt-1 text-sm text-stone-500">
               Add the rentable subdivisions of this property. A single-family
               home is one unit; a building has many.
             </p>
             {property.units.length === 0 ? (
               <p className="mt-4 text-sm text-stone-500">
-                No units yet. (Unit and lease management coming next.)
+                No units yet. Click <span className="font-medium text-stone-700">Add unit</span> above to create the first one.
               </p>
             ) : (
               <ul className="mt-4 divide-y divide-stone-100">
@@ -103,9 +111,12 @@ export default async function PropertyDetailPage({
                     key={u.id}
                     className="flex items-center justify-between py-3"
                   >
-                    <span className="font-medium text-stone-900">
+                    <Link
+                      href={`/admin/units/${u.id}`}
+                      className="font-medium text-stone-900 hover:underline"
+                    >
                       {u.label}
-                    </span>
+                    </Link>
                     <span className="text-xs uppercase tracking-wider text-stone-500">
                       {u.status}
                     </span>
