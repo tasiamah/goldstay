@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 export default async function OwnerDashboardPage() {
   const user = await requireUser();
 
-  // Best-effort owner lookup. Until an admin has provisioned an Owner
-  // row matching this email, we render the "pending" empty state so
-  // the user gets a useful message instead of a 500.
+  // Best-effort owner lookup. Match by authUserId first (set on first
+  // login via the magic-link callback) then fall back to email so the
+  // very first sign-in still resolves.
   const owner = await prisma.owner.findFirst({
     where: {
       OR: [
@@ -17,88 +17,305 @@ export default async function OwnerDashboardPage() {
         user.email ? { email: user.email } : { id: "__never__" },
       ],
     },
-    include: {
-      properties: {
-        include: { units: true },
-      },
-    },
   });
 
   if (!owner) {
-    return (
-      <div className="rounded-lg border border-stone-200 bg-white p-8">
-        <h2 className="text-xl font-serif text-stone-900">
-          We are still setting up your account
-        </h2>
-        <p className="mt-3 text-stone-600">
-          You are signed in as <strong>{user.email}</strong>, but we have not
-          linked any properties to this email yet. The Goldstay team will be
-          in touch as soon as your portfolio is live in the portal.
-        </p>
-      </div>
-    );
+    return <PendingState email={user.email ?? "your account"} />;
   }
 
-  const totalProperties = owner.properties.length;
-  const totalUnits = owner.properties.reduce(
-    (sum, p) => sum + p.units.length,
-    0,
+  const twelveMonthsAgo = new Date();
+  twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+
+  const [
+    properties,
+    unitCount,
+    occupiedUnitCount,
+    activeLeaseCount,
+    totals,
+    recentTransactions,
+  ] = await Promise.all([
+    prisma.property.findMany({
+      where: { ownerId: owner.id },
+      orderBy: { createdAt: "desc" },
+      include: {
+        units: {
+          select: { id: true, status: true },
+        },
+      },
+    }),
+    prisma.unit.count({ where: { property: { ownerId: owner.id } } }),
+    prisma.unit.count({
+      where: {
+        property: { ownerId: owner.id },
+        status: "OCCUPIED",
+      },
+    }),
+    prisma.lease.count({
+      where: {
+        unit: { property: { ownerId: owner.id } },
+        status: "ACTIVE",
+      },
+    }),
+    prisma.transaction.groupBy({
+      by: ["currency", "direction"],
+      where: {
+        property: { ownerId: owner.id },
+        occurredOn: { gte: twelveMonthsAgo },
+      },
+      _sum: { amount: true },
+    }),
+    prisma.transaction.findMany({
+      where: { property: { ownerId: owner.id } },
+      orderBy: { occurredOn: "desc" },
+      take: 10,
+      include: {
+        property: { select: { id: true, name: true } },
+        lease: { select: { tenantName: true } },
+      },
+    }),
+  ]);
+
+  const occupancyPct =
+    unitCount === 0 ? null : Math.round((occupiedUnitCount / unitCount) * 100);
+
+  // Group totals by currency so we don't pretend USD and KES sum.
+  const byCurrency = new Map<
+    string,
+    { inflow: number; outflow: number }
+  >();
+  for (const row of totals) {
+    const bucket = byCurrency.get(row.currency) ?? { inflow: 0, outflow: 0 };
+    const amt = Number(row._sum.amount ?? 0);
+    if (row.direction === "INFLOW") bucket.inflow += amt;
+    else bucket.outflow += amt;
+    byCurrency.set(row.currency, bucket);
+  }
+  const currencyRows = Array.from(byCurrency.entries()).sort(([a], [b]) =>
+    a === owner.preferredCurrency ? -1 : b === owner.preferredCurrency ? 1 : 0,
   );
 
   return (
-    <div className="space-y-8">
-      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <Stat label="Properties" value={totalProperties} />
-        <Stat label="Units" value={totalUnits} />
-        <Stat label="Country" value={owner.country} />
+    <div className="space-y-10">
+      <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+        <Stat label="Properties" value={properties.length} />
+        <Stat label="Units" value={unitCount} />
+        <Stat label="Active leases" value={activeLeaseCount} />
+        <Stat
+          label="Occupancy"
+          value={occupancyPct === null ? "—" : `${occupancyPct}%`}
+        />
       </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-lg font-medium text-stone-900">Your portfolio</h2>
-          <Link
-            href="/owner/properties"
-            className="text-sm text-stone-600 hover:text-stone-900"
-          >
-            See all
-          </Link>
-        </div>
-        {owner.properties.length === 0 ? (
-          <p className="mt-4 text-sm text-stone-500">
-            No properties yet. Once Goldstay onboards a property under your
-            name it will appear here.
+        <h2 className="text-base font-medium text-stone-900">
+          Last 12 months
+        </h2>
+        <p className="mt-1 text-sm text-stone-500">
+          Inflows are rent and deposits. Outflows are expenses, refunds,
+          management fees, and payouts already remitted to you.
+        </p>
+        {currencyRows.length === 0 ? (
+          <p className="mt-6 text-sm text-stone-500">
+            No transactions recorded in the last 12 months.
           </p>
         ) : (
-          <ul className="mt-4 divide-y divide-stone-100">
-            {owner.properties.slice(0, 5).map((p) => (
-              <li
-                key={p.id}
-                className="flex items-center justify-between py-3"
-              >
-                <div>
-                  <p className="font-medium text-stone-900">{p.name}</p>
-                  <p className="text-sm text-stone-500">
-                    {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
-                    {p.city}
-                  </p>
-                </div>
-                <span className="text-xs uppercase tracking-wider text-stone-500">
-                  {p.status}
-                </span>
-              </li>
-            ))}
-          </ul>
+          <div className="mt-6 overflow-hidden rounded-md border border-stone-200">
+            <table className="min-w-full divide-y divide-stone-200">
+              <thead className="bg-stone-50">
+                <tr>
+                  <Th>Currency</Th>
+                  <Th align="right">Inflow</Th>
+                  <Th align="right">Outflow</Th>
+                  <Th align="right">Net</Th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-stone-100">
+                {currencyRows.map(([currency, b]) => {
+                  const net = b.inflow - b.outflow;
+                  return (
+                    <tr key={currency}>
+                      <td className="px-4 py-3 text-sm font-medium text-stone-900">
+                        {currency}
+                      </td>
+                      <td className="px-4 py-3 text-right text-sm tabular-nums text-emerald-700">
+                        {fmt(b.inflow)}
+                      </td>
+                      <td className="px-4 py-3 text-right text-sm tabular-nums text-red-700">
+                        {fmt(b.outflow)}
+                      </td>
+                      <td
+                        className={`px-4 py-3 text-right text-sm font-medium tabular-nums ${
+                          net >= 0 ? "text-stone-900" : "text-red-800"
+                        }`}
+                      >
+                        {fmt(net)}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         )}
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        <div className="rounded-lg border border-stone-200 bg-white p-6">
+          <h2 className="text-base font-medium text-stone-900">
+            Your portfolio
+          </h2>
+          {properties.length === 0 ? (
+            <p className="mt-4 text-sm text-stone-500">
+              Goldstay has not attached any properties to your account yet.
+              We&rsquo;ll be in touch as soon as your portfolio is live in the
+              portal.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-stone-100">
+              {properties.map((p) => {
+                const occupied = p.units.filter(
+                  (u) => u.status === "OCCUPIED",
+                ).length;
+                const pct =
+                  p.units.length === 0
+                    ? null
+                    : Math.round((occupied / p.units.length) * 100);
+                return (
+                  <li
+                    key={p.id}
+                    className="flex items-start justify-between py-3"
+                  >
+                    <div>
+                      <p className="font-medium text-stone-900">{p.name}</p>
+                      <p className="text-xs text-stone-500">
+                        {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
+                        {p.city} · {p.units.length}{" "}
+                        {p.units.length === 1 ? "unit" : "units"}
+                        {pct !== null ? ` · ${pct}% occupied` : ""}
+                      </p>
+                    </div>
+                    <span className="text-xs uppercase tracking-wider text-stone-500">
+                      {p.status}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+        </div>
+
+        <div className="rounded-lg border border-stone-200 bg-white p-6">
+          <h2 className="text-base font-medium text-stone-900">
+            Recent activity
+          </h2>
+          {recentTransactions.length === 0 ? (
+            <p className="mt-4 text-sm text-stone-500">
+              No transactions yet. Goldstay logs every rent payment, expense,
+              and payout here so you can audit the numbers behind your monthly
+              statement.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-stone-100">
+              {recentTransactions.map((t) => (
+                <li
+                  key={t.id}
+                  className="flex items-start justify-between py-3"
+                >
+                  <div>
+                    <p className="text-sm font-medium text-stone-900">
+                      {t.type.replace(/_/g, " ")}
+                      {t.lease ? (
+                        <span className="font-normal text-stone-500">
+                          {" "}
+                          · {t.lease.tenantName}
+                        </span>
+                      ) : null}
+                    </p>
+                    <p className="text-xs text-stone-500">
+                      <Link
+                        href={`#`}
+                        className="pointer-events-none"
+                        aria-disabled
+                      >
+                        {t.property.name}
+                      </Link>{" "}
+                      ·{" "}
+                      {t.occurredOn.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </div>
+                  <span
+                    className={`text-sm tabular-nums ${
+                      t.direction === "INFLOW"
+                        ? "text-emerald-700"
+                        : "text-red-700"
+                    }`}
+                  >
+                    {t.direction === "INFLOW" ? "+" : "−"}
+                    {fmt(Number(t.amount))} {t.currency}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </section>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string | number }) {
+function Stat({
+  label,
+  value,
+}: {
+  label: string;
+  value: number | string;
+}) {
   return (
     <div className="rounded-lg border border-stone-200 bg-white p-6">
       <p className="text-xs uppercase tracking-wider text-stone-500">{label}</p>
       <p className="mt-2 text-2xl font-serif text-stone-900">{value}</p>
+    </div>
+  );
+}
+
+function Th({
+  children,
+  align = "left",
+}: {
+  children: React.ReactNode;
+  align?: "left" | "right";
+}) {
+  return (
+    <th
+      className={`px-4 py-2 text-${align} text-xs font-semibold uppercase tracking-wider text-stone-500`}
+    >
+      {children}
+    </th>
+  );
+}
+
+function fmt(n: number): string {
+  return n.toLocaleString("en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}
+
+function PendingState({ email }: { email: string }) {
+  return (
+    <div className="rounded-lg border border-stone-200 bg-white p-8">
+      <h2 className="text-xl font-serif text-stone-900">
+        We are still setting up your account
+      </h2>
+      <p className="mt-3 text-stone-600">
+        You are signed in as <strong>{email}</strong>, but we have not linked
+        any properties to this email yet. The Goldstay team will be in touch
+        as soon as your portfolio is live in the portal.
+      </p>
     </div>
   );
 }
