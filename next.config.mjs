@@ -3,6 +3,14 @@ import { withSentryConfig } from "@sentry/nextjs";
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // @react-pdf/renderer pulls in fontkit, yoga-layout, and a stack of
+  // CommonJS internals that webpack can mangle when it tries to bundle
+  // them into a serverless function. Marking them external keeps them
+  // as require() calls that Node resolves at runtime, which is what
+  // every working Next.js + react-pdf setup ends up doing.
+  experimental: {
+    serverComponentsExternalPackages: ["@react-pdf/renderer"],
+  },
   images: {
     remotePatterns: [
       {
