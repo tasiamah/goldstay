@@ -5,6 +5,7 @@ import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
 import { DocumentUploader } from "./documents/DocumentUploader";
 import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
+import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
@@ -80,17 +81,26 @@ export default async function PropertyDetailPage({
         >
           ← {property.owner.fullName}
         </Link>
-        <div className="mt-2 flex flex-wrap items-center gap-3">
-          <h2 className="text-xl font-medium text-stone-900">
-            {property.name}
-          </h2>
-          <PropertyStatusBadge status={property.status} />
+        <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <div className="flex flex-wrap items-center gap-3">
+              <h2 className="text-xl font-medium text-stone-900">
+                {property.name}
+              </h2>
+              <PropertyStatusBadge status={property.status} />
+            </div>
+            <p className="mt-1 text-sm text-stone-500">
+              {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
+              {property.city} ·{" "}
+              {property.country === "KE" ? "Kenya" : "Ghana"}
+            </p>
+          </div>
+          <PropertyLifecycleActions
+            propertyId={property.id}
+            status={property.status}
+            documentCount={property.documents.length}
+          />
         </div>
-        <p className="text-sm text-stone-500">
-          {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
-          {property.city} ·{" "}
-          {property.country === "KE" ? "Kenya" : "Ghana"}
-        </p>
       </div>
 
       <section className="grid gap-8 lg:grid-cols-2">

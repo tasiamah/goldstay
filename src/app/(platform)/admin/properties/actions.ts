@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Country } from "@prisma/client";
+import { Country, PropertyStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { PropertyInput } from "@/lib/validation/schemas";
@@ -121,4 +121,80 @@ export async function updatePropertyAction(
   } catch {
     return { ok: false, error: "Could not save changes. Please retry." };
   }
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Lifecycle transitions
+//
+// Status is not a free-form field. The only paths in/out of ACTIVE
+// are the two actions below: a human marks the property verified
+// after reviewing the documents, or marks it exited when it leaves
+// the portfolio. Both are guarded server-side so the UI buttons
+// can't be replayed to skip the rules.
+// ──────────────────────────────────────────────────────────────────
+
+export type LifecycleResult = { ok: true } | { ok: false; error: string };
+
+export async function markPropertyVerifiedAction(
+  propertyId: string,
+): Promise<LifecycleResult> {
+  await requireAdmin();
+
+  const property = await prisma.property.findUnique({
+    where: { id: propertyId },
+    select: {
+      status: true,
+      ownerId: true,
+      _count: { select: { documents: true } },
+    },
+  });
+  if (!property) return { ok: false, error: "Property not found." };
+  if (property.status !== PropertyStatus.ONBOARDING) {
+    return {
+      ok: false,
+      error: "Only onboarding properties can be marked as verified.",
+    };
+  }
+  if (property._count.documents === 0) {
+    return {
+      ok: false,
+      error:
+        "Upload at least one document (title deed, sale agreement, lease) before marking the property as verified.",
+    };
+  }
+
+  await prisma.property.update({
+    where: { id: propertyId },
+    data: { status: PropertyStatus.ACTIVE },
+  });
+  revalidatePath("/admin");
+  revalidatePath("/admin/properties");
+  revalidatePath(`/admin/properties/${propertyId}`);
+  revalidatePath(`/admin/owners/${property.ownerId}`);
+  return { ok: true };
+}
+
+export async function markPropertyExitedAction(
+  propertyId: string,
+): Promise<LifecycleResult> {
+  await requireAdmin();
+
+  const property = await prisma.property.findUnique({
+    where: { id: propertyId },
+    select: { status: true, ownerId: true },
+  });
+  if (!property) return { ok: false, error: "Property not found." };
+  if (property.status === PropertyStatus.EXITED) {
+    return { ok: false, error: "Property is already marked as exited." };
+  }
+
+  await prisma.property.update({
+    where: { id: propertyId },
+    data: { status: PropertyStatus.EXITED },
+  });
+  revalidatePath("/admin");
+  revalidatePath("/admin/properties");
+  revalidatePath(`/admin/properties/${propertyId}`);
+  revalidatePath(`/admin/owners/${property.ownerId}`);
+  return { ok: true };
 }
