@@ -1,7 +1,15 @@
 "use client";
 
+import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import type { PropertyActionResult } from "./actions";
+import {
+  findCanonicalNairobiNeighbourhood,
+  isNairobiCity,
+  NAIROBI_NEIGHBOURHOODS,
+} from "@/lib/nairobi-neighbourhoods";
+
+const OTHER_NEIGHBOURHOOD_VALUE = "__other__";
 
 type FormAction = (
   prev: PropertyActionResult | null,
@@ -56,24 +64,15 @@ export function PropertyForm({
         error={fieldError("name")}
       />
 
-      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field
-          label="City"
-          name="city"
-          defaultValue={
-            defaults.city ?? (ownerCountry === "KE" ? "Nairobi" : "Accra")
-          }
-          required
-          error={fieldError("city")}
-        />
-        <Field
-          label="Neighbourhood"
-          name="neighbourhood"
-          defaultValue={defaults.neighbourhood ?? ""}
-          placeholder={ownerCountry === "KE" ? "Westlands" : "East Legon"}
-          error={fieldError("neighbourhood")}
-        />
-      </div>
+      <LocationFields
+        defaults={{
+          city: defaults.city ?? (ownerCountry === "KE" ? "Nairobi" : "Accra"),
+          neighbourhood: defaults.neighbourhood ?? "",
+        }}
+        ownerCountry={ownerCountry}
+        cityError={fieldError("city")}
+        neighbourhoodError={fieldError("neighbourhood")}
+      />
 
       <Field
         label="Address"
@@ -176,6 +175,148 @@ export function PropertyForm({
 
       <SubmitButton label={submitLabel} />
     </form>
+  );
+}
+
+// City + Neighbourhood, controlled together so the neighbourhood
+// field can swap between dropdown and free text based on whether
+// the city is Nairobi. We track the typed neighbourhood string in
+// one piece of state and derive the <select>'s display value from
+// it, so a landlord typing "westlands" via the Other input would
+// snap back to the canonical "Westlands" dropdown option on next
+// render. That auto-normalising behaviour is intentional: it keeps
+// the data clean for the per-neighbourhood reporting we'll add later
+// without nagging the operator with a validation error.
+function LocationFields({
+  defaults,
+  ownerCountry,
+  cityError,
+  neighbourhoodError,
+}: {
+  defaults: { city: string; neighbourhood: string };
+  ownerCountry: "KE" | "GH";
+  cityError?: string;
+  neighbourhoodError?: string;
+}) {
+  const [city, setCity] = useState(defaults.city);
+  const [neighbourhood, setNeighbourhood] = useState(defaults.neighbourhood);
+
+  const showsDropdown = isNairobiCity(city);
+  const canonical = findCanonicalNairobiNeighbourhood(neighbourhood);
+  const isOther = neighbourhood !== "" && canonical === null;
+  const selectValue = isOther
+    ? OTHER_NEIGHBOURHOOD_VALUE
+    : (canonical ?? "");
+
+  function handleSelectChange(value: string) {
+    if (value === OTHER_NEIGHBOURHOOD_VALUE) {
+      // Clear so the Other input starts empty and the user can type
+      // their own value. Without this, picking Other after picking
+      // "Westlands" would leave "Westlands" prefilled in the input,
+      // which is confusing.
+      setNeighbourhood("");
+    } else {
+      setNeighbourhood(value);
+    }
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <label className="block">
+        <span className="text-sm font-medium text-stone-700">
+          City<span className="text-red-600"> *</span>
+        </span>
+        <input
+          type="text"
+          name="city"
+          required
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          aria-invalid={Boolean(cityError) || undefined}
+          className={`mt-1 block w-full rounded-md border px-3 py-2 text-stone-900 shadow-sm focus:outline-none focus:ring-1 ${
+            cityError
+              ? "border-red-400 focus:border-red-500 focus:ring-red-500"
+              : "border-stone-300 focus:border-stone-500 focus:ring-stone-500"
+          }`}
+        />
+        {cityError ? (
+          <span className="mt-1 block text-xs text-red-700">{cityError}</span>
+        ) : null}
+      </label>
+
+      {showsDropdown ? (
+        <div className="space-y-2">
+          <label className="block">
+            <span className="text-sm font-medium text-stone-700">
+              Neighbourhood
+            </span>
+            <select
+              value={selectValue}
+              onChange={(e) => handleSelectChange(e.target.value)}
+              aria-invalid={Boolean(neighbourhoodError) || undefined}
+              className={`mt-1 block w-full rounded-md border bg-white px-3 py-2 text-stone-900 shadow-sm focus:outline-none focus:ring-1 ${
+                neighbourhoodError
+                  ? "border-red-400 focus:border-red-500 focus:ring-red-500"
+                  : "border-stone-300 focus:border-stone-500 focus:ring-stone-500"
+              }`}
+            >
+              <option value="">Select a neighbourhood…</option>
+              {NAIROBI_NEIGHBOURHOODS.map((n) => (
+                <option key={n} value={n}>
+                  {n}
+                </option>
+              ))}
+              <option value={OTHER_NEIGHBOURHOOD_VALUE}>
+                Other / not listed
+              </option>
+            </select>
+          </label>
+          {selectValue === OTHER_NEIGHBOURHOOD_VALUE ? (
+            <input
+              type="text"
+              autoFocus
+              placeholder="Type the neighbourhood name"
+              value={neighbourhood}
+              onChange={(e) => setNeighbourhood(e.target.value)}
+              className="block w-full rounded-md border border-stone-300 px-3 py-2 text-stone-900 shadow-sm focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500"
+            />
+          ) : null}
+          {/* Hidden input is what actually posts to the server action.
+              We use a separate hidden field rather than naming the
+              <select> so the "__other__" sentinel never reaches Zod. */}
+          <input type="hidden" name="neighbourhood" value={neighbourhood} />
+          {neighbourhoodError ? (
+            <span className="block text-xs text-red-700">
+              {neighbourhoodError}
+            </span>
+          ) : null}
+        </div>
+      ) : (
+        <label className="block">
+          <span className="text-sm font-medium text-stone-700">
+            Neighbourhood
+          </span>
+          <input
+            type="text"
+            name="neighbourhood"
+            value={neighbourhood}
+            onChange={(e) => setNeighbourhood(e.target.value)}
+            placeholder={ownerCountry === "GH" ? "East Legon" : "Suburb name"}
+            aria-invalid={Boolean(neighbourhoodError) || undefined}
+            className={`mt-1 block w-full rounded-md border px-3 py-2 text-stone-900 shadow-sm focus:outline-none focus:ring-1 ${
+              neighbourhoodError
+                ? "border-red-400 focus:border-red-500 focus:ring-red-500"
+                : "border-stone-300 focus:border-stone-500 focus:ring-stone-500"
+            }`}
+          />
+          {neighbourhoodError ? (
+            <span className="mt-1 block text-xs text-red-700">
+              {neighbourhoodError}
+            </span>
+          ) : null}
+        </label>
+      )}
+    </div>
   );
 }
 
