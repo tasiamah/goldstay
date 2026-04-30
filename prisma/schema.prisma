@@ -32,6 +32,28 @@ enum PropertyStatus {
   EXITED
 }
 
+// LONG_TERM: classic monthly tenancy, modelled by Lease.
+// SHORT_TERM: nightly stays via Airbnb / Booking.com / Vrbo / direct,
+// modelled by Booking. A property is one or the other for now; the
+// schema permits both relations to coexist if we add mixed-mode later.
+enum PropertyType {
+  LONG_TERM
+  SHORT_TERM
+}
+
+enum BookingSource {
+  AIRBNB
+  BOOKING_COM
+  VRBO
+  DIRECT
+}
+
+enum BookingStatus {
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
 enum UnitStatus {
   VACANT
   OCCUPIED
@@ -53,6 +75,11 @@ enum TransactionType {
   EXPENSE
   MANAGEMENT_FEE
   PAYOUT
+  // Short-term rental flavours.
+  OTA_COMMISSION       // Airbnb / Booking.com / Vrbo cut
+  CLEANING_FEE         // paid out to cleaner (or absorbed)
+  GUEST_REFUND         // chargeback / discount returned to a guest
+  GOLDSTAY_COMMISSION  // our cut on a short-term booking
   OTHER
 }
 
@@ -111,6 +138,10 @@ model Property {
   acquisitionPrice Decimal?    @db.Decimal(14, 2)
   acquisitionCurrency String?  @default("USD")
   status        PropertyStatus @default(ONBOARDING)
+  propertyType  PropertyType   @default(LONG_TERM)
+  // Hostaway listing id for SHORT_TERM properties. Used by the
+  // webhook receiver to map external reservations back to a property.
+  hostawayListingId String?    @unique
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 
@@ -118,9 +149,11 @@ model Property {
   documents     Document[]
   valuations    Valuation[]
   transactions  Transaction[]
+  bookings      Booking[]
 
   @@index([ownerId])
   @@index([country])
+  @@index([propertyType])
 }
 
 model Unit {
@@ -169,6 +202,8 @@ model Transaction {
   property    Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   leaseId     String?
   lease       Lease?               @relation(fields: [leaseId], references: [id], onDelete: SetNull)
+  bookingId   String?
+  booking     Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
   occurredOn  DateTime
   type        TransactionType
   direction   TransactionDirection
@@ -181,6 +216,47 @@ model Transaction {
 
   @@index([propertyId, occurredOn])
   @@index([leaseId])
+  @@index([bookingId])
+}
+
+// One row per nightly stay. Created either manually in the admin or
+// automatically by the Hostaway webhook (which sets externalId to the
+// upstream reservation id so we can upsert idempotently).
+//
+// grossAmount is what the guest paid. otaCommission is what the OTA
+// retained. cleaningFee is what we paid (or absorbed) for the
+// turnover. netPayout is what the owner sees before Goldstay's own
+// commission, which lands as a separate Transaction row of type
+// GOLDSTAY_COMMISSION so it stays auditable.
+model Booking {
+  id            String         @id @default(cuid())
+  propertyId    String
+  property      Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  source        BookingSource
+  externalId    String?        // upstream reservation id (Hostaway / Airbnb / etc); null for direct
+  guestName     String
+  guestEmail    String?
+  checkIn       DateTime
+  checkOut      DateTime
+  nights        Int
+  grossAmount   Decimal        @db.Decimal(12, 2)
+  otaCommission Decimal?       @db.Decimal(12, 2)
+  cleaningFee   Decimal?       @db.Decimal(12, 2)
+  netPayout     Decimal        @db.Decimal(12, 2)
+  currency      String         @default("KES")
+  status        BookingStatus  @default(CONFIRMED)
+  notes         String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  transactions  Transaction[]
+
+  // Postgres treats NULL as distinct in unique constraints, so direct
+  // bookings with no externalId never collide. Upstream-sourced rows
+  // are guaranteed unique per (source, externalId) for upserts.
+  @@unique([source, externalId])
+  @@index([propertyId, checkIn])
+  @@index([status])
 }
 
 // Snapshot of an estimated property valuation at a point in time.
