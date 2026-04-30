@@ -11,6 +11,7 @@ import {
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
 import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import { IcalFeedManager } from "./ical/IcalFeedManager";
 import {
   occupancyPercentForPeriod,
   revenueTotalsByCurrency,
@@ -71,6 +72,9 @@ export default async function PropertyDetailPage({
       bookings: {
         orderBy: { checkIn: "desc" },
         take: 25,
+      },
+      icalFeeds: {
+        orderBy: { source: "asc" },
       },
     },
   });
@@ -207,10 +211,36 @@ export default async function PropertyDetailPage({
 
         <div className="space-y-6">
           {isShortTerm ? (
-            <BookingsCard
-              propertyId={property.id}
-              bookings={property.bookings}
-            />
+            <>
+              <BookingsCard
+                propertyId={property.id}
+                bookings={property.bookings}
+              />
+              <div className="rounded-lg border border-stone-200 bg-white p-6">
+                <h3 className="text-base font-medium text-stone-900">
+                  Channel calendars
+                </h3>
+                <p className="mt-1 text-sm text-stone-500">
+                  Connect this property&rsquo;s public iCal feeds so the
+                  occupancy calendar updates automatically every 15 minutes.
+                  Free alternative to a paid PMS — dates only, no guest data
+                  or money. Operators backfill financials manually.
+                </p>
+                <div className="mt-5">
+                  <IcalFeedManager
+                    propertyId={property.id}
+                    feeds={property.icalFeeds.map((f) => ({
+                      id: f.id,
+                      source: f.source,
+                      url: f.url,
+                      lastSyncedAt: f.lastSyncedAt,
+                      lastSuccessAt: f.lastSuccessAt,
+                      lastError: f.lastError,
+                    }))}
+                  />
+                </div>
+              </div>
+            </>
           ) : (
             <div className="rounded-lg border border-stone-200 bg-white p-6">
               <div className="flex items-center justify-between gap-4">
