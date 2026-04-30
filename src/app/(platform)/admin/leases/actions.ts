@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { LeaseStatus, UnitStatus } from "@prisma/client";
+import { LeaseStatus, PropertyStatus, UnitStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { LeaseInput } from "@/lib/validation/schemas";
@@ -43,8 +43,9 @@ export async function createLeaseAction(
   }
 
   try {
-    const lease = await prisma.$transaction(async (tx) => {
+    const { lease, propertyId } = await prisma.$transaction(async (tx) => {
       const created = await tx.lease.create({ data: parsed.data });
+
       // Auto-flip the unit to OCCUPIED if the new lease is active.
       if (parsed.data.status === "ACTIVE") {
         await tx.unit.update({
@@ -52,11 +53,32 @@ export async function createLeaseAction(
           data: { status: UnitStatus.OCCUPIED },
         });
       }
-      return created;
+
+      // Promote a still-ONBOARDING property to ACTIVE on its first
+      // active lease. Anything beyond ONBOARDING (ACTIVE, EXITED) is
+      // a deliberate state — never overwrite it from here.
+      const unit = await tx.unit.findUnique({
+        where: { id: parsed.data.unitId },
+        select: { propertyId: true },
+      });
+      if (unit && parsed.data.status === "ACTIVE") {
+        await tx.property.updateMany({
+          where: {
+            id: unit.propertyId,
+            status: PropertyStatus.ONBOARDING,
+          },
+          data: { status: PropertyStatus.ACTIVE },
+        });
+      }
+
+      return { lease: created, propertyId: unit?.propertyId ?? null };
     });
 
     revalidatePath("/admin");
     revalidatePath(`/admin/units/${parsed.data.unitId}`);
+    if (propertyId) {
+      revalidatePath(`/admin/properties/${propertyId}`);
+    }
     redirect(`/admin/leases/${lease.id}`);
   } catch (e) {
     if ((e as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")) {
