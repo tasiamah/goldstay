@@ -37,11 +37,17 @@ export function PropertyForm({
   defaults,
   submitLabel,
   ownerCountry,
+  showStatusField = false,
 }: {
   action: FormAction;
   defaults: Defaults;
   submitLabel: string;
   ownerCountry: "KE" | "GH";
+  // Status is inferred for new properties (defaults to ONBOARDING and
+  // auto-promotes to ACTIVE on first lease). Only surface the editable
+  // field on the edit form, where admins may need to mark EXITED or
+  // correct a stuck row.
+  showStatusField?: boolean;
 }) {
   const [state, formAction] = useFormState(action, null);
   const fieldError = (key: string) =>
@@ -154,18 +160,21 @@ export function PropertyForm({
         />
       </fieldset>
 
-      <Select
-        label="Status"
-        name="status"
-        defaultValue={defaults.status ?? "ONBOARDING"}
-        required
-        options={[
-          { value: "ONBOARDING", label: "Onboarding" },
-          { value: "ACTIVE", label: "Active" },
-          { value: "EXITED", label: "Exited" },
-        ]}
-        error={fieldError("status")}
-      />
+      {showStatusField ? (
+        <Select
+          label="Status"
+          name="status"
+          defaultValue={defaults.status ?? "ONBOARDING"}
+          required
+          options={[
+            { value: "ONBOARDING", label: "Onboarding" },
+            { value: "ACTIVE", label: "Active" },
+            { value: "EXITED", label: "Exited" },
+          ]}
+          error={fieldError("status")}
+          hint="Onboarding flips to Active automatically on the first lease. Use Exited only when the property leaves the portfolio."
+        />
+      ) : null}
 
       {state && !state.ok ? (
         <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">
@@ -423,6 +432,7 @@ function Select({
   required,
   error,
   options,
+  hint,
 }: {
   label: string;
   name: string;
@@ -430,6 +440,7 @@ function Select({
   required?: boolean;
   error?: string;
   options: { value: string; label: string }[];
+  hint?: string;
 }) {
   return (
     <label className="block">
@@ -453,6 +464,9 @@ function Select({
           </option>
         ))}
       </select>
+      {hint ? (
+        <span className="mt-1 block text-xs text-stone-500">{hint}</span>
+      ) : null}
       {error ? (
         <span className="mt-1 block text-xs text-red-700">{error}</span>
       ) : null}

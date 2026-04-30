@@ -32,6 +32,8 @@ export default async function NewPropertyForOwnerPage({
           <span className="font-medium text-stone-700">{owner.fullName}</span>.
           Country is set to{" "}
           {owner.country === "KE" ? "Kenya" : "Ghana"} based on the owner.
+          Status starts as <span className="font-medium text-stone-700">Onboarding</span>{" "}
+          and flips to Active automatically once you add the first lease.
         </p>
       </div>
 

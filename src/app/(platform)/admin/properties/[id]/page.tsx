@@ -98,6 +98,7 @@ export default async function PropertyDetailPage({
                 status: property.status,
               }}
               submitLabel="Save changes"
+              showStatusField
             />
           </div>
         </div>
