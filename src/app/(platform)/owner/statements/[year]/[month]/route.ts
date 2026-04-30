@@ -1,0 +1,103 @@
+// GET /owner/statements/2026/4 — returns the rendered PDF for the
+// logged-in owner's portfolio for that month. Browser hits this URL
+// directly via a download link; we set a content-disposition header
+// so the file lands in Downloads with a sensible name instead of
+// "[year].pdf".
+//
+// Auth: requireOwner() handles redirect-to-login for guests and
+// redirect-to-/owner/pending for users not yet linked to an Owner row.
+// We never serve PDFs to anyone outside the owner's own properties.
+
+import { NextResponse } from "next/server";
+import { renderToBuffer } from "@react-pdf/renderer";
+import { requireOwner } from "@/lib/auth";
+import { prisma } from "@/lib/db";
+import { StatementDocument } from "@/lib/statements/StatementDocument";
+import { buildStatement } from "@/lib/statements/aggregate";
+import {
+  formatPeriod,
+  parsePeriod,
+  periodRange,
+  periodSlug,
+} from "@/lib/statements/period";
+
+export const dynamic = "force-dynamic";
+
+export async function GET(
+  _request: Request,
+  context: { params: { year: string; month: string } },
+) {
+  const period = parsePeriod(context.params.year, context.params.month);
+  if (!period) {
+    return new NextResponse("Invalid period", { status: 400 });
+  }
+
+  const { owner } = await requireOwner();
+
+  const { start, end } = periodRange(period);
+
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      occurredOn: { gte: start, lt: end },
+      property: { ownerId: owner.id },
+    },
+    include: {
+      property: { select: { id: true, name: true } },
+      lease: { select: { id: true, tenantName: true } },
+    },
+    orderBy: { occurredOn: "asc" },
+  });
+
+  const statement = buildStatement(
+    transactions.map((t) => ({
+      id: t.id,
+      occurredOn: t.occurredOn,
+      type: t.type,
+      direction: t.direction,
+      amount: t.amount.toString(),
+      currency: t.currency,
+      description: t.description,
+      reference: t.reference,
+      propertyId: t.propertyId,
+      propertyName: t.property.name,
+      leaseId: t.leaseId,
+      tenantName: t.lease?.tenantName ?? null,
+    })),
+    { preferredCurrency: owner.preferredCurrency },
+  );
+
+  const buffer = await renderToBuffer(
+    StatementDocument({
+      period,
+      owner: {
+        fullName: owner.fullName,
+        email: owner.email,
+        preferredCurrency: owner.preferredCurrency,
+      },
+      statement,
+      generatedAt: new Date(),
+    }),
+  );
+
+  const filename = `goldstay-statement-${periodSlug(period)}-${slug(
+    owner.fullName,
+  )}.pdf`;
+
+  return new NextResponse(new Uint8Array(buffer), {
+    status: 200,
+    headers: {
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `inline; filename="${filename}"`,
+      "Cache-Control": "private, max-age=0, must-revalidate",
+      "X-Statement-Period": formatPeriod(period),
+    },
+  });
+}
+
+function slug(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")
+    .slice(0, 40);
+}
