@@ -28,10 +28,10 @@ export default async function OwnerLayout({
             Overview
           </Link>
           <Link
-            href="/owner/properties"
+            href="/owner/transactions"
             className="text-stone-700 hover:text-stone-900"
           >
-            Properties
+            Transactions
           </Link>
           <Link
             href="/owner/statements"

@@ -192,7 +192,12 @@ export default async function OwnerDashboardPage() {
                     className="flex items-start justify-between py-3"
                   >
                     <div>
-                      <p className="font-medium text-stone-900">{p.name}</p>
+                      <Link
+                        href={`/owner/properties/${p.id}`}
+                        className="font-medium text-stone-900 hover:underline"
+                      >
+                        {p.name}
+                      </Link>
                       <p className="text-xs text-stone-500">
                         {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
                         {p.city} · {p.units.length}{" "}
@@ -211,9 +216,17 @@ export default async function OwnerDashboardPage() {
         </div>
 
         <div className="rounded-lg border border-stone-200 bg-white p-6">
-          <h2 className="text-base font-medium text-stone-900">
-            Recent activity
-          </h2>
+          <div className="flex items-start justify-between gap-4">
+            <h2 className="text-base font-medium text-stone-900">
+              Recent activity
+            </h2>
+            <Link
+              href="/owner/transactions"
+              className="text-xs text-stone-500 hover:text-stone-900"
+            >
+              See all →
+            </Link>
+          </div>
           {recentTransactions.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">
               No transactions yet. Goldstay logs every rent payment, expense,
@@ -239,9 +252,8 @@ export default async function OwnerDashboardPage() {
                     </p>
                     <p className="text-xs text-stone-500">
                       <Link
-                        href={`#`}
-                        className="pointer-events-none"
-                        aria-disabled
+                        href={`/owner/properties/${t.property.id}`}
+                        className="hover:text-stone-900 hover:underline"
                       >
                         {t.property.name}
                       </Link>{" "}
