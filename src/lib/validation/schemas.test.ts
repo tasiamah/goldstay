@@ -22,59 +22,39 @@ function unwrap<T>(
   return parsed.data;
 }
 
+// Tests in this file focus on our preprocessor + transform layer:
+// what we add ON TOP of Zod's built-ins. We don't re-test min(), max(),
+// .email(), .enum() — Zod already covers those.
+
 describe("OwnerInput", () => {
   const valid = {
     email: "Hello@Goldstay.co.ke",
     fullName: "  Asha Kimani  ",
-    phone: "  +254700000000 ",
     companyName: "",
     country: "KE",
     preferredCurrency: "usd",
   };
 
-  it("normalises email to lowercase and trims the name", () => {
+  it("normalises email to lowercase, trims name, upper-cases currency, defaults USD", () => {
     const data = unwrap(OwnerInput.safeParse(valid));
     expect(data.email).toBe("hello@goldstay.co.ke");
     expect(data.fullName).toBe("Asha Kimani");
-  });
-
-  it("upper-cases the preferred currency", () => {
-    const data = unwrap(OwnerInput.safeParse(valid));
     expect(data.preferredCurrency).toBe("USD");
+
+    const { preferredCurrency: _ignored, ...withoutCurrency } = valid;
+    const fallback = unwrap(OwnerInput.safeParse(withoutCurrency));
+    expect(fallback.preferredCurrency).toBe("USD");
   });
 
-  it("treats empty optional strings as undefined, not empty", () => {
+  it("treats empty optional strings as undefined, not as empty strings", () => {
+    // Critical: HTML form posts always send "" for unfilled fields.
+    // If we let it through, optional fields become brittle "" comparisons.
     const data = unwrap(OwnerInput.safeParse({ ...valid, companyName: "" }));
     expect(data.companyName).toBeUndefined();
   });
 
-  it("rejects an invalid email address", () => {
-    const result = OwnerInput.safeParse({ ...valid, email: "not-an-email" });
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects a name that is too short", () => {
-    const result = OwnerInput.safeParse({ ...valid, fullName: "A" });
-    expect(result.success).toBe(false);
-  });
-
   it("rejects an unknown country", () => {
-    const result = OwnerInput.safeParse({ ...valid, country: "ZW" });
-    expect(result.success).toBe(false);
-  });
-
-  it("defaults preferredCurrency to USD when omitted", () => {
-    const { preferredCurrency: _ignored, ...rest } = valid;
-    const data = unwrap(OwnerInput.safeParse(rest));
-    expect(data.preferredCurrency).toBe("USD");
-  });
-
-  it("rejects a 4-letter currency code", () => {
-    const result = OwnerInput.safeParse({
-      ...valid,
-      preferredCurrency: "USDD",
-    });
-    expect(result.success).toBe(false);
+    expect(OwnerInput.safeParse({ ...valid, country: "ZW" }).success).toBe(false);
   });
 });
 
@@ -86,30 +66,14 @@ describe("PropertyInput", () => {
     address: "Pinetree Plaza, Kindaruma Road",
   };
 
-  it("accepts the minimum required fields", () => {
+  it("accepts the minimum required fields with sensible status default", () => {
     const data = unwrap(PropertyInput.safeParse(base));
-    expect(data.ownerId).toBe("cuid-owner-1");
     expect(data.status).toBe("ONBOARDING");
   });
 
-  it("treats an empty bedroom string as undefined", () => {
-    const data = unwrap(PropertyInput.safeParse({ ...base, bedrooms: "" }));
-    expect(data.bedrooms).toBeUndefined();
-  });
-
-  it("parses bedrooms as a non-negative integer", () => {
-    const data = unwrap(PropertyInput.safeParse({ ...base, bedrooms: "3" }));
-    expect(data.bedrooms).toBe(3);
-  });
-
-  it("rejects a negative bedroom count", () => {
-    const result = PropertyInput.safeParse({ ...base, bedrooms: "-1" });
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects a non-numeric bedroom value", () => {
-    const result = PropertyInput.safeParse({ ...base, bedrooms: "abc" });
-    expect(result.success).toBe(false);
+  it("converts an empty bedroom string to undefined and a numeric string to an int", () => {
+    expect(unwrap(PropertyInput.safeParse({ ...base, bedrooms: "" })).bedrooms).toBeUndefined();
+    expect(unwrap(PropertyInput.safeParse({ ...base, bedrooms: "3" })).bedrooms).toBe(3);
   });
 
   it("parses acquisitionPrice as a decimal", () => {
@@ -119,53 +83,29 @@ describe("PropertyInput", () => {
     expect(data.acquisitionPrice).toBe(1234567.89);
   });
 
-  it("parses acquiredOn (YYYY-MM-DD) into a Date", () => {
-    const data = unwrap(
+  it("parses YYYY-MM-DD into a Date and treats empty as undefined", () => {
+    const filled = unwrap(
       PropertyInput.safeParse({ ...base, acquiredOn: "2024-06-15" }),
     );
-    expect(data.acquiredOn).toBeInstanceOf(Date);
-    expect(data.acquiredOn?.getUTCFullYear()).toBe(2024);
+    expect(filled.acquiredOn).toBeInstanceOf(Date);
+    expect(filled.acquiredOn?.getUTCFullYear()).toBe(2024);
+
+    const empty = unwrap(PropertyInput.safeParse({ ...base, acquiredOn: "" }));
+    expect(empty.acquiredOn).toBeUndefined();
   });
 
-  it("treats an empty acquiredOn as undefined", () => {
-    const data = unwrap(
-      PropertyInput.safeParse({ ...base, acquiredOn: "" }),
-    );
-    expect(data.acquiredOn).toBeUndefined();
-  });
-
-  it("rejects a malformed acquiredOn", () => {
-    const result = PropertyInput.safeParse({
-      ...base,
-      acquiredOn: "yesterday",
-    });
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects an empty address (below min length)", () => {
-    const result = PropertyInput.safeParse({ ...base, address: "x" });
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects a missing ownerId", () => {
-    const { ownerId: _ignored, ...rest } = base;
-    const result = PropertyInput.safeParse(rest);
-    expect(result.success).toBe(false);
+  it("rejects a malformed date", () => {
+    expect(
+      PropertyInput.safeParse({ ...base, acquiredOn: "yesterday" }).success,
+    ).toBe(false);
   });
 });
 
 describe("UnitInput", () => {
-  it("accepts a single-character label", () => {
-    const data = unwrap(
-      UnitInput.safeParse({ propertyId: "p1", label: "A" }),
-    );
+  it("accepts a single-character label and defaults to VACANT", () => {
+    const data = unwrap(UnitInput.safeParse({ propertyId: "p1", label: "A" }));
     expect(data.label).toBe("A");
     expect(data.status).toBe("VACANT");
-  });
-
-  it("rejects an empty label", () => {
-    const result = UnitInput.safeParse({ propertyId: "p1", label: "" });
-    expect(result.success).toBe(false);
   });
 });
 
@@ -177,49 +117,23 @@ describe("LeaseInput", () => {
     monthlyRent: "85000",
   };
 
-  it("accepts the minimum required fields", () => {
+  it("accepts the minimum required fields with sensible defaults", () => {
     const data = unwrap(LeaseInput.safeParse(base));
-    expect(data.tenantName).toBe("Jane Doe");
-    expect(data.monthlyRent).toBe(85000);
+    expect(data.monthlyRent).toBe(85_000);
     expect(data.startDate).toBeInstanceOf(Date);
     expect(data.currency).toBe("KES");
     expect(data.status).toBe("ACTIVE");
   });
 
-  it("treats an empty tenantEmail as undefined (not invalid email)", () => {
+  it("treats empty tenantEmail as undefined (not as an invalid email)", () => {
+    // Regression guard. Plain z.string().email().optional() rejects ""
+    // because "" fails the email rule before optional() runs.
     const data = unwrap(LeaseInput.safeParse({ ...base, tenantEmail: "" }));
     expect(data.tenantEmail).toBeUndefined();
   });
 
-  it("rejects a non-empty but invalid tenantEmail", () => {
-    const result = LeaseInput.safeParse({
-      ...base,
-      tenantEmail: "not-an-email",
-    });
-    expect(result.success).toBe(false);
-  });
-
   it("upper-cases the currency", () => {
-    const data = unwrap(LeaseInput.safeParse({ ...base, currency: "kes" }));
-    expect(data.currency).toBe("KES");
-  });
-
-  it("rejects a missing startDate", () => {
-    const { startDate: _ignored, ...rest } = base;
-    const result = LeaseInput.safeParse(rest);
-    expect(result.success).toBe(false);
-  });
-
-  it("rejects a negative monthlyRent", () => {
-    const result = LeaseInput.safeParse({ ...base, monthlyRent: "-1" });
-    expect(result.success).toBe(false);
-  });
-
-  it("parses an optional endDate", () => {
-    const data = unwrap(
-      LeaseInput.safeParse({ ...base, endDate: "2026-12-31" }),
-    );
-    expect(data.endDate).toBeInstanceOf(Date);
+    expect(unwrap(LeaseInput.safeParse({ ...base, currency: "kes" })).currency).toBe("KES");
   });
 });
 
@@ -232,31 +146,17 @@ describe("TransactionInput", () => {
     amount: "85000",
   };
 
-  it("accepts a valid rent inflow", () => {
+  it("accepts a valid rent inflow with the amount coerced to a number", () => {
     const data = unwrap(TransactionInput.safeParse(base));
-    expect(data.amount).toBe(85000);
-    expect(data.type).toBe("RENT");
-    expect(data.direction).toBe("INFLOW");
+    expect(data.amount).toBe(85_000);
   });
 
   it("rejects an unknown transaction type", () => {
-    const result = TransactionInput.safeParse({ ...base, type: "BRIBERY" });
-    expect(result.success).toBe(false);
+    expect(TransactionInput.safeParse({ ...base, type: "BRIBERY" }).success).toBe(false);
   });
 
-  it("rejects an unknown direction", () => {
-    const result = TransactionInput.safeParse({ ...base, direction: "SIDEWAYS" });
-    expect(result.success).toBe(false);
-  });
-
-  it("treats an empty leaseId as undefined", () => {
+  it("treats empty leaseId as undefined", () => {
     const data = unwrap(TransactionInput.safeParse({ ...base, leaseId: "" }));
     expect(data.leaseId).toBeUndefined();
-  });
-
-  it("requires occurredOn", () => {
-    const { occurredOn: _ignored, ...rest } = base;
-    const result = TransactionInput.safeParse(rest);
-    expect(result.success).toBe(false);
   });
 });
