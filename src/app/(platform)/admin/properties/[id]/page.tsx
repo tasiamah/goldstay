@@ -10,7 +10,13 @@ import {
   PropertyStatusBadge,
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
-import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import {
+  OccupancyCalendar,
+  clampHeatmapMonths,
+  heatmapWindowStart,
+  HEATMAP_MAX_MONTHS,
+  HEATMAP_STEP,
+} from "@/components/OccupancyCalendar";
 import { IcalFeedManager } from "./ical/IcalFeedManager";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
@@ -35,9 +41,18 @@ export const dynamic = "force-dynamic";
 
 export default async function PropertyDetailPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams?: { heatmap?: string };
 }) {
+  // The heatmap window grows in 3-month steps from 3 → 12 via a
+  // ?heatmap=N query param. We fetch bookings overlapping that window
+  // and pass the same monthsBack to the calendar so the fetch and
+  // the render line up exactly.
+  const heatmapMonthsBack = clampHeatmapMonths(searchParams?.heatmap);
+  const heatmapStart = heatmapWindowStart(new Date(), heatmapMonthsBack);
+
   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: {
@@ -68,11 +83,12 @@ export default async function PropertyDetailPage({
       documents: {
         orderBy: { createdAt: "desc" },
       },
-      // Recent bookings for short-term rentals. Capped at 25 here for
-      // the card; the full history will live behind a paginated page.
+      // All bookings whose stay overlaps the heatmap window. The
+      // BookingsCard then takes the most recent slice for display,
+      // so one query feeds both views.
       bookings: {
+        where: { checkOut: { gte: heatmapStart } },
         orderBy: { checkIn: "desc" },
-        take: 25,
       },
       icalFeeds: {
         orderBy: { source: "asc" },
@@ -81,6 +97,24 @@ export default async function PropertyDetailPage({
   });
 
   if (!property) notFound();
+
+  // Only surface the "Show 3 more months" link when both conditions
+  // hold: there's actually older data to reveal AND the window hasn't
+  // already hit its cap. Cheap count, scoped by property.
+  const olderBookingCount =
+    heatmapMonthsBack < HEATMAP_MAX_MONTHS
+      ? await prisma.booking.count({
+          where: {
+            propertyId: params.id,
+            checkOut: { lt: heatmapStart },
+            status: { not: "CANCELLED" },
+          },
+        })
+      : 0;
+  const heatmapLoadMoreHref =
+    olderBookingCount > 0
+      ? `?heatmap=${heatmapMonthsBack + HEATMAP_STEP}`
+      : null;
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
@@ -153,7 +187,7 @@ export default async function PropertyDetailPage({
         <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <h3 className="text-base font-medium text-stone-900">
-              Last 3 months
+              Last {heatmapMonthsBack} months
             </h3>
             <div className="flex flex-wrap items-baseline gap-6 text-sm">
               <span className="text-stone-500">
@@ -174,7 +208,11 @@ export default async function PropertyDetailPage({
               ))}
             </div>
           </div>
-          <OccupancyCalendar bookings={property.bookings} />
+          <OccupancyCalendar
+            bookings={property.bookings}
+            monthsBack={heatmapMonthsBack}
+            loadMoreHref={heatmapLoadMoreHref}
+          />
         </section>
       ) : null}
 
@@ -214,7 +252,7 @@ export default async function PropertyDetailPage({
             <>
               <BookingsCard
                 propertyId={property.id}
-                bookings={property.bookings}
+                bookings={property.bookings.slice(0, 25)}
               />
               <div className="rounded-lg border border-stone-200 bg-white p-6">
                 <h3 className="text-base font-medium text-stone-900">

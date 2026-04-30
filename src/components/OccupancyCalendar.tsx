@@ -67,10 +67,15 @@ export function OccupancyCalendar({
   bookings,
   monthsBack = 3,
   now = new Date(),
+  loadMoreHref,
 }: {
   bookings: BookingForCalendar[];
   monthsBack?: number;
   now?: Date;
+  // When set, renders a "Show 3 more months" link below the grid.
+  // The page decides whether to show it based on whether older
+  // bookings actually exist and the window hasn't hit its cap.
+  loadMoreHref?: string | null;
 }) {
   // Map of "YYYY-M-D" -> first matching booking, used to colour the
   // square and source the tooltip.
@@ -108,9 +113,30 @@ export function OccupancyCalendar({
           />
         ))}
       </div>
+      {loadMoreHref ? (
+        <div className="pt-1">
+          <a
+            href={loadMoreHref}
+            className="inline-flex items-center gap-1 text-xs font-medium text-stone-600 hover:text-stone-900"
+          >
+            ← Show 3 more months
+          </a>
+        </div>
+      ) : null}
     </div>
   );
 }
+
+// Re-export the heatmap helpers so callers only need to remember one
+// import path. The actual definitions live in `lib/bookings/heatmap`
+// so they're testable without pulling JSX into Vitest.
+export {
+  clampHeatmapMonths,
+  heatmapWindowStart,
+  HEATMAP_MIN_MONTHS,
+  HEATMAP_MAX_MONTHS,
+  HEATMAP_STEP,
+} from "@/lib/bookings/heatmap";
 
 // Monday-first week order, matching local norms in Kenya / Ghana.
 const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;

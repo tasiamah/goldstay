@@ -22,7 +22,13 @@ import {
   PropertyStatusBadge,
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
-import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import {
+  OccupancyCalendar,
+  clampHeatmapMonths,
+  heatmapWindowStart,
+  HEATMAP_MAX_MONTHS,
+  HEATMAP_STEP,
+} from "@/components/OccupancyCalendar";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
@@ -46,10 +52,18 @@ export const dynamic = "force-dynamic";
 
 export default async function OwnerPropertyDetailPage({
   params,
+  searchParams,
 }: {
   params: { id: string };
+  searchParams?: { heatmap?: string };
 }) {
   const { owner } = await requireOwner();
+
+  // Heatmap window grows in 3-month steps from 3 → 12 via ?heatmap=N.
+  // Same logic as the admin view so the URL behaves the same on both
+  // sides of the platform.
+  const heatmapMonthsBack = clampHeatmapMonths(searchParams?.heatmap);
+  const heatmapStart = heatmapWindowStart(new Date(), heatmapMonthsBack);
 
   const property = await prisma.property.findFirst({
     where: { id: params.id, ownerId: owner.id },
@@ -80,14 +94,31 @@ export default async function OwnerPropertyDetailPage({
           lease: { select: { tenantName: true } },
         },
       },
+      // Bookings overlapping the heatmap window — same query feeds the
+      // calendar and the recent stays card.
       bookings: {
+        where: { checkOut: { gte: heatmapStart } },
         orderBy: { checkIn: "desc" },
-        take: 200,
       },
     },
   });
 
   if (!property) notFound();
+
+  const olderBookingCount =
+    heatmapMonthsBack < HEATMAP_MAX_MONTHS
+      ? await prisma.booking.count({
+          where: {
+            propertyId: params.id,
+            checkOut: { lt: heatmapStart },
+            status: { not: "CANCELLED" },
+          },
+        })
+      : 0;
+  const heatmapLoadMoreHref =
+    olderBookingCount > 0
+      ? `?heatmap=${heatmapMonthsBack + HEATMAP_STEP}`
+      : null;
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
@@ -174,9 +205,13 @@ export default async function OwnerPropertyDetailPage({
       </section>
 
       {isShortTerm ? (
-        <Card title="Last 3 months">
+        <Card title={`Last ${heatmapMonthsBack} months`}>
           <div className="mt-4">
-            <OccupancyCalendar bookings={property.bookings} />
+            <OccupancyCalendar
+              bookings={property.bookings}
+              monthsBack={heatmapMonthsBack}
+              loadMoreHref={heatmapLoadMoreHref}
+            />
           </div>
         </Card>
       ) : null}
