@@ -27,6 +27,8 @@ function fromForm(formData: FormData) {
     acquisitionPrice: String(formData.get("acquisitionPrice") ?? ""),
     acquisitionCurrency: String(formData.get("acquisitionCurrency") ?? "USD"),
     status: String(formData.get("status") ?? "ONBOARDING"),
+    propertyType: String(formData.get("propertyType") ?? "LONG_TERM"),
+    hostawayListingId: String(formData.get("hostawayListingId") ?? ""),
   };
 }
 

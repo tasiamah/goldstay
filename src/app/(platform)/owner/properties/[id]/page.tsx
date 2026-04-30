@@ -18,7 +18,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
+import {
+  PropertyStatusBadge,
+  PropertyTypeBadge,
+} from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -92,6 +95,7 @@ export default async function OwnerPropertyDetailPage({
             {property.name}
           </h2>
           <PropertyStatusBadge status={property.status} />
+          <PropertyTypeBadge type={property.propertyType} />
         </div>
         <p className="mt-1 text-sm text-stone-500">
           {property.neighbourhood ? `${property.neighbourhood}, ` : ""}

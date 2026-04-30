@@ -30,6 +30,8 @@ type Defaults = {
   acquisitionPrice?: string | number | null;
   acquisitionCurrency?: string | null;
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
+  propertyType?: "LONG_TERM" | "SHORT_TERM";
+  hostawayListingId?: string | null;
 };
 
 export function PropertyForm({
@@ -93,6 +95,27 @@ export function PropertyForm({
         placeholder="Internal notes for ops. Not visible to the landlord."
         error={fieldError("description")}
       />
+
+      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <Select
+          label="Rental model"
+          name="propertyType"
+          defaultValue={defaults.propertyType ?? "LONG_TERM"}
+          required
+          options={[
+            { value: "LONG_TERM", label: "Long-term lease" },
+            { value: "SHORT_TERM", label: "Short-term (Airbnb / Booking.com / Vrbo)" },
+          ]}
+          error={fieldError("propertyType")}
+        />
+        <Field
+          label="Hostaway listing ID"
+          name="hostawayListingId"
+          defaultValue={defaults.hostawayListingId ?? ""}
+          placeholder="e.g. 12345678"
+          error={fieldError("hostawayListingId")}
+        />
+      </fieldset>
 
       <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <Field

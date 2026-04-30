@@ -3,9 +3,12 @@
 // Actions can import without dragging extra weight into the bundle.
 import { z } from "zod";
 import {
+  BookingSource,
+  BookingStatus,
   Country,
   LeaseStatus,
   PropertyStatus,
+  PropertyType,
   TransactionDirection,
   TransactionType,
   UnitStatus,
@@ -58,6 +61,30 @@ export const PropertyInput = z.object({
   acquisitionPrice: optionalDecimal,
   acquisitionCurrency: z.string().trim().toUpperCase().min(3).max(3).optional(),
   status: z.nativeEnum(PropertyStatus).default("ONBOARDING"),
+  propertyType: z.nativeEnum(PropertyType).default("LONG_TERM"),
+  hostawayListingId: optionalString,
+});
+
+export const BookingInput = z.object({
+  propertyId: z.string().min(1),
+  source: z.nativeEnum(BookingSource),
+  externalId: optionalString,
+  guestName: z.string().trim().min(1).max(120),
+  guestEmail: z
+    .preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.string().email().optional(),
+    )
+    .optional(),
+  checkIn: requiredDate,
+  checkOut: requiredDate,
+  grossAmount: requiredAmount,
+  otaCommission: optionalDecimal,
+  cleaningFee: optionalDecimal,
+  netPayout: requiredAmount,
+  currency: z.string().trim().toUpperCase().min(3).max(3).default("KES"),
+  status: z.nativeEnum(BookingStatus).default("CONFIRMED"),
+  notes: optionalString,
 });
 
 export const UnitInput = z.object({

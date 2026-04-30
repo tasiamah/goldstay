@@ -6,7 +6,10 @@ import { updatePropertyAction } from "../actions";
 import { DocumentUploader } from "./documents/DocumentUploader";
 import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
 import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
-import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
+import {
+  PropertyStatusBadge,
+  PropertyTypeBadge,
+} from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -88,6 +91,7 @@ export default async function PropertyDetailPage({
                 {property.name}
               </h2>
               <PropertyStatusBadge status={property.status} />
+              <PropertyTypeBadge type={property.propertyType} />
             </div>
             <p className="mt-1 text-sm text-stone-500">
               {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
@@ -127,6 +131,8 @@ export default async function PropertyDetailPage({
                 acquisitionPrice,
                 acquisitionCurrency: property.acquisitionCurrency,
                 status: property.status,
+                propertyType: property.propertyType,
+                hostawayListingId: property.hostawayListingId,
               }}
               submitLabel="Save changes"
             />
