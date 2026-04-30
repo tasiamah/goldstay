@@ -8,6 +8,7 @@ import { requireAdmin } from "@/lib/auth";
 import { BookingInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { nightsBetween } from "@/lib/bookings/nights";
+import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 
 export type BookingActionResult =
   | { ok: true; bookingId: string }
@@ -86,9 +87,11 @@ export async function cancelBookingAction(bookingId: string): Promise<void> {
 // the booking already has emitted transactions, do nothing. Used by
 // the Hostaway webhook on first ingest and exposed manually for
 // direct bookings.
+// Defaults to Goldstay's published 20% short-stay commission. Pass
+// 0 explicitly to skip (e.g. when invoicing the owner directly).
 export async function emitBookingTransactionsAction(
   bookingId: string,
-  goldstayCommissionRate: number = 0,
+  goldstayCommissionRate: number = SHORT_TERM_COMMISSION_RATE,
 ): Promise<{ ok: boolean }> {
   await requireAdmin();
   const booking = await prisma.booking.findUnique({

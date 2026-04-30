@@ -20,6 +20,7 @@ import {
   type HostawayReservation,
 } from "@/lib/hostaway/mapper";
 import { verifyHostawaySignature } from "@/lib/hostaway/signature";
+import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -152,6 +153,23 @@ export async function POST(request: Request) {
         direction: TransactionDirection.OUTFLOW,
         amount: mapped.cleaningFee,
         description: "Turnover cleaning",
+      });
+    }
+    // Goldstay's 20% short-stay commission is auto-recorded against
+    // the gross at the same time, so the owner statement reconciles
+    // without anyone having to write the row by hand. Bespoke owner
+    // rates can override this later via the (yet-to-add) per-owner
+    // commissionRate field.
+    const goldstayCommission =
+      Math.round(mapped.grossAmount * SHORT_TERM_COMMISSION_RATE * 100) / 100;
+    if (goldstayCommission > 0) {
+      rows.push({
+        type: TransactionType.GOLDSTAY_COMMISSION,
+        direction: TransactionDirection.OUTFLOW,
+        amount: goldstayCommission,
+        description: `Goldstay commission (${Math.round(
+          SHORT_TERM_COMMISSION_RATE * 100,
+        )}%)`,
       });
     }
 
