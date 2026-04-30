@@ -22,6 +22,12 @@ import {
   PropertyStatusBadge,
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
+import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import {
+  occupancyPercentForPeriod,
+  revenueTotalsByCurrency,
+  type BookingLike,
+} from "@/lib/bookings/aggregate";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -73,13 +79,42 @@ export default async function OwnerPropertyDetailPage({
           lease: { select: { tenantName: true } },
         },
       },
+      bookings: {
+        orderBy: { checkIn: "desc" },
+        take: 200,
+      },
     },
   });
 
   if (!property) notFound();
 
+  const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
   const occupancyLabel = activeLease ? "Occupied" : "Vacant";
+
+  // Short-term occupancy and gross revenue for the last 30 days, used
+  // both in the stat row and to colour the calendar.
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now);
+  thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 30);
+  const period = { start: thirtyDaysAgo, end: now };
+  const bookingsForAgg: BookingLike[] = property.bookings.map((b) => ({
+    checkIn: b.checkIn,
+    checkOut: b.checkOut,
+    nights: b.nights,
+    grossAmount: Number(b.grossAmount),
+    otaCommission: b.otaCommission ? Number(b.otaCommission) : null,
+    cleaningFee: b.cleaningFee ? Number(b.cleaningFee) : null,
+    netPayout: Number(b.netPayout),
+    currency: b.currency,
+    status: b.status,
+  }));
+  const occPct30 = isShortTerm
+    ? occupancyPercentForPeriod(bookingsForAgg, period)
+    : null;
+  const revenue30 = isShortTerm
+    ? revenueTotalsByCurrency(bookingsForAgg, period)
+    : [];
 
   return (
     <div className="space-y-8">
@@ -105,49 +140,124 @@ export default async function OwnerPropertyDetailPage({
       </div>
 
       <section className="grid grid-cols-3 gap-4">
-        <Stat label="Status" value={occupancyLabel} />
-        <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
-        <Stat
-          label="Monthly rent"
-          value={
-            activeLease
-              ? `${activeLease.currency} ${fmt(Number(activeLease.monthlyRent))}`
-              : "—"
-          }
-        />
+        {isShortTerm ? (
+          <>
+            <Stat
+              label="Occupancy (30d)"
+              value={occPct30 === null ? "—" : `${occPct30}%`}
+            />
+            <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
+            <Stat
+              label="Gross (30d)"
+              value={
+                revenue30.length === 0
+                  ? "—"
+                  : `${revenue30[0].currency} ${fmt(revenue30[0].gross)}`
+              }
+            />
+          </>
+        ) : (
+          <>
+            <Stat label="Status" value={occupancyLabel} />
+            <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
+            <Stat
+              label="Monthly rent"
+              value={
+                activeLease
+                  ? `${activeLease.currency} ${fmt(Number(activeLease.monthlyRent))}`
+                  : "—"
+              }
+            />
+          </>
+        )}
       </section>
 
-      <section className="grid gap-8 lg:grid-cols-2">
-        <Card title="Tenancy">
-          {activeLease ? (
-            <div className="mt-4 space-y-1">
-              <p className="font-medium text-stone-900">
-                {activeLease.tenantName}
-              </p>
-              <p className="text-sm text-stone-500">
-                {activeLease.currency}{" "}
-                {fmt(Number(activeLease.monthlyRent))}/mo · since{" "}
-                {activeLease.startDate.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "short",
-                  year: "numeric",
-                })}
-                {activeLease.endDate
-                  ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "short",
-                      year: "numeric",
-                    })}`
-                  : " · ongoing"}
-              </p>
-            </div>
-          ) : (
-            <p className="mt-4 text-sm text-stone-500">
-              No active tenant. Goldstay will update this once the next
-              lease is in place.
-            </p>
-          )}
+      {isShortTerm ? (
+        <Card title="Last 6 months">
+          <div className="mt-4">
+            <OccupancyCalendar bookings={property.bookings} monthsBack={6} />
+          </div>
         </Card>
+      ) : null}
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        {isShortTerm ? (
+          <Card title="Recent stays">
+            {property.bookings.length === 0 ? (
+              <p className="mt-4 text-sm text-stone-500">
+                No bookings recorded yet for this property.
+              </p>
+            ) : (
+              <ul className="mt-4 divide-y divide-stone-100">
+                {property.bookings.slice(0, 8).map((b) => (
+                  <li
+                    key={b.id}
+                    className="flex items-start justify-between gap-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <p className="font-medium text-stone-900">
+                        {b.guestName}
+                      </p>
+                      <p className="mt-0.5 text-xs text-stone-500">
+                        {b.source === "BOOKING_COM"
+                          ? "Booking.com"
+                          : b.source.charAt(0) +
+                            b.source.slice(1).toLowerCase()}
+                        {" · "}
+                        {b.checkIn.toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                        })}{" "}
+                        →{" "}
+                        {b.checkOut.toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}{" "}
+                        · {b.nights}{" "}
+                        {b.nights === 1 ? "night" : "nights"}
+                      </p>
+                    </div>
+                    <p className="shrink-0 text-right text-sm tabular-nums text-stone-900">
+                      {b.currency} {fmt(Number(b.netPayout))}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </Card>
+        ) : (
+          <Card title="Tenancy">
+            {activeLease ? (
+              <div className="mt-4 space-y-1">
+                <p className="font-medium text-stone-900">
+                  {activeLease.tenantName}
+                </p>
+                <p className="text-sm text-stone-500">
+                  {activeLease.currency}{" "}
+                  {fmt(Number(activeLease.monthlyRent))}/mo · since{" "}
+                  {activeLease.startDate.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                  {activeLease.endDate
+                    ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}`
+                    : " · ongoing"}
+                </p>
+              </div>
+            ) : (
+              <p className="mt-4 text-sm text-stone-500">
+                No active tenant. Goldstay will update this once the next
+                lease is in place.
+              </p>
+            )}
+          </Card>
+        )}
 
         <Card title="Documents">
           {property.documents.length === 0 ? (

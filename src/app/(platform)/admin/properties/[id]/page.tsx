@@ -10,6 +10,12 @@ import {
   PropertyStatusBadge,
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
+import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import {
+  occupancyPercentForPeriod,
+  revenueTotalsByCurrency,
+  type BookingLike,
+} from "@/lib/bookings/aggregate";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -74,6 +80,30 @@ export default async function PropertyDetailPage({
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
 
+  // Last-30-day occupancy stat for short-term properties. Anchored to
+  // UTC midnight so it lines up with the booking aggregation.
+  const now = new Date();
+  const thirtyDaysAgo = new Date(now);
+  thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 30);
+  const period = { start: thirtyDaysAgo, end: now };
+  const bookingsForAgg: BookingLike[] = property.bookings.map((b) => ({
+    checkIn: b.checkIn,
+    checkOut: b.checkOut,
+    nights: b.nights,
+    grossAmount: Number(b.grossAmount),
+    otaCommission: b.otaCommission ? Number(b.otaCommission) : null,
+    cleaningFee: b.cleaningFee ? Number(b.cleaningFee) : null,
+    netPayout: Number(b.netPayout),
+    currency: b.currency,
+    status: b.status,
+  }));
+  const occPct30 = isShortTerm
+    ? occupancyPercentForPeriod(bookingsForAgg, period)
+    : null;
+  const revenue30 = isShortTerm
+    ? revenueTotalsByCurrency(bookingsForAgg, period)
+    : [];
+
   const boundUpdate = updatePropertyAction.bind(null, property.id);
 
   // Decimal serialises to string on the wire; convert for the form
@@ -113,6 +143,35 @@ export default async function PropertyDetailPage({
           />
         </div>
       </div>
+
+      {isShortTerm ? (
+        <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-4">
+            <h3 className="text-base font-medium text-stone-900">
+              Last 6 months
+            </h3>
+            <div className="flex flex-wrap items-baseline gap-6 text-sm">
+              <span className="text-stone-500">
+                Occupancy (30d){" "}
+                <span className="ml-1 text-base font-serif text-stone-900">
+                  {occPct30 === null ? "—" : `${occPct30}%`}
+                </span>
+              </span>
+              {revenue30.map((r) => (
+                <span key={r.currency} className="text-stone-500">
+                  Gross {r.currency}{" "}
+                  <span className="ml-1 text-base font-serif text-stone-900">
+                    {r.gross.toLocaleString("en-GB", {
+                      maximumFractionDigits: 0,
+                    })}
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+          <OccupancyCalendar bookings={property.bookings} monthsBack={6} />
+        </section>
+      ) : null}
 
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-6">
