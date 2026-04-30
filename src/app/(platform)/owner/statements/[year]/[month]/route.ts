@@ -14,6 +14,7 @@ import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { StatementDocument } from "@/lib/statements/StatementDocument";
 import { buildStatement } from "@/lib/statements/aggregate";
+import { buildShortTermSummary } from "@/lib/statements/short-term";
 import {
   formatPeriod,
   parsePeriod,
@@ -36,17 +37,32 @@ export async function GET(
 
   const { start, end } = periodRange(period);
 
-  const transactions = await prisma.transaction.findMany({
-    where: {
-      occurredOn: { gte: start, lt: end },
-      property: { ownerId: owner.id },
-    },
-    include: {
-      property: { select: { id: true, name: true } },
-      lease: { select: { id: true, tenantName: true } },
-    },
-    orderBy: { occurredOn: "asc" },
-  });
+  const [transactions, shortTermBookings] = await Promise.all([
+    prisma.transaction.findMany({
+      where: {
+        occurredOn: { gte: start, lt: end },
+        property: { ownerId: owner.id },
+      },
+      include: {
+        property: { select: { id: true, name: true } },
+        lease: { select: { id: true, tenantName: true } },
+      },
+      orderBy: { occurredOn: "asc" },
+    }),
+    // Bookings whose stay overlaps the period at all. The aggregator
+    // clips nights to the window; gross / fees stay attached to the
+    // booking's anchor period so it matches the bank.
+    prisma.booking.findMany({
+      where: {
+        property: { ownerId: owner.id, propertyType: "SHORT_TERM" },
+        checkIn: { lt: end },
+        checkOut: { gt: start },
+      },
+      include: {
+        property: { select: { id: true, name: true } },
+      },
+    }),
+  ]);
 
   const statement = buildStatement(
     transactions.map((t) => ({
@@ -66,6 +82,31 @@ export async function GET(
     { preferredCurrency: owner.preferredCurrency },
   );
 
+  const shortTerm = buildShortTermSummary(
+    shortTermBookings.map((b) => ({
+      propertyId: b.propertyId,
+      propertyName: b.property.name,
+      checkIn: b.checkIn,
+      checkOut: b.checkOut,
+      nights: b.nights,
+      grossAmount: Number(b.grossAmount),
+      otaCommission: b.otaCommission ? Number(b.otaCommission) : null,
+      cleaningFee: b.cleaningFee ? Number(b.cleaningFee) : null,
+      netPayout: Number(b.netPayout),
+      currency: b.currency,
+      status: b.status,
+    })),
+    transactions
+      .filter((t) => t.type === "GOLDSTAY_COMMISSION")
+      .map((t) => ({
+        propertyId: t.propertyId,
+        type: t.type,
+        amount: Number(t.amount),
+        currency: t.currency,
+      })),
+    { start, end },
+  );
+
   const buffer = await renderToBuffer(
     StatementDocument({
       period,
@@ -75,6 +116,7 @@ export async function GET(
         preferredCurrency: owner.preferredCurrency,
       },
       statement,
+      shortTerm,
       generatedAt: new Date(),
     }),
   );

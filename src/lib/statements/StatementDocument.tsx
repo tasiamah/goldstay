@@ -16,6 +16,7 @@ import {
 } from "@react-pdf/renderer";
 import type { Statement } from "./aggregate";
 import { formatPeriod, type Period } from "./period";
+import type { ShortTermPropertyRow } from "./short-term";
 
 const colors = {
   ink: "#1c1917", // stone-900
@@ -185,11 +186,13 @@ export function StatementDocument({
   period,
   owner,
   statement,
+  shortTerm,
   generatedAt,
 }: {
   period: Period;
   owner: { fullName: string; email: string; preferredCurrency: string };
   statement: Statement;
+  shortTerm?: ShortTermPropertyRow[];
   generatedAt: Date;
 }) {
   return (
@@ -272,6 +275,67 @@ export function StatementDocument({
           </View>
         )}
 
+        {shortTerm && shortTerm.length > 0 ? (
+          <>
+            <Text style={styles.sectionTitle}>Short-term rentals</Text>
+            {shortTerm.map((row) => (
+              <View
+                key={`${row.propertyId}-${row.currency}`}
+                style={styles.propertyBlock}
+              >
+                <Text style={styles.propertyName}>
+                  {row.propertyName}
+                  {"  "}
+                  <Text style={{ color: colors.muted, fontSize: 9 }}>
+                    {row.bookings} bookings · {row.nights} nights ·{" "}
+                    {row.currency}
+                  </Text>
+                </Text>
+                <View style={styles.txTable}>
+                  <ShortTermLine
+                    label="Gross from guests"
+                    amount={row.gross}
+                    sign="+"
+                  />
+                  {row.otaFees > 0 ? (
+                    <ShortTermLine
+                      label="OTA fees (Airbnb / Booking.com / Vrbo)"
+                      amount={row.otaFees}
+                      sign="-"
+                    />
+                  ) : null}
+                  {row.cleaning > 0 ? (
+                    <ShortTermLine
+                      label="Cleaning"
+                      amount={row.cleaning}
+                      sign="-"
+                    />
+                  ) : null}
+                  {row.goldstayCommission > 0 ? (
+                    <ShortTermLine
+                      label={`Goldstay commission${
+                        row.gross > 0
+                          ? ` (${Math.round(
+                              (row.goldstayCommission / row.gross) * 100,
+                            )}%)`
+                          : ""
+                      }`}
+                      amount={row.goldstayCommission}
+                      sign="-"
+                    />
+                  ) : null}
+                  <ShortTermLine
+                    label="Net payout"
+                    amount={row.payout}
+                    sign="="
+                    bold
+                  />
+                </View>
+              </View>
+            ))}
+          </>
+        ) : null}
+
         <Text style={styles.sectionTitle}>By property</Text>
         {statement.propertyGroups.length === 0 ? (
           <Text style={styles.empty}>No activity to break down.</Text>
@@ -348,5 +412,46 @@ export function StatementDocument({
         </Text>
       </Page>
     </Document>
+  );
+}
+
+function ShortTermLine({
+  label,
+  amount,
+  sign,
+  bold,
+}: {
+  label: string;
+  amount: number;
+  sign: "+" | "-" | "=";
+  bold?: boolean;
+}) {
+  const isOut = sign === "-";
+  const isTotal = sign === "=";
+  return (
+    <View style={styles.txRow}>
+      <Text
+        style={[
+          styles.txDesc,
+          bold ? { color: colors.ink } : {},
+        ]}
+      >
+        {label}
+      </Text>
+      <Text
+        style={[
+          styles.txAmount,
+          isTotal
+            ? { color: colors.ink }
+            : isOut
+              ? styles.outflow
+              : styles.inflow,
+          bold ? { fontFamily: "Helvetica-Bold" } : {},
+        ]}
+      >
+        {sign === "=" ? "= " : isOut ? "− " : "+ "}
+        {fmt(amount)}
+      </Text>
+    </View>
   );
 }
