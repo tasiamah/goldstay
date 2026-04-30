@@ -17,12 +17,21 @@ type BookingForCalendar = {
   status: string;
 };
 
+// Colour per channel. Vrbo / Booking.com are kept in the map so
+// historical bookings still render if they exist, but they don't
+// appear in the legend until we re-enable them in
+// src/lib/booking-sources.ts.
 const SOURCE_COLOR: Record<string, string> = {
   AIRBNB: "bg-rose-400",
   BOOKING_COM: "bg-sky-500",
   VRBO: "bg-amber-400",
   DIRECT: "bg-emerald-500",
 };
+
+const LEGEND_SOURCES: { src: keyof typeof SOURCE_COLOR; label: string }[] = [
+  { src: "AIRBNB", label: "Airbnb" },
+  { src: "DIRECT", label: "Direct" },
+];
 
 function startOfMonthUTC(d: Date): Date {
   return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1));
@@ -171,14 +180,7 @@ function Legend() {
       <span className="font-medium uppercase tracking-wider text-stone-500">
         Sources
       </span>
-      {(
-        [
-          { src: "AIRBNB", label: "Airbnb" },
-          { src: "BOOKING_COM", label: "Booking.com" },
-          { src: "VRBO", label: "Vrbo" },
-          { src: "DIRECT", label: "Direct" },
-        ] as const
-      ).map(({ src, label }) => (
+      {LEGEND_SOURCES.map(({ src, label }) => (
         <span key={src} className="inline-flex items-center gap-1.5">
           <span className={`h-3 w-3 rounded-sm ${SOURCE_COLOR[src]}`} />
           {label}

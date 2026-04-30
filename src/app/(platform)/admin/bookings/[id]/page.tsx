@@ -19,15 +19,9 @@ import { prisma } from "@/lib/db";
 import { BookingForm } from "../BookingForm";
 import { updateBookingAction } from "../actions";
 import { DeleteBookingButton } from "./DeleteBookingButton";
+import { SOURCE_LABEL } from "@/lib/booking-sources";
 
 export const dynamic = "force-dynamic";
-
-const SOURCE_LABEL: Record<string, string> = {
-  AIRBNB: "Airbnb",
-  BOOKING_COM: "Booking.com",
-  VRBO: "Vrbo",
-  DIRECT: "Direct",
-};
 
 export default async function BookingDetailPage({
   params,

@@ -8,6 +8,7 @@ import {
   upsertIcalFeedAction,
   type FeedActionResult,
 } from "./actions";
+import { ACTIVE_OTA_SOURCES, SOURCE_LABEL } from "@/lib/booking-sources";
 
 type Feed = {
   id: string;
@@ -18,13 +19,6 @@ type Feed = {
   lastError: string | null;
 };
 
-const SOURCE_LABEL: Record<Feed["source"], string> = {
-  AIRBNB: "Airbnb",
-  BOOKING_COM: "Booking.com",
-  VRBO: "Vrbo",
-  DIRECT: "Direct",
-};
-
 export function IcalFeedManager({
   propertyId,
   feeds,
@@ -33,7 +27,10 @@ export function IcalFeedManager({
   feeds: Feed[];
 }) {
   const existingSources = new Set(feeds.map((f) => f.source));
-  const availableSources = (["AIRBNB", "BOOKING_COM", "VRBO"] as const).filter(
+  // Only OTAs that have an iCal feed are connectable; "Direct"
+  // bookings are recorded by hand. Booking.com / Vrbo come back
+  // when src/lib/booking-sources.ts re-enables them.
+  const availableSources = ACTIVE_OTA_SOURCES.filter(
     (s) => !existingSources.has(s),
   );
 
@@ -63,7 +60,7 @@ export function IcalFeedManager({
         />
       ) : (
         <p className="text-xs text-stone-500">
-          All three channel calendars are already connected.
+          All connectable channel calendars are already linked.
         </p>
       )}
     </div>
@@ -146,7 +143,7 @@ function AddFeedForm({
   availableSources,
 }: {
   propertyId: string;
-  availableSources: ReadonlyArray<"AIRBNB" | "BOOKING_COM" | "VRBO">;
+  availableSources: ReadonlyArray<"AIRBNB" | "BOOKING_COM" | "VRBO" | "DIRECT">;
 }) {
   const [state, formAction] = useFormState(
     upsertIcalFeedAction,

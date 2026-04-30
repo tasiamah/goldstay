@@ -12,6 +12,7 @@ import {
 } from "@/components/PropertyStatusBadge";
 import { OccupancyCalendar } from "@/components/OccupancyCalendar";
 import { IcalFeedManager } from "./ical/IcalFeedManager";
+import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
   revenueTotalsByCurrency,
@@ -364,13 +365,6 @@ function formatBytes(bytes: number): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-const SOURCE_LABEL: Record<string, string> = {
-  AIRBNB: "Airbnb",
-  BOOKING_COM: "Booking.com",
-  VRBO: "Vrbo",
-  DIRECT: "Direct",
-};
-
 function BookingsCard({
   propertyId,
   bookings,
@@ -421,7 +415,9 @@ function BookingsCard({
                   <div className="min-w-0">
                     <p className="font-medium text-stone-900">{b.guestName}</p>
                     <p className="mt-0.5 text-xs text-stone-500">
-                      {SOURCE_LABEL[b.source] ?? b.source} ·{" "}
+                      {SOURCE_LABEL[b.source as keyof typeof SOURCE_LABEL] ??
+                        b.source}{" "}
+                      ·{" "}
                       {b.checkIn.toLocaleDateString("en-GB", {
                         day: "2-digit",
                         month: "short",

@@ -2,6 +2,10 @@
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { BookingActionResult } from "./actions";
+import {
+  ACTIVE_BOOKING_SOURCES,
+  SOURCE_LABEL,
+} from "@/lib/booking-sources";
 
 type FormAction = (
   prev: BookingActionResult | null,
@@ -55,12 +59,29 @@ export function BookingForm({
           name="source"
           defaultValue={defaults.source ?? "DIRECT"}
           required
-          options={[
-            { value: "AIRBNB", label: "Airbnb" },
-            { value: "BOOKING_COM", label: "Booking.com" },
-            { value: "VRBO", label: "Vrbo" },
-            { value: "DIRECT", label: "Direct" },
-          ]}
+          // Only Airbnb + Direct are active right now (see
+          // src/lib/booking-sources.ts). When editing a legacy
+          // booking from a hidden channel, append it to the list so
+          // the existing value stays valid in the dropdown.
+          options={(() => {
+            const opts: { value: string; label: string }[] =
+              ACTIVE_BOOKING_SOURCES.map((s) => ({
+                value: s,
+                label: SOURCE_LABEL[s],
+              }));
+            if (
+              defaults.source &&
+              !ACTIVE_BOOKING_SOURCES.includes(
+                defaults.source as (typeof ACTIVE_BOOKING_SOURCES)[number],
+              )
+            ) {
+              opts.push({
+                value: defaults.source,
+                label: `${SOURCE_LABEL[defaults.source]} (legacy)`,
+              });
+            }
+            return opts;
+          })()}
           error={fieldError("source")}
         />
         <Field

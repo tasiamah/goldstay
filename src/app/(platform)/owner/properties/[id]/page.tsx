@@ -23,6 +23,7 @@ import {
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
 import { OccupancyCalendar } from "@/components/OccupancyCalendar";
+import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
   revenueTotalsByCurrency,
@@ -199,10 +200,7 @@ export default async function OwnerPropertyDetailPage({
                         {b.guestName}
                       </p>
                       <p className="mt-0.5 text-xs text-stone-500">
-                        {b.source === "BOOKING_COM"
-                          ? "Booking.com"
-                          : b.source.charAt(0) +
-                            b.source.slice(1).toLowerCase()}
+                        {SOURCE_LABEL[b.source]}
                         {" · "}
                         {b.checkIn.toLocaleDateString("en-GB", {
                           day: "2-digit",

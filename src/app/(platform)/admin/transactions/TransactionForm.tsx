@@ -47,7 +47,7 @@ const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[]
     { value: "PAYOUT", label: "Payout to owner", direction: "OUTFLOW" },
     {
       value: "OTA_COMMISSION",
-      label: "OTA commission (Airbnb / Booking.com / Vrbo)",
+      label: "OTA commission (Airbnb)",
       direction: "OUTFLOW",
     },
     { value: "CLEANING_FEE", label: "Cleaning fee", direction: "OUTFLOW" },

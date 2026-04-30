@@ -104,7 +104,7 @@ export function PropertyForm({
           required
           options={[
             { value: "LONG_TERM", label: "Long-term lease" },
-            { value: "SHORT_TERM", label: "Short-term (Airbnb / Booking.com / Vrbo)" },
+            { value: "SHORT_TERM", label: "Short-term (Airbnb)" },
           ]}
           error={fieldError("propertyType")}
         />

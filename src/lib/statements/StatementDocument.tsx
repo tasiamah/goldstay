@@ -299,7 +299,7 @@ export function StatementDocument({
                   />
                   {row.otaFees > 0 ? (
                     <ShortTermLine
-                      label="OTA fees (Airbnb / Booking.com / Vrbo)"
+                      label="Airbnb fees"
                       amount={row.otaFees}
                       sign="-"
                     />
