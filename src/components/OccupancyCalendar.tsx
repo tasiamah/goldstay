@@ -1,10 +1,14 @@
 // Server-rendered, dependency-free monthly occupancy heatmap.
 // Renders the last N months (default 3) with one square per night,
-// shaded by booking source. Columns are day-of-week (Mon → Sun) so
-// the operator can read patterns at a glance — weekend-heavy vs
-// midweek vacancy etc. Computes everything in UTC midnights to
-// avoid timezone foot-guns; same anchor the booking aggregation
-// uses.
+// shaded by booking source. Columns are day-of-week (Mon → Sun) and
+// the leftmost column shows the Monday's day-of-month so the
+// operator can quickly say "the week of the 11th was fully booked".
+// Everything is computed in UTC midnights to avoid timezone
+// foot-guns; same anchor the booking aggregation uses.
+//
+// Layout: a single CSS grid with a fixed track size for each
+// column, so the weekday header letters sit dead-centre over their
+// squares (no sub-pixel wobble).
 //
 // Each square shows a tooltip on hover with check-in/out info. No
 // client JS required — it's <span title="...">.
@@ -116,6 +120,12 @@ function mondayIndex(date: Date): number {
   return (date.getUTCDay() + 6) % 7;
 }
 
+// Day-cell sizes are tied to the grid track size below. If you bump
+// one, bump the other or the alignment falls apart.
+const CELL = "h-5 w-5";
+const GRID_COLS =
+  "grid-cols-[1.5rem_repeat(7,1.25rem)]"; // [week#] [Mo..Su × 7]
+
 function MonthGrid({
   month,
   dayIndex,
@@ -129,32 +139,71 @@ function MonthGrid({
   );
   const leadingBlanks = mondayIndex(firstDate);
 
-  const cells: React.ReactNode[] = [];
+  const prevMonth = addMonthsUTC(month, -1);
+  const prevDays = daysInMonthUTC(prevMonth);
+  const monthShort = fmtMonth(month).split(" ")[0];
 
-  // Pad so day 1 lands under its actual weekday column.
-  for (let i = 0; i < leadingBlanks; i++) {
-    cells.push(<span key={`pad-${i}`} className="block h-4 w-4" />);
+  // Build the grid as a single flat array, row-major: header row,
+  // then one row per week. Each week row is [label] + 7 cells, and
+  // the label is the Monday's day-of-month (rendered subtly even
+  // when that Monday spilled in from the previous month).
+  const elements: React.ReactNode[] = [];
+
+  elements.push(<span key="hdr-blank" aria-hidden />);
+  for (const d of WEEKDAYS) {
+    elements.push(
+      <span key={`hdr-${d}`} className="text-center">
+        {d}
+      </span>,
+    );
   }
 
-  for (let day = 1; day <= days; day++) {
-    const date = new Date(
-      Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), day),
-    );
-    const booking = dayIndex.get(dayKey(date));
-    const colour = booking
-      ? (SOURCE_COLOR[booking.source] ?? "bg-stone-400")
-      : "bg-stone-100";
-    const monthShort = fmtMonth(month).split(" ")[0];
-    const tooltip = booking
-      ? `${day} ${monthShort} · ${booking.guestName} (${booking.source})`
-      : `${day} ${monthShort} · vacant`;
-    cells.push(
+  for (
+    let weekStart = 1 - leadingBlanks;
+    weekStart <= days;
+    weekStart += 7
+  ) {
+    const weekLabel =
+      weekStart >= 1 ? String(weekStart) : String(prevDays + weekStart);
+    const isLeadingWeek = weekStart < 1;
+
+    elements.push(
       <span
-        key={day}
-        title={tooltip}
-        className={`block h-4 w-4 rounded-sm ${colour}`}
-      />,
+        key={`wk-${weekStart}`}
+        className={`pr-1 text-right normal-case tabular-nums ${
+          isLeadingWeek ? "text-stone-300" : "text-stone-400"
+        }`}
+      >
+        {weekLabel}
+      </span>,
     );
+
+    for (let i = 0; i < 7; i++) {
+      const day = weekStart + i;
+      if (day < 1 || day > days) {
+        elements.push(
+          <span key={`blank-${weekStart}-${i}`} className={`block ${CELL}`} />,
+        );
+        continue;
+      }
+      const date = new Date(
+        Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), day),
+      );
+      const booking = dayIndex.get(dayKey(date));
+      const colour = booking
+        ? (SOURCE_COLOR[booking.source] ?? "bg-stone-400")
+        : "bg-stone-100";
+      const tooltip = booking
+        ? `${day} ${monthShort} · ${booking.guestName} (${booking.source})`
+        : `${day} ${monthShort} · vacant`;
+      elements.push(
+        <span
+          key={`d-${day}`}
+          title={tooltip}
+          className={`block rounded-[4px] ${CELL} ${colour}`}
+        />,
+      );
+    }
   }
 
   return (
@@ -162,14 +211,11 @@ function MonthGrid({
       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-stone-500">
         {fmtMonth(month)}
       </p>
-      <div className="grid grid-cols-7 gap-1 text-[10px] font-medium uppercase tracking-wider text-stone-400">
-        {WEEKDAYS.map((d) => (
-          <span key={d} className="block h-3 text-center">
-            {d}
-          </span>
-        ))}
+      <div
+        className={`inline-grid ${GRID_COLS} items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-stone-400`}
+      >
+        {elements}
       </div>
-      <div className="mt-1 grid grid-cols-7 gap-1">{cells}</div>
     </div>
   );
 }
