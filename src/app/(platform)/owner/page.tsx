@@ -106,13 +106,23 @@ export default async function OwnerDashboardPage() {
       </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-6">
-        <h2 className="text-base font-medium text-stone-900">
-          Last 12 months
-        </h2>
-        <p className="mt-1 text-sm text-stone-500">
-          Inflows are rent and deposits. Outflows are expenses, refunds,
-          management fees, and payouts already remitted to you.
-        </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-medium text-stone-900">
+              Last 12 months
+            </h2>
+            <p className="mt-1 text-sm text-stone-500">
+              Inflows are rent and deposits. Outflows are expenses, refunds,
+              management fees, and payouts already remitted to you.
+            </p>
+          </div>
+          <Link
+            href="/owner/statements"
+            className="shrink-0 self-start rounded-md border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-white"
+          >
+            Download statement
+          </Link>
+        </div>
         {currencyRows.length === 0 ? (
           <p className="mt-6 text-sm text-stone-500">
             No transactions recorded in the last 12 months.
