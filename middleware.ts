@@ -16,7 +16,7 @@ import { updateSession } from "@/lib/supabase/middleware";
 const PROTECTED_PREFIXES = ["/owner", "/admin"];
 
 export async function middleware(request: NextRequest) {
-  const { response, user } = await updateSession(request);
+  const { response: sessionResponse, user } = await updateSession(request);
 
   const { pathname } = request.nextUrl;
   const isProtected = PROTECTED_PREFIXES.some(
@@ -30,7 +30,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return response;
+  // Tag every request that the matcher caught (every platform route)
+  // with a request header so the root layout can suppress the
+  // marketing Navbar / Footer / floating CTAs. Forwarding the auth
+  // cookies that updateSession just refreshed onto this new response
+  // is what keeps the session alive across navigations.
+  const requestHeaders = new Headers(request.headers);
+  requestHeaders.set("x-platform-route", "1");
+  const tagged = NextResponse.next({ request: { headers: requestHeaders } });
+  sessionResponse.cookies.getAll().forEach((cookie) => {
+    tagged.cookies.set(cookie);
+  });
+  return tagged;
 }
 
 export const config = {

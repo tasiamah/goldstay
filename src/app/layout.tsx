@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { headers } from "next/headers";
 import { Instrument_Serif } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
@@ -118,6 +119,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // The marketing Navbar / Footer / WhatsApp float belong to the
+  // public-facing site. Logged-in surfaces (/admin, /owner, /login,
+  // /auth/*) get their own headers and would otherwise stack behind
+  // the marketing nav and lose vertical space. The middleware tags
+  // every platform request with x-platform-route so we can branch
+  // here without coupling the root layout to a hardcoded path list.
+  const isPlatform = headers().get("x-platform-route") === "1";
+
   return (
     <html
       lang="en"
@@ -137,10 +146,10 @@ export default function RootLayout({
       <body>
         <JsonLd />
         <Analytics />
-        <Navbar />
+        {!isPlatform ? <Navbar /> : null}
         <main>{children}</main>
-        <Footer />
-        <LayoutClientExtras />
+        {!isPlatform ? <Footer /> : null}
+        {!isPlatform ? <LayoutClientExtras /> : null}
         {/* Vercel Speed Insights: captures real-user web vitals (LCP, CLS,
             INP) on production only. Self-hosts a tiny client script, no
             extra env vars needed, no-op on local dev and preview. */}

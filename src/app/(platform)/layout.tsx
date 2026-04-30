@@ -1,7 +1,7 @@
-// Shared shell for platform routes. Sits inside the existing root
-// layout, so the marketing Navbar and Footer still render around it
-// for now. We can move marketing pages into a `(marketing)` route
-// group later to drop that chrome on logged-in surfaces.
+// Shared shell for platform routes. The root layout suppresses the
+// marketing Navbar / Footer / floating CTAs for any request the
+// middleware tagged as a platform route, so /admin and /owner render
+// with just their own internal header and this neutral wash.
 export default function PlatformLayout({
   children,
 }: {
