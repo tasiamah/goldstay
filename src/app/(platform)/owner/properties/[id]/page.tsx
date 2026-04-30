@@ -14,6 +14,7 @@ import { notFound } from "next/navigation";
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { occupancyPercent } from "@/lib/owner-dashboard";
+import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -87,16 +88,16 @@ export default async function OwnerPropertyDetailPage({
         >
           ← Overview
         </Link>
-        <h2 className="mt-2 text-2xl font-serif text-stone-900">
-          {property.name}
-        </h2>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <h2 className="text-2xl font-serif text-stone-900">
+            {property.name}
+          </h2>
+          <PropertyStatusBadge status={property.status} />
+        </div>
         <p className="mt-1 text-sm text-stone-500">
           {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
           {property.city} ·{" "}
-          {property.country === "KE" ? "Kenya" : "Ghana"} ·{" "}
-          <span className="text-xs uppercase tracking-wider">
-            {property.status}
-          </span>
+          {property.country === "KE" ? "Kenya" : "Ghana"}
         </p>
       </div>
 

@@ -5,6 +5,7 @@ import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
 import { DocumentUploader } from "./documents/DocumentUploader";
 import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
+import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -59,16 +60,16 @@ export default async function PropertyDetailPage({
         >
           ← {property.owner.fullName}
         </Link>
-        <h2 className="mt-2 text-xl font-medium text-stone-900">
-          {property.name}
-        </h2>
+        <div className="mt-2 flex flex-wrap items-center gap-3">
+          <h2 className="text-xl font-medium text-stone-900">
+            {property.name}
+          </h2>
+          <PropertyStatusBadge status={property.status} />
+        </div>
         <p className="text-sm text-stone-500">
           {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
           {property.city} ·{" "}
-          {property.country === "KE" ? "Kenya" : "Ghana"} ·{" "}
-          <span className="text-xs uppercase tracking-wider">
-            {property.status}
-          </span>
+          {property.country === "KE" ? "Kenya" : "Ghana"}
         </p>
       </div>
 
