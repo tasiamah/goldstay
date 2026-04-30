@@ -26,6 +26,10 @@ export default async function LeaseDetailPage({
           },
         },
       },
+      transactions: {
+        orderBy: { occurredOn: "desc" },
+        take: 10,
+      },
     },
   });
   if (!lease) notFound();
@@ -109,6 +113,7 @@ export default async function LeaseDetailPage({
           </div>
         </div>
 
+        <div className="space-y-6">
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <h3 className="text-base font-medium text-stone-900">Snapshot</h3>
           <dl className="mt-4 space-y-3 text-sm">
@@ -144,6 +149,65 @@ export default async function LeaseDetailPage({
               }
             />
           </dl>
+        </div>
+
+        <div className="rounded-lg border border-stone-200 bg-white p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-base font-medium text-stone-900">
+              Recent transactions
+            </h3>
+            <Link
+              href={`/admin/transactions/new?propertyId=${lease.unit.property.id}&leaseId=${lease.id}`}
+              className="text-sm font-medium text-stone-900 hover:underline"
+            >
+              + Record
+            </Link>
+          </div>
+          {lease.transactions.length === 0 ? (
+            <p className="mt-4 text-sm text-stone-500">
+              No transactions recorded for this lease yet.
+            </p>
+          ) : (
+            <ul className="mt-4 divide-y divide-stone-100">
+              {lease.transactions.map((t) => (
+                <li
+                  key={t.id}
+                  className="flex items-center justify-between py-3"
+                >
+                  <Link
+                    href={`/admin/transactions/${t.id}`}
+                    className="block hover:underline"
+                  >
+                    <p className="text-sm font-medium text-stone-900">
+                      {t.type.replace(/_/g, " ")}
+                    </p>
+                    <p className="text-xs text-stone-500">
+                      {t.occurredOn.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}
+                    </p>
+                  </Link>
+                  <span
+                    className={`text-sm tabular-nums ${
+                      t.direction === "INFLOW"
+                        ? "text-emerald-700"
+                        : "text-red-700"
+                    }`}
+                  >
+                    {t.direction === "INFLOW" ? "+" : "−"}
+                    {Number(t.amount).toLocaleString("en-GB", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}{" "}
+                    {t.currency}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         </div>
       </section>
     </div>

@@ -36,6 +36,12 @@ export default async function AdminLayout({
           >
             Properties
           </Link>
+          <Link
+            href="/admin/transactions"
+            className="text-stone-700 hover:text-stone-900"
+          >
+            Transactions
+          </Link>
           <form action="/auth/sign-out" method="post">
             <button
               type="submit"
