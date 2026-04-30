@@ -152,7 +152,7 @@ export default async function PropertyDetailPage({
         <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
           <div className="flex flex-wrap items-baseline justify-between gap-4">
             <h3 className="text-base font-medium text-stone-900">
-              Last 6 months
+              Last 3 months
             </h3>
             <div className="flex flex-wrap items-baseline gap-6 text-sm">
               <span className="text-stone-500">
@@ -173,7 +173,7 @@ export default async function PropertyDetailPage({
               ))}
             </div>
           </div>
-          <OccupancyCalendar bookings={property.bookings} monthsBack={6} />
+          <OccupancyCalendar bookings={property.bookings} />
         </section>
       ) : null}
 

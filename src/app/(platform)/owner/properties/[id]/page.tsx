@@ -173,9 +173,9 @@ export default async function OwnerPropertyDetailPage({
       </section>
 
       {isShortTerm ? (
-        <Card title="Last 6 months">
+        <Card title="Last 3 months">
           <div className="mt-4">
-            <OccupancyCalendar bookings={property.bookings} monthsBack={6} />
+            <OccupancyCalendar bookings={property.bookings} />
           </div>
         </Card>
       ) : null}

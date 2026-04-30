@@ -1,8 +1,10 @@
 // Server-rendered, dependency-free monthly occupancy heatmap.
-// Renders the last N months (default 6) with one square per night,
-// shaded by booking source. We compute everything in UTC midnights
-// to avoid timezone foot-guns; that's the same anchor the rest of
-// the booking aggregation uses.
+// Renders the last N months (default 3) with one square per night,
+// shaded by booking source. Columns are day-of-week (Mon → Sun) so
+// the operator can read patterns at a glance — weekend-heavy vs
+// midweek vacancy etc. Computes everything in UTC midnights to
+// avoid timezone foot-guns; same anchor the booking aggregation
+// uses.
 //
 // Each square shows a tooltip on hover with check-in/out info. No
 // client JS required — it's <span title="...">.
@@ -50,7 +52,7 @@ function fmtMonth(d: Date): string {
 
 export function OccupancyCalendar({
   bookings,
-  monthsBack = 6,
+  monthsBack = 3,
   now = new Date(),
 }: {
   bookings: BookingForCalendar[];
@@ -97,6 +99,14 @@ export function OccupancyCalendar({
   );
 }
 
+// Monday-first week order, matching local norms in Kenya / Ghana.
+const WEEKDAYS = ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"] as const;
+
+// JS getUTCDay() is Sun=0..Sat=6. Convert to Mon=0..Sun=6.
+function mondayIndex(date: Date): number {
+  return (date.getUTCDay() + 6) % 7;
+}
+
 function MonthGrid({
   month,
   dayIndex,
@@ -105,7 +115,18 @@ function MonthGrid({
   dayIndex: Map<string, BookingForCalendar>;
 }) {
   const days = daysInMonthUTC(month);
+  const firstDate = new Date(
+    Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), 1),
+  );
+  const leadingBlanks = mondayIndex(firstDate);
+
   const cells: React.ReactNode[] = [];
+
+  // Pad so day 1 lands under its actual weekday column.
+  for (let i = 0; i < leadingBlanks; i++) {
+    cells.push(<span key={`pad-${i}`} className="block h-4 w-4" />);
+  }
+
   for (let day = 1; day <= days; day++) {
     const date = new Date(
       Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), day),
@@ -114,9 +135,10 @@ function MonthGrid({
     const colour = booking
       ? (SOURCE_COLOR[booking.source] ?? "bg-stone-400")
       : "bg-stone-100";
+    const monthShort = fmtMonth(month).split(" ")[0];
     const tooltip = booking
-      ? `${day} ${fmtMonth(month).split(" ")[0]} · ${booking.guestName} (${booking.source})`
-      : `${day} ${fmtMonth(month).split(" ")[0]} · vacant`;
+      ? `${day} ${monthShort} · ${booking.guestName} (${booking.source})`
+      : `${day} ${monthShort} · vacant`;
     cells.push(
       <span
         key={day}
@@ -131,7 +153,14 @@ function MonthGrid({
       <p className="mb-2 text-xs font-medium uppercase tracking-wider text-stone-500">
         {fmtMonth(month)}
       </p>
-      <div className="grid grid-cols-7 gap-1">{cells}</div>
+      <div className="grid grid-cols-7 gap-1 text-[10px] font-medium uppercase tracking-wider text-stone-400">
+        {WEEKDAYS.map((d) => (
+          <span key={d} className="block h-3 text-center">
+            {d}
+          </span>
+        ))}
+      </div>
+      <div className="mt-1 grid grid-cols-7 gap-1">{cells}</div>
     </div>
   );
 }
