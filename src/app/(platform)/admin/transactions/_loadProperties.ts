@@ -32,11 +32,13 @@ export async function loadPropertyOptions() {
         : p.country === "GH"
           ? "GHS"
           : (p.owner.preferredCurrency ?? "USD"),
+    // Goldstay rents each property as a whole, so we flatten the
+    // implicit unit out of the picker and just expose the active
+    // tenants on this property.
     leases: p.units.flatMap((u) =>
       u.leases.map((l) => ({
         id: l.id,
         tenantName: l.tenantName,
-        unitLabel: u.label,
       })),
     ),
   }));

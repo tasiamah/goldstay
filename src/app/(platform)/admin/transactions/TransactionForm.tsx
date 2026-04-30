@@ -15,7 +15,7 @@ type PropertyOption = {
   city: string;
   ownerName: string;
   defaultCurrency: string;
-  leases: { id: string; tenantName: string; unitLabel: string }[];
+  leases: { id: string; tenantName: string }[];
 };
 
 type Defaults = {
@@ -99,7 +99,7 @@ export function TransactionForm({
             { value: "", label: "— No lease —" },
             ...selectedProperty.leases.map((l) => ({
               value: l.id,
-              label: `${l.unitLabel} · ${l.tenantName}`,
+              label: l.tenantName,
             })),
           ]}
           error={fieldError("leaseId")}
