@@ -142,7 +142,7 @@ export default function Article() {
           for KES 4m to KES 8m 2-bed
         </LI>
         <LI>
-          South B, South C, Lang&rsquo;ata
+          South B, South C, Lang’ata
           fringes for slightly higher
           tickets with stronger residential
           character

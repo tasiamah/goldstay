@@ -116,7 +116,7 @@ export default function Article() {
         well-selected properties remain attractive
         relative to alternatives. The bad news: most of
         what gets marketed to diaspora buyers in
-        &ldquo;Kilimani&rdquo; is the saturated middle.
+        “Kilimani” is the saturated middle.
       </P>
 
       <H3 id="ngara-pangani">Ngara, Pangani, Park Road and the AHP corridor</H3>
@@ -240,7 +240,7 @@ export default function Article() {
       <OL>
         <LI>
           <strong>The mid-tier 2-bed compound is the
-          market&rsquo;s favourite product to build.</strong>{" "}
+          market’s favourite product to build.</strong>{" "}
           Most developable plots in Kilimani, Ngara,
           Syokimau and Thindigua have been built out
           identically. The result is undifferentiated
@@ -248,7 +248,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Tenant demand grew, but not at the same
-          rate.</strong> Nairobi&rsquo;s middle-class
+          rate.</strong> Nairobi’s middle-class
           tenant pool grew through 2017 to 2024 strongly
           but unit supply outpaced it in the named
           suburbs.

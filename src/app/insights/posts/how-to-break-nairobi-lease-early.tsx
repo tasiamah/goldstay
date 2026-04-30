@@ -116,7 +116,7 @@ export default function Article() {
           handover
         </LI>
         <LI>
-          Get the landlord&rsquo;s written
+          Get the landlord’s written
           acceptance before vacating
         </LI>
       </UL>

@@ -42,9 +42,9 @@ export default function Article() {
       <P>
         This piece is about why that hour matters and what we look for
         in it. It is also a quiet argument against the most common
-        diaspora-buyer mistake we see: confusing &ldquo;I have seen the
-        property on video&rdquo; with &ldquo;I have inspected the
-        property&rdquo;. They are not the same activity.
+        diaspora-buyer mistake we see: confusing “I have seen the
+        property on video” with “I have inspected the
+        property”. They are not the same activity.
       </P>
 
       <H2 id="what-video-actually-shows">What a video actually shows</H2>
@@ -88,7 +88,7 @@ export default function Article() {
 
       <P>
         Traffic from the road below at 6 PM. The mosque or church on
-        the next street at 5 AM. The neighbours&rsquo; sound system on
+        the next street at 5 AM. The neighbours’ sound system on
         Saturday night. The lift motor on the floor above. The
         air-conditioning compressor outside the bedroom window.
         Listings are filmed mid-morning on a quiet weekday. The unit
@@ -121,7 +121,7 @@ export default function Article() {
         actually patchy. The veneer kitchen unit photographs as solid
         wood. The marble counter is engineered stone with a chip
         repair near the sink. None of this is dishonest on the
-        seller&rsquo;s side; it is what cameras do. It only shows up at
+        seller’s side; it is what cameras do. It only shows up at
         20 centimetres.
       </P>
 
@@ -129,7 +129,7 @@ export default function Article() {
 
       <P>
         On new-build handover, the snag list is where the project
-        actually finishes, and it is the buyer&rsquo;s responsibility
+        actually finishes, and it is the buyer’s responsibility
         to compile it. Hairline cracks, doors out of
         plumb, sockets installed but not energised, balcony tiles
         with hollow patches under them, sealant gaps along the
@@ -145,8 +145,8 @@ export default function Article() {
         a concierge desk and a back-up generator. The actual building
         delivers two of those things. The pool is shut for
         maintenance four months a year, the rooftop is locked, the
-        gym has one broken treadmill, and the &ldquo;24-hour
-        security&rdquo; is one guard with a torch. Video marketing
+        gym has one broken treadmill, and the “24-hour
+        security” is one guard with a torch. Video marketing
         rarely lies on this; it just photographs the moments where
         every amenity is operational.
       </P>
@@ -161,7 +161,7 @@ export default function Article() {
         is being built across the street, and how the security on
         the block reads from the pavement. Listings are flown in by
         car or filmed from the unit; the walk-out experience is your
-        tenant&rsquo;s real experience.
+        tenant’s real experience.
       </P>
 
       <H2 id="our-checklist">The 14-point checklist we run</H2>
@@ -227,8 +227,8 @@ export default function Article() {
         <LI>
           Water pressure on the master bathroom dropped to a trickle
           when the kitchen tap and second bathroom were also running.
-          The building&rsquo;s booster pump had been failing for six
-          months and the management committee&rsquo;s reserve fund
+          The building’s booster pump had been failing for six
+          months and the management committee’s reserve fund
           could not cover replacement.
         </LI>
         <LI>
@@ -244,7 +244,7 @@ export default function Article() {
         <LI>
           A hairline diagonal crack in the master bedroom that on
           inspection followed a structural beam line. Survey
-          recommended a structural engineer&rsquo;s sign-off before
+          recommended a structural engineer’s sign-off before
           completion.
         </LI>
       </UL>
@@ -290,8 +290,8 @@ export default function Article() {
         </LI>
         <LI>
           A service charge ledger and AGM minutes from the management
-          committee, not just the seller&rsquo;s representation that
-          &ldquo;all charges are up to date&rdquo;.
+          committee, not just the seller’s representation that
+          “all charges are up to date”.
         </LI>
         <LI>
           A title check at the relevant registry done by your own
@@ -311,7 +311,7 @@ export default function Article() {
         , all three are part of the service and the service is free
         for the buyer. If you are not buying with us, the same three
         are still the right things to insist on. The fastest way to
-        protect a remote purchase is to assume the seller&rsquo;s
+        protect a remote purchase is to assume the seller’s
         video is a marketing artefact, not a survey.
       </P>
     </>

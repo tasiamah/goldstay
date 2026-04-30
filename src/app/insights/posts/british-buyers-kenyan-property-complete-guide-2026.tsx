@@ -187,7 +187,7 @@ export default function Article() {
         </LI>
         <LI>
           Engage an independent Kenyan property
-          lawyer (not the seller&rsquo;s)
+          lawyer (not the seller’s)
         </LI>
         <LI>
           Lawyer runs official title search,
@@ -198,7 +198,7 @@ export default function Article() {
         </LI>
         <LI>
           Sale agreement, deposit (10 percent) into
-          lawyer&rsquo;s client account
+          lawyer’s client account
         </LI>
         <LI>
           Power of attorney executed and
@@ -390,7 +390,7 @@ export default function Article() {
         </LI>
       </OL>
 
-      <Callout title="The British buyer&rsquo;s rule">
+      <Callout title="The British buyer’s rule">
         UK based buyers can buy Kenyan property
         successfully and many do. The execution
         works when the buyer treats it as a

@@ -55,7 +55,7 @@ export default function Article() {
           <strong>Joint tenancy</strong>: two or
           more co-owners hold the title together
           with rights of survivorship. The
-          deceased&rsquo;s share passes
+          deceased’s share passes
           automatically to the survivors. Common
           for spouses
         </LI>
@@ -64,7 +64,7 @@ export default function Article() {
           two or more co-owners hold defined
           shares (50 percent each, or 30/30/40,
           for example). Each share passes
-          through the owner&rsquo;s estate, not
+          through the owner’s estate, not
           to the survivors. Common for friend
           and sibling co-investments
         </LI>

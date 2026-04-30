@@ -74,7 +74,7 @@ export default function Article() {
         If your apartment block sits inside a larger gated
         estate (Garden City, Two Rivers, Tatu City, Migaa,
         and many newer Karen and Runda developments), there
-        is usually a second fee paid to the estate&rsquo;s
+        is usually a second fee paid to the estate’s
         Home Owners Association or estate management company.
         This covers shared infrastructure outside your
         building: estate roads, perimeter security, gatehouse
@@ -164,7 +164,7 @@ export default function Article() {
 
       <Callout title="Red flags in the accounts">
         Persistent receivables (owners owing six months or
-        more), large &ldquo;sundry&rdquo; expense lines that
+        more), large “sundry” expense lines that
         are not explained in notes, no reserve fund line,
         and management agent fees that exceed 15 percent of
         operating expenses. Each of those alone is a yellow
@@ -252,7 +252,7 @@ export default function Article() {
         issues on your monthly statement. For every property
         we source, we pull the management accounts before the
         offer letter and refuse properties in compounds with
-        weak governance. The compound shapes the unit&rsquo;s
+        weak governance. The compound shapes the unit’s
         long-term performance more than the unit itself does.
       </P>
 

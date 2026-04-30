@@ -41,7 +41,7 @@ export default function Article() {
     <>
       <Lede>
         Crypto-denominated property pitches show up in
-        almost every diaspora buyer&rsquo;s inbox at this
+        almost every diaspora buyer’s inbox at this
         point. Some are gimmicks, some are real, and the
         legal and operational picture has changed enough
         in the last two years to warrant a sober look.
@@ -97,7 +97,7 @@ export default function Article() {
       <H2 id="how-it-actually-works">How a crypto-funded purchase actually works</H2>
 
       <P>
-        The phrase &ldquo;buying with crypto&rdquo; covers
+        The phrase “buying with crypto” covers
         three different mechanics, with different risk
         profiles:
       </P>
@@ -108,9 +108,9 @@ export default function Article() {
         The buyer sells stablecoin or bitcoin on a
         regulated exchange, off-ramps to USD or directly
         to KES, and the proceeds are wired to the property
-        lawyer&rsquo;s client account in the normal way.
-        From the seller&rsquo;s perspective and the
-        Lands Registry&rsquo;s perspective this is
+        lawyer’s client account in the normal way.
+        From the seller’s perspective and the
+        Lands Registry’s perspective this is
         identical to a standard wire purchase.
       </P>
 
@@ -153,7 +153,7 @@ export default function Article() {
         </LI>
         <LI>
           AML and source-of-funds documentation that
-          satisfies the lawyer&rsquo;s obligations
+          satisfies the lawyer’s obligations
         </LI>
         <LI>
           Tax compliance handled, including stamp duty
@@ -222,7 +222,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="aml">AML, source of funds and the lawyer&rsquo;s job</H2>
+      <H2 id="aml">AML, source of funds and the lawyer’s job</H2>
 
       <P>
         Kenyan property lawyers are obligated under the
@@ -243,7 +243,7 @@ export default function Article() {
         </LI>
         <LI>
           Bank statements or wallet records showing the
-          flow of funds into the lawyer&rsquo;s client
+          flow of funds into the lawyer’s client
           account
         </LI>
         <LI>
@@ -263,7 +263,7 @@ export default function Article() {
         For most diaspora buyers, the simplest and lowest
         risk path is to off-ramp crypto to USD on a
         regulated exchange, document the source of funds,
-        wire the USD to the property lawyer&rsquo;s client
+        wire the USD to the property lawyer’s client
         account in the ordinary way, and run the property
         leg as a standard transaction. Direct stablecoin
         settlement is increasingly possible on developer
@@ -279,7 +279,7 @@ export default function Article() {
           escrow or custodian structure
         </LI>
         <LI>
-          Off-plan projects offering &ldquo;crypto-only&rdquo;
+          Off-plan projects offering “crypto-only”
           discounts that do not translate to USD
           equivalents on inspection
         </LI>
@@ -345,7 +345,7 @@ export default function Article() {
         the property leg as a standard wire transaction.
         Where a client wants to settle directly in
         stablecoin and the counterparty supports it, we
-        engage with the lawyer&rsquo;s AML process and
+        engage with the lawyer’s AML process and
         document the deal accordingly.
       </P>
 

@@ -158,7 +158,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Independent counsel</strong>:
-          not the developer&rsquo;s lawyer
+          not the developer’s lawyer
         </LI>
         <LI>
           <strong>Comparables</strong>: per

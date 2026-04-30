@@ -96,7 +96,7 @@ export default function Article() {
         <LI>
           <strong>Karen</strong>: Hillcrest,
           Brookhouse, Banda, St
-          Christopher&rsquo;s, Kenton
+          Christopher’s, Kenton
           Preparatory
         </LI>
         <LI>

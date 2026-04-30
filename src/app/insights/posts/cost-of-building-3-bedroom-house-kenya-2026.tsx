@@ -32,8 +32,8 @@ export default function Article() {
   return (
     <>
       <Lede>
-        &ldquo;How much does it cost to build a three bedroom
-        house in Kenya?&rdquo; is one of the most searched
+        “How much does it cost to build a three bedroom
+        house in Kenya?” is one of the most searched
         questions in Kenyan property, year after year. The
         honest answer in 2026 is wider than most quotes
         suggest, depends heavily on land cost, finish
@@ -170,8 +170,8 @@ export default function Article() {
           800,000. Solar PV adding KES 400,000 to KES 1.5m.
         </LI>
         <LI>
-          <strong>Internal finishes the contractor &ldquo;assumed
-          basic&rdquo;.</strong> Wardrobes, kitchen
+          <strong>Internal finishes the contractor “assumed
+          basic”.</strong> Wardrobes, kitchen
           cabinetry, blinds, light fittings. Combined often
           KES 600,000 to KES 1.5m above the contract base.
         </LI>

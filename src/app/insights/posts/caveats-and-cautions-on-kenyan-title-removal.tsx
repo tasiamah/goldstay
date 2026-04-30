@@ -60,7 +60,7 @@ export default function Article() {
         the land. Once registered, the registrar
         cannot register any subsequent dealing in
         the land without notifying the caveator and
-        without complying with the caveat&rsquo;s
+        without complying with the caveat’s
         terms. The caveat is a defensive instrument
         that pauses transactions until the
         underlying claim is resolved.
@@ -145,8 +145,8 @@ export default function Article() {
           entry
         </LI>
         <LI>
-          The buyer&rsquo;s lawyer raises the
-          issue with the seller&rsquo;s lawyer
+          The buyer’s lawyer raises the
+          issue with the seller’s lawyer
         </LI>
         <LI>
           The seller is asked to explain and
@@ -193,7 +193,7 @@ export default function Article() {
         Where the caveator refuses to withdraw,
         the registered owner can apply to court
         for an order to remove. The court
-        considers whether the caveator&rsquo;s
+        considers whether the caveator’s
         underlying claim has any prospect of
         success. If the claim is baseless, the
         court orders removal and may award costs
@@ -229,9 +229,9 @@ export default function Article() {
           claim
         </LI>
         <LI>
-          Do not accept the seller&rsquo;s
-          assurance that &ldquo;it will be
-          removed soon&rdquo;. Removal has to
+          Do not accept the seller’s
+          assurance that “it will be
+          removed soon”. Removal has to
           happen before completion, not after
         </LI>
         <LI>
@@ -247,7 +247,7 @@ export default function Article() {
       <UL>
         <LI>
           Run your own title search before you
-          list, not after the buyer&rsquo;s
+          list, not after the buyer’s
           lawyer raises the issue
         </LI>
         <LI>

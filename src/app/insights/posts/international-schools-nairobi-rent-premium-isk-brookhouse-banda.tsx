@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "International school catchments and Nairobi rent: ISK, Brookhouse, Banda, Hillcrest, Peponi",
   description:
-    "International schools shape Nairobi&rsquo;s premium rental market more than any other single demand driver. Here is how the catchments around ISK, Brookhouse, Banda, Hillcrest, Peponi, GEMS Cambridge, Crawford and Nova Pioneer actually move rent, what families look for and which compounds rent before they even hit the market.",
+    "International schools shape Nairobi’s premium rental market more than any other single demand driver. Here is how the catchments around ISK, Brookhouse, Banda, Hillcrest, Peponi, GEMS Cambridge, Crawford and Nova Pioneer actually move rent, what families look for and which compounds rent before they even hit the market.",
   publishedAt: "2025-07-03",
   readingMinutes: 8,
   author: authors.poonam,
@@ -40,7 +40,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Few demand drivers move Nairobi&rsquo;s premium
+        Few demand drivers move Nairobi’s premium
         rental market more reliably than international
         school enrolment. Diplomatic and corporate families
         choose the school first and the address second,
@@ -108,7 +108,7 @@ export default function Article() {
         main Karen campus historically the family magnet.
         Runda campus serves North Nairobi families.
         Brookhouse families anchor a meaningful share of
-        Karen&rsquo;s premium rental demand.
+        Karen’s premium rental demand.
       </P>
 
       <UL>
@@ -266,7 +266,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Driver and helper accommodation.</strong>{" "}
-          Servant&rsquo;s quarter (SQ) is widely valued in
+          Servant’s quarter (SQ) is widely valued in
           this segment.
         </LI>
         <LI>
@@ -337,7 +337,7 @@ export default function Article() {
       <Pullquote>
         For premium family-let strategy in Nairobi, the
         question to ask is not which suburb. The question
-        is which schools your prospective tenants&rsquo;
+        is which schools your prospective tenants’
         children attend, and which compounds put a
         7-minute drive between front door and school
         gate.
@@ -353,7 +353,7 @@ export default function Article() {
         communities and time tenant marketing to the
         relevant school calendar. Properties under our
         management in family-let compounds typically retain
-        tenants for the duration of their child&rsquo;s
+        tenants for the duration of their child’s
         school stage, often 5 to 7 years.
       </P>
 

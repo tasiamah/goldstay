@@ -265,7 +265,7 @@ export default function Article() {
         <LI>
           They run a thin margin and any one
           maintenance issue or void week destroys
-          the year&rsquo;s profit
+          the year’s profit
         </LI>
         <LI>
           They under-invest in the unit and end up

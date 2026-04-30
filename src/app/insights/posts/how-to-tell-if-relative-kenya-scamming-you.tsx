@@ -172,7 +172,7 @@ export default function Article() {
           cement than the build can have used)
         </LI>
         <LI>
-          Renovations or extensions to the relative&rsquo;s
+          Renovations or extensions to the relative’s
           own property happening at the same time, on
           materials that look similar to yours
         </LI>

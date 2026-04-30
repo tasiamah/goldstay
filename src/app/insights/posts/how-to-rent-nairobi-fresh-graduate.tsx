@@ -139,7 +139,7 @@ export default function Article() {
         </LI>
         <LI>
           Agent fee (often 1
-          month&rsquo;s rent)
+          month’s rent)
         </LI>
         <LI>
           Service charge (if separate)

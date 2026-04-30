@@ -91,18 +91,18 @@ export default function Article() {
       <P>
         The crucial detail is that Tier 1 and Tier 2 are
         funded from a held maintenance float, not from
-        the next month&rsquo;s collected rent. The float
+        the next month’s collected rent. The float
         is typically one month of rent, replenished from
         rent as it depletes. Without a float, even Tier 1
         repairs sit in WhatsApp for hours waiting for
-        payment authorisation, and the tenant&rsquo;s
+        payment authorisation, and the tenant’s
         experience deteriorates.
       </P>
 
       <Pullquote>
         Without a maintenance float, even a fifty-dollar
         repair sits in WhatsApp waiting for payment
-        authorisation, and the tenant&rsquo;s experience
+        authorisation, and the tenant’s experience
         quietly deteriorates.
       </Pullquote>
 

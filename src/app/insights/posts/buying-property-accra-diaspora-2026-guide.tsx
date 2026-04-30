@@ -32,7 +32,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Ghana&rsquo;s diaspora is the country&rsquo;s
+        Ghana’s diaspora is the country’s
         largest single source of property capital, and
         Accra is the city where most of it lands. The
         market is not particularly forgiving. Land
@@ -149,8 +149,8 @@ export default function Article() {
       <OL>
         <LI>
           <strong>Engage a Ghanaian property lawyer
-          paid by you.</strong> Not the seller&rsquo;s,
-          not the agent&rsquo;s. Cost is roughly 1 to
+          paid by you.</strong> Not the seller’s,
+          not the agent’s. Cost is roughly 1 to
           2% of purchase price plus disbursements.
         </LI>
         <LI>
@@ -177,7 +177,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Negotiate and sign sale agreement.</strong>
-          Deposit (typically 10%) into a lawyer&rsquo;s
+          Deposit (typically 10%) into a lawyer’s
           escrow, not directly to the seller.
         </LI>
         <LI>
@@ -188,7 +188,7 @@ export default function Article() {
           <strong>Lodge the assignment at the Lands
           Commission.</strong> Registration completes
           the transfer. Until registration, the
-          buyer&rsquo;s position is protected by
+          buyer’s position is protected by
           contract but not by record.
         </LI>
         <LI>
@@ -243,7 +243,7 @@ export default function Article() {
         consistent with Bank of Ghana FX regulations.
       </P>
 
-      <H3 id="pitfall-3">3. Trusting an &ldquo;original&rdquo; lease document</H3>
+      <H3 id="pitfall-3">3. Trusting an “original” lease document</H3>
 
       <P>
         Document forgery in Accra land transactions is

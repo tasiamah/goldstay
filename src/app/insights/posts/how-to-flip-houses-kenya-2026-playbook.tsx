@@ -81,7 +81,7 @@ export default function Article() {
         </LI>
       </OL>
 
-      <H2 id="formula">The flipper&rsquo;s formula</H2>
+      <H2 id="formula">The flipper’s formula</H2>
 
       <P>
         Target margin: 20 to 30 percent of the eventual
@@ -263,7 +263,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          Over-renovating beyond the suburb&rsquo;s
+          Over-renovating beyond the suburb’s
           ceiling. The granite kitchen in the South C
           apartment is wasted spend.
         </LI>

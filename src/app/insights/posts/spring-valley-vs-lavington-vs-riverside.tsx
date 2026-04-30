@@ -199,7 +199,7 @@ export default function Article() {
         For most family buyers Lavington is the
         default. Spring Valley wins when the buyer
         wants larger plot at the same family
-        stage. Riverside wins when the buyer&rsquo;s
+        stage. Riverside wins when the buyer’s
         priority is the embassy or UN tenant pool
         in apartment format.
       </Callout>
@@ -208,7 +208,7 @@ export default function Article() {
         These three suburbs answer slightly
         different questions about how you want to
         live. Match the suburb to the question, not
-        to the suburb&rsquo;s reputation.
+        to the suburb’s reputation.
       </Pullquote>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>

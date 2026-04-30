@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "Spousal consent in Kenyan property deals: the Matrimonial Property Act in practice",
   description:
-    "If the property is matrimonial, the seller&rsquo;s spouse must consent. The Matrimonial Property Act 2013 makes this very clear, and a sale without proper spousal consent can be set aside years later. Here is what counts as matrimonial property, when consent is required, what consent looks like, and how diaspora buyers protect themselves.",
+    "If the property is matrimonial, the seller’s spouse must consent. The Matrimonial Property Act 2013 makes this very clear, and a sale without proper spousal consent can be set aside years later. Here is what counts as matrimonial property, when consent is required, what consent looks like, and how diaspora buyers protect themselves.",
   publishedAt: "2025-04-10",
   readingMinutes: 7,
   author: authors.legal,
@@ -42,7 +42,7 @@ export default function Article() {
         Some of the most painful property litigation in
         Kenya involves a buyer who paid in full, took
         possession, lived in the property for years, and
-        was then sued by the seller&rsquo;s spouse seeking
+        was then sued by the seller’s spouse seeking
         to set the sale aside on the ground that they
         never consented. The Matrimonial Property Act
         2013, read alongside Article 45 of the
@@ -127,7 +127,7 @@ export default function Article() {
         The line in practice is fact specific. Where there
         is any doubt, the safe answer for a buyer is to
         ask for spousal consent rather than rely on a
-        seller&rsquo;s assertion that the property is not
+        seller’s assertion that the property is not
         matrimonial.
       </P>
 
@@ -180,11 +180,11 @@ export default function Article() {
         </LI>
         <LI>
           Witnessed signature, typically before the
-          parties&rsquo; lawyer or a commissioner of
+          parties’ lawyer or a commissioner of
           oaths
         </LI>
         <LI>
-          Copy of the consenting spouse&rsquo;s ID or
+          Copy of the consenting spouse’s ID or
           passport
         </LI>
         <LI>
@@ -227,7 +227,7 @@ export default function Article() {
           markers)
         </LI>
         <LI>
-          Get the spouse&rsquo;s consent anyway as belt
+          Get the spouse’s consent anyway as belt
           and braces, even if the seller maintains it is
           not legally needed
         </LI>
@@ -248,19 +248,19 @@ export default function Article() {
           inconvenience.
         </LI>
         <LI>
-          The buyer&rsquo;s ability to sell, mortgage or
+          The buyer’s ability to sell, mortgage or
           fully enjoy the property is impaired during the
           litigation.
         </LI>
         <LI>
           Where the spouse can demonstrate clear knowledge
-          on the buyer&rsquo;s side (or constructive
+          on the buyer’s side (or constructive
           notice), the court may be willing to set aside
           even years later.
         </LI>
       </OL>
 
-      <Callout title="The buyer&rsquo;s default rule">
+      <Callout title="The buyer’s default rule">
         On any Kenyan property sale where the seller is
         married, ask for written spousal consent.
         Witnessed, dated, attached to the file, lodged
@@ -273,9 +273,9 @@ export default function Article() {
 
       <UL>
         <LI>
-          You will rarely meet the seller&rsquo;s spouse
+          You will rarely meet the seller’s spouse
           in person; rely on documentary consent and your
-          lawyer&rsquo;s diligence
+          lawyer’s diligence
         </LI>
         <LI>
           Verify the marriage situation of the seller

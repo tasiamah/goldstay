@@ -62,8 +62,8 @@ export default function Article() {
         <LI>
           <strong>Year minus 6 to election (late
           pre-election):</strong> Transaction volumes start
-          to soften. Buyers ask the &ldquo;wait until after
-          the election&rdquo; question. Asking prices stay
+          to soften. Buyers ask the “wait until after
+          the election” question. Asking prices stay
           firm but agreed prices drift 2 to 6% below
           asking. Off-plan launches slow.
         </LI>
@@ -123,7 +123,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Diaspora flows are large.</strong>{" "}
-          Diaspora remittances are now Kenya&rsquo;s
+          Diaspora remittances are now Kenya’s
           largest single foreign exchange source. Diaspora
           buying behaviour through the cycle has become a
           materially bigger market driver than in earlier
@@ -133,7 +133,7 @@ export default function Article() {
 
       <H2 id="three-windows">The three strategic windows</H2>
 
-      <H3 id="window-1">Now to mid 2027: the buyers&rsquo; window</H3>
+      <H3 id="window-1">Now to mid 2027: the buyers’ window</H3>
 
       <P>
         This is the period where motivated sellers start

@@ -43,7 +43,7 @@ export default function Article() {
         community and a substantial mid-premium
         apartment market. Less talked about than
         Westlands but consistently active among
-        Nairobi&rsquo;s mid-premium professional
+        Nairobi’s mid-premium professional
         buyers. Here is the honest 2026 guide.
       </Lede>
 

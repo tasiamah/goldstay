@@ -15,9 +15,9 @@ import {
 export const meta: PostMeta = {
   slug: "property-valuation-kenya-how-it-works-bank-vs-market",
   title:
-    "Property valuation in Kenya: how it actually works, and why your number differs from the bank&rsquo;s",
+    "Property valuation in Kenya: how it actually works, and why your number differs from the bank’s",
   description:
-    "Why a Kenyan bank&rsquo;s mortgage valuation lands 10 to 20 percent below the price you agreed to pay, what the three valuation methods are, when each is used, what an Open Market Value report should include, and how to use a valuation properly when buying or selling.",
+    "Why a Kenyan bank’s mortgage valuation lands 10 to 20 percent below the price you agreed to pay, what the three valuation methods are, when each is used, what an Open Market Value report should include, and how to use a valuation properly when buying or selling.",
   publishedAt: "2025-12-31",
   readingMinutes: 7,
   author: authors.research,
@@ -35,7 +35,7 @@ export default function Article() {
         Almost every diaspora buyer running a Kenyan
         mortgage application meets the same surprise. The
         seller wants KES 14m. The buyer agreed KES 13.5m.
-        The bank&rsquo;s valuer comes back at KES 11.8m.
+        The bank’s valuer comes back at KES 11.8m.
         Suddenly the loan-to-value calculation shifts, the
         deposit gets larger, and the deal looks less
         attractive. Understanding why valuations land where
@@ -110,7 +110,7 @@ export default function Article() {
         comparables are limited.
       </P>
 
-      <H2 id="why-bank-lower">Why the bank&rsquo;s number is lower</H2>
+      <H2 id="why-bank-lower">Why the bank’s number is lower</H2>
 
       <P>
         Bank mortgage valuations land below the agreed
@@ -133,7 +133,7 @@ export default function Article() {
         <LI>
           <strong>Conservative comparables.</strong> Bank
           valuers default to the more conservative end of
-          the comparable range to protect the bank&rsquo;s
+          the comparable range to protect the bank’s
           downside.
         </LI>
         <LI>
@@ -161,7 +161,7 @@ export default function Article() {
         Open Market Value is what the property is worth in
         a normal sale. Forced Sale Value is what the bank
         thinks it could fetch in a fast sale to recover
-        debt. Both can be true. The bank&rsquo;s loan
+        debt. Both can be true. The bank’s loan
         decision usually rests on FSV, which is naturally
         lower.
       </Callout>
@@ -203,7 +203,7 @@ export default function Article() {
           Statement of assumptions and limitations
         </LI>
         <LI>
-          Valuer&rsquo;s registration number and signature
+          Valuer’s registration number and signature
         </LI>
       </UL>
 
@@ -250,7 +250,7 @@ export default function Article() {
           anchors discussions with buyers and agents.
         </LI>
         <LI>
-          Be ready for buyers&rsquo; bank valuations to
+          Be ready for buyers’ bank valuations to
           come in below your asking price. That is normal.
           Decide in advance how much room you have to
           negotiate if it does.

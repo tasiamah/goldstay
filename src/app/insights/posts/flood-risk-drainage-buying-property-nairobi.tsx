@@ -77,7 +77,7 @@ export default function Article() {
 
       <P>
         <strong>What to check.</strong> A licensed
-        surveyor&rsquo;s report mapping the property&rsquo;s
+        surveyor’s report mapping the property’s
         boundaries against the nearest watercourse and
         confirming clearance of the 30-metre setback. For
         any plot that is anywhere near a stream, river or
@@ -163,10 +163,10 @@ export default function Article() {
           <strong>Compound flood history.</strong> Ask the
           management company directly: did this compound
           experience flooding in 2024 (or 2018 or 2015)?
-          A management company that says &ldquo;not
-          really&rdquo; is telling you it did. A management
-          company that says &ldquo;yes and here is what we
-          did about it&rdquo; is more reassuring than one
+          A management company that says “not
+          really” is telling you it did. A management
+          company that says “yes and here is what we
+          did about it” is more reassuring than one
           that pretends it did not happen.
         </LI>
         <LI>
@@ -253,7 +253,7 @@ export default function Article() {
           higher peak intensity in shorter windows
         </LI>
         <LI>
-          Nairobi&rsquo;s impervious surface area has
+          Nairobi’s impervious surface area has
           grown materially in the last decade, increasing
           surface runoff
         </LI>

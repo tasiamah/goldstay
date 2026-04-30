@@ -72,7 +72,7 @@ export default function Article() {
         </LI>
         <LI>
           Westlands further consolidated as
-          Nairobi&rsquo;s premium business district
+          Nairobi’s premium business district
         </LI>
       </UL>
 
@@ -121,7 +121,7 @@ export default function Article() {
         professionals living in eastern corridor
         suburbs. The expressway is part of the story
         behind Westlands continuing to consolidate as
-        the city&rsquo;s premium business district.
+        the city’s premium business district.
       </P>
 
       <H2 id="losers">The relative losers</H2>

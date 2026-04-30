@@ -93,7 +93,7 @@ export default function Article() {
           adjusted periodically)
         </LI>
         <LI>
-          Borrower meeting the originator&rsquo;s
+          Borrower meeting the originator’s
           standard credit requirements
         </LI>
         <LI>
@@ -351,7 +351,7 @@ export default function Article() {
         relationships with the diaspora mortgage desks
         at the tier 1 Kenyan banks and can structure
         KMRC-backed and pension-secured options where
-        they fit the client&rsquo;s situation.
+        they fit the client’s situation.
       </P>
 
       <P>

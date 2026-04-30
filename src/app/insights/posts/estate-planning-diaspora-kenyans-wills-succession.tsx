@@ -96,7 +96,7 @@ export default function Article() {
         </LI>
         <LI>
           Land and apartments end up registered in a
-          deceased person&rsquo;s name long after death,
+          deceased person’s name long after death,
           with rents diverted, service charge arrears
           accumulating and eventual buyers facing title
           chains they cannot clean up.
@@ -120,7 +120,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Signed by the testator.</strong> Or
-          signed by another person at the testator&rsquo;s
+          signed by another person at the testator’s
           direction in their presence.
         </LI>
         <LI>
@@ -146,7 +146,7 @@ export default function Article() {
         The will can be drafted by a Kenyan property
         lawyer, executed remotely with witnessed signing,
         and stored either with the lawyer, with a Kenyan
-        bank&rsquo;s safe custody service, or registered
+        bank’s safe custody service, or registered
         with the Public Trustee.
       </P>
 
@@ -297,7 +297,7 @@ export default function Article() {
 
       <P>
         Probate of a Kenyan will is granted by the High
-        Court&rsquo;s Family Division. Typical sequence:
+        Court’s Family Division. Typical sequence:
       </P>
 
       <OL>
@@ -367,7 +367,7 @@ export default function Article() {
           <strong>Property management continuity.</strong>{" "}
           Property held under a long-term management
           arrangement does not stop generating rent at the
-          owner&rsquo;s death. The management arrangement
+          owner’s death. The management arrangement
           continues through probate and beyond. This is
           one of the underrated benefits of professional
           management for diaspora landlords.
@@ -384,9 +384,9 @@ export default function Article() {
         Most Kenyan family land disputes can be traced to
         one of three things: no will, a will that was not
         executed properly, or property still registered
-        in a deceased person&rsquo;s name years after
+        in a deceased person’s name years after
         their death. All three are preventable for a
-        few hundred dollars and an afternoon&rsquo;s
+        few hundred dollars and an afternoon’s
         work. The reason most families do not do it is
         that the topic is unpleasant, not that it is hard.
       </Callout>

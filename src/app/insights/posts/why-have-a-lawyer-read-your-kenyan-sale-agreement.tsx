@@ -39,9 +39,9 @@ export default function Article() {
         impossible to meet from abroad, or the seller had reserved
         the right to a price escalation no buyer would ever
         consciously agree to. None of those clauses were hidden.
-        They were just written by the seller&rsquo;s side, and
-        nobody on the buyer&rsquo;s side actually read the
-        document with a lawyer&rsquo;s eye before the buyer
+        They were just written by the seller’s side, and
+        nobody on the buyer’s side actually read the
+        document with a lawyer’s eye before the buyer
         signed.
       </Lede>
 
@@ -118,7 +118,7 @@ export default function Article() {
         Four buyer-hostile clauses we still see in Nairobi
       </H2>
 
-      <H3 id="time-of-essence">1. &ldquo;Time is of the essence&rdquo; against the buyer only</H3>
+      <H3 id="time-of-essence">1. “Time is of the essence” against the buyer only</H3>
 
       <P>
         Standard clause, fine in principle, except it is often
@@ -137,16 +137,16 @@ export default function Article() {
         also forfeit if completion is delayed by failure of the
         seller to produce searches, consent to transfer, or
         capital gains tax clearance from KRA. That is a trap.
-        The buyer ends up paying for the seller&rsquo;s
+        The buyer ends up paying for the seller’s
         administrative slowness.
       </P>
 
       <H3 id="price-escalation">3. Hidden price escalation on off-plan</H3>
 
       <P>
-        A common developer clause: &ldquo;The purchase price
+        A common developer clause: “The purchase price
         shall be subject to adjustment in line with material
-        cost inflation.&rdquo; Translation: the developer can
+        cost inflation.” Translation: the developer can
         add 8 to 15 percent at completion and call it
         commodities. Either strip this clause out entirely or
         cap it at a number you can live with (3 percent
@@ -158,7 +158,7 @@ export default function Article() {
       <P>
         On handover, the buyer is given seven days to
         identify defects, after which the property is deemed
-        accepted &ldquo;as is&rdquo;. Seven days is not enough
+        accepted “as is”. Seven days is not enough
         time for a diaspora buyer to fly in, inspect properly,
         and document everything. Push to thirty days, and
         require the developer to remedy major defects at their
@@ -233,7 +233,7 @@ export default function Article() {
         it. They send back a marked-up version with the clauses
         they would change, the rationale for each, and a clear
         risk score from green to red. We negotiate the changes
-        with the seller&rsquo;s counsel and only present you a
+        with the seller’s counsel and only present you a
         final version when the document is balanced.
       </P>
 

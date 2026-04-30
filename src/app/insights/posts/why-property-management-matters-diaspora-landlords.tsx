@@ -43,7 +43,7 @@ export default function Article() {
         management does differently.
       </Lede>
 
-      <H2 id="the-trust-tax">The hidden cost of &ldquo;trusting your cousin&rdquo;</H2>
+      <H2 id="the-trust-tax">The hidden cost of “trusting your cousin”</H2>
 
       <P>
         Hiring family or a friend feels free. It is not. The cost
@@ -55,9 +55,9 @@ export default function Article() {
       <H3 id="failure-one">1. Rent collection drift</H3>
 
       <P>
-        The tenant is &ldquo;a friend of a friend&rdquo;. Rent is
+        The tenant is “a friend of a friend”. Rent is
         always paid. Until it is not. The friend managing the
-        property doesn&rsquo;t want the awkwardness of chasing on day
+        property doesn’t want the awkwardness of chasing on day
         five, so it slides to day fifteen, then day thirty. When the
         landlord finally hears about it, three months are owed and
         the tenant is preparing a sob story instead of a payment.
@@ -70,10 +70,10 @@ export default function Article() {
 
       <P>
         Without a held float, every repair becomes a question:
-        &ldquo;Can you wire 18,000 shillings for the geyser?&rdquo;
+        “Can you wire 18,000 shillings for the geyser?”
         The diaspora landlord, working in another timezone, does not
         respond for four hours. The tenant takes a cold shower for
-        the second day. The friend doesn&rsquo;t want to keep
+        the second day. The friend doesn’t want to keep
         nagging. The geyser does not get fixed. The tenant does not
         renew. The unit goes vacant. Lost rent for two months is
         many multiples of the geyser bill, but the friction of
@@ -105,7 +105,7 @@ export default function Article() {
           the MRI tax piece
         </Link>
         . The short version: KRA expects 7.5% of gross rent every
-        month, filed by the 20th, in the landlord&rsquo;s name on
+        month, filed by the 20th, in the landlord’s name on
         their KRA PIN. Most informal arrangements never file at all.
         Penalties accrue silently in the background and surface, with
         interest, the day the landlord tries to sell or transfer
@@ -235,8 +235,8 @@ export default function Article() {
 
       <P>
         Anonymise the landlord and the address, but show me the
-        actual format. If the answer is &ldquo;we do them on
-        request&rdquo; or &ldquo;we send a WhatsApp summary&rdquo;,
+        actual format. If the answer is “we do them on
+        request” or “we send a WhatsApp summary”,
         you do not have a managed property. You have a paid
         intermediary.
       </P>
@@ -246,11 +246,11 @@ export default function Article() {
       </H3>
 
       <P>
-        The right answer is specific. &ldquo;We file in your name on
+        The right answer is specific. “We file in your name on
         your KRA PIN by the 20th of each month, withhold 7.5% from
-        collection, attach the e-slip to the statement.&rdquo; In
-        Ghana: &ldquo;We deduct 8% at source, remit to GRA by the
-        15th, attach the GRA acknowledgement to the statement.&rdquo;
+        collection, attach the e-slip to the statement.” In
+        Ghana: “We deduct 8% at source, remit to GRA by the
+        15th, attach the GRA acknowledgement to the statement.”
         Anything vaguer is a future penalty waiting to surface.
       </P>
 
@@ -273,10 +273,10 @@ export default function Article() {
 
       <P>
         Currency, frequency, FX rate basis, and disclosed spread.
-        &ldquo;We collect in KES and wire USD on the 5th at
+        “We collect in KES and wire USD on the 5th at
         wholesale interbank rate with the spread on the
-        statement&rdquo; is a complete answer. &ldquo;We&rsquo;ll
-        figure that out when the time comes&rdquo; means the
+        statement” is a complete answer. “We’ll
+        figure that out when the time comes” means the
         landlord will be paying retail FX and unflagged spreads
         for years.
       </P>
@@ -287,17 +287,17 @@ export default function Article() {
 
       <P>
         A serious manager has a serious answer. Tenant
-        relationships are yours, not the manager&rsquo;s. Bank
+        relationships are yours, not the manager’s. Bank
         details are on your accounts, not theirs. Lease, statements,
-        vendor list and keys are deliverable on 14 days&rsquo;
-        notice. There is no lock-in, no clawback, no &ldquo;our
-        tenants&rdquo; framing. If the manager treats your tenant
+        vendor list and keys are deliverable on 14 days’
+        notice. There is no lock-in, no clawback, no “our
+        tenants” framing. If the manager treats your tenant
         relationships as their asset, you are not a client. You are
         a supplier.
       </P>
 
       <Pullquote>
-        Tenant relationships are yours, not the manager&rsquo;s. If
+        Tenant relationships are yours, not the manager’s. If
         a manager treats your tenants as their asset, you are not a
         client. You are a supplier.
       </Pullquote>
@@ -313,7 +313,7 @@ export default function Article() {
         send the statement, wire USD on the 5th, and tell the truth
         when something goes wrong. Our fees are flat and disclosed:
         10% of rent collected for long-term, 20% of revenue for
-        Airbnb, one month&rsquo;s rent for tenant-finding only. No
+        Airbnb, one month’s rent for tenant-finding only. No
         setup fees, no hidden deductions.
       </P>
 

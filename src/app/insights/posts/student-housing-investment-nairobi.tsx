@@ -15,7 +15,7 @@ export const meta: PostMeta = {
   title:
     "Student housing investment in Nairobi: the 2026 guide",
   description:
-    "Nairobi has the largest concentrated university student population in East Africa. Acorn&rsquo;s Qwetu and Qejani brands proved the institutional thesis. Here is the honest 2026 investor guide on student housing in Nairobi for direct investors.",
+    "Nairobi has the largest concentrated university student population in East Africa. Acorn’s Qwetu and Qejani brands proved the institutional thesis. Here is the honest 2026 investor guide on student housing in Nairobi for direct investors.",
   publishedAt: "2025-12-10",
   readingMinutes: 5,
   author: authors.research,
@@ -41,7 +41,7 @@ export default function Article() {
         university student population in East
         Africa. University of Nairobi, JKUAT,
         Strathmore, USIU, Daystar, KU and
-        several others. Acorn&rsquo;s Qwetu
+        several others. Acorn’s Qwetu
         and Qejani brands proved the
         institutional thesis. Here is the
         honest 2026 investor guide for direct

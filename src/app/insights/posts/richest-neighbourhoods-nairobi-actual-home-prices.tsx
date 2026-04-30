@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "The richest neighbourhoods in Nairobi 2026: actual home prices, ranked",
   description:
-    "Where do the wealthiest Nairobi households actually live, and what do their homes really cost? Forget the rumours. Here is the 2026 ranking of Nairobi&rsquo;s richest suburbs by realistic home prices, who lives there, and how the wealth signal has shifted over the last decade.",
+    "Where do the wealthiest Nairobi households actually live, and what do their homes really cost? Forget the rumours. Here is the 2026 ranking of Nairobi’s richest suburbs by realistic home prices, who lives there, and how the wealth signal has shifted over the last decade.",
   publishedAt: "2025-01-15",
   readingMinutes: 8,
   author: authors.research,
@@ -63,7 +63,7 @@ export default function Article() {
         Muthaiga Country Club neighbourhoods. The
         ambassadors live here, the Kenyan industrial
         family money lives here, and a meaningful share
-        of the country&rsquo;s top political and
+        of the country’s top political and
         professional class.
       </P>
 

@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "tatu-city-northlands-konza-investing-kenya-smart-cities",
   title:
-    "Tatu City, Northlands and Konza: investing in Kenya&rsquo;s smart cities in 2026",
+    "Tatu City, Northlands and Konza: investing in Kenya’s smart cities in 2026",
   description:
     "Tatu City, Northlands and Konza Technopolis are the three master-planned cities being marketed hardest to diaspora investors today. Each is genuinely real, each is materially unfinished, and each rewards a different kind of investor. Here is the honest 2026 picture.",
   publishedAt: "2025-07-18",
@@ -135,7 +135,7 @@ export default function Article() {
       <H2 id="konza">Konza Technopolis: the longest horizon</H2>
 
       <P>
-        Konza is the government&rsquo;s technology city,
+        Konza is the government’s technology city,
         about 60 km south east of Nairobi along the Mombasa
         Road and SGR corridor. The vision is a Kenyan
         Silicon Savannah anchor: tech firms, the Konza
@@ -167,7 +167,7 @@ export default function Article() {
         exposure today, with steady appreciation. Northlands
         is for patient land plays in the Northern Bypass
         corridor. Konza is for very long horizon allocators
-        who want a very early position in Kenya&rsquo;s
+        who want a very early position in Kenya’s
         technology city. Confusing the three causes most
         diaspora disappointment with smart-city allocations.
       </Callout>
@@ -241,7 +241,7 @@ export default function Article() {
       <Pullquote>
         Tatu, Northlands and Konza are real, important and
         different from each other. The mistake to avoid is
-        treating &ldquo;smart cities&rdquo; as one
+        treating “smart cities” as one
         interchangeable category. They reward different
         investors on different timelines.
       </Pullquote>
@@ -251,12 +251,12 @@ export default function Article() {
       <P>
         We have managed property at Tatu since the early
         residential compounds opened. Where it fits a
-        client&rsquo;s brief, we source there alongside
+        client’s brief, we source there alongside
         core Nairobi options. Where it does not fit, we say
         so. We do not earn referral fees from any of the
         master-plan developers, and we will not push a Tatu
         unit when a Kilimani apartment is the better answer
-        for the client&rsquo;s actual goals.
+        for the client’s actual goals.
       </P>
 
       <P>

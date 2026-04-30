@@ -300,7 +300,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Negotiate a tier 1 Kenyan bank&rsquo;s
+          Negotiate a tier 1 Kenyan bank’s
           spread on outbound USD wire (CBA, Equity,
           KCB, NCBA, Stanbic, StanChart, Co-operative)
         </LI>
@@ -308,7 +308,7 @@ export default function Article() {
           Convert in tranches if FX is volatile
         </LI>
         <LI>
-          Confirm the sending bank&rsquo;s
+          Confirm the sending bank’s
           documentation requirements (sale agreement,
           KRA receipts, beneficial ownership) before
           initiating
@@ -341,7 +341,7 @@ export default function Article() {
         </LI>
         <LI>
           Hold a small KES buffer to cover next
-          month&rsquo;s property expenses without
+          month’s property expenses without
           having to convert back
         </LI>
       </OL>

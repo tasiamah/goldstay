@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "kilimani-apartment-market-changing-2026",
   title:
-    "Kilimani is changing: what happened to Nairobi&rsquo;s busiest apartment market",
+    "Kilimani is changing: what happened to Nairobi’s busiest apartment market",
   description:
     "Kilimani was the apartment story of the 2010s in Nairobi. By 2026 the picture is more complicated. Oversupply, traffic, GenZ preferences and the expressway have all reshaped the suburb. Here is the honest read on what changed, who is still buying there, and what it means for owners and investors.",
   publishedAt: "2024-09-14",
@@ -73,7 +73,7 @@ export default function Article() {
         <LI>
           Office space migration to Westlands towers
           and the expressway corridor reduced
-          Kilimani&rsquo;s pull as a live-near-work
+          Kilimani’s pull as a live-near-work
           suburb
         </LI>
         <LI>
@@ -103,7 +103,7 @@ export default function Article() {
       <H3 id="mid">Mid-tier mass stock</H3>
 
       <P>
-        The bulk of Kilimani&rsquo;s apartment supply
+        The bulk of Kilimani’s apartment supply
         sits here. 5 to 8 storey buildings with modest
         amenity, varying compound management quality,
         mixed tenant profile. Vacancy is real,
@@ -215,7 +215,7 @@ export default function Article() {
           weak stock; do not pay asking
         </LI>
         <LI>
-          Premium pockets are still a sellers&rsquo;
+          Premium pockets are still a sellers’
           market; expect to pay close to asking on
           the right unit
         </LI>

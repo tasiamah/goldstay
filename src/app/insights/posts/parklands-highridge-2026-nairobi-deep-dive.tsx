@@ -192,7 +192,7 @@ export default function Article() {
           in 5 to 10 minutes)
         </LI>
         <LI>
-          City Park (one of Nairobi&rsquo;s best
+          City Park (one of Nairobi’s best
           green spaces)
         </LI>
         <LI>
@@ -259,7 +259,7 @@ export default function Article() {
         For value investors, mid-budget owner
         occupiers and members of the Asian Kenyan
         community returning home, Parklands and
-        Highridge remain one of Nairobi&rsquo;s
+        Highridge remain one of Nairobi’s
         strongest property propositions. The market
         is durable, the yield is real and the
         community is the anchor that nothing else

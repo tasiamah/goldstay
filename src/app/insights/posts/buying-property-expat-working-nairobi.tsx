@@ -65,7 +65,7 @@ export default function Article() {
         <LI>
           Apartments are typically leasehold
           on a long lease via the
-          development&rsquo;s mother title
+          development’s mother title
         </LI>
         <LI>
           Standalone houses on residential

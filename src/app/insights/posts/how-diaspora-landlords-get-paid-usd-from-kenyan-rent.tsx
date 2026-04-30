@@ -49,7 +49,7 @@ export default function Article() {
         agent collects rent in Kenyan shillings into a Kenyan
         bank account. Once a quarter, the agent walks into a
         retail bank, asks for a USD wire to your foreign account,
-        and accepts the bank&rsquo;s posted rate of the day. The
+        and accepts the bank’s posted rate of the day. The
         bank charges the retail spread (typically 1.5 to 2.5% off
         wholesale) plus a wire fee of USD 30 to USD 60.
       </P>
@@ -91,8 +91,8 @@ export default function Article() {
         </LI>
         <LI>
           On the 5th of each month, the remaining balance is
-          converted at the day&rsquo;s wholesale interbank rate
-          and wired to the landlord&rsquo;s foreign account.
+          converted at the day’s wholesale interbank rate
+          and wired to the landlord’s foreign account.
         </LI>
         <LI>
           The statement shows the KES amount, the rate used, the
@@ -127,7 +127,7 @@ export default function Article() {
 
       <P>
         For larger remittances, your Kenyan bank will ask for a
-        copy of the lease, the tenant&rsquo;s ID or PIN, the MRI
+        copy of the lease, the tenant’s ID or PIN, the MRI
         e-slip showing tax has been paid, and proof of property
         ownership. Goldstay maintains all of these on file as part
         of the standard service. Owners who try to remit without

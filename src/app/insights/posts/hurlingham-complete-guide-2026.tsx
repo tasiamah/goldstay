@@ -146,7 +146,7 @@ export default function Article() {
 
       <Pullquote>
         Walkability is undervalued in
-        Nairobi&rsquo;s pricing. Hurlingham
+        Nairobi’s pricing. Hurlingham
         is one of the few addresses where
         you can actually walk to dinner and
         the hospital both, and the rental

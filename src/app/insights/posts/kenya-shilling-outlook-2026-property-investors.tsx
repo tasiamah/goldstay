@@ -118,7 +118,7 @@ export default function Article() {
       <H3 id="debt">External debt service</H3>
 
       <P>
-        Kenya&rsquo;s sovereign debt service in foreign
+        Kenya’s sovereign debt service in foreign
         currency (mainly USD) is the largest single
         outflow that the FX market has to absorb. The
         Eurobond schedule and the multilateral
@@ -192,7 +192,7 @@ export default function Article() {
           dollars).
         </LI>
         <LI>
-          Buyers waiting for the &ldquo;perfect&rdquo;
+          Buyers waiting for the “perfect”
           KES level often miss the property cycle
           while watching the FX cycle. The right answer
           is usually to buy when you find the right
@@ -263,7 +263,7 @@ export default function Article() {
         <LI>
           Convert rental income to dollars on a
           regular monthly schedule rather than waiting
-          for the &ldquo;right&rdquo; rate. Dollar cost
+          for the “right” rate. Dollar cost
           averaging works in FX as it does in equities
         </LI>
         <LI>
@@ -315,7 +315,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <Callout title="The diaspora investor&rsquo;s rule of thumb">
+      <Callout title="The diaspora investor’s rule of thumb">
         Buy property when the property is right, not
         when the FX is right. Hedge through long hold
         and through dollar-cost averaging on rental

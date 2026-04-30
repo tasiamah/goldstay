@@ -53,7 +53,7 @@ export default function Article() {
         <LI>
           <strong>The Distress for Rent Act (Cap 293)</strong>
           gives the landlord the right to recover unpaid rent
-          by lawful seizure of the tenant&rsquo;s goods,
+          by lawful seizure of the tenant’s goods,
           executed via a licensed auctioneer. Useful for
           recovering rent owed; does not by itself remove the
           tenant.
@@ -65,7 +65,7 @@ export default function Article() {
           termination of tenancy and recovery of possession.
           For most residential lets above the controlled-rent
           threshold, the relevant route is a plain civil claim
-          in the appropriate Magistrate&rsquo;s Court.
+          in the appropriate Magistrate’s Court.
         </LI>
       </UL>
 
@@ -73,7 +73,7 @@ export default function Article() {
         For controlled tenancies (rent below the prescribed
         threshold) you go through the Rent Restriction Tribunal.
         For everyone above (most diaspora-owned units in
-        Nairobi), you go through the Magistrate&rsquo;s Court.
+        Nairobi), you go through the Magistrate’s Court.
         Mixing the two is the first big mistake.
       </P>
 
@@ -109,7 +109,7 @@ export default function Article() {
       </P>
 
       <H3 id="step-3">
-        Step 3: File a plaint at the Magistrate&rsquo;s Court
+        Step 3: File a plaint at the Magistrate’s Court
       </H3>
 
       <P>
@@ -150,8 +150,8 @@ export default function Article() {
         Lawful eviction execution requires giving the tenant
         notice (typically 7 days), and is conducted in daylight
         hours with a court official or licensed auctioneer
-        present. The tenant&rsquo;s belongings are removed and
-        either stored at the tenant&rsquo;s cost or sold at
+        present. The tenant’s belongings are removed and
+        either stored at the tenant’s cost or sold at
         public auction to recover arrears.
       </P>
 
@@ -169,13 +169,13 @@ export default function Article() {
 
       <P>
         Changing the locks, cutting power, removing the
-        tenant&rsquo;s belongings without a warrant, or
+        tenant’s belongings without a warrant, or
         physically removing the tenant. All of these are
         unlawful in Kenya and expose the landlord to
         counter-claims for damages and even criminal charges.
         We have seen otherwise winnable cases collapse because
         the landlord, frustrated after three months of
-        non-payment, cut power for two days. The tenant&rsquo;s
+        non-payment, cut power for two days. The tenant’s
         counter-claim ate the original arrears and added
         another six months to the case.
       </P>
@@ -201,7 +201,7 @@ export default function Article() {
 
       <P>
         No signed lease, no record of payments, no record of
-        notices, no MRI tax filings (a tenant&rsquo;s counsel
+        notices, no MRI tax filings (a tenant’s counsel
         can use the absence of MRI filings to suggest the
         landlord operates outside the law). Diaspora landlords
         managed by informal arrangements often discover at
@@ -223,7 +223,7 @@ export default function Article() {
         differently. The single highest-leverage change a
         landlord can make is to never allow arrears to grow
         past one month. Once two or more months are owed, the
-        tenant&rsquo;s incentive structure flips. They have
+        tenant’s incentive structure flips. They have
         nothing to lose by staying as long as possible.
       </P>
 

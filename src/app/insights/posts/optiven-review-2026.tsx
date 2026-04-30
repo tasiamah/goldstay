@@ -153,8 +153,8 @@ export default function Article() {
         Optiven is a land brand for buyers
         with a multi-year personal use plan
         and disciplined budget. The
-        brand&rsquo;s critics overstate the
-        problems; the brand&rsquo;s
+        brand’s critics overstate the
+        problems; the brand’s
         promoters often understate the
         opportunity cost. Buy with eyes
         open.

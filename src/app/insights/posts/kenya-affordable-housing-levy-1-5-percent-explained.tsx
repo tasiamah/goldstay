@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "kenya-affordable-housing-levy-1-5-percent-explained",
   title:
-    "Kenya&rsquo;s 1.5% Affordable Housing Levy explained for diaspora landlords",
+    "Kenya’s 1.5% Affordable Housing Levy explained for diaspora landlords",
   description:
     "Who pays the 1.5% Affordable Housing Levy, who is exempt, what it actually funds, and what diaspora landlords specifically need to know about how it interacts with rental income, payroll obligations and the Affordable Housing Programme allocation rules.",
   publishedAt: "2025-08-29",
@@ -220,7 +220,7 @@ export default function Article() {
         <LI>
           <strong>The KMRC effect on mortgages.</strong> The
           Kenya Mortgage Refinance Company refinances
-          banks&rsquo; long-term mortgage portfolios at
+          banks’ long-term mortgage portfolios at
           lower cost, partly funded by the housing levy
           stream. Over time this is gradually pushing
           mortgage rates down for borrowers in the

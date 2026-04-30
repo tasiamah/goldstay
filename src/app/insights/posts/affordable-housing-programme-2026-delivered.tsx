@@ -50,8 +50,8 @@ export default function Article() {
       <UL>
         <LI>
           Launched as part of the
-          government&rsquo;s &ldquo;Big
-          Four&rdquo; agenda; continued
+          government’s “Big
+          Four” agenda; continued
           under the Kenya Kwanza
           administration
         </LI>
@@ -179,7 +179,7 @@ export default function Article() {
       <Pullquote>
         Government housing programmes
         rarely deliver on the original
-        scale. AHP&rsquo;s most lasting
+        scale. AHP’s most lasting
         contribution is probably the
         KMRC mortgage architecture, not
         the unit count.

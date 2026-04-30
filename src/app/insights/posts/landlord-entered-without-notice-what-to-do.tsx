@@ -100,7 +100,7 @@ export default function Article() {
           Routine inspection without notice
         </LI>
         <LI>
-          &ldquo;Checking up&rdquo; on the
+          “Checking up” on the
           tenant
         </LI>
         <LI>

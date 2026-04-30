@@ -48,7 +48,7 @@ export default function Article() {
       <H2 id="research">Neighbourhood research prompt</H2>
 
       <P>
-        &ldquo;You are a Nairobi property
+        “You are a Nairobi property
         analyst. Compare Kileleshwa, Lavington
         and Spring Valley for a returning
         diaspora family with two school-age
@@ -57,13 +57,13 @@ export default function Article() {
         community fit and resale liquidity.
         Be honest about the trade-offs.
         Output as a table with one column
-        per suburb.&rdquo;
+        per suburb.”
       </P>
 
       <H2 id="contract">Contract review prompt</H2>
 
       <P>
-        &ldquo;Below is a Nairobi property
+        “Below is a Nairobi property
         sale agreement. Identify any clauses
         that are unusual, one-sided in
         favour of the seller, ambiguous on
@@ -73,13 +73,13 @@ export default function Article() {
         concern with a brief explanation
         and a recommended counter-edit.
         I will run independent counsel after.
-        [Paste contract here.]&rdquo;
+        [Paste contract here.]”
       </P>
 
       <H2 id="diligence">Diligence checklist prompt</H2>
 
       <P>
-        &ldquo;Generate a complete pre-purchase
+        “Generate a complete pre-purchase
         diligence checklist for an off-plan
         apartment in Nairobi. Cover
         developer, title, zoning, NEMA, NCA,
@@ -88,13 +88,13 @@ export default function Article() {
         defect liability, service charge
         governance and tenant pool. Format
         as a printable checklist with
-        checkboxes.&rdquo;
+        checkboxes.”
       </P>
 
       <H2 id="affordability">Affordability prompt</H2>
 
       <P>
-        &ldquo;I earn KES 450,000 net per
+        “I earn KES 450,000 net per
         month in Nairobi, have KES 4m
         savings, no other debt. I want to
         buy in 18 months. Calculate the
@@ -103,20 +103,20 @@ export default function Article() {
         the indicative mortgage size at
         current rates, and my monthly cash
         flow after mortgage. Suggest the
-        Nairobi suburbs that fit.&rdquo;
+        Nairobi suburbs that fit.”
       </P>
 
       <H2 id="comparables">Comparable pricing prompt</H2>
 
       <P>
-        &ldquo;I am being shown a 3-bed
+        “I am being shown a 3-bed
         apartment in Kilimani at KES 22m.
         What questions should I ask to
         verify this is fair value? What
         comparable data points should I
         request from the agent? What
         signals would suggest the price is
-        too high or too low?&rdquo;
+        too high or too low?”
       </P>
 
       <H2 id="limits">Where ChatGPT cannot help</H2>

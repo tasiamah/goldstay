@@ -53,7 +53,7 @@ export default function Article() {
         <LI>
           <strong>Maisonette + SQ</strong>:
           live in the main house, rent the
-          servant&rsquo;s quarters as
+          servant’s quarters as
           studio
         </LI>
         <LI>

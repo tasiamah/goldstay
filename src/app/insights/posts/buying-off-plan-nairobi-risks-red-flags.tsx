@@ -110,12 +110,12 @@ export default function Article() {
 
       <H2 id="seven-red-flags">Seven red flags that predict failure</H2>
 
-      <H3 id="red-1">1. No completed projects on the developer&rsquo;s record</H3>
+      <H3 id="red-1">1. No completed projects on the developer’s record</H3>
 
       <P>
         First-time developers fail at materially higher rates
         than experienced ones. Always ask for the
-        developer&rsquo;s previous completed projects. Visit
+        developer’s previous completed projects. Visit
         one. Speak to current owners. If the developer cannot
         produce a completed project to walk through, the
         project you are buying into is their first, and the
@@ -150,9 +150,9 @@ export default function Article() {
         Reputable Nairobi off plan projects in 2026 have
         commercial bank construction financing, and the bank
         in turn provides an off-plan mortgage facility for
-        end-buyers. The bank&rsquo;s due diligence on the
+        end-buyers. The bank’s due diligence on the
         developer is a separate independent check. If no
-        bank is touching the project, the bank&rsquo;s due
+        bank is touching the project, the bank’s due
         diligence has presumably failed already.
       </P>
 
@@ -174,13 +174,13 @@ export default function Article() {
         The brochure is beautiful. The website is animated.
         The structural drawings are not available. The
         approvals from the County are described as
-        &ldquo;in progress&rdquo;. The contractor is unnamed.
+        “in progress”. The contractor is unnamed.
         Every cost-cutting and corner-cutting decision shows
         up downstream as either a delay or a quality
         compromise.
       </P>
 
-      <H3 id="red-7">7. The developer&rsquo;s entity is brand new</H3>
+      <H3 id="red-7">7. The developer’s entity is brand new</H3>
 
       <P>
         Many Nairobi off plan projects are sold through a
@@ -224,14 +224,14 @@ export default function Article() {
         <LI>
           <strong>Hard-stop refund clause.</strong> If
           completion does not happen by the target date plus
-          grace period, the buyer&rsquo;s right is automatic
+          grace period, the buyer’s right is automatic
           refund of all paid deposits plus interest. Make
           sure this is in the sale agreement, not just
           assumed.
         </LI>
         <LI>
           <strong>Your own lawyer, paid by you.</strong> Not
-          the developer&rsquo;s, not the agent&rsquo;s. A
+          the developer’s, not the agent’s. A
           property lawyer paid by you reads every clause for
           you, not for the seller.
         </LI>
@@ -265,9 +265,9 @@ export default function Article() {
       </UL>
 
       <Callout title="The hardest question to ask">
-        Ask the developer: &ldquo;If I want to assign my
+        Ask the developer: “If I want to assign my
         contract to another buyer halfway through, what is
-        your process?&rdquo; A developer running a real
+        your process?” A developer running a real
         project has a clear answer (typically a 1 to 2%
         assignment fee, no questions). A developer with
         problems gets defensive, because they need new
@@ -286,7 +286,7 @@ export default function Article() {
         </Link>
         , Goldstay shortlists off plan projects against the
         full red flag and protection checklist, walks through
-        each, speaks to current owners of the developer&rsquo;s
+        each, speaks to current owners of the developer’s
         previous projects, reviews the sale agreement with our
         partner law firm, and makes a written go or no-go
         recommendation. The buyer pays nothing for this. We

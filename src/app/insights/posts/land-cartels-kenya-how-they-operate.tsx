@@ -113,7 +113,7 @@ export default function Article() {
 
       <P>
         Cartels sponsor squatters onto absentee
-        owners&rsquo; land, then years later
+        owners’ land, then years later
         invoke adverse possession to acquire
         ownership through the courts (covered
         in our{" "}

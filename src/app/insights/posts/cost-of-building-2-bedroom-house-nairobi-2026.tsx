@@ -191,7 +191,7 @@ export default function Article() {
         the professional fees in. Pick
         the contractor with track record.
         The 2026 honest budget is rarely
-        the spreadsheet&rsquo;s first
+        the spreadsheet’s first
         number.
       </Callout>
 

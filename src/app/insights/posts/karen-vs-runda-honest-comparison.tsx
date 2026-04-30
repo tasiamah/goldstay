@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "Karen vs Runda: an honest comparison after 30 years",
   description:
-    "Karen and Runda have been Nairobi&rsquo;s two flagship premium suburbs for 30 years. Despite the cliche of comparing them, the two markets have evolved into very different propositions. Here is the honest 2026 comparison covering price, character, who actually lives there, school catchment, security, traffic, resale and long-term outlook.",
+    "Karen and Runda have been Nairobi’s two flagship premium suburbs for 30 years. Despite the cliche of comparing them, the two markets have evolved into very different propositions. Here is the honest 2026 comparison covering price, character, who actually lives there, school catchment, security, traffic, resale and long-term outlook.",
   publishedAt: "2024-09-10",
   readingMinutes: 7,
   author: authors.editors,
@@ -39,7 +39,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Karen and Runda have been Nairobi&rsquo;s two
+        Karen and Runda have been Nairobi’s two
         flagship premium suburbs for 30 years.
         Diaspora returnees compare them constantly.
         First-time premium buyers ask which one to
@@ -87,7 +87,7 @@ export default function Article() {
           KES 80m to KES 800m+ depending on plot
           size and condition. Wider range than
           Runda, with the very high end well above
-          Runda&rsquo;s ceiling.
+          Runda’s ceiling.
         </LI>
         <LI>
           <strong>Karen townhouse compound</strong>:
@@ -321,9 +321,9 @@ export default function Article() {
       <P>
         For premium clients we walk through the
         actual day-to-day implications of each
-        suburb against the family&rsquo;s
+        suburb against the family’s
         situation, rather than reflecting back the
-        client&rsquo;s expectations. The right
+        client’s expectations. The right
         answer between Karen and Runda is rarely
         obvious from the outside; usually obvious
         once you have lived in either.

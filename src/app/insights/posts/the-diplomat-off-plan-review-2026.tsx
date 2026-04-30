@@ -158,7 +158,7 @@ export default function Article() {
       </UL>
 
       <Callout title="The Diplomat rule">
-        The Diplomat&rsquo;s tenant thesis is
+        The Diplomat’s tenant thesis is
         defensible but only if the unit
         actually appeals to the diplomatic
         cohort. Test the proposition through

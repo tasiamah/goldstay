@@ -112,7 +112,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Comparable build quality</strong>.
-          Where a unit&rsquo;s spec is below
+          Where a unit’s spec is below
           neighbours, the discount has to reflect
           the spec
         </LI>
@@ -134,7 +134,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          End of a developer&rsquo;s phase (last
+          End of a developer’s phase (last
           few units, accounting pressure to clear
           the phase)
         </LI>

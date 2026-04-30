@@ -37,7 +37,7 @@ export default function Article() {
         straight answer. In Kenya in 2026, residential property
         management costs between 8% and 12% of rent collected for a
         long-term let, between 18% and 25% of revenue for a
-        short-stay or Airbnb, and roughly one month&rsquo;s rent for
+        short-stay or Airbnb, and roughly one month’s rent for
         tenant-finding only. Anything outside those bands is either
         a bargain you should be suspicious of or a premium you
         should ask hard questions about.
@@ -117,7 +117,7 @@ export default function Article() {
         depreciated. The 2% saved on the headline fee gets eaten by
         a single penalty assessment from KRA and a single year of
         unhedged FX drift. We have unwound enough of these
-        situations to know the math is rarely in the landlord&rsquo;s
+        situations to know the math is rarely in the landlord’s
         favour.
       </P>
 
@@ -187,7 +187,7 @@ export default function Article() {
       <P>
         For owners who genuinely want to manage themselves but need
         a tenant in the door, the standard Kenyan rate is one
-        month&rsquo;s rent as a one-off finder&rsquo;s fee. That
+        month’s rent as a one-off finder’s fee. That
         should include marketing, viewings, screening, lease
         drafting, and handover. It should not include any ongoing
         management. The tenant becomes your direct relationship
@@ -227,7 +227,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Repair markup.</strong> Some operators add 10 to
-          15% on top of contractor invoices for &ldquo;coordination&rdquo;.
+          15% on top of contractor invoices for “coordination”.
           On a year with two real repairs it can add a percentage
           point to the total cost.
         </LI>
@@ -247,12 +247,12 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Renewal fees.</strong> Some agents charge a half
-          month&rsquo;s rent every time a tenant renews. We do
+          month’s rent every time a tenant renews. We do
           not.
         </LI>
         <LI>
           <strong>Exit fees.</strong> The contract should let you
-          leave on 30 days&rsquo; notice with no clawback. If
+          leave on 30 days’ notice with no clawback. If
           there is a notice period longer than 60 days, ask why.
         </LI>
       </OL>
@@ -261,7 +261,7 @@ export default function Article() {
 
       <P>
         Flat and disclosed. 10% of rent collected for long-term,
-        20% of revenue for Airbnb, one month&rsquo;s rent for
+        20% of revenue for Airbnb, one month’s rent for
         tenant-finding only. No setup fee. No repair markup. No
         vacancy fee. No renewal fee. No exit clawback. FX at
         wholesale interbank rate with the spread shown on every

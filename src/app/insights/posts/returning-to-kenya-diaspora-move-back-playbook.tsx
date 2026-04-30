@@ -434,7 +434,7 @@ export default function Article() {
         property sourcing once the family has settled and
         knows the suburb, and the eventual purchase
         through our normal sourcing process. We also
-        coordinate with the family&rsquo;s broader
+        coordinate with the family’s broader
         relocation advisers (tax, schools, shipping)
         where helpful.
       </P>

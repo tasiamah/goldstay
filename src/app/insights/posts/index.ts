@@ -784,6 +784,76 @@ import BestNairobiSuburbsYoungProfessionals2026, {
   meta as bestNairobiSuburbsYoungProfessionals2026Meta,
 } from "./best-nairobi-suburbs-young-professionals-2026";
 
+import NairobiNeighbourhoodsRentsDropping2026, {
+  meta as nairobiNeighbourhoodsRentsDropping2026Meta,
+} from "./nairobi-neighbourhoods-rents-dropping-2026";
+import HowMuchRentCanYouAffordNairobi2026, {
+  meta as howMuchRentCanYouAffordNairobi2026Meta,
+} from "./how-much-rent-can-you-afford-nairobi-2026";
+import BestPlacesBuy1BedroomNairobi2026, {
+  meta as bestPlacesBuy1BedroomNairobi2026Meta,
+} from "./best-places-buy-1-bedroom-apartment-nairobi-2026";
+import BestPlacesBuy2BedroomNairobi2026, {
+  meta as bestPlacesBuy2BedroomNairobi2026Meta,
+} from "./best-places-buy-2-bedroom-apartment-nairobi-2026";
+import BestPlacesBuy3BedroomNairobi2026, {
+  meta as bestPlacesBuy3BedroomNairobi2026Meta,
+} from "./best-places-buy-3-bedroom-apartment-nairobi-2026";
+import WhyNairobiSingleMothersBuyingProperty, {
+  meta as whyNairobiSingleMothersBuyingPropertyMeta,
+} from "./why-nairobi-single-mothers-buying-property";
+import SevenThingsNairobiTenantShouldAsk, {
+  meta as sevenThingsNairobiTenantShouldAskMeta,
+} from "./7-things-nairobi-tenant-should-ask-before-signing";
+import CostFurnishNairobiApartment2026, {
+  meta as costFurnishNairobiApartment2026Meta,
+} from "./cost-furnish-nairobi-apartment-2026";
+import WhyLavingtonOvertakingKaren, {
+  meta as whyLavingtonOvertakingKarenMeta,
+} from "./why-lavington-overtaking-karen-family-suburb";
+import NairobiPropertyPredictions2027, {
+  meta as nairobiPropertyPredictions2027Meta,
+} from "./nairobi-property-predictions-2027-honest-forecast";
+import WhyKenyaPensionFundsBuyingRealEstate, {
+  meta as whyKenyaPensionFundsBuyingRealEstateMeta,
+} from "./why-kenya-pension-funds-buying-real-estate";
+import NairobiDeveloperBrandsBuyersTrust2026, {
+  meta as nairobiDeveloperBrandsBuyersTrust2026Meta,
+} from "./nairobi-developer-brands-buyers-trust-2026";
+import BuyNairobiPropertyLessThan5mDeposit, {
+  meta as buyNairobiPropertyLessThan5mDepositMeta,
+} from "./buy-nairobi-property-less-than-5m-deposit";
+import NairobiCommercialVsResidential, {
+  meta as nairobiCommercialVsResidentialMeta,
+} from "./nairobi-commercial-vs-residential-which-wins";
+import WhyIndianArabBuyersPreferSpecificSuburbs, {
+  meta as whyIndianArabBuyersPreferSpecificSuburbsMeta,
+} from "./why-indian-arab-buyers-prefer-specific-nairobi-suburbs";
+import HighestYieldingNairobiShortLetSuburbs2026, {
+  meta as highestYieldingNairobiShortLetSuburbs2026Meta,
+} from "./highest-yielding-nairobi-short-let-suburbs-2026";
+import NairobiSuburbsPropertyCrimeRising2026, {
+  meta as nairobiSuburbsPropertyCrimeRising2026Meta,
+} from "./nairobi-suburbs-where-property-crime-rising-2026";
+import WhyEastlandsMostUnderratedInvestmentMarket, {
+  meta as whyEastlandsMostUnderratedInvestmentMarketMeta,
+} from "./why-eastlands-most-underrated-investment-market";
+import SecretNairobiSuburbWealthySecondHome, {
+  meta as secretNairobiSuburbWealthySecondHomeMeta,
+} from "./secret-nairobi-suburb-wealthy-second-home";
+import WhyMostNairobiLandlordsDontMakeMoney, {
+  meta as whyMostNairobiLandlordsDontMakeMoneyMeta,
+} from "./why-most-nairobi-landlords-dont-make-money";
+import HowActuallyVerifyNairobiDeveloper2026, {
+  meta as howActuallyVerifyNairobiDeveloper2026Meta,
+} from "./how-actually-verify-nairobi-developer-2026";
+import BuyFirstNairobiProperty12Months, {
+  meta as buyFirstNairobiProperty12MonthsMeta,
+} from "./buy-first-nairobi-property-12-months";
+import MortgageRatesKenyaBanksWontTellYou2026, {
+  meta as mortgageRatesKenyaBanksWontTellYou2026Meta,
+} from "./mortgage-rates-kenya-banks-wont-tell-you-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1239,6 +1309,99 @@ export const posts: readonly Post[] = [
   {
     meta: bestNairobiSuburbsYoungProfessionals2026Meta,
     Component: BestNairobiSuburbsYoungProfessionals2026,
+  },
+
+  {
+    meta: nairobiNeighbourhoodsRentsDropping2026Meta,
+    Component: NairobiNeighbourhoodsRentsDropping2026,
+  },
+  {
+    meta: howMuchRentCanYouAffordNairobi2026Meta,
+    Component: HowMuchRentCanYouAffordNairobi2026,
+  },
+  {
+    meta: bestPlacesBuy1BedroomNairobi2026Meta,
+    Component: BestPlacesBuy1BedroomNairobi2026,
+  },
+  {
+    meta: bestPlacesBuy2BedroomNairobi2026Meta,
+    Component: BestPlacesBuy2BedroomNairobi2026,
+  },
+  {
+    meta: bestPlacesBuy3BedroomNairobi2026Meta,
+    Component: BestPlacesBuy3BedroomNairobi2026,
+  },
+  {
+    meta: whyNairobiSingleMothersBuyingPropertyMeta,
+    Component: WhyNairobiSingleMothersBuyingProperty,
+  },
+  {
+    meta: sevenThingsNairobiTenantShouldAskMeta,
+    Component: SevenThingsNairobiTenantShouldAsk,
+  },
+  {
+    meta: costFurnishNairobiApartment2026Meta,
+    Component: CostFurnishNairobiApartment2026,
+  },
+  {
+    meta: whyLavingtonOvertakingKarenMeta,
+    Component: WhyLavingtonOvertakingKaren,
+  },
+  {
+    meta: nairobiPropertyPredictions2027Meta,
+    Component: NairobiPropertyPredictions2027,
+  },
+  {
+    meta: whyKenyaPensionFundsBuyingRealEstateMeta,
+    Component: WhyKenyaPensionFundsBuyingRealEstate,
+  },
+  {
+    meta: nairobiDeveloperBrandsBuyersTrust2026Meta,
+    Component: NairobiDeveloperBrandsBuyersTrust2026,
+  },
+  {
+    meta: buyNairobiPropertyLessThan5mDepositMeta,
+    Component: BuyNairobiPropertyLessThan5mDeposit,
+  },
+  {
+    meta: nairobiCommercialVsResidentialMeta,
+    Component: NairobiCommercialVsResidential,
+  },
+  {
+    meta: whyIndianArabBuyersPreferSpecificSuburbsMeta,
+    Component: WhyIndianArabBuyersPreferSpecificSuburbs,
+  },
+  {
+    meta: highestYieldingNairobiShortLetSuburbs2026Meta,
+    Component: HighestYieldingNairobiShortLetSuburbs2026,
+  },
+  {
+    meta: nairobiSuburbsPropertyCrimeRising2026Meta,
+    Component: NairobiSuburbsPropertyCrimeRising2026,
+  },
+  {
+    meta: whyEastlandsMostUnderratedInvestmentMarketMeta,
+    Component: WhyEastlandsMostUnderratedInvestmentMarket,
+  },
+  {
+    meta: secretNairobiSuburbWealthySecondHomeMeta,
+    Component: SecretNairobiSuburbWealthySecondHome,
+  },
+  {
+    meta: whyMostNairobiLandlordsDontMakeMoneyMeta,
+    Component: WhyMostNairobiLandlordsDontMakeMoney,
+  },
+  {
+    meta: howActuallyVerifyNairobiDeveloper2026Meta,
+    Component: HowActuallyVerifyNairobiDeveloper2026,
+  },
+  {
+    meta: buyFirstNairobiProperty12MonthsMeta,
+    Component: BuyFirstNairobiProperty12Months,
+  },
+  {
+    meta: mortgageRatesKenyaBanksWontTellYou2026Meta,
+    Component: MortgageRatesKenyaBanksWontTellYou2026,
   },
 ];
 

@@ -61,8 +61,8 @@ export default function Article() {
 
       <P>
         <strong>Signal</strong>: deposits that
-        move to the seller&rsquo;s personal
-        account rather than the lawyer&rsquo;s
+        move to the seller’s personal
+        account rather than the lawyer’s
         client account. Sellers who push for fast
         completion and unusual deposit
         arrangements.
@@ -92,7 +92,7 @@ export default function Article() {
       <P>
         Someone impersonates the registered
         owner of a property. They produce a fake
-        ID matching the owner&rsquo;s name and
+        ID matching the owner’s name and
         sell the property without the owner ever
         knowing. The owner is often diaspora or
         absentee.
@@ -100,7 +100,7 @@ export default function Article() {
 
       <P>
         <strong>Signal</strong>: the
-        owner&rsquo;s ID details do not match
+        owner’s ID details do not match
         registry records. Banks and registries
         increasingly verify biometrics; insist
         on biometric or photo-matched
@@ -111,8 +111,8 @@ export default function Article() {
 
       <P>
         A genuine or forged POA is used to sell
-        property without the owner&rsquo;s real
-        knowledge or consent. The owner&rsquo;s
+        property without the owner’s real
+        knowledge or consent. The owner’s
         absence (often abroad) means they
         discover the sale months later.
       </P>
@@ -147,8 +147,8 @@ export default function Article() {
         sold without their own registered titles.
         Your title must be in your name on day
         one or have a clear registered path to
-        sub-division. &ldquo;The title is being
-        processed&rdquo; is not a title.
+        sub-division. “The title is being
+        processed” is not a title.
       </P>
 
       <H2 id="s6">6. Land grab through fake government letter</H2>
@@ -197,7 +197,7 @@ export default function Article() {
       <UL>
         <LI>
           Independent buyer-side advocate
-          (never the seller&rsquo;s)
+          (never the seller’s)
         </LI>
         <LI>
           Official title search at the Lands
@@ -210,7 +210,7 @@ export default function Article() {
         </LI>
         <LI>
           Deposit only into the
-          advocate&rsquo;s client account
+          advocate’s client account
         </LI>
         <LI>
           Title must register in your name

@@ -58,7 +58,7 @@ export default function Article() {
       <P>
         Kenya already has several property-linked
         taxes, although none of them is a recurring
-        national property tax in the way the UK&rsquo;s
+        national property tax in the way the UK’s
         Council Tax or US property taxes operate.
       </P>
 

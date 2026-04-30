@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "Boma Yangu and the Affordable Housing Programme: the diaspora application playbook",
   description:
-    "Boma Yangu is the registration platform for Kenya&rsquo;s Affordable Housing Programme. Diaspora Kenyans can apply, qualify and ultimately own under the same scheme as residents, with some important differences. Here is the practical 2026 playbook covering eligibility, the categories, the application process, the price points and the realistic timelines.",
+    "Boma Yangu is the registration platform for Kenya’s Affordable Housing Programme. Diaspora Kenyans can apply, qualify and ultimately own under the same scheme as residents, with some important differences. Here is the practical 2026 playbook covering eligibility, the categories, the application process, the price points and the realistic timelines.",
   publishedAt: "2025-03-12",
   readingMinutes: 8,
   author: authors.editors,
@@ -40,7 +40,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Boma Yangu, the digital platform for Kenya&rsquo;s
+        Boma Yangu, the digital platform for Kenya’s
         Affordable Housing Programme, has registered
         millions of Kenyans since launch and is steadily
         delivering units across the country. For diaspora
@@ -77,8 +77,8 @@ export default function Article() {
         <LI>
           <strong>Affordable housing</strong>. KES 1m to
           KES 3m per unit, the broad middle of the
-          programme, targeted at the &ldquo;missing
-          middle&rdquo; of formal sector workers.
+          programme, targeted at the “missing
+          middle” of formal sector workers.
         </LI>
         <LI>
           <strong>Market housing</strong>. KES 3m to KES
@@ -395,7 +395,7 @@ export default function Article() {
         KMRC partner banks, and the eventual completion
         and tenant find when the unit is delivered. We
         will say plainly when AHP is the right answer and
-        when it is not, given the client&rsquo;s broader
+        when it is not, given the client’s broader
         objectives.
       </P>
 

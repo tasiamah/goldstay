@@ -38,7 +38,7 @@ export default function Article() {
     <>
       <Lede>
         Beyond the headline residences,
-        Nairobi&rsquo;s wealthiest families
+        Nairobi’s wealthiest families
         own carefully diversified property
         portfolios. The strategy is more
         disciplined than most people

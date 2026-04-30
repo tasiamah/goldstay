@@ -15,7 +15,7 @@ export const meta: PostMeta = {
   title:
     "Lang'ata: the complete 2026 guide",
   description:
-    "Lang&rsquo;ata sits south of Nairobi, anchored by Nairobi National Park, the AIC Schools cluster and a substantial mid-premium and family residential market. Here is the honest 2026 guide on Lang&rsquo;ata property and how the market actually works.",
+    "Lang’ata sits south of Nairobi, anchored by Nairobi National Park, the AIC Schools cluster and a substantial mid-premium and family residential market. Here is the honest 2026 guide on Lang’ata property and how the market actually works.",
   publishedAt: "2025-10-11",
   readingMinutes: 6,
   author: authors.editors,
@@ -37,7 +37,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Lang&rsquo;ata sits south of Nairobi,
+        Lang’ata sits south of Nairobi,
         anchored by Nairobi National Park, the
         AIC Schools cluster, the cemetery and
         a substantial mid-premium and family
@@ -51,7 +51,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Lang&rsquo;ata Road
+          <strong>Lang’ata Road
           corridor</strong>: established
           residential
         </LI>
@@ -118,7 +118,7 @@ export default function Article() {
       <UL>
         <LI>
           Families with children at
-          Lang&rsquo;ata schools
+          Lang’ata schools
         </LI>
         <LI>
           Senior corporate professionals
@@ -136,7 +136,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Lang&rsquo;ata Road traffic at peak
+          Lang’ata Road traffic at peak
           can be challenging; verify your
           honest commute
         </LI>
@@ -156,7 +156,7 @@ export default function Article() {
       </UL>
 
       <Callout title="The Lang'ata rule">
-        Lang&rsquo;ata is the underrated
+        Lang’ata is the underrated
         family suburb of southern Nairobi.
         For families wanting space, schools
         and a quieter pace at price levels
@@ -168,16 +168,16 @@ export default function Article() {
 
       <Pullquote>
         The buyers who grew up in
-        Lang&rsquo;ata stay loyal. The
+        Lang’ata stay loyal. The
         suburb has held its character
-        through the worst of Nairobi&rsquo;s
+        through the worst of Nairobi’s
         speculative phases.
       </Pullquote>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        For Lang&rsquo;ata sourcing clients we
+        For Lang’ata sourcing clients we
         run compound and family-school
         diligence. Read also our pieces on{" "}
         <Link

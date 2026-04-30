@@ -39,7 +39,7 @@ export default function Article() {
         Both numbers can be reasonable. Both can also hide
         problems. Here is what service charge actually covers,
         what to look for in the ledger, and the four red
-        flags that mean the building&rsquo;s management
+        flags that mean the building’s management
         committee is in trouble.
       </Lede>
 
@@ -47,7 +47,7 @@ export default function Article() {
 
       <P>
         Service charge is the apartment-by-apartment
-        contribution to the running of the building&rsquo;s
+        contribution to the running of the building’s
         common areas, services, and reserve fund. A typical
         Nairobi mid-tier apartment service charge breaks down
         roughly like this:
@@ -133,7 +133,7 @@ export default function Article() {
         Every apartment should have an annual service charge
         budget approved by the AGM and a quarterly or
         half-yearly statement of actuals. Both documents are
-        the landlord&rsquo;s right to request, and the
+        the landlord’s right to request, and the
         landlord should ask for both before buying or before
         signing on for management.
       </P>
@@ -164,7 +164,7 @@ export default function Article() {
         </LI>
         <LI>
           Is the management committee or managing agent fee
-          listed separately? Bundling it into &ldquo;admin&rdquo;
+          listed separately? Bundling it into “admin”
           obscures what the governance is actually costing.
         </LI>
       </OL>

@@ -175,7 +175,7 @@ export default function Article() {
         </LI>
         <LI>
           Guarantor recovery depends on the
-          guarantor&rsquo;s willingness and capacity
+          guarantor’s willingness and capacity
           to pay
         </LI>
       </UL>

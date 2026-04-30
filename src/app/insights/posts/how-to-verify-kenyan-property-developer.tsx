@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "How to verify a Kenyan property developer before buying off-plan",
   description:
-    "Off-plan buyers carry the project execution risk on the developer&rsquo;s shoulders. Pick the wrong developer and your deposit funds the next failed Instagram launch. Here is the practical 2026 checklist for verifying a Kenyan property developer before you commit, with the specific questions and the documents that matter.",
+    "Off-plan buyers carry the project execution risk on the developer’s shoulders. Pick the wrong developer and your deposit funds the next failed Instagram launch. Here is the practical 2026 checklist for verifying a Kenyan property developer before you commit, with the specific questions and the documents that matter.",
   publishedAt: "2024-10-26",
   readingMinutes: 8,
   author: authors.editors,
@@ -40,7 +40,7 @@ export default function Article() {
     <>
       <Lede>
         Off-plan buyers carry the entire project
-        execution risk on the developer&rsquo;s
+        execution risk on the developer’s
         shoulders. Pick a strong developer and an off
         plan deposit becomes equity in a finished
         building. Pick a weak one and the deposit funds
@@ -112,8 +112,8 @@ export default function Article() {
           Cross-reference the directors against any
           past failed projects, regulatory actions or
           litigation (a Google search of the
-          director&rsquo;s name plus &ldquo;Kenya
-          property&rdquo; reveals more than you would
+          director’s name plus “Kenya
+          property” reveals more than you would
           expect)
         </LI>
         <LI>
@@ -160,8 +160,8 @@ export default function Article() {
 
       <P>
         A project where the developer does not own the
-        land yet, where approvals are &ldquo;in
-        progress&rdquo; or where charges are
+        land yet, where approvals are “in
+        progress” or where charges are
         registered, is a project at substantial
         execution risk regardless of how attractive
         the marketing is.
@@ -184,9 +184,9 @@ export default function Article() {
         </LI>
         <LI>
           Do deposits sit in an escrow account
-          managed by a third party (lawyer&rsquo;s
+          managed by a third party (lawyer’s
           client account or escrow agent), or in the
-          developer&rsquo;s operating account
+          developer’s operating account
         </LI>
         <LI>
           Is there a buyer protection mechanism (in
@@ -260,7 +260,7 @@ export default function Article() {
           <strong>Title transfer date</strong>:
           specific commitment on when the sectional
           title will be issued and registered, not
-          &ldquo;within reasonable time&rdquo;
+          “within reasonable time”
         </LI>
         <LI>
           <strong>Refund clause</strong>: what
@@ -286,7 +286,7 @@ export default function Article() {
       <OL>
         <LI>
           Speak to at least three previous buyers from
-          the developer&rsquo;s completed projects
+          the developer’s completed projects
         </LI>
         <LI>
           Ask specifically about delivery date
@@ -295,17 +295,17 @@ export default function Article() {
         </LI>
         <LI>
           Ask specifically about title delivery
-          (registered title in buyer&rsquo;s name, on
+          (registered title in buyer’s name, on
           time)
         </LI>
         <LI>
           Search news and social media for the
-          developer&rsquo;s name; bad projects leave
+          developer’s name; bad projects leave
           digital trails
         </LI>
         <LI>
           Ask the broker community quietly about the
-          developer&rsquo;s reputation; established
+          developer’s reputation; established
           brokers know which developers complete and
           which ones do not
         </LI>
@@ -323,7 +323,7 @@ export default function Article() {
         </LI>
         <LI>
           A developer running aggressive flash sales
-          and &ldquo;today only&rdquo; pricing is
+          and “today only” pricing is
           using behavioural pressure rather than
           building durable demand
         </LI>
@@ -336,7 +336,7 @@ export default function Article() {
         </LI>
         <LI>
           A developer asking buyers to pay deposits
-          directly to a personal or directors&rsquo;
+          directly to a personal or directors’
           account, rather than to a corporate or
           escrow account, is the strongest negative
           signal

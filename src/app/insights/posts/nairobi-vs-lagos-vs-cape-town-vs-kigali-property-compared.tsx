@@ -232,7 +232,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Lagos</strong>: more complex, with
-          Governor&rsquo;s Consent required for transfers,
+          Governor’s Consent required for transfers,
           state-level registration, and the Land Use Act
           framework that requires careful navigation
         </LI>
@@ -253,7 +253,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Lagos</strong>: 12 to 20 percent
-          (Governor&rsquo;s Consent, stamp duty,
+          (Governor’s Consent, stamp duty,
           registration, legal fees, agency fees)
         </LI>
         <LI>

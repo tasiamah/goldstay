@@ -69,7 +69,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>SACCO-led sales</strong>: SACCO
-          recovering against a member&rsquo;s
+          recovering against a member’s
           charged property
         </LI>
         <LI>
@@ -128,7 +128,7 @@ export default function Article() {
           90 days
         </LI>
         <LI>
-          Transfer registered in winner&rsquo;s name
+          Transfer registered in winner’s name
         </LI>
       </OL>
 
@@ -185,8 +185,8 @@ export default function Article() {
       <H3 id="title">Title issues</H3>
 
       <P>
-        Auction property is sold &ldquo;as is, where
-        is&rdquo;. Title problems do not get
+        Auction property is sold “as is, where
+        is”. Title problems do not get
         cleansed by the auction. The bidder is
         bidding on whatever the title actually is.
         Run an official title search through your
@@ -256,7 +256,7 @@ export default function Article() {
         </LI>
         <LI>
           Have the 25 percent deposit ready in
-          banker&rsquo;s cheque or confirmed funds
+          banker’s cheque or confirmed funds
         </LI>
         <LI>
           Have the 75 percent balance available

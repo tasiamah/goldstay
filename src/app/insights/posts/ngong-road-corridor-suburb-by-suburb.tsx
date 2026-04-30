@@ -186,7 +186,7 @@ export default function Article() {
           equivalents
         </LI>
         <LI>
-          Southern Bypass and Lang&rsquo;ata Road
+          Southern Bypass and Lang’ata Road
           provide alternatives for some segments
         </LI>
       </UL>

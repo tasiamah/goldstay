@@ -53,7 +53,7 @@ export default function Article() {
         spent on something else, used on
         another property, or simply lost.
         Defence: pay through traceable bank
-        channels into the seller&rsquo;s
+        channels into the seller’s
         account, not through relatives;
         independent counsel manages the
         transaction.
@@ -95,23 +95,23 @@ export default function Article() {
       <H2 id="agent">Mistake 5: Trusting an agent without verifying mandate</H2>
 
       <P>
-        Person without owner&rsquo;s power
+        Person without owner’s power
         of attorney shows the property and
         takes deposits. Defence: insist on
-        owner&rsquo;s POA or direct meeting
+        owner’s POA or direct meeting
         with owner; payment to verified
         bank account.
       </P>
 
-      <H2 id="family-name">Mistake 6: Putting property in someone else&rsquo;s name</H2>
+      <H2 id="family-name">Mistake 6: Putting property in someone else’s name</H2>
 
       <P>
         Property registered in a relative or
-        spouse&rsquo;s name without proper
+        spouse’s name without proper
         legal protection. On dispute or
         death, recovery is expensive and
         slow. Defence: register in the
-        actual buyer&rsquo;s name; if
+        actual buyer’s name; if
         company structuring, document
         beneficial ownership properly.
       </P>

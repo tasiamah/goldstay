@@ -113,7 +113,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Support easement</strong>: where
-          your structure depends on a neighbour&rsquo;s
+          your structure depends on a neighbour’s
           structure for support (party wall
           situations)
         </LI>
@@ -164,7 +164,7 @@ export default function Article() {
 
       <P>
         Easements run with the land. The next
-        buyer&rsquo;s lawyer will spot them in the
+        buyer’s lawyer will spot them in the
         same way you should have. Material
         easements affect both your enjoyment and
         your eventual resale.
@@ -175,7 +175,7 @@ export default function Article() {
       <OL>
         <LI>
           Official title search through the
-          buyer&rsquo;s lawyer
+          buyer’s lawyer
         </LI>
         <LI>
           Survey plan review (the title plan
@@ -266,7 +266,7 @@ export default function Article() {
           your gardens)
         </LI>
         <LI>
-          You sell and the next buyer&rsquo;s
+          You sell and the next buyer’s
           lawyer demands a price reduction at
           completion
         </LI>

@@ -39,8 +39,8 @@ export default function Article() {
       <Lede>
         Not every Nairobi suburb is a good
         purchase right now. The honest 2026
-        list is not about &ldquo;bad
-        neighbourhoods&rdquo; in any social
+        list is not about “bad
+        neighbourhoods” in any social
         sense; it is about pockets and
         segments where buyers typically get
         the worst end of the deal. Here is
@@ -154,7 +154,7 @@ export default function Article() {
       </UL>
 
       <Callout title="The avoidance rule">
-        Most &ldquo;bad&rdquo; Nairobi
+        Most “bad” Nairobi
         property is not bad because of
         the suburb; it is bad because of
         the compound, the developer or the

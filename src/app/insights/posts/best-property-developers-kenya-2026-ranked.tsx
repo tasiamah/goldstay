@@ -157,7 +157,7 @@ export default function Article() {
       <P>
         Within tier 2, run individual project
         diligence rather than relying on the
-        developer&rsquo;s overall reputation.
+        developer’s overall reputation.
       </P>
 
       <H2 id="tier3">Tier 3: caution</H2>
@@ -200,11 +200,11 @@ export default function Article() {
         <LI>
           Speak to owners in those buildings
           (compound WhatsApp groups,
-          occupiers&rsquo; associations)
+          occupiers’ associations)
         </LI>
         <LI>
           Ask for evidence of titles handed over
-          to buyers (the lawyer&rsquo;s files
+          to buyers (the lawyer’s files
           should show this)
         </LI>
         <LI>

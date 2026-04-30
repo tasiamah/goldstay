@@ -15,7 +15,7 @@ export const meta: PostMeta = {
   title:
     "Buying property as an unmarried couple in Kenya: the honest guide",
   description:
-    "Many couples buy property in Nairobi before marriage. The legal, tax and structuring decisions are different from a married couple&rsquo;s purchase. Here is the honest 2026 guide on co-ownership, financing, exit and the documentation that actually protects both parties.",
+    "Many couples buy property in Nairobi before marriage. The legal, tax and structuring decisions are different from a married couple’s purchase. Here is the honest 2026 guide on co-ownership, financing, exit and the documentation that actually protects both parties.",
   publishedAt: "2026-01-15",
   readingMinutes: 6,
   author: authors.legal,
@@ -40,7 +40,7 @@ export default function Article() {
         Many couples buy property in Nairobi
         before marriage. The legal, tax and
         structuring decisions are different from
-        a married couple&rsquo;s purchase. Here
+        a married couple’s purchase. Here
         is the honest 2026 guide on
         co-ownership, financing, exit and the
         documentation that actually protects
@@ -179,7 +179,7 @@ export default function Article() {
         </LI>
         <LI>
           Mortgage default by one party
-          affects both parties&rsquo; credit
+          affects both parties’ credit
           and asset
         </LI>
       </UL>

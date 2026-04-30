@@ -34,7 +34,7 @@ export default function Article() {
       <Lede>
         When the Nairobi Expressway opened in mid 2022 it was
         sold as a transformational piece of infrastructure for
-        the city&rsquo;s real estate market. Four years on the
+        the city’s real estate market. Four years on the
         story is more nuanced. The expressway did move property
         prices. Just not uniformly, not in the directions every
         agent claimed at the time, and not always upward. Here
@@ -102,8 +102,8 @@ export default function Article() {
         flight market that used to mean a CBD or Mombasa Road
         airport hotel now extends comfortably into Kilimani,
         Lavington and even Westlands. Short-stay operators
-        who reposition listings as &ldquo;15 minutes to JKIA
-        via expressway&rdquo; consistently command 10 to 20
+        who reposition listings as “15 minutes to JKIA
+        via expressway” consistently command 10 to 20
         percent rate premiums.
       </P>
 
@@ -185,7 +185,7 @@ export default function Article() {
           but is far from closed, and the connectivity gap
           has fundamentally closed. For diaspora investors
           comfortable with mid-tier compounds at lower entry
-          prices, this is one of Nairobi&rsquo;s most
+          prices, this is one of Nairobi’s most
           interesting risk-adjusted submarkets.
         </LI>
         <LI>
@@ -219,7 +219,7 @@ export default function Article() {
         For sourcing clients we model the actual journey-time
         improvement and toll cost into the rental
         expectations and the buy underwriting. We do not
-        rely on agent-driven &ldquo;expressway access&rdquo;
+        rely on agent-driven “expressway access”
         claims for price justification. Read the related{" "}
         <Link
           href="/insights/best-neighbourhoods-nairobi-rental-yield-2026"

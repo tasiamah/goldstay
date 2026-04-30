@@ -59,7 +59,7 @@ export default function Article() {
         utilities, and can be inspected, valued and rented
         from the day of completion. The buyer takes possession
         within 60 to 90 days of signing the sale agreement. The
-        title is in the seller&rsquo;s name today and transfers
+        title is in the seller’s name today and transfers
         to yours through the standard{" "}
         <Link
           href="/insights/sale-agreement-stage-buying-property-kenya"
@@ -79,7 +79,7 @@ export default function Article() {
         percent), and pay the balance in milestone tranches as
         construction progresses (typically 5 to 10 tranches
         over 12 to 24 months). Title transfers on completion,
-        which is anywhere between the developer&rsquo;s
+        which is anywhere between the developer’s
         promised date and 6 to 18 months after.
       </P>
 
@@ -237,7 +237,7 @@ export default function Article() {
 
       <P>
         For every property sourcing brief, we model both ready
-        and off-plan options for the client&rsquo;s budget,
+        and off-plan options for the client’s budget,
         with the full adjusted-cost analysis above. We pull
         the developer track record on every off-plan we
         consider, and we walk the nearly-ready compounds

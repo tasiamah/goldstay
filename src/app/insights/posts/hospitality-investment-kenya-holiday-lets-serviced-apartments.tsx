@@ -321,7 +321,7 @@ export default function Article() {
         management business. We coordinate the
         purchase and the operator agreement
         and oversee performance on the
-        owner&rsquo;s behalf.
+        owner’s behalf.
       </P>
 
       <P>

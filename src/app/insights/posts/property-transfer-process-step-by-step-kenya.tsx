@@ -67,7 +67,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Buyer&rsquo;s advocate runs official
+          Buyer’s advocate runs official
           title search at the Lands Registry
           (Ardhisasa where applicable)
         </LI>
@@ -102,7 +102,7 @@ export default function Article() {
         >
           offer letter piece
         </Link>
-        . Buyer&rsquo;s advocate issues the formal
+        . Buyer’s advocate issues the formal
         offer letter; seller accepts in writing.
       </P>
 
@@ -122,10 +122,10 @@ export default function Article() {
       <UL>
         <LI>
           Sale agreement drafted (typically by
-          seller&rsquo;s advocate)
+          seller’s advocate)
         </LI>
         <LI>
-          Reviewed and negotiated by buyer&rsquo;s
+          Reviewed and negotiated by buyer’s
           advocate
         </LI>
         <LI>
@@ -133,8 +133,8 @@ export default function Article() {
         </LI>
         <LI>
           Buyer pays deposit (typically 10
-          percent) into seller&rsquo;s
-          advocate&rsquo;s client account
+          percent) into seller’s
+          advocate’s client account
         </LI>
       </UL>
 
@@ -194,7 +194,7 @@ export default function Article() {
       <UL>
         <LI>
           Transfer instrument prepared by
-          buyer&rsquo;s advocate
+          buyer’s advocate
         </LI>
         <LI>
           Signed by both seller and buyer
@@ -210,11 +210,11 @@ export default function Article() {
       <UL>
         <LI>
           Buyer pays the balance of the purchase
-          price into seller&rsquo;s
-          advocate&rsquo;s client account
+          price into seller’s
+          advocate’s client account
         </LI>
         <LI>
-          Seller&rsquo;s advocate releases the
+          Seller’s advocate releases the
           original title
         </LI>
         <LI>
@@ -239,7 +239,7 @@ export default function Article() {
           counties: 6 to 16 weeks)
         </LI>
         <LI>
-          New title issued in buyer&rsquo;s name
+          New title issued in buyer’s name
         </LI>
       </UL>
 
@@ -250,7 +250,7 @@ export default function Article() {
           Keys handover
         </LI>
         <LI>
-          Service charge transfer to buyer&rsquo;s
+          Service charge transfer to buyer’s
           name (apartments)
         </LI>
         <LI>

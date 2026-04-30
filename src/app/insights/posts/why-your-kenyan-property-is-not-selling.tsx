@@ -67,7 +67,7 @@ export default function Article() {
       <H2 id="r2">2. Title position is unclear</H2>
 
       <P>
-        Buyers&rsquo; advocates run searches early.
+        Buyers’ advocates run searches early.
         If your title has unresolved cautions,
         outstanding charges, succession gaps or
         spousal consent issues, buyers walk away
@@ -111,8 +111,8 @@ export default function Article() {
       <H2 id="r4">4. Listing description is generic</H2>
 
       <P>
-        &ldquo;Beautiful 3-bedroom apartment with
-        modern finishes&rdquo; is what every
+        “Beautiful 3-bedroom apartment with
+        modern finishes” is what every
         listing says. Buyers scroll past it.
       </P>
 

@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "tigoni-and-limuru-nairobi-country-edge",
   title:
-    "Tigoni and Limuru: Nairobi&rsquo;s country edge in 2026",
+    "Tigoni and Limuru: Nairobi’s country edge in 2026",
   description:
     "Tigoni and Limuru sit on the cool, leafy edge of Nairobi 30 minutes from Westlands and have quietly become one of the most premium country home markets in Kenya. Here is the honest 2026 guide on who lives there, what property costs and why disciplined buyers keep showing up.",
   publishedAt: "2025-07-04",

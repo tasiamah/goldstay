@@ -101,14 +101,14 @@ export default function Article() {
       <OL>
         <LI>
           <strong>General POA</strong>. Wide authority to
-          act on the donor&rsquo;s behalf across many
+          act on the donor’s behalf across many
           types of matters. Convenient but powerful, and
           carries more risk if the attorney misuses it.
         </LI>
         <LI>
           <strong>Specific POA</strong>. Narrow authority
           tied to a defined transaction, property and
-          time period. Safer because the attorney&rsquo;s
+          time period. Safer because the attorney’s
           authority is bounded by what the document
           expressly says.
         </LI>
@@ -187,7 +187,7 @@ export default function Article() {
           country of residence
         </LI>
         <LI>
-          The notary&rsquo;s signature is apostilled by
+          The notary’s signature is apostilled by
           the relevant competent authority (Foreign
           Office in the UK, Secretary of State in the
           US, etc)
@@ -236,7 +236,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Provides public notice of the attorney&rsquo;s
+          Provides public notice of the attorney’s
           authority
         </LI>
         <LI>
@@ -251,7 +251,7 @@ export default function Article() {
       </UL>
 
       <P>
-        For unregistered POAs the attorney&rsquo;s
+        For unregistered POAs the attorney’s
         authority can still be relied on for some
         purposes, but property registration mechanics
         prefer the registered version.
@@ -287,7 +287,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          The seller&rsquo;s agent or anyone with a
+          The seller’s agent or anyone with a
           commission on the underlying transaction
         </LI>
         <LI>
@@ -348,8 +348,8 @@ export default function Article() {
         </LI>
         <LI>
           <strong>No price floor or ceiling</strong>. An
-          attorney empowered to sign a sale at &ldquo;the
-          price agreed&rdquo; can sign at any price.
+          attorney empowered to sign a sale at “the
+          price agreed” can sign at any price.
         </LI>
         <LI>
           <strong>Wrong attorney</strong>. The single

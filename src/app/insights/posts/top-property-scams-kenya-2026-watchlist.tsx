@@ -67,7 +67,7 @@ export default function Article() {
           <strong>Warning signs</strong>: pressure to
           pay quickly, reluctance to register the
           transfer immediately, no recent search done by
-          the buyer&rsquo;s lawyer
+          the buyer’s lawyer
         </LI>
         <LI>
           <strong>Defence</strong>: fresh search
@@ -98,7 +98,7 @@ export default function Article() {
         <LI>
           <strong>Defence</strong>: official search
           through Ardhisasa or at the relevant Lands
-          Registry, never accept the seller&rsquo;s
+          Registry, never accept the seller’s
           recent search, run yours fresh
         </LI>
       </UL>
@@ -107,7 +107,7 @@ export default function Article() {
 
       <P>
         A glossy off-plan development promoted on
-        Instagram and at &ldquo;launches&rdquo; in
+        Instagram and at “launches” in
         diaspora cities, taking deposits for a project
         whose land is not owned, whose approvals are not
         in place and whose construction never begins.
@@ -188,8 +188,8 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Warning signs</strong>: company sells
-          allotment letters and promises &ldquo;title
-          processing within 6 months&rdquo; that turns
+          allotment letters and promises “title
+          processing within 6 months” that turns
           into 18 months, no fixed date in the contract
           for title delivery
         </LI>
@@ -245,15 +245,15 @@ export default function Article() {
         <LI>
           <strong>Warning signs</strong>: registered
           owner has been deceased for some time but no
-          completed succession process, &ldquo;family
-          consent&rdquo; that does not include all
+          completed succession process, “family
+          consent” that does not include all
           heirs
         </LI>
         <LI>
           <strong>Defence</strong>: insist on completed
           succession (grant of probate or letters of
           administration confirmed in court), title
-          transferred into the heir&rsquo;s name before
+          transferred into the heir’s name before
           sale, all heirs sign or written consent from
           all heirs
         </LI>
@@ -334,7 +334,7 @@ export default function Article() {
           <strong>Warning signs</strong>: no clean
           financial records, defensiveness when asked
           for receipts, lifestyle improvements that do
-          not match the relative&rsquo;s known income
+          not match the relative’s known income
         </LI>
         <LI>
           <strong>Defence</strong>: separate financial
@@ -361,7 +361,7 @@ export default function Article() {
           Fresh title search on the day of completion
         </LI>
         <LI>
-          Funds through lawyer&rsquo;s client account,
+          Funds through lawyer’s client account,
           never directly to seller or agent
         </LI>
         <LI>

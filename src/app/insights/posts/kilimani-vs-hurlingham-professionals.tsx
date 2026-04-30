@@ -146,7 +146,7 @@ export default function Article() {
         corporate professionals who want
         tower amenity and slightly cheaper
         comparable inventory. Both work; the
-        choice should match the buyer&rsquo;s
+        choice should match the buyer’s
         honest profile.
       </Callout>
 

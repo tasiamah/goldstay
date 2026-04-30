@@ -352,7 +352,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <Callout title="The diaspora user&rsquo;s rule of thumb">
+      <Callout title="The diaspora user’s rule of thumb">
         eCitizen is the gatekeeper for almost every
         Kenyan government interaction. Set up the
         account before you need it. Link KRA, link

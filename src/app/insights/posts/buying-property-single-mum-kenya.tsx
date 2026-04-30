@@ -90,7 +90,7 @@ export default function Article() {
         </LI>
         <LI>
           Family-friendly neighbourhoods
-          with active children&rsquo;s
+          with active children’s
           social options
         </LI>
       </UL>
@@ -107,7 +107,7 @@ export default function Article() {
           pockets)
         </LI>
         <LI>
-          Lang&rsquo;ata (family-friendly,
+          Lang’ata (family-friendly,
           school cluster)
         </LI>
         <LI>

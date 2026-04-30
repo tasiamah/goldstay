@@ -155,7 +155,7 @@ export default function Article() {
         </LI>
         <LI>
           Compound governance is the
-          owner&rsquo;s responsibility
+          owner’s responsibility
         </LI>
         <LI>
           Resale liquidity slower than

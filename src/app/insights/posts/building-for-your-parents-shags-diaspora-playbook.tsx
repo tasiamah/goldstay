@@ -75,7 +75,7 @@ export default function Article() {
           preferences you have to honour
         </LI>
         <LI>
-          The budget is being spent in your parents&rsquo;
+          The budget is being spent in your parents’
           home area where prices for diaspora children
           arrive with a multiplier
         </LI>
@@ -268,7 +268,7 @@ export default function Article() {
         <LI>
           Sign a written contract with a payment
           schedule tied to verifiable build milestones,
-          not to dates or to relatives&rsquo; opinions.
+          not to dates or to relatives’ opinions.
         </LI>
         <LI>
           Use a quantity surveyor or independent
@@ -333,10 +333,10 @@ export default function Article() {
           imported tiles, the European kitchen, the
           chandelier. None of them will fix in shags
           when something breaks. None of them will
-          improve your parents&rsquo; daily life.
+          improve your parents’ daily life.
         </LI>
         <LI>
-          <strong>Sponsoring relatives&rsquo; supply
+          <strong>Sponsoring relatives’ supply
           contracts</strong>. The sand, the cement, the
           hardware. The relative who brings them is
           often the relative who marks them up.

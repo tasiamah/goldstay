@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "cement-steel-finishing-prices-kenya-2026",
   title:
-    "Cement, steel and finishing prices in Kenya 2026: a builder&rsquo;s view",
+    "Cement, steel and finishing prices in Kenya 2026: a builder’s view",
   description:
     "Construction material prices in Kenya have moved significantly over the last 24 months. Here is the honest 2026 view of where cement, steel, sand, ballast, tiles and finishing prices currently sit, what is driving them, and what they mean for owners building or renovating in 2026.",
   publishedAt: "2026-01-13",
@@ -44,7 +44,7 @@ export default function Article() {
         supply chain shifts. For owners planning
         builds or renovations in 2026, the price
         environment matters. Here is the honest
-        builder&rsquo;s view.
+        builder’s view.
       </Lede>
 
       <H2 id="cement">Cement</H2>

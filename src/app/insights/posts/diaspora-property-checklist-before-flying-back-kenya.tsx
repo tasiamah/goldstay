@@ -106,7 +106,7 @@ export default function Article() {
           area to maximise time)
         </LI>
         <LI>
-          Confirm advocate&rsquo;s availability
+          Confirm advocate’s availability
           for the visit window
         </LI>
         <LI>

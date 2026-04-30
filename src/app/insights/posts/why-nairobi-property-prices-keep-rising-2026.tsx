@@ -136,10 +136,10 @@ export default function Article() {
 
       <Callout title="The price rule">
         Nairobi property pricing is segmented.
-        The headline &ldquo;prices are
-        rising&rdquo; story is true for
+        The headline “prices are
+        rising” story is true for
         quality stock; the headline
-        &ldquo;oversupply&rdquo; story is
+        “oversupply” story is
         true for weaker compounds. Buy in
         the right segment and the rise is
         with you; buy in the wrong one

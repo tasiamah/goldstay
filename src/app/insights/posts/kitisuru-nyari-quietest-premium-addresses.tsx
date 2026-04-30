@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "kitisuru-nyari-quietest-premium-addresses",
   title:
-    "Kitisuru and Nyari: Nairobi&rsquo;s quietest premium addresses in 2026",
+    "Kitisuru and Nyari: Nairobi’s quietest premium addresses in 2026",
   description:
     "Kitisuru and Nyari are two of the quietest, most family oriented premium addresses in Nairobi. Here is the honest 2026 guide to who lives there, what property costs, what rents look like and why low key buyers keep ending up in this corridor.",
   publishedAt: "2026-03-06",

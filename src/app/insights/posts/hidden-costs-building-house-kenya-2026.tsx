@@ -265,7 +265,7 @@ export default function Article() {
         approvals, utilities, finishes,
         resilience systems, external works,
         contingency and inflation. The
-        contractor&rsquo;s quote covers about 70
+        contractor’s quote covers about 70
         to 80 percent of the cost; the rest is
         on you. Plan accordingly.
       </Callout>

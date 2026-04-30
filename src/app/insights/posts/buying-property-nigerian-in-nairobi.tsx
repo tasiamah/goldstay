@@ -84,7 +84,7 @@ export default function Article() {
         </LI>
         <LI>
           Apartments are typically leasehold
-          via the development&rsquo;s mother
+          via the development’s mother
           title; clean structure for
           foreign ownership
         </LI>

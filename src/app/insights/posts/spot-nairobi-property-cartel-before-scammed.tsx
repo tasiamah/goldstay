@@ -64,8 +64,8 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Pressure to close fast</strong>:
-          &ldquo;sign now, money tomorrow,
-          another buyer waiting&rdquo;
+          “sign now, money tomorrow,
+          another buyer waiting”
         </LI>
         <LI>
           <strong>Resistance to independent

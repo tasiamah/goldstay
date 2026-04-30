@@ -139,7 +139,7 @@ export default function Article() {
           Lands Registry
         </LI>
         <LI>
-          Spousal consent from the seller&rsquo;s
+          Spousal consent from the seller’s
           spouse where applicable
         </LI>
         <LI>
@@ -149,7 +149,7 @@ export default function Article() {
           Physical inspection by a person you trust
         </LI>
         <LI>
-          Funds through lawyer&rsquo;s client account
+          Funds through lawyer’s client account
         </LI>
       </OL>
 
@@ -326,7 +326,7 @@ export default function Article() {
           apply
         </LI>
         <LI>
-          Property goes to the deceased&rsquo;s
+          Property goes to the deceased’s
           parents, then to siblings, with specific
           rules around dependency
         </LI>
@@ -338,7 +338,7 @@ export default function Article() {
 
       <P>
         For the cost of a few hours of a Kenyan
-        property lawyer&rsquo;s time, a clear will
+        property lawyer’s time, a clear will
         eliminates most of the future complexity. For
         diaspora women specifically, a Kenyan will
         covering Kenyan assets sits alongside the home
@@ -371,7 +371,7 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Property in Kenya, owned in a woman&rsquo;s
+        Property in Kenya, owned in a woman’s
         sole name, holds the same legal weight as
         property held by any other owner. The
         practical journey is well trodden, the

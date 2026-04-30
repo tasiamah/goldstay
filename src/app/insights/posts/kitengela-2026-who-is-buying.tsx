@@ -156,7 +156,7 @@ export default function Article() {
         </LI>
         <LI>
           Health infrastructure improving (Boma,
-          St Mary&rsquo;s and several SACCO clinics
+          St Mary’s and several SACCO clinics
           now in the suburb)
         </LI>
       </UL>

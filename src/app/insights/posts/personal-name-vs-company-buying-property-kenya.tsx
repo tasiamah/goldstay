@@ -281,7 +281,7 @@ export default function Article() {
         exemptions (intra-spousal transfers, certain
         intra-group reorganisations) but in most cases a
         change of structure mid-stream costs 4% of the
-        property&rsquo;s current market value plus legal
+        property’s current market value plus legal
         fees.
       </P>
 

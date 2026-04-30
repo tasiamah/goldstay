@@ -181,7 +181,7 @@ export default function Article() {
           Buildings with explicit short-stay bans in the
           management committee bylaws. The management committee
           can fine you, restrict access, and ultimately refuse to
-          renew the unit&rsquo;s good standing.
+          renew the unit’s good standing.
         </LI>
         <LI>
           Heritage homes or properties with high-value finishes
@@ -189,7 +189,7 @@ export default function Article() {
           loses on a single broken object.
         </LI>
         <LI>
-          Anything where the owner&rsquo;s personal use is part of
+          Anything where the owner’s personal use is part of
           the calculation. Mixed-use Airbnb almost always
           underperforms because the lockout periods break
           algorithm visibility.

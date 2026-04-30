@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "selling-kenyan-property-from-abroad-diaspora-seller-guide",
   title:
-    "Selling Kenyan property from abroad: the complete diaspora seller&rsquo;s guide",
+    "Selling Kenyan property from abroad: the complete diaspora seller’s guide",
   description:
     "Selling a Kenyan property from London, New York, Dubai or anywhere else takes more than picking a broker. Pricing, legal preparation, capital gains tax, power of attorney, completion logistics and getting the proceeds out of Kenya cleanly. Here is the full 2026 playbook for diaspora sellers.",
   publishedAt: "2025-05-04",
@@ -122,7 +122,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Get an independent valuation</strong>.
-          A registered valuer&rsquo;s report (KES 25,000
+          A registered valuer’s report (KES 25,000
           to KES 80,000) gives you an objective anchor.
           More on this in our{" "}
           <Link
@@ -193,7 +193,7 @@ export default function Article() {
         cleanest mechanism. The POA gives a named,
         trusted person in Kenya the authority to sign the
         sale agreement, the transfer instrument and other
-        completion documents on the seller&rsquo;s behalf.
+        completion documents on the seller’s behalf.
       </P>
 
       <P>
@@ -262,7 +262,7 @@ export default function Article() {
         </LI>
         <LI>
           For diaspora sellers, the gain is calculated in
-          KES even if the seller&rsquo;s reference
+          KES even if the seller’s reference
           currency is USD. Pure currency moves between
           purchase and sale are still taxable in KES
         </LI>
@@ -292,18 +292,18 @@ export default function Article() {
 
       <OL>
         <LI>
-          Buyer&rsquo;s offer received in writing
+          Buyer’s offer received in writing
         </LI>
         <LI>
           Counter offer if needed; price agreed
         </LI>
         <LI>
-          Sale agreement drafted by buyer&rsquo;s lawyer,
-          reviewed by seller&rsquo;s lawyer
+          Sale agreement drafted by buyer’s lawyer,
+          reviewed by seller’s lawyer
         </LI>
         <LI>
           Deposit (typically 10 percent) paid into the
-          buyer&rsquo;s lawyer&rsquo;s client account on
+          buyer’s lawyer’s client account on
           signing
         </LI>
         <LI>
@@ -322,7 +322,7 @@ export default function Article() {
           Registry
         </LI>
         <LI>
-          Title registered in buyer&rsquo;s name; balance
+          Title registered in buyer’s name; balance
           of price released to seller
         </LI>
       </OL>
@@ -404,8 +404,8 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Forgetting CGT until completion</strong>.
-          The buyer&rsquo;s lawyer will not register the
-          transfer until the seller&rsquo;s CGT is paid.
+          The buyer’s lawyer will not register the
+          transfer until the seller’s CGT is paid.
           Sellers who have not budgeted for it scramble.
         </LI>
         <LI>
@@ -434,11 +434,11 @@ export default function Article() {
         condition, comparables) before the property is
         listed. Where the property is currently under our
         management, much of the file is already current.
-        We coordinate with the seller&rsquo;s lawyer on
+        We coordinate with the seller’s lawyer on
         the POA, the sale agreement and the CGT
         assessment, and we plan the outbound wire and
         currency conversion so the proceeds land in the
-        seller&rsquo;s home country in usable form rather
+        seller’s home country in usable form rather
         than as a string of partial transfers.
       </P>
 

@@ -156,7 +156,7 @@ export default function Article() {
         Most property managers operate a Paybill
         infrastructure with separate account references
         per landlord and per unit. Tenants pay into the
-        manager&rsquo;s Paybill quoting the unit reference,
+        manager’s Paybill quoting the unit reference,
         the manager reconciles, and the manager remits net
         rent to the landlord on the agreed schedule. This
         is the dominant model in Nairobi for diaspora
@@ -175,7 +175,7 @@ export default function Article() {
         <LI>
           The Paybill operator pays a percentage and a
           flat fee on settlement, often baked into the
-          property manager&rsquo;s service fee
+          property manager’s service fee
         </LI>
         <LI>
           For most Nairobi rents the all-in cost of
@@ -258,8 +258,8 @@ export default function Article() {
           Tenant pays Paybill in KES
         </LI>
         <LI>
-          Funds settle to the landlord&rsquo;s KES bank
-          account (or to the property manager&rsquo;s
+          Funds settle to the landlord’s KES bank
+          account (or to the property manager’s
           client account)
         </LI>
         <LI>
@@ -268,7 +268,7 @@ export default function Article() {
           negotiated FX rate
         </LI>
         <LI>
-          Outbound wire to the landlord&rsquo;s home
+          Outbound wire to the landlord’s home
           country bank account
         </LI>
       </OL>
@@ -332,7 +332,7 @@ export default function Article() {
         Every property we manage has unique account
         references for the tenant and the unit. Rents
         come in to our Paybill, get reconciled to the
-        owner statement and the tenant&rsquo;s ledger, and
+        owner statement and the tenant’s ledger, and
         settle to the owner in their preferred currency
         on the agreed schedule. The owner sees a monthly
         statement in their dashboard rather than a string

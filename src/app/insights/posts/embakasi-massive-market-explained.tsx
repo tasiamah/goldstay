@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "embakasi-massive-market-explained",
   title:
-    "Embakasi: Nairobi&rsquo;s biggest residential market explained",
+    "Embakasi: Nairobi’s biggest residential market explained",
   description:
     "Embakasi is by some measures the largest residential constituency in Nairobi, with a vast mass-market apartment supply, the airport adjacency and a property economy under-discussed in premium media. Here is the honest 2026 guide to Embakasi for buyers and investors.",
   publishedAt: "2025-08-25",
@@ -185,7 +185,7 @@ export default function Article() {
 
       <Pullquote>
         Embakasi houses a meaningful fraction
-        of Nairobi&rsquo;s working
+        of Nairobi’s working
         population. The investors who treat
         it with respect and manage it
         professionally do well.

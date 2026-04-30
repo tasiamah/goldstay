@@ -125,7 +125,7 @@ export default function Article() {
       <UL>
         <LI>
           Higher density apartment edges may
-          encroach on the suburb&rsquo;s
+          encroach on the suburb’s
           residential feel over time
         </LI>
         <LI>

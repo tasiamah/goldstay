@@ -49,13 +49,13 @@ export default function Article() {
         each one happens and how to avoid it.
       </Lede>
 
-      <H2 id="m1">1. Trusting the seller&rsquo;s lawyer</H2>
+      <H2 id="m1">1. Trusting the seller’s lawyer</H2>
 
       <P>
-        The seller&rsquo;s lawyer represents the
-        seller. The seller&rsquo;s incentive is to
-        complete the sale on the seller&rsquo;s terms.
-        Buyers who use the seller&rsquo;s lawyer to
+        The seller’s lawyer represents the
+        seller. The seller’s incentive is to
+        complete the sale on the seller’s terms.
+        Buyers who use the seller’s lawyer to
         save on fees are the buyers who later discover
         a problem with the title that nobody warned
         them about. Always engage your own lawyer.
@@ -77,13 +77,13 @@ export default function Article() {
       <H2 id="m3">3. Paying deposits to the seller or agent directly</H2>
 
       <P>
-        Deposits should sit in the buyer&rsquo;s
-        lawyer&rsquo;s client account, held against
+        Deposits should sit in the buyer’s
+        lawyer’s client account, held against
         the completion of the sale. Deposits that move
         directly to the seller or agent are deposits
         that walk away with them if the deal falls
         apart. The client account is a regulated
-        account; the agent&rsquo;s personal M-Pesa is
+        account; the agent’s personal M-Pesa is
         not.
       </P>
 
@@ -104,7 +104,7 @@ export default function Article() {
         .
       </P>
 
-      <H2 id="m5">5. Stretching the budget to the bank&rsquo;s ceiling</H2>
+      <H2 id="m5">5. Stretching the budget to the bank’s ceiling</H2>
 
       <P>
         Banks lend up to roughly one third of net
@@ -197,7 +197,7 @@ export default function Article() {
         </LI>
         <LI>
           Skipping spousal consent on a married
-          seller&rsquo;s property
+          seller’s property
         </LI>
         <LI>
           Failing to make a will, leaving the property

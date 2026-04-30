@@ -114,7 +114,7 @@ export default function Article() {
         </LI>
         <LI>
           Children inherit subject to the surviving
-          spouse&rsquo;s life interest
+          spouse’s life interest
         </LI>
         <LI>
           Where there is no spouse, children take

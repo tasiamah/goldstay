@@ -41,8 +41,8 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Search results for &ldquo;Kenya citizenship by
-        investment&rdquo; produce a long list of pages
+        Search results for “Kenya citizenship by
+        investment” produce a long list of pages
         promising Kenyan passports in exchange for a
         property purchase or a fixed deposit. None of those
         pages describe a real programme. Kenya does not
@@ -97,8 +97,8 @@ export default function Article() {
         Nowhere in the Act, in the regulations or in the
         practice of the Department of Immigration is there
         an investment threshold that converts directly to
-        Kenyan citizenship. The pages selling &ldquo;Kenya
-        citizenship by investment&rdquo; are either
+        Kenyan citizenship. The pages selling “Kenya
+        citizenship by investment” are either
         repurposing Class G investor permit content under a
         misleading label or, more often, selling something
         that does not exist.
@@ -107,8 +107,8 @@ export default function Article() {
       <H2 id="real-investor-route">What actually exists: the Class G investor permit</H2>
 
       <P>
-        The closest real thing to an &ldquo;investment-led
-        residence&rdquo; pathway in Kenya is the Class G
+        The closest real thing to an “investment-led
+        residence” pathway in Kenya is the Class G
         permit, issued under the Kenya Citizenship and
         Immigration Act for non-citizens engaged in
         specific investment, trade or business activity in
@@ -278,11 +278,11 @@ export default function Article() {
           Intention to continue residing in Kenya
         </LI>
         <LI>
-          Renunciation, where required by the applicant&rsquo;s
+          Renunciation, where required by the applicant’s
           country of origin (Kenya itself permits dual
           citizenship since the 2010 Constitution, so
           renunciation is a function of the other
-          country&rsquo;s rules, not Kenya&rsquo;s)
+          country’s rules, not Kenya’s)
         </LI>
       </OL>
 
@@ -296,8 +296,8 @@ export default function Article() {
 
       <P>
         For most diaspora Kenyans the citizenship question
-        is much simpler than the framing &ldquo;citizenship
-        by investment&rdquo; suggests. Article 14 of the
+        is much simpler than the framing “citizenship
+        by investment” suggests. Article 14 of the
         2010 Constitution recognises citizenship by birth
         for:
       </P>
@@ -310,7 +310,7 @@ export default function Article() {
         </LI>
         <LI>
           Anyone born outside Kenya, where one parent was a
-          Kenyan citizen at the time of that person&rsquo;s
+          Kenyan citizen at the time of that person’s
           birth
         </LI>
       </UL>
@@ -325,7 +325,7 @@ export default function Article() {
       <OL>
         <LI>
           Obtain a Kenyan birth certificate (where born in
-          Kenya) or document the parent&rsquo;s Kenyan
+          Kenya) or document the parent’s Kenyan
           citizenship at the time of birth (where born
           abroad)
         </LI>
@@ -439,8 +439,8 @@ export default function Article() {
       </P>
 
       <Callout title="The honest summary">
-        There is no &ldquo;buy a property, get a Kenyan
-        passport&rdquo; programme. The serious pathways
+        There is no “buy a property, get a Kenyan
+        passport” programme. The serious pathways
         for non-citizens are the Class G investor permit
         (with USD 100,000 of active business investment),
         the Class K retiree permit (with USD 24,000 of
@@ -509,8 +509,8 @@ export default function Article() {
       <H2 id="scams">Common scams and red flags</H2>
 
       <P>
-        Because the search demand for &ldquo;Kenya
-        citizenship by investment&rdquo; is large and the
+        Because the search demand for “Kenya
+        citizenship by investment” is large and the
         actual programme does not exist, the space attracts
         scams. Patterns we have seen:
       </P>
@@ -524,8 +524,8 @@ export default function Article() {
         </LI>
         <LI>
           Property developers marketing units with
-          &ldquo;automatic citizenship&rdquo; or
-          &ldquo;automatic residence&rdquo; on purchase.
+          “automatic citizenship” or
+          “automatic residence” on purchase.
           Neither is automatic; both require independent
           immigration applications.
         </LI>
@@ -538,7 +538,7 @@ export default function Article() {
         </LI>
         <LI>
           Misrepresented Class G applications using
-          property purchases as &ldquo;the investment&rdquo;
+          property purchases as “the investment”
           where the activity test is not actually met.
           The application gets refused; the applicant
           loses the fees and time.
@@ -566,7 +566,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          Document your Kenyan birth or your parent&rsquo;s
+          Document your Kenyan birth or your parent’s
           citizenship at the time of your birth
         </LI>
         <LI>

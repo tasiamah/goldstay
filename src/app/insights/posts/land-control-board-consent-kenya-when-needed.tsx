@@ -55,8 +55,8 @@ export default function Article() {
 
       <P>
         The Land Control Act, dating to 1967 and still in
-        force, requires that any &ldquo;controlled
-        transaction&rdquo; involving agricultural land be
+        force, requires that any “controlled
+        transaction” involving agricultural land be
         approved by the Land Control Board (LCB) of the
         district where the land sits. The LCB is a county
         level body chaired by the County Commissioner or a
@@ -92,7 +92,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="agricultural">What &ldquo;agricultural land&rdquo; means in this context</H2>
+      <H2 id="agricultural">What “agricultural land” means in this context</H2>
 
       <P>
         For LCB purposes, land is agricultural unless it
@@ -129,7 +129,7 @@ export default function Article() {
           specific gazettement for the parcel
         </LI>
         <LI>
-          Plots in Kiambu, Kajiado, Machakos, Murang&rsquo;a
+          Plots in Kiambu, Kajiado, Machakos, Murang’a
           and other counties around Nairobi typically do
           fall under LCB jurisdiction unless the specific
           area has been declared urban
@@ -191,7 +191,7 @@ export default function Article() {
           transaction value
         </LI>
         <LI>
-          <strong>Lawyer&rsquo;s appearance fee</strong>:
+          <strong>Lawyer’s appearance fee</strong>:
           KES 10,000 to KES 30,000 if your lawyer attends
           the hearing on your behalf with a power of
           attorney
@@ -264,7 +264,7 @@ export default function Article() {
           owners or community interests
         </LI>
         <LI>
-          The seller&rsquo;s spouse or family members
+          The seller’s spouse or family members
           object on legitimate grounds (matrimonial or
           ancestral)
         </LI>
@@ -285,7 +285,7 @@ export default function Article() {
       <P>
         Section 6 of the Land Control Act states that any
         controlled transaction without LCB consent
-        becomes &ldquo;void for all purposes&rdquo; six
+        becomes “void for all purposes” six
         months after the date of the transaction. The
         consequences:
       </P>
@@ -293,10 +293,10 @@ export default function Article() {
       <OL>
         <LI>
           The transfer cannot be registered. Title remains
-          in the seller&rsquo;s name.
+          in the seller’s name.
         </LI>
         <LI>
-          The buyer&rsquo;s remedy is restitution
+          The buyer’s remedy is restitution
           (recovery of money paid) rather than specific
           performance
         </LI>
@@ -332,7 +332,7 @@ export default function Article() {
         </LI>
         <LI>
           Buying through a relative as nominee on
-          agricultural land, assuming the relative&rsquo;s
+          agricultural land, assuming the relative’s
           consent posture transfers automatically. It does
           not; the substance is still a transfer to a non
           family beneficial owner.
@@ -344,8 +344,8 @@ export default function Article() {
           recovery action.
         </LI>
         <LI>
-          Skipping LCB consent on land that &ldquo;will
-          shortly be gazetted urban&rdquo;. Plans
+          Skipping LCB consent on land that “will
+          shortly be gazetted urban”. Plans
           frequently slip; rely on the current
           gazettement, not the promised one.
         </LI>

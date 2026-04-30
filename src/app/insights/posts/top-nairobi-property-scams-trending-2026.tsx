@@ -80,7 +80,7 @@ export default function Article() {
         Person without mandate from the
         owner shows the property and takes
         deposits. Defence: insist on the
-        owner&rsquo;s power of attorney or
+        owner’s power of attorney or
         direct meeting; pay through
         traceable bank channels; verify
         agent EARB registration.

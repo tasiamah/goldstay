@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "riverside-drive-nairobi-old-money-corridor",
   title:
-    "Riverside Drive in 2026: Nairobi&rsquo;s old-money corridor",
+    "Riverside Drive in 2026: Nairobi’s old-money corridor",
   description:
     "Riverside Drive sits between Westlands and Hurlingham and quietly anchors some of the most expensive embassy, NGO and corporate residences in Nairobi. Here is the honest 2026 read on who lives there, what property costs, and why the corridor remains a top-tier address regardless of where the rest of the city is going.",
   publishedAt: "2026-04-13",

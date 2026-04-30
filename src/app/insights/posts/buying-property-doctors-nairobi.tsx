@@ -59,7 +59,7 @@ export default function Article() {
         </LI>
         <LI>
           Karen Hospital: Karen,
-          Lang&rsquo;ata, Karen-Langata
+          Lang’ata, Karen-Langata
           fringe
         </LI>
         <LI>
@@ -73,7 +73,7 @@ export default function Article() {
         </LI>
         <LI>
           Mater Hospital, South B: South B,
-          South C, Lang&rsquo;ata
+          South C, Lang’ata
         </LI>
       </UL>
 
@@ -90,7 +90,7 @@ export default function Article() {
           flexibility
         </LI>
         <LI>
-          Avoid Mombasa Road and Lang&rsquo;ata
+          Avoid Mombasa Road and Lang’ata
           Road traffic if doing late-night
           on-call commutes
         </LI>

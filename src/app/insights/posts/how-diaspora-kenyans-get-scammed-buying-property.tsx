@@ -57,7 +57,7 @@ export default function Article() {
       <H2 id="forged-title">1. The forged title</H2>
 
       <P>
-        A &ldquo;seller&rdquo; presents a clean-looking
+        A “seller” presents a clean-looking
         title document, an ID, a KRA PIN and a sale
         agreement. Everything looks legitimate. The
         document is a forgery, the seller is not the
@@ -114,7 +114,7 @@ export default function Article() {
         is correct. At the wire stage the buyer receives
         an email or WhatsApp message giving an account
         number for the deposit. The account is not the
-        seller&rsquo;s. It belongs to a fraudster who
+        seller’s. It belongs to a fraudster who
         intercepted the conversation (compromised email,
         cloned WhatsApp, social engineering of a relative
         helping with the purchase). The wire lands and is
@@ -123,9 +123,9 @@ export default function Article() {
 
       <P>
         <strong>Catches it.</strong> Account details only
-        ever provided through the buyer&rsquo;s lawyer&rsquo;s
+        ever provided through the buyer’s lawyer’s
         client account, never directly seller-to-buyer.
-        Deposit wired to the lawyer&rsquo;s client account
+        Deposit wired to the lawyer’s client account
         and released to the seller against signed sale
         agreement and confirmed title position. Any
         unsolicited last-minute change of bank details
@@ -144,13 +144,13 @@ export default function Article() {
         instalments. Some of these projects deliver years
         late at degraded quality. Some never deliver at all,
         with the developer either disappearing or simply
-        running out of capital with the buyer&rsquo;s
+        running out of capital with the buyer’s
         deposit already inside the project.
       </P>
 
       <P>
         <strong>Catches it.</strong> Off-plan diligence on
-        the developer&rsquo;s previous projects, audited
+        the developer’s previous projects, audited
         financials, escrow arrangements for buyer deposits,
         and a contractual right to refund on missed
         delivery milestones. We cover the full off-plan
@@ -178,11 +178,11 @@ export default function Article() {
         former classmate to handle the on-the-ground
         transaction. The helper finds a property, agrees a
         price with the seller, and reports the price plus a
-        helper&rsquo;s commission to the buyer. The
+        helper’s commission to the buyer. The
         commission is real. The reported price has been
         marked up: the seller agreed to KES 14m, the helper
         reports KES 16m, and the KES 2m gap quietly leaves
-        the deal in the helper&rsquo;s account.
+        the deal in the helper’s account.
       </P>
 
       <P>
@@ -198,9 +198,9 @@ export default function Article() {
         property lawyer instructed by the buyer, with the
         actual seller signing the sale agreement and
         confirming receipt of the actual purchase price in
-        writing. The buyer should always know the seller&rsquo;s
-        name, see the seller&rsquo;s ID, and know the bank
-        account the seller&rsquo;s funds will land in. If a
+        writing. The buyer should always know the seller’s
+        name, see the seller’s ID, and know the bank
+        account the seller’s funds will land in. If a
         helper is filtering all of this, the basic check is
         already broken.
       </P>
@@ -246,7 +246,7 @@ export default function Article() {
         A variant of the fake developer: the project is
         real, construction does start, even gets to slab
         level, and then quietly stops. The developer is not
-        a fraud; they have run out of money. The buyer&rsquo;s
+        a fraud; they have run out of money. The buyer’s
         deposit is committed inside a project that may
         eventually restart, may be sold to another developer
         at a discount, or may simply sit unfinished for
@@ -270,7 +270,7 @@ export default function Article() {
 
       <Callout title="The single rule that prevents most of these">
         Money moves only through your independent
-        property lawyer&rsquo;s client account, against
+        property lawyer’s client account, against
         documents that lawyer has personally verified, to
         a counterparty whose identity that lawyer has
         confirmed. Every scam pattern above breaks if
@@ -360,7 +360,7 @@ export default function Article() {
         clearance before completion. We also use a
         documented funds-flow protocol that prevents the
         last-minute change-of-account scam regardless of
-        what the buyer&rsquo;s email looks like.
+        what the buyer’s email looks like.
       </P>
 
       <P>

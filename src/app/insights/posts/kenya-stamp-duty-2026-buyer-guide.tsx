@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "kenya-stamp-duty-2026-buyer-guide",
   title:
-    "Kenya stamp duty in 2026: the complete buyer&rsquo;s guide with examples",
+    "Kenya stamp duty in 2026: the complete buyer’s guide with examples",
   description:
     "Stamp duty rates, who pays, when it is due, the exemptions that actually apply in 2026, the difference between urban and rural rates, how it interacts with valuation and how diaspora buyers should budget for it. Worked examples for typical Nairobi purchases.",
   publishedAt: "2025-09-26",
@@ -77,7 +77,7 @@ export default function Article() {
         property, all Mombasa property, all Kisumu property
         and most county capital property attracts the 4%
         rate. Genuinely rural land (agricultural acreage in
-        Kiambu, Murang&rsquo;a, Machakos outside the Athi
+        Kiambu, Murang’a, Machakos outside the Athi
         River urban zone) attracts 2%.
       </P>
 
@@ -93,17 +93,17 @@ export default function Article() {
         right.
       </P>
 
-      <H2 id="value">Value: agreed price or valuer&rsquo;s figure</H2>
+      <H2 id="value">Value: agreed price or valuer’s figure</H2>
 
       <P>
         Stamp duty is charged on the higher of the agreed
         purchase price and the value determined by a
         government valuer. In practice the government
-        valuer&rsquo;s figure is generated automatically as
+        valuer’s figure is generated automatically as
         part of the registration workflow. For most
         transactions where agreed price reflects market
         value, the agreed price is what stamp duty applies
-        to. The valuer&rsquo;s number bites in two cases:
+        to. The valuer’s number bites in two cases:
       </P>
 
       <OL>
@@ -113,7 +113,7 @@ export default function Article() {
           the valuer overrides the declared price).
         </LI>
         <LI>
-          Sale is between related parties at a non-arm&rsquo;s
+          Sale is between related parties at a non-arm’s
           length price (gifts to family, transfers between
           spouses, intra-group transfers).
         </LI>
@@ -177,7 +177,7 @@ export default function Article() {
           10%)
         </LI>
         <LI>
-          Buyer&rsquo;s lawyer prepares the transfer
+          Buyer’s lawyer prepares the transfer
           instrument
         </LI>
         <LI>
@@ -190,7 +190,7 @@ export default function Article() {
         </LI>
         <LI>
           Transfer registered at the Lands Registry, title
-          issued in buyer&rsquo;s name
+          issued in buyer’s name
         </LI>
       </OL>
 

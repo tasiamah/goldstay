@@ -70,8 +70,8 @@ export default function Article() {
         <LI>
           Plots in Joska, Konza, Malaa,
           Kangundo Road and similar are
-          marketed as &ldquo;Nairobi
-          metro&rdquo; but are not where
+          marketed as “Nairobi
+          metro” but are not where
           most diaspora buyers will ever
           live or rent
         </LI>

@@ -46,7 +46,7 @@ export default function Article() {
         the honest 2026 map.
       </Lede>
 
-      <H2 id="lavington">&ldquo;Lavington&rdquo;</H2>
+      <H2 id="lavington">“Lavington”</H2>
 
       <UL>
         <LI>
@@ -64,7 +64,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="westlands">&ldquo;Westlands&rdquo;</H2>
+      <H2 id="westlands">“Westlands”</H2>
 
       <UL>
         <LI>
@@ -73,12 +73,12 @@ export default function Article() {
           Brookside Drive area
         </LI>
         <LI>
-          Westlands &ldquo;extension&rdquo;:
+          Westlands “extension”:
           Riverside Drive, parts of Spring
           Valley, parts of Parklands
         </LI>
         <LI>
-          &ldquo;Westlands area&rdquo; in
+          “Westlands area” in
           marketing: Kangemi, Kabete,
           Ridgeways approach
         </LI>
@@ -88,7 +88,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="karen">&ldquo;Karen&rdquo;</H2>
+      <H2 id="karen">“Karen”</H2>
 
       <UL>
         <LI>
@@ -101,7 +101,7 @@ export default function Article() {
           Magadi Road approach
         </LI>
         <LI>
-          &ldquo;Karen area&rdquo; in
+          “Karen area” in
           marketing: parts of Langata,
           parts of Ongata Rongai
         </LI>
@@ -111,7 +111,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="kileleshwa">&ldquo;Kileleshwa&rdquo;</H2>
+      <H2 id="kileleshwa">“Kileleshwa”</H2>
 
       <UL>
         <LI>
@@ -128,7 +128,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="runda">&ldquo;Runda&rdquo;</H2>
+      <H2 id="runda">“Runda”</H2>
 
       <UL>
         <LI>
@@ -146,7 +146,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="gigiri">&ldquo;Gigiri&rdquo;</H2>
+      <H2 id="gigiri">“Gigiri”</H2>
 
       <UL>
         <LI>
@@ -208,7 +208,7 @@ export default function Article() {
         Verify the actual address against
         the actual sub-pocket. Two
         properties listed as
-        &ldquo;Lavington&rdquo; can be
+        “Lavington” can be
         meaningfully different products at
         meaningfully different prices.
         Pricing follows the actual

@@ -110,7 +110,7 @@ export default function Article() {
         Tier 1 plus 2 to 4 kW of rooftop solar. Solar offsets
         a portion of the daily power bill (15 to 30% of
         typical apartment usage) and reduces battery cycling
-        from grid charging. For Nairobi&rsquo;s sun, payback
+        from grid charging. For Nairobi’s sun, payback
         on the solar component alone is 5 to 8 years. Useful
         for owner-occupied houses; for rentals where the
         tenant pays the bill, the case is weaker because the
@@ -155,7 +155,7 @@ export default function Article() {
         outage is not the inconvenience to a tenant who
         will stay regardless. It is the one-star review,
         the cancelled stay, the refund. A single bad
-        review materially hurts a listing&rsquo;s ranking
+        review materially hurts a listing’s ranking
         for months.
       </P>
 
@@ -189,7 +189,7 @@ export default function Article() {
           <strong>Undersized cabling.</strong> A common
           installer corner-cut. Insist on cable sizing
           matching the inverter output, not the smallest
-          wire that &ldquo;just works&rdquo;.
+          wire that “just works”.
         </LI>
         <LI>
           <strong>Unprotected install.</strong> Inverter and

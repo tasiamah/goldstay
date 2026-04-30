@@ -150,7 +150,7 @@ export default function Article() {
         </LI>
         <LI>
           Off-plan agents claiming commission on
-          deals the developer&rsquo;s direct
+          deals the developer’s direct
           sales team closed. Confirm with the
           developer before paying
         </LI>
@@ -161,7 +161,7 @@ export default function Article() {
         </LI>
         <LI>
           Verbal commission agreements that turn
-          out to differ from each side&rsquo;s
+          out to differ from each side’s
           recollection. Always paper the deal
         </LI>
       </UL>
@@ -181,7 +181,7 @@ export default function Article() {
           Confirm EARB registration of the agent
         </LI>
         <LI>
-          Pay through the lawyer&rsquo;s
+          Pay through the lawyer’s
           completion statement, not separately
         </LI>
         <LI>
@@ -199,7 +199,7 @@ export default function Article() {
         engagement. Document the agency
         relationship in writing. Verify EARB
         registration. Pay through the
-        lawyer&rsquo;s completion statement.
+        lawyer’s completion statement.
         Most commission disputes disappear when
         these four boxes are ticked.
       </Callout>

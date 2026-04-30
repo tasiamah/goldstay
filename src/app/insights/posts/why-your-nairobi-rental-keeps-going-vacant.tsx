@@ -139,7 +139,7 @@ export default function Article() {
       <P>
         <strong>Fix</strong>: where you cannot
         change the compound, price the unit at
-        the compound&rsquo;s actual market level
+        the compound’s actual market level
         rather than at an aspirational level.
       </P>
 

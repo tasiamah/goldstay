@@ -51,7 +51,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Buyer&rsquo;s lawyer</strong>: 1
+          <strong>Buyer’s lawyer</strong>: 1
           to 2 percent of purchase price (LSK
           scale; some negotiation possible)
         </LI>

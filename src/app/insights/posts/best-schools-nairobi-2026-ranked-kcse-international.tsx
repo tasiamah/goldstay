@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "best-schools-nairobi-2026-ranked-kcse-international",
   title:
-    "The best schools in Nairobi 2026: a parent&rsquo;s guide to the rankings, fees and catchment",
+    "The best schools in Nairobi 2026: a parent’s guide to the rankings, fees and catchment",
   description:
     "Choosing a school in Nairobi shapes the suburb you will live in for years. Here is the honest 2026 guide to the best private and international schools in the city, the realistic fees, the catchment areas, and how the school decision drives the property decision for diaspora returnees.",
   publishedAt: "2024-12-27",
@@ -48,7 +48,7 @@ export default function Article() {
         feed directly into UK and US universities, to
         strong British curriculum schools at materially
         lower fees, to local private schools that
-        produce the country&rsquo;s top KCSE results.
+        produce the country’s top KCSE results.
         Here is the honest 2026 guide.
       </Lede>
 
@@ -457,7 +457,7 @@ export default function Article() {
         explicitly. Once the school is chosen, we focus
         on suburbs and compounds within the realistic
         catchment, balanced against budget and the
-        family&rsquo;s preferences on amenity and
+        family’s preferences on amenity and
         density.
       </P>
 

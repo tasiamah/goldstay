@@ -103,8 +103,8 @@ export default function Article() {
           Lawyer reviews title, runs official search
         </LI>
         <LI>
-          Sale agreement drafted by buyer&rsquo;s or
-          seller&rsquo;s lawyer
+          Sale agreement drafted by buyer’s or
+          seller’s lawyer
         </LI>
         <LI>
           Negotiation of clauses
@@ -153,7 +153,7 @@ export default function Article() {
           For paper-based registries: 6 to 16 weeks
         </LI>
         <LI>
-          Registered title issued in buyer&rsquo;s
+          Registered title issued in buyer’s
           name
         </LI>
       </UL>

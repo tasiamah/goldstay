@@ -167,7 +167,7 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Title in a Kenyan
-          relative&rsquo;s name</strong>. The
+          relative’s name</strong>. The
           legal owner is the relative, not the
           foreign investor. Disputes,
           succession problems, theft.

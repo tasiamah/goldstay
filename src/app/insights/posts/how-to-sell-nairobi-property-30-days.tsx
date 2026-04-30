@@ -176,7 +176,7 @@ export default function Article() {
           Stamp duty assessment expedited
         </LI>
         <LI>
-          Buyer&rsquo;s mortgage on accelerated
+          Buyer’s mortgage on accelerated
           schedule (only if cash buyer is not
           available)
         </LI>

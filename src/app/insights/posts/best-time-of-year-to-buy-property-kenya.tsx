@@ -173,7 +173,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          End of a developer&rsquo;s phase: developers
+          End of a developer’s phase: developers
           discount the last few units to clear stock
           and free their balance sheet
         </LI>

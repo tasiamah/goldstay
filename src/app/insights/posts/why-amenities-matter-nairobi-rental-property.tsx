@@ -149,7 +149,7 @@ export default function Article() {
           driver, and an ongoing service charge cost.
         </LI>
         <LI>
-          <strong>Children&rsquo;s play area in
+          <strong>Children’s play area in
           professional-only buildings.</strong> If the
           tenant base is single professionals and couples
           without children, this is space the gym or
@@ -259,8 +259,8 @@ export default function Article() {
           are included and at what specification. Pool tile
           quality, gym equipment brand, fibre provider,
           generator size, lift brand and warranty. We have
-          seen brochures promise &ldquo;rooftop terrace and
-          gym&rdquo; and deliver an empty rooftop and a room
+          seen brochures promise “rooftop terrace and
+          gym” and deliver an empty rooftop and a room
           with a single secondhand treadmill.
         </LI>
       </UL>

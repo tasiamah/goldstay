@@ -178,7 +178,7 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Northern Nairobi&rsquo;s biggest
+        Northern Nairobi’s biggest
         property story is not Westlands; it
         is the Kiambu metro arc. The
         institutional master-planned developers

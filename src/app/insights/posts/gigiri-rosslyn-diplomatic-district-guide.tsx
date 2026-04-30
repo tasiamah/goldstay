@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "gigiri-rosslyn-diplomatic-district-guide",
   title:
-    "Gigiri and Rosslyn: living in Nairobi&rsquo;s diplomatic district in 2026",
+    "Gigiri and Rosslyn: living in Nairobi’s diplomatic district in 2026",
   description:
     "Gigiri and Rosslyn are home to the UN, more than 100 embassies and the senior international professional community in Nairobi. Here is the honest 2026 guide to living and investing in the diplomatic district, with property prices, rental dynamics, school catchment and the unique tenant pool that anchors the area.",
   publishedAt: "2026-03-16",
@@ -168,7 +168,7 @@ export default function Article() {
         </LI>
         <LI>
           Currency mismatch where the
-          investor&rsquo;s costs are KES and the
+          investor’s costs are KES and the
           rent is USD (asymmetric depending on
           which way the shilling moves)
         </LI>

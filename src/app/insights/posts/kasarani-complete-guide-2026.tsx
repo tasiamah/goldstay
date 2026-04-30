@@ -179,7 +179,7 @@ export default function Article() {
 
       <Pullquote>
         Kasarani houses a meaningful slice of
-        Nairobi&rsquo;s working professional
+        Nairobi’s working professional
         population. Investors who treat it
         with respect and manage it
         professionally do well.

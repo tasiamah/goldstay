@@ -42,7 +42,7 @@ export default function Article() {
       <H2 id="what-is-mri">What MRI actually is</H2>
 
       <P>
-        Monthly Rental Income tax (&ldquo;MRI&rdquo;) is the simplified
+        Monthly Rental Income tax (“MRI”) is the simplified
         residential rental income regime introduced by the Finance Act
         2015 and amended by the Finance Act 2023. It applies to{" "}
         <strong>resident landlords earning gross residential rent up to
@@ -71,7 +71,7 @@ export default function Article() {
       </Callout>
 
       <H2 id="do-i-qualify-as-resident">
-        &ldquo;But I live in London. Am I really a resident landlord?&rdquo;
+        “But I live in London. Am I really a resident landlord?”
       </H2>
 
       <P>
@@ -121,7 +121,7 @@ export default function Article() {
       <OL>
         <LI>
           By the <strong>20th of every month</strong>, file an MRI return
-          on iTax for the previous month&rsquo;s rent collected.
+          on iTax for the previous month’s rent collected.
         </LI>
         <LI>
           Generate a payment slip on iTax. Pay the 7.5% via M-Pesa
@@ -171,30 +171,30 @@ export default function Article() {
       <P>
         Annual MRI on the same unit, assuming full occupancy: KES
         162,000, or about USD 1,260 at current rates. Roughly the cost
-        of one month&rsquo;s rent.
+        of one month’s rent.
       </P>
 
       <H2 id="three-mistakes">
         Three mistakes we see diaspora landlords make
       </H2>
 
-      <H3 id="mistake-one">1. Assuming &ldquo;my agent handles tax&rdquo;</H3>
+      <H3 id="mistake-one">1. Assuming “my agent handles tax”</H3>
 
       <P>
         Many traditional Kenyan property agents charge a management
         fee, collect rent, and stop there. KRA filings are not part of
         the contract. The landlord finds out, sometimes years later,
         that no return has ever been filed in their name and the
-        accumulated penalties are now larger than a year&rsquo;s rent. We have
+        accumulated penalties are now larger than a year’s rent. We have
         taken over enough of these properties to know it is the
         single most common silent failure in diaspora property.
       </P>
 
       <P>
         Before signing with anyone, ask one specific question:{" "}
-        <em>&ldquo;Do you file my MRI returns each month, in my name, on
-        my KRA PIN, and send me the e-slip?&rdquo;</em> If the answer is
-        anything other than &ldquo;yes&rdquo;, you are filing them yourself or
+        <em>“Do you file my MRI returns each month, in my name, on
+        my KRA PIN, and send me the e-slip?”</em> If the answer is
+        anything other than “yes”, you are filing them yourself or
         not at all.
       </P>
 
@@ -266,7 +266,7 @@ export default function Article() {
       <Callout title="Adjacent compliance, while we are here">
         MRI is one line on the statement. The full bundle a Nairobi
         residential landlord owes also includes: annual land rates to
-        Nairobi City County, service charge to the apartment&rsquo;s
+        Nairobi City County, service charge to the apartment’s
         management committee, any SRA levy on Karen or Westlands
         properties, and the single business permit / TRA registration
         when the unit is run as a short-stay. We pay all of them from

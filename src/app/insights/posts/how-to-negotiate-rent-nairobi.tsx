@@ -117,7 +117,7 @@ export default function Article() {
         <LI>
           <strong>Service charge included</strong>:
           shifts cost transparency in
-          tenant&rsquo;s favour
+          tenant’s favour
         </LI>
         <LI>
           <strong>Reference and tenant
@@ -162,14 +162,14 @@ export default function Article() {
       <H2 id="script">A workable script</H2>
 
       <P>
-        &ldquo;Thank you for showing the unit.
+        “Thank you for showing the unit.
         Based on the comparable units we
         have seen in this compound and the
         nearby area, the market for a unit
         of this specification is closer to
         KES X. We are happy to take a
         2-year lease and pay 3 months in
-        advance. Can we agree at KES X?&rdquo;
+        advance. Can we agree at KES X?”
       </P>
 
       <P>

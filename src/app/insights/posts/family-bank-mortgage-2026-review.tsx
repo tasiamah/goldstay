@@ -112,7 +112,7 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Family Bank&rsquo;s mortgage book is
+        Family Bank’s mortgage book is
         small but the relationship pricing
         for existing customers is real.
         Always quote your home bank before

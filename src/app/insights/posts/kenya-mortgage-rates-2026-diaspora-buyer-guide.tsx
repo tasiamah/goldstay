@@ -187,7 +187,7 @@ export default function Article() {
           residence.</strong> In some jurisdictions
           mortgage interest on overseas investment
           property is deductible against foreign rental
-          income. Check with your country&rsquo;s tax
+          income. Check with your country’s tax
           advisor.
         </LI>
       </OL>

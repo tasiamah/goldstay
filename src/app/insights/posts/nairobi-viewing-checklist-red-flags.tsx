@@ -72,7 +72,7 @@ export default function Article() {
           by tired guards
         </LI>
         <LI>
-          Visitors&rsquo; book missing or chaotic
+          Visitors’ book missing or chaotic
         </LI>
         <LI>
           Cars parked in unauthorised spaces
@@ -149,7 +149,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          Title in seller&rsquo;s name (not a
+          Title in seller’s name (not a
           relative or company)
         </LI>
         <LI>

@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "diplomatic-tenant-market-gigiri-rosslyn-runda-un-embassy-rent",
   title:
-    "Nairobi&rsquo;s diplomatic and UN tenant market: Gigiri, Rosslyn, Runda explained",
+    "Nairobi’s diplomatic and UN tenant market: Gigiri, Rosslyn, Runda explained",
   description:
     "The single most reliable premium tenant segment in Nairobi is the UN, embassy and international NGO market clustered around Gigiri. Here is how the segment works, what specific compounds command in rent, what tenants actually require, the lease patterns, and how diaspora investors get into it.",
   publishedAt: "2025-05-31",
@@ -205,7 +205,7 @@ export default function Article() {
           single units in this segment.
         </LI>
         <LI>
-          <strong>Servant&rsquo;s quarter (SQ).</strong>{" "}
+          <strong>Servant’s quarter (SQ).</strong>{" "}
           Most diplomatic households retain a driver,
           house staff or both. A compound or home without
           SQ is materially less competitive.
@@ -238,7 +238,7 @@ export default function Article() {
           drafted leases, professional inventories,
           dilapidations procedure, deposit protection in
           a recognisable form. Anything informal is
-          incompatible with the employer&rsquo;s housing
+          incompatible with the employer’s housing
           policy.
         </LI>
       </OL>
@@ -261,7 +261,7 @@ export default function Article() {
           at the prevailing rate on the day of payment
         </LI>
         <LI>
-          Two months&rsquo; rent as security deposit, plus
+          Two months’ rent as security deposit, plus
           one month in advance, held in a manner the
           employer can audit
         </LI>
@@ -272,7 +272,7 @@ export default function Article() {
         </LI>
         <LI>
           Diplomatic clause allowing early termination on
-          30 to 60 days&rsquo; notice if the tenant is
+          30 to 60 days’ notice if the tenant is
           reassigned by the posting authority
         </LI>
       </UL>

@@ -40,7 +40,7 @@ export default function Article() {
     <>
       <Lede>
         Property insurance is one of those expenses that
-        looks optional until it isn&rsquo;t. The Nairobi
+        looks optional until it isn’t. The Nairobi
         2024 floods reminded a lot of owners that the
         difference between a properly insured property
         and a partially insured one is the difference
@@ -91,7 +91,7 @@ export default function Article() {
         the tenant covers their own personal effects.
       </P>
 
-      <H3 id="public-liability">Owner&rsquo;s public liability</H3>
+      <H3 id="public-liability">Owner’s public liability</H3>
 
       <P>
         Covers the owner against claims by third parties
@@ -282,7 +282,7 @@ export default function Article() {
       </UL>
 
       <Callout title="The minimum every landlord should hold">
-        Confirm the corporation&rsquo;s buildings cover is
+        Confirm the corporation’s buildings cover is
         adequate and current. Take out an owner-side
         policy covering contents, public liability, loss
         of rent and burglary. Update the sum insured

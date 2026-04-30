@@ -286,7 +286,7 @@ export default function Article() {
 
       <P>
         For sourcing clients we structure the
-        finance leg around the buyer&rsquo;s
+        finance leg around the buyer’s
         situation. SACCO members get walked
         through the share-and-savings funding
         structure. Diaspora and premium clients get

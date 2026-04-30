@@ -83,7 +83,7 @@ export default function Article() {
         </LI>
         <LI>
           Diaspora deposits are real money
-          and the developer&rsquo;s
+          and the developer’s
           financing for construction; treat
           the milestone discipline
           accordingly
@@ -113,7 +113,7 @@ export default function Article() {
         </LI>
         <LI>
           Independent conveyancing lawyer
-          (not the developer&rsquo;s lawyer)
+          (not the developer’s lawyer)
         </LI>
         <LI>
           Comparable per-square-metre pricing

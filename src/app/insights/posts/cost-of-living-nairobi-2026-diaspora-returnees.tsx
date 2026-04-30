@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "Cost of living in Nairobi in 2026: the honest budget for diaspora returnees",
   description:
-    "Diaspora Kenyans planning to return often arrive with a budget calibrated against London, New York or Dubai and discover Nairobi is not as cheap as their parents&rsquo; generation said. Housing, schools, transport, food, healthcare, staff and lifestyle. Here is the honest 2026 budget for a returning Kenyan family.",
+    "Diaspora Kenyans planning to return often arrive with a budget calibrated against London, New York or Dubai and discover Nairobi is not as cheap as their parents’ generation said. Housing, schools, transport, food, healthcare, staff and lifestyle. Here is the honest 2026 budget for a returning Kenyan family.",
   publishedAt: "2025-02-11",
   readingMinutes: 9,
   author: authors.editors,
@@ -304,7 +304,7 @@ export default function Article() {
           KES 18,000 per month per person
         </LI>
         <LI>
-          <strong>Children&rsquo;s activities</strong>:
+          <strong>Children’s activities</strong>:
           KES 10,000 to KES 60,000 per month for two
           children with sports and music
         </LI>
@@ -338,7 +338,7 @@ export default function Article() {
         <LI>Domestic staff (housekeeper plus nanny): USD 800</LI>
         <LI>Utilities: USD 500</LI>
         <LI>Healthcare and insurance: USD 600</LI>
-        <LI>Lifestyle (clubs, gym, kids&rsquo; activities): USD 800</LI>
+        <LI>Lifestyle (clubs, gym, kids’ activities): USD 800</LI>
         <LI>Buffer and miscellaneous: USD 500</LI>
         <LI>
           <strong>Total monthly</strong>: approximately

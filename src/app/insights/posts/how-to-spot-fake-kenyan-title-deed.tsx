@@ -106,7 +106,7 @@ export default function Article() {
         </LI>
         <LI>
           Title number formats that do not
-          match the issuing registry&rsquo;s
+          match the issuing registry’s
           conventions
         </LI>
         <LI>
@@ -159,7 +159,7 @@ export default function Article() {
       <H2 id="ardhisasa">Ardhisasa specifically</H2>
 
       <P>
-        For Nairobi, Kiambu, Murang&rsquo;a,
+        For Nairobi, Kiambu, Murang’a,
         Nakuru, Mombasa and the other counties
         on Ardhisasa, the digital land platform
         produces a real-time official search
@@ -199,7 +199,7 @@ export default function Article() {
       <P>
         The official search must be run by your
         Kenyan advocate against your nominated
-        buyer&rsquo;s details. Do not accept
+        buyer’s details. Do not accept
         scanned copies of search results
         provided by the seller; they can be
         manipulated.

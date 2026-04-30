@@ -87,7 +87,7 @@ export default function Article() {
           Sectional title transfer cost
         </LI>
         <LI>
-          AOA (owners&rsquo; association)
+          AOA (owners’ association)
           setup contribution
         </LI>
         <LI>

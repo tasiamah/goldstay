@@ -140,7 +140,7 @@ export default function Article() {
         </LI>
         <LI>
           Outstanding utility bills in the
-          tenant&rsquo;s name
+          tenant’s name
         </LI>
       </UL>
 
@@ -160,7 +160,7 @@ export default function Article() {
           chose to make
         </LI>
         <LI>
-          Generic &ldquo;cleaning&rdquo;
+          Generic “cleaning”
           charges with no invoice
         </LI>
         <LI>

@@ -51,13 +51,13 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Buyer&rsquo;s lawyer (your conveyancer).</strong>{" "}
+          <strong>Buyer’s lawyer (your conveyancer).</strong>{" "}
           Drafts or marks up the sale agreement, runs title
           searches, prepares the transfer documents, and
           ultimately registers the property in your name.
         </LI>
         <LI>
-          <strong>Seller&rsquo;s lawyer.</strong> Provides
+          <strong>Seller’s lawyer.</strong> Provides
           original title and supporting documents, obtains
           capital gains tax clearance from KRA, and signs off
           on the transfer.
@@ -65,14 +65,14 @@ export default function Article() {
         <LI>
           <strong>Valuer.</strong> Produces a current market
           valuation, primarily for stamp duty assessment but
-          also for the buyer&rsquo;s sanity check.
+          also for the buyer’s sanity check.
         </LI>
       </UL>
 
       <P>
         If you are buying off-plan from a developer, the
-        developer&rsquo;s in-house counsel often plays the
-        seller&rsquo;s lawyer role and the developer&rsquo;s
+        developer’s in-house counsel often plays the
+        seller’s lawyer role and the developer’s
         own valuer is sometimes used. Insist on an
         independent valuer for stamp duty in any event.
       </P>
@@ -98,7 +98,7 @@ export default function Article() {
         any encumbrances (charges, caveats, restrictions, court
         orders), and the title type (freehold, leasehold,
         sectional). At the same time, the lawyer verifies the
-        seller&rsquo;s capacity (CR12 if a company, grant of
+        seller’s capacity (CR12 if a company, grant of
         probate if an estate, spousal consent if married).
       </P>
 
@@ -106,8 +106,8 @@ export default function Article() {
 
       <P>
         Either side can draft. Standard practice in Kenya is
-        for the seller&rsquo;s lawyer to draft and the
-        buyer&rsquo;s lawyer to mark up. This is the moment
+        for the seller’s lawyer to draft and the
+        buyer’s lawyer to mark up. This is the moment
         every clause from the{" "}
         <Link
           href="/insights/why-have-a-lawyer-read-your-kenyan-sale-agreement"
@@ -121,7 +121,7 @@ export default function Article() {
 
       <P>
         On exchange (signing) the buyer pays the deposit,
-        usually 10%, into the buyer&rsquo;s lawyer&rsquo;s
+        usually 10%, into the buyer’s lawyer’s
         client account or a formal escrow account. The
         deposit is not released to the seller until completion.
       </P>
@@ -144,7 +144,7 @@ export default function Article() {
       <P>
         The seller must obtain CGT clearance from KRA before
         title can transfer. CGT is currently 15% on the
-        seller&rsquo;s gain (sale price less acquisition cost
+        seller’s gain (sale price less acquisition cost
         less allowable expenses). The seller files iTax,
         pays, and obtains a clearance certificate. This is the
         single step most diaspora buyers underestimate. KRA
@@ -166,7 +166,7 @@ export default function Article() {
       <P>
         Once stamp duty assessment is back and KRA clearance
         is in hand, the buyer pays stamp duty (4% of valuation
-        for urban property) and the buyer&rsquo;s lawyer
+        for urban property) and the buyer’s lawyer
         lodges the transfer documents at Ardhi House. Required
         documents include the executed sale agreement, the
         transfer instrument, valuation report, stamp duty
@@ -178,8 +178,8 @@ export default function Article() {
 
       <P>
         Completion is the moment the balance of the purchase
-        price moves from the buyer&rsquo;s lawyer to the
-        seller&rsquo;s lawyer, the original title and keys
+        price moves from the buyer’s lawyer to the
+        seller’s lawyer, the original title and keys
         change hands, and possession transfers. For a clean
         diligence, this is choreographed in a single day. For
         contested purchases, it can stretch to multiple
@@ -191,7 +191,7 @@ export default function Article() {
       <P>
         After completion, the lodgement at Ardhi House is
         processed and the new title is issued in the
-        buyer&rsquo;s name. This currently takes 4 to 8 weeks.
+        buyer’s name. This currently takes 4 to 8 weeks.
         Until you hold the new title in your name, the
         purchase is technically not yet complete from a
         registration perspective, but the property is yours
@@ -244,7 +244,7 @@ export default function Article() {
         </LI>
         <LI>
           A signed Power of Attorney (PoA) for the
-          buyer&rsquo;s lawyer or a trusted local agent. This
+          buyer’s lawyer or a trusted local agent. This
           enables the lawyer to lodge documents, sign forms
           and represent you at Ardhi House without you flying
           in. The PoA must be properly notarised in your

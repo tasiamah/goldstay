@@ -51,7 +51,7 @@ export default function Article() {
         signals. This is the 2026 honest assessment.
       </Lede>
 
-      <H2 id="what-crash-means">What &ldquo;crash&rdquo; actually means</H2>
+      <H2 id="what-crash-means">What “crash” actually means</H2>
 
       <P>
         A crash, properly defined, is a 25 percent or

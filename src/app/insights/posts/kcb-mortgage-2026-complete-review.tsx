@@ -202,7 +202,7 @@ export default function Article() {
       <Pullquote>
         The lender that approves is better
         than the lender with the lowest
-        advertised rate. KCB&rsquo;s
+        advertised rate. KCB’s
         residential approval discipline is
         the reason it sits at the top of the
         market.

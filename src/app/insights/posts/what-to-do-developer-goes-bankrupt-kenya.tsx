@@ -72,7 +72,7 @@ export default function Article() {
           contractor (banners, work stoppages)
         </LI>
         <LI>
-          Auctions of the developer&rsquo;s assets in
+          Auctions of the developer’s assets in
           the press
         </LI>
         <LI>
@@ -87,8 +87,8 @@ export default function Article() {
       <OL>
         <LI>
           <strong>Engage a property litigator
-          immediately</strong>. Not the developer&rsquo;s
-          lawyer. Not the agent&rsquo;s lawyer. A
+          immediately</strong>. Not the developer’s
+          lawyer. Not the agent’s lawyer. A
           litigator who handles property disputes
         </LI>
         <LI>
@@ -105,8 +105,8 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Find your fellow buyers</strong>.
-          The developer&rsquo;s WhatsApp groups,
-          buyers&rsquo; meetings and informal
+          The developer’s WhatsApp groups,
+          buyers’ meetings and informal
           networks become important
         </LI>
         <LI>
@@ -122,24 +122,24 @@ export default function Article() {
       <P>
         Off-plan buyers in Kenya are usually
         unsecured creditors of the developer for the
-        purposes of insolvency. The buyer&rsquo;s
+        purposes of insolvency. The buyer’s
         rights depend heavily on:
       </P>
 
       <UL>
         <LI>
           Whether the sub-divided title for the
-          buyer&rsquo;s unit has already been
-          registered in the buyer&rsquo;s name
+          buyer’s unit has already been
+          registered in the buyer’s name
         </LI>
         <LI>
           Whether the development has reached
           structural completion
         </LI>
         <LI>
-          Whether the buyer&rsquo;s payments were
+          Whether the buyer’s payments were
           ring-fenced (rare in Kenya) or co-mingled
-          with the developer&rsquo;s general
+          with the developer’s general
           finances (typical)
         </LI>
         <LI>
@@ -180,7 +180,7 @@ export default function Article() {
         but completion proceeds.
       </P>
 
-      <H3 id="path3">Path 3: Buyers&rsquo; cooperative</H3>
+      <H3 id="path3">Path 3: Buyers’ cooperative</H3>
 
       <P>
         In some cases, buyers organise themselves

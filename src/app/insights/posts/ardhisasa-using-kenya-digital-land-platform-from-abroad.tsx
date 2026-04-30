@@ -15,7 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "ardhisasa-using-kenya-digital-land-platform-from-abroad",
   title:
-    "Ardhisasa explained: using Kenya&rsquo;s digital land platform from abroad",
+    "Ardhisasa explained: using Kenya’s digital land platform from abroad",
   description:
     "Ardhisasa is gradually replacing the Ardhi House paper registry. For diaspora landlords and buyers it changes how title searches, transfers and land rates payments are handled. Here is what works on Ardhisasa today, what still needs the physical registry, and how to set up your account from outside Kenya.",
   publishedAt: "2025-08-16",
@@ -35,7 +35,7 @@ export default function Article() {
         For decades, anything to do with land in Kenya meant
         a physical visit to Ardhi House, an envelope of cash,
         and a long wait. Ardhisasa, the Ministry of
-        Lands&rsquo; digital platform, is gradually changing
+        Lands’ digital platform, is gradually changing
         that. For diaspora landlords and buyers the change
         is genuinely useful, but only once you understand
         what works on the platform today, what is still
@@ -46,7 +46,7 @@ export default function Article() {
       <H2 id="what-is-ardhisasa">What Ardhisasa is and what it covers</H2>
 
       <P>
-        Ardhisasa (literally &ldquo;land now&rdquo; in
+        Ardhisasa (literally “land now” in
         Swahili) is a national land information system.
         Where it is rolled out, it lets owners and authorised
         users perform title searches, lodge transfers,
@@ -61,7 +61,7 @@ export default function Article() {
         rolling out to Kiambu, Mombasa, Nakuru, Kajiado and
         Machakos. Other counties are still mostly on the
         legacy paper registry. The plan is national coverage,
-        the timeline is &ldquo;phased&rdquo;, and most
+        the timeline is “phased”, and most
         counties outside the rollout list will not be on
         Ardhisasa for several more years.
       </P>
@@ -151,7 +151,7 @@ export default function Article() {
         <LI>
           For most diaspora users the bottleneck is the
           Kenyan mobile number. Either keep an active
-          Safaricom or Airtel number on a relative&rsquo;s
+          Safaricom or Airtel number on a relative’s
           phone for OTPs, port your old number to a digital
           line, or use a Kenyan eSIM service. Without a
           working OTP path the account is unusable.
@@ -253,7 +253,7 @@ export default function Article() {
         title state matches the sale records. For sourcing
         clients we run two preliminary searches before any
         offer letter goes out, one through Ardhisasa and
-        one through our property lawyers&rsquo; Ardhi House
+        one through our property lawyers’ Ardhi House
         verification, so the title state is double-confirmed.
       </P>
 

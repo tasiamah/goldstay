@@ -124,7 +124,7 @@ export default function Article() {
         </LI>
         <LI>
           Captive demand pool from
-          Nairobi&rsquo;s university student
+          Nairobi’s university student
           population
         </LI>
       </UL>

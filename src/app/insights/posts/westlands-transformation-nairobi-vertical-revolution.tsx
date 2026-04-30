@@ -15,9 +15,9 @@ import {
 export const meta: PostMeta = {
   slug: "westlands-transformation-nairobi-vertical-revolution",
   title:
-    "The Westlands transformation: Nairobi&rsquo;s vertical revolution explained",
+    "The Westlands transformation: Nairobi’s vertical revolution explained",
   description:
-    "Westlands has gone from a low-rise suburb of bungalows to Nairobi&rsquo;s most vertical district in 15 years. The transformation has reshaped pricing, tenant pool, lifestyle and the property thesis. Here is the honest 2026 read on what changed, who is buying, who is renting, and where Westlands goes next.",
+    "Westlands has gone from a low-rise suburb of bungalows to Nairobi’s most vertical district in 15 years. The transformation has reshaped pricing, tenant pool, lifestyle and the property thesis. Here is the honest 2026 read on what changed, who is buying, who is renting, and where Westlands goes next.",
   publishedAt: "2024-09-04",
   readingMinutes: 7,
   author: authors.editors,
@@ -41,7 +41,7 @@ export default function Article() {
       <Lede>
         Fifteen years ago Westlands was a leafy suburb
         of low-rise bungalows and small office blocks.
-        In 2026 it is Nairobi&rsquo;s most vertical
+        In 2026 it is Nairobi’s most vertical
         district, anchored by a cluster of high-rise
         residential and commercial towers, and
         connected to the wider city by the Nairobi
@@ -57,7 +57,7 @@ export default function Article() {
           Wave of office tower construction from
           2010 onwards (GTC, Delta, Sanlam, Britam,
           Westend, NCBA Centre). Westlands became
-          Nairobi&rsquo;s second CBD
+          Nairobi’s second CBD
         </LI>
         <LI>
           Wave of residential tower construction from
@@ -276,7 +276,7 @@ export default function Article() {
       </OL>
 
       <Callout title="The Westlands rule">
-        Westlands has matured into Nairobi&rsquo;s
+        Westlands has matured into Nairobi’s
         primary urban-density premium suburb. For
         professional couples, returning diaspora
         without children and corporate tenants,
@@ -291,7 +291,7 @@ export default function Article() {
         when it grows up. The diaspora returnee
         professional, the mid-career expat, the
         DINK couple. The suburb has become the
-        country&rsquo;s most successful premium
+        country’s most successful premium
         urban-density story.
       </Pullquote>
 

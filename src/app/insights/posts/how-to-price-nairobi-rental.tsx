@@ -32,7 +32,7 @@ export default function Article() {
     <>
       <Lede>
         Most Nairobi rents are set in one of two wrong
-        ways. Either the previous owner&rsquo;s rent is
+        ways. Either the previous owner’s rent is
         increased by some round number (10%, 15%) without
         reference to the actual market, or the agent
         pulls a number from a competing listing of
@@ -48,7 +48,7 @@ export default function Article() {
 
       <P>
         Pricing a rental properly means finding
-        comparable units (&ldquo;comps&rdquo;) currently
+        comparable units (“comps”) currently
         let or recently let, adjusting for the
         differences between the comp and your unit, and
         landing on a defensible figure. Three rules:
@@ -279,7 +279,7 @@ export default function Article() {
           renewal. Existing tenants represent zero
           vacancy risk and zero re-let cost. The right
           renewal is below the ceiling, with the
-          discount being the tenant&rsquo;s reward for
+          discount being the tenant’s reward for
           staying.
         </LI>
       </UL>

@@ -159,7 +159,7 @@ export default function Article() {
       <Pullquote>
         Master-planned developments are
         rare in Nairobi at this scale.
-        Centum&rsquo;s execution at Two
+        Centum’s execution at Two
         Rivers is one of the few credible
         examples.
       </Pullquote>

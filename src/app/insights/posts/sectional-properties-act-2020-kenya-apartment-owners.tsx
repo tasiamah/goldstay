@@ -131,7 +131,7 @@ export default function Article() {
 
       <P>
         The unit factor is the number that quantifies
-        each unit&rsquo;s share in the common property
+        each unit’s share in the common property
         and the common expenses. It is set in the
         registered sectional plan and it determines:
       </P>
@@ -398,14 +398,14 @@ export default function Article() {
         <LI>
           What insurance is in place at corporation level
           (buildings, public liability) and at owner
-          level (contents, owner&rsquo;s liability)
+          level (contents, owner’s liability)
         </LI>
         <LI>
           Are there any pending disputes or court matters
         </LI>
       </OL>
 
-      <Callout title="The buyer&rsquo;s shortcut">
+      <Callout title="The buyer’s shortcut">
         The Sectional Properties Act 2020 turns every
         apartment purchase into the purchase of two
         things: the unit and a share of the corporation.
@@ -427,10 +427,10 @@ export default function Article() {
         diligence (audited accounts, service charge
         history, reserve fund position, collection rate,
         active disputes) before we recommend a unit. For
-        management clients we represent the owner&rsquo;s
+        management clients we represent the owner’s
         interests in corporation matters, attend AGMs by
         proxy where helpful, and flag any governance
-        issues before they affect the owner&rsquo;s
+        issues before they affect the owner’s
         position.
       </P>
 

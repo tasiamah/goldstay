@@ -129,15 +129,15 @@ export default function Article() {
       <UL>
         <LI>
           Security deposit: typically 1 to 2
-          months&rsquo; rent
+          months’ rent
         </LI>
         <LI>
-          First month&rsquo;s rent in
+          First month’s rent in
           advance
         </LI>
         <LI>
           Agent fee: typically 1
-          month&rsquo;s rent (paid by
+          month’s rent (paid by
           tenant or landlord depending on
           arrangement)
         </LI>

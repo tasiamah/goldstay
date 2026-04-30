@@ -136,7 +136,7 @@ export default function Article() {
         </LI>
         <LI>
           Service charge governance unknown
-          until owners&rsquo; association is
+          until owners’ association is
           formed
         </LI>
       </UL>

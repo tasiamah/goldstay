@@ -64,7 +64,7 @@ export default function Article() {
         accurate. Often it overstates your actual
         position. Diaspora Kenyans pay rent or mortgages
         in their host country, save for retirement that
-        their host country&rsquo;s state pension will not
+        their host country’s state pension will not
         cover, raise children whose university costs are
         in dollars or pounds, and run lives whose
         expenses look small on Instagram and large on a
@@ -102,7 +102,7 @@ export default function Article() {
           hardest category, because the cause is good and
           the costs are recurring. Helping a niece through
           high school is one decision. Funding three
-          nieces, a nephew and a sibling&rsquo;s child
+          nieces, a nephew and a sibling’s child
           through university is several decisions stacked
           together that nobody ever explicitly made.
         </LI>
@@ -123,7 +123,7 @@ export default function Article() {
         <LI>
           <strong>Things that look like requests but are
           really opportunities for embezzlement</strong>.
-          A &ldquo;family land project&rdquo; that turns
+          A “family land project” that turns
           out to have no land, a hospital bill that did
           not exist, a funeral that already happened. A
           minority of cases but a real category.
@@ -213,10 +213,10 @@ export default function Article() {
 
       <P>
         Diaspora Kenyans struggle to say no because no
-        feels rude. The trick is the long no. &ldquo;I
+        feels rude. The trick is the long no. “I
         cannot help with this one because of x, y, z, and
         if anything changes I will tell you, but for now
-        please plan as if my answer is no.&rdquo; The long
+        please plan as if my answer is no.” The long
         no protects the relationship more than the short
         no does, because the short no leaves room for
         ambiguity and a follow up next month.
@@ -241,7 +241,7 @@ export default function Article() {
         <LI>
           Never give the custodian rights to draw on the
           rent account. Rent goes to your bank or to a
-          professional manager&rsquo;s client account.
+          professional manager’s client account.
         </LI>
         <LI>
           Pay the custodian a clear, documented fee for
@@ -285,7 +285,7 @@ export default function Article() {
         The point is to help in a way that is sustainable
         for you and dignified for the relative. Sustainable
         means the help does not derail your retirement,
-        your children&rsquo;s university or your property
+        your children’s university or your property
         plan. Dignified means the relative knows what they
         can and cannot rely on rather than guessing at
         each request.

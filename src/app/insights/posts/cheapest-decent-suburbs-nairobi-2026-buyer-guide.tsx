@@ -53,10 +53,10 @@ export default function Article() {
         avoid.
       </Lede>
 
-      <H2 id="criteria">What &ldquo;decent and affordable&rdquo; means in this list</H2>
+      <H2 id="criteria">What “decent and affordable” means in this list</H2>
 
       <P>
-        For this list, &ldquo;decent&rdquo; means:
+        For this list, “decent” means:
       </P>
 
       <UL>
@@ -83,7 +83,7 @@ export default function Article() {
       </UL>
 
       <P>
-        And &ldquo;affordable&rdquo; means a 2-bed
+        And “affordable” means a 2-bed
         apartment under KES 8m and a 3-bed family unit
         under KES 14m. We are not listing slums or
         speculative outer plots. These are real
@@ -374,7 +374,7 @@ export default function Article() {
         </LI>
         <LI>
           Areas where land use disputes are still
-          active (parts of the Lang&rsquo;ata corridor,
+          active (parts of the Lang’ata corridor,
           some pockets near the railway reserve)
         </LI>
         <LI>
@@ -407,7 +407,7 @@ export default function Article() {
         below KES 12m.
       </P>
 
-      <Callout title="The buyer&rsquo;s priority order at this end">
+      <Callout title="The buyer’s priority order at this end">
         Compound management quality first. Specific
         unit quality second. Suburb badge third. Most
         affordable-end Nairobi disappointments come from

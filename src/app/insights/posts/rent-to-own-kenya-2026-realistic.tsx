@@ -86,7 +86,7 @@ export default function Article() {
         <LI>
           <strong>SACCOs</strong>: some SACCOs
           structure rent-to-own arrangements
-          against members&rsquo; share capital
+          against members’ share capital
         </LI>
         <LI>
           <strong>Private arrangements</strong>:
@@ -154,7 +154,7 @@ export default function Article() {
           <strong>Title risk</strong>. The title
           remains with the developer or seller
           for the period; buyers are exposed to
-          the seller&rsquo;s solvency. If the
+          the seller’s solvency. If the
           seller fails, the buyer may be an
           unsecured creditor
         </LI>
@@ -189,7 +189,7 @@ export default function Article() {
           sufficient for commercial mortgage
         </LI>
         <LI>
-          Buyers wanting to lock today&rsquo;s
+          Buyers wanting to lock today’s
           price against expected inflation
         </LI>
         <LI>

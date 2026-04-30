@@ -49,7 +49,7 @@ export default function Article() {
       <P>
         A REIT is a regulated investment vehicle that holds
         income-producing real estate and distributes the
-        rental income to unit holders. Kenya&rsquo;s REIT
+        rental income to unit holders. Kenya’s REIT
         framework, supervised by the Capital Markets
         Authority, allows three categories: Income REITs
         (I-REITs) that hold completed rented property,
@@ -261,7 +261,7 @@ export default function Article() {
         fees from REIT managers or earn anything if you
         choose a REIT over direct property. We mention REITs
         in advisory conversations where they fit a
-        client&rsquo;s profile, and we say so when they do
+        client’s profile, and we say so when they do
         not. For direct property, our{" "}
         <Link
           href="/property-sourcing"

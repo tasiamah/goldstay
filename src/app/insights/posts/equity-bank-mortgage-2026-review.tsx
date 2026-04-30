@@ -110,7 +110,7 @@ export default function Article() {
         </LI>
         <LI>
           Premium residential is not the
-          bank&rsquo;s primary focus
+          bank’s primary focus
         </LI>
         <LI>
           Process can be slower on complex
@@ -129,7 +129,7 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Equity&rsquo;s strength is volume
+        Equity’s strength is volume
         and reach. The bank approves more
         first-time buyer mortgages than any
         other lender in Kenya.

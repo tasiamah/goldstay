@@ -43,7 +43,7 @@ export default function Article() {
         established schools and a substantial
         residential and rental market. Less
         talked about than Westlands but
-        consistently active among Nairobi&rsquo;s
+        consistently active among Nairobi’s
         mid-market buyers and tenants. Here is
         the honest 2026 guide.
       </Lede>

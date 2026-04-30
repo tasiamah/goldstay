@@ -15,7 +15,7 @@ export const meta: PostMeta = {
   title:
     "The best Runda compounds in 2026: an honest map",
   description:
-    "Runda is not one place. The original Runda Estate, Runda Mumwe, Runda Mhasibu, Runda Evergreen and the broader Runda Road compounds each have different price levels, residential character and resale dynamics. Here is the honest 2026 map of Runda&rsquo;s compounds for buyers.",
+    "Runda is not one place. The original Runda Estate, Runda Mumwe, Runda Mhasibu, Runda Evergreen and the broader Runda Road compounds each have different price levels, residential character and resale dynamics. Here is the honest 2026 map of Runda’s compounds for buyers.",
   publishedAt: "2026-03-19",
   readingMinutes: 6,
   author: authors.editors,
@@ -93,7 +93,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Originally an accountants&rsquo;
+          Originally an accountants’
           cooperative compound; established
           mid-premium feel
         </LI>

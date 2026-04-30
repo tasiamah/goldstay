@@ -38,7 +38,7 @@ export default function Article() {
     <>
       <Lede>
         Young professionals (mid-twenties to
-        mid-thirties) anchor Nairobi&rsquo;s
+        mid-thirties) anchor Nairobi’s
         most active rental cohort. Here is
         the honest 2026 ranked list across
         lifestyle, commute, security, value

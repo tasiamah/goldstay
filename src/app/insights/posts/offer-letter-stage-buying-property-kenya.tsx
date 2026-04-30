@@ -57,7 +57,7 @@ export default function Article() {
 
       <P>
         An offer letter is a written, dated, signed document
-        from the buyer (or buyer&rsquo;s agent) to the seller
+        from the buyer (or buyer’s agent) to the seller
         proposing the headline terms of the purchase. In Kenya
         it is conventionally subject to contract, which means
         it is not yet a binding agreement to buy. It is a
@@ -112,16 +112,16 @@ export default function Article() {
           10%), when payable (on signing the sale agreement,
           not on signing the offer), and crucially, where it
           will be held. The only acceptable answer is in the
-          buyer&rsquo;s lawyer&rsquo;s client account or a
-          formal escrow account. Never in the seller&rsquo;s
+          buyer’s lawyer’s client account or a
+          formal escrow account. Never in the seller’s
           account.
         </LI>
         <LI>
           <strong>Completion date.</strong> A real date, not
-          &ldquo;upon completion of works&rdquo;. For ready
+          “upon completion of works”. For ready
           properties, 60 to 90 days from sale agreement is
           standard. For off-plan, the completion date should
-          align with the developer&rsquo;s programme with a
+          align with the developer’s programme with a
           long-stop date and remedy if it slips.
         </LI>
         <LI>
@@ -138,13 +138,13 @@ export default function Article() {
           Especially for furnished or partially fitted
           properties. Specify what conveys with the sale
           (white goods, fitted wardrobes, AC units, generator
-          share, water tank). The default in Kenya is &ldquo;if
-          not listed, it does not transfer&rdquo;.
+          share, water tank). The default in Kenya is “if
+          not listed, it does not transfer”.
         </LI>
         <LI>
           <strong>Subject to contract clause.</strong> A line
           confirming the offer is subject to a sale agreement
-          drawn up by the buyer&rsquo;s lawyers. This keeps
+          drawn up by the buyer’s lawyers. This keeps
           the offer non-binding while the diligence runs.
         </LI>
       </OL>
@@ -165,8 +165,8 @@ export default function Article() {
           in the rebuttal.
         </LI>
         <LI>
-          <strong>Open-ended deadlines.</strong> &ldquo;On or
-          before completion&rdquo; is meaningless. Use real
+          <strong>Open-ended deadlines.</strong> “On or
+          before completion” is meaningless. Use real
           dates, even if you adjust them later.
         </LI>
         <LI>
@@ -212,7 +212,7 @@ export default function Article() {
         is often called a Reservation Form or Expression of
         Interest. It is short, it usually requires a small
         reservation fee (KES 50,000 to KES 200,000), and it
-        commits the buyer to enter into the developer&rsquo;s
+        commits the buyer to enter into the developer’s
         sale agreement within a defined window (often 14 to
         30 days).
       </P>

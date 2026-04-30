@@ -118,7 +118,7 @@ export default function Article() {
         </LI>
         <LI>
           Compound density relative to plot
-          size; Brookside Drive&rsquo;s
+          size; Brookside Drive’s
           character is best preserved by
           lower-density compounds
         </LI>

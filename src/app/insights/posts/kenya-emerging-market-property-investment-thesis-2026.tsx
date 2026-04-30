@@ -54,7 +54,7 @@ export default function Article() {
       <H2 id="demand-side">The demand side: demographics and urbanisation</H2>
 
       <P>
-        Kenya&rsquo;s population is roughly 56 million in
+        Kenya’s population is roughly 56 million in
         2026, growing at about 2 percent a year. Median age
         is 20. Roughly 28 percent of the country lives in
         urban areas today; the long-run trajectory pushes
@@ -88,7 +88,7 @@ export default function Article() {
       <H2 id="supply-side">The supply side and the persistent gap</H2>
 
       <P>
-        Kenya&rsquo;s formal housing deficit is consistently
+        Kenya’s formal housing deficit is consistently
         estimated by the Ministry of Housing and the World
         Bank in the range of 2 million units, with about
         200,000 new units added annually against demand of
@@ -169,7 +169,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          Rents in Nairobi&rsquo;s top tier suburbs reset
+          Rents in Nairobi’s top tier suburbs reset
           upward in KES terms over time, partly tracking
           inflation and partly tracking demand. The USD
           equivalent rent of a Kilimani 2 bed today is
@@ -232,7 +232,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Title and transaction friction.</strong>{" "}
-          Kenya&rsquo;s land registration system has improved
+          Kenya’s land registration system has improved
           markedly since 2020 but is not yet world-class.
           Title fraud, while rare in mainstream urban
           residential, is a real risk that requires real

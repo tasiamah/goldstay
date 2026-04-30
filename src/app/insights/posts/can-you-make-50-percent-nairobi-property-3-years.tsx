@@ -37,7 +37,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        The &ldquo;50 percent in 3 years&rdquo;
+        The “50 percent in 3 years”
         pitch is everywhere on social media.
         Marketing decks promise it, influencer
         videos confirm it, the comments
@@ -182,8 +182,8 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Most viral &ldquo;50 percent in 3
-        years&rdquo; pitches are
+        Most viral “50 percent in 3
+        years” pitches are
         misleading on the maths. The
         underlying truth is that quality
         Nairobi property pairs durable

@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "loresho-mountain-view-nairobi-underrated-premium",
   title:
-    "Loresho and Mountain View: Nairobi&rsquo;s underrated premium pocket in 2026",
+    "Loresho and Mountain View: Nairobi’s underrated premium pocket in 2026",
   description:
     "Loresho and Mountain View sit between Westlands, Lavington and Spring Valley but somehow stay quieter and cheaper than all three. Here is the honest 2026 guide to who lives there, what property costs, what rents look like and why disciplined buyers keep ending up in the area.",
   publishedAt: "2026-04-17",

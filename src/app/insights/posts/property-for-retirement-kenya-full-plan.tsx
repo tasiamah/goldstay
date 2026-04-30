@@ -111,7 +111,7 @@ export default function Article() {
         </LI>
         <LI>
           Karen Hospital (Karen,
-          Lang&rsquo;ata)
+          Lang’ata)
         </LI>
         <LI>
           MP Shah (Parklands, Westlands)

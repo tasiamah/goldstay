@@ -40,7 +40,7 @@ export default function Article() {
         Here is what each major Nairobi residential area is
         actually doing right now, broken down by gross yield, net
         yield, who the tenant base is, and where we would put a
-        diaspora buyer&rsquo;s shilling today.
+        diaspora buyer’s shilling today.
       </Lede>
 
       <Callout title="Methodology, briefly">
@@ -183,7 +183,7 @@ export default function Article() {
         cost of the property. We do not steer diaspora
         first-time buyers towards Karen for income. We steer
         buyers who want a holding for personal use eventually
-        and don&rsquo;t mind the carrying cost in the
+        and don’t mind the carrying cost in the
         meantime.
       </P>
 

@@ -76,7 +76,7 @@ export default function Article() {
           <strong>Construction Loan</strong>
         </LI>
         <LI>
-          <strong>SACCO members&rsquo;
+          <strong>SACCO members’
           products</strong>: relationship
           pricing for SACCO-affiliated
           borrowers
@@ -107,7 +107,7 @@ export default function Article() {
       <UL>
         <LI>
           Premium residential is not the
-          bank&rsquo;s primary focus
+          bank’s primary focus
         </LI>
         <LI>
           Process can be slower than the
@@ -127,7 +127,7 @@ export default function Article() {
       </Callout>
 
       <Pullquote>
-        Co-op&rsquo;s distinctive retail and
+        Co-op’s distinctive retail and
         SACCO franchise produces consistent
         relationship pricing for the right
         borrower. Worth a quote in the

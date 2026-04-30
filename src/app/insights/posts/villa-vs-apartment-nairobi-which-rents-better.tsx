@@ -147,7 +147,7 @@ export default function Article() {
           <strong>Building governance.</strong> A poorly
           managed apartment compound (weak service charge
           collection, deferred maintenance, dysfunctional
-          management committee) can drag your unit&rsquo;s
+          management committee) can drag your unit’s
           rentability and value down regardless of how good
           your unit is. Diligence the building, not just the
           apartment.
@@ -190,8 +190,8 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Operational variance.</strong> An
-          apartment&rsquo;s unknowns are bounded. A
-          villa&rsquo;s unknowns include the perimeter wall
+          apartment’s unknowns are bounded. A
+          villa’s unknowns include the perimeter wall
           someone wants to put a window in, the neighbour
           building too high, the borehole running dry, the
           generator failing during a 16 hour blackout, and

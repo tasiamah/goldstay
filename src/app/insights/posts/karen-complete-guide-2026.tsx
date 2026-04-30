@@ -162,7 +162,7 @@ export default function Article() {
           Banda School
         </LI>
         <LI>
-          St Christopher&rsquo;s
+          St Christopher’s
         </LI>
         <LI>
           Kenton College Preparatory

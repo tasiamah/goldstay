@@ -35,7 +35,7 @@ export default function Article() {
         the Ghana Revenue Authority expects 8% of your gross
         rent. Whether you live in Accra or Atlanta. Whether your
         agent has mentioned it or not. The structure is simpler
-        than Kenya&rsquo;s and the penalties are smaller, but the
+        than Kenya’s and the penalties are smaller, but the
         compliance gap among diaspora landlords is, if anything,
         wider. Here is what the rule actually says, who pays it,
         the filing mechanic, and the three traps that catch most
@@ -56,9 +56,9 @@ export default function Article() {
 
       <P>
         Two sentences buried in that paragraph are worth a closer
-        look. &ldquo;Final withholding&rdquo; means the tax is
+        look. “Final withholding” means the tax is
         deducted at source by the person paying the rent and
-        remitted directly to GRA. &ldquo;Gross rent&rdquo; means
+        remitted directly to GRA. “Gross rent” means
         the headline rent agreed in the lease, before any
         deductions for service charge, ground rent, or
         management fees.
@@ -151,7 +151,7 @@ export default function Article() {
         Three traps that catch most diaspora landlords
       </H2>
 
-      <H3 id="trap-one">1. The &ldquo;cedi rent&rdquo; vs USD lease problem</H3>
+      <H3 id="trap-one">1. The “cedi rent” vs USD lease problem</H3>
 
       <P>
         Some Accra leases are denominated in USD (especially
@@ -178,7 +178,7 @@ export default function Article() {
       <H3 id="trap-three">3. Vacancy assumptions</H3>
 
       <P>
-        Unlike Kenya&rsquo;s MRI, Ghana does not require a nil
+        Unlike Kenya’s MRI, Ghana does not require a nil
         return for vacant months. There is no monthly KES 2,000
         equivalent penalty. But landlords who file in months when
         rent was collected and stay silent in vacant months
@@ -190,7 +190,7 @@ export default function Article() {
 
       <Pullquote>
         The simpler the rule, the wider the compliance gap.
-        Ghana&rsquo;s 8% withholding is one of the easier
+        Ghana’s 8% withholding is one of the easier
         African residential rental tax regimes to comply with,
         and one of the most under-complied with.
       </Pullquote>
@@ -229,7 +229,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          We register the landlord&rsquo;s Ghana TIN if they do
+          We register the landlord’s Ghana TIN if they do
           not have one.
         </LI>
         <LI>

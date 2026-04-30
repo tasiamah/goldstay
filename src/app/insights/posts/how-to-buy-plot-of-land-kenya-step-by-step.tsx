@@ -188,7 +188,7 @@ export default function Article() {
         This is the single most important diligence step
         on a Kenyan land purchase. Do not skip it. Do not
         accept a recent search done by the seller or the
-        seller&rsquo;s agent. Run a fresh search yourself
+        seller’s agent. Run a fresh search yourself
         through your lawyer.
       </P>
 
@@ -314,7 +314,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Spousal consent</strong> from the
-          seller&rsquo;s spouse where the land is
+          seller’s spouse where the land is
           matrimonial property under the Matrimonial
           Property Act, as covered in our{" "}
           <Link
@@ -353,7 +353,7 @@ export default function Article() {
           Purchase price and the exact payment schedule
         </LI>
         <LI>
-          Deposit (usually 10 percent) held by the buyer&rsquo;s
+          Deposit (usually 10 percent) held by the buyer’s
           lawyer in client account
         </LI>
         <LI>
@@ -395,7 +395,7 @@ export default function Article() {
         gazetted municipality, township or city) and two
         percent for genuinely rural land. The valuation is
         done by the government valuer and the duty is paid
-        on the higher of declared price and valuer&rsquo;s
+        on the higher of declared price and valuer’s
         figure. The full mechanics are in our{" "}
         <Link
           href="/insights/kenya-stamp-duty-2026-buyer-guide"
@@ -412,7 +412,7 @@ export default function Article() {
         With stamp duty paid and KRA receipt obtained, the
         transfer instrument is lodged at the Lands
         Registry. The registry processes the transfer and
-        issues a fresh title in the buyer&rsquo;s name.
+        issues a fresh title in the buyer’s name.
         Timeline:
       </P>
 
@@ -496,8 +496,8 @@ export default function Article() {
           everything.</strong> The agent who finds the
           plot, drafts the agreement, holds the deposit,
           confirms the title and registers the transfer
-          is one person too many. Separate the buyer&rsquo;s
-          lawyer from the seller&rsquo;s side completely.
+          is one person too many. Separate the buyer’s
+          lawyer from the seller’s side completely.
         </LI>
         <LI>
           <strong>Skipping the surveyor visit.</strong>{" "}

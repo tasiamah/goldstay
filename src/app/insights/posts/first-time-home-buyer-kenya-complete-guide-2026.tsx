@@ -43,7 +43,7 @@ export default function Article() {
         biggest decisions you will make, and it is also
         one of the most poorly explained. The advice
         out there is either too generic to be useful or
-        too specific to a single agent&rsquo;s pitch.
+        too specific to a single agent’s pitch.
         Here is the practical 2026 guide for first-time
         Kenyan buyers, whether you live in Nairobi,
         upcountry or in the diaspora. It covers every
@@ -136,7 +136,7 @@ export default function Article() {
 
       <P>
         Match the suburb to your actual life rather
-        than to the suburb&rsquo;s reputation. The
+        than to the suburb’s reputation. The
         relevant questions:
       </P>
 
@@ -217,8 +217,8 @@ export default function Article() {
 
       <OL>
         <LI>
-          Engage your own lawyer (not the seller&rsquo;s,
-          not the agent&rsquo;s, not the developer&rsquo;s)
+          Engage your own lawyer (not the seller’s,
+          not the agent’s, not the developer’s)
         </LI>
         <LI>
           Lawyer runs an official title search through
@@ -236,7 +236,7 @@ export default function Article() {
         </LI>
         <LI>
           Sale agreement signed, deposit (typically 10
-          percent) into lawyer&rsquo;s client account
+          percent) into lawyer’s client account
         </LI>
         <LI>
           Spousal consent if seller is married
@@ -294,7 +294,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <Callout title="The first-time buyer&rsquo;s rule of thumb">
+      <Callout title="The first-time buyer’s rule of thumb">
         Compound first, unit second, suburb third,
         emotion last. Independent lawyer, fresh title
         search, escrowed deposit, written contract,

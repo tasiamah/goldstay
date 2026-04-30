@@ -13,9 +13,9 @@ import {
 export const meta: PostMeta = {
   slug: "kmrc-affordable-mortgage-explained",
   title:
-    "KMRC and Kenya&rsquo;s affordable mortgage explained: the 2026 guide",
+    "KMRC and Kenya’s affordable mortgage explained: the 2026 guide",
   description:
-    "Kenya Mortgage Refinance Company (KMRC) is the government-backed institution behind the country&rsquo;s lower-rate Affordable Housing Programme mortgages. Here is the honest 2026 guide on what KMRC actually does, who qualifies and which banks offer KMRC-backed products.",
+    "Kenya Mortgage Refinance Company (KMRC) is the government-backed institution behind the country’s lower-rate Affordable Housing Programme mortgages. Here is the honest 2026 guide on what KMRC actually does, who qualifies and which banks offer KMRC-backed products.",
   publishedAt: "2026-02-23",
   readingMinutes: 5,
   author: authors.legal,
@@ -39,7 +39,7 @@ export default function Article() {
       <Lede>
         Kenya Mortgage Refinance Company (KMRC)
         is the government-backed institution
-        behind the country&rsquo;s lower-rate
+        behind the country’s lower-rate
         Affordable Housing Programme mortgages.
         Misunderstood by most borrowers and
         sometimes confused with a separate

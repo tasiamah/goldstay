@@ -33,10 +33,10 @@ export default function Article() {
     <>
       <Lede>
         Smart home is no longer the marketing differentiator
-        it was three years ago. In Nairobi&rsquo;s
+        it was three years ago. In Nairobi’s
         mid-market and upmarket rental segments, several
         features tenants used to pay a premium for have
-        quietly moved into &ldquo;expected&rdquo; territory.
+        quietly moved into “expected” territory.
         Others still command a real premium when done well.
         And a few add cost without adding any rent at all.
         Here is the honest 2026 picture for landlords
@@ -176,7 +176,7 @@ export default function Article() {
         <LI>
           <strong>Voice assistants pre-installed.</strong>{" "}
           Alexa or Google Home in a rental usually ends up
-          unused, signed in to the previous tenant&rsquo;s
+          unused, signed in to the previous tenant’s
           account, or factory reset between guests anyway.
           Skip.
         </LI>
@@ -235,7 +235,7 @@ export default function Article() {
           Compound gate access pre-arranged for the guest
         </LI>
         <LI>
-          Streaming-equipped TV with the guest&rsquo;s
+          Streaming-equipped TV with the guest’s
           preferred apps available (Netflix, YouTube Premium
           where licensing allows, Showmax)
         </LI>
@@ -272,7 +272,7 @@ export default function Article() {
         </LI>
         <LI>
           Avoid linking the smart device to the
-          installer&rsquo;s personal account. Set up a
+          installer’s personal account. Set up a
           property-owned account that survives staff
           changes.
         </LI>
@@ -284,7 +284,7 @@ export default function Article() {
         </LI>
         <LI>
           Document model numbers, account credentials and
-          service history in the property&rsquo;s
+          service history in the property’s
           maintenance file.
         </LI>
       </OL>

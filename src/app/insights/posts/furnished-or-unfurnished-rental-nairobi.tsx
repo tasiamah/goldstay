@@ -105,7 +105,7 @@ export default function Article() {
 
       <P>
         Total: KES 910,000 to KES 1,450,000 (USD 7,000 to
-        USD 11,000) for a properly-spec&rsquo;d 2 bed.
+        USD 11,000) for a properly-spec’d 2 bed.
         Skimp by 30% and you get a unit that photographs
         well but feels cheap on inspection, which costs you
         more in slow letting than the savings ever recover.
@@ -157,8 +157,8 @@ export default function Article() {
         <LI>
           <strong>Mid-tier, not bottom-tier.</strong> The
           worst ROI is bottom-tier furnishing. The
-          difference between &ldquo;cheap&rdquo; and
-          &ldquo;mid&rdquo; is roughly 25% of cost and 100%
+          difference between “cheap” and
+          “mid” is roughly 25% of cost and 100%
           of perceived quality.
         </LI>
         <LI>
@@ -213,7 +213,7 @@ export default function Article() {
         </LI>
         <LI>
           Owners who personally use the property
-          intermittently. Owner&rsquo;s personal furniture
+          intermittently. Owner’s personal furniture
           generally does not survive tenant turnover well,
           and dual-use furnishing is a recipe for
           mid-tenancy disputes.

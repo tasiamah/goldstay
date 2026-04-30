@@ -98,8 +98,8 @@ export default function Article() {
         <LI>
           <strong>Communication degrading</strong>:
           slower replies, evasive answers,
-          marketing replaced by &ldquo;trust
-          us&rdquo;
+          marketing replaced by “trust
+          us”
         </LI>
         <LI>
           <strong>Payment requests outside

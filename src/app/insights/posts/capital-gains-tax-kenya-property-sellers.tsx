@@ -95,7 +95,7 @@ export default function Article() {
       </UL>
 
       <P>
-        The diaspora seller&rsquo;s problem is that capital
+        The diaspora seller’s problem is that capital
         improvements often happened five, ten, fifteen years
         ago, with receipts long lost. KRA accepts
         bank-statement evidence of payment, contractor
@@ -107,7 +107,7 @@ export default function Article() {
       </P>
 
       <Pullquote>
-        The diaspora seller&rsquo;s problem is rarely the
+        The diaspora seller’s problem is rarely the
         15% rate. It is that they cannot prove the cost
         base and end up paying CGT on gains they did not
         actually make.
@@ -118,7 +118,7 @@ export default function Article() {
       <H3 id="exempt-1">1. Principal place of residence</H3>
 
       <P>
-        Disposal of a property that has been the seller&rsquo;s
+        Disposal of a property that has been the seller’s
         principal place of residence for at least three of
         the five years preceding the sale is exempt. For most
         diaspora sellers this does not apply, because the
@@ -159,7 +159,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          The seller&rsquo;s lawyer files a CGT return on
+          The seller’s lawyer files a CGT return on
           iTax before submitting transfer documents to the
           registry.
         </LI>
@@ -253,7 +253,7 @@ export default function Article() {
         </LI>
         <LI>
           Get a current valuation. The KRA reference
-          minimum value (the &ldquo;assessed value&rdquo;)
+          minimum value (the “assessed value”)
           is increasingly used as a floor for CGT
           calculation. If your sale price is below it, KRA
           can re-assess.

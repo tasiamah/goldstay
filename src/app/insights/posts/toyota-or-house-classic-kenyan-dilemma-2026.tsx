@@ -301,7 +301,7 @@ export default function Article() {
         For most working Kenyans and diaspora Kenyans
         under 45 with no property yet, the right answer
         is the apartment first and the smaller car. The
-        Premio comes later, paid for by the apartment&rsquo;s
+        Premio comes later, paid for by the apartment’s
         rent rather than by the salary that should be
         building your retirement. The cultural pressure
         runs the other way; the spreadsheet does not.

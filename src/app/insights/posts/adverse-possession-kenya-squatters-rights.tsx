@@ -55,8 +55,8 @@ export default function Article() {
       <P>
         Adverse possession is the legal principle that
         a person who occupies and uses someone
-        else&rsquo;s land openly, continuously and
-        without the owner&rsquo;s permission for a
+        else’s land openly, continuously and
+        without the owner’s permission for a
         period of 12 years can apply to the court to
         be registered as the owner. The doctrine is
         codified in the Limitation of Actions Act
@@ -82,7 +82,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Hostile</strong>. Without the
-          owner&rsquo;s permission. Permission
+          owner’s permission. Permission
           breaks the adverse possession
         </LI>
         <LI>
@@ -156,8 +156,8 @@ export default function Article() {
         Document visits to the property. Photographs
         with dates. Receipts from local payments.
         County rates payments. Any record that
-        demonstrates the owner&rsquo;s continued
-        engagement breaks the squatter&rsquo;s
+        demonstrates the owner’s continued
+        engagement breaks the squatter’s
         narrative of exclusive possession.
       </P>
 
@@ -192,10 +192,10 @@ export default function Article() {
 
       <P>
         A formally engaged caretaker on the
-        owner&rsquo;s instructions occupies on the
-        owner&rsquo;s behalf. Their occupation is
-        permissive and counts as the owner&rsquo;s
-        possession, not the caretaker&rsquo;s.
+        owner’s instructions occupies on the
+        owner’s behalf. Their occupation is
+        permissive and counts as the owner’s
+        possession, not the caretaker’s.
       </P>
 
       <H3 id="manage">Engage a property manager</H3>
@@ -255,7 +255,7 @@ export default function Article() {
         not.
       </P>
 
-      <Callout title="The diaspora landowner&rsquo;s rule">
+      <Callout title="The diaspora landowner’s rule">
         Visit the land at least every 18 to 24
         months. Pay land rates annually. If anyone
         is using the land, paper the use as

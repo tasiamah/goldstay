@@ -110,8 +110,8 @@ export default function Article() {
       <H3 id="snagging">Snagging is genuinely longer than developers plan</H3>
 
       <P>
-        The gap between &ldquo;structurally complete&rdquo;
-        and &ldquo;ready for handover&rdquo; in Nairobi is
+        The gap between “structurally complete”
+        and “ready for handover” in Nairobi is
         commonly 6 to 12 months. Power connection, water
         connection, lift commissioning, generator
         commissioning, fire system sign-off, NEMA
@@ -168,13 +168,13 @@ export default function Article() {
           <strong>Marketed presales discount that looks
           too generous.</strong> Below-market off-plan
           discounts are typically funded by the next
-          buyer&rsquo;s deposit. A project with very
+          buyer’s deposit. A project with very
           aggressive presales pricing is often a project
           short of equity.
         </LI>
         <LI>
           <strong>No genuine escrow.</strong> Buyer
-          deposits going into the developer&rsquo;s
+          deposits going into the developer’s
           general operating account rather than a
           designated trust or escrow account. The strongest
           single negative signal.
@@ -202,7 +202,7 @@ export default function Article() {
         <LI>
           <strong>Contractor not named.</strong> A
           credible developer names their contractor and
-          can demonstrate the contractor&rsquo;s
+          can demonstrate the contractor’s
           capacity. Vague answers on contractor identity
           are a signal.
         </LI>
@@ -256,7 +256,7 @@ export default function Article() {
         <LI>
           <strong>Independent project monitor.</strong>{" "}
           A quantity surveyor or project manager
-          retained by buyer (or by buyer&rsquo;s lawyer)
+          retained by buyer (or by buyer’s lawyer)
           to verify milestone progress. This costs
           marginal money and saves substantial money.
         </LI>
@@ -295,7 +295,7 @@ export default function Article() {
         If the marketed off-plan price does not look
         attractive once you have made these adjustments,
         the project is asking you to subsidise the
-        developer&rsquo;s risk. Walk.
+        developer’s risk. Walk.
       </P>
 
       <Callout title="When off-plan still makes sense">

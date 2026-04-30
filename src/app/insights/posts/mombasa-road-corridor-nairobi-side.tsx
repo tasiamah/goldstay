@@ -13,7 +13,7 @@ import {
 export const meta: PostMeta = {
   slug: "mombasa-road-corridor-nairobi-side",
   title:
-    "The Mombasa Road corridor: Nairobi&rsquo;s southern residential belt",
+    "The Mombasa Road corridor: Nairobi’s southern residential belt",
   description:
     "Mombasa Road runs from the Nairobi CBD past JKIA into the southern metro. The suburbs along the way each have distinct character and tenant profiles, anchored by the airport, the Industrial Area and the SGR. Here is the honest 2026 guide on the Nairobi side of the corridor.",
   publishedAt: "2026-03-13",
@@ -191,7 +191,7 @@ export default function Article() {
 
       <Pullquote>
         The Mombasa Road corridor is
-        Nairobi&rsquo;s southern engine. The
+        Nairobi’s southern engine. The
         Expressway changed the calculation;
         the disciplined investor reaps the
         most.

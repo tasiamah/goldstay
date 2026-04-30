@@ -72,7 +72,7 @@ export default function Article() {
       <P>
         National ID for Kenyan tenants, passport for
         foreign tenants. We photograph the original (not
-        a copy) against the tenant&rsquo;s face on a video
+        a copy) against the tenant’s face on a video
         call or in person. We cross-reference the ID
         number against the iTax PIN, since every adult
         Kenyan working formally has one. If the ID and
@@ -117,7 +117,7 @@ export default function Article() {
       </P>
 
       <P>
-        We treat &ldquo;great tenant, no issues&rdquo;
+        We treat “great tenant, no issues”
         with mild scepticism if the previous landlord is
         a relative. We treat the same statement with
         confidence if the previous landlord is a known
@@ -165,7 +165,7 @@ export default function Article() {
       <H3 id="check-8">8. Lease term match</H3>
 
       <P>
-        We match lease terms to the tenant&rsquo;s
+        We match lease terms to the tenant’s
         actual situation. A 12 month lease for somebody
         on a three month consulting contract is asking
         for early termination. A 6 month lease for
@@ -238,15 +238,15 @@ export default function Article() {
         <LI>
           Two to four days from application to lease
           signing. Faster than informal arrangements but
-          slower than &ldquo;same-day if you have the
-          money&rdquo;, which is the wrong cadence for
+          slower than “same-day if you have the
+          money”, which is the wrong cadence for
           serious tenancies.
         </LI>
       </UL>
 
       <Callout title="The most useful question we ask">
-        &ldquo;What rent are you paying right now, and
-        what was your rent before that?&rdquo; Tenants
+        “What rent are you paying right now, and
+        what was your rent before that?” Tenants
         with stable rent histories that match their
         income answer easily. Tenants with chaotic
         histories struggle. Five seconds of phrasing

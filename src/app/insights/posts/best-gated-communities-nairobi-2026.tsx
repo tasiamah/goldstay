@@ -17,7 +17,7 @@ export const meta: PostMeta = {
   title:
     "The best gated communities in Nairobi in 2026: an honest 2026 guide",
   description:
-    "Nairobi&rsquo;s premium living happens inside compounds. This is an honest 2026 walk through of the best gated communities in the city, organised by suburb and tenant tier, with what makes each one rent and resell well, who actually lives there, and the trade offs buyers should know before committing.",
+    "Nairobi’s premium living happens inside compounds. This is an honest 2026 walk through of the best gated communities in the city, organised by suburb and tenant tier, with what makes each one rent and resell well, who actually lives there, and the trade offs buyers should know before committing.",
   publishedAt: "2025-05-14",
   readingMinutes: 9,
   author: authors.editors,
@@ -47,7 +47,7 @@ export default function Article() {
         services like water and power that work better at
         compound scale. The result is that picking the
         right gated community is most of the property
-        decision in Nairobi&rsquo;s premium and upper mid
+        decision in Nairobi’s premium and upper mid
         market segments. This is the 2026 guide to the
         gated communities that actually rent well, resell
         well and hold value, written without the marketing
@@ -389,7 +389,7 @@ export default function Article() {
         Gigiri, Rosslyn, Tatu and the Mombasa Road
         corridor. For sourcing clients we recommend on the
         compound first and the unit second; for management
-        clients we work with the compound&rsquo;s
+        clients we work with the compound’s
         management company directly so the owner does not
         have to navigate it from abroad.
       </P>

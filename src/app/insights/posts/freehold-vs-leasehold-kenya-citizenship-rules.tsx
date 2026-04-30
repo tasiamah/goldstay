@@ -41,8 +41,8 @@ export default function Article() {
     <>
       <Lede>
         Almost every diaspora buyer we work with has heard a
-        version of the rule: &ldquo;you have to be Kenyan to
-        own land in Kenya.&rdquo; The full picture is more
+        version of the rule: “you have to be Kenyan to
+        own land in Kenya.” The full picture is more
         precise than that, more permissive in some ways and
         more restrictive in others. The rule sits in
         Article 65 of the 2010 Constitution and it shapes
@@ -211,13 +211,13 @@ export default function Article() {
       <UL>
         <LI>
           The land underneath the building is held by the
-          development&rsquo;s management company on
+          development’s management company on
           leasehold from the relevant authority (typically
           99 years, sometimes 999 for certain older titles).
         </LI>
         <LI>
           Each individual apartment is registered as a
-          separate sectional title, with the owner&rsquo;s
+          separate sectional title, with the owner’s
           name on the title and a corresponding share in
           the management company that holds the underlying
           land.

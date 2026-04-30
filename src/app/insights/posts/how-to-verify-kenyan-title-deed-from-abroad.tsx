@@ -84,7 +84,7 @@ export default function Article() {
           The title number on the document the seller is
           holding is a real registered title.
         </LI>
-        <LI>The registered owner&rsquo;s name matches the seller.</LI>
+        <LI>The registered owner’s name matches the seller.</LI>
         <LI>
           The size and tenure on the title document match the
           register.
@@ -103,8 +103,8 @@ export default function Article() {
         If any of those five fail, do not proceed to offer.
         The number of cases we have seen where a buyer
         proceeded after a title returned a registered charge
-        on the basis of &ldquo;the seller said they will
-        clear it before completion&rdquo; is greater than
+        on the basis of “the seller said they will
+        clear it before completion” is greater than
         zero, and the outcomes are uniformly bad.
       </P>
 
@@ -146,7 +146,7 @@ export default function Article() {
       <P>
         The defence is to confirm physical occupation
         matches the title. Whoever is in the property, or
-        the building&rsquo;s management committee, should
+        the building’s management committee, should
         recognise the seller as the owner. Our pre-purchase
         inspection always asks the building security or the
         management committee chair to confirm the seller is
@@ -166,14 +166,14 @@ export default function Article() {
       <P>
         Every diaspora purchase should be done through a
         Kenyan advocate engaged and paid by the buyer
-        directly. Not the seller&rsquo;s lawyer, not the
-        agent&rsquo;s lawyer, your own lawyer. Cost for
+        directly. Not the seller’s lawyer, not the
+        agent’s lawyer, your own lawyer. Cost for
         residential conveyancing in Nairobi in 2026: 1.5 to
         2.5% of purchase price plus disbursements.
       </P>
 
       <P>
-        Your lawyer&rsquo;s job is to:
+        Your lawyer’s job is to:
       </P>
 
       <UL>
@@ -182,7 +182,7 @@ export default function Article() {
           Pull the rates and ground rent clearance certificates.
         </LI>
         <LI>
-          Confirm the seller&rsquo;s identity matches the
+          Confirm the seller’s identity matches the
           registered owner (passport copy, KRA PIN
           certificate, witnesses).
         </LI>
@@ -261,7 +261,7 @@ export default function Article() {
           2,500 to KES 5,000.
         </LI>
         <LI>
-          Lawyer&rsquo;s search and report on title: KES
+          Lawyer’s search and report on title: KES
           5,000 to KES 10,000.
         </LI>
         <LI>Physical inspection and occupation match: included by us.</LI>

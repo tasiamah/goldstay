@@ -15,9 +15,9 @@ import {
 export const meta: PostMeta = {
   slug: "nairobi-emerging-suburbs-ruiru-kitengela-syokimau-athi-river",
   title:
-    "Nairobi&rsquo;s emerging suburbs in 2026: Ruiru, Kitengela, Syokimau and Athi River",
+    "Nairobi’s emerging suburbs in 2026: Ruiru, Kitengela, Syokimau and Athi River",
   description:
-    "Outside the core Nairobi suburbs, four growth corridors are absorbing most of the city&rsquo;s new mid-market families. Ruiru on the north, Kitengela and Athi River on the south east, and Syokimau on the airport corridor. Honest 2026 prices, rental yields, tenant base and which one fits which investor.",
+    "Outside the core Nairobi suburbs, four growth corridors are absorbing most of the city’s new mid-market families. Ruiru on the north, Kitengela and Athi River on the south east, and Syokimau on the airport corridor. Honest 2026 prices, rental yields, tenant base and which one fits which investor.",
   publishedAt: "2025-05-27",
   readingMinutes: 9,
   author: authors.research,
@@ -32,7 +32,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Most of Nairobi&rsquo;s housing growth in the last
+        Most of Nairobi’s housing growth in the last
         decade has happened outside the traditional core
         suburbs. Four corridors absorbed the bulk of it:
         Ruiru on the Northern Bypass, Kitengela and Athi

@@ -57,7 +57,7 @@ export default function Article() {
       <P>
         The proposed Adani Group concession to operate
         and expand JKIA was abandoned in November 2024
-        after the US indictments against the group&rsquo;s
+        after the US indictments against the group’s
         founder. JKIA modernisation has continued under
         Kenya Airports Authority leadership and through
         smaller specific contracts.
@@ -171,7 +171,7 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Nairobi Expressway</strong> (delivered
-          2022) is now fully integrated into the city&rsquo;s
+          2022) is now fully integrated into the city’s
           commute pattern and has reshaped property
           values along the corridor. Detail in our{" "}
           <Link
