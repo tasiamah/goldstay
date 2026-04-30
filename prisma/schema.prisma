@@ -97,7 +97,26 @@ enum DocumentKind {
   RECEIPT
   STATEMENT
   PHOTO
+  // Signed Goldstay management agreement; written by the
+  // ManagementAgreement.sign action, never uploaded by hand.
+  MANAGEMENT_AGREEMENT
   OTHER
+}
+
+enum AgreementStatus {
+  // Created server-side but not yet shown to the owner. Surfaces in
+  // the admin UI so we can review / regenerate before sending.
+  DRAFT
+  // Visible to the owner with a clear "review and sign" call to
+  // action. Default state immediately after a property is verified.
+  SENT
+  // Owner has clicked "I agree" and we have captured a signature
+  // record (typed name, IP, UA, timestamp). The PDF lives as a
+  // Document on the property.
+  SIGNED
+  // Manually killed by an admin (e.g. terms changed before signing).
+  // We keep the row for audit and supersede it with a new agreement.
+  CANCELLED
 }
 
 // One row per landlord. authUserId is the Supabase auth.users.id so we
@@ -151,6 +170,7 @@ model Property {
   transactions  Transaction[]
   bookings      Booking[]
   icalFeeds     PropertyIcalFeed[]
+  agreements    ManagementAgreement[]
 
   @@index([ownerId])
   @@index([country])
@@ -313,5 +333,56 @@ model Document {
   uploadedBy  String?
   createdAt   DateTime     @default(now())
 
+  // Backlink for management agreements that materialise themselves
+  // as a Document row on signing. Optional because most documents
+  // (title deeds, leases, KYC) have no source agreement.
+  agreement   ManagementAgreement?
+
   @@index([propertyId, kind])
+}
+
+// Goldstay's management agreement with the landlord, scoped to a
+// single property. Generated automatically when a property is marked
+// verified; sent to the owner for click-to-accept signature; the
+// signed snapshot is materialised as a Document row attached to the
+// same property so it lives next to the rest of the paper trail.
+//
+// Term, commission rate and early-termination fee are snapshotted
+// onto the row at generation time. Future changes to the defaults
+// helper never retroactively alter a signed contract.
+model ManagementAgreement {
+  id                   String          @id @default(cuid())
+  propertyId           String
+  property             Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Snapshot of terms agreed for this specific property.
+  termMonths           Int
+  commissionRate       Decimal         @db.Decimal(5, 4) // 0.2000 = 20%
+  earlyExitFee         Decimal         @db.Decimal(12, 2)
+  earlyExitFeeCurrency String
+  noticePeriodDays     Int
+  governingLaw         String          // "Kenya" or "Ghana"
+
+  status               AgreementStatus @default(DRAFT)
+
+  // Lifecycle timestamps; null until the corresponding event happens.
+  generatedAt          DateTime        @default(now())
+  sentAt               DateTime?
+  signedAt             DateTime?
+
+  // Click-to-accept signature record. Captured server-side from the
+  // request the owner submits, never trusted from form input.
+  signedByName         String?
+  signedByIp           String?
+  signedByUserAgent    String?
+
+  // Once SIGNED we render the PDF and attach it as a Document.
+  documentId           String?         @unique
+  document             Document?       @relation(fields: [documentId], references: [id], onDelete: SetNull)
+
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  @@index([propertyId])
+  @@index([status])
 }
