@@ -66,7 +66,6 @@ export async function createLeaseAction(
     });
 
     revalidatePath("/admin");
-    revalidatePath(`/admin/units/${parsed.data.unitId}`);
     if (propertyId) {
       revalidatePath(`/admin/properties/${propertyId}`);
     }
@@ -95,13 +94,12 @@ export async function updateLeaseAction(
   }
   try {
     const { unitId: _u, ...rest } = parsed.data;
-    const updated = await prisma.lease.update({
+    await prisma.lease.update({
       where: { id: leaseId },
       data: rest,
     });
     revalidatePath("/admin");
     revalidatePath(`/admin/leases/${leaseId}`);
-    revalidatePath(`/admin/units/${updated.unitId}`);
     return { ok: true, leaseId };
   } catch {
     return { ok: false, error: "Could not save changes. Please retry." };
@@ -131,5 +129,4 @@ export async function endLeaseAction(leaseId: string): Promise<void> {
 
   revalidatePath("/admin");
   revalidatePath(`/admin/leases/${leaseId}`);
-  revalidatePath(`/admin/units/${lease.unitId}`);
 }

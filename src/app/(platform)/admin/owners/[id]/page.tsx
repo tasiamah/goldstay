@@ -16,7 +16,6 @@ export default async function OwnerDetailPage({
     include: {
       properties: {
         orderBy: { createdAt: "desc" },
-        include: { _count: { select: { units: true } } },
       },
     },
   });
@@ -112,8 +111,10 @@ export default async function OwnerDetailPage({
                     </Link>
                     <p className="text-xs text-stone-500">
                       {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
-                      {p.city} · {p._count.units}{" "}
-                      {p._count.units === 1 ? "unit" : "units"}
+                      {p.city} ·{" "}
+                      {p.propertyType === "SHORT_TERM"
+                        ? "Short-term"
+                        : "Long-term"}
                     </p>
                   </div>
                   <span className="text-xs uppercase tracking-wider text-stone-500">

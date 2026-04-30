@@ -8,7 +8,6 @@ export default async function PropertiesListPage() {
     orderBy: { createdAt: "desc" },
     include: {
       owner: { select: { id: true, fullName: true } },
-      _count: { select: { units: true } },
     },
   });
 
@@ -48,7 +47,7 @@ export default async function PropertiesListPage() {
                 <Th>Property</Th>
                 <Th>Owner</Th>
                 <Th>Country</Th>
-                <Th align="right">Units</Th>
+                <Th>Model</Th>
                 <Th>Status</Th>
               </tr>
             </thead>
@@ -78,8 +77,10 @@ export default async function PropertiesListPage() {
                   <td className="px-4 py-3 text-sm text-stone-700">
                     {p.country === "KE" ? "Kenya" : "Ghana"}
                   </td>
-                  <td className="px-4 py-3 text-right text-sm tabular-nums text-stone-700">
-                    {p._count.units}
+                  <td className="px-4 py-3 text-sm text-stone-700">
+                    {p.propertyType === "SHORT_TERM"
+                      ? "Short-term"
+                      : "Long-term"}
                   </td>
                   <td className="px-4 py-3 text-xs uppercase tracking-wider text-stone-500">
                     {p.status}

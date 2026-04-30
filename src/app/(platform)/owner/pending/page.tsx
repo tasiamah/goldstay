@@ -54,7 +54,7 @@ export default async function OwnerPendingPage() {
               property documents you shared.
             </li>
             <li>
-              We add your portfolio (properties, units, current
+              We add your portfolio (properties and current
               tenancies) to your dashboard.
             </li>
             <li>

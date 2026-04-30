@@ -59,7 +59,7 @@ export function PropertyForm({
         label="Property name"
         name="name"
         defaultValue={defaults.name ?? ""}
-        placeholder="Pinetree Plaza unit 4B"
+        placeholder="Pinetree Plaza A4B"
         required
         error={fieldError("name")}
       />
