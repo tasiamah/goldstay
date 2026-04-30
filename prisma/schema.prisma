@@ -150,6 +150,7 @@ model Property {
   valuations    Valuation[]
   transactions  Transaction[]
   bookings      Booking[]
+  icalFeeds     PropertyIcalFeed[]
 
   @@index([ownerId])
   @@index([country])
@@ -257,6 +258,29 @@ model Booking {
   @@unique([source, externalId])
   @@index([propertyId, checkIn])
   @@index([status])
+}
+
+// One row per channel calendar feed for a short-term property. Each
+// OTA exposes a public iCal URL that we poll every 15 minutes (via
+// the Vercel cron at /api/cron/sync-ical). Cheaper and friendlier
+// than full PMS integrations like Hostaway, but limited to dates
+// only — no guest names, no money. We import calendar holds as
+// placeholder Booking rows so the occupancy calendar lights up;
+// the operator backfills financials later from the OTA dashboard.
+model PropertyIcalFeed {
+  id             String        @id @default(cuid())
+  propertyId     String
+  property       Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  source         BookingSource
+  url            String
+  lastSyncedAt   DateTime?
+  lastSuccessAt  DateTime?
+  lastError      String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@unique([propertyId, source])
+  @@index([propertyId])
 }
 
 // Snapshot of an estimated property valuation at a point in time.
