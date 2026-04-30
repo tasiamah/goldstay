@@ -55,11 +55,29 @@ export async function createPropertyAction(
   }
 
   try {
-    const created = await prisma.property.create({
-      data: {
-        ...parsed.data,
-        country: owner.country as Country,
-      },
+    // Business rule (current): a property is rented out as a whole,
+    // never sub-divided. We still keep the Unit table because Lease
+    // FKs into it, so we auto-create one implicit unit per property
+    // and treat it as the property itself everywhere in the UI. If
+    // we ever rent out subparts (a building, a compound) we flip
+    // back to the per-unit flow without a migration.
+    const created = await prisma.$transaction(async (tx) => {
+      const property = await tx.property.create({
+        data: {
+          ...parsed.data,
+          country: owner.country as Country,
+        },
+      });
+      await tx.unit.create({
+        data: {
+          propertyId: property.id,
+          label: "Whole property",
+          bedrooms: property.bedrooms,
+          bathrooms: property.bathrooms,
+          sizeSqm: property.sizeSqm,
+        },
+      });
+      return property;
     });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
