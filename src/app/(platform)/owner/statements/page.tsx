@@ -10,7 +10,7 @@ import { prisma } from "@/lib/db";
 import {
   formatPeriod,
   periodRange,
-  recentPeriods,
+  periodsSince,
   type Period,
 } from "@/lib/statements/period";
 
@@ -19,10 +19,22 @@ export const dynamic = "force-dynamic";
 export default async function OwnerStatementsPage() {
   const { owner } = await requireOwner();
 
-  const periods = recentPeriods(new Date(), 12);
+  // Floor the dropdown to the earlier of (joined date, first txn) so
+  // brand new landlords don't see a wall of "no activity" cards for
+  // months that predate them. Capped at 24 months for sanity.
+  const earliestTx = await prisma.transaction.findFirst({
+    where: { property: { ownerId: owner.id } },
+    orderBy: { occurredOn: "asc" },
+    select: { occurredOn: true },
+  });
+  const earliest =
+    earliestTx && earliestTx.occurredOn < owner.createdAt
+      ? earliestTx.occurredOn
+      : owner.createdAt;
+  const periods = periodsSince(earliest, new Date());
 
-  // Pull the full 12-month window in one query and bucket client-side
-  // so we don't fan out to 12 separate Prisma calls.
+  // Pull the full window in one query and bucket client-side so we
+  // don't fan out to one Prisma call per month.
   const oldest = periodRange(periods[periods.length - 1]).start;
   const newest = periodRange(periods[0]).end;
 

@@ -15,7 +15,7 @@ import {
   formatPeriod,
   parsePeriod,
   periodRange,
-  recentPeriods,
+  periodsSince,
 } from "@/lib/statements/period";
 
 export const dynamic = "force-dynamic";
@@ -59,7 +59,7 @@ export default async function OwnerTransactionsPage({
     where.occurredOn = { gte: start, lt: end };
   }
 
-  const [transactions, total, properties] = await Promise.all([
+  const [transactions, total, properties, earliestTx] = await Promise.all([
     prisma.transaction.findMany({
       where,
       orderBy: { occurredOn: "desc" },
@@ -76,10 +76,21 @@ export default async function OwnerTransactionsPage({
       orderBy: { name: "asc" },
       select: { id: true, name: true },
     }),
+    // Earliest transaction date constrains the month dropdown so a
+    // landlord who joined last week doesn't see 11 empty months.
+    prisma.transaction.findFirst({
+      where: { property: { ownerId: owner.id } },
+      orderBy: { occurredOn: "asc" },
+      select: { occurredOn: true },
+    }),
   ]);
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-  const months = recentPeriods(new Date(), 12);
+  const earliest =
+    earliestTx && earliestTx.occurredOn < owner.createdAt
+      ? earliestTx.occurredOn
+      : owner.createdAt;
+  const months = periodsSince(earliest, new Date());
 
   return (
     <div className="space-y-6">

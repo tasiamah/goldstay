@@ -4,6 +4,7 @@ import {
   parsePeriod,
   periodRange,
   periodSlug,
+  periodsSince,
   recentPeriods,
 } from "./period";
 
@@ -57,5 +58,31 @@ describe("recentPeriods", () => {
       { year: 2025, month: 12 },
       { year: 2025, month: 11 },
     ]);
+  });
+});
+
+describe("periodsSince", () => {
+  const now = new Date("2026-04-15T00:00:00Z");
+
+  it("returns just the current month for an owner who joined this month", () => {
+    const out = periodsSince(new Date("2026-04-02T00:00:00Z"), now);
+    expect(out).toEqual([{ year: 2026, month: 4 }]);
+  });
+
+  it("includes every month from earliest to now, most recent first", () => {
+    const out = periodsSince(new Date("2026-01-20T00:00:00Z"), now);
+    expect(out).toEqual([
+      { year: 2026, month: 4 },
+      { year: 2026, month: 3 },
+      { year: 2026, month: 2 },
+      { year: 2026, month: 1 },
+    ]);
+  });
+
+  it("caps at maxCount even if earliest is years back", () => {
+    const out = periodsSince(new Date("2020-01-01T00:00:00Z"), now, 6);
+    expect(out).toHaveLength(6);
+    expect(out[0]).toEqual({ year: 2026, month: 4 });
+    expect(out[5]).toEqual({ year: 2025, month: 11 });
   });
 });
