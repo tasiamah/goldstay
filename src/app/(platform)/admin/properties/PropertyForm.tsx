@@ -37,18 +37,15 @@ export function PropertyForm({
   defaults,
   submitLabel,
   ownerCountry,
-  showStatusField = false,
 }: {
   action: FormAction;
   defaults: Defaults;
   submitLabel: string;
   ownerCountry: "KE" | "GH";
-  // Status is inferred for new properties (defaults to ONBOARDING and
-  // auto-promotes to ACTIVE on first lease). Only surface the editable
-  // field on the edit form, where admins may need to mark EXITED or
-  // correct a stuck row.
-  showStatusField?: boolean;
 }) {
+  // Status is intentionally not on this form. It's a lifecycle state
+  // (Onboarding → Active → Exited) driven by explicit actions on the
+  // property detail page after a human has reviewed the paperwork.
   const [state, formAction] = useFormState(action, null);
   const fieldError = (key: string) =>
     state && !state.ok ? state.fieldErrors?.[key] : undefined;
@@ -160,21 +157,19 @@ export function PropertyForm({
         />
       </fieldset>
 
-      {showStatusField ? (
-        <Select
-          label="Status"
-          name="status"
-          defaultValue={defaults.status ?? "ONBOARDING"}
-          required
-          options={[
-            { value: "ONBOARDING", label: "Onboarding" },
-            { value: "ACTIVE", label: "Active" },
-            { value: "EXITED", label: "Exited" },
-          ]}
-          error={fieldError("status")}
-          hint="Onboarding flips to Active automatically on the first lease. Use Exited only when the property leaves the portfolio."
-        />
-      ) : null}
+      {/*
+        Status used to be editable here. It's now driven by lifecycle
+        actions on the property detail page, so we lock the value via
+        a hidden input that just echoes whatever was already on the row
+        (or ONBOARDING for new properties). This keeps the form
+        round-trip safe while removing it from the admin's mental
+        model of "fields I can change".
+      */}
+      <input
+        type="hidden"
+        name="status"
+        value={defaults.status ?? "ONBOARDING"}
+      />
 
       {state && !state.ok ? (
         <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">
@@ -432,7 +427,6 @@ function Select({
   required,
   error,
   options,
-  hint,
 }: {
   label: string;
   name: string;
@@ -440,7 +434,6 @@ function Select({
   required?: boolean;
   error?: string;
   options: { value: string; label: string }[];
-  hint?: string;
 }) {
   return (
     <label className="block">
@@ -464,9 +457,6 @@ function Select({
           </option>
         ))}
       </select>
-      {hint ? (
-        <span className="mt-1 block text-xs text-stone-500">{hint}</span>
-      ) : null}
       {error ? (
         <span className="mt-1 block text-xs text-red-700">{error}</span>
       ) : null}
