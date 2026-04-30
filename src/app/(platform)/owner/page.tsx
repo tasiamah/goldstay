@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import {
+  aggregateTransactionsByCurrency,
+  occupancyPercent,
+} from "@/lib/owner-dashboard";
 
 export const dynamic = "force-dynamic";
 
@@ -75,23 +79,18 @@ export default async function OwnerDashboardPage() {
     }),
   ]);
 
-  const occupancyPct =
-    unitCount === 0 ? null : Math.round((occupiedUnitCount / unitCount) * 100);
+  const occupancyPct = occupancyPercent({
+    totalUnits: unitCount,
+    occupiedUnits: occupiedUnitCount,
+  });
 
-  // Group totals by currency so we don't pretend USD and KES sum.
-  const byCurrency = new Map<
-    string,
-    { inflow: number; outflow: number }
-  >();
-  for (const row of totals) {
-    const bucket = byCurrency.get(row.currency) ?? { inflow: 0, outflow: 0 };
-    const amt = Number(row._sum.amount ?? 0);
-    if (row.direction === "INFLOW") bucket.inflow += amt;
-    else bucket.outflow += amt;
-    byCurrency.set(row.currency, bucket);
-  }
-  const currencyRows = Array.from(byCurrency.entries()).sort(([a], [b]) =>
-    a === owner.preferredCurrency ? -1 : b === owner.preferredCurrency ? 1 : 0,
+  const currencyRows = aggregateTransactionsByCurrency(
+    totals.map((t) => ({
+      currency: t.currency,
+      direction: t.direction,
+      amount: t._sum.amount ? Number(t._sum.amount) : 0,
+    })),
+    owner.preferredCurrency,
   );
 
   return (
@@ -130,29 +129,26 @@ export default async function OwnerDashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-stone-100">
-                {currencyRows.map(([currency, b]) => {
-                  const net = b.inflow - b.outflow;
-                  return (
-                    <tr key={currency}>
-                      <td className="px-4 py-3 text-sm font-medium text-stone-900">
-                        {currency}
-                      </td>
-                      <td className="px-4 py-3 text-right text-sm tabular-nums text-emerald-700">
-                        {fmt(b.inflow)}
-                      </td>
-                      <td className="px-4 py-3 text-right text-sm tabular-nums text-red-700">
-                        {fmt(b.outflow)}
-                      </td>
-                      <td
-                        className={`px-4 py-3 text-right text-sm font-medium tabular-nums ${
-                          net >= 0 ? "text-stone-900" : "text-red-800"
-                        }`}
-                      >
-                        {fmt(net)}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {currencyRows.map((row) => (
+                  <tr key={row.currency}>
+                    <td className="px-4 py-3 text-sm font-medium text-stone-900">
+                      {row.currency}
+                    </td>
+                    <td className="px-4 py-3 text-right text-sm tabular-nums text-emerald-700">
+                      {fmt(row.inflow)}
+                    </td>
+                    <td className="px-4 py-3 text-right text-sm tabular-nums text-red-700">
+                      {fmt(row.outflow)}
+                    </td>
+                    <td
+                      className={`px-4 py-3 text-right text-sm font-medium tabular-nums ${
+                        row.net >= 0 ? "text-stone-900" : "text-red-800"
+                      }`}
+                    >
+                      {fmt(row.net)}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
@@ -176,10 +172,10 @@ export default async function OwnerDashboardPage() {
                 const occupied = p.units.filter(
                   (u) => u.status === "OCCUPIED",
                 ).length;
-                const pct =
-                  p.units.length === 0
-                    ? null
-                    : Math.round((occupied / p.units.length) * 100);
+                const pct = occupancyPercent({
+                  totalUnits: p.units.length,
+                  occupiedUnits: occupied,
+                });
                 return (
                   <li
                     key={p.id}

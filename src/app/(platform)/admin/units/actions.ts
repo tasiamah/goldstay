@@ -2,27 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { UnitStatus } from "@prisma/client";
-
-const optionalInt = z.preprocess((v) => {
-  if (typeof v !== "string") return undefined;
-  const t = v.trim();
-  if (t === "") return undefined;
-  const n = Number(t);
-  return Number.isFinite(n) ? n : NaN;
-}, z.number().int().min(0).optional());
-
-const UnitInput = z.object({
-  propertyId: z.string().min(1),
-  label: z.string().trim().min(1).max(60),
-  bedrooms: optionalInt,
-  bathrooms: optionalInt,
-  sizeSqm: optionalInt,
-  status: z.nativeEnum(UnitStatus).default("VACANT"),
-});
+import { UnitInput } from "@/lib/validation/schemas";
+import { flattenZodErrors } from "@/lib/validation/preprocessors";
 
 export type UnitActionResult =
   | { ok: true; unitId: string }
@@ -37,15 +20,6 @@ function fromForm(formData: FormData) {
     sizeSqm: String(formData.get("sizeSqm") ?? ""),
     status: String(formData.get("status") ?? "VACANT"),
   };
-}
-
-function flattenZodErrors(error: z.ZodError): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
 }
 
 export async function createUnitAction(

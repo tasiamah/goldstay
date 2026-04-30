@@ -9,6 +9,9 @@
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/db";
+import { isAdminEmail } from "@/lib/admin-allowlist";
+
+export { isAdminEmail };
 
 export async function getCurrentUser() {
   const supabase = createSupabaseServerClient();
@@ -22,15 +25,6 @@ export async function requireUser() {
   const user = await getCurrentUser();
   if (!user) redirect("/login");
   return user;
-}
-
-export function isAdminEmail(email: string | null | undefined) {
-  if (!email) return false;
-  const list = (process.env.ADMIN_EMAILS ?? "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-  return list.includes(email.toLowerCase());
 }
 
 export async function requireAdmin() {

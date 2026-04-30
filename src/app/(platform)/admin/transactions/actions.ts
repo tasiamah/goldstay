@@ -2,36 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { TransactionDirection, TransactionType } from "@prisma/client";
-
-const optionalString = z
-  .preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.string().trim().optional(),
-  )
-  .optional();
-
-const TransactionInput = z.object({
-  propertyId: z.string().min(1),
-  leaseId: optionalString,
-  occurredOn: z.preprocess((v) => {
-    if (typeof v !== "string" || v.trim() === "") return undefined;
-    const d = new Date(v);
-    return isNaN(d.getTime()) ? NaN : d;
-  }, z.date()),
-  type: z.nativeEnum(TransactionType),
-  direction: z.nativeEnum(TransactionDirection),
-  amount: z.preprocess(
-    (v) => (typeof v === "string" ? Number(v) : v),
-    z.number().min(0),
-  ),
-  currency: z.string().trim().toUpperCase().min(3).max(3).default("KES"),
-  description: optionalString,
-  reference: optionalString,
-});
+import { TransactionInput } from "@/lib/validation/schemas";
+import { flattenZodErrors } from "@/lib/validation/preprocessors";
 
 export type TransactionActionResult =
   | { ok: true; transactionId: string }
@@ -49,15 +23,6 @@ function fromForm(formData: FormData) {
     description: String(formData.get("description") ?? ""),
     reference: String(formData.get("reference") ?? ""),
   };
-}
-
-function flattenZodErrors(error: z.ZodError): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
 }
 
 export async function createTransactionAction(

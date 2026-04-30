@@ -5,35 +5,11 @@
 // a stolen form action token cannot be replayed by a non-admin.
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { Country, Prisma } from "@prisma/client";
-
-const OwnerInput = z.object({
-  email: z.string().trim().toLowerCase().email(),
-  fullName: z.string().trim().min(2, "Name is too short").max(120),
-  phone: z
-    .string()
-    .trim()
-    .max(40)
-    .optional()
-    .transform((v) => (v ? v : undefined)),
-  companyName: z
-    .string()
-    .trim()
-    .max(120)
-    .optional()
-    .transform((v) => (v ? v : undefined)),
-  country: z.nativeEnum(Country),
-  preferredCurrency: z
-    .string()
-    .trim()
-    .toUpperCase()
-    .min(3)
-    .max(3)
-    .default("USD"),
-});
+import { OwnerInput } from "@/lib/validation/schemas";
+import { flattenZodErrors } from "@/lib/validation/preprocessors";
 
 export type OwnerActionResult =
   | { ok: true; ownerId: string }
@@ -48,15 +24,6 @@ function fromForm(formData: FormData) {
     country: String(formData.get("country") ?? ""),
     preferredCurrency: String(formData.get("preferredCurrency") ?? "USD"),
   };
-}
-
-function flattenZodErrors(error: z.ZodError): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
 }
 
 export async function createOwnerAction(

@@ -2,59 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { LeaseStatus, UnitStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { LeaseStatus, UnitStatus } from "@prisma/client";
-
-const optionalString = z
-  .preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.string().trim().optional(),
-  )
-  .optional();
-
-const optionalDecimal = z.preprocess((v) => {
-  if (typeof v !== "string") return undefined;
-  const t = v.trim();
-  if (t === "") return undefined;
-  const n = Number(t);
-  return Number.isFinite(n) ? n : NaN;
-}, z.number().min(0).optional());
-
-const requiredDate = z.preprocess((v) => {
-  if (typeof v !== "string" || v.trim() === "") return undefined;
-  const d = new Date(v);
-  return isNaN(d.getTime()) ? NaN : d;
-}, z.date());
-
-const optionalDate = z.preprocess((v) => {
-  if (typeof v !== "string" || v.trim() === "") return undefined;
-  const d = new Date(v);
-  return isNaN(d.getTime()) ? NaN : d;
-}, z.date().optional());
-
-const LeaseInput = z.object({
-  unitId: z.string().min(1),
-  tenantName: z.string().trim().min(2).max(120),
-  tenantEmail: z
-    .preprocess(
-      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-      z.string().email().optional(),
-    )
-    .optional(),
-  tenantPhone: optionalString,
-  startDate: requiredDate,
-  endDate: optionalDate,
-  monthlyRent: z.preprocess(
-    (v) => (typeof v === "string" ? Number(v) : v),
-    z.number().min(0),
-  ),
-  currency: z.string().trim().toUpperCase().min(3).max(3).default("KES"),
-  depositAmount: optionalDecimal,
-  status: z.nativeEnum(LeaseStatus).default("ACTIVE"),
-  notes: optionalString,
-});
+import { LeaseInput } from "@/lib/validation/schemas";
+import { flattenZodErrors } from "@/lib/validation/preprocessors";
 
 export type LeaseActionResult =
   | { ok: true; leaseId: string }
@@ -74,15 +26,6 @@ function fromForm(formData: FormData) {
     status: String(formData.get("status") ?? "ACTIVE"),
     notes: String(formData.get("notes") ?? ""),
   };
-}
-
-function flattenZodErrors(error: z.ZodError): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
 }
 
 export async function createLeaseAction(

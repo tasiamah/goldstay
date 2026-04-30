@@ -2,58 +2,11 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { z } from "zod";
+import { Country } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
-import { Country, PropertyStatus } from "@prisma/client";
-
-// Coerces an empty form value to undefined so optional fields don't
-// get persisted as the empty string. Numeric fields go through this
-// then get parsed; failing parses produce a validation error.
-const optionalString = z
-  .preprocess(
-    (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
-    z.string().trim().optional(),
-  )
-  .optional();
-
-const optionalInt = z.preprocess((v) => {
-  if (typeof v !== "string") return undefined;
-  const trimmed = v.trim();
-  if (trimmed === "") return undefined;
-  const n = Number(trimmed);
-  return Number.isFinite(n) ? n : NaN;
-}, z.number().int().min(0).optional());
-
-const optionalDecimal = z.preprocess((v) => {
-  if (typeof v !== "string") return undefined;
-  const trimmed = v.trim();
-  if (trimmed === "") return undefined;
-  const n = Number(trimmed);
-  return Number.isFinite(n) ? n : NaN;
-}, z.number().min(0).optional());
-
-const optionalDate = z.preprocess((v) => {
-  if (typeof v !== "string" || v.trim() === "") return undefined;
-  const d = new Date(v);
-  return isNaN(d.getTime()) ? NaN : d;
-}, z.date().optional());
-
-const PropertyInput = z.object({
-  ownerId: z.string().min(1),
-  name: z.string().trim().min(2).max(120),
-  city: z.string().trim().min(2).max(80),
-  neighbourhood: optionalString,
-  address: z.string().trim().min(3).max(240),
-  description: optionalString,
-  bedrooms: optionalInt,
-  bathrooms: optionalInt,
-  sizeSqm: optionalInt,
-  acquiredOn: optionalDate,
-  acquisitionPrice: optionalDecimal,
-  acquisitionCurrency: z.string().trim().toUpperCase().min(3).max(3).optional(),
-  status: z.nativeEnum(PropertyStatus).default("ONBOARDING"),
-});
+import { PropertyInput } from "@/lib/validation/schemas";
+import { flattenZodErrors } from "@/lib/validation/preprocessors";
 
 export type PropertyActionResult =
   | { ok: true; propertyId: string }
@@ -75,15 +28,6 @@ function fromForm(formData: FormData) {
     acquisitionCurrency: String(formData.get("acquisitionCurrency") ?? "USD"),
     status: String(formData.get("status") ?? "ONBOARDING"),
   };
-}
-
-function flattenZodErrors(error: z.ZodError): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const issue of error.issues) {
-    const key = issue.path.join(".");
-    if (!out[key]) out[key] = issue.message;
-  }
-  return out;
 }
 
 export async function createPropertyAction(
