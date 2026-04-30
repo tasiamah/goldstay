@@ -41,32 +41,12 @@ export default async function AdminOverviewPage() {
         <Stat label="Active leases" value={activeLeaseCount} />
       </section>
 
-      <section className="flex flex-wrap gap-3">
-        <Link
-          href="/admin/owners/new"
-          className="inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
-        >
-          Add owner
-        </Link>
-        <Link
-          href="/admin/owners"
-          className="inline-flex items-center rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-800 hover:bg-stone-100"
-        >
-          All owners
-        </Link>
-        <Link
-          href="/admin/properties"
-          className="inline-flex items-center rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-800 hover:bg-stone-100"
-        >
-          All properties
-        </Link>
-      </section>
-
       <section className="grid gap-8 lg:grid-cols-2">
         <RecentList
           title="Recent owners"
-          emptyHint="No owners yet."
+          emptyHint="No owners yet. Add the first one to get started."
           href="/admin/owners"
+          primaryAction={{ href: "/admin/owners/new", label: "+ Add owner" }}
           items={recentOwners.map((o) => ({
             id: o.id,
             primary: o.fullName,
@@ -78,7 +58,7 @@ export default async function AdminOverviewPage() {
         />
         <RecentList
           title="Recent properties"
-          emptyHint="No properties yet."
+          emptyHint="No properties yet. Open an owner to add their first property."
           href="/admin/properties"
           items={recentProperties.map((p) => ({
             id: p.id,
@@ -115,22 +95,34 @@ function RecentList({
   href,
   items,
   emptyHint,
+  primaryAction,
 }: {
   title: string;
   href: string;
   items: { id: string; primary: string; secondary: string; href: string }[];
   emptyHint: string;
+  primaryAction?: { href: string; label: string };
 }) {
   return (
     <div className="rounded-lg border border-stone-200 bg-white p-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4">
         <h3 className="text-base font-medium text-stone-900">{title}</h3>
-        <Link
-          href={href}
-          className="text-sm text-stone-600 hover:text-stone-900"
-        >
-          See all
-        </Link>
+        <div className="flex items-center gap-3 text-sm">
+          <Link
+            href={href}
+            className="text-stone-600 hover:text-stone-900"
+          >
+            See all
+          </Link>
+          {primaryAction ? (
+            <Link
+              href={primaryAction.href}
+              className="inline-flex items-center rounded-md bg-stone-900 px-3 py-1.5 font-medium text-white hover:bg-stone-800"
+            >
+              {primaryAction.label}
+            </Link>
+          ) : null}
+        </div>
       </div>
       {items.length === 0 ? (
         <p className="mt-4 text-sm text-stone-500">{emptyHint}</p>
