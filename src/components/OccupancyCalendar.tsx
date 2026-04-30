@@ -146,13 +146,15 @@ function mondayIndex(date: Date): number {
   return (date.getUTCDay() + 6) % 7;
 }
 
-// Each day column is 1fr so the heatmap stretches to fill its
-// card. Squares use `aspect-square w-full` so they grow with the
-// column and stay square. The leading column for the Monday-date
-// label is fixed-width so the digits don't shift around.
+// Day cells use `aspect-square w-full` so they grow with the
+// column and stay square. We cap the inner grid at ~16rem and
+// centre it in the card; without the cap the squares balloon to
+// ~40px on a wide card and the heatmap takes up half the screen.
+// 16rem yields ~22px squares which read like a real heatmap.
 const CELL = "aspect-square w-full";
 const GRID_COLS =
-  "grid-cols-[1.75rem_repeat(7,minmax(0,1fr))]"; // [week#] [Mo..Su × 7]
+  "grid-cols-[1.5rem_repeat(7,minmax(0,1fr))]"; // [week#] [Mo..Su × 7]
+const GRID_MAX_WIDTH = "max-w-[16rem]";
 
 function MonthGrid({
   month,
@@ -240,7 +242,7 @@ function MonthGrid({
         {fmtMonth(month)}
       </p>
       <div
-        className={`grid ${GRID_COLS} items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-stone-400`}
+        className={`mx-auto grid ${GRID_COLS} ${GRID_MAX_WIDTH} items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-stone-400`}
       >
         {elements}
       </div>
