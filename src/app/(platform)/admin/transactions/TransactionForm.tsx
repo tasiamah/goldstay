@@ -14,13 +14,16 @@ type PropertyOption = {
   name: string;
   city: string;
   ownerName: string;
+  propertyType: "LONG_TERM" | "SHORT_TERM";
   defaultCurrency: string;
   leases: { id: string; tenantName: string }[];
+  bookings: { id: string; label: string }[];
 };
 
 type Defaults = {
   propertyId?: string;
   leaseId?: string | null;
+  bookingId?: string | null;
   occurredOn?: Date;
   type?: string;
   direction?: "INFLOW" | "OUTFLOW";
@@ -32,7 +35,7 @@ type Defaults = {
 
 const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[] =
   [
-    { value: "RENT", label: "Rent", direction: "INFLOW" },
+    { value: "RENT", label: "Rent / gross from guests", direction: "INFLOW" },
     { value: "DEPOSIT", label: "Deposit", direction: "INFLOW" },
     { value: "REFUND", label: "Refund (deposit returned)", direction: "OUTFLOW" },
     { value: "EXPENSE", label: "Expense", direction: "OUTFLOW" },
@@ -42,6 +45,18 @@ const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[]
       direction: "OUTFLOW",
     },
     { value: "PAYOUT", label: "Payout to owner", direction: "OUTFLOW" },
+    {
+      value: "OTA_COMMISSION",
+      label: "OTA commission (Airbnb / Booking.com / Vrbo)",
+      direction: "OUTFLOW",
+    },
+    { value: "CLEANING_FEE", label: "Cleaning fee", direction: "OUTFLOW" },
+    { value: "GUEST_REFUND", label: "Guest refund", direction: "OUTFLOW" },
+    {
+      value: "GOLDSTAY_COMMISSION",
+      label: "Goldstay commission",
+      direction: "OUTFLOW",
+    },
     { value: "OTHER", label: "Other", direction: "INFLOW" },
   ];
 
@@ -90,7 +105,27 @@ export function TransactionForm({
         ]}
       />
 
-      {selectedProperty && selectedProperty.leases.length > 0 ? (
+      {selectedProperty?.propertyType === "SHORT_TERM" &&
+      selectedProperty.bookings.length > 0 ? (
+        <Select
+          label="Booking (optional)"
+          name="bookingId"
+          defaultValue={defaults.bookingId ?? ""}
+          options={[
+            { value: "", label: "— No booking —" },
+            ...selectedProperty.bookings.map((b) => ({
+              value: b.id,
+              label: b.label,
+            })),
+          ]}
+          error={fieldError("bookingId")}
+        />
+      ) : (
+        <input type="hidden" name="bookingId" value={defaults.bookingId ?? ""} />
+      )}
+
+      {selectedProperty?.propertyType === "LONG_TERM" &&
+      selectedProperty.leases.length > 0 ? (
         <Select
           label="Lease (optional)"
           name="leaseId"

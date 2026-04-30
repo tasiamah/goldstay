@@ -18,6 +18,18 @@ export async function loadPropertyOptions() {
           },
         },
       },
+      bookings: {
+        where: { status: { in: ["CONFIRMED", "COMPLETED"] } },
+        orderBy: { checkIn: "desc" },
+        take: 30,
+        select: {
+          id: true,
+          guestName: true,
+          checkIn: true,
+          checkOut: true,
+          source: true,
+        },
+      },
     },
   });
 
@@ -26,6 +38,7 @@ export async function loadPropertyOptions() {
     name: p.name,
     city: p.city,
     ownerName: p.owner.fullName,
+    propertyType: p.propertyType,
     defaultCurrency:
       p.country === "KE"
         ? "KES"
@@ -41,5 +54,15 @@ export async function loadPropertyOptions() {
         tenantName: l.tenantName,
       })),
     ),
+    bookings: p.bookings.map((b) => ({
+      id: b.id,
+      label: `${b.guestName} · ${b.checkIn.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+      })} → ${b.checkOut.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+      })} · ${b.source.replace("_", " ").toLowerCase()}`,
+    })),
   }));
 }

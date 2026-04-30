@@ -15,6 +15,7 @@ function fromForm(formData: FormData) {
   return {
     propertyId: String(formData.get("propertyId") ?? ""),
     leaseId: String(formData.get("leaseId") ?? ""),
+    bookingId: String(formData.get("bookingId") ?? ""),
     occurredOn: String(formData.get("occurredOn") ?? ""),
     type: String(formData.get("type") ?? ""),
     direction: String(formData.get("direction") ?? "INFLOW"),

@@ -33,8 +33,8 @@ export default async function NewPropertyForOwnerPage({
           Country is set to{" "}
           {owner.country === "KE" ? "Kenya" : "Ghana"} based on the owner.
           Status starts as <span className="font-medium text-stone-700">Onboarding</span>{" "}
-          and flips to Active once you've reviewed the paperwork and
-          marked the property as verified.
+          and flips to Active once you&rsquo;ve reviewed the paperwork
+          and marked the property as verified.
         </p>
       </div>
 

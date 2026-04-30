@@ -103,6 +103,7 @@ export default async function TransactionDetailPage({
           defaults={{
             propertyId: tx.propertyId,
             leaseId: tx.leaseId,
+            bookingId: tx.bookingId,
             occurredOn: tx.occurredOn,
             type: tx.type,
             direction: tx.direction,

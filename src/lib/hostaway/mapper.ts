@@ -38,7 +38,7 @@ const HOSTAWAY_STATUS_TO_BOOKING: Record<string, BookingStatus> = {
 };
 
 export type HostawayReservation = {
-  id: number | string;
+  id?: number | string;
   channelId?: HostawayChannel;
   channelName?: string;
   status?: string;

@@ -118,6 +118,7 @@ export const LeaseInput = z.object({
 export const TransactionInput = z.object({
   propertyId: z.string().min(1),
   leaseId: optionalString,
+  bookingId: optionalString,
   occurredOn: requiredDate,
   type: z.nativeEnum(TransactionType),
   direction: z.nativeEnum(TransactionDirection),

@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function NewTransactionPage({
   searchParams,
 }: {
-  searchParams: { propertyId?: string; leaseId?: string };
+  searchParams: { propertyId?: string; leaseId?: string; bookingId?: string };
 }) {
   const properties = await loadPropertyOptions();
 
@@ -43,6 +43,7 @@ export default async function NewTransactionPage({
             defaults={{
               propertyId: searchParams.propertyId,
               leaseId: searchParams.leaseId,
+              bookingId: searchParams.bookingId,
               occurredOn: new Date(),
               type: "RENT",
               direction: "INFLOW",
