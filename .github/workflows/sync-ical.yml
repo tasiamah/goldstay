@@ -1,0 +1,45 @@
+# Polls every connected channel iCal feed every 15 minutes by
+# pinging /api/cron/sync-ical on the production deployment. Lives
+# in GitHub Actions instead of vercel.json because Vercel's Hobby
+# plan rejects sub-daily cron schedules; Actions is free and gives
+# us minute-level scheduling without bumping to Vercel Pro.
+#
+# The endpoint requires Authorization: Bearer $CRON_SECRET. Set
+# CRON_SECRET both as a Vercel project env var (so the route can
+# verify) and as a GitHub repo secret (so this workflow can send).
+#
+# Manual trigger ("Run workflow" button) is enabled for ad-hoc
+# syncs without waiting for the next 15-minute slot.
+
+name: Sync iCal feeds
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping sync endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET repo secret is not set"
+            exit 1
+          fi
+          response=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            https://goldstay.co.ke/api/cron/sync-ical)
+          echo "HTTP $response"
+          cat /tmp/body
+          echo
+          if [ "$response" != "200" ]; then
+            exit 1
+          fi
