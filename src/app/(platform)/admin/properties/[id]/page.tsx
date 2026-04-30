@@ -198,7 +198,6 @@ export default async function PropertyDetailPage({
                 bedrooms: property.bedrooms,
                 bathrooms: property.bathrooms,
                 sizeSqm: property.sizeSqm,
-                acquiredOn: property.acquiredOn,
                 acquisitionPrice,
                 acquisitionCurrency: property.acquisitionCurrency,
                 status: property.status,

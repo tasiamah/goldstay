@@ -82,23 +82,6 @@ describe("PropertyInput", () => {
     );
     expect(data.acquisitionPrice).toBe(1234567.89);
   });
-
-  it("parses YYYY-MM-DD into a Date and treats empty as undefined", () => {
-    const filled = unwrap(
-      PropertyInput.safeParse({ ...base, acquiredOn: "2024-06-15" }),
-    );
-    expect(filled.acquiredOn).toBeInstanceOf(Date);
-    expect(filled.acquiredOn?.getUTCFullYear()).toBe(2024);
-
-    const empty = unwrap(PropertyInput.safeParse({ ...base, acquiredOn: "" }));
-    expect(empty.acquiredOn).toBeUndefined();
-  });
-
-  it("rejects a malformed date", () => {
-    expect(
-      PropertyInput.safeParse({ ...base, acquiredOn: "yesterday" }).success,
-    ).toBe(false);
-  });
 });
 
 describe("UnitInput", () => {

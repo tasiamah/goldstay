@@ -57,7 +57,6 @@ export const PropertyInput = z.object({
   bedrooms: optionalInt,
   bathrooms: optionalInt,
   sizeSqm: optionalInt,
-  acquiredOn: optionalDate,
   acquisitionPrice: optionalDecimal,
   acquisitionCurrency: z.string().trim().toUpperCase().min(3).max(3).optional(),
   status: z.nativeEnum(PropertyStatus).default("ONBOARDING"),

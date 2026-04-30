@@ -26,7 +26,6 @@ type Defaults = {
   bedrooms?: number | null;
   bathrooms?: number | null;
   sizeSqm?: number | null;
-  acquiredOn?: Date | null;
   acquisitionPrice?: string | number | null;
   acquisitionCurrency?: string | null;
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
@@ -51,10 +50,6 @@ export function PropertyForm({
   const [state, formAction] = useFormState(action, null);
   const fieldError = (key: string) =>
     state && !state.ok ? state.fieldErrors?.[key] : undefined;
-
-  const dateValue = defaults.acquiredOn
-    ? new Date(defaults.acquiredOn).toISOString().slice(0, 10)
-    : "";
 
   return (
     <form action={formAction} className="space-y-6">
@@ -144,14 +139,7 @@ export function PropertyForm({
         />
       </fieldset>
 
-      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <Field
-          label="Acquired on"
-          name="acquiredOn"
-          type="date"
-          defaultValue={dateValue}
-          error={fieldError("acquiredOn")}
-        />
+      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
         <Field
           label="Acquisition price"
           name="acquisitionPrice"

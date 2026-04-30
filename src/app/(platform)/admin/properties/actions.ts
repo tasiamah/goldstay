@@ -23,7 +23,6 @@ function fromForm(formData: FormData) {
     bedrooms: String(formData.get("bedrooms") ?? ""),
     bathrooms: String(formData.get("bathrooms") ?? ""),
     sizeSqm: String(formData.get("sizeSqm") ?? ""),
-    acquiredOn: String(formData.get("acquiredOn") ?? ""),
     acquisitionPrice: String(formData.get("acquisitionPrice") ?? ""),
     acquisitionCurrency: String(formData.get("acquisitionCurrency") ?? "USD"),
     status: String(formData.get("status") ?? "ONBOARDING"),
