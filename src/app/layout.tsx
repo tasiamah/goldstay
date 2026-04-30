@@ -125,12 +125,14 @@ export default function RootLayout({
   // the marketing nav and lose vertical space. The middleware tags
   // every platform request with x-platform-route so we can branch
   // here without coupling the root layout to a hardcoded path list.
-  const isPlatform = headers().get("x-platform-route") === "1";
+  const platformHeader = headers().get("x-platform-route");
+  const isPlatform = platformHeader === "1";
 
   return (
     <html
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
+      data-platform-header={platformHeader ?? "null"}
     >
       <head>
         {/* Preconnect to the image CDNs the hero and location cards pull
