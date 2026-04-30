@@ -3,6 +3,20 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
+import { DocumentUploader } from "./documents/DocumentUploader";
+import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
+
+const DOCUMENT_KIND_LABELS: Record<string, string> = {
+  TITLE_DEED: "Title deed",
+  SALE_AGREEMENT: "Sale agreement",
+  LEASE: "Lease",
+  KYC: "KYC",
+  INVOICE: "Invoice",
+  RECEIPT: "Receipt",
+  STATEMENT: "Statement",
+  PHOTO: "Photo",
+  OTHER: "Other",
+};
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +33,9 @@ export default async function PropertyDetailPage({
       },
       units: {
         orderBy: { createdAt: "asc" },
+      },
+      documents: {
+        orderBy: { createdAt: "desc" },
       },
     },
   });
@@ -125,8 +142,71 @@ export default async function PropertyDetailPage({
               </ul>
             )}
           </div>
+
+          <div className="rounded-lg border border-stone-200 bg-white p-6">
+            <h3 className="text-base font-medium text-stone-900">
+              Documents
+            </h3>
+            <p className="mt-1 text-sm text-stone-500">
+              Title deeds, sale agreements, leases, invoices, and any
+              other paperwork backing this property. Visible to the
+              landlord on their portal.
+            </p>
+
+            <div className="mt-5 border-b border-stone-100 pb-5">
+              <DocumentUploader propertyId={property.id} />
+            </div>
+
+            {property.documents.length === 0 ? (
+              <p className="mt-5 text-sm text-stone-500">
+                No documents uploaded yet.
+              </p>
+            ) : (
+              <ul className="mt-5 divide-y divide-stone-100">
+                {property.documents.map((d) => (
+                  <li
+                    key={d.id}
+                    className="flex items-start justify-between gap-4 py-3"
+                  >
+                    <div className="min-w-0">
+                      <a
+                        href={`/admin/documents/${d.id}/download`}
+                        target="_blank"
+                        rel="noopener"
+                        className="block truncate font-medium text-stone-900 hover:underline"
+                      >
+                        {d.title}
+                      </a>
+                      <p className="mt-0.5 text-xs text-stone-500">
+                        {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
+                        {d.sizeBytes
+                          ? ` · ${formatBytes(d.sizeBytes)}`
+                          : ""}
+                        {" · "}
+                        {d.createdAt.toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                      </p>
+                    </div>
+                    <DeleteDocumentButton
+                      documentId={d.id}
+                      title={d.title}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
       </section>
     </div>
   );
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
