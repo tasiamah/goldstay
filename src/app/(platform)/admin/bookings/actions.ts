@@ -81,6 +81,56 @@ export async function cancelBookingAction(bookingId: string): Promise<void> {
   revalidatePath(`/admin/properties/${booking.propertyId}`);
 }
 
+export async function updateBookingAction(
+  bookingId: string,
+  _prev: BookingActionResult | null,
+  formData: FormData,
+): Promise<BookingActionResult> {
+  await requireAdmin();
+  const parsed = BookingInput.safeParse(fromForm(formData));
+  if (!parsed.success) {
+    return {
+      ok: false,
+      error: "Please fix the highlighted fields.",
+      fieldErrors: flattenZodErrors(parsed.error),
+    };
+  }
+  const nights = nightsBetween(parsed.data.checkIn, parsed.data.checkOut);
+  if (nights <= 0) {
+    return {
+      ok: false,
+      error: "Check-out must be at least one night after check-in.",
+      fieldErrors: { checkOut: "Must be after check-in." },
+    };
+  }
+  try {
+    const updated = await prisma.booking.update({
+      where: { id: bookingId },
+      data: { ...parsed.data, nights },
+      select: { id: true, propertyId: true },
+    });
+    revalidatePath("/admin");
+    revalidatePath(`/admin/properties/${updated.propertyId}`);
+    revalidatePath(`/admin/bookings/${bookingId}`);
+    return { ok: true, bookingId };
+  } catch {
+    return { ok: false, error: "Could not save changes. Please retry." };
+  }
+}
+
+export async function deleteBookingAction(bookingId: string): Promise<void> {
+  await requireAdmin();
+  const booking = await prisma.booking.findUnique({
+    where: { id: bookingId },
+    select: { propertyId: true },
+  });
+  if (!booking) return;
+  await prisma.booking.delete({ where: { id: bookingId } });
+  revalidatePath("/admin");
+  revalidatePath(`/admin/properties/${booking.propertyId}`);
+  redirect(`/admin/properties/${booking.propertyId}`);
+}
+
 // Records the booking's monetary footprint as Transactions so the
 // owner statement can reconcile against bank reality without us
 // needing to re-derive numbers from Booking columns. Idempotent: if

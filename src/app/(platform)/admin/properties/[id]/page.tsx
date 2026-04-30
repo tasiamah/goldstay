@@ -410,37 +410,52 @@ function BookingsCard({
         </p>
       ) : (
         <ul className="mt-4 divide-y divide-stone-100">
-          {bookings.map((b) => (
-            <li
-              key={b.id}
-              className="flex items-start justify-between gap-4 py-3"
-            >
-              <div className="min-w-0">
-                <p className="font-medium text-stone-900">{b.guestName}</p>
-                <p className="mt-0.5 text-xs text-stone-500">
-                  {SOURCE_LABEL[b.source] ?? b.source} ·{" "}
-                  {b.checkIn.toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                  })}{" "}
-                  →{" "}
-                  {b.checkOut.toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}{" "}
-                  · {b.nights} {b.nights === 1 ? "night" : "nights"}
-                  {b.status !== "CONFIRMED" ? ` · ${b.status.toLowerCase()}` : ""}
-                </p>
-              </div>
-              <p className="shrink-0 text-right text-sm tabular-nums text-stone-900">
-                {b.currency}{" "}
-                {Number(b.grossAmount).toLocaleString("en-GB", {
-                  maximumFractionDigits: 0,
-                })}
-              </p>
-            </li>
-          ))}
+          {bookings.map((b) => {
+            const isPlaceholder = Number(b.grossAmount) === 0;
+            return (
+              <li key={b.id}>
+                <Link
+                  href={`/admin/bookings/${b.id}`}
+                  className="-mx-2 flex items-start justify-between gap-4 rounded-md px-2 py-3 hover:bg-stone-50"
+                >
+                  <div className="min-w-0">
+                    <p className="font-medium text-stone-900">{b.guestName}</p>
+                    <p className="mt-0.5 text-xs text-stone-500">
+                      {SOURCE_LABEL[b.source] ?? b.source} ·{" "}
+                      {b.checkIn.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                      })}{" "}
+                      →{" "}
+                      {b.checkOut.toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "short",
+                        year: "numeric",
+                      })}{" "}
+                      · {b.nights} {b.nights === 1 ? "night" : "nights"}
+                      {b.status !== "CONFIRMED"
+                        ? ` · ${b.status.toLowerCase()}`
+                        : ""}
+                    </p>
+                  </div>
+                  <p
+                    className={`shrink-0 text-right text-sm tabular-nums ${
+                      isPlaceholder
+                        ? "italic text-amber-700"
+                        : "text-stone-900"
+                    }`}
+                  >
+                    {isPlaceholder
+                      ? "needs financials →"
+                      : `${b.currency} ${Number(b.grossAmount).toLocaleString(
+                          "en-GB",
+                          { maximumFractionDigits: 0 },
+                        )}`}
+                  </p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>
