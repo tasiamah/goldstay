@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +63,7 @@ export default async function AdminOverviewPage() {
             primary: p.name,
             secondary: `${p.city} · ${p.owner.fullName}`,
             href: `/admin/properties/${p.id}`,
+            trailing: <PropertyStatusBadge status={p.status} />,
           }))}
         />
       </section>
@@ -96,7 +98,13 @@ function RecentList({
 }: {
   title: string;
   href: string;
-  items: { id: string; primary: string; secondary: string; href: string }[];
+  items: {
+    id: string;
+    primary: string;
+    secondary: string;
+    href: string;
+    trailing?: React.ReactNode;
+  }[];
   emptyHint: string;
   primaryAction?: { href: string; label: string };
 }) {
@@ -127,9 +135,19 @@ function RecentList({
         <ul className="mt-4 divide-y divide-stone-100">
           {items.map((it) => (
             <li key={it.id} className="py-3">
-              <Link href={it.href} className="block hover:underline">
-                <p className="font-medium text-stone-900">{it.primary}</p>
-                <p className="text-xs text-stone-500">{it.secondary}</p>
+              <Link
+                href={it.href}
+                className="group flex items-start justify-between gap-4"
+              >
+                <div className="min-w-0">
+                  <p className="font-medium text-stone-900 group-hover:underline">
+                    {it.primary}
+                  </p>
+                  <p className="text-xs text-stone-500">{it.secondary}</p>
+                </div>
+                {it.trailing ? (
+                  <div className="shrink-0">{it.trailing}</div>
+                ) : null}
               </Link>
             </li>
           ))}
