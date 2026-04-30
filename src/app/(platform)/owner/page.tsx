@@ -6,6 +6,10 @@ import {
   occupancyPercent,
 } from "@/lib/owner-dashboard";
 
+// Goldstay rents each property out as a whole, so we treat
+// "occupied" as a per-property boolean (an active lease exists)
+// rather than a per-unit count.
+
 export const dynamic = "force-dynamic";
 
 export default async function OwnerDashboardPage() {
@@ -19,8 +23,6 @@ export default async function OwnerDashboardPage() {
 
   const [
     properties,
-    unitCount,
-    occupiedUnitCount,
     activeLeaseCount,
     totals,
     recentTransactions,
@@ -30,15 +32,13 @@ export default async function OwnerDashboardPage() {
       orderBy: { createdAt: "desc" },
       include: {
         units: {
-          select: { id: true, status: true },
+          select: {
+            leases: {
+              where: { status: "ACTIVE" },
+              select: { id: true },
+            },
+          },
         },
-      },
-    }),
-    prisma.unit.count({ where: { property: { ownerId: owner.id } } }),
-    prisma.unit.count({
-      where: {
-        property: { ownerId: owner.id },
-        status: "OCCUPIED",
       },
     }),
     prisma.lease.count({
@@ -66,9 +66,15 @@ export default async function OwnerDashboardPage() {
     }),
   ]);
 
+  const propertyOccupancy = properties.map((p) => ({
+    id: p.id,
+    occupied: p.units.some((u) => u.leases.length > 0),
+  }));
+  const occupiedPropertyCount = propertyOccupancy.filter((p) => p.occupied)
+    .length;
   const occupancyPct = occupancyPercent({
-    totalUnits: unitCount,
-    occupiedUnits: occupiedUnitCount,
+    totalUnits: properties.length,
+    occupiedUnits: occupiedPropertyCount,
   });
 
   const currencyRows = aggregateTransactionsByCurrency(
@@ -82,9 +88,8 @@ export default async function OwnerDashboardPage() {
 
   return (
     <div className="space-y-10">
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+      <section className="grid grid-cols-3 gap-4">
         <Stat label="Properties" value={properties.length} />
-        <Stat label="Units" value={unitCount} />
         <Stat label="Active leases" value={activeLeaseCount} />
         <Stat
           label="Occupancy"
@@ -166,13 +171,7 @@ export default async function OwnerDashboardPage() {
           ) : (
             <ul className="mt-4 divide-y divide-stone-100">
               {properties.map((p) => {
-                const occupied = p.units.filter(
-                  (u) => u.status === "OCCUPIED",
-                ).length;
-                const pct = occupancyPercent({
-                  totalUnits: p.units.length,
-                  occupiedUnits: occupied,
-                });
+                const occupied = p.units.some((u) => u.leases.length > 0);
                 return (
                   <li
                     key={p.id}
@@ -187,9 +186,7 @@ export default async function OwnerDashboardPage() {
                       </Link>
                       <p className="text-xs text-stone-500">
                         {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
-                        {p.city} · {p.units.length}{" "}
-                        {p.units.length === 1 ? "unit" : "units"}
-                        {pct !== null ? ` · ${pct}% occupied` : ""}
+                        {p.city} · {occupied ? "Occupied" : "Vacant"}
                       </p>
                     </div>
                     <span className="text-xs uppercase tracking-wider text-stone-500">

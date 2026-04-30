@@ -1,19 +1,23 @@
 // /owner/properties/[id] — drill-down for a single property in the
-// landlord's portfolio. Read-only: listing the units, the active
-// leases, the documents, and the full transaction history (newest
-// first) for that one property. The dashboard sends them here when
-// they click on a property name.
+// landlord's portfolio. Read-only: the active tenancy, the documents,
+// and the full transaction history (newest first) for that one
+// property. The dashboard sends them here when they click on a
+// property name.
 //
 // We use findFirst with a scoped where clause (id + ownerId) so a
 // landlord can never load another landlord's property by guessing
 // the cuid. Returns notFound() instead of 403 to avoid leaking
 // existence.
+//
+// Goldstay rents each property out as a whole, so we don't surface
+// units in the UI even though Lease still FKs into Unit at the
+// schema level. The active lease is read by walking the property's
+// implicit unit and is presented as a tenancy summary.
 
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
-import { occupancyPercent } from "@/lib/owner-dashboard";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
@@ -71,13 +75,8 @@ export default async function OwnerPropertyDetailPage({
 
   if (!property) notFound();
 
-  const occupied = property.units.filter(
-    (u) => u.status === "OCCUPIED",
-  ).length;
-  const occPct = occupancyPercent({
-    totalUnits: property.units.length,
-    occupiedUnits: occupied,
-  });
+  const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
+  const occupancyLabel = activeLease ? "Occupied" : "Vacant";
 
   return (
     <div className="space-y-8">
@@ -101,55 +100,48 @@ export default async function OwnerPropertyDetailPage({
         </p>
       </div>
 
-      <section className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <Stat label="Units" value={property.units.length} />
-        <Stat label="Occupied" value={occupied} />
-        <Stat
-          label="Occupancy"
-          value={occPct === null ? "—" : `${occPct}%`}
-        />
+      <section className="grid grid-cols-3 gap-4">
+        <Stat label="Status" value={occupancyLabel} />
         <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
+        <Stat
+          label="Monthly rent"
+          value={
+            activeLease
+              ? `${activeLease.currency} ${fmt(Number(activeLease.monthlyRent))}`
+              : "—"
+          }
+        />
       </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
-        <Card title="Units">
-          {property.units.length === 0 ? (
-            <p className="mt-4 text-sm text-stone-500">
-              No units recorded for this property yet.
-            </p>
+        <Card title="Tenancy">
+          {activeLease ? (
+            <div className="mt-4 space-y-1">
+              <p className="font-medium text-stone-900">
+                {activeLease.tenantName}
+              </p>
+              <p className="text-sm text-stone-500">
+                {activeLease.currency}{" "}
+                {fmt(Number(activeLease.monthlyRent))}/mo · since{" "}
+                {activeLease.startDate.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+                {activeLease.endDate
+                  ? ` → ${activeLease.endDate.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}`
+                  : " · ongoing"}
+              </p>
+            </div>
           ) : (
-            <ul className="mt-4 divide-y divide-stone-100">
-              {property.units.map((u) => {
-                const activeLease = u.leases[0];
-                return (
-                  <li key={u.id} className="py-3">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-stone-900">
-                        {u.label}
-                      </span>
-                      <span className="text-xs uppercase tracking-wider text-stone-500">
-                        {u.status}
-                      </span>
-                    </div>
-                    {activeLease ? (
-                      <p className="mt-1 text-xs text-stone-500">
-                        {activeLease.tenantName} ·{" "}
-                        {fmt(Number(activeLease.monthlyRent))}{" "}
-                        {activeLease.currency}/mo · since{" "}
-                        {activeLease.startDate.toLocaleDateString("en-GB", {
-                          month: "short",
-                          year: "numeric",
-                        })}
-                      </p>
-                    ) : (
-                      <p className="mt-1 text-xs text-stone-500">
-                        No active lease
-                      </p>
-                    )}
-                  </li>
-                );
-              })}
-            </ul>
+            <p className="mt-4 text-sm text-stone-500">
+              No active tenant. Goldstay will update this once the next
+              lease is in place.
+            </p>
           )}
         </Card>
 
