@@ -120,11 +120,13 @@ function mondayIndex(date: Date): number {
   return (date.getUTCDay() + 6) % 7;
 }
 
-// Day-cell sizes are tied to the grid track size below. If you bump
-// one, bump the other or the alignment falls apart.
-const CELL = "h-5 w-5";
+// Each day column is 1fr so the heatmap stretches to fill its
+// card. Squares use `aspect-square w-full` so they grow with the
+// column and stay square. The leading column for the Monday-date
+// label is fixed-width so the digits don't shift around.
+const CELL = "aspect-square w-full";
 const GRID_COLS =
-  "grid-cols-[1.5rem_repeat(7,1.25rem)]"; // [week#] [Mo..Su × 7]
+  "grid-cols-[1.75rem_repeat(7,minmax(0,1fr))]"; // [week#] [Mo..Su × 7]
 
 function MonthGrid({
   month,
@@ -212,7 +214,7 @@ function MonthGrid({
         {fmtMonth(month)}
       </p>
       <div
-        className={`inline-grid ${GRID_COLS} items-center gap-1 text-[10px] font-medium uppercase tracking-wider text-stone-400`}
+        className={`grid ${GRID_COLS} items-center gap-1.5 text-[10px] font-medium uppercase tracking-wider text-stone-400`}
       >
         {elements}
       </div>
