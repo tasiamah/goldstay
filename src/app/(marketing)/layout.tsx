@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { headers } from "next/headers";
 import { Instrument_Serif } from "next/font/google";
 import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import "./globals.css";
+import "../globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -114,25 +113,22 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default function RootLayout({
+// Marketing root layout. This is one of two root layouts in the app
+// (the other lives at (platform)/layout.tsx). Splitting the root by
+// route group is what keeps the public Navbar / Footer / WhatsApp
+// float off the logged-in surfaces — middleware-set request headers
+// turned out not to propagate to layout `headers()` calls reliably
+// in production, so the route-group root-layout split is what we
+// rely on instead.
+export default function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  // The marketing Navbar / Footer / WhatsApp float belong to the
-  // public-facing site. Logged-in surfaces (/admin, /owner, /login,
-  // /auth/*) get their own headers and would otherwise stack behind
-  // the marketing nav and lose vertical space. The middleware tags
-  // every platform request with x-platform-route so we can branch
-  // here without coupling the root layout to a hardcoded path list.
-  const platformHeader = headers().get("x-platform-route");
-  const isPlatform = platformHeader === "1";
-
   return (
     <html
       lang="en"
       className={`${GeistSans.variable} ${GeistMono.variable} ${instrumentSerif.variable}`}
-      data-platform-header={platformHeader ?? "null"}
     >
       <head>
         {/* Preconnect to the image CDNs the hero and location cards pull
@@ -148,10 +144,10 @@ export default function RootLayout({
       <body>
         <JsonLd />
         <Analytics />
-        {!isPlatform ? <Navbar /> : null}
+        <Navbar />
         <main>{children}</main>
-        {!isPlatform ? <Footer /> : null}
-        {!isPlatform ? <LayoutClientExtras /> : null}
+        <Footer />
+        <LayoutClientExtras />
         {/* Vercel Speed Insights: captures real-user web vitals (LCP, CLS,
             INP) on production only. Self-hosts a tiny client script, no
             extra env vars needed, no-op on local dev and preview. */}

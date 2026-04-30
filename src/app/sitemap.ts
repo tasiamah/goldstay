@@ -1,8 +1,8 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { site, cities, neighbourhoodSlug, countryForHost } from "@/lib/site";
-import { postsForCountry } from "./insights/posts";
-import { categories, postsForCategory } from "./insights/categories";
+import { postsForCountry } from "./(marketing)/insights/posts";
+import { categories, postsForCategory } from "./(marketing)/insights/categories";
 
 // Host-aware sitemap. Each country domain advertises only the routes
 // that actually live on it: goldstay.co.ke skips /accra*, goldstay.com.gh

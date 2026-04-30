@@ -5,8 +5,8 @@ import { Reveal } from "./Reveal";
 import { CTABanner } from "./CTABanner";
 import { BreadcrumbJsonLd } from "./JsonLd";
 import { site } from "@/lib/site";
-import type { Post, PostMeta } from "@/app/insights/posts";
-import { categoriesForPost } from "@/app/insights/categories";
+import type { Post, PostMeta } from "@/app/(marketing)/insights/posts";
+import { categoriesForPost } from "@/app/(marketing)/insights/categories";
 
 // Shared shell for every insights post. Renders the hero, byline,
 // JSON-LD (Article + Person + Breadcrumb), prose body and a
