@@ -1,16 +1,14 @@
-// /owner/payouts — owner self-service for payout details and the
-// account-setup checklist. The page is laid out as a four-step
-// onboarding flow rather than a single payouts list, because the
-// senior risk in this surface is an owner who's "set up" their
-// payout method but skipped the legal docs / personal details and
-// gets blocked at the first wire run. The checklist makes the
-// missing piece obvious.
+// /owner/payouts — bank account + legal documents.
 //
-// Each step has its own anchored section below the checklist:
-//   #personal  — full name + phone (Personal details)
-//   #business  — company + country (Business)
-//   #legal     — KYC documents (existing OwnerKycCard)
-//   #bank      — payout methods + add-new form (existing components)
+// "Who you are" lives at /owner/profile (name, phone, address,
+// business). This page focuses on the operational settings tied to
+// a payout: KYC documents the team verifies before the first wire,
+// and the payout methods themselves.
+//
+// The setup checklist is rendered here as well as on /owner/profile
+// — it's the single source of "where am I in onboarding?" — and
+// each row routes to the page that owns that step (personal /
+// business → /owner/profile, legal / bank → here).
 
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
@@ -25,17 +23,10 @@ import type { SetupStepKey } from "@/lib/owner/setup-status";
 import { OwnerPayoutMethodActions } from "./OwnerPayoutMethodActions";
 import { OwnerAddPayoutMethodForm } from "./OwnerAddPayoutMethodForm";
 import { OwnerKycCard } from "./OwnerKycCard";
-import { PersonalDetailsForm } from "./PersonalDetailsForm";
-import { BusinessForm } from "./BusinessForm";
 
 export const dynamic = "force-dynamic";
 
-const VALID_STEPS = new Set<SetupStepKey>([
-  "personal",
-  "business",
-  "legal",
-  "bank",
-]);
+const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
 export default async function OwnerPayoutsPage({
   searchParams,
@@ -61,6 +52,7 @@ export default async function OwnerPayoutsPage({
     owner: {
       fullName: owner.fullName,
       phone: owner.phone,
+      address: owner.address,
       companyName: owner.companyName,
     },
     hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
@@ -68,14 +60,16 @@ export default async function OwnerPayoutsPage({
     payoutMethodCount: methods.length,
   });
 
-  // Active step: explicit ?step=… wins, otherwise the first
-  // incomplete row (or "personal" if everything's done so the page
-  // doesn't look unanchored).
+  // Active step on this page is one of the two payouts-owned steps;
+  // an explicit ?step=… wins if it's legal/bank, otherwise we anchor
+  // to the first incomplete payouts-owned step (or "legal" so the
+  // page never looks unanchored).
   const requested = searchParams?.step as SetupStepKey | undefined;
   const activeKey: SetupStepKey =
-    requested && VALID_STEPS.has(requested)
+    requested && PAYOUTS_STEPS.has(requested)
       ? requested
-      : (checklist.firstIncomplete ?? "personal");
+      : (checklist.steps.find((s) => PAYOUTS_STEPS.has(s.key) && !s.done)
+          ?.key ?? "legal");
 
   const allDone = checklist.doneCount === checklist.totalCount;
 
@@ -83,46 +77,26 @@ export default async function OwnerPayoutsPage({
     <div className="space-y-8">
       <header>
         <h2 className="text-xl font-medium text-stone-900">
-          Account setup
+          Payouts &amp; legal
         </h2>
         <p className="mt-1 text-sm text-stone-600">
           {allDone
             ? "Everything we need is on file. You can update any of these later from this page."
             : `Finish the ${
                 checklist.totalCount - checklist.doneCount
-              } of ${checklist.totalCount} steps below before your first payout. Each step takes about a minute.`}
+              } of ${checklist.totalCount} setup steps below before your first payout. Each step takes about a minute.`}
         </p>
       </header>
 
       <SetupChecklist
         data={checklist}
         activeKey={activeKey}
-        hrefFor={(key) => `/owner/payouts?step=${key}#${key}`}
+        hrefFor={(key) =>
+          PAYOUTS_STEPS.has(key)
+            ? `/owner/payouts?step=${key}#${key}`
+            : `/owner/profile?step=${key}#${key}`
+        }
       />
-
-      <SetupSection
-        id="personal"
-        title="Personal details"
-        description="Used on every monthly statement and on KYC paperwork."
-        active={activeKey === "personal"}
-      >
-        <PersonalDetailsForm
-          defaultFullName={owner.fullName}
-          defaultPhone={owner.phone ?? ""}
-        />
-      </SetupSection>
-
-      <SetupSection
-        id="business"
-        title="Business"
-        description="The legal entity that holds the property, if you let through one."
-        active={activeKey === "business"}
-      >
-        <BusinessForm
-          defaultCompanyName={owner.companyName ?? ""}
-          defaultCountry={owner.country}
-        />
-      </SetupSection>
 
       <SetupSection
         id="legal"

@@ -77,6 +77,12 @@ export default async function OwnerLayout({
               >
                 Payouts
               </Link>
+              <Link
+                href="/owner/profile"
+                className="text-stone-700 hover:text-stone-900"
+              >
+                Profile
+              </Link>
             </>
           ) : null}
           <form action="/auth/sign-out" method="post">

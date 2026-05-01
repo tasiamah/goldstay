@@ -23,6 +23,11 @@ import {
 const PersonalInput = z.object({
   fullName: personFullName,
   phone: z.string().trim().min(4, "Phone is too short").max(40),
+  address: z
+    .string()
+    .trim()
+    .min(6, "Please enter a postal address.")
+    .max(500),
 });
 
 const BusinessInput = z.object({
@@ -48,6 +53,7 @@ export async function updatePersonalDetailsAction(
   const parsed = PersonalInput.safeParse({
     fullName: formData.get("fullName") ?? "",
     phone: formData.get("phone") ?? "",
+    address: formData.get("address") ?? "",
   });
   if (!parsed.success) {
     return {
@@ -67,9 +73,15 @@ export async function updatePersonalDetailsAction(
     entityId: owner.id,
     action: "owner.profile.personal_updated",
     summary: "Owner updated personal details",
-    metadata: { fields: ["fullName", "phone"], scope: "owner-self-serve" },
+    metadata: {
+      fields: ["fullName", "phone", "address"],
+      scope: "owner-self-serve",
+    },
   });
 
+  // Both /owner/profile and /owner/payouts render the personal block
+  // (or its checklist row), so we revalidate both surfaces.
+  revalidatePath("/owner/profile");
   revalidatePath("/owner/payouts");
   return { ok: true };
 }
@@ -109,6 +121,7 @@ export async function updateBusinessDetailsAction(
     },
   });
 
+  revalidatePath("/owner/profile");
   revalidatePath("/owner/payouts");
   return { ok: true };
 }
