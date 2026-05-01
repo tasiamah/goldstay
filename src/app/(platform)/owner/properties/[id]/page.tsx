@@ -100,6 +100,13 @@ export default async function OwnerPropertyDetailPage({
         where: { checkOut: { gte: heatmapStart } },
         orderBy: { checkIn: "desc" },
       },
+      // Most recent management agreement, if any. We highlight the
+      // status on the property header so an unsigned contract is
+      // visible from the property view as well as the dashboard banner.
+      agreements: {
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      },
     },
   });
 
@@ -148,6 +155,8 @@ export default async function OwnerPropertyDetailPage({
     ? revenueTotalsByCurrency(bookingsForAgg, period)
     : [];
 
+  const latestAgreement = property.agreements[0] ?? null;
+
   return (
     <div className="space-y-8">
       <div>
@@ -170,6 +179,31 @@ export default async function OwnerPropertyDetailPage({
           {property.country === "KE" ? "Kenya" : "Ghana"}
         </p>
       </div>
+
+      {latestAgreement && latestAgreement.status === "SENT" ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-amber-900/80">
+                Action required
+              </p>
+              <h2 className="mt-1 text-base font-medium text-amber-950">
+                Sign your management agreement
+              </h2>
+              <p className="mt-1 text-sm text-amber-900/80">
+                We need a signed agreement on file before payouts can be
+                released. About two minutes to review and sign.
+              </p>
+            </div>
+            <Link
+              href={`/owner/agreements/${latestAgreement.id}`}
+              className="shrink-0 rounded-md bg-amber-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800"
+            >
+              Review and sign
+            </Link>
+          </div>
+        </section>
+      ) : null}
 
       <section className="grid grid-cols-3 gap-4">
         {isShortTerm ? (

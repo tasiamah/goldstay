@@ -26,6 +26,7 @@ export default async function OwnerDashboardPage() {
     activeLeaseCount,
     totals,
     recentTransactions,
+    pendingAgreements,
   ] = await Promise.all([
     prisma.property.findMany({
       where: { ownerId: owner.id },
@@ -64,6 +65,19 @@ export default async function OwnerDashboardPage() {
         lease: { select: { tenantName: true } },
       },
     }),
+    // Outstanding management agreements awaiting the owner's signature.
+    // We show a single dashboard-level banner that links to the first
+    // one (most common case is a single property), but the count is
+    // surfaced in the copy so a multi-property landlord knows there's
+    // more than one to handle.
+    prisma.managementAgreement.findMany({
+      where: {
+        property: { ownerId: owner.id },
+        status: "SENT",
+      },
+      orderBy: { sentAt: "asc" },
+      include: { property: { select: { id: true, name: true } } },
+    }),
   ]);
 
   const propertyOccupancy = properties.map((p) => ({
@@ -88,6 +102,37 @@ export default async function OwnerDashboardPage() {
 
   return (
     <div className="space-y-10">
+      {pendingAgreements.length > 0 ? (
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-amber-900/80">
+                Action required
+              </p>
+              <h2 className="mt-1 text-base font-medium text-amber-950">
+                {pendingAgreements.length === 1
+                  ? `Sign your management agreement for ${pendingAgreements[0].property.name}`
+                  : `${pendingAgreements.length} management agreements awaiting your signature`}
+              </h2>
+              <p className="mt-1 text-sm text-amber-900/80">
+                Goldstay has issued a 12-month management agreement
+                covering your property. It takes about two minutes to
+                review and sign — your statements and payouts depend on
+                it being in place.
+              </p>
+            </div>
+            <Link
+              href={`/owner/agreements/${pendingAgreements[0].id}`}
+              className="shrink-0 rounded-md bg-amber-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800"
+            >
+              {pendingAgreements.length === 1
+                ? "Review and sign"
+                : "Start with the first"}
+            </Link>
+          </div>
+        </section>
+      ) : null}
+
       <section className="grid grid-cols-3 gap-4">
         <Stat label="Properties" value={properties.length} />
         <Stat label="Active leases" value={activeLeaseCount} />
