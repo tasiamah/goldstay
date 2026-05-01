@@ -18,10 +18,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { PropertyTypeBadge } from "@/components/PropertyStatusBadge";
 import {
-  PropertyStatusBadge,
-  PropertyTypeBadge,
-} from "@/components/PropertyStatusBadge";
+  PropertyReadinessBadge,
+  PropertyReadinessSummary,
+} from "@/components/owner/PropertyReadinessBadge";
+import { computePropertyReadiness } from "@/lib/owner/property-readiness";
+import { computeSetupChecklist } from "@/lib/owner/setup-status";
+import { listPayoutMethodsFor } from "@/lib/payouts";
 import {
   OccupancyCalendar,
   clampHeatmapMonths,
@@ -113,6 +117,36 @@ export default async function OwnerPropertyDetailPage({
 
   if (!property) notFound();
 
+  // Setup completeness drives the readiness badge below. Two cheap
+  // reads — same shape the dashboard uses — so the property header
+  // can show "what's missing" without a navigation back to /owner.
+  const [payoutMethods, kycCounts] = await Promise.all([
+    listPayoutMethodsFor(owner.id, { includeArchived: false }),
+    prisma.document.groupBy({
+      by: ["kind"],
+      where: {
+        ownerId: owner.id,
+        kind: { in: ["ID_DOCUMENT", "PROOF_OF_PAYOUT_ACCOUNT"] },
+      },
+      _count: { _all: true },
+    }),
+  ]);
+  const kycByKind = Object.fromEntries(
+    kycCounts.map((c) => [c.kind, c._count._all]),
+  );
+  const setupChecklist = computeSetupChecklist({
+    owner: {
+      fullName: owner.fullName,
+      phone: owner.phone,
+      address: owner.address,
+      entityType: owner.entityType,
+      companyName: owner.companyName,
+    },
+    hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
+    hasProofOfAccount: (kycByKind.PROOF_OF_PAYOUT_ACCOUNT ?? 0) > 0,
+    payoutMethodCount: payoutMethods.length,
+  });
+
   const olderBookingCount =
     heatmapMonthsBack < HEATMAP_MAX_MONTHS
       ? await prisma.booking.count({
@@ -157,6 +191,12 @@ export default async function OwnerPropertyDetailPage({
     : [];
 
   const latestAgreement = property.agreements[0] ?? null;
+  const readiness = computePropertyReadiness({
+    propertyStatus: property.status,
+    hasPendingAgreement:
+      latestAgreement != null && latestAgreement.status === "SENT",
+    setupComplete: setupChecklist.doneCount === setupChecklist.totalCount,
+  });
 
   return (
     <div className="space-y-8">
@@ -171,7 +211,10 @@ export default async function OwnerPropertyDetailPage({
           <h2 className="text-2xl font-serif text-stone-900">
             {formatPropertyDisplayName(property.name, property.unitNumber)}
           </h2>
-          <PropertyStatusBadge status={property.status} />
+          <PropertyReadinessBadge
+            status={property.status}
+            ownerSideDone={readiness.ownerSideDone}
+          />
           <PropertyTypeBadge type={property.propertyType} />
         </div>
         <p className="mt-1 text-sm text-stone-500">
@@ -179,6 +222,7 @@ export default async function OwnerPropertyDetailPage({
           {property.city} ·{" "}
           {property.country === "KE" ? "Kenya" : "Ghana"}
         </p>
+        <PropertyReadinessSummary readiness={readiness} />
       </div>
 
       {latestAgreement && latestAgreement.status === "SENT" ? (

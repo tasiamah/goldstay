@@ -22,6 +22,11 @@ import {
 } from "@/lib/owner/setup-status";
 import { listPayoutMethodsFor } from "@/lib/payouts";
 import { syncOwnerNotifications } from "@/lib/notifications/sync";
+import { computePropertyReadiness } from "@/lib/owner/property-readiness";
+import {
+  PropertyReadinessBadge,
+  PropertyReadinessSummary,
+} from "@/components/owner/PropertyReadinessBadge";
 
 const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
@@ -512,26 +517,40 @@ export default async function OwnerDashboardPage() {
             <ul className="mt-4 divide-y divide-stone-100">
               {properties.map((p) => {
                 const occupied = p.units.some((u) => u.leases.length > 0);
+                // We have agreement-pending state owner-wide; this
+                // narrows it to "is there one for *this* property".
+                const hasPendingAgreement = pendingAgreements.some(
+                  (a) => a.property.id === p.id,
+                );
+                const readiness = computePropertyReadiness({
+                  propertyStatus: p.status,
+                  hasPendingAgreement,
+                  setupComplete,
+                });
                 return (
-                  <li
-                    key={p.id}
-                    className="flex items-start justify-between py-3"
-                  >
-                    <div>
-                      <Link
-                        href={`/owner/properties/${p.id}`}
-                        className="font-medium text-stone-900 hover:underline"
-                      >
-                        {formatPropertyDisplayName(p.name, p.unitNumber)}
-                      </Link>
-                      <p className="text-xs text-stone-500">
-                        {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
-                        {p.city} · {occupied ? "Occupied" : "Vacant"}
-                      </p>
+                  <li key={p.id} className="py-3">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <Link
+                          href={`/owner/properties/${p.id}`}
+                          className="font-medium text-stone-900 hover:underline"
+                        >
+                          {formatPropertyDisplayName(p.name, p.unitNumber)}
+                        </Link>
+                        <p className="text-xs text-stone-500">
+                          {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
+                          {p.city}
+                          {readiness.isActive ? (
+                            <> · {occupied ? "Occupied" : "Vacant"}</>
+                          ) : null}
+                        </p>
+                      </div>
+                      <PropertyReadinessBadge
+                        status={p.status}
+                        ownerSideDone={readiness.ownerSideDone}
+                      />
                     </div>
-                    <span className="text-xs uppercase tracking-wider text-stone-500">
-                      {p.status}
-                    </span>
+                    <PropertyReadinessSummary readiness={readiness} />
                   </li>
                 );
               })}
