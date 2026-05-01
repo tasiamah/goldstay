@@ -62,7 +62,7 @@ export async function PropertyFinanceCard({
             Goldstay P&amp;L
           </h3>
           <p className="text-xs text-stone-500">
-            What this property has produced for Goldstay each month —
+            What this property has produced for Goldstay each month:
             commission revenue, OTA / cleaning costs we ate, and the net
             we kept. SUPER_ADMIN-only.
           </p>

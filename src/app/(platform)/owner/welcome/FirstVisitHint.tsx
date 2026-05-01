@@ -22,7 +22,7 @@ export function FirstVisitHint({
   // We still render but with quieter copy that defers to the action.
   const message = hasPendingAgreement
     ? `Welcome, ${ownerFirstName}. Sign your agreement first; once that's done, the ? icons next to each section explain what you're looking at.`
-    : `Welcome, ${ownerFirstName}. Click the ? icons next to each section heading to learn what it shows — they stay there for whenever you want a refresher.`;
+    : `Welcome, ${ownerFirstName}. Click the ? icons next to each section heading to learn what it shows. They stay there for whenever you want a refresher.`;
 
   return (
     <section className="flex flex-wrap items-center justify-between gap-3 rounded-md border border-stone-200 bg-stone-50 px-4 py-2.5 text-sm text-stone-700">

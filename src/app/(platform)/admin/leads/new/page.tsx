@@ -23,7 +23,7 @@ export default function NewLeadPage() {
           Log a lead manually
         </h2>
         <p className="mt-1 text-sm text-stone-500">
-          Use this when a landlord reaches us off-platform — WhatsApp, a
+          Use this when a landlord reaches us off-platform: WhatsApp, a
           referral, an event. The lead lands in the same queue as website
           submissions.
         </p>

@@ -201,9 +201,9 @@ export default async function PropertyDetailPage({
                 {formatPropertyDisplayName(property.name, property.unitNumber)}
               </h2>
               <Tip term={<PropertyStatusBadge status={property.status} />}>
-                ONBOARDING — verifying documents.
-                ACTIVE — under management; statements run.
-                EXITED — left the portfolio; data retained.
+                ONBOARDING: verifying documents.
+                ACTIVE: under management; statements run.
+                EXITED: left the portfolio; data retained.
               </Tip>
               <Tip term={<PropertyTypeBadge type={property.propertyType} />}>
                 LONG_TERM rents to a single tenant under a Lease.
@@ -305,7 +305,7 @@ export default async function PropertyDetailPage({
                 <p className="mt-1 text-sm text-stone-500">
                   Connect this property&rsquo;s public iCal feeds so the
                   occupancy calendar updates automatically every 15 minutes.
-                  Free alternative to a paid PMS — dates only, no guest data
+                  Free alternative to a paid PMS: dates only, no guest data
                   or money. Operators backfill financials manually.
                 </p>
                 <div className="mt-5">
@@ -658,7 +658,7 @@ function AgreementCard({
                     day: "2-digit",
                     month: "short",
                     year: "numeric",
-                  })} by ${current.signedByName ?? "—"}`
+                  })} by ${current.signedByName ?? "(unknown)"}`
                 : current.sentAt
                   ? ` · sent ${current.sentAt.toLocaleDateString("en-GB", {
                       day: "2-digit",

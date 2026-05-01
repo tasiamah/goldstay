@@ -190,8 +190,8 @@ function Header() {
       <h2 className="text-xl font-serif text-stone-900">Statements</h2>
       <p className="mt-2 text-sm text-stone-500">
         Every rent payment, expense, fee and payout Goldstay records on
-        your portfolio. Filter by month or property to scope the view —
-        pick a specific month to download a signed PDF for your
+        your portfolio. Filter by month or property to scope the view,
+        or pick a specific month to download a signed PDF for your
         accountant.
       </p>
     </div>
@@ -234,7 +234,7 @@ function FilterCard({
               const b = byMonth.get(monthKeyFromPeriod(p))!;
               return (
                 <option key={periodParam(p)} value={periodParam(p)}>
-                  {formatPeriod(p)} —{" "}
+                  {formatPeriod(p)} ·{" "}
                   {b.count === 1 ? "1 transaction" : `${b.count} transactions`}
                 </option>
               );
@@ -416,7 +416,7 @@ function ResultsCount({
   const to = Math.min(page * PAGE_SIZE, total);
   return (
     <p className="text-xs text-stone-500">
-      Showing <strong className="text-stone-700">{from}</strong>–
+      Showing <strong className="text-stone-700">{from}</strong> to{" "}
       <strong className="text-stone-700">{to}</strong> of {total}
       {isFiltered ? " filtered" : ""} {total === 1 ? "row" : "rows"}
       {showing < total - (page - 1) * PAGE_SIZE ? null : ""}

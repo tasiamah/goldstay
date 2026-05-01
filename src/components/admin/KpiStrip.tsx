@@ -58,7 +58,7 @@ function PulseStrip({ kpis }: { kpis: OverviewKpis }) {
           value={kpis.vacantUnits.toString()}
           sub={
             kpis.vacantUnits === 0
-              ? "Portfolio fully let — pop the champagne."
+              ? "Portfolio fully let. Pop the champagne."
               : "Units without an active lease today"
           }
           href="/admin/properties?vacancy=vacant"

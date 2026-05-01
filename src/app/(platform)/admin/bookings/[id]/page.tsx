@@ -92,7 +92,7 @@ export default async function BookingDetailPage({
       {isPlaceholder ? (
         <div className="rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
           This booking was imported from an iCal feed. Financials are
-          placeholders — fill in the real gross, OTA fee, cleaning, and
+          placeholders. Fill in the real gross, OTA fee, cleaning, and
           payout from the {SOURCE_LABEL[booking.source]} dashboard so the
           owner statement reconciles.
         </div>

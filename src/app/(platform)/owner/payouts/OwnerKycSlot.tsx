@@ -147,7 +147,7 @@ export function OwnerKycSlot({
           </p>
           <p className="mt-1 text-xs text-stone-500">
             Pending verification from Goldstay. We&apos;ll email you as
-            soon as it&apos;s reviewed — usually within one working day.
+            soon as it&apos;s reviewed, usually within one working day.
           </p>
           {!showReplace ? (
             <button

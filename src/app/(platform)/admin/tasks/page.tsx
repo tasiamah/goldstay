@@ -102,7 +102,7 @@ export default async function MyTasksPage() {
 
       <p className="text-xs text-stone-400">
         Need to assign a task to a teammate? Open the entity and add the task
-        there — assignment by name lands in a future iteration. Until then,{" "}
+        there. Assignment by name lands in a future iteration. Until then,{" "}
         <Link href="/admin/team" className="underline">
           ping them
         </Link>{" "}

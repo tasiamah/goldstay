@@ -33,7 +33,7 @@ export default async function PropertyImportPage() {
           Each row is attached to an existing owner via{" "}
           <code>ownerEmail</code>. Rows whose email doesn&apos;t match an
           owner are skipped (we never auto-create owners during a property
-          import — that would hide data quality issues).
+          import; that would hide data quality issues).
         </p>
       </div>
 

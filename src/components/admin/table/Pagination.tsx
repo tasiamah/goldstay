@@ -35,7 +35,7 @@ export function Pagination({
           "No rows"
         ) : (
           <>
-            Showing <strong>{start.toLocaleString()}</strong>–
+            Showing <strong>{start.toLocaleString()}</strong> to{" "}
             <strong>{end.toLocaleString()}</strong> of{" "}
             <strong>{totalRows.toLocaleString()}</strong>
           </>

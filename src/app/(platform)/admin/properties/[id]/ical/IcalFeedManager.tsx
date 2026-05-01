@@ -39,7 +39,7 @@ export function IcalFeedManager({
       {feeds.length === 0 ? (
         <p className="text-sm text-stone-500">
           No channel calendars connected yet. Paste your Airbnb iCal link
-          below — find it under{" "}
+          below. Find it under{" "}
           <span className="font-medium text-stone-700">
             Listing → Availability → Sync calendars → Export calendar
           </span>{" "}

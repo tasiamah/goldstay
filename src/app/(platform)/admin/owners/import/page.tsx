@@ -54,13 +54,13 @@ export default async function OwnerImportPage() {
         </h4>
         <ul className="mt-1 list-disc space-y-1 pl-5 text-sm text-stone-700">
           <li>
-            <code>companyName</code> — promoted to the display name when set
+            <code>companyName</code>: promoted to the display name when set
           </li>
           <li>
             <code>phone</code>
           </li>
           <li>
-            <code>preferredCurrency</code> — 3-letter ISO code; defaults to USD
+            <code>preferredCurrency</code>: 3-letter ISO code; defaults to USD
           </li>
         </ul>
         <p className="mt-3 text-xs text-stone-500">

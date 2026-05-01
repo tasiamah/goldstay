@@ -44,7 +44,7 @@ export function ManualLeadForm() {
           label="Property country"
           name="country"
           options={[
-            { value: "", label: "—" },
+            { value: "", label: "Select…" },
             { value: "KE", label: "Kenya" },
             { value: "GH", label: "Ghana" },
           ]}

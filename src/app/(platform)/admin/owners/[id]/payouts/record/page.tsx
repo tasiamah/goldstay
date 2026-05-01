@@ -74,8 +74,8 @@ export default async function RecordPayoutPage({
         </div>
       ) : properties.length === 0 ? (
         <div className="rounded-lg border border-stone-200 bg-white p-5 text-sm text-stone-600">
-          This owner has no active properties — there&apos;s nothing to pay
-          out for. Add a property first.
+          This owner has no active properties, so there&apos;s nothing to
+          pay out for. Add a property first.
         </div>
       ) : (
         <div className="max-w-2xl rounded-lg border border-stone-200 bg-white p-6">

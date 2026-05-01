@@ -169,7 +169,7 @@ export function YourDetailsForm({
               <p className="mt-1 text-xs text-red-700">{fieldErrors.country}</p>
             ) : (
               <p className="mt-1 text-xs text-stone-500">
-                Where the company is registered — drives the tax setup on
+                Where the company is registered. Drives the tax setup on
                 statements.
               </p>
             )}

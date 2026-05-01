@@ -143,7 +143,7 @@ export default async function FinancePage({
         <div>
           <h2 className="text-xl font-medium text-stone-900">Finance</h2>
           <p className="text-sm text-stone-500">
-            Goldstay revenue, cost and net — what we keep after every owner
+            Goldstay revenue, cost and net: what we keep after every owner
             statement clears. {PERIOD_LABEL[period]}.
           </p>
         </div>
@@ -195,7 +195,7 @@ export default async function FinancePage({
       </section>
 
       <p className="text-xs text-stone-500">
-        Transactions are grouped by currency, never converted — Goldstay
+        Transactions are grouped by currency, never converted. Goldstay
         does not run an FX rate internally. To compare across currencies,
         pick a single currency on a property and compare against itself
         over time.

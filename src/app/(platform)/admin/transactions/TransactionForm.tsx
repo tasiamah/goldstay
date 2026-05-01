@@ -112,7 +112,7 @@ export function TransactionForm({
           name="bookingId"
           defaultValue={defaults.bookingId ?? ""}
           options={[
-            { value: "", label: "— No booking —" },
+            { value: "", label: "No booking" },
             ...selectedProperty.bookings.map((b) => ({
               value: b.id,
               label: b.label,
@@ -131,7 +131,7 @@ export function TransactionForm({
           name="leaseId"
           defaultValue={defaults.leaseId ?? ""}
           options={[
-            { value: "", label: "— No lease —" },
+            { value: "", label: "No lease" },
             ...selectedProperty.leases.map((l) => ({
               value: l.id,
               label: l.tenantName,

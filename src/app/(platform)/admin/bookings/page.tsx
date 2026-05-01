@@ -86,7 +86,7 @@ export default async function AdminBookingsListPage({
       <div>
         <h2 className="text-xl font-medium text-stone-900">Bookings</h2>
         <p className="mt-1 text-sm text-stone-500">
-          Short-term stays from every channel — Airbnb, Booking.com, Vrbo and
+          Short-term stays from every channel: Airbnb, Booking.com, Vrbo and
           direct. Calendar-only iCal imports show up here with a 0 amount until
           the financials are backfilled (the attention queue chases those).
         </p>
@@ -167,7 +167,7 @@ export default async function AdminBookingsListPage({
                   </td>
                   <td className="px-4 py-3 text-right text-sm tabular-nums text-stone-900">
                     {Number(b.grossAmount) === 0 ? (
-                      <span className="text-amber-700">— pending</span>
+                      <span className="text-amber-700">pending</span>
                     ) : (
                       <>
                         {Number(b.grossAmount).toLocaleString("en-GB", {

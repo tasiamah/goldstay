@@ -102,7 +102,7 @@ export default async function OwnerPayoutsPage({
       <SetupSection
         id="legal"
         title="Legal documents"
-        description="KYC paperwork — passport / national ID and proof of payout-account ownership."
+        description="ID verification: passport or national ID, plus proof of payout-account ownership."
         active={activeKey === "legal"}
       >
         <OwnerKycCard ownerId={owner.id} />
@@ -111,13 +111,13 @@ export default async function OwnerPayoutsPage({
       <SetupSection
         id="bank"
         title="Bank account"
-        description="Where Goldstay sends your net rent every month. Add as many methods as you like — only one is the default at any time."
+        description="Where Goldstay sends your net rent every month. Add as many methods as you like; only one is the default at any time."
         active={activeKey === "bank"}
       >
         {methods.length === 0 ? (
           <div className="rounded-md border border-dashed border-stone-300 bg-stone-50 p-5 text-sm text-stone-600">
             <p>
-              You haven&apos;t added a payout method yet. Add one below — the
+              You haven&apos;t added a payout method yet. Add one below. The
               Goldstay team will verify it before the first payout, so do
               this at least 5 working days before your first statement is
               due.
@@ -183,7 +183,7 @@ export default async function OwnerPayoutsPage({
 
       <p className="text-xs text-stone-500">
         For your protection, we never display the full account number of
-        an existing method — only the last 4 digits. To change a number,
+        an existing method, only the last 4 digits. To change a number,
         archive the old method and add a new one.
       </p>
     </div>

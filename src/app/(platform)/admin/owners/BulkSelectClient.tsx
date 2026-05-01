@@ -49,7 +49,7 @@ export function BulkActionBar({ formId }: { formId: string }) {
               toast.success(`${res.archived} archived`, {
                 description:
                   res.failed > 0
-                    ? `${res.failed} failed — see logs.`
+                    ? `${res.failed} failed. See logs.`
                     : "Hidden from default queries.",
               });
               router.refresh();
