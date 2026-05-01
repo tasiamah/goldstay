@@ -23,11 +23,21 @@ import {
 export { isAdminEmail };
 
 export async function getCurrentUser() {
-  const supabase = createSupabaseServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user;
+  // Supabase's getUser() can throw on transient network blips,
+  // malformed cookies, or missing env vars. We mirror the
+  // defensive try/catch from src/lib/supabase/middleware.ts so
+  // an exception here doesn't propagate up to the platform error
+  // boundary and render the generic "Something went wrong" UI to
+  // a logged-out visitor — they should just be sent to /login.
+  try {
+    const supabase = createSupabaseServerClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user;
+  } catch {
+    return null;
+  }
 }
 
 export async function requireUser() {
@@ -65,19 +75,28 @@ export async function requireAdmin(): Promise<AdminUser> {
 
   // Update authUserId on first login + bump lastLoginAt at most
   // once per minute to avoid hammering the DB on rapid navigation.
+  // The bump is best-effort: a transient DB hiccup here must not
+  // take down the entire admin surface, so we swallow the error
+  // and return the row we already have. The next refresh will
+  // retry on its own.
   const STALE_AFTER_MS = 60 * 1000;
   const needsAuthUserId = admin.authUserId !== user.id;
   const stale =
     !admin.lastLoginAt ||
     Date.now() - admin.lastLoginAt.getTime() > STALE_AFTER_MS;
   if (needsAuthUserId || stale) {
-    admin = await prisma.adminUser.update({
-      where: { id: admin.id },
-      data: {
-        authUserId: user.id,
-        lastLoginAt: new Date(),
-      },
-    });
+    try {
+      admin = await prisma.adminUser.update({
+        where: { id: admin.id },
+        data: {
+          authUserId: user.id,
+          lastLoginAt: new Date(),
+        },
+      });
+    } catch {
+      // Stick with the unbumped row. Auth still works; the
+      // "active 2 days ago" indicator may lag by one navigation.
+    }
   }
 
   return admin;
@@ -167,10 +186,18 @@ export async function requireOwner() {
   if (!owner && user.email) {
     owner = await prisma.owner.findUnique({ where: { email: user.email } });
     if (owner) {
-      owner = await prisma.owner.update({
-        where: { id: owner.id },
-        data: { authUserId: user.id },
-      });
+      // Best-effort claim of the owner row by authUserId. If the
+      // write hits a transient error we still know who they are
+      // from the email match — return the row as-is and let the
+      // next page load retry the bind.
+      try {
+        owner = await prisma.owner.update({
+          where: { id: owner.id },
+          data: { authUserId: user.id },
+        });
+      } catch {
+        // Fall through with the email-matched owner.
+      }
     }
   }
 
