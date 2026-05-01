@@ -5,27 +5,36 @@ import { formatPropertyDisplayName } from "@/lib/format-property";
 import { formatOwnerDisplayName } from "@/lib/format-owner";
 import { requireAdmin } from "@/lib/auth";
 import { AdminWelcomeCard } from "./welcome/AdminWelcomeCard";
+import { AttentionQueue } from "@/components/admin/AttentionQueue";
+import { CurrencyTotals } from "@/components/admin/CurrencyTotals";
+import { getAttentionQueue, getMonthlyTotals } from "@/lib/admin/queue";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminOverviewPage() {
   const admin = await requireAdmin();
   const [
+    queue,
+    totals,
     ownerCount,
     propertyCount,
     activeLeaseCount,
     recentOwners,
     recentProperties,
   ] = await Promise.all([
-    prisma.owner.count(),
-    prisma.property.count(),
-    prisma.lease.count({ where: { status: "ACTIVE" } }),
+    getAttentionQueue(admin),
+    getMonthlyTotals(),
+    prisma.owner.count({ where: { archivedAt: null } }),
+    prisma.property.count({ where: { archivedAt: null } }),
+    prisma.lease.count({ where: { status: "ACTIVE", archivedAt: null } }),
     prisma.owner.findMany({
+      where: { archivedAt: null },
       orderBy: { createdAt: "desc" },
       take: 5,
       include: { _count: { select: { properties: true } } },
     }),
     prisma.property.findMany({
+      where: { archivedAt: null },
       orderBy: { createdAt: "desc" },
       take: 5,
       include: {
@@ -39,6 +48,8 @@ export default async function AdminOverviewPage() {
   return (
     <div className="space-y-10">
       <AdminWelcomeCard admin={admin} />
+      <AttentionQueue queue={queue} />
+      <CurrencyTotals monthLabel={totals.monthLabel} totals={totals.totals} />
       <section className="grid grid-cols-3 gap-4">
         <Stat label="Owners" value={ownerCount} href="/admin/owners" />
         <Stat
