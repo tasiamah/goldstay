@@ -15,7 +15,6 @@ import { FirstVisitHint } from "./welcome/FirstVisitHint";
 import { KpiCard } from "@/components/owner/KpiCard";
 import { EarningsOverview } from "@/components/owner/EarningsOverview";
 import { HelpHint } from "@/components/owner/HelpHint";
-import { SetupChecklist } from "@/components/owner/SetupChecklist";
 import {
   computeSetupChecklist,
   type SetupStepKey,
@@ -334,9 +333,12 @@ export default async function OwnerDashboardPage() {
       {!setupComplete ? (
         // Red, not amber — setup blocks every payout, so it ranks
         // above the agreement banner (amber) and the missing-docs
-        // banner (amber). The CTA points at the first incomplete
-        // step so a single click takes the owner to where they
-        // actually have to type something.
+        // banner (amber). Deliberately a one-liner with a single
+        // CTA: the full step-by-step checklist already lives on
+        // /owner/payouts and /owner/profile where the owner is
+        // about to fill the fields anyway, so duplicating it
+        // inside the banner just made the dashboard noisier
+        // without giving the owner a faster path to the work.
         <section className="rounded-lg border border-rose-300 bg-rose-50 p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -344,12 +346,12 @@ export default async function OwnerDashboardPage() {
                 Account setup not complete
               </p>
               <h2 className="mt-1 text-base font-medium text-rose-950">
-                {setup.doneCount} of {setup.totalCount} steps done — finish
+                {setup.doneCount} of {setup.totalCount} steps done. Finish
                 the rest before your first payout
               </h2>
               <p className="mt-1 text-sm text-rose-900/80">
-                Each step takes about a minute. Tap a row to jump straight
-                to the missing piece.
+                Each step takes about a minute. Click below to jump
+                straight to the next missing piece.
               </p>
             </div>
             <Link
@@ -362,17 +364,6 @@ export default async function OwnerDashboardPage() {
             >
               Complete here →
             </Link>
-          </div>
-          <div className="mt-4">
-            <SetupChecklist
-              data={setup}
-              activeKey={setup.firstIncomplete}
-              hrefFor={(key) =>
-                PAYOUTS_STEPS.has(key)
-                  ? `/owner/payouts?step=${key}#${key}`
-                  : `/owner/profile#details`
-              }
-            />
           </div>
         </section>
       ) : null}
@@ -405,8 +396,8 @@ export default async function OwnerDashboardPage() {
               <p className="mt-1 text-sm text-amber-900/80">
                 We need {humanJoin(REQUIRED_PROPERTY_DOC_KINDS.map(labelForRequiredDoc))}{" "}
                 on file for every property. The Goldstay team handles
-                most of these for you — open the property to see what&rsquo;s
-                missing or email{" "}
+                most of these for you. Open the property to see what&rsquo;s
+                missing, or email{" "}
                 <a
                   href="mailto:support@goldstay.co.ke"
                   className="font-medium text-amber-900 underline-offset-2 hover:underline"
@@ -448,7 +439,7 @@ export default async function OwnerDashboardPage() {
               <p className="mt-1 text-sm text-amber-900/80">
                 Goldstay has issued a 12-month management agreement
                 covering your property. It takes about two minutes to
-                review and sign — your statements and payouts depend on
+                review and sign. Your statements and payouts depend on
                 it being in place.
               </p>
             </div>
@@ -559,8 +550,8 @@ export default async function OwnerDashboardPage() {
             <HelpHint label="By currency">
               Owners with portfolios across Kenya, Ghana and the
               diaspora often collect in more than one currency. We
-              never auto-FX between them — each row is the real
-              ledger total in that currency.
+              never auto-FX between them. Each row is the real
+              total in that currency.
             </HelpHint>
           </div>
           <div className="mt-4 overflow-hidden rounded-md border border-stone-200">
@@ -670,8 +661,8 @@ export default async function OwnerDashboardPage() {
                 Recent activity
               </h2>
               <HelpHint label="Recent activity">
-                Every rent payment, expense, refund and payout — the
-                numbers behind your statement. Filter by property
+                Every rent payment, expense, refund and payout, all
+                the numbers behind your statement. Filter by property
                 and month, or download the signed monthly PDF, on
                 the Statements page.
               </HelpHint>
