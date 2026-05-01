@@ -19,6 +19,13 @@ import {
   HEATMAP_STEP,
 } from "@/components/OccupancyCalendar";
 import { IcalFeedManager } from "./ical/IcalFeedManager";
+import { ReissueAgreementButton } from "./agreement/ReissueButton";
+import {
+  AGREEMENT_STATUS_CLASSES,
+  AGREEMENT_STATUS_LABEL,
+  formatCommissionPct,
+  formatMoney,
+} from "@/lib/agreements/format";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
@@ -93,6 +100,11 @@ export default async function PropertyDetailPage({
       },
       icalFeeds: {
         orderBy: { source: "asc" },
+      },
+      // Most recent agreement first; UI surfaces the latest one.
+      // Older rows stay around for audit history.
+      agreements: {
+        orderBy: { createdAt: "desc" },
       },
     },
   });
@@ -336,6 +348,26 @@ export default async function PropertyDetailPage({
             </div>
           )}
 
+          {property.status === "ACTIVE" || property.agreements.length > 0 ? (
+            <AgreementCard
+              propertyId={property.id}
+              agreements={property.agreements.map((a) => ({
+                id: a.id,
+                status: a.status,
+                termMonths: a.termMonths,
+                commissionRate: a.commissionRate.toString(),
+                earlyExitFee: a.earlyExitFee.toString(),
+                earlyExitFeeCurrency: a.earlyExitFeeCurrency,
+                noticePeriodDays: a.noticePeriodDays,
+                generatedAt: a.generatedAt,
+                sentAt: a.sentAt,
+                signedAt: a.signedAt,
+                signedByName: a.signedByName,
+                documentId: a.documentId,
+              }))}
+            />
+          ) : null}
+
           <div className="rounded-lg border border-stone-200 bg-white p-6">
             <h3 className="text-base font-medium text-stone-900">
               Documents
@@ -493,6 +525,151 @@ function BookingsCard({
           })}
         </ul>
       )}
+    </div>
+  );
+}
+
+// Surfaces the management agreement lifecycle to the operator. Most
+// of the time there'll be exactly one row (the auto-issued one);
+// older CANCELLED rows are listed under a small "history" line so the
+// audit trail is visible without dominating the card. Reissue lives
+// on a small button at the top so changing terms before signature is
+// a single click.
+type AgreementRow = {
+  id: string;
+  status: "DRAFT" | "SENT" | "SIGNED" | "CANCELLED";
+  termMonths: number;
+  commissionRate: string;
+  earlyExitFee: string;
+  earlyExitFeeCurrency: string;
+  noticePeriodDays: number;
+  generatedAt: Date;
+  sentAt: Date | null;
+  signedAt: Date | null;
+  signedByName: string | null;
+  documentId: string | null;
+};
+
+function AgreementCard({
+  propertyId,
+  agreements,
+}: {
+  propertyId: string;
+  agreements: AgreementRow[];
+}) {
+  const current =
+    agreements.find((a) => a.status !== "CANCELLED") ?? agreements[0] ?? null;
+  const cancelledHistory = agreements.filter((a) => a.status === "CANCELLED");
+  const hasOpen =
+    !!current &&
+    (current.status === "DRAFT" || current.status === "SENT");
+
+  return (
+    <div className="rounded-lg border border-stone-200 bg-white p-6">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h3 className="text-base font-medium text-stone-900">
+            Management agreement
+          </h3>
+          <p className="mt-1 text-sm text-stone-500">
+            12-month management contract with the landlord.
+            Auto-issued on verification; landlord signs through their
+            portal.
+          </p>
+        </div>
+        <ReissueAgreementButton
+          propertyId={propertyId}
+          hasOpenAgreement={hasOpen}
+        />
+      </div>
+
+      {!current ? (
+        <p className="mt-5 text-sm text-stone-500">
+          No agreement on file yet. Mark the property verified to
+          auto-issue one, or click reissue above.
+        </p>
+      ) : (
+        <div className="mt-5 space-y-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <span
+              className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium uppercase tracking-wider ${AGREEMENT_STATUS_CLASSES[current.status]}`}
+            >
+              {AGREEMENT_STATUS_LABEL[current.status]}
+            </span>
+            <span className="text-xs text-stone-500">
+              Issued{" "}
+              {current.generatedAt.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+              {current.signedAt
+                ? ` · signed ${current.signedAt.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })} by ${current.signedByName ?? "—"}`
+                : current.sentAt
+                  ? ` · sent ${current.sentAt.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                    })}`
+                  : ""}
+            </span>
+          </div>
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
+            <Term label="Term" value={`${current.termMonths} months`} />
+            <Term
+              label="Commission"
+              value={formatCommissionPct(current.commissionRate)}
+            />
+            <Term
+              label="Notice"
+              value={`${current.noticePeriodDays} days`}
+            />
+            <Term
+              label="Early-exit fee"
+              value={formatMoney(
+                current.earlyExitFee,
+                current.earlyExitFeeCurrency,
+              )}
+            />
+          </dl>
+          {current.status === "SIGNED" && current.documentId ? (
+            <a
+              href={`/admin/documents/${current.documentId}/download`}
+              target="_blank"
+              rel="noopener"
+              className="inline-flex items-center text-sm font-medium text-stone-700 underline-offset-2 hover:underline"
+            >
+              Download signed PDF →
+            </a>
+          ) : current.status === "SENT" ? (
+            <p className="text-xs text-stone-500">
+              Landlord can sign at /owner/agreements/{current.id}
+            </p>
+          ) : null}
+        </div>
+      )}
+
+      {cancelledHistory.length > 0 ? (
+        <p className="mt-4 border-t border-stone-100 pt-3 text-xs text-stone-500">
+          {cancelledHistory.length} earlier{" "}
+          {cancelledHistory.length === 1 ? "version" : "versions"} cancelled
+          and superseded.
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function Term({ label, value }: { label: string; value: string }) {
+  return (
+    <div>
+      <dt className="text-xs uppercase tracking-wider text-stone-500">
+        {label}
+      </dt>
+      <dd className="mt-1 font-serif text-base text-stone-900">{value}</dd>
     </div>
   );
 }
