@@ -8,6 +8,7 @@ import {
 } from "@/lib/format-owner";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
+import { ResendWelcomeButton } from "./ResendWelcomeButton";
 
 export const dynamic = "force-dynamic";
 
@@ -55,6 +56,9 @@ export default async function OwnerDetailPage({
             <p className="text-sm text-stone-500">
               {owner.email} · {owner.country === "KE" ? "Kenya" : "Ghana"} ·{" "}
               {owner.preferredCurrency}
+            </p>
+            <p className="mt-2">
+              <ResendWelcomeButton ownerId={owner.id} />
             </p>
           </div>
           <Link

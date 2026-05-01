@@ -10,6 +10,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { OwnerInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
+import { sendOwnerWelcomeEmail } from "@/lib/owner-welcome";
 
 export type OwnerActionResult =
   | { ok: true; ownerId: string }
@@ -43,6 +44,23 @@ export async function createOwnerAction(
 
   try {
     const owner = await prisma.owner.create({ data: parsed.data });
+
+    // Fire-and-forget welcome email with a magic-link the landlord
+    // can click straight from their inbox. We deliberately await it
+    // here (not detach with .catch()) so a Resend timeout can't
+    // outlive the request lifetime on Vercel — but we never throw on
+    // failure, because a missing email is recoverable via the manual
+    // "resend welcome" button on the owner detail page, while a
+    // missing owner row would be a real data loss.
+    await sendOwnerWelcomeEmail({
+      email: owner.email,
+      fullName: owner.fullName,
+      companyName: owner.companyName,
+      country: owner.country,
+    }).catch((err) => {
+      console.error("[createOwnerAction] welcome email failed", err);
+    });
+
     revalidatePath("/admin");
     revalidatePath("/admin/owners");
     redirect(`/admin/owners/${owner.id}`);
@@ -64,6 +82,37 @@ export async function createOwnerAction(
     }
     return { ok: false, error: "Could not save the owner. Please retry." };
   }
+}
+
+// Manual re-trigger of the welcome email + magic link. Used when
+// the original send bounced, the landlord deleted the email, or the
+// 60-minute link expired before they got to it. Idempotent — a
+// landlord can receive this many times without any DB side effects.
+export async function resendOwnerWelcomeAction(
+  ownerId: string,
+): Promise<{ ok: true } | { ok: false; error: string }> {
+  await requireAdmin();
+
+  const owner = await prisma.owner.findUnique({
+    where: { id: ownerId },
+    select: {
+      email: true,
+      fullName: true,
+      companyName: true,
+      country: true,
+    },
+  });
+  if (!owner) return { ok: false, error: "Owner not found." };
+
+  const result = await sendOwnerWelcomeEmail(owner);
+  if (!result.ok) {
+    return {
+      ok: false,
+      error:
+        "Welcome email could not be sent. Check Resend logs and try again.",
+    };
+  }
+  return { ok: true };
 }
 
 export async function updateOwnerAction(

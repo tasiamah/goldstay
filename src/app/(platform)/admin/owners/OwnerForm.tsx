@@ -47,7 +47,7 @@ export function OwnerForm({
         required
         autoComplete="off"
         error={fieldError("email")}
-        help="Used for sign-in. The landlord will receive a magic link at this address."
+        help="Used for sign-in. We email a one-click magic link to this address the moment you save."
       />
       <Field
         label="Phone"
