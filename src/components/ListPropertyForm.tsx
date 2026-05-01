@@ -126,6 +126,19 @@ export function ListPropertyForm() {
   });
   const [sent, setSent] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // Conversion-funnel rule: ask for the minimum we need to call the
+  // landlord back, hide everything else behind a deliberate click.
+  // The four required fields below are the smallest set that lets ops
+  // (a) reach the person, (b) know which market they're in, and
+  // (c) decide whether to staff a Nairobi or Accra agent on the call.
+  // Everything else (bedrooms, furnishing, availability, notes,
+  // service preference) is useful-but-not-blocking; we surface it
+  // under a "Tell us more" disclosure so a landlord who *wants* to
+  // give context can, but a landlord who just wants a callback isn't
+  // forced through 9 extra fields on mobile. Server contract is
+  // unchanged: undefined fields just don't appear on the Resend email
+  // or the Airtable row, both of which already tolerate that.
+  const [moreOpen, setMoreOpen] = useState(false);
 
   const onSubmit = async (data: FormValues) => {
     setError(null);
@@ -175,20 +188,6 @@ export function ListPropertyForm() {
 
   const field =
     "mt-2 block w-full rounded-xl border border-charcoal/15 bg-white px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/30";
-
-  // Conversion-funnel rule: ask for the minimum we need to call the
-  // landlord back, hide everything else behind a deliberate click.
-  // The four required fields below are the smallest set that lets ops
-  // (a) reach the person, (b) know which market they're in, and
-  // (c) decide whether to staff a Nairobi or Accra agent on the call.
-  // Everything else (bedrooms, furnishing, availability, notes,
-  // service preference) is useful-but-not-blocking; we surface it
-  // under a "Tell us more" disclosure so a landlord who *wants* to
-  // give context can, but a landlord who just wants a callback isn't
-  // forced through 9 extra fields on mobile. Server contract is
-  // unchanged: undefined fields just don't appear on the Resend email
-  // or the Airtable row, both of which already tolerate that.
-  const [moreOpen, setMoreOpen] = useState(false);
 
   return (
     <form
