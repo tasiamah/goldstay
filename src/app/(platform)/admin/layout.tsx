@@ -1,5 +1,6 @@
 import { requireAdmin } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
+import { AdminToaster } from "@/components/admin/Toaster";
 import { ROLE_LABEL } from "@/lib/admin/roles";
 
 export default async function AdminLayout({
@@ -30,6 +31,7 @@ export default async function AdminLayout({
         <AdminNav role={admin.role} />
       </header>
       {children}
+      <AdminToaster />
     </div>
   );
 }

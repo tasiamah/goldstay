@@ -147,18 +147,31 @@ export async function finaliseDocumentUploadAction(input: unknown) {
       mimeType: mimeType ?? undefined,
       sizeBytes: sizeBytes ?? undefined,
     },
-    select: { propertyId: true, title: true, kind: true },
+    select: { propertyId: true, ownerId: true, title: true, kind: true },
   });
-  await recordAudit({
-    actor,
-    entity: "PROPERTY",
-    entityId: doc.propertyId,
-    action: "document.uploaded",
-    summary: `Document "${doc.title}" (${doc.kind}) uploaded`,
-    metadata: { documentId, kind: doc.kind },
-  });
-
-  revalidatePath(`/admin/properties/${doc.propertyId}`);
+  // Documents can attach to either a property or an owner (owner-
+  // level KYC etc.). Audit against whichever scope is set.
+  if (doc.propertyId) {
+    await recordAudit({
+      actor,
+      entity: "PROPERTY",
+      entityId: doc.propertyId,
+      action: "document.uploaded",
+      summary: `Document "${doc.title}" (${doc.kind}) uploaded`,
+      metadata: { documentId, kind: doc.kind },
+    });
+    revalidatePath(`/admin/properties/${doc.propertyId}`);
+  } else if (doc.ownerId) {
+    await recordAudit({
+      actor,
+      entity: "OWNER",
+      entityId: doc.ownerId,
+      action: "document.uploaded",
+      summary: `Document "${doc.title}" (${doc.kind}) uploaded`,
+      metadata: { documentId, kind: doc.kind },
+    });
+    revalidatePath(`/admin/owners/${doc.ownerId}`);
+  }
   return { ok: true as const };
 }
 
@@ -166,7 +179,13 @@ export async function deleteDocumentAction(documentId: string) {
   const actor = await currentAuditActor();
   const doc = await prisma.document.findUnique({
     where: { id: documentId },
-    select: { id: true, propertyId: true, storagePath: true, title: true },
+    select: {
+      id: true,
+      propertyId: true,
+      ownerId: true,
+      storagePath: true,
+      title: true,
+    },
   });
   if (!doc) return { ok: false as const, error: "Document not found" };
 
@@ -177,14 +196,26 @@ export async function deleteDocumentAction(documentId: string) {
       // GC'd later. Surface the failure as a soft warning.
     });
   }
-  await recordAudit({
-    actor,
-    entity: "PROPERTY",
-    entityId: doc.propertyId,
-    action: "document.deleted",
-    summary: `Document "${doc.title}" deleted`,
-    metadata: { documentId },
-  });
-  revalidatePath(`/admin/properties/${doc.propertyId}`);
+  if (doc.propertyId) {
+    await recordAudit({
+      actor,
+      entity: "PROPERTY",
+      entityId: doc.propertyId,
+      action: "document.deleted",
+      summary: `Document "${doc.title}" deleted`,
+      metadata: { documentId },
+    });
+    revalidatePath(`/admin/properties/${doc.propertyId}`);
+  } else if (doc.ownerId) {
+    await recordAudit({
+      actor,
+      entity: "OWNER",
+      entityId: doc.ownerId,
+      action: "document.deleted",
+      summary: `Document "${doc.title}" deleted`,
+      metadata: { documentId },
+    });
+    revalidatePath(`/admin/owners/${doc.ownerId}`);
+  }
   return { ok: true as const };
 }
