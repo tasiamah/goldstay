@@ -2,11 +2,16 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { Country, PropertyStatus } from "@prisma/client";
+import {
+  AgreementStatus,
+  Country,
+  PropertyStatus,
+} from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { PropertyInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
+import { defaultAgreementTerms } from "@/lib/agreements/defaults";
 
 export type PropertyActionResult =
   | { ok: true; propertyId: string }
@@ -146,6 +151,8 @@ export async function markPropertyVerifiedAction(
     select: {
       status: true,
       ownerId: true,
+      country: true,
+      propertyType: true,
       _count: { select: { documents: true } },
     },
   });
@@ -164,14 +171,57 @@ export async function markPropertyVerifiedAction(
     };
   }
 
-  await prisma.property.update({
-    where: { id: propertyId },
-    data: { status: PropertyStatus.ACTIVE },
+  // Verifying a property is also the moment we hand the landlord a
+  // management agreement to sign. We snapshot the country/type-aware
+  // defaults onto the row so future tweaks to the defaults helper
+  // don't retroactively alter terms shown to a landlord. The agreement
+  // is created in SENT state in a single transaction with the status
+  // bump so the owner banner appears the moment they refresh.
+  //
+  // Idempotency: if a non-CANCELLED agreement somehow already exists
+  // (e.g. an admin verified, then exited, then re-verified), we
+  // leave it alone. Re-issuing terms is a deliberate admin action,
+  // not a side effect of the lifecycle button.
+  const terms = defaultAgreementTerms({
+    country: property.country,
+    propertyType: property.propertyType,
   });
+  const existingActiveAgreement = await prisma.managementAgreement.findFirst({
+    where: {
+      propertyId,
+      status: { not: AgreementStatus.CANCELLED },
+    },
+    select: { id: true },
+  });
+
+  await prisma.$transaction(async (tx) => {
+    await tx.property.update({
+      where: { id: propertyId },
+      data: { status: PropertyStatus.ACTIVE },
+    });
+    if (!existingActiveAgreement) {
+      const now = new Date();
+      await tx.managementAgreement.create({
+        data: {
+          propertyId,
+          termMonths: terms.termMonths,
+          commissionRate: terms.commissionRate,
+          earlyExitFee: terms.earlyExitFee,
+          earlyExitFeeCurrency: terms.earlyExitFeeCurrency,
+          noticePeriodDays: terms.noticePeriodDays,
+          governingLaw: terms.governingLaw,
+          status: AgreementStatus.SENT,
+          sentAt: now,
+        },
+      });
+    }
+  });
+
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
   revalidatePath(`/admin/properties/${propertyId}`);
   revalidatePath(`/admin/owners/${property.ownerId}`);
+  revalidatePath("/owner");
   return { ok: true };
 }
 
