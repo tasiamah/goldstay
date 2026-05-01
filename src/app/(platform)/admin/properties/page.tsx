@@ -58,6 +58,19 @@ export default async function PropertiesListPage({
   if (filters.country) where.country = filters.country;
   if (filters.status) where.status = filters.status;
   if (filters.type) where.propertyType = filters.type;
+  // Vacancy: a property is "vacant" when at least one of its units
+  // has no ACTIVE lease today. "let" = every unit has at least one
+  // ACTIVE lease. We model both via the units relation so the same
+  // page works for single-unit homes and multi-unit blocks.
+  if (filters.vacancy === "vacant") {
+    where.units = {
+      some: { leases: { none: { status: "ACTIVE", archivedAt: null } } },
+    };
+  } else if (filters.vacancy === "let") {
+    where.units = {
+      every: { leases: { some: { status: "ACTIVE", archivedAt: null } } },
+    };
+  }
   if (filters.q) {
     // Search across the things an operator types when looking up a
     // property: building name, unit/door, address, neighbourhood,
@@ -104,7 +117,8 @@ export default async function PropertiesListPage({
     filters.q !== "" ||
     filters.country !== null ||
     filters.status !== null ||
-    filters.type !== null;
+    filters.type !== null ||
+    filters.vacancy !== null;
 
   const chips: Chip[] = [];
   if (filters.q) chips.push({ key: "q", label: `Search: “${filters.q}”` });
@@ -127,6 +141,11 @@ export default async function PropertiesListPage({
     chips.push({
       key: "type",
       label: filters.type === "SHORT_TERM" ? "Short-term" : "Long-term",
+    });
+  if (filters.vacancy)
+    chips.push({
+      key: "vacancy",
+      label: filters.vacancy === "vacant" ? "Has vacant unit" : "Fully let",
     });
 
   return (
@@ -156,6 +175,7 @@ export default async function PropertiesListPage({
               country: filters.country,
               status: filters.status,
               type: filters.type,
+              vacancy: filters.vacancy,
             })}`}
             className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
           >
@@ -210,6 +230,7 @@ export default async function PropertiesListPage({
           country: filters.country,
           status: filters.status,
           type: filters.type,
+          vacancy: filters.vacancy,
         }}
       />
 
@@ -317,6 +338,7 @@ function propertiesTableParams(
   if (filters.country) out.country = filters.country;
   if (filters.status) out.status = filters.status;
   if (filters.type) out.type = filters.type;
+  if (filters.vacancy) out.vacancy = filters.vacancy;
   return out;
 }
 

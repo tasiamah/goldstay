@@ -42,7 +42,8 @@ export type AdminAction =
   | "impersonate.owner"
   | "health.read"
   | "import.write"
-  | "archive.write";
+  | "archive.write"
+  | "finance.read";
 
 const SUPER_ADMIN_ALLOWED: ReadonlySet<AdminAction> = new Set(
   // Empty set means "everything"; SUPER_ADMIN bypasses the lookup.
@@ -126,9 +127,14 @@ const MATRIX: Record<AdminRole, ReadonlySet<AdminAction>> = {
 
 // SUPER_ADMIN-only actions, listed once so the test suite can pin
 // them and the production code can refuse them for everyone else
-// without searching the matrix.
+// without searching the matrix. finance.read is the gate for any
+// view that exposes Goldstay-side P&L (commission revenue, the
+// margin that lands in our pocket per property, the all-up monthly
+// totals). Operators don't see those numbers — they work on owner
+// money flow only.
 const SUPER_ADMIN_ONLY: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "admin.write",
+  "finance.read",
 ]);
 
 export function can(role: AdminRole, action: AdminAction): boolean {

@@ -7,7 +7,13 @@ import { requireAdmin } from "@/lib/auth";
 import { AdminWelcomeCard } from "./welcome/AdminWelcomeCard";
 import { AttentionQueue } from "@/components/admin/AttentionQueue";
 import { CurrencyTotals } from "@/components/admin/CurrencyTotals";
-import { getAttentionQueue, getMonthlyTotals } from "@/lib/admin/queue";
+import { ExecutiveKpiStrip } from "@/components/admin/finance/ExecutiveKpiStrip";
+import { KpiStrip } from "@/components/admin/KpiStrip";
+import {
+  getAttentionQueue,
+  getMonthlyTotals,
+  getOverviewKpis,
+} from "@/lib/admin/queue";
 
 export const dynamic = "force-dynamic";
 
@@ -16,17 +22,13 @@ export default async function AdminOverviewPage() {
   const [
     queue,
     totals,
-    ownerCount,
-    propertyCount,
-    activeLeaseCount,
+    kpis,
     recentOwners,
     recentProperties,
   ] = await Promise.all([
     getAttentionQueue(admin),
     getMonthlyTotals(),
-    prisma.owner.count({ where: { archivedAt: null } }),
-    prisma.property.count({ where: { archivedAt: null } }),
-    prisma.lease.count({ where: { status: "ACTIVE", archivedAt: null } }),
+    getOverviewKpis(admin),
     prisma.owner.findMany({
       where: { archivedAt: null },
       orderBy: { createdAt: "desc" },
@@ -48,17 +50,20 @@ export default async function AdminOverviewPage() {
   return (
     <div className="space-y-10">
       <AdminWelcomeCard admin={admin} />
+      {/* Self-gated to SUPER_ADMIN. Renders nothing — and does not
+          query — for any other role, so there's no number for the
+          rest of the team to glimpse over a shoulder. */}
+      <ExecutiveKpiStrip />
+      {/* Operational pulse, visible to every admin. Country-scoped
+          for COUNTRY_MANAGER so a Kenya manager doesn't see Ghana's
+          numbers and vice versa. The three legacy "Owners /
+          Properties / Active leases" tiles below this strip are now
+          subsumed: occupancy already encodes active leases, and the
+          inventory totals were never action-driving — anyone who
+          needs them opens /admin/owners or /admin/properties. */}
+      <KpiStrip kpis={kpis} />
       <AttentionQueue queue={queue} />
       <CurrencyTotals monthLabel={totals.monthLabel} totals={totals.totals} />
-      <section className="grid grid-cols-3 gap-4">
-        <Stat label="Owners" value={ownerCount} href="/admin/owners" />
-        <Stat
-          label="Properties"
-          value={propertyCount}
-          href="/admin/properties"
-        />
-        <Stat label="Active leases" value={activeLeaseCount} />
-      </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
         <RecentList
@@ -95,24 +100,6 @@ export default async function AdminOverviewPage() {
       </section>
     </div>
   );
-}
-
-function Stat({
-  label,
-  value,
-  href,
-}: {
-  label: string;
-  value: number;
-  href?: string;
-}) {
-  const inner = (
-    <div className="rounded-lg border border-stone-200 bg-white p-6 transition hover:border-stone-300">
-      <p className="text-xs uppercase tracking-wider text-stone-500">{label}</p>
-      <p className="mt-2 text-2xl font-serif text-stone-900">{value}</p>
-    </div>
-  );
-  return href ? <Link href={href}>{inner}</Link> : inner;
 }
 
 function RecentList({

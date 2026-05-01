@@ -37,6 +37,11 @@ const ITEMS: readonly NavItem[] = [
   { href: "/admin/health", label: "Health" },
   { href: "/admin/archive", label: "Archive" },
   {
+    href: "/admin/finance",
+    label: "Finance",
+    visibleToRoles: ["SUPER_ADMIN"],
+  },
+  {
     href: "/admin/team",
     label: "Team",
     visibleToRoles: ["SUPER_ADMIN"],

@@ -38,6 +38,7 @@ import { Tip } from "@/components/admin/Tip";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
+import { PropertyFinanceCard } from "@/components/admin/finance/PropertyFinanceCard";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -455,6 +456,8 @@ export default async function PropertyDetailPage({
           </div>
         </div>
       </section>
+
+      <PropertyFinanceCard propertyId={property.id} />
 
       <section className="grid gap-8 lg:grid-cols-2">
         <NotesPanel
