@@ -21,10 +21,13 @@ const Toaster = dynamic(
   () => import("./Toaster").then((m) => m.Toaster),
   { ssr: false },
 );
-const CookieConsent = dynamic(
-  () => import("./CookieConsent").then((m) => m.CookieConsent),
-  { ssr: false },
-);
+
+// Cookie banner intentionally not mounted: Goldstay operates in KE /
+// GH only today and neither requires a prior-consent banner for the
+// minimal first-party analytics + auth cookies we use. Re-import
+// ./CookieConsent here when expanding into the EU / UK / South
+// Africa where prior consent is the legal default — the component
+// itself is still in the repo for that day.
 
 export function LayoutClientExtras() {
   return (
@@ -32,7 +35,6 @@ export function LayoutClientExtras() {
       <WhatsAppFloat />
       <MobileStickyCTA />
       <Toaster />
-      <CookieConsent />
     </>
   );
 }
