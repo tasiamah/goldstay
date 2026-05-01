@@ -70,6 +70,17 @@ export function periodSlug(period: Period): string {
   return `${period.year}-${mm}`;
 }
 
+// The calendar month immediately before `now`. Used by the
+// monthly statement cron: when it fires on the 5th of May, we
+// want the April statement, not May's. Pure so unit tests can
+// pin behaviour without freezing the clock globally.
+export function previousPeriod(now: Date): Period {
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() + 1; // 1..12
+  if (month === 1) return { year: year - 1, month: 12 };
+  return { year, month: month - 1 };
+}
+
 // Generates the previous N periods including the current one, ordered
 // most recent first. Used by /owner/statements to list 12 months of
 // statements as a clickable grid.

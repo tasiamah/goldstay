@@ -187,7 +187,8 @@ function renderText({
     "Questions? Reply to this email and you'll reach a real person at",
     "Goldstay. We answer within one business day.",
     "",
-    "— The Goldstay team",
+    "Best,",
+    "The Goldstay team",
   ].join("\n");
 }
 

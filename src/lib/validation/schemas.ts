@@ -7,6 +7,8 @@ import {
   BookingStatus,
   Country,
   LeaseStatus,
+  LeadSource,
+  PayoutMethodKind,
   PropertyStatus,
   PropertyType,
   TransactionDirection,
@@ -18,13 +20,14 @@ import {
   optionalDecimal,
   optionalInt,
   optionalString,
+  personFullName,
   requiredAmount,
   requiredDate,
 } from "./preprocessors";
 
 export const OwnerInput = z.object({
   email: z.string().trim().toLowerCase().email(),
-  fullName: z.string().trim().min(2, "Name is too short").max(120),
+  fullName: personFullName,
   phone: z
     .string()
     .trim()
@@ -126,4 +129,64 @@ export const TransactionInput = z.object({
   currency: z.string().trim().toUpperCase().min(3).max(3).default("KES"),
   description: optionalString,
   reference: optionalString,
+});
+
+// Public-form lead intake. Email is optional because some inbound
+// channels genuinely don't have one (a WhatsApp-only landlord),
+// but `phone` is mandatory because we need a callback path. Source
+// defaults to WEBSITE so the legacy /api/lead body keeps working
+// without explicitly setting it.
+export const LeadInput = z.object({
+  source: z.nativeEnum(LeadSource).default("WEBSITE"),
+  fullName: personFullName,
+  email: z
+    .preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.string().email().optional(),
+    )
+    .optional(),
+  phone: z.string().trim().min(4, "Phone number is too short").max(40),
+  residenceCountry: optionalString,
+  country: z.nativeEnum(Country).optional(),
+  city: optionalString,
+  neighbourhood: optionalString,
+  propertyType: optionalString,
+  bedrooms: optionalString,
+  furnished: optionalString,
+  serviceInterest: optionalString,
+  availability: optionalString,
+  notes: optionalString,
+});
+
+// Owner payout method capture. The conditional fields
+// (wiseEmail vs accountNumber vs mpesaPhone) are validated by the
+// helper layer because the rules are kind-dependent and zod's
+// discriminated unions get loud quickly with optional siblings.
+export const PayoutMethodInput = z.object({
+  ownerId: z.string().min(1),
+  kind: z.nativeEnum(PayoutMethodKind),
+  label: z.string().trim().min(2).max(80),
+  currency: z.string().trim().toUpperCase().min(3).max(3),
+  beneficiaryName: z.string().trim().min(2).max(120),
+  bankName: optionalString,
+  bankCountry: optionalString,
+  branchCode: optionalString,
+  accountNumber: optionalString,
+  iban: optionalString,
+  swift: optionalString,
+  wiseEmail: z
+    .preprocess(
+      (v) => (typeof v === "string" && v.trim() === "" ? undefined : v),
+      z.string().email().optional(),
+    )
+    .optional(),
+  mpesaPhone: optionalString,
+  beneficiaryAddress: optionalString,
+  internalNotes: optionalString,
+  isDefault: z
+    .preprocess(
+      (v) => v === "on" || v === "true" || v === true,
+      z.boolean(),
+    )
+    .optional(),
 });

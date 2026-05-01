@@ -102,6 +102,16 @@ const DEFAULT_SUMMARIES: Record<string, string> = {
   "admin.created": "Admin user invited",
   "admin.updated": "Admin user updated",
   "admin.archived": "Admin user removed",
+  "lead.created": "Lead created",
+  "lead.contacted": "Lead marked contacted",
+  "lead.qualified": "Lead marked qualified",
+  "lead.lost": "Lead marked lost",
+  "lead.converted": "Lead converted to owner",
+  "payout.added": "Payout method added",
+  "payout.defaulted": "Default payout method changed",
+  "payout.verified": "Payout method verified",
+  "payout.archived": "Payout method archived",
+  "payout.recorded": "Payout transaction recorded",
 };
 
 export function summariseAction(action: string): string {

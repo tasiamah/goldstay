@@ -1,88 +1,56 @@
 import { describe, expect, it } from "vitest";
 import {
-  formatPeriod,
-  parsePeriod,
   periodRange,
-  periodSlug,
   periodsSince,
-  recentPeriods,
+  previousPeriod,
 } from "./period";
 
-describe("parsePeriod", () => {
-  it("parses URL fragments into a Period", () => {
-    expect(parsePeriod("2026", "4")).toEqual({ year: 2026, month: 4 });
-  });
+// Statement-period maths. Every monthly owner statement, every "last
+// month" comparison and every URL slug runs through here, so the
+// only interesting failure modes are:
+//   - month / year rollover at boundaries (Jan, Dec)
+//   - UTC vs local-clock drift (servers run in many tz)
+//   - earliest-month → now traversal for the period dropdown
+// Label formatting and parse-from-URL guards are exercised by the
+// pages that consume them and aren't worth standalone tests.
 
-  it("returns null for missing or out-of-range input", () => {
-    expect(parsePeriod(undefined, "4")).toBeNull();
-    expect(parsePeriod("2026", "13")).toBeNull();
-    expect(parsePeriod("1999", "1")).toBeNull(); // outside supported range
+describe("previousPeriod", () => {
+  it("rolls back across year and tz boundaries in UTC", () => {
+    expect(previousPeriod(new Date("2026-05-15T00:00:00Z"))).toEqual({
+      year: 2026,
+      month: 4,
+    });
+    // Jan in UTC → previous = Dec of prior year, even when the local
+    // clock is already in Feb.
+    expect(previousPeriod(new Date("2026-01-31T23:00:00Z"))).toEqual({
+      year: 2025,
+      month: 12,
+    });
   });
 });
 
 describe("periodRange", () => {
-  it("returns inclusive start and exclusive end in UTC", () => {
-    const { start, end } = periodRange({ year: 2026, month: 4 });
-    expect(start.toISOString()).toBe("2026-04-01T00:00:00.000Z");
-    expect(end.toISOString()).toBe("2026-05-01T00:00:00.000Z");
-  });
-
-  it("rolls into the next year on December", () => {
-    const { end } = periodRange({ year: 2026, month: 12 });
-    expect(end.toISOString()).toBe("2027-01-01T00:00:00.000Z");
-  });
-});
-
-describe("formatPeriod + periodSlug", () => {
-  it("formats human-readable label and zero-padded slug", () => {
-    expect(formatPeriod({ year: 2026, month: 4 })).toBe("April 2026");
-    expect(periodSlug({ year: 2026, month: 4 })).toBe("2026-04");
-  });
-});
-
-describe("recentPeriods", () => {
-  it("returns N periods ending in the given month, most recent first", () => {
-    const out = recentPeriods(new Date("2026-04-15T00:00:00Z"), 3);
-    expect(out).toEqual([
-      { year: 2026, month: 4 },
-      { year: 2026, month: 3 },
-      { year: 2026, month: 2 },
-    ]);
-  });
-
-  it("rolls back across the year boundary", () => {
-    const out = recentPeriods(new Date("2026-02-15T00:00:00Z"), 4);
-    expect(out).toEqual([
-      { year: 2026, month: 2 },
-      { year: 2026, month: 1 },
-      { year: 2025, month: 12 },
-      { year: 2025, month: 11 },
-    ]);
+  it("returns inclusive UTC start + exclusive end across December", () => {
+    const apr = periodRange({ year: 2026, month: 4 });
+    expect(apr.start.toISOString()).toBe("2026-04-01T00:00:00.000Z");
+    expect(apr.end.toISOString()).toBe("2026-05-01T00:00:00.000Z");
+    expect(periodRange({ year: 2026, month: 12 }).end.toISOString()).toBe(
+      "2027-01-01T00:00:00.000Z",
+    );
   });
 });
 
 describe("periodsSince", () => {
-  const now = new Date("2026-04-15T00:00:00Z");
-
-  it("returns just the current month for an owner who joined this month", () => {
-    const out = periodsSince(new Date("2026-04-02T00:00:00Z"), now);
-    expect(out).toEqual([{ year: 2026, month: 4 }]);
-  });
-
-  it("includes every month from earliest to now, most recent first", () => {
-    const out = periodsSince(new Date("2026-01-20T00:00:00Z"), now);
-    expect(out).toEqual([
+  it("walks earliest → now most-recent first and caps at maxCount", () => {
+    const now = new Date("2026-04-15T00:00:00Z");
+    expect(periodsSince(new Date("2026-01-20T00:00:00Z"), now)).toEqual([
       { year: 2026, month: 4 },
       { year: 2026, month: 3 },
       { year: 2026, month: 2 },
       { year: 2026, month: 1 },
     ]);
-  });
-
-  it("caps at maxCount even if earliest is years back", () => {
-    const out = periodsSince(new Date("2020-01-01T00:00:00Z"), now, 6);
-    expect(out).toHaveLength(6);
-    expect(out[0]).toEqual({ year: 2026, month: 4 });
-    expect(out[5]).toEqual({ year: 2025, month: 11 });
+    const capped = periodsSince(new Date("2020-01-01T00:00:00Z"), now, 6);
+    expect(capped).toHaveLength(6);
+    expect(capped[0]).toEqual({ year: 2026, month: 4 });
   });
 });

@@ -71,6 +71,42 @@ export const requiredAmount = z.preprocess(
   z.number().min(0),
 );
 
+// Person full-name validator. Owner / lead / admin sign-up forms all
+// take a single "Full name" input rather than separate first/last
+// fields, but downstream we still want both halves to be present:
+//
+//   * statements address the person by first name ("Hi Asha,")
+//   * legal docs need the surname for the signature block
+//   * mistyped single-token names ("Asha", "K") are almost always
+//     accidents — surfacing them as a validation error catches them
+//     at the form rather than three steps later
+//
+// Rules: trimmed; at least one whitespace-separated token after the
+// first; first token at least 2 letters; last token at least 2 letters.
+// Inner whitespace runs are tolerated (collapsed implicitly by the
+// regex).
+export const personFullName = z
+  .string()
+  .trim()
+  .min(2, "Name is too short")
+  .max(120)
+  .refine((v) => /\s/.test(v), {
+    message: "Enter both a first name and a last name.",
+  })
+  .refine(
+    (v) => {
+      const parts = v.split(/\s+/).filter(Boolean);
+      if (parts.length < 2) return false;
+      const first = parts[0]!;
+      const last = parts[parts.length - 1]!;
+      return first.length >= 2 && last.length >= 2;
+    },
+    {
+      message:
+        "First and last name each need at least 2 characters.",
+    },
+  );
+
 // Helper used by every Server Action's error envelope. Flattens a
 // ZodError into a {fieldName: firstMessage} dictionary so the form
 // can highlight the offending input directly.

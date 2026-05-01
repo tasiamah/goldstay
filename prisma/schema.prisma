@@ -93,6 +93,15 @@ enum DocumentKind {
   SALE_AGREEMENT
   LEASE
   KYC
+  // Government-issued ID for the owner (passport, national ID,
+  // driver's licence). Distinct from the property-attached KYC
+  // because owner identity verification is a one-time per-person
+  // event, not a per-property document.
+  ID_DOCUMENT
+  // Proof of beneficiary banking detail (bank letter, voided
+  // cheque, M-Pesa till statement). Held against an owner so we
+  // can match a payout to the source.
+  PROOF_OF_PAYOUT_ACCOUNT
   INVOICE
   RECEIPT
   STATEMENT
@@ -101,6 +110,31 @@ enum DocumentKind {
   // ManagementAgreement.sign action, never uploaded by hand.
   MANAGEMENT_AGREEMENT
   OTHER
+}
+
+// Where a payout actually lands. One owner has zero or more rows;
+// exactly one is `isDefault`. Captured fields vary by `method`:
+//
+//   WISE         → wiseEmail (the email the Wise account is linked to)
+//                  + currency. Cheapest for diaspora USD/GBP/EUR
+//                  remittance into local KES/GHS.
+//   SWIFT_BANK   → bankName + bankCountry + accountNumber/iban + swift
+//                  + beneficiaryAddress. Used when Wise can't reach
+//                  a country (e.g. older Saudi Arabia accounts).
+//   LOCAL_BANK   → bankName + accountNumber + branchCode. KE/GH
+//                  domestic transfer, cheaper than SWIFT for
+//                  landlords whose receiving account is local.
+//   MPESA        → mpesaPhone (international format, no +). Smallest
+//                  fees, instant settlement, but capped per txn.
+//
+// Verification: an admin reviews the matching PROOF_OF_PAYOUT_ACCOUNT
+// document on the owner and sets verifiedAt + verifiedByAdminId. We
+// refuse to record a Transaction.PAYOUT against an unverified row.
+enum PayoutMethodKind {
+  WISE
+  SWIFT_BANK
+  LOCAL_BANK
+  MPESA
 }
 
 enum AgreementStatus {
@@ -145,6 +179,9 @@ model Owner {
 
   properties     Property[]
   communications CommunicationLog[]
+  payoutMethods  OwnerPayoutMethod[]
+  documents      Document[]
+  statementSends StatementSend[]
 
   @@index([country])
   @@index([archivedAt])
@@ -240,28 +277,35 @@ model Lease {
 }
 
 model Transaction {
-  id          String               @id @default(cuid())
-  propertyId  String
-  property    Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  leaseId     String?
-  lease       Lease?               @relation(fields: [leaseId], references: [id], onDelete: SetNull)
-  bookingId   String?
-  booking     Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
-  occurredOn  DateTime
-  type        TransactionType
-  direction   TransactionDirection
-  amount      Decimal              @db.Decimal(12, 2)
-  currency    String               @default("KES")
-  description String?
-  reference   String?
+  id              String               @id @default(cuid())
+  propertyId      String
+  property        Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  leaseId         String?
+  lease           Lease?               @relation(fields: [leaseId], references: [id], onDelete: SetNull)
+  bookingId       String?
+  booking         Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  // Set ONLY for type=PAYOUT rows: which beneficiary account the
+  // money actually went to. SetNull on delete because we never want
+  // to lose the underlying ledger entry just because an owner
+  // archived an old bank account; the payout itself stays.
+  payoutMethodId  String?
+  payoutMethod    OwnerPayoutMethod?   @relation(fields: [payoutMethodId], references: [id], onDelete: SetNull)
+  occurredOn      DateTime
+  type            TransactionType
+  direction       TransactionDirection
+  amount          Decimal              @db.Decimal(12, 2)
+  currency        String               @default("KES")
+  description     String?
+  reference       String?
   // Soft-delete column. See Owner.archivedAt.
-  archivedAt  DateTime?
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
+  archivedAt      DateTime?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
 
   @@index([propertyId, occurredOn])
   @@index([leaseId])
   @@index([bookingId])
+  @@index([payoutMethodId])
   @@index([archivedAt])
 }
 
@@ -346,10 +390,19 @@ model Valuation {
   @@index([propertyId, valuedOn])
 }
 
+// Polymorphic by parent: a document is attached to *either* a
+// property (most docs: title deed, lease, signed agreement) *or*
+// an owner (ID_DOCUMENT, PROOF_OF_PAYOUT_ACCOUNT, owner-level KYC).
+// Both FKs are nullable; an app-level invariant enforces exactly
+// one is set on every row. The two indexes below mirror this:
+// the property-attached query path stays unchanged from before
+// the migration; the owner path is new for KYC.
 model Document {
   id          String       @id @default(cuid())
-  propertyId  String
-  property    Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  propertyId  String?
+  property    Property?    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  ownerId     String?
+  owner       Owner?       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   kind        DocumentKind
   title       String
   storagePath String
@@ -364,6 +417,7 @@ model Document {
   agreement ManagementAgreement?
 
   @@index([propertyId, kind])
+  @@index([ownerId, kind])
 }
 
 // Goldstay's management agreement with the landlord, scoped to a
@@ -443,6 +497,17 @@ enum AuditEntity {
   DOCUMENT
   AGREEMENT
   ADMIN_USER
+  // Inbound landlord lead. Lifecycle audit rows (lead.created,
+  // lead.contacted, lead.qualified, lead.lost, lead.converted) are
+  // keyed by entity=LEAD so the per-lead timeline / notes panel can
+  // find them. Once a lead converts, the resulting owner.created
+  // audit row is keyed by entity=OWNER, and the conversion crumb
+  // links the two.
+  LEAD
+  // Owner payout method. payout.added / verified / archived /
+  // defaulted events live here so a per-method timeline can be
+  // shown on the owner payout card.
+  PAYOUT_METHOD
 }
 
 enum CommunicationChannel {
@@ -494,6 +559,7 @@ model AdminUser {
   tasksAssigned      Task[]             @relation("AssignedTasks")
   tasksCreated       Task[]             @relation("CreatedTasks")
   communicationsSent CommunicationLog[]
+  leadsOwned         Lead[]             @relation("LeadOwner")
 
   @@index([role])
   @@index([archivedAt])
@@ -592,6 +658,172 @@ model CommunicationLog {
   @@index([status])
 }
 
+// ---------- Referral programme ----------
+//
+// Goldstay pays third parties — existing landlords, estate agents,
+// adjacent professionals — for sourced landlords. Referrers live in
+// their own table (not Owner) because most are *not* customers and
+// will never authenticate against Supabase. They access their
+// dashboard via a long, opaque, signed token in the URL — see
+// src/lib/referrals/codes.ts.
+//
+// Postgres holds the system of record for codes, referrals and
+// payout schedules; Airtable is mirrored for ops visibility, same
+// pattern as Owner/Property + lead leads.
+
+enum ReferrerType {
+  // Existing or past Goldstay landlord referring another landlord.
+  // Default share: 50% of one month's management fee, paid once.
+  LANDLORD
+  // Estate agent or independent broker who sources landlords they
+  // don't or can't manage themselves. Default share: 25% of fee
+  // for 12 months, paid monthly.
+  AGENT
+  // Friends-of-Goldstay, employer benefit programmes, association
+  // partnerships. Same default schedule as AGENT until ops sets an
+  // override.
+  PARTNER
+}
+
+enum ReferrerStatus {
+  ACTIVE
+  // Ops has paused payouts (e.g. KYC pending, payout details
+  // missing). Their referral link still tracks; payout rows stay
+  // SCHEDULED.
+  PAUSED
+  // Ops has terminated the relationship (fraud, abuse, churn).
+  // Their referral link 404s and any pending payouts are cancelled.
+  TERMINATED
+}
+
+enum ReferralStatus {
+  // Landlord clicked a tracked link or was submitted manually.
+  // Equivalent to a "New" lead in the Airtable Landlord leads table.
+  ATTRIBUTED
+  // Ops has spoken to the landlord at least once.
+  CONTACTED
+  // Ops believes this lead will sign. Useful for forecasting payout
+  // accruals before any contract is in place.
+  QUALIFIED
+  // Landlord signed a Goldstay management agreement. Triggers the
+  // payout schedule via generatePayoutsForReferral().
+  SIGNED
+  // Signed but later off-boarded. Future scheduled payouts are
+  // cancelled; already-paid ones stand.
+  CHURNED
+  // We refused the lead (out of scope, bad fit, blacklist).
+  REJECTED
+}
+
+enum PayoutStatus {
+  // Generated by the system, awaiting its scheduled date.
+  SCHEDULED
+  // Ops marked this payout as paid; paidReference holds the M-PESA
+  // / wire / cheque reference.
+  PAID
+  // Killed by ops (referral churned, fraud detected, ops adjustment).
+  CANCELLED
+}
+
+// One row per third party we pay for sourced landlords. The `code`
+// is the short, public part embedded in URLs (?ref=ABC123); the
+// `dashboardToken` is the long, secret part that lets the referrer
+// see their own page without a Supabase account.
+model Referrer {
+  id             String         @id @default(cuid())
+  code           String         @unique
+  dashboardToken String         @unique
+  type           ReferrerType
+  status         ReferrerStatus @default(ACTIVE)
+  fullName       String
+  email          String         @unique
+  phone          String?
+  companyName    String?
+  // Country the referrer is based in. Drives payout currency
+  // defaults and which DTA we cite in the welcome email.
+  country        String?
+  // Per-referrer commission overrides. Null means "use the type's
+  // default rate". Stored as fractional decimals (0.25 = 25%).
+  longTermPctOverride  Decimal? @db.Decimal(5, 4)
+  shortStayPctOverride Decimal? @db.Decimal(5, 4)
+  // Months over which the recurring share is paid. Null → default
+  // for the referrer type.
+  payoutMonthsOverride Int?
+  // Free-text notes ops keeps on the relationship: KYC checks,
+  // payout-detail confirmations, why we paused them.
+  notes          String?
+  archivedAt     DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  referrals Referral[]
+
+  @@index([status])
+  @@index([type])
+  @@index([archivedAt])
+}
+
+// One row per landlord introduced by a referrer. The Airtable lead
+// id is mirrored in for cross-system audit; the management terms
+// snapshotted on `signedAt` drive the payout schedule.
+model Referral {
+  id              String         @id @default(cuid())
+  referrerId      String
+  referrer        Referrer       @relation(fields: [referrerId], references: [id], onDelete: Restrict)
+  // Airtable record id from the Landlord leads table when this
+  // referral was attached. Null if attribution happened before the
+  // Airtable mirror could write (rare, but defensible).
+  airtableLeadId  String?
+  landlordName    String
+  landlordEmail   String?
+  landlordPhone   String?
+  city            String?
+  status          ReferralStatus @default(ATTRIBUTED)
+  // Lifecycle timestamps. Nullable until the corresponding event
+  // happens; mirrored to Airtable on each transition.
+  contactedAt     DateTime?
+  signedAt        DateTime?
+  // Snapshot of the management terms as of `signedAt`. Used by
+  // generatePayouts() and frozen even if the live agreement later
+  // changes — the referrer was promised what they were promised.
+  monthlyRentUsd   Decimal? @db.Decimal(12, 2)
+  managementFeePct Decimal? @db.Decimal(5, 4)
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  payouts ReferralPayout[]
+
+  @@index([referrerId, status])
+  @@index([airtableLeadId])
+  @@index([status])
+}
+
+// One row per scheduled or paid commission. Generated atomically
+// when a referral transitions to SIGNED via the helper in
+// src/lib/referrals/payouts.ts. Ops marks each row PAID after a
+// real-world payout and stamps the reference.
+model ReferralPayout {
+  id            String       @id @default(cuid())
+  referralId    String
+  referral      Referral     @relation(fields: [referralId], references: [id], onDelete: Cascade)
+  // 1-based month index since signing. monthIndex 1 is the payout
+  // for the first full month after signedAt.
+  monthIndex    Int
+  amountUsd     Decimal      @db.Decimal(12, 2)
+  status        PayoutStatus @default(SCHEDULED)
+  scheduledFor  DateTime
+  paidAt        DateTime?
+  paidReference String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // A given referral can only have one row per monthIndex; this
+  // stops a re-run of generatePayouts() from creating duplicates.
+  @@unique([referralId, monthIndex])
+  @@index([status, scheduledFor])
+}
+
 // One row per cron / background job execution. Powers the system
 // health page (last-24h success rate, longest-running, last error).
 // Wrapped via lib/admin/job-run.ts:wrapJob().
@@ -607,4 +839,179 @@ model JobRun {
 
   @@index([name, startedAt])
   @@index([startedAt])
+}
+
+// ---------- Acquisition pipeline ----------
+
+enum LeadStatus {
+  // Just landed in the inbox; nobody has picked it up yet.
+  NEW
+  // An ops person has reached out (call / WhatsApp / email).
+  CONTACTED
+  // A meaningful conversation has happened; we expect to convert.
+  QUALIFIED
+  // Converted into an Owner row. Once set, the lead is read-only;
+  // its `convertedOwnerId` points at the resulting owner.
+  CONVERTED
+  // Owner declined, didn't engage after multiple attempts, or the
+  // property doesn't fit the Goldstay portfolio. Free-text reason
+  // is captured on `lostReason` for retro analysis.
+  LOST
+}
+
+enum LeadSource {
+  // /list-your-property form submission.
+  WEBSITE
+  // Direct WhatsApp inbound (manually logged by ops).
+  WHATSAPP
+  // Inbound email to leads@goldstay.co.ke (manually logged).
+  EMAIL
+  // Met the landlord at an event, got a referral, etc.
+  REFERRAL
+  // Outbound — we found the listing and reached out (the
+  // src/lib/acquisition/* scrape pipeline writes here).
+  OUTBOUND_SCRAPE
+  // Catch-all when nothing else fits; should be rare.
+  OTHER
+}
+
+// One row per inbound (or outbound-sourced) landlord lead. The
+// website form route still mirrors to Resend + Airtable so ops
+// keeps its existing inbox + spreadsheet workflow, but the row
+// here is the system of record from this point on. Conversion
+// flips the row to CONVERTED and links to the resulting Owner.
+//
+// The schema deliberately overlaps the Airtable "Landlord leads"
+// table 1:1 so a lead created on either side stays comparable.
+model Lead {
+  id                String      @id @default(cuid())
+  source            LeadSource
+  status            LeadStatus  @default(NEW)
+  // Headline contact details. Phone is required for callback,
+  // email is optional because some inbound channels (a WhatsApp-
+  // only landlord) genuinely don't have one we should keep.
+  fullName          String
+  email             String?
+  phone             String
+  residenceCountry  String?     // free-text, e.g. "United Kingdom"
+  // Property-side context. country is the asset country (KE/GH);
+  // city + neighbourhood + propertyType are free-text because the
+  // form lets the lead be vague at first.
+  country           Country?
+  city              String?
+  neighbourhood     String?
+  propertyType      String?
+  bedrooms          String?
+  furnished         String?
+  serviceInterest   String?
+  availability      String?
+  notes             String?
+  // The cuid of the request that generated the row. Useful for
+  // de-dupe when the form is double-submitted on flaky mobile
+  // connections — same hash within 60s is treated as one lead.
+  submissionHash    String?     @unique
+  // Lifecycle.
+  contactedAt       DateTime?
+  qualifiedAt       DateTime?
+  convertedAt       DateTime?
+  convertedOwnerId  String?     @unique
+  lostAt            DateTime?
+  lostReason        String?
+  // Who owns this lead inside Goldstay (the ops person actively
+  // working it). SetNull on admin removal so the lead survives.
+  ownerAdminId      String?
+  ownerAdmin        AdminUser?  @relation("LeadOwner", fields: [ownerAdminId], references: [id], onDelete: SetNull)
+  archivedAt        DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  @@index([status, createdAt])
+  @@index([country, status])
+  @@index([ownerAdminId, status])
+  @@index([archivedAt])
+}
+
+// Where Goldstay should send the owner's net payout each month.
+// One owner has zero or more rows; exactly one is `isDefault`.
+// Fields the schema accepts vary by `kind` — see the
+// PayoutMethodKind enum docstring for the rules. The form layer
+// validates that the right combination is set per kind.
+//
+// Verification: an admin reviews a matching
+// PROOF_OF_PAYOUT_ACCOUNT document on the owner and sets
+// verifiedAt + verifiedByAdminId. Server-side guards refuse to
+// record a Transaction.PAYOUT against an unverified row, so the
+// platform can't accidentally remit money to an unverified
+// beneficiary.
+model OwnerPayoutMethod {
+  id                  String           @id @default(cuid())
+  ownerId             String
+  owner               Owner            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  kind                PayoutMethodKind
+  // Display label the owner picks ("Wise USD", "KCB Westlands").
+  // Surfaced in admin dropdowns + on statements.
+  label               String
+  currency            String           // ISO-4217
+  beneficiaryName     String
+  // Bank-shaped fields (LOCAL_BANK / SWIFT_BANK).
+  bankName            String?
+  bankCountry         String?          // ISO-3166-1 alpha-2 free-text
+  branchCode          String?
+  accountNumber       String?
+  iban                String?
+  swift               String?
+  // Wise-shaped fields.
+  wiseEmail           String?
+  // M-Pesa-shaped fields. Phone in international format, no leading +.
+  mpesaPhone          String?
+  // Free-text address used by SWIFT remittances; some banks reject
+  // wires without a beneficiary address line.
+  beneficiaryAddress  String?
+  // Operator-only context: notes from the verification call, why we
+  // picked one method over another, etc. Never shown to the owner.
+  internalNotes       String?
+  isDefault           Boolean          @default(false)
+  verifiedAt          DateTime?
+  verifiedByAdminId   String?
+  archivedAt          DateTime?
+  createdAt           DateTime         @default(now())
+  updatedAt           DateTime         @updatedAt
+
+  payouts             Transaction[]
+
+  @@index([ownerId, archivedAt])
+  // Partial-unique enforced at the application layer ("only one
+  // default per owner") because Postgres partial-unique with
+  // `WHERE archivedAt IS NULL` requires raw SQL we'd rather not
+  // bake into Prisma migrations yet.
+  @@index([ownerId, isDefault])
+}
+
+// One row per (owner, period) statement we've sent. Idempotency
+// guard for the monthly cron: before generating + emailing, the
+// job checks for an existing row and skips. Captured fields make
+// the system-health page useful: which owner got which month,
+// when, via which provider, with what status.
+model StatementSend {
+  id           String              @id @default(cuid())
+  ownerId      String
+  owner        Owner               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  // Period the statement covers. Year + month combo so we can
+  // (owner, year, month) unique without juggling Date semantics.
+  periodYear   Int
+  periodMonth  Int
+  status       CommunicationStatus @default(QUEUED)
+  providerId   String?
+  // Free-text human summary surfaced in admin / health views.
+  // E.g. "12 transactions, KES 215,000 net". Cheap to compute at
+  // send time, expensive to recompute later.
+  summary      String?
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime            @default(now())
+  updatedAt    DateTime            @updatedAt
+
+  @@unique([ownerId, periodYear, periodMonth])
+  @@index([periodYear, periodMonth])
+  @@index([status])
 }

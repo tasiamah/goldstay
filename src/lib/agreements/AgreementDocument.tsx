@@ -169,7 +169,7 @@ export type AgreementPdfInput = {
 export function AgreementDocument(input: AgreementPdfInput) {
   return (
     <Document
-      title={`Goldstay management agreement — ${input.propertyDisplayName}`}
+      title={`Goldstay management agreement: ${input.propertyDisplayName}`}
       author="Goldstay"
       subject="Property management agreement"
     >

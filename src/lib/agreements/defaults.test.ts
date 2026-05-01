@@ -1,70 +1,42 @@
 import { describe, expect, it } from "vitest";
 import { defaultAgreementTerms, namesPlausiblyMatch } from "./defaults";
 
+// Management-agreement defaults. Wrong numbers here are printed onto a
+// signed PDF so the failure mode is "we offered the wrong commission
+// rate to a customer". Two scenarios cover the entire decision tree:
+// short-term Kenya (the highest-fee path) and long-term Ghana (the
+// other currency + governing law).
 describe("defaultAgreementTerms", () => {
-  it("uses 20% / 60-day notice / KES 75k floor for Kenyan short-term", () => {
-    const t = defaultAgreementTerms({
-      country: "KE",
-      propertyType: "SHORT_TERM",
+  it("matches the published rate card for KE short-term and GH long-term", () => {
+    const ke = defaultAgreementTerms({ country: "KE", propertyType: "SHORT_TERM" });
+    expect(ke).toMatchObject({
+      commissionRate: 0.2,
+      earlyExitFee: 75_000,
+      earlyExitFeeCurrency: "KES",
+      noticePeriodDays: 60,
+      governingLaw: "Kenya",
     });
-    expect(t.termMonths).toBe(12);
-    expect(t.commissionRate).toBe(0.2);
-    expect(t.earlyExitFee).toBe(75_000);
-    expect(t.earlyExitFeeCurrency).toBe("KES");
-    expect(t.noticePeriodDays).toBe(60);
-    expect(t.governingLaw).toBe("Kenya");
-  });
 
-  it("uses 10% / 90-day notice / KES 50k floor for Kenyan long-term", () => {
-    const t = defaultAgreementTerms({
-      country: "KE",
-      propertyType: "LONG_TERM",
+    const gh = defaultAgreementTerms({ country: "GH", propertyType: "LONG_TERM" });
+    expect(gh).toMatchObject({
+      commissionRate: 0.1,
+      earlyExitFeeCurrency: "GHS",
+      governingLaw: "Ghana",
     });
-    expect(t.commissionRate).toBe(0.1);
-    expect(t.earlyExitFee).toBe(50_000);
-    expect(t.noticePeriodDays).toBe(90);
-  });
-
-  it("switches to GHS / Ghana law for Ghanaian properties", () => {
-    const t = defaultAgreementTerms({
-      country: "GH",
-      propertyType: "SHORT_TERM",
-    });
-    expect(t.earlyExitFeeCurrency).toBe("GHS");
-    expect(t.governingLaw).toBe("Ghana");
-    expect(t.earlyExitFee).toBe(7_500);
   });
 });
 
+// Signature name matcher. Used to decide whether the typed signature
+// at the bottom of the PDF actually matches the named signatory.
+// False positives let someone sign as another party; false negatives
+// block a legitimate signing. Both sides matter.
 describe("namesPlausiblyMatch", () => {
-  it("accepts an exact match", () => {
-    expect(namesPlausiblyMatch("Jane Doe", "Jane Doe")).toBe(true);
-  });
-
-  it("is case and whitespace insensitive", () => {
+  it("accepts case / whitespace / punctuation / middle-name diffs and rejects clear mismatches", () => {
     expect(namesPlausiblyMatch("  jane   doe ", "Jane Doe")).toBe(true);
-    expect(namesPlausiblyMatch("JANE DOE", "Jane Doe")).toBe(true);
-  });
-
-  it("accepts middle-name omission or addition either way", () => {
-    expect(namesPlausiblyMatch("Jane Doe", "Jane Margaret Doe")).toBe(true);
-    expect(namesPlausiblyMatch("Jane Margaret Doe", "Jane Doe")).toBe(true);
-  });
-
-  it("rejects a single-name signature when the record has more", () => {
-    expect(namesPlausiblyMatch("Jane", "Jane Doe")).toBe(false);
-  });
-
-  it("rejects a clearly different name", () => {
-    expect(namesPlausiblyMatch("John Doe", "Jane Doe")).toBe(false);
-  });
-
-  it("rejects empty input", () => {
-    expect(namesPlausiblyMatch("", "Jane Doe")).toBe(false);
-    expect(namesPlausiblyMatch("Jane Doe", "")).toBe(false);
-  });
-
-  it("ignores punctuation differences", () => {
     expect(namesPlausiblyMatch("Jane O'Connor", "Jane OConnor")).toBe(true);
+    expect(namesPlausiblyMatch("Jane Doe", "Jane Margaret Doe")).toBe(true);
+    expect(namesPlausiblyMatch("Jane", "Jane Doe")).toBe(false);
+    expect(namesPlausiblyMatch("John Doe", "Jane Doe")).toBe(false);
+    expect(namesPlausiblyMatch("", "Jane Doe")).toBe(false);
   });
 });

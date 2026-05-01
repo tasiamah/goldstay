@@ -6,7 +6,13 @@
 // download link ever exposes the raw bucket key, and the browser
 // never carries the service-role secret.
 //
-// Bucket layout: properties/<propertyId>/<docId>-<safeFilename>
+// Bucket layout:
+//   properties/<propertyId>/<docId>-<safeFilename>   ← property docs
+//   owners/<ownerId>/<docId>-<safeFilename>          ← owner KYC docs
+//
+// Both live in the same private bucket; the prefix tells us which
+// table the row in `Document` points back to (propertyId vs ownerId
+// — exactly one is non-null per row, enforced by the application).
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -22,6 +28,20 @@ export function buildStoragePath(opts: {
 }): string {
   const safe = sanitiseFilename(opts.filename);
   return `properties/${opts.propertyId}/${opts.documentId}-${safe}`;
+}
+
+// Owner-scoped path. Owner-attached documents (ID_DOCUMENT, KYC,
+// PROOF_OF_PAYOUT_ACCOUNT) live here. Kept separate from
+// `buildStoragePath` to make the call sites unambiguous: a function
+// signature with `ownerId` only can never accidentally write to a
+// property prefix and vice versa.
+export function buildOwnerStoragePath(opts: {
+  ownerId: string;
+  documentId: string;
+  filename: string;
+}): string {
+  const safe = sanitiseFilename(opts.filename);
+  return `owners/${opts.ownerId}/${opts.documentId}-${safe}`;
 }
 
 export function sanitiseFilename(name: string): string {

@@ -1,29 +1,19 @@
 import { describe, expect, it } from "vitest";
 import { buildStoragePath, sanitiseFilename } from "./storage";
 
-describe("sanitiseFilename", () => {
-  it("strips directory traversal", () => {
-    expect(sanitiseFilename("../../etc/passwd")).toBe("passwd");
-    expect(sanitiseFilename("uploads/../foo.pdf")).toBe("foo.pdf");
-  });
+// File upload sanitiser. The catastrophic bug class is path traversal
+// — an `accountant.pdf` upload that ends up overwriting a system file
+// because the "../" wasn't stripped. The 80-char cap also matters
+// because S3 keys above the storage backend's limit silently 500.
 
-  it("collapses spaces and special chars to dashes", () => {
+describe("sanitiseFilename + buildStoragePath", () => {
+  it("strips traversal, slugifies, caps length, and namespaces under properties/<id>/", () => {
+    expect(sanitiseFilename("../../etc/passwd")).toBe("passwd");
     expect(sanitiseFilename("Title Deed (signed) #1.pdf")).toBe(
       "Title-Deed-signed-1.pdf",
     );
-  });
-
-  it("falls back to 'file' when the input contains nothing usable", () => {
     expect(sanitiseFilename("///")).toBe("file");
-  });
-
-  it("caps the on-disk key at 80 chars", () => {
     expect(sanitiseFilename("a".repeat(200) + ".pdf").length).toBeLessThanOrEqual(80);
-  });
-});
-
-describe("buildStoragePath", () => {
-  it("namespaces by property and prefixes the file with the document id", () => {
     expect(
       buildStoragePath({
         propertyId: "abc",

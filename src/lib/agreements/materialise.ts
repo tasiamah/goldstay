@@ -119,7 +119,7 @@ export async function materialiseSignedAgreement(
       data: {
         propertyId: agreement.property.id,
         kind: "MANAGEMENT_AGREEMENT",
-        title: `Goldstay management agreement — ${propertyDisplayName}`,
+        title: `Goldstay management agreement: ${propertyDisplayName}`,
         // Real path is filled in immediately below; keeping a
         // sentinel here means a half-failed upload doesn't leave a
         // misleading "this row points to a real file" record around.

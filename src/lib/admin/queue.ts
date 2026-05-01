@@ -392,6 +392,299 @@ export async function getMonthlyTotals(now: Date = new Date()): Promise<{
   };
 }
 
+// ---------- Overview KPIs ----------
+//
+// The morning-glance set. Six numbers an operator should be able to
+// open the dashboard, scan, and instantly answer "is the business
+// going well today?":
+//
+//   1. Occupancy %        — units leased / total units (the headline)
+//   2. Vacant units       — actionable subset of #1
+//   3. New leads MTD      — top of funnel + delta vs prior month
+//   4. New owners MTD     — bottom of funnel proxy + delta vs prior
+//   5. Active referrers   — channel health (the new acquisition rail)
+//   6. Referrals signed   — channel output, MTD
+//
+// All of it country-scoped for COUNTRY_MANAGER admins so a Kenya
+// manager doesn't see Ghana's pipeline polluting their numbers, and
+// vice versa. SUPER_ADMIN sees the global view.
+//
+// Single Promise.all so the page stays one round-trip. Counts only —
+// no .findMany() — keeps Postgres happy even as the data grows.
+
+export type DeltaDirection = "up" | "down" | "flat";
+
+export type Delta = {
+  current: number;
+  prior: number;
+  // Percentage change vs prior period. `null` when prior is 0 to
+  // avoid the div-by-zero "+infinity%" rendering trap.
+  pct: number | null;
+  direction: DeltaDirection;
+};
+
+export type OverviewKpis = {
+  occupancy: {
+    leasedUnits: number;
+    totalUnits: number;
+    pct: number | null; // null when totalUnits === 0
+  };
+  vacantUnits: number;
+  leads: Delta;
+  owners: Delta;
+  activeReferrers: number;
+  referralsSignedThisMonth: number;
+  // ---- Growth & funnel (rendered as a second strip on /admin) ----
+  // Conversion of leads → owners over a rolling 30-day window. Same
+  // cohort in numerator and denominator (leads created in the window)
+  // so the rate is attributable. The lag from leads created in the
+  // last few days that haven't had time to convert pulls the number
+  // down a little; that's noise we accept rather than papering over.
+  leadConversion: {
+    leadsCreated: number;
+    leadsConverted: number;
+    pct: number | null; // null when leadsCreated === 0
+  };
+  // Mean days from Lead.createdAt → Lead.convertedAt for leads
+  // converted in the last 30 days. We use the mean (not median)
+  // because the cohort is small in early months and a percentile
+  // calc adds machinery without earning anything. `null` when
+  // nobody converted in the window.
+  avgDaysToConvert: number | null;
+  // Properties added this month vs prior month — pure growth signal.
+  properties: Delta;
+  // Owners archived this month vs prior — churn signal. `up` here is
+  // a *bad* thing and the strip surfaces that with a coloured badge
+  // anyway; the operator will know what they're looking at.
+  ownerChurn: Delta;
+};
+
+export async function getOverviewKpis(
+  admin: AdminUser,
+): Promise<OverviewKpis> {
+  const now = new Date();
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 1);
+  const priorMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+
+  const propertyCountryFilter =
+    admin.role === "COUNTRY_MANAGER" && admin.country
+      ? { country: admin.country }
+      : {};
+
+  // Lead.country is a Country? enum; we filter the same way as
+  // Property.country. Owners don't carry a direct country column but
+  // they're scoped through their leads/properties; for the overview
+  // KPI we count *new* owners by createdAt and accept the small
+  // imprecision that an owner created without any property yet won't
+  // be country-attributable. In practice ops creates an owner with
+  // a property in the same flow.
+  const leadCountryFilter =
+    admin.role === "COUNTRY_MANAGER" && admin.country
+      ? { country: admin.country }
+      : {};
+
+  // Owner has no country column — country attribution lives on the
+  // owner's properties. For COUNTRY_MANAGER we narrow to owners with
+  // at least one property in their country so the "new owners" delta
+  // doesn't double-count cross-country owners under both managers.
+  const ownerCountryFilter =
+    admin.role === "COUNTRY_MANAGER" && admin.country
+      ? { properties: { some: { country: admin.country } } }
+      : {};
+
+  const thirtyDaysAgo = daysAgo(30, now);
+
+  const [
+    leasedUnits,
+    totalUnits,
+    leadsThisMonth,
+    leadsPriorMonth,
+    ownersThisMonth,
+    ownersPriorMonth,
+    activeReferrers,
+    referralsSignedThisMonth,
+    leadsCreatedLast30,
+    leadsConvertedFromCohort,
+    convertedRecently,
+    propertiesThisMonth,
+    propertiesPriorMonth,
+    ownersChurnedThisMonth,
+    ownersChurnedPriorMonth,
+  ] = await Promise.all([
+    // Occupancy numerator: distinct units with at least one ACTIVE
+    // lease today. We count units (not leases) because a unit
+    // briefly owning two ACTIVE rows mid-renewal would otherwise
+    // overstate occupancy.
+    prisma.unit.count({
+      where: {
+        property: { archivedAt: null, ...propertyCountryFilter },
+        leases: { some: { status: "ACTIVE", archivedAt: null } },
+      },
+    }),
+    prisma.unit.count({
+      where: {
+        property: { archivedAt: null, ...propertyCountryFilter },
+      },
+    }),
+    prisma.lead.count({
+      where: {
+        createdAt: { gte: monthStart, lt: monthEnd },
+        ...leadCountryFilter,
+      },
+    }),
+    prisma.lead.count({
+      where: {
+        createdAt: { gte: priorMonthStart, lt: monthStart },
+        ...leadCountryFilter,
+      },
+    }),
+    prisma.owner.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: monthStart, lt: monthEnd },
+        ...ownerCountryFilter,
+      },
+    }),
+    prisma.owner.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: priorMonthStart, lt: monthStart },
+        ...ownerCountryFilter,
+      },
+    }),
+    // Referrers and referrals are not country-scoped: a UK-based
+    // agent may bring deals in either market. The dashboard owner
+    // is global-by-default for this rail.
+    prisma.referrer.count({ where: { status: "ACTIVE", archivedAt: null } }),
+    prisma.referral.count({
+      where: { signedAt: { gte: monthStart, lt: monthEnd } },
+    }),
+    // ---- Conversion-funnel inputs ----
+    // Same-cohort numerator & denominator: leads created in the
+    // rolling 30-day window, and the subset that have converted
+    // (at any later point — usually within the same window). Avoids
+    // the classic dashboard lie of "this month's signed / this
+    // month's leads" which mixes cohorts of different ages.
+    prisma.lead.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: thirtyDaysAgo },
+        ...leadCountryFilter,
+      },
+    }),
+    prisma.lead.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: thirtyDaysAgo },
+        convertedAt: { not: null },
+        ...leadCountryFilter,
+      },
+    }),
+    // For avg-days-to-convert we need the actual timestamp pairs.
+    // Bounded to leads converted in the last 30 days so the query
+    // stays tiny even at full scale; ops cares about *recent*
+    // velocity, not all-time.
+    prisma.lead.findMany({
+      where: {
+        archivedAt: null,
+        convertedAt: { gte: thirtyDaysAgo, not: null },
+        ...leadCountryFilter,
+      },
+      select: { createdAt: true, convertedAt: true },
+    }),
+    prisma.property.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: monthStart, lt: monthEnd },
+        ...propertyCountryFilter,
+      },
+    }),
+    prisma.property.count({
+      where: {
+        archivedAt: null,
+        createdAt: { gte: priorMonthStart, lt: monthStart },
+        ...propertyCountryFilter,
+      },
+    }),
+    // Churn: owners *archived* this month. We don't apply the
+    // ownerCountryFilter because an archived owner with no
+    // remaining properties has no country attribution path. The
+    // small over-counting risk for COUNTRY_MANAGER is preferable
+    // to silently dropping churn events from their view.
+    prisma.owner.count({
+      where: { archivedAt: { gte: monthStart, lt: monthEnd } },
+    }),
+    prisma.owner.count({
+      where: { archivedAt: { gte: priorMonthStart, lt: monthStart } },
+    }),
+  ]);
+
+  const avgDaysToConvert = meanDaysBetween(
+    convertedRecently.map((l) => ({
+      from: l.createdAt,
+      to: l.convertedAt!,
+    })),
+  );
+
+  return {
+    occupancy: {
+      leasedUnits,
+      totalUnits,
+      pct: totalUnits === 0 ? null : (leasedUnits / totalUnits) * 100,
+    },
+    vacantUnits: Math.max(0, totalUnits - leasedUnits),
+    leads: computeDelta(leadsThisMonth, leadsPriorMonth),
+    owners: computeDelta(ownersThisMonth, ownersPriorMonth),
+    activeReferrers,
+    referralsSignedThisMonth,
+    leadConversion: {
+      leadsCreated: leadsCreatedLast30,
+      leadsConverted: leadsConvertedFromCohort,
+      pct:
+        leadsCreatedLast30 === 0
+          ? null
+          : (leadsConvertedFromCohort / leadsCreatedLast30) * 100,
+    },
+    avgDaysToConvert,
+    properties: computeDelta(propertiesThisMonth, propertiesPriorMonth),
+    ownerChurn: computeDelta(ownersChurnedThisMonth, ownersChurnedPriorMonth),
+  };
+}
+
+// Mean number of whole days between paired timestamps. Returns null
+// for an empty input so the caller can render a friendly "—" instead
+// of "NaN days". Pure — no Prisma — and trivially testable.
+export function meanDaysBetween(
+  pairs: { from: Date; to: Date }[],
+): number | null {
+  if (pairs.length === 0) return null;
+  const totalMs = pairs.reduce(
+    (sum, p) => sum + (p.to.getTime() - p.from.getTime()),
+    0,
+  );
+  return totalMs / pairs.length / 86_400_000;
+}
+
+// Pure delta calculator. Extracted from the aggregator above so the
+// edge cases (zero prior, equal periods, negative movements) are
+// trivially testable without standing up Prisma. Direction is what
+// the UI uses to colour the badge — pct is what it prints.
+export function computeDelta(current: number, prior: number): Delta {
+  if (prior === 0) {
+    return {
+      current,
+      prior,
+      pct: null,
+      direction: current > 0 ? "up" : "flat",
+    };
+  }
+  const pct = ((current - prior) / prior) * 100;
+  const direction: DeltaDirection =
+    pct > 0 ? "up" : pct < 0 ? "down" : "flat";
+  return { current, prior, pct, direction };
+}
+
 // ---------- Pure helpers ----------
 
 export function daysAgo(days: number, from: Date = new Date()): Date {
