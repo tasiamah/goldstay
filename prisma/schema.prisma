@@ -163,6 +163,12 @@ model Owner {
   email              String    @unique
   fullName           String
   phone              String?
+  // Free-form postal address. Used on KYC paperwork and on the
+  // statement PDF return-address line. Kept as a single text blob
+  // because formats vary wildly across KE / GH / diaspora origins
+  // (apartment numbers, estates, P.O. boxes); we don't structure
+  // per line until a real downstream needs it.
+  address            String?
   companyName        String?
   country            Country
   preferredCurrency  String    @default("USD")

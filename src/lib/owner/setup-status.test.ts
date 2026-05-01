@@ -13,6 +13,7 @@ const baseInput = {
   owner: {
     fullName: "Asha Kimani",
     phone: "+254712345678",
+    address: "Riverside Drive, Westlands, Nairobi",
     companyName: "Pinetree Holdings Ltd",
   },
   hasIdDocument: true,
@@ -27,7 +28,7 @@ describe("computeSetupChecklist", () => {
     expect(c.firstIncomplete).toBeNull();
   });
 
-  it("rejects a single-token name and a phone-less owner on Personal", () => {
+  it("rejects a single-token name, a phone-less owner, and a missing address on Personal", () => {
     expect(
       computeSetupChecklist({
         ...baseInput,
@@ -38,6 +39,12 @@ describe("computeSetupChecklist", () => {
       computeSetupChecklist({
         ...baseInput,
         owner: { ...baseInput.owner, phone: "" },
+      }).firstIncomplete,
+    ).toBe("personal");
+    expect(
+      computeSetupChecklist({
+        ...baseInput,
+        owner: { ...baseInput.owner, address: null },
       }).firstIncomplete,
     ).toBe("personal");
   });

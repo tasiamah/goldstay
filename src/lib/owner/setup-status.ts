@@ -6,7 +6,10 @@
 // ready for a payout?" gate elsewhere in the app.
 //
 // What counts as complete:
-//   * personal  — a parseable two-token name AND a non-empty phone
+//   * personal  — a parseable two-token name, a non-empty phone, AND
+//                 a postal address. Address is required because the
+//                 monthly statement PDF carries it as the return-
+//                 address line and we use it on KYC paperwork.
 //   * business  — companyName present (KE/GH country always exists,
 //                 it's required at owner creation)
 //   * legal     — at least one ID_DOCUMENT on file. We treat the
@@ -40,6 +43,7 @@ export type SetupInput = {
   owner: {
     fullName: string | null;
     phone: string | null;
+    address: string | null;
     companyName: string | null;
   };
   hasIdDocument: boolean;
@@ -56,7 +60,9 @@ function isFullName(name: string | null): boolean {
 
 export function computeSetupChecklist(input: SetupInput): SetupChecklist {
   const personalDone =
-    isFullName(input.owner.fullName) && Boolean(input.owner.phone?.trim());
+    isFullName(input.owner.fullName) &&
+    Boolean(input.owner.phone?.trim()) &&
+    Boolean(input.owner.address?.trim());
   const businessDone = Boolean(input.owner.companyName?.trim());
   const legalDone = input.hasIdDocument;
   const bankDone = input.payoutMethodCount > 0 && input.hasProofOfAccount;
@@ -65,7 +71,8 @@ export function computeSetupChecklist(input: SetupInput): SetupChecklist {
     {
       key: "personal",
       label: "Personal details",
-      description: "Your full legal name and a callable phone number.",
+      description:
+        "Your full legal name, a callable phone number, and a postal address.",
       done: personalDone,
     },
     {
