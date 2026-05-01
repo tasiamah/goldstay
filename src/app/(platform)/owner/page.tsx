@@ -6,6 +6,7 @@ import {
   occupancyPercent,
 } from "@/lib/owner-dashboard";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { WelcomeCard } from "./welcome/WelcomeCard";
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -13,7 +14,11 @@ import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
 
-export default async function OwnerDashboardPage() {
+export default async function OwnerDashboardPage({
+  searchParams,
+}: {
+  searchParams?: { welcome?: string };
+}) {
   // requireOwner handles the unmatched-user case by redirecting to
   // /owner/pending, so by the time we get here we always have a real
   // Owner row to render.
@@ -103,8 +108,27 @@ export default async function OwnerDashboardPage() {
     owner.preferredCurrency,
   );
 
+  // Show the welcome panel either on a true first session
+  // (welcomeCompletedAt is null) or whenever the owner explicitly
+  // clicks "Take the tour" further down the page (?welcome=1).
+  // Replay uses a different dismiss path so it doesn't try to flip
+  // an already-set monotonic timestamp.
+  const showWelcome =
+    !owner.welcomeCompletedAt || searchParams?.welcome === "1";
+  const isWelcomeReplay =
+    Boolean(owner.welcomeCompletedAt) && searchParams?.welcome === "1";
+
   return (
     <div className="space-y-10">
+      {showWelcome ? (
+        <WelcomeCard
+          ownerFirstName={owner.fullName.split(/\s+/)[0] || "there"}
+          hasProperties={properties.length > 0}
+          hasPendingAgreement={pendingAgreements.length > 0}
+          isReplay={isWelcomeReplay}
+        />
+      ) : null}
+
       {pendingAgreements.length > 0 ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -319,6 +343,23 @@ export default async function OwnerDashboardPage() {
           )}
         </div>
       </section>
+
+      {/* Quiet replay link so a landlord who's already dismissed
+          the welcome panel can still revisit it later. We hide it
+          while the panel is open to avoid a circular UX where the
+          link leads back to the page you're on. */}
+      {!showWelcome ? (
+        <p className="border-t border-stone-200 pt-6 text-xs text-stone-500">
+          New to the portal?{" "}
+          <Link
+            href="/owner?welcome=1"
+            className="underline-offset-2 hover:text-stone-900 hover:underline"
+          >
+            Take the tour
+          </Link>
+          .
+        </p>
+      ) : null}
     </div>
   );
 }

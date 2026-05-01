@@ -132,6 +132,11 @@ model Owner {
   companyName    String?
   country        Country
   preferredCurrency String  @default("USD")
+  // Set the first time the landlord clicks "Got it" on the welcome
+  // tour. Lets us show the introductory guide cards on first login
+  // and quietly stand down once they've been there. Nullable so a
+  // backfill isn't needed: null === never dismissed.
+  welcomeCompletedAt DateTime?
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
 
