@@ -8,6 +8,7 @@ import { currentAuditActor, requireRole } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { ALL_ROLES, ROLE_LABEL } from "@/lib/admin/roles";
+import { personFullName } from "@/lib/validation/preprocessors";
 
 const RoleEnum = z.enum(ALL_ROLES as readonly [string, ...string[]]);
 const CountryEnum = z.enum(["KE", "GH"]);
@@ -18,13 +19,13 @@ const InviteInput = z.object({
     .trim()
     .toLowerCase()
     .email({ message: "Enter a valid email address." }),
-  fullName: z.string().trim().min(2),
+  fullName: personFullName,
   role: RoleEnum,
   country: z.union([CountryEnum, z.literal("")]).optional(),
 });
 
 const UpdateInput = z.object({
-  fullName: z.string().trim().min(2),
+  fullName: personFullName,
   role: RoleEnum,
   country: z.union([CountryEnum, z.literal("")]).optional(),
 });

@@ -11,12 +11,13 @@ import {
   validateRows,
   type ValidatedRow,
 } from "@/lib/admin/csv-import";
+import { personFullName } from "@/lib/validation/preprocessors";
 
 // Schema mirrors the OwnerForm validators in src/lib/validation/schemas.
 // We accept either fullName or full_name as the column header so a
 // pasted Google Sheets export works without manual renaming.
 const RowSchema = z.object({
-  fullName: z.string().trim().min(2),
+  fullName: personFullName,
   email: z.string().trim().toLowerCase().email(),
   country: z.enum(["KE", "GH"]),
   companyName: z.string().trim().optional(),

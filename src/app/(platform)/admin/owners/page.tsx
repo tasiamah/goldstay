@@ -12,7 +12,9 @@ import {
   type Chip,
 } from "@/components/admin/ActiveFilterChips";
 import {
+  PERIOD_LABEL,
   parseOwnerListFilters,
+  periodRange,
   toQueryString,
   type RawSearchParams,
 } from "@/lib/admin/list-search";
@@ -57,6 +59,11 @@ export default async function OwnersListPage({
   // when looking for a landlord: name, company, email, phone.
   const where: Prisma.OwnerWhereInput = { archivedAt: null };
   if (filters.country) where.country = filters.country;
+  // Period drills the list to owners created in a specific calendar
+  // month. Used by the admin overview "New owners" KPI deep-link so
+  // clicking the number shows the rows that produced it.
+  const range = periodRange(filters.period);
+  if (range) where.createdAt = { gte: range.gte, lt: range.lt };
   if (filters.q) {
     where.OR = [
       { fullName: { contains: filters.q, mode: "insensitive" } },
@@ -82,7 +89,8 @@ export default async function OwnersListPage({
     prisma.owner.count({ where: { archivedAt: null } }),
   ]);
 
-  const isFiltered = filters.q !== "" || filters.country !== null;
+  const isFiltered =
+    filters.q !== "" || filters.country !== null || filters.period !== null;
   const chips: Chip[] = [];
   if (filters.q) chips.push({ key: "q", label: `Search: “${filters.q}”` });
   if (filters.country)
@@ -90,6 +98,8 @@ export default async function OwnersListPage({
       key: "country",
       label: filters.country === "KE" ? "Kenya" : "Ghana",
     });
+  if (filters.period)
+    chips.push({ key: "period", label: PERIOD_LABEL[filters.period] });
 
   return (
     <div className="space-y-6">
@@ -115,6 +125,7 @@ export default async function OwnersListPage({
             href={`/admin/owners/export${toQueryString({
               q: filters.q,
               country: filters.country,
+              period: filters.period,
             })}`}
             className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
           >
@@ -155,7 +166,11 @@ export default async function OwnersListPage({
       <ActiveFilterChips
         chips={chips}
         basePath="/admin/owners"
-        allParams={{ q: filters.q, country: filters.country }}
+        allParams={{
+          q: filters.q,
+          country: filters.country,
+          period: filters.period,
+        }}
       />
 
       {owners.length === 0 ? (
@@ -269,7 +284,7 @@ export default async function OwnersListPage({
 }
 
 function ownersTableParams(
-  filters: { q: string; country: "KE" | "GH" | null },
+  filters: ReturnType<typeof parseOwnerListFilters>,
   sort: SortState,
   pageSize: number,
 ): Record<string, string> {
@@ -279,6 +294,7 @@ function ownersTableParams(
   };
   if (filters.q) out.q = filters.q;
   if (filters.country) out.country = filters.country;
+  if (filters.period) out.period = filters.period;
   return out;
 }
 

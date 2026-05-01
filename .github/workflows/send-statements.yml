@@ -1,0 +1,58 @@
+# Backup trigger for the monthly statement push.
+#
+# Vercel's native cron fires it on the 5th at 07:00 UTC, but a
+# single-shot once-monthly cron is a single point of failure: a
+# transient deployment outage on the 5th means landlords don't
+# get their statement until the next month.
+#
+# This workflow runs on the 6th at 07:00 UTC as a safety net. The
+# /api/cron/send-statements route is idempotent (StatementSend
+# rows dedupe per (owner, period)), so if the Vercel run already
+# completed for everyone, the workflow re-run is a no-op.
+#
+# Manual trigger ("Run workflow" button) is also enabled for ad-
+# hoc replays — pass `period` to back-fill an older month.
+
+name: Send monthly statements
+
+on:
+  schedule:
+    - cron: "0 7 6 * *"
+  workflow_dispatch:
+    inputs:
+      period:
+        description: "Optional period to send (YYYY-MM). Defaults to last month."
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ping send-statements endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PERIOD: ${{ github.event.inputs.period }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET repo secret is not set"
+            exit 1
+          fi
+          base="https://goldstay.co.ke/api/cron/send-statements"
+          if [ -n "$PERIOD" ]; then
+            url="${base}?period=${PERIOD}"
+          else
+            url="${base}"
+          fi
+          response=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "$url")
+          echo "HTTP $response"
+          cat /tmp/body
+          if [ "$response" != "200" ]; then
+            exit 1
+          fi

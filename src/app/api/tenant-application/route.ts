@@ -10,6 +10,7 @@ import {
 } from "@/lib/airtable";
 import { rateLimitOr429 } from "@/lib/rateLimit";
 import { isApplyAccessValid } from "@/lib/applyAccess";
+import { personFullName } from "@/lib/validation/preprocessors";
 
 export const runtime = "nodejs";
 
@@ -102,6 +103,18 @@ export async function POST(req: Request) {
   if (!data.fullName || !data.email || !data.phone) {
     return NextResponse.json(
       { error: "Missing required identity fields." },
+      { status: 400 },
+    );
+  }
+
+  const nameCheck = personFullName.safeParse(data.fullName);
+  if (!nameCheck.success) {
+    return NextResponse.json(
+      {
+        error:
+          nameCheck.error.issues[0]?.message ??
+          "Enter both a first name and a last name.",
+      },
       { status: 400 },
     );
   }
@@ -301,7 +314,7 @@ export async function POST(req: Request) {
       Status: "New",
     });
 
-    const writes: Promise<void>[] = [applicationWrite];
+    const writes: Promise<unknown>[] = [applicationWrite];
 
     if (data.hasPreviousLandlord && data.previousLandlordPhone) {
       writes.push(
