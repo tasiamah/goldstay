@@ -35,6 +35,8 @@ import {
 } from "@/lib/bookings/aggregate";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { Tip } from "@/components/admin/Tip";
+import { NotesPanel } from "@/components/admin/notes/NotesPanel";
+import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -451,6 +453,19 @@ export default async function PropertyDetailPage({
             )}
           </div>
         </div>
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        <NotesPanel
+          entity="PROPERTY"
+          entityId={property.id}
+          returnPath={`/admin/properties/${property.id}`}
+        />
+        <ActivityTimeline
+          entity="PROPERTY"
+          entityId={property.id}
+          ownerId={property.owner.id}
+        />
       </section>
     </div>
   );

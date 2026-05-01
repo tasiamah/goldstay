@@ -7,6 +7,8 @@ import {
   formatOwnerSecondaryName,
 } from "@/lib/format-owner";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
+import { NotesPanel } from "@/components/admin/notes/NotesPanel";
+import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 import { ResendWelcomeButton } from "./ResendWelcomeButton";
@@ -144,6 +146,19 @@ export default async function OwnerDetailPage({
             </ul>
           )}
         </div>
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        <NotesPanel
+          entity="OWNER"
+          entityId={owner.id}
+          returnPath={`/admin/owners/${owner.id}`}
+        />
+        <ActivityTimeline
+          entity="OWNER"
+          entityId={owner.id}
+          ownerId={owner.id}
+        />
       </section>
     </div>
   );
