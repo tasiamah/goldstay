@@ -1,15 +1,24 @@
 // Auth helpers used by Server Components and Server Actions to gate
 // platform routes. Pure server module; never import from the browser.
 //
-// Admin access is hard-allowlisted via the ADMIN_EMAILS env var (comma
-// separated). This is intentional: until we have more than two staff
-// users, there is no reason to model role rows in the database. When
-// the team grows past that, swap in an `admin_users` table and update
-// the `isAdmin` helper without touching the rest of the app.
+// As of Phase A.3, admin access is DB-backed via the AdminUser table.
+// The env-only allowlist (ADMIN_EMAILS) and the goldstay corporate
+// domains still drive *bootstrap* — the first time an allowlisted
+// email signs in, we provision an AdminUser row for them — but every
+// subsequent decision (role, country scope, archive, last-login)
+// reads from the DB. This means an outsourced contractor can be
+// granted SUPPORT and revoked again without redeploying the app.
+
 import { redirect } from "next/navigation";
+import type { AdminUser } from "@prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/db";
 import { isAdminEmail } from "@/lib/admin-allowlist";
+import {
+  can,
+  canForCountry,
+  type AdminAction,
+} from "@/lib/admin/roles";
 
 export { isAdminEmail };
 
@@ -27,35 +36,121 @@ export async function requireUser() {
   return user;
 }
 
-export async function requireAdmin() {
+// Resolves the AdminUser row for the logged-in Supabase user, auto-
+// provisioning on first login from the env / corporate-domain
+// allowlist. Bumps lastLoginAt on every refresh so the team page can
+// show "active 2 days ago".
+//
+// Redirects to /owner if:
+//   * the user has no email (impossible for magic-link, defensive)
+//   * the email isn't allowlisted AND has no existing AdminUser row
+//   * the AdminUser row is archived
+export async function requireAdmin(): Promise<AdminUser> {
   const user = await requireUser();
-  if (!isAdminEmail(user.email)) redirect("/owner");
-  return user;
+  const email = (user.email ?? "").toLowerCase();
+  if (!email) redirect("/owner");
+
+  let admin = await prisma.adminUser.findUnique({ where: { email } });
+
+  if (!admin) {
+    // Bootstrap path: an allowlisted email has signed in before any
+    // AdminUser row was created for them. Provision now. The first
+    // such row gets SUPER_ADMIN so the founder isn't immediately
+    // locked out of the team-management page.
+    if (!isAdminEmail(email)) redirect("/owner");
+    admin = await provisionAdmin(email, user.id);
+  } else if (admin.archivedAt) {
+    redirect("/owner");
+  }
+
+  // Update authUserId on first login + bump lastLoginAt at most
+  // once per minute to avoid hammering the DB on rapid navigation.
+  const STALE_AFTER_MS = 60 * 1000;
+  const needsAuthUserId = admin.authUserId !== user.id;
+  const stale =
+    !admin.lastLoginAt ||
+    Date.now() - admin.lastLoginAt.getTime() > STALE_AFTER_MS;
+  if (needsAuthUserId || stale) {
+    admin = await prisma.adminUser.update({
+      where: { id: admin.id },
+      data: {
+        authUserId: user.id,
+        lastLoginAt: new Date(),
+      },
+    });
+  }
+
+  return admin;
 }
 
+// Bootstrap a new AdminUser from an allowlisted login. SUPER_ADMIN
+// for the very first row, OPS thereafter. The team page is the
+// proper way to add subsequent admins; this path only fires for the
+// founders + people whose @goldstay.* email logs in before they've
+// been added explicitly.
+async function provisionAdmin(
+  email: string,
+  authUserId: string,
+): Promise<AdminUser> {
+  const existingCount = await prisma.adminUser.count();
+  return prisma.adminUser.create({
+    data: {
+      email,
+      fullName: deriveNameFromEmail(email),
+      authUserId,
+      role: existingCount === 0 ? "SUPER_ADMIN" : "OPS",
+    },
+  });
+}
+
+function deriveNameFromEmail(email: string): string {
+  const local = email.split("@")[0] ?? "";
+  if (local.length === 0) return email;
+  // "kwame.mensah" → "Kwame Mensah", "ops" → "Ops"
+  return local
+    .split(/[._-]+/)
+    .filter(Boolean)
+    .map((p) => p[0]!.toUpperCase() + p.slice(1))
+    .join(" ");
+}
+
+// Higher-level admin gate: ensures the current admin can perform
+// the named action (and optionally the target country, for
+// COUNTRY_MANAGER). Redirects if not. Use this in any server action
+// where the action key meaningfully differs from a blanket admin.
+export async function requireRole(
+  action: AdminAction,
+  targetCountry: AdminUser["country"] | null = null,
+): Promise<AdminUser> {
+  const admin = await requireAdmin();
+  const ok = canForCountry(admin.role, action, admin.country, targetCountry);
+  if (!ok) redirect("/admin");
+  return admin;
+}
+
+// Boolean check, no redirect. Useful in server components that want
+// to conditionally render an action button.
+export async function adminCan(
+  action: AdminAction,
+  targetCountry: AdminUser["country"] | null = null,
+): Promise<boolean> {
+  const admin = await requireAdmin();
+  return canForCountry(admin.role, action, admin.country, targetCountry);
+}
+
+// Shorter alias re-exported for callers that just want the matrix.
+export { can };
+
 // Resolves the AuditActor used by recordAudit / addNote / createTask
-// from the current admin session. Currently the AdminUser table is
-// not yet populated by every login, so adminId is best-effort. After
-// Phase A.3 wires DB-backed auth this returns the AdminUser row id
-// alongside the email.
+// from the current admin session.
 export type CurrentActor = {
   adminId: string | null;
   email: string;
 };
 
 export async function currentAuditActor(): Promise<CurrentActor> {
-  const user = await requireAdmin();
-  const email = (user.email ?? "").toLowerCase();
-  if (!email) return { adminId: null, email: "unknown@goldstay" };
-
-  // Phase A.1 ships the table empty. We do a quick lookup so that
-  // when Phase A.3 backfills rows on first login, audit rows get
-  // a proper FK without us touching every action again.
-  const admin = await prisma.adminUser.findUnique({
-    where: { email },
-    select: { id: true },
-  });
-  return { adminId: admin?.id ?? null, email };
+  const admin = await requireAdmin();
+  return { adminId: admin.id, email: admin.email };
 }
 
 // Resolves the Owner row for the logged-in Supabase user. Owner rows

@@ -6,7 +6,7 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const user = await requireAdmin();
+  const admin = await requireAdmin();
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-10">
@@ -18,7 +18,9 @@ export default async function AdminLayout({
           <h1 className="mt-1 text-2xl font-serif text-stone-900">
             Operations
           </h1>
-          <p className="mt-1 text-sm text-stone-500">{user.email}</p>
+          <p className="mt-1 text-sm text-stone-500">
+            {admin.fullName} · {admin.email}
+          </p>
         </div>
         <nav className="flex items-center gap-4 text-sm">
           <Link href="/admin" className="text-stone-700 hover:text-stone-900">

@@ -63,7 +63,7 @@ export async function createDocumentUploadAction(input: unknown): Promise<{
   ok: false;
   error: string;
 }> {
-  const user = await requireAdmin();
+  const admin = await requireAdmin();
   const parsed = InitInput.safeParse(input);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
@@ -86,7 +86,7 @@ export async function createDocumentUploadAction(input: unknown): Promise<{
       storagePath: "pending",
       mimeType: mimeType ?? null,
       sizeBytes: sizeBytes ?? null,
-      uploadedBy: user.email ?? user.id,
+      uploadedBy: admin.email,
     },
   });
 
