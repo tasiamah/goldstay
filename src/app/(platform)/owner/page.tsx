@@ -5,8 +5,15 @@ import {
   aggregateTransactionsByCurrency,
   occupancyPercent,
 } from "@/lib/owner-dashboard";
+import {
+  pctChange,
+  pickPrimaryCurrency,
+  summariseTransactionsByCurrency,
+} from "@/lib/owner-kpis";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { WelcomeCard } from "./welcome/WelcomeCard";
+import { KpiCard } from "@/components/owner/KpiCard";
+import { MonthlyNetChart } from "@/components/owner/MonthlyNetChart";
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -24,13 +31,19 @@ export default async function OwnerDashboardPage({
   // Owner row to render.
   const { owner } = await requireOwner();
 
-  const twelveMonthsAgo = new Date();
+  const now = new Date();
+  const twelveMonthsAgo = new Date(now);
   twelveMonthsAgo.setMonth(twelveMonthsAgo.getMonth() - 12);
+  // Window covers the KPI strip's "prior 30 days" comparator too,
+  // so a 13-month pull keeps us to a single round-trip.
+  const thirteenMonthsAgo = new Date(now);
+  thirteenMonthsAgo.setMonth(thirteenMonthsAgo.getMonth() - 13);
 
   const [
     properties,
     activeLeaseCount,
     totals,
+    kpiTransactions,
     recentTransactions,
     pendingAgreements,
   ] = await Promise.all([
@@ -61,6 +74,22 @@ export default async function OwnerDashboardPage({
         occurredOn: { gte: twelveMonthsAgo },
       },
       _sum: { amount: true },
+    }),
+    // Raw transactions feed the KPI strip + monthly net chart. We
+    // pull 13 months so the prior-30-day comparator window stays
+    // inside the result set and we don't need a second round-trip.
+    prisma.transaction.findMany({
+      where: {
+        property: { ownerId: owner.id },
+        occurredOn: { gte: thirteenMonthsAgo },
+      },
+      select: {
+        occurredOn: true,
+        amount: true,
+        currency: true,
+        direction: true,
+        propertyId: true,
+      },
     }),
     prisma.transaction.findMany({
       where: { property: { ownerId: owner.id } },
@@ -107,6 +136,28 @@ export default async function OwnerDashboardPage({
     })),
     owner.preferredCurrency,
   );
+
+  // KPI + chart data feed off the same raw 13-month pull so the
+  // numbers a landlord eyeballs in the strip exactly match the
+  // bars in the chart below.
+  const summaries = summariseTransactionsByCurrency(
+    kpiTransactions.map((t) => ({
+      occurredOn: t.occurredOn,
+      amount: Number(t.amount),
+      currency: t.currency,
+      direction: t.direction,
+      propertyId: t.propertyId,
+    })),
+    now,
+  );
+  const primary = pickPrimaryCurrency(summaries, owner.preferredCurrency);
+  const trend30d = primary
+    ? pctChange(primary.thirtyDayNet, primary.prior30DayNet)
+    : null;
+  const otherCurrencyCount = Math.max(0, summaries.length - 1);
+  const activePropertyCount = properties.filter(
+    (p) => p.status === "ACTIVE",
+  ).length;
 
   // Show the welcome panel either on a true first session
   // (welcomeCompletedAt is null) or whenever the owner explicitly
@@ -163,24 +214,81 @@ export default async function OwnerDashboardPage({
         </section>
       ) : null}
 
-      <section className="grid grid-cols-3 gap-4">
-        <Stat label="Properties" value={properties.length} />
-        <Stat label="Active leases" value={activeLeaseCount} />
-        <Stat
+      {/* Top-level KPI strip. The four tiles answer the four
+          questions a landlord opens this page to ask: "what did I
+          make recently", "what did I make this year", "is my
+          portfolio working", "am I full". The right-most tile
+          deliberately doubles as the link into the trend chart
+          below — landlords lean on the strip and ignore the chart
+          on tiny screens, so we don't hide one behind the other. */}
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard
+          label="Net last 30 days"
+          value={
+            primary
+              ? `${primary.currency} ${fmt(primary.thirtyDayNet)}`
+              : "—"
+          }
+          sub={
+            otherCurrencyCount > 0
+              ? `+ ${otherCurrencyCount} other ${
+                  otherCurrencyCount === 1 ? "currency" : "currencies"
+                }`
+              : "Inflows minus outflows"
+          }
+          trend={
+            trend30d
+              ? {
+                  ...trend30d,
+                  label: "vs prior 30d",
+                }
+              : undefined
+          }
+        />
+        <KpiCard
+          label="Net last 12 months"
+          value={
+            primary
+              ? `${primary.currency} ${fmt(primary.twelveMonthNet)}`
+              : "—"
+          }
+          sub="Year-to-now in primary currency"
+        />
+        <KpiCard
+          label="Active properties"
+          value={String(activePropertyCount)}
+          sub={
+            properties.length === activePropertyCount
+              ? properties.length === 1
+                ? "1 property"
+                : `${properties.length} properties`
+              : `of ${properties.length} on the books`
+          }
+        />
+        <KpiCard
           label="Occupancy"
           value={occupancyPct === null ? "—" : `${occupancyPct}%`}
+          sub={
+            activeLeaseCount === 0
+              ? "No active leases yet"
+              : `${activeLeaseCount} active ${
+                  activeLeaseCount === 1 ? "lease" : "leases"
+                }`
+          }
         />
       </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-6">
-        <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <h2 className="text-base font-medium text-stone-900">
-              Last 12 months
+              Net by month
             </h2>
             <p className="mt-1 text-sm text-stone-500">
-              Inflows are rent and deposits. Outflows are expenses, refunds,
-              management fees, and payouts already remitted to you.
+              Inflows minus outflows by calendar month. Goldstay
+              commission and out-of-pocket expenses are already
+              netted off — these bars are what landed on your side
+              of the ledger.
             </p>
           </div>
           <Link
@@ -190,11 +298,21 @@ export default async function OwnerDashboardPage({
             Download statement
           </Link>
         </div>
-        {currencyRows.length === 0 ? (
+
+        {primary ? (
+          <div className="mt-6">
+            <MonthlyNetChart
+              series={primary.monthlyNet}
+              currency={primary.currency}
+            />
+          </div>
+        ) : (
           <p className="mt-6 text-sm text-stone-500">
             No transactions recorded in the last 12 months.
           </p>
-        ) : (
+        )}
+
+        {currencyRows.length > 0 ? (
           <div className="mt-6 overflow-hidden rounded-md border border-stone-200">
             <table className="min-w-full divide-y divide-stone-200">
               <thead className="bg-stone-50">
@@ -229,7 +347,7 @@ export default async function OwnerDashboardPage({
               </tbody>
             </table>
           </div>
-        )}
+        ) : null}
       </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
@@ -360,21 +478,6 @@ export default async function OwnerDashboardPage({
           .
         </p>
       ) : null}
-    </div>
-  );
-}
-
-function Stat({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | string;
-}) {
-  return (
-    <div className="rounded-lg border border-stone-200 bg-white p-6">
-      <p className="text-xs uppercase tracking-wider text-stone-500">{label}</p>
-      <p className="mt-2 text-2xl font-serif text-stone-900">{value}</p>
     </div>
   );
 }
