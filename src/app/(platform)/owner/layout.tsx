@@ -13,6 +13,7 @@
 import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 
 export default async function OwnerLayout({
   children,
@@ -33,6 +34,7 @@ export default async function OwnerLayout({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-10">
+      <ImpersonationBanner />
       <header className="mb-10 flex items-center justify-between border-b border-stone-200 pb-6">
         <div>
           <p className="text-xs uppercase tracking-wider text-stone-500">
@@ -63,6 +65,12 @@ export default async function OwnerLayout({
                 className="text-stone-700 hover:text-stone-900"
               >
                 Statements
+              </Link>
+              <Link
+                href="/owner/payouts"
+                className="text-stone-700 hover:text-stone-900"
+              >
+                Payouts
               </Link>
             </>
           ) : null}

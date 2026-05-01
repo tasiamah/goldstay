@@ -14,6 +14,9 @@ import { CommsTab } from "@/components/admin/comms/CommsTab";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 import { ResendWelcomeButton } from "./ResendWelcomeButton";
+import { ImpersonateButton } from "@/components/admin/ImpersonateButton";
+import { PayoutMethodsCard } from "./payouts/PayoutMethodsCard";
+import { OwnerDocumentsCard } from "./documents/OwnerDocumentsCard";
 
 export const dynamic = "force-dynamic";
 
@@ -62,16 +65,25 @@ export default async function OwnerDetailPage({
               {owner.email} · {owner.country === "KE" ? "Kenya" : "Ghana"} ·{" "}
               {owner.preferredCurrency}
             </p>
-            <p className="mt-2">
+            <p className="mt-2 flex flex-wrap items-center gap-2">
               <ResendWelcomeButton ownerId={owner.id} />
+              <ImpersonateButton ownerId={owner.id} />
             </p>
           </div>
-          <Link
-            href={`/admin/owners/${owner.id}/properties/new`}
-            className="inline-flex shrink-0 items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
-          >
-            Add property
-          </Link>
+          <div className="flex shrink-0 items-center gap-2">
+            <Link
+              href={`/admin/owners/${owner.id}/payouts/record`}
+              className="inline-flex items-center rounded-md border border-stone-300 bg-white px-4 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+            >
+              Record payout
+            </Link>
+            <Link
+              href={`/admin/owners/${owner.id}/properties/new`}
+              className="inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
+            >
+              Add property
+            </Link>
+          </div>
         </div>
       </div>
 
@@ -148,6 +160,14 @@ export default async function OwnerDetailPage({
             </ul>
           )}
         </div>
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        <PayoutMethodsCard
+          ownerId={owner.id}
+          preferredCurrency={owner.preferredCurrency}
+        />
+        <OwnerDocumentsCard ownerId={owner.id} />
       </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
