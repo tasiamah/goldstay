@@ -27,10 +27,15 @@ export default async function OwnerLayout({
         where: {
           OR: [{ authUserId: user.id }, { email: user.email }],
         },
-        select: { id: true },
+        select: { id: true, fullName: true },
       })
     : null;
   const isLinkedOwner = Boolean(owner);
+
+  // First name only — full names look formal in a header. Falls
+  // back to "back" so an unlinked Supabase user still gets a clean
+  // "Welcome back" rather than "Welcome back, undefined".
+  const firstName = owner?.fullName?.trim().split(/\s+/)[0] ?? null;
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-10">
@@ -41,7 +46,7 @@ export default async function OwnerLayout({
             Owner portal
           </p>
           <h1 className="mt-1 text-2xl font-serif text-stone-900">
-            Welcome back
+            {firstName ? `Welcome back, ${firstName}` : "Welcome back"}
           </h1>
           <p className="mt-1 text-sm text-stone-500">{user.email}</p>
         </div>

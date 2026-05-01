@@ -11,9 +11,10 @@ import {
   summariseTransactionsByCurrency,
 } from "@/lib/owner-kpis";
 import { formatPropertyDisplayName } from "@/lib/format-property";
-import { WelcomeCard } from "./welcome/WelcomeCard";
+import { FirstVisitHint } from "./welcome/FirstVisitHint";
 import { KpiCard } from "@/components/owner/KpiCard";
 import { MonthlyNetChart } from "@/components/owner/MonthlyNetChart";
+import { HelpHint } from "@/components/owner/HelpHint";
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -21,11 +22,7 @@ import { MonthlyNetChart } from "@/components/owner/MonthlyNetChart";
 
 export const dynamic = "force-dynamic";
 
-export default async function OwnerDashboardPage({
-  searchParams,
-}: {
-  searchParams?: { welcome?: string };
-}) {
+export default async function OwnerDashboardPage() {
   // requireOwner handles the unmatched-user case by redirecting to
   // /owner/pending, so by the time we get here we always have a real
   // Owner row to render.
@@ -159,24 +156,18 @@ export default async function OwnerDashboardPage({
     (p) => p.status === "ACTIVE",
   ).length;
 
-  // Show the welcome panel either on a true first session
-  // (welcomeCompletedAt is null) or whenever the owner explicitly
-  // clicks "Take the tour" further down the page (?welcome=1).
-  // Replay uses a different dismiss path so it doesn't try to flip
-  // an already-set monotonic timestamp.
-  const showWelcome =
-    !owner.welcomeCompletedAt || searchParams?.welcome === "1";
-  const isWelcomeReplay =
-    Boolean(owner.welcomeCompletedAt) && searchParams?.welcome === "1";
+  // First-visit nudge: a one-line banner above the dashboard
+  // pointing at the per-section ? hints. Once dismissed it never
+  // comes back — the hints themselves remain available for any
+  // refresher, removing the need for a separate "take the tour" link.
+  const showFirstVisitHint = !owner.welcomeCompletedAt;
 
   return (
     <div className="space-y-10">
-      {showWelcome ? (
-        <WelcomeCard
+      {showFirstVisitHint ? (
+        <FirstVisitHint
           ownerFirstName={owner.fullName.split(/\s+/)[0] || "there"}
-          hasProperties={properties.length > 0}
           hasPendingAgreement={pendingAgreements.length > 0}
-          isReplay={isWelcomeReplay}
         />
       ) : null}
 
@@ -281,9 +272,17 @@ export default async function OwnerDashboardPage({
       <section className="rounded-lg border border-stone-200 bg-white p-6">
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h2 className="text-base font-medium text-stone-900">
-              Net by month
-            </h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-medium text-stone-900">
+                Net by month
+              </h2>
+              <HelpHint label="Net by month">
+                A signed PDF statement is also issued on the 5th of
+                every month — open it from the &ldquo;Download
+                statement&rdquo; button to see the same numbers with
+                supporting receipts attached.
+              </HelpHint>
+            </div>
             <p className="mt-1 text-sm text-stone-500">
               Inflows minus outflows by calendar month. Goldstay
               commission and out-of-pocket expenses are already
@@ -352,9 +351,16 @@ export default async function OwnerDashboardPage({
 
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-6">
-          <h2 className="text-base font-medium text-stone-900">
-            Your portfolio
-          </h2>
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-medium text-stone-900">
+              Your portfolio
+            </h2>
+            <HelpHint label="Your portfolio">
+              Every property Goldstay manages for you. Tap into a
+              property to see live occupancy, recent bookings, and the
+              documents we hold for it.
+            </HelpHint>
+          </div>
           {properties.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">
               Goldstay has not attached any properties to your account yet.
@@ -394,9 +400,16 @@ export default async function OwnerDashboardPage({
 
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <div className="flex items-start justify-between gap-4">
-            <h2 className="text-base font-medium text-stone-900">
-              Recent activity
-            </h2>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base font-medium text-stone-900">
+                Recent activity
+              </h2>
+              <HelpHint label="Recent activity">
+                Every rent payment, expense, refund and payout — the
+                numbers behind your statement. Filterable by property
+                and month on the full transactions page.
+              </HelpHint>
+            </div>
             <Link
               href="/owner/transactions"
               className="text-xs text-stone-500 hover:text-stone-900"
@@ -462,22 +475,6 @@ export default async function OwnerDashboardPage({
         </div>
       </section>
 
-      {/* Quiet replay link so a landlord who's already dismissed
-          the welcome panel can still revisit it later. We hide it
-          while the panel is open to avoid a circular UX where the
-          link leads back to the page you're on. */}
-      {!showWelcome ? (
-        <p className="border-t border-stone-200 pt-6 text-xs text-stone-500">
-          New to the portal?{" "}
-          <Link
-            href="/owner?welcome=1"
-            className="underline-offset-2 hover:text-stone-900 hover:underline"
-          >
-            Take the tour
-          </Link>
-          .
-        </p>
-      ) : null}
     </div>
   );
 }
