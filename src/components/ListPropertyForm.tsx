@@ -263,7 +263,7 @@ export function ListPropertyForm() {
               Tell us more (optional)
             </span>{" "}
             <span className="text-charcoal/55">
-              — speeds up the call, but not required.
+              speeds up the call, but not required.
             </span>
           </span>
           <span aria-hidden className="text-charcoal/55">

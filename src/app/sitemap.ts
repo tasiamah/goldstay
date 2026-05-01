@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
 import { site, cities, neighbourhoodSlug, countryForHost } from "@/lib/site";
+import { DIASPORA_ORIGINS } from "@/lib/diaspora-origins";
 import { postsForCountry } from "./(marketing)/insights/posts";
 import { categories, postsForCategory } from "./(marketing)/insights/categories";
 
@@ -29,17 +30,31 @@ export default function sitemap(): MetadataRoute.Sitemap {
     .filter((c) => postsForCategory(c.slug, insightsCountry).length > 0)
     .map((c) => `/insights/category/${c.slug}`);
 
+  // Programmatic diaspora-origin landing pages. Every supported
+  // origin × city combination is statically generated, so we list
+  // every URL on every host that serves the corresponding city.
+  // The Nairobi and Accra origin pages are split below so the
+  // /from/uk/accra URL only appears on goldstay.com and .com.gh,
+  // not on the .co.ke sitemap.
+  const fromHubAndOrigins = ["/from"];
+  const fromNairobi = DIASPORA_ORIGINS.map((o) => `/from/${o.code}/nairobi`);
+  const fromAccra = DIASPORA_ORIGINS.map((o) => `/from/${o.code}/accra`);
+
   const neutral = [
     "",
     "/airbnb-management",
     "/property-sourcing",
+    "/diaspora-payouts",
     "/yield-calculator",
+    "/refer",
+    "/refer/signup",
     "/list-your-property",
     "/find-a-home",
     "/about",
     "/insights",
     ...categoryRoutes,
     ...insightSlugs,
+    ...fromHubAndOrigins,
     "/privacy",
     "/terms",
   ];
@@ -50,6 +65,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...cities.nairobi.neighbourhoods.map(
       (n) => `/nairobi/${neighbourhoodSlug(n.name)}`,
     ),
+    ...fromNairobi,
   ];
 
   const accraRoutes = [
@@ -58,6 +74,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...cities.accra.neighbourhoods.map(
       (n) => `/accra/${neighbourhoodSlug(n.name)}`,
     ),
+    ...fromAccra,
   ];
 
   const routes = isNairobi

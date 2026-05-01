@@ -240,7 +240,16 @@ export default function Article() {
         >
           this form
         </Link>{" "}
-        and we will share an anonymised real one.
+        and we will share an anonymised real one. The shorter
+        operations write-up (rails, fees, verification flow) lives
+        on the{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Diaspora Payouts page
+        </Link>
+        .
       </P>
     </>
   );

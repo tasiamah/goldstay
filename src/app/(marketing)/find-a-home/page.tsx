@@ -48,7 +48,7 @@ export default function Page() {
             optimisation pipeline. */}
         <Image
           src="https://images.unsplash.com/photo-1505691938895-1758d7feb511?auto=format&fit=crop&w=2400&q=80"
-          alt={`Light-filled apartment interior — Goldstay vetted homes in ${cityPhrase.replace(" &", " and")}`}
+          alt={`Light-filled apartment interior. Goldstay vetted homes in ${cityPhrase.replace(" &", " and")}`}
           fill
           priority
           sizes="100vw"

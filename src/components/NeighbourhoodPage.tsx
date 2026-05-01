@@ -113,7 +113,7 @@ export function NeighbourhoodPage({
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <Image
           src={heroImage}
-          alt={`${neighbourhood.name}, ${cityName} — Goldstay property management area`}
+          alt={`${neighbourhood.name}, ${cityName}. Goldstay property management area`}
           fill
           priority
           sizes="100vw"
@@ -177,7 +177,7 @@ export function NeighbourhoodPage({
                 <Banknote className="h-6 w-6 text-gold-600" />
                 <h3 className="mt-6 font-serif text-2xl">Long-term rent</h3>
                 <p className="mt-2 font-mono text-lg text-charcoal">
-                  USD {neighbourhood.twoBrUsd.min.toLocaleString()} —{" "}
+                  USD {neighbourhood.twoBrUsd.min.toLocaleString()} to{" "}
                   USD {neighbourhood.twoBrUsd.max.toLocaleString()} / month
                 </p>
                 <p className="mt-3 text-sm text-charcoal/70">

@@ -43,8 +43,8 @@ export function generateMetadata({
 
   const title =
     page > 1
-      ? `${category.name} insights (page ${page}) — Goldstay`
-      : `${category.name} insights for diaspora landlords — Goldstay`;
+      ? `${category.name} insights (page ${page}) | Goldstay`
+      : `${category.name} insights for diaspora landlords | Goldstay`;
 
   return {
     title,

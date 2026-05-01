@@ -334,6 +334,60 @@ const tablesSpec = [
     ],
   },
   {
+    name: "Referrers",
+    description:
+      "Mirror of the Postgres Referrer table. Postgres is the system of record (codes, tokens, payouts) — this view exists for ops triage. Edits made here do not flow back to Postgres unless wired up later.",
+    fields: [
+      { name: "Code", ...text() },
+      {
+        name: "Type",
+        ...singleSelect(["LANDLORD", "AGENT", "PARTNER"]),
+      },
+      {
+        name: "Status",
+        ...singleSelect(["ACTIVE", "PAUSED", "TERMINATED"]),
+      },
+      { name: "Full name", ...text() },
+      { name: "Email", ...email() },
+      { name: "Phone", ...phone() },
+      { name: "Company", ...text() },
+      { name: "Country", ...text() },
+      { name: "Dashboard URL", ...url() },
+      { name: "Notes", ...longText() },
+      { name: "Joined", ...dateTime() },
+    ],
+  },
+  {
+    name: "Referrals",
+    description:
+      "Mirror of the Postgres Referral table. Each row is a landlord introduced by a referrer. The Postgres referral id is in the 'Referral ID' column for audit; the Airtable lead id is in 'Lead ID'.",
+    fields: [
+      { name: "Landlord name", ...text() },
+      { name: "Referrer code", ...text() },
+      { name: "Referrer name", ...text() },
+      { name: "Referrer email", ...email() },
+      { name: "Lead email", ...email() },
+      { name: "Lead phone", ...phone() },
+      { name: "City", ...text() },
+      {
+        name: "Status",
+        ...singleSelect([
+          "ATTRIBUTED",
+          "CONTACTED",
+          "QUALIFIED",
+          "SIGNED",
+          "CHURNED",
+          "REJECTED",
+        ]),
+      },
+      { name: "Source", ...text() },
+      { name: "Notes", ...longText() },
+      { name: "Created", ...dateTime() },
+      { name: "Referral ID", ...text() },
+      { name: "Lead ID", ...text() },
+    ],
+  },
+  {
     name: "Tenant waitlist",
     description:
       "Public lightweight tenant captures from /find-a-home. Different from Tenant Applications, which is the private deep-dossier form.",

@@ -89,6 +89,11 @@ export function Footer() {
                   Property sourcing
                 </Link>
               </li>
+              <li>
+                <Link href="/diaspora-payouts" className="link-underline">
+                  Diaspora USD payouts
+                </Link>
+              </li>
               {showNairobi ? (
                 <li>
                   <Link href="/nairobi/buy" className="link-underline">

@@ -1,0 +1,45 @@
+# Daily vacancy-lead auto-pitch. Hits /api/cron/vacancy-pitch on
+# production, which reads "New" rows out of the Airtable Vacancy
+# Leads table, sends a short pitch via Resend (or to the ops inbox
+# with a WhatsApp deeplink when the row only has a phone), and
+# patches the row to "Contacted" so the next run skips it.
+#
+# Same Bearer-token convention as sync-ical and acquisition-scan:
+# the route checks CRON_SECRET and 401s anything else.
+#
+# Schedule: 06:30 UTC = 09:30 EAT, slightly after the morning ops
+# stand-up so the team can react to a fresh batch of replies during
+# their first window.
+
+name: Vacancy auto-pitch
+
+on:
+  schedule:
+    - cron: "30 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  pitch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Ping vacancy-pitch endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET repo secret is not set"
+            exit 1
+          fi
+          response=$(curl -sS --max-time 600 -o /tmp/body -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            https://goldstay.co.ke/api/cron/vacancy-pitch)
+          echo "HTTP $response"
+          cat /tmp/body
+          echo
+          if [ "$response" != "200" ]; then
+            exit 1
+          fi

@@ -15,6 +15,7 @@
     "db:studio": "dotenv -e .env.local -- prisma studio",
     "db:push": "dotenv -e .env.local -- prisma db push",
     "storage:bootstrap": "dotenv -e .env.local -- node scripts/ensure-documents-bucket.mjs",
+    "test:deliverability": "dotenv -e .env.local -- node scripts/test-deliverability.mjs",
     "postinstall": "prisma generate",
     "test": "vitest run",
     "test:watch": "vitest",

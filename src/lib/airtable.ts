@@ -21,6 +21,8 @@ export const airtableTables = {
     process.env.AIRTABLE_ACQUISITION_TABLE || "Acquisition Targets",
   yieldReports:
     process.env.AIRTABLE_YIELD_REPORTS_TABLE || "Yield Reports",
+  referrers: process.env.AIRTABLE_REFERRERS_TABLE || "Referrers",
+  referrals: process.env.AIRTABLE_REFERRALS_TABLE || "Referrals",
 } as const;
 
 function getConfig() {
@@ -47,15 +49,20 @@ function cleanFields(fields: AirtableFields): AirtableFields {
   return out;
 }
 
+// Creates one record. Returns the new record id on success, or null on
+// any failure / when Airtable is not configured. Callers that don't
+// need the id can keep ignoring the return value, which preserves the
+// pre-existing best-effort semantics: a broken CRM never breaks the
+// public form.
 export async function createAirtableRecord(
   table: string,
   fields: AirtableFields,
-): Promise<void> {
+): Promise<string | null> {
   const cfg = getConfig();
-  if (!cfg) return;
+  if (!cfg) return null;
 
   const cleaned = cleanFields(fields);
-  if (Object.keys(cleaned).length === 0) return;
+  if (Object.keys(cleaned).length === 0) return null;
 
   try {
     const res = await fetch(
@@ -81,9 +88,15 @@ export async function createAirtableRecord(
       console.error(
         `[airtable] create failed on "${table}": ${res.status} ${body}`,
       );
+      return null;
     }
+    const json = (await res.json()) as {
+      records?: Array<{ id?: string }>;
+    };
+    return json.records?.[0]?.id ?? null;
   } catch (e) {
     console.error(`[airtable] create error on "${table}":`, e);
+    return null;
   }
 }
 

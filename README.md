@@ -25,6 +25,13 @@ Brand: Goldstay · A TADCO Company.
 | `/list-your-property` | Landlord intake form (posts to `/api/lead`). |
 | `/privacy`, `/terms` | Legal placeholders. |
 | `/api/lead` | Server route: delivers form submissions via Resend; logs to console if no API key. |
+| `/yield-calculator` | Diaspora landlord yield calculator. Posts to `/api/yield-report` for branded PDF + Airtable capture. |
+| `/from` | Hub for the diaspora-origin landing pages. |
+| `/from/[origin]/[city]` | Programmatic SEO pages: 10 origins × 2 cities = 20 unique landing pages targeting "Nairobi/Accra property management for landlords in [origin]". |
+| `/embed/landlord-intake` | Stripped embeddable form (no nav/footer). Loaded into partner sites via `/embed/landlord-intake.js`. |
+| `/api/yield-report` | Server route: renders branded yield PDF and mirrors the lead to Airtable. |
+| `/api/cron/acquisition-scan` | Cron-only: runs the Airbnb + BuyRentKenya scrapers, classifies, upserts targets. Auth via `CRON_SECRET`. |
+| `/api/cron/vacancy-pitch` | Cron-only: pitches landlords whose tenants have given notice (rows in Airtable Vacancy Leads). Auth via `CRON_SECRET`. |
 | `/sitemap.xml`, `/robots.txt` | Auto-generated. |
 
 ## Environment variables
@@ -46,6 +53,11 @@ AIRTABLE_BASE_ID=                       # base id from airtable.com/api
 AIRTABLE_LEADS_TABLE=Landlord leads     # table name, override if renamed
 AIRTABLE_TENANTS_TABLE=Tenant Applications
 AIRTABLE_VACANCY_TABLE=Vacancy Leads
+AIRTABLE_ACQUISITION_TABLE=Acquisition Targets   # outbound scrape pipeline
+AIRTABLE_YIELD_REPORTS_TABLE=Yield Reports        # /yield-calculator captures
+ACQUISITION_AGENT_PHONE_BLOCKLIST=               # comma-separated international phones, hard agents
+ACQUISITION_PROXY_URL=                           # optional outbound proxy for the scrapers (Bright Data etc)
+CRON_SECRET=                                     # bearer token for /api/cron/* (must match GitHub Actions secret)
 ```
 
 All analytics and the Meta Pixel only load when their IDs are set, so the site is clean by default.
@@ -177,6 +189,53 @@ Create the three tables described below. Field names are case-sensitive and must
 - Writes run in parallel with the Resend email via `Promise.allSettled`, so total latency is max(email, airtable) not sum.
 - Failures are logged and swallowed: a broken CRM never breaks the public form.
 - `typecast: true` is enabled, so adding new single-select options (for example a new status) can be done from Airtable without a code change.
+
+## Outbound acquisition pipeline
+
+A nightly GitHub Actions cron (`.github/workflows/acquisition-scan.yml`) hits `/api/cron/acquisition-scan` on the production deployment, which runs the Airbnb + BuyRentKenya scrapers, scores each result with the owner-vs-agent classifier in `src/lib/acquisition/classify.ts`, and upserts surviving rows into the Airtable **Acquisition Targets** table.
+
+- **Owner vs agent**: Most BuyRentKenya / Property24 listings are agency-posted. The classifier is what turns the firehose into a useful pipe — it weights phone-frequency, lister-name shape, owner-direct phrasing in the description, and a manually-curated phone blocklist (`ACQUISITION_AGENT_PHONE_BLOCKLIST`). Likely-agent rows are filtered out before they reach Airtable; ops only sees what's worth calling.
+- **Pain score**: Stale listings (45+ days), repeat re-listings and mid-market asking prices score higher. Sort the table by Pain score descending for the warmest outbound.
+- **Blocking**: Some sources will eventually 403 a Vercel-IP request. When that happens, set `ACQUISITION_PROXY_URL` to a residential proxy (Bright Data, ScraperAPI, etc.) and the existing `fetchHtml` helper will start routing through it.
+- **Manual run**: trigger the GitHub Actions workflow with the *Run workflow* button, or POST `Authorization: Bearer $CRON_SECRET` to `/api/cron/acquisition-scan` from your terminal.
+
+Vacancy auto-pitch (`/api/cron/vacancy-pitch`) runs daily on the same Bearer-token pattern. It reads "New" rows out of the Airtable Vacancy Leads table — auto-created when a tenant application names a previous landlord — sends a short pitch via Resend (or to the ops inbox with a WhatsApp deeplink when only a phone is on file), and patches the row to "Contacted" so the next run skips it.
+
+## Yield calculator lead magnet
+
+`/yield-calculator` is the highest-intent inbound surface. It renders a live comparison of self-managed vs. Goldstay-managed economics, then captures the landlord's email in exchange for a branded PDF report (rendered server-side via `@react-pdf/renderer`, reuses the `StatementDocument` styling so the visual identity is continuous from lead to live owner). Every download mirrors to the Airtable Yield Reports table tagged `Source = yield-calculator`.
+
+Edit assumptions (occupancy, leakage, OTA fees, tax) in one place: `src/lib/yield/calc.ts`. Tests in `calc.test.ts` lock in the directional behaviour (Goldstay > self-managed, scales with rent, Accra tax > Nairobi tax).
+
+## Embeddable landlord intake
+
+Partner sites (diaspora associations, employer benefit pages, founder-network newsletters) drop one snippet:
+
+```html
+<div id="goldstay-landlord-intake"></div>
+<script
+  src="https://goldstay.co.ke/embed/landlord-intake.js"
+  data-goldstay-partner="kenyans-in-uk"
+  defer
+></script>
+```
+
+The script injects an iframe pointing at `/embed/landlord-intake?partner=…`, auto-resizes via `postMessage`, and posts submissions to `/api/lead` with `Source = embed:<partner>` so every signed landlord traces back to the referring site. No tracking pixels, no external dependencies.
+
+## Referral programme
+
+Third parties — agents, brokers, existing landlords — earn a share of every monthly management fee for landlords they introduce. Postgres is the system of record for codes, referrals, and payout schedules; Airtable mirrors `Referrers` and `Referrals` so ops can triage without VPN-ing into the admin surface.
+
+- **Public landing**: `/refer` (programme pitch, two tiers).
+- **Signup**: `/refer/signup` → `POST /api/refer/signup` → creates a `Referrer` row, sends a welcome email via Resend with both the public referral link (`/list-your-property?ref=<code>`) and a private dashboard URL (`/refer/dashboard/<token>`).
+- **Attribution**: `src/middleware.ts` watches `?ref=…` on every public marketing URL and stamps a 90-day `gs_ref` cookie. `/api/lead` reads the cookie and creates a `Referral` row tied to the originating landlord lead. First click wins.
+- **Manual submission**: from the dashboard, an agent can post a landlord directly via `/api/refer/lead`. Auth is the dashboard token (same trust boundary as viewing the page). Mirrors to the Landlord leads table with `Source = referral:<code>`.
+- **Defaults** (override per row in the `Referrer` table):
+  - **Agent / partner**: 25% of long-term fee or 15% of short-stay fee, paid monthly for 12 months.
+  - **Existing landlord**: 50% of one month's fee, paid once 30 days after first rent collection.
+- **Payout schedule** generation lives in `src/lib/referrals/payouts.ts`. When ops marks a referral SIGNED, `markReferralSigned()` snapshots the management terms onto the row and atomically inserts the schedule into `ReferralPayout`. Idempotent on `(referralId, monthIndex)`.
+
+Pure-logic tests in `src/lib/referrals/payouts.test.ts` lock the agent example ($1,500/mo unit at 10% fee → $37.50 × 12 months → $450 first-year payout) so the public landing copy and the database can never disagree.
 
 ## Brand guardrails (baked into the design system)
 

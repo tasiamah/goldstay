@@ -1,0 +1,45 @@
+# Daily outbound acquisition scrape. Hits /api/cron/acquisition-scan
+# on production, which runs the Airbnb / BuyRentKenya scrapers,
+# classifies the results and upserts surviving owner-leaning targets
+# into the Airtable Acquisition Targets table.
+#
+# Same Bearer-token convention as sync-ical: the route checks
+# CRON_SECRET and 401s anything else, so this workflow is the only
+# safe way to trigger from outside the app. Manual runs via the
+# "Run workflow" button are enabled for ad-hoc backfills.
+#
+# Schedule: 04:00 UTC = 07:00 EAT, before the ops day starts so the
+# call list is fresh.
+
+name: Acquisition scrape
+
+on:
+  schedule:
+    - cron: "0 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ping acquisition-scan endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET repo secret is not set"
+            exit 1
+          fi
+          response=$(curl -sS --max-time 600 -o /tmp/body -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            https://goldstay.co.ke/api/cron/acquisition-scan)
+          echo "HTTP $response"
+          cat /tmp/body
+          echo
+          if [ "$response" != "200" ]; then
+            exit 1
+          fi

@@ -117,7 +117,7 @@ export function CityBuyPage({ city }: { city: City }) {
             for "buy property Nairobi" / "buy property Accra". */}
         <Image
           src={image}
-          alt={`${cityName} skyline — Goldstay buy-side property sourcing in ${country}`}
+          alt={`${cityName} skyline. Goldstay buy-side property sourcing in ${country}`}
           fill
           priority
           sizes="100vw"

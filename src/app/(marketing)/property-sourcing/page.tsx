@@ -118,7 +118,7 @@ export default function Page() {
                     property Nairobi" / "buy property Accra". */}
                 <Image
                   src={c.image}
-                  alt={`${c.city} skyline — Goldstay buy-side property sourcing in ${c.country}`}
+                  alt={`${c.city} skyline. Goldstay buy-side property sourcing in ${c.country}`}
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
