@@ -9,6 +9,7 @@
 
 import { NextResponse } from "next/server";
 import { runAllFeedsSync } from "@/lib/ical/run";
+import { wrapJob } from "@/lib/admin/job-run";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,10 +38,17 @@ export async function GET(request: Request) {
   }
 
   const startedAt = Date.now();
-  const summary = await runAllFeedsSync();
+  const result = await wrapJob("sync-ical", async () => {
+    const summary = await runAllFeedsSync();
+    return {
+      summary: `feeds=${summary.total} ok=${summary.succeeded} fail=${summary.failed}`,
+      _extras: summary,
+    } as const;
+  });
   return NextResponse.json({
     ok: true,
+    jobRunId: result.id,
     durationMs: Date.now() - startedAt,
-    ...summary,
+    summary: result.summary,
   });
 }
