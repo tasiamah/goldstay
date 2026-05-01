@@ -36,6 +36,7 @@ import {
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { Tip } from "@/components/admin/Tip";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
+import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
@@ -461,12 +462,17 @@ export default async function PropertyDetailPage({
           entityId={property.id}
           returnPath={`/admin/properties/${property.id}`}
         />
-        <ActivityTimeline
+        <TasksPanel
           entity="PROPERTY"
           entityId={property.id}
-          ownerId={property.owner.id}
+          returnPath={`/admin/properties/${property.id}`}
         />
       </section>
+      <ActivityTimeline
+        entity="PROPERTY"
+        entityId={property.id}
+        ownerId={property.owner.id}
+      />
     </div>
   );
 }

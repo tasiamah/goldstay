@@ -8,6 +8,7 @@ import {
 } from "@/lib/format-owner";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
+import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
@@ -154,12 +155,17 @@ export default async function OwnerDetailPage({
           entityId={owner.id}
           returnPath={`/admin/owners/${owner.id}`}
         />
-        <ActivityTimeline
+        <TasksPanel
           entity="OWNER"
           entityId={owner.id}
-          ownerId={owner.id}
+          returnPath={`/admin/owners/${owner.id}`}
         />
       </section>
+      <ActivityTimeline
+        entity="OWNER"
+        entityId={owner.id}
+        ownerId={owner.id}
+      />
     </div>
   );
 }
