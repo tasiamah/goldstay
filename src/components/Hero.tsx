@@ -89,7 +89,18 @@ export function Hero({
             {subheadline}
           </p>
 
+          {/* Conversion-funnel rule: the primary CTA on the hero
+              must lead to a surface we control, can instrument, and
+              can A/B test. WhatsApp opens an external app, leaves no
+              analytics trail, and on iOS Safari often gets a "would
+              you like to leave this page?" interstitial that kills
+              flow. The form route at /list-your-property is now the
+              primary; WhatsApp stays as the secondary for landlords
+              who actively prefer it. */}
           <div className="mt-10 flex flex-col items-stretch justify-center gap-3 sm:flex-row sm:items-center">
+            <Link href="/list-your-property" className="btn-primary">
+              List Your Property
+            </Link>
             <a
               href={waLink(
                 city === "nairobi"
@@ -101,13 +112,15 @@ export function Hero({
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="btn-primary"
+              className="btn-ghost-light"
             >
-              List Your Property
+              WhatsApp Us
             </a>
-            <Link href="#services" className="btn-ghost-light">
-              Learn More
-              <ArrowDown className="h-4 w-4" />
+            <Link
+              href="#services"
+              className="link-underline self-center text-sm text-cream/75 sm:ml-2"
+            >
+              Learn more <ArrowDown className="ml-1 inline h-3.5 w-3.5" />
             </Link>
           </div>
         </div>
