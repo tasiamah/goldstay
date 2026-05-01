@@ -11,6 +11,7 @@ import {
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
 import {
   OccupancyCalendar,
   clampHeatmapMonths,
@@ -65,7 +66,12 @@ export default async function PropertyDetailPage({
     where: { id: params.id },
     include: {
       owner: {
-        select: { id: true, fullName: true, country: true },
+        select: {
+          id: true,
+          fullName: true,
+          companyName: true,
+          country: true,
+        },
       },
       // We don't surface units in the UI any more (one property is
       // one rental) but we still walk them to find the active lease,
@@ -171,7 +177,7 @@ export default async function PropertyDetailPage({
           href={`/admin/owners/${property.owner.id}`}
           className="text-sm text-stone-500 hover:text-stone-900"
         >
-          ← {property.owner.fullName}
+          ← {formatOwnerDisplayName(property.owner)}
         </Link>
         <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
           <div>

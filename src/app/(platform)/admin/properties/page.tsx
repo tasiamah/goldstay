@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
 
 export const dynamic = "force-dynamic";
 
@@ -8,7 +9,7 @@ export default async function PropertiesListPage() {
   const properties = await prisma.property.findMany({
     orderBy: { createdAt: "desc" },
     include: {
-      owner: { select: { id: true, fullName: true } },
+      owner: { select: { id: true, fullName: true, companyName: true } },
     },
   });
 
@@ -72,7 +73,7 @@ export default async function PropertiesListPage() {
                       href={`/admin/owners/${p.owner.id}`}
                       className="text-stone-700 hover:underline"
                     >
-                      {p.owner.fullName}
+                      {formatOwnerDisplayName(p.owner)}
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-sm text-stone-700">

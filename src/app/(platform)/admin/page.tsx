@@ -2,6 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
 
 export const dynamic = "force-dynamic";
 
@@ -24,7 +25,11 @@ export default async function AdminOverviewPage() {
     prisma.property.findMany({
       orderBy: { createdAt: "desc" },
       take: 5,
-      include: { owner: { select: { fullName: true, id: true } } },
+      include: {
+        owner: {
+          select: { fullName: true, companyName: true, id: true },
+        },
+      },
     }),
   ]);
 
@@ -48,7 +53,12 @@ export default async function AdminOverviewPage() {
           primaryAction={{ href: "/admin/owners/new", label: "+ Add owner" }}
           items={recentOwners.map((o) => ({
             id: o.id,
-            primary: o.fullName,
+            primary: formatOwnerDisplayName(o),
+            // We deliberately keep email + property count as the
+            // secondary line here rather than the personal name; the
+            // operator already has the legal entity on the primary
+            // line and the email is the more useful piece of context
+            // when scanning the recent-owners feed.
             secondary: `${o.email} · ${o._count.properties} ${
               o._count.properties === 1 ? "property" : "properties"
             }`,
@@ -62,7 +72,7 @@ export default async function AdminOverviewPage() {
           items={recentProperties.map((p) => ({
             id: p.id,
             primary: formatPropertyDisplayName(p.name, p.unitNumber),
-            secondary: `${p.city} · ${p.owner.fullName}`,
+            secondary: `${p.city} · ${formatOwnerDisplayName(p.owner)}`,
             href: `/admin/properties/${p.id}`,
             trailing: <PropertyStatusBadge status={p.status} />,
           }))}

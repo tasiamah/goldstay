@@ -112,6 +112,7 @@ export async function GET(
       period,
       owner: {
         fullName: owner.fullName,
+        companyName: owner.companyName,
         email: owner.email,
         preferredCurrency: owner.preferredCurrency,
       },
@@ -121,8 +122,11 @@ export async function GET(
     }),
   );
 
+  // Filename mirrors the cover page: company name when set, personal
+  // name otherwise. Diaspora landlords keep these statements in
+  // shared Drive folders, so a recognisable filename matters.
   const filename = `goldstay-statement-${periodSlug(period)}-${slug(
-    owner.fullName,
+    owner.companyName?.trim() || owner.fullName,
   )}.pdf`;
 
   return new NextResponse(new Uint8Array(buffer), {

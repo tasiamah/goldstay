@@ -2,6 +2,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import {
+  formatOwnerDisplayName,
+  formatOwnerSecondaryName,
+} from "@/lib/format-owner";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 
@@ -37,8 +41,17 @@ export default async function OwnerDetailPage({
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>
             <h2 className="text-xl font-medium text-stone-900">
-              {owner.fullName}
+              {formatOwnerDisplayName(owner)}
             </h2>
+            {/* Personal name is the natural-person we hold the
+                relationship with; promote it to a sub-header so an
+                operator can glance and know who's behind a corporate
+                holding without opening the form. */}
+            {formatOwnerSecondaryName(owner) ? (
+              <p className="text-sm text-stone-700">
+                {formatOwnerSecondaryName(owner)}
+              </p>
+            ) : null}
             <p className="text-sm text-stone-500">
               {owner.email} · {owner.country === "KE" ? "Kenya" : "Ghana"} ·{" "}
               {owner.preferredCurrency}

@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { LeaseForm } from "../LeaseForm";
 import { endLeaseAction, updateLeaseAction } from "../actions";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
 
@@ -20,8 +22,16 @@ export default async function LeaseDetailPage({
             select: {
               id: true,
               name: true,
+              unitNumber: true,
               country: true,
-              owner: { select: { id: true, fullName: true, preferredCurrency: true } },
+              owner: {
+                select: {
+                  id: true,
+                  fullName: true,
+                  companyName: true,
+                  preferredCurrency: true,
+                },
+              },
             },
           },
         },
@@ -60,7 +70,11 @@ export default async function LeaseDetailPage({
           href={`/admin/properties/${lease.unit.property.id}`}
           className="text-sm text-stone-500 hover:text-stone-900"
         >
-          ← {lease.unit.property.name}
+          ←{" "}
+          {formatPropertyDisplayName(
+            lease.unit.property.name,
+            lease.unit.property.unitNumber,
+          )}
         </Link>
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>
@@ -144,7 +158,7 @@ export default async function LeaseDetailPage({
                   href={`/admin/owners/${lease.unit.property.owner.id}`}
                   className="text-stone-900 hover:underline"
                 >
-                  {lease.unit.property.owner.fullName}
+                  {formatOwnerDisplayName(lease.unit.property.owner)}
                 </Link>
               }
             />

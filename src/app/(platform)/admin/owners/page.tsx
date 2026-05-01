@@ -1,5 +1,9 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import {
+  formatOwnerDisplayName,
+  formatOwnerSecondaryName,
+} from "@/lib/format-owner";
 
 export const dynamic = "force-dynamic";
 
@@ -44,17 +48,19 @@ export default async function OwnersListPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
-              {owners.map((o) => (
+              {owners.map((o) => {
+                const secondary = formatOwnerSecondaryName(o);
+                return (
                 <tr key={o.id} className="hover:bg-stone-50/60">
                   <td className="px-4 py-3">
                     <Link
                       href={`/admin/owners/${o.id}`}
                       className="font-medium text-stone-900 hover:underline"
                     >
-                      {o.fullName}
+                      {formatOwnerDisplayName(o)}
                     </Link>
-                    {o.companyName ? (
-                      <p className="text-xs text-stone-500">{o.companyName}</p>
+                    {secondary ? (
+                      <p className="text-xs text-stone-500">{secondary}</p>
                     ) : null}
                   </td>
                   <td className="px-4 py-3 text-sm text-stone-700">
@@ -74,7 +80,8 @@ export default async function OwnersListPage() {
                     })}
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
 
 // Loader shared by /admin/transactions/new and /admin/transactions/[id]
 // to feed the property + lease pickers in TransactionForm. We expose
@@ -9,7 +10,13 @@ export async function loadPropertyOptions() {
   const properties = await prisma.property.findMany({
     orderBy: [{ city: "asc" }, { name: "asc" }],
     include: {
-      owner: { select: { fullName: true, preferredCurrency: true } },
+      owner: {
+        select: {
+          fullName: true,
+          companyName: true,
+          preferredCurrency: true,
+        },
+      },
       units: {
         include: {
           leases: {
@@ -37,7 +44,7 @@ export async function loadPropertyOptions() {
     id: p.id,
     name: p.name,
     city: p.city,
-    ownerName: p.owner.fullName,
+    ownerName: formatOwnerDisplayName(p.owner),
     propertyType: p.propertyType,
     defaultCurrency:
       p.country === "KE"
