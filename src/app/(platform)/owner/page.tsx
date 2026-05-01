@@ -145,6 +145,7 @@ export default async function OwnerDashboardPage() {
       fullName: owner.fullName,
       phone: owner.phone,
       address: owner.address,
+      entityType: owner.entityType,
       companyName: owner.companyName,
     },
     hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
@@ -223,8 +224,7 @@ export default async function OwnerDashboardPage() {
               </h2>
               <p className="mt-1 text-sm text-stone-500">
                 Each step takes about a minute. Tap a row to jump straight
-                to the missing piece. Personal details and business sit
-                under{" "}
+                to the missing piece. Your details sit under{" "}
                 <Link
                   href="/owner/profile"
                   className="text-stone-700 underline-offset-2 hover:underline"
@@ -253,7 +253,7 @@ export default async function OwnerDashboardPage() {
               hrefFor={(key) =>
                 PAYOUTS_STEPS.has(key)
                   ? `/owner/payouts?step=${key}#${key}`
-                  : `/owner/profile?step=${key}#${key}`
+                  : `/owner/profile#details`
               }
             />
           </div>

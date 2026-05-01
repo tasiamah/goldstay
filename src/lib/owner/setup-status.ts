@@ -1,17 +1,21 @@
-// Computes which of the four owner-onboarding steps are complete.
+// Computes which of the three owner-onboarding steps are complete.
 //
 // Pure: takes a snapshot of the owner row, their KYC documents and
-// their payout methods, returns a four-row checklist. Same fixture
+// their payout methods, returns a three-row checklist. Same fixture
 // can drive both the visual <SetupChecklist> and any "is this owner
 // ready for a payout?" gate elsewhere in the app.
 //
 // What counts as complete:
-//   * personal  — a parseable two-token name, a non-empty phone, AND
-//                 a postal address. Address is required because the
-//                 monthly statement PDF carries it as the return-
-//                 address line and we use it on KYC paperwork.
-//   * business  — companyName present (KE/GH country always exists,
-//                 it's required at owner creation)
+//   * details   — a parseable two-token name, a non-empty phone, a
+//                 postal address, AND (only when entityType is
+//                 COMPANY) a companyName. companyRegistrationNumber
+//                 is collected if available but never required, so it
+//                 doesn't influence this gate. The previous build
+//                 split this into two separate steps; we collapsed
+//                 them because the personal/business distinction was
+//                 confusing and "business" was hardly ever the active
+//                 step (companyName defaults to the owner's name at
+//                 record creation).
 //   * legal     — at least one ID_DOCUMENT on file. We treat the
 //                 PROOF_OF_PAYOUT_ACCOUNT as part of the bank step
 //                 because that's the doc that gates the wire.
@@ -21,7 +25,9 @@
 //                 "verified" separately so an owner can still tick
 //                 the box once they've done their part.)
 
-export type SetupStepKey = "personal" | "business" | "legal" | "bank";
+import type { OwnerEntityType } from "@prisma/client";
+
+export type SetupStepKey = "details" | "legal" | "bank";
 
 export type SetupStep = {
   key: SetupStepKey;
@@ -44,6 +50,7 @@ export type SetupInput = {
     fullName: string | null;
     phone: string | null;
     address: string | null;
+    entityType: OwnerEntityType;
     companyName: string | null;
   };
   hasIdDocument: boolean;
@@ -59,28 +66,25 @@ function isFullName(name: string | null): boolean {
 }
 
 export function computeSetupChecklist(input: SetupInput): SetupChecklist {
-  const personalDone =
+  const personalCore =
     isFullName(input.owner.fullName) &&
     Boolean(input.owner.phone?.trim()) &&
     Boolean(input.owner.address?.trim());
-  const businessDone = Boolean(input.owner.companyName?.trim());
+  const businessOk =
+    input.owner.entityType === "COMPANY"
+      ? Boolean(input.owner.companyName?.trim())
+      : true;
+  const detailsDone = personalCore && businessOk;
   const legalDone = input.hasIdDocument;
   const bankDone = input.payoutMethodCount > 0 && input.hasProofOfAccount;
 
   const steps: SetupStep[] = [
     {
-      key: "personal",
-      label: "Personal details",
+      key: "details",
+      label: "Your details",
       description:
-        "Your full legal name, a callable phone number, and a postal address.",
-      done: personalDone,
-    },
-    {
-      key: "business",
-      label: "Business",
-      description:
-        "The company that holds the property, if you let through one.",
-      done: businessDone,
+        "Your full legal name, a callable phone number, and a postal address. If you let through a company, we also collect the company name.",
+      done: detailsDone,
     },
     {
       key: "legal",
@@ -98,8 +102,7 @@ export function computeSetupChecklist(input: SetupInput): SetupChecklist {
   ];
 
   const doneCount = steps.filter((s) => s.done).length;
-  const firstIncomplete =
-    steps.find((s) => !s.done)?.key ?? null;
+  const firstIncomplete = steps.find((s) => !s.done)?.key ?? null;
 
   return { steps, doneCount, totalCount: steps.length, firstIncomplete };
 }

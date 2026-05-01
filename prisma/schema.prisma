@@ -153,6 +153,18 @@ enum AgreementStatus {
   CANCELLED
 }
 
+enum OwnerEntityType {
+  // The landlord lets in their personal capacity. We keep the
+  // companyName and companyRegistrationNumber columns nullable so we
+  // don't have to wipe them on toggle back from COMPANY, but the UI
+  // hides those fields and the setup checklist ignores them.
+  INDIVIDUAL
+  // The landlord lets through a registered company (LLC / Ltd).
+  // companyName becomes a required field for setup-complete in this
+  // mode; companyRegistrationNumber stays optional.
+  COMPANY
+}
+
 // One row per landlord. authUserId is the Supabase auth.users.id so we
 // can match a logged-in session straight back to a Goldstay owner. An
 // owner can be a natural person or a company; we capture both shapes
@@ -169,7 +181,21 @@ model Owner {
   // (apartment numbers, estates, P.O. boxes); we don't structure
   // per line until a real downstream needs it.
   address            String?
+  // Whether the landlord lets in their personal capacity or through
+  // a registered company. Default INDIVIDUAL because that's how most
+  // KE / GH first-property landlords come to us; the COMPANY path is
+  // used by diaspora investors and operators with multiple units. The
+  // companyName + companyRegistrationNumber fields below are only
+  // semantically meaningful when entityType === COMPANY, but we keep
+  // them nullable on the column so we don't have to round-trip an
+  // empty string when toggling back to INDIVIDUAL.
+  entityType         OwnerEntityType @default(INDIVIDUAL)
   companyName        String?
+  // Country-specific ID for the registered company (KE: CR. number,
+  // GH: RGD registration number). Free text because formats vary and
+  // we don't want to validate too eagerly — collected if the owner has
+  // it, never required to mark setup complete.
+  companyRegistrationNumber String?
   country            Country
   preferredCurrency  String    @default("USD")
   // Set the first time the landlord clicks "Got it" on the welcome

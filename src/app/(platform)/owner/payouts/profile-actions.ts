@@ -1,14 +1,17 @@
 "use server";
 
-// Owner-side profile updates for the setup checklist on /owner/payouts.
+// Owner-side profile updates for the consolidated "Your details" step
+// of the setup checklist. We collapsed the previous Personal +
+// Business actions into a single updateYourDetailsAction because the
+// two forms always shipped together and a single round-trip means we
+// can validate the entityType/companyName interlock atomically.
 //
-// We keep the schema for what the owner can self-edit deliberately
-// narrow: name + phone (Personal) and company name + country
-// (Business). Email is the auth principal so we don't expose a way
-// to change it from a server action — it has to round-trip through
-// admin support, otherwise an account takeover is one form post away.
-// Currency is a financial decision tied to the payout method and
-// stays admin-controlled for the same reason.
+// What the owner can self-edit: name, phone, address, entity type,
+// company name (only when entityType === COMPANY), company
+// registration number (always optional), and country. Email stays
+// admin-controlled — it's the auth principal, so a self-serve change
+// here would be a one-click account-takeover. Currency is a financial
+// decision tied to the payout method and is also admin-controlled.
 
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -20,82 +23,64 @@ import {
   personFullName,
 } from "@/lib/validation/preprocessors";
 
-const PersonalInput = z.object({
-  fullName: personFullName,
-  phone: z.string().trim().min(4, "Phone is too short").max(40),
-  address: z
-    .string()
-    .trim()
-    .min(6, "Please enter a postal address.")
-    .max(500),
-});
-
-const BusinessInput = z.object({
-  companyName: z
-    .string()
-    .trim()
-    .min(2, "Company name is too short")
-    .max(120),
-  country: z.enum(["KE", "GH"]),
-});
+const YourDetailsInput = z
+  .object({
+    fullName: personFullName,
+    phone: z.string().trim().min(4, "Phone is too short").max(40),
+    address: z
+      .string()
+      .trim()
+      .min(6, "Please enter a postal address.")
+      .max(500),
+    entityType: z.enum(["INDIVIDUAL", "COMPANY"]),
+    // Always allow a value through, even when entityType is INDIVIDUAL,
+    // so toggling back and forth doesn't wipe the company name in the
+    // DB. The COMPANY-mode required-ness is enforced via .superRefine
+    // below so we get a precise field-scoped error.
+    companyName: z
+      .string()
+      .trim()
+      .max(120)
+      .optional()
+      .transform((v) => (v && v.length > 0 ? v : null)),
+    companyRegistrationNumber: z
+      .string()
+      .trim()
+      .max(64)
+      .optional()
+      .transform((v) => (v && v.length > 0 ? v : null)),
+    country: z.enum(["KE", "GH"]),
+  })
+  .superRefine((val, ctx) => {
+    if (val.entityType === "COMPANY" && !val.companyName) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["companyName"],
+        message: "Company name is required when letting through a company.",
+      });
+    }
+  });
 
 export type ProfileActionResult =
   | { ok: true }
   | { ok: false; error: string; fieldErrors?: Record<string, string> };
 
-export async function updatePersonalDetailsAction(
+export async function updateYourDetailsAction(
   _prev: unknown,
   formData: FormData,
 ): Promise<ProfileActionResult> {
   const { owner } = await requireOwner();
   const actor = { adminId: null, email: owner.email };
 
-  const parsed = PersonalInput.safeParse({
+  const parsed = YourDetailsInput.safeParse({
     fullName: formData.get("fullName") ?? "",
     phone: formData.get("phone") ?? "",
     address: formData.get("address") ?? "",
-  });
-  if (!parsed.success) {
-    return {
-      ok: false,
-      error: "Please fix the highlighted fields.",
-      fieldErrors: flattenZodErrors(parsed.error),
-    };
-  }
-
-  await prisma.owner.update({
-    where: { id: owner.id },
-    data: parsed.data,
-  });
-  await recordAudit({
-    actor,
-    entity: "OWNER",
-    entityId: owner.id,
-    action: "owner.profile.personal_updated",
-    summary: "Owner updated personal details",
-    metadata: {
-      fields: ["fullName", "phone", "address"],
-      scope: "owner-self-serve",
-    },
-  });
-
-  // Both /owner/profile and /owner/payouts render the personal block
-  // (or its checklist row), so we revalidate both surfaces.
-  revalidatePath("/owner/profile");
-  revalidatePath("/owner/payouts");
-  return { ok: true };
-}
-
-export async function updateBusinessDetailsAction(
-  _prev: unknown,
-  formData: FormData,
-): Promise<ProfileActionResult> {
-  const { owner } = await requireOwner();
-  const actor = { adminId: null, email: owner.email };
-
-  const parsed = BusinessInput.safeParse({
+    entityType: formData.get("entityType") ?? "INDIVIDUAL",
     companyName: formData.get("companyName") ?? "",
-    country: formData.get("country") ?? "",
+    companyRegistrationNumber:
+      formData.get("companyRegistrationNumber") ?? "",
+    country: formData.get("country") ?? owner.country,
   });
   if (!parsed.success) {
     return {
@@ -113,14 +98,27 @@ export async function updateBusinessDetailsAction(
     actor,
     entity: "OWNER",
     entityId: owner.id,
-    action: "owner.profile.business_updated",
-    summary: "Owner updated business details",
+    action: "owner.profile.details_updated",
+    summary: "Owner updated profile details",
     metadata: {
-      fields: ["companyName", "country"],
+      fields: [
+        "fullName",
+        "phone",
+        "address",
+        "entityType",
+        "companyName",
+        "companyRegistrationNumber",
+        "country",
+      ],
+      entityType: parsed.data.entityType,
       scope: "owner-self-serve",
     },
   });
 
+  // Both /owner/profile and /owner/payouts render the details block
+  // (or its checklist row), and the dashboard surfaces the same
+  // checklist banner — revalidate all three.
+  revalidatePath("/owner");
   revalidatePath("/owner/profile");
   revalidatePath("/owner/payouts");
   return { ok: true };

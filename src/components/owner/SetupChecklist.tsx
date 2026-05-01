@@ -1,4 +1,4 @@
-// Four-step owner setup checklist. Visual matches the inspiration
+// Three-step owner setup checklist. Visual matches the inspiration
 // screenshot: stacked rows with a leading icon, a label, and a
 // trailing status indicator (filled green check when complete,
 // hollow ring while incomplete). The active row gets a tinted
@@ -9,7 +9,6 @@
 
 import {
   Banknote,
-  Building2,
   Check,
   Circle,
   FileCheck2,
@@ -24,8 +23,7 @@ const ICON_FOR: Record<
   SetupStepKey,
   (props: { className?: string }) => React.ReactNode
 > = {
-  personal: (p) => <UserRound aria-hidden className={p.className} />,
-  business: (p) => <Building2 aria-hidden className={p.className} />,
+  details: (p) => <UserRound aria-hidden className={p.className} />,
   legal: (p) => <FileCheck2 aria-hidden className={p.className} />,
   bank: (p) => <Banknote aria-hidden className={p.className} />,
 };

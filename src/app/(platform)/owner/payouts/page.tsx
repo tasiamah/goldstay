@@ -1,14 +1,14 @@
 // /owner/payouts — bank account + legal documents.
 //
-// "Who you are" lives at /owner/profile (name, phone, address,
-// business). This page focuses on the operational settings tied to
-// a payout: KYC documents the team verifies before the first wire,
-// and the payout methods themselves.
+// "Who you are" lives at /owner/profile (the consolidated "Your
+// details" step). This page focuses on the operational settings tied
+// to a payout: KYC documents the team verifies before the first
+// wire, and the payout methods themselves.
 //
 // The setup checklist is rendered here as well as on /owner/profile
 // — it's the single source of "where am I in onboarding?" — and
-// each row routes to the page that owns that step (personal /
-// business → /owner/profile, legal / bank → here).
+// each row routes to the page that owns that step (details →
+// /owner/profile, legal / bank → here).
 
 import { requireOwner } from "@/lib/auth";
 import { prisma } from "@/lib/db";
@@ -53,6 +53,7 @@ export default async function OwnerPayoutsPage({
       fullName: owner.fullName,
       phone: owner.phone,
       address: owner.address,
+      entityType: owner.entityType,
       companyName: owner.companyName,
     },
     hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
