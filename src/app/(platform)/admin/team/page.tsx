@@ -5,17 +5,18 @@
 // detail page.
 
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { requireRole } from "@/lib/auth";
 import { ROLE_LABEL } from "@/lib/admin/roles";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminTeamPage() {
-  const me = await requireAdmin();
-  if (me.role !== "SUPER_ADMIN") redirect("/admin");
+  // Route through requireRole instead of a hand-rolled
+  // role check so non-SUPER_ADMINs get the friendly
+  // ?denied= flash banner on /admin instead of a silent bounce.
+  const me = await requireRole("admin.write");
 
   const admins = await prisma.adminUser.findMany({
     orderBy: [{ archivedAt: "asc" }, { fullName: "asc" }],

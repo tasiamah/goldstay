@@ -9,6 +9,7 @@ import { AttentionQueue } from "@/components/admin/AttentionQueue";
 import { CurrencyTotals } from "@/components/admin/CurrencyTotals";
 import { ExecutiveKpiStrip } from "@/components/admin/finance/ExecutiveKpiStrip";
 import { KpiStrip } from "@/components/admin/KpiStrip";
+import { PermissionDeniedBanner } from "@/components/admin/PermissionDeniedBanner";
 import {
   getAttentionQueue,
   getMonthlyTotals,
@@ -17,7 +18,11 @@ import {
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminOverviewPage() {
+export default async function AdminOverviewPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const admin = await requireAdmin();
   const [
     queue,
@@ -49,6 +54,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <div className="space-y-10">
+      <PermissionDeniedBanner deniedRaw={searchParams?.denied} />
       <AdminWelcomeCard admin={admin} />
       {/* Self-gated to SUPER_ADMIN. Renders nothing — and does not
           query — for any other role, so there's no number for the

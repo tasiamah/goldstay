@@ -137,13 +137,22 @@ function deriveNameFromEmail(email: string): string {
 // the named action (and optionally the target country, for
 // COUNTRY_MANAGER). Redirects if not. Use this in any server action
 // where the action key meaningfully differs from a blanket admin.
+//
+// On denial we redirect to /admin?denied=<action> (URL-encoded) so
+// the overview page can render a friendly explanatory banner with
+// the action key — much better than the previous silent bounce
+// that made permission-gated routes feel broken to new hires.
+// Server actions inherit the same UX: if a SUPPORT user submits
+// a form behind impersonate.owner they land on the overview with
+// a clear "you don't have access to..." message instead of just
+// an unexplained jump.
 export async function requireRole(
   action: AdminAction,
   targetCountry: AdminUser["country"] | null = null,
 ): Promise<AdminUser> {
   const admin = await requireAdmin();
   const ok = canForCountry(admin.role, action, admin.country, targetCountry);
-  if (!ok) redirect("/admin");
+  if (!ok) redirect(`/admin?denied=${encodeURIComponent(action)}`);
   return admin;
 }
 
