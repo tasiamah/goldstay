@@ -15,6 +15,14 @@ import { FirstVisitHint } from "./welcome/FirstVisitHint";
 import { KpiCard } from "@/components/owner/KpiCard";
 import { MonthlyNetChart } from "@/components/owner/MonthlyNetChart";
 import { HelpHint } from "@/components/owner/HelpHint";
+import { SetupChecklist } from "@/components/owner/SetupChecklist";
+import {
+  computeSetupChecklist,
+  type SetupStepKey,
+} from "@/lib/owner/setup-status";
+import { listPayoutMethodsFor } from "@/lib/payouts";
+
+const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -43,6 +51,8 @@ export default async function OwnerDashboardPage() {
     kpiTransactions,
     recentTransactions,
     pendingAgreements,
+    payoutMethods,
+    kycCounts,
   ] = await Promise.all([
     prisma.property.findMany({
       where: { ownerId: owner.id },
@@ -112,7 +122,36 @@ export default async function OwnerDashboardPage() {
         property: { select: { id: true, name: true, unitNumber: true } },
       },
     }),
+    // Two cheap reads that drive the setup checklist banner below.
+    // We only need the count of payout methods and a kind-grouped
+    // count of KYC documents — the underlying rows are the source
+    // of truth on /owner/payouts and /owner/profile.
+    listPayoutMethodsFor(owner.id, { includeArchived: false }),
+    prisma.document.groupBy({
+      by: ["kind"],
+      where: {
+        ownerId: owner.id,
+        kind: { in: ["ID_DOCUMENT", "PROOF_OF_PAYOUT_ACCOUNT"] },
+      },
+      _count: { _all: true },
+    }),
   ]);
+
+  const kycByKind = Object.fromEntries(
+    kycCounts.map((c) => [c.kind, c._count._all]),
+  );
+  const setup = computeSetupChecklist({
+    owner: {
+      fullName: owner.fullName,
+      phone: owner.phone,
+      address: owner.address,
+      companyName: owner.companyName,
+    },
+    hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
+    hasProofOfAccount: (kycByKind.PROOF_OF_PAYOUT_ACCOUNT ?? 0) > 0,
+    payoutMethodCount: payoutMethods.length,
+  });
+  const setupComplete = setup.doneCount === setup.totalCount;
 
   const propertyOccupancy = properties.map((p) => ({
     id: p.id,
@@ -169,6 +208,56 @@ export default async function OwnerDashboardPage() {
           ownerFirstName={owner.fullName.split(/\s+/)[0] || "there"}
           hasPendingAgreement={pendingAgreements.length > 0}
         />
+      ) : null}
+
+      {!setupComplete ? (
+        <section className="rounded-lg border border-stone-200 bg-white p-5">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-stone-500">
+                Account setup
+              </p>
+              <h2 className="mt-1 text-base font-medium text-stone-900">
+                {setup.doneCount} of {setup.totalCount} steps done — finish
+                the rest before your first payout
+              </h2>
+              <p className="mt-1 text-sm text-stone-500">
+                Each step takes about a minute. Tap a row to jump straight
+                to the missing piece. Personal details and business sit
+                under{" "}
+                <Link
+                  href="/owner/profile"
+                  className="text-stone-700 underline-offset-2 hover:underline"
+                >
+                  Profile
+                </Link>
+                ; legal documents and bank account sit under{" "}
+                <Link
+                  href="/owner/payouts"
+                  className="text-stone-700 underline-offset-2 hover:underline"
+                >
+                  Payouts
+                </Link>
+                .
+              </p>
+            </div>
+            <ProgressPill
+              done={setup.doneCount}
+              total={setup.totalCount}
+            />
+          </div>
+          <div className="mt-4">
+            <SetupChecklist
+              data={setup}
+              activeKey={setup.firstIncomplete}
+              hrefFor={(key) =>
+                PAYOUTS_STEPS.has(key)
+                  ? `/owner/payouts?step=${key}#${key}`
+                  : `/owner/profile?step=${key}#${key}`
+              }
+            />
+          </div>
+        </section>
       ) : null}
 
       {pendingAgreements.length > 0 ? (
@@ -500,4 +589,22 @@ function fmt(n: number): string {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
+}
+
+// Small "X / Y" pill rendered next to the setup-checklist heading
+// so a glance at the dashboard tells the owner how close they are
+// without reading the row icons. We keep it amber-tinted so it
+// echoes the same visual language as the agreement-pending banner
+// below — both are "finish me" prompts.
+function ProgressPill({ done, total }: { done: number; total: number }) {
+  return (
+    <span
+      aria-label={`${done} of ${total} setup steps done`}
+      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-900"
+    >
+      <span className="tabular-nums">{done}</span>
+      <span className="text-amber-700">/</span>
+      <span className="tabular-nums">{total}</span>
+    </span>
+  );
 }
