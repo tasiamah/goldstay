@@ -27,6 +27,11 @@ import {
   PropertyReadinessBadge,
   PropertyReadinessSummary,
 } from "@/components/owner/PropertyReadinessBadge";
+import {
+  REQUIRED_PROPERTY_DOC_KINDS,
+  labelForRequiredDoc,
+  missingPropertyDocKinds,
+} from "@/lib/owner/property-documents";
 
 const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
@@ -74,6 +79,11 @@ export default async function OwnerDashboardPage() {
             },
           },
         },
+        // Pull just the kind column for every document on the
+        // property — enough to compute "is the required set
+        // complete" without paying for titles, sizes, signed URLs,
+        // etc. Cheap when there are 5–20 documents per property.
+        documents: { select: { kind: true } },
       },
     }),
     prisma.lease.count({
@@ -253,6 +263,16 @@ export default async function OwnerDashboardPage() {
     (p) => p.status === "ACTIVE",
   ).length;
 
+  // Properties that don't yet have every kind in
+  // REQUIRED_PROPERTY_DOC_KINDS on file. Drives the second banner.
+  // We compute this in memory (already have the documents from the
+  // Promise.all above) so no extra round-trip — the cost is one Set
+  // construction per property.
+  const propertiesMissingDocs = properties.filter(
+    (p) => missingPropertyDocKinds(p.documents.map((d) => d.kind)).length > 0,
+  );
+  const firstPropertyMissingDocs = propertiesMissingDocs[0] ?? null;
+
   // First-visit nudge: a one-line banner above the dashboard
   // pointing at the per-section ? hints. Once dismissed it never
   // comes back — the hints themselves remain available for any
@@ -269,39 +289,36 @@ export default async function OwnerDashboardPage() {
       ) : null}
 
       {!setupComplete ? (
-        <section className="rounded-lg border border-stone-200 bg-white p-5">
+        // Red, not amber — setup blocks every payout, so it ranks
+        // above the agreement banner (amber) and the missing-docs
+        // banner (amber). The CTA points at the first incomplete
+        // step so a single click takes the owner to where they
+        // actually have to type something.
+        <section className="rounded-lg border border-rose-300 bg-rose-50 p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
-              <p className="text-xs uppercase tracking-wider text-stone-500">
-                Account setup
+              <p className="text-xs uppercase tracking-wider text-rose-800">
+                Account setup not complete
               </p>
-              <h2 className="mt-1 text-base font-medium text-stone-900">
+              <h2 className="mt-1 text-base font-medium text-rose-950">
                 {setup.doneCount} of {setup.totalCount} steps done — finish
                 the rest before your first payout
               </h2>
-              <p className="mt-1 text-sm text-stone-500">
+              <p className="mt-1 text-sm text-rose-900/80">
                 Each step takes about a minute. Tap a row to jump straight
-                to the missing piece. Your details sit under{" "}
-                <Link
-                  href="/owner/profile"
-                  className="text-stone-700 underline-offset-2 hover:underline"
-                >
-                  Profile
-                </Link>
-                ; legal documents and bank account sit under{" "}
-                <Link
-                  href="/owner/payouts"
-                  className="text-stone-700 underline-offset-2 hover:underline"
-                >
-                  Payouts
-                </Link>
-                .
+                to the missing piece.
               </p>
             </div>
-            <ProgressPill
-              done={setup.doneCount}
-              total={setup.totalCount}
-            />
+            <Link
+              href={
+                setup.firstIncomplete && PAYOUTS_STEPS.has(setup.firstIncomplete)
+                  ? `/owner/payouts?step=${setup.firstIncomplete}#${setup.firstIncomplete}`
+                  : "/owner/profile#details"
+              }
+              className="shrink-0 rounded-md bg-rose-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-rose-800"
+            >
+              Complete here →
+            </Link>
           </div>
           <div className="mt-4">
             <SetupChecklist
@@ -313,6 +330,59 @@ export default async function OwnerDashboardPage() {
                   : `/owner/profile#details`
               }
             />
+          </div>
+        </section>
+      ) : null}
+
+      {propertiesMissingDocs.length > 0 ? (
+        // Amber — informational, not blocking. Most property docs
+        // (title deed, sale agreement) are uploaded by the Goldstay
+        // team rather than the owner, so we frame this as "what we
+        // need on file" and route the owner to the most relevant
+        // property detail page where the per-property "Documents
+        // we still need" callout shows them what to chase support
+        // for. Hidden entirely when every property is documented.
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs uppercase tracking-wider text-amber-900/80">
+                Documents needed
+              </p>
+              <h2 className="mt-1 text-base font-medium text-amber-950">
+                {propertiesMissingDocs.length === properties.length
+                  ? properties.length === 1
+                    ? "Your property is missing required documents"
+                    : `All ${properties.length} of your properties are missing required documents`
+                  : `${propertiesMissingDocs.length} of your ${
+                      properties.length
+                    } ${
+                      properties.length === 1 ? "property is" : "properties are"
+                    } missing required documents`}
+              </h2>
+              <p className="mt-1 text-sm text-amber-900/80">
+                We need {humanJoin(REQUIRED_PROPERTY_DOC_KINDS.map(labelForRequiredDoc))}{" "}
+                on file for every property. The Goldstay team handles
+                most of these for you — open the property to see what&rsquo;s
+                missing or email{" "}
+                <a
+                  href="mailto:support@goldstay.co.ke"
+                  className="font-medium text-amber-900 underline-offset-2 hover:underline"
+                >
+                  support@goldstay.co.ke
+                </a>{" "}
+                if you have copies handy.
+              </p>
+            </div>
+            {firstPropertyMissingDocs ? (
+              <Link
+                href={`/owner/properties/${firstPropertyMissingDocs.id}`}
+                className="shrink-0 rounded-md border border-amber-700 bg-white px-3 py-1.5 text-sm font-medium text-amber-900 hover:bg-amber-100"
+              >
+                {propertiesMissingDocs.length === 1
+                  ? "Open property"
+                  : "Open first property"}
+              </Link>
+            ) : null}
           </div>
         </section>
       ) : null}
@@ -662,20 +732,13 @@ function fmt(n: number): string {
   });
 }
 
-// Small "X / Y" pill rendered next to the setup-checklist heading
-// so a glance at the dashboard tells the owner how close they are
-// without reading the row icons. We keep it amber-tinted so it
-// echoes the same visual language as the agreement-pending banner
-// below — both are "finish me" prompts.
-function ProgressPill({ done, total }: { done: number; total: number }) {
-  return (
-    <span
-      aria-label={`${done} of ${total} setup steps done`}
-      className="inline-flex shrink-0 items-center gap-1 rounded-full border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs font-medium text-amber-900"
-    >
-      <span className="tabular-nums">{done}</span>
-      <span className="text-amber-700">/</span>
-      <span className="tabular-nums">{total}</span>
-    </span>
-  );
+// English-style joiner: ["a"] → "a"; ["a","b"] → "a and b";
+// ["a","b","c"] → "a, b and c". Used by the documents banner so a
+// future addition to REQUIRED_PROPERTY_DOC_KINDS reads cleanly
+// without the banner copy needing to change.
+function humanJoin(items: ReadonlyArray<string>): string {
+  if (items.length === 0) return "";
+  if (items.length === 1) return items[0]!;
+  if (items.length === 2) return `${items[0]} and ${items[1]}`;
+  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
 }

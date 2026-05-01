@@ -27,6 +27,10 @@ import { computePropertyReadiness } from "@/lib/owner/property-readiness";
 import { computeSetupChecklist } from "@/lib/owner/setup-status";
 import { listPayoutMethodsFor } from "@/lib/payouts";
 import {
+  labelForRequiredDoc,
+  missingPropertyDocKinds,
+} from "@/lib/owner/property-documents";
+import {
   OccupancyCalendar,
   clampHeatmapMonths,
   heatmapWindowStart,
@@ -372,6 +376,44 @@ export default async function OwnerPropertyDetailPage({
         )}
 
         <Card title="Documents">
+          {(() => {
+            const missing = missingPropertyDocKinds(
+              property.documents.map((d) => d.kind),
+            );
+            if (missing.length === 0) return null;
+            return (
+              <div className="mt-3 rounded-md border border-amber-200 bg-amber-50/60 px-4 py-3">
+                <p className="text-xs font-medium uppercase tracking-wider text-amber-900">
+                  We still need
+                </p>
+                <ul className="mt-1 space-y-0.5">
+                  {missing.map((kind) => (
+                    <li
+                      key={kind}
+                      className="flex items-center gap-2 text-sm text-amber-900"
+                    >
+                      <span
+                        aria-hidden
+                        className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500"
+                      />
+                      {labelForRequiredDoc(kind)}
+                    </li>
+                  ))}
+                </ul>
+                <p className="mt-2 text-xs text-amber-900/80">
+                  The Goldstay team usually attaches these on your behalf.
+                  Email{" "}
+                  <a
+                    href="mailto:support@goldstay.co.ke"
+                    className="font-medium text-amber-900 underline-offset-2 hover:underline"
+                  >
+                    support@goldstay.co.ke
+                  </a>{" "}
+                  if you have copies handy and we&rsquo;ll get them on file.
+                </p>
+              </div>
+            );
+          })()}
           {property.documents.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">
               Goldstay has not uploaded any paperwork for this property
