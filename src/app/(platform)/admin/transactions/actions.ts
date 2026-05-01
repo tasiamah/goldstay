@@ -3,9 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { TransactionInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
+import { recordAudit } from "@/lib/audit";
 
 export type TransactionActionResult =
   | { ok: true; transactionId: string }
@@ -30,7 +31,7 @@ export async function createTransactionAction(
   _prev: TransactionActionResult | null,
   formData: FormData,
 ): Promise<TransactionActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = TransactionInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -41,6 +42,14 @@ export async function createTransactionAction(
   }
   try {
     const created = await prisma.transaction.create({ data: parsed.data });
+    await recordAudit({
+      actor,
+      entity: "TRANSACTION",
+      entityId: created.id,
+      action: "transaction.created",
+      summary: `${created.type} ${created.direction === "INFLOW" ? "+" : "-"}${created.amount} ${created.currency}`,
+      metadata: { propertyId: created.propertyId, leaseId: created.leaseId },
+    });
     revalidatePath("/admin");
     revalidatePath("/admin/transactions");
     revalidatePath(`/admin/properties/${parsed.data.propertyId}`);
@@ -64,7 +73,7 @@ export async function updateTransactionAction(
   _prev: TransactionActionResult | null,
   formData: FormData,
 ): Promise<TransactionActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = TransactionInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -77,6 +86,14 @@ export async function updateTransactionAction(
     const updated = await prisma.transaction.update({
       where: { id: transactionId },
       data: parsed.data,
+    });
+    await recordAudit({
+      actor,
+      entity: "TRANSACTION",
+      entityId: transactionId,
+      action: "transaction.updated",
+      summary: `${updated.type} ${updated.direction === "INFLOW" ? "+" : "-"}${updated.amount} ${updated.currency}`,
+      metadata: { propertyId: updated.propertyId },
     });
     revalidatePath("/admin");
     revalidatePath("/admin/transactions");
@@ -94,13 +111,27 @@ export async function updateTransactionAction(
 export async function deleteTransactionAction(
   transactionId: string,
 ): Promise<void> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const tx = await prisma.transaction.findUnique({
     where: { id: transactionId },
-    select: { propertyId: true, leaseId: true },
+    select: {
+      propertyId: true,
+      leaseId: true,
+      type: true,
+      amount: true,
+      currency: true,
+    },
   });
   if (!tx) return;
   await prisma.transaction.delete({ where: { id: transactionId } });
+  await recordAudit({
+    actor,
+    entity: "TRANSACTION",
+    entityId: transactionId,
+    action: "transaction.deleted",
+    summary: `${tx.type} ${tx.amount} ${tx.currency} deleted`,
+    metadata: { propertyId: tx.propertyId },
+  });
   revalidatePath("/admin");
   revalidatePath("/admin/transactions");
   revalidatePath(`/admin/properties/${tx.propertyId}`);

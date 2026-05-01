@@ -4,11 +4,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { TransactionDirection, TransactionType } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { BookingInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { nightsBetween } from "@/lib/bookings/nights";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
+import { recordAudit } from "@/lib/audit";
 
 export type BookingActionResult =
   | { ok: true; bookingId: string }
@@ -37,7 +38,7 @@ export async function createBookingAction(
   _prev: BookingActionResult | null,
   formData: FormData,
 ): Promise<BookingActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = BookingInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -59,6 +60,14 @@ export async function createBookingAction(
     const booking = await prisma.booking.create({
       data: { ...parsed.data, nights },
     });
+    await recordAudit({
+      actor,
+      entity: "BOOKING",
+      entityId: booking.id,
+      action: "booking.created",
+      summary: `Booking ${booking.guestName} (${nights}n) created`,
+      metadata: { propertyId: booking.propertyId, source: booking.source },
+    });
     revalidatePath("/admin");
     revalidatePath(`/admin/properties/${parsed.data.propertyId}`);
     redirect(`/admin/properties/${parsed.data.propertyId}`);
@@ -71,11 +80,19 @@ export async function createBookingAction(
 }
 
 export async function cancelBookingAction(bookingId: string): Promise<void> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const booking = await prisma.booking.update({
     where: { id: bookingId },
     data: { status: "CANCELLED" },
-    select: { propertyId: true },
+    select: { propertyId: true, guestName: true },
+  });
+  await recordAudit({
+    actor,
+    entity: "BOOKING",
+    entityId: bookingId,
+    action: "booking.cancelled",
+    summary: `Booking ${booking.guestName} cancelled`,
+    metadata: { propertyId: booking.propertyId },
   });
   revalidatePath("/admin");
   revalidatePath(`/admin/properties/${booking.propertyId}`);
@@ -86,7 +103,7 @@ export async function updateBookingAction(
   _prev: BookingActionResult | null,
   formData: FormData,
 ): Promise<BookingActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = BookingInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -107,7 +124,15 @@ export async function updateBookingAction(
     const updated = await prisma.booking.update({
       where: { id: bookingId },
       data: { ...parsed.data, nights },
-      select: { id: true, propertyId: true },
+      select: { id: true, propertyId: true, guestName: true },
+    });
+    await recordAudit({
+      actor,
+      entity: "BOOKING",
+      entityId: bookingId,
+      action: "booking.updated",
+      summary: `Booking ${updated.guestName} updated`,
+      metadata: { propertyId: updated.propertyId },
     });
     revalidatePath("/admin");
     revalidatePath(`/admin/properties/${updated.propertyId}`);
@@ -119,13 +144,21 @@ export async function updateBookingAction(
 }
 
 export async function deleteBookingAction(bookingId: string): Promise<void> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
-    select: { propertyId: true },
+    select: { propertyId: true, guestName: true },
   });
   if (!booking) return;
   await prisma.booking.delete({ where: { id: bookingId } });
+  await recordAudit({
+    actor,
+    entity: "BOOKING",
+    entityId: bookingId,
+    action: "booking.deleted",
+    summary: `Booking ${booking.guestName} deleted`,
+    metadata: { propertyId: booking.propertyId },
+  });
   revalidatePath("/admin");
   revalidatePath(`/admin/properties/${booking.propertyId}`);
   redirect(`/admin/properties/${booking.propertyId}`);
@@ -143,7 +176,7 @@ export async function emitBookingTransactionsAction(
   bookingId: string,
   goldstayCommissionRate: number = SHORT_TERM_COMMISSION_RATE,
 ): Promise<{ ok: boolean }> {
-  await requireAdmin();
+  await currentAuditActor();
   const booking = await prisma.booking.findUnique({
     where: { id: bookingId },
     include: { transactions: { select: { id: true } } },

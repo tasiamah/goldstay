@@ -4,9 +4,10 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { BookingSource } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { runFeedSync } from "@/lib/ical/run";
+import { recordAudit } from "@/lib/audit";
 
 export type FeedActionResult =
   | { ok: true }
@@ -34,7 +35,7 @@ export async function upsertIcalFeedAction(
   _prev: FeedActionResult | null,
   formData: FormData,
 ): Promise<FeedActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = FeedInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -53,6 +54,14 @@ export async function upsertIcalFeedAction(
     create: parsed.data,
     update: { url: parsed.data.url, lastError: null },
   });
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: parsed.data.propertyId,
+    action: "ical.feed.added",
+    summary: `iCal feed for ${parsed.data.source} added/updated`,
+    metadata: { source: parsed.data.source },
+  });
   revalidatePath(`/admin/properties/${parsed.data.propertyId}`);
   return { ok: true };
 }
@@ -61,18 +70,36 @@ export async function deleteIcalFeedAction(
   feedId: string,
   propertyId: string,
 ): Promise<void> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
+  const feed = await prisma.propertyIcalFeed.findUnique({
+    where: { id: feedId },
+    select: { source: true },
+  });
   await prisma.propertyIcalFeed.delete({ where: { id: feedId } });
+  if (feed) {
+    await recordAudit({
+      actor,
+      entity: "PROPERTY",
+      entityId: propertyId,
+      action: "ical.feed.removed",
+      summary: `iCal feed for ${feed.source} removed`,
+      metadata: { source: feed.source },
+    });
+  }
   revalidatePath(`/admin/properties/${propertyId}`);
 }
 
 // "Sync now" button on the property detail. Runs the same logic as
 // the cron, but for a single feed and surfaces the outcome inline.
+// We deliberately don't write an audit row per manual sync — the
+// JobRun table already has a per-execution record we can surface in
+// the system-health page, and a manual sync isn't an entity-state
+// change anyone reading the property timeline cares about.
 export async function syncIcalFeedNowAction(
   feedId: string,
   propertyId: string,
 ): Promise<FeedActionResult> {
-  await requireAdmin();
+  await currentAuditActor();
   const outcome = await runFeedSync(feedId);
   revalidatePath(`/admin/properties/${propertyId}`);
   return outcome.ok ? { ok: true } : { ok: false, error: outcome.error };

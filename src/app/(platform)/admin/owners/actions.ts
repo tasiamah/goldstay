@@ -7,10 +7,12 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { OwnerInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { sendOwnerWelcomeEmail } from "@/lib/owner-welcome";
+import { recordAudit } from "@/lib/audit";
+import { formatOwnerDisplayName } from "@/lib/format-owner";
 
 export type OwnerActionResult =
   | { ok: true; ownerId: string }
@@ -31,7 +33,7 @@ export async function createOwnerAction(
   _prev: OwnerActionResult | null,
   formData: FormData,
 ): Promise<OwnerActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const parsed = OwnerInput.safeParse(fromForm(formData));
   if (!parsed.success) {
@@ -44,6 +46,15 @@ export async function createOwnerAction(
 
   try {
     const owner = await prisma.owner.create({ data: parsed.data });
+
+    await recordAudit({
+      actor,
+      entity: "OWNER",
+      entityId: owner.id,
+      action: "owner.created",
+      summary: `Owner ${formatOwnerDisplayName(owner)} created`,
+      metadata: { country: owner.country, email: owner.email },
+    });
 
     // Fire-and-forget welcome email with a magic-link the landlord
     // can click straight from their inbox. We deliberately await it
@@ -91,7 +102,7 @@ export async function createOwnerAction(
 export async function resendOwnerWelcomeAction(
   ownerId: string,
 ): Promise<{ ok: true } | { ok: false; error: string }> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const owner = await prisma.owner.findUnique({
     where: { id: ownerId },
@@ -112,6 +123,13 @@ export async function resendOwnerWelcomeAction(
         "Welcome email could not be sent. Check Resend logs and try again.",
     };
   }
+  await recordAudit({
+    actor,
+    entity: "OWNER",
+    entityId: ownerId,
+    action: "owner.welcomed.resent",
+    summary: `Welcome email resent to ${owner.email}`,
+  });
   return { ok: true };
 }
 
@@ -120,7 +138,7 @@ export async function updateOwnerAction(
   _prev: OwnerActionResult | null,
   formData: FormData,
 ): Promise<OwnerActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const parsed = OwnerInput.safeParse(fromForm(formData));
   if (!parsed.success) {
@@ -132,9 +150,16 @@ export async function updateOwnerAction(
   }
 
   try {
-    await prisma.owner.update({
+    const updated = await prisma.owner.update({
       where: { id: ownerId },
       data: parsed.data,
+    });
+    await recordAudit({
+      actor,
+      entity: "OWNER",
+      entityId: ownerId,
+      action: "owner.updated",
+      summary: `Owner ${formatOwnerDisplayName(updated)} updated`,
     });
     revalidatePath("/admin");
     revalidatePath("/admin/owners");

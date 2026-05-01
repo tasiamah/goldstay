@@ -4,9 +4,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { LeaseStatus, UnitStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { LeaseInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
+import { recordAudit } from "@/lib/audit";
 
 export type LeaseActionResult =
   | { ok: true; leaseId: string }
@@ -32,7 +33,7 @@ export async function createLeaseAction(
   _prev: LeaseActionResult | null,
   formData: FormData,
 ): Promise<LeaseActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = LeaseInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -65,6 +66,15 @@ export async function createLeaseAction(
       return { lease: created, propertyId: unit?.propertyId ?? null };
     });
 
+    await recordAudit({
+      actor,
+      entity: "LEASE",
+      entityId: lease.id,
+      action: "lease.created",
+      summary: `Lease for ${lease.tenantName} created`,
+      metadata: { propertyId, unitId: lease.unitId },
+    });
+
     revalidatePath("/admin");
     if (propertyId) {
       revalidatePath(`/admin/properties/${propertyId}`);
@@ -83,7 +93,7 @@ export async function updateLeaseAction(
   _prev: LeaseActionResult | null,
   formData: FormData,
 ): Promise<LeaseActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const parsed = LeaseInput.safeParse(fromForm(formData));
   if (!parsed.success) {
     return {
@@ -94,9 +104,16 @@ export async function updateLeaseAction(
   }
   try {
     const { unitId: _u, ...rest } = parsed.data;
-    await prisma.lease.update({
+    const updated = await prisma.lease.update({
       where: { id: leaseId },
       data: rest,
+    });
+    await recordAudit({
+      actor,
+      entity: "LEASE",
+      entityId: leaseId,
+      action: "lease.updated",
+      summary: `Lease for ${updated.tenantName} updated`,
     });
     revalidatePath("/admin");
     revalidatePath(`/admin/leases/${leaseId}`);
@@ -109,10 +126,10 @@ export async function updateLeaseAction(
 // Quick-action: end an active lease today. Sets endDate=now, status=ENDED,
 // and frees the unit. Used from the lease detail page.
 export async function endLeaseAction(leaseId: string): Promise<void> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
   const lease = await prisma.lease.findUnique({
     where: { id: leaseId },
-    select: { unitId: true },
+    select: { unitId: true, tenantName: true },
   });
   if (!lease) return;
 
@@ -126,6 +143,14 @@ export async function endLeaseAction(leaseId: string): Promise<void> {
       data: { status: UnitStatus.VACANT },
     }),
   ]);
+
+  await recordAudit({
+    actor,
+    entity: "LEASE",
+    entityId: leaseId,
+    action: "lease.ended",
+    summary: `Lease for ${lease.tenantName} ended`,
+  });
 
   revalidatePath("/admin");
   revalidatePath(`/admin/leases/${leaseId}`);

@@ -6,6 +6,7 @@ import { AgreementStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { requireOwner } from "@/lib/auth";
 import { namesPlausiblyMatch } from "@/lib/agreements/defaults";
+import { recordAudit } from "@/lib/audit";
 
 export type SignAgreementResult =
   | { ok: true }
@@ -80,6 +81,22 @@ export async function signAgreementAction(
       signedByName: typedName,
       signedByIp: ip,
       signedByUserAgent: userAgent,
+    },
+  });
+
+  // Audit row attributed to the owner's email so the property
+  // timeline reads "Asha Kimani signed agreement at 14:32" without
+  // leaking it under an admin actor.
+  await recordAudit({
+    actor: { adminId: null, email: owner.email },
+    entity: "AGREEMENT",
+    entityId: agreementId,
+    action: "agreement.signed",
+    summary: `Signed by ${typedName}`,
+    metadata: {
+      propertyId: agreement.propertyId,
+      ownerId: owner.id,
+      ip,
     },
   });
 

@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { AgreementStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { defaultAgreementTerms } from "@/lib/agreements/defaults";
+import { recordAudit } from "@/lib/audit";
 
 export type AgreementAdminResult =
   | { ok: true; agreementId: string }
@@ -17,7 +18,7 @@ export type AgreementAdminResult =
 export async function reissueAgreementAction(
   propertyId: string,
 ): Promise<AgreementAdminResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
@@ -59,6 +60,15 @@ export async function reissueAgreementAction(
         sentAt: new Date(),
       },
     });
+  });
+
+  await recordAudit({
+    actor,
+    entity: "AGREEMENT",
+    entityId: newAgreement.id,
+    action: "agreement.reissued",
+    summary: "Management agreement reissued",
+    metadata: { propertyId, ownerId: property.ownerId },
   });
 
   revalidatePath("/admin");

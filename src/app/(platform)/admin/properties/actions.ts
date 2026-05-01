@@ -8,10 +8,12 @@ import {
   PropertyStatus,
 } from "@prisma/client";
 import { prisma } from "@/lib/db";
-import { requireAdmin } from "@/lib/auth";
+import { currentAuditActor } from "@/lib/auth";
 import { PropertyInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { defaultAgreementTerms } from "@/lib/agreements/defaults";
+import { recordAudit } from "@/lib/audit";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export type PropertyActionResult =
   | { ok: true; propertyId: string }
@@ -41,7 +43,7 @@ export async function createPropertyAction(
   _prev: PropertyActionResult | null,
   formData: FormData,
 ): Promise<PropertyActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const parsed = PropertyInput.safeParse(fromForm(formData));
   if (!parsed.success) {
@@ -86,6 +88,18 @@ export async function createPropertyAction(
       });
       return property;
     });
+    await recordAudit({
+      actor,
+      entity: "PROPERTY",
+      entityId: created.id,
+      action: "property.created",
+      summary: `Property ${formatPropertyDisplayName(created.name, created.unitNumber)} created`,
+      metadata: {
+        ownerId: created.ownerId,
+        country: created.country,
+        propertyType: created.propertyType,
+      },
+    });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
     revalidatePath(`/admin/owners/${parsed.data.ownerId}`);
@@ -103,7 +117,7 @@ export async function updatePropertyAction(
   _prev: PropertyActionResult | null,
   formData: FormData,
 ): Promise<PropertyActionResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const parsed = PropertyInput.safeParse(fromForm(formData));
   if (!parsed.success) {
@@ -134,9 +148,16 @@ export async function updatePropertyAction(
 
     const { ownerId: _ignored, propertyType: _attempted, ...rest } =
       parsed.data;
-    await prisma.property.update({
+    const updated = await prisma.property.update({
       where: { id: propertyId },
       data: { ...rest, propertyType: existing.propertyType },
+    });
+    await recordAudit({
+      actor,
+      entity: "PROPERTY",
+      entityId: propertyId,
+      action: "property.updated",
+      summary: `Property ${formatPropertyDisplayName(updated.name, updated.unitNumber)} updated`,
     });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
@@ -163,7 +184,7 @@ export type LifecycleResult = { ok: true } | { ok: false; error: string };
 export async function markPropertyVerifiedAction(
   propertyId: string,
 ): Promise<LifecycleResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
@@ -172,6 +193,8 @@ export async function markPropertyVerifiedAction(
       ownerId: true,
       country: true,
       propertyType: true,
+      name: true,
+      unitNumber: true,
       _count: { select: { documents: true } },
     },
   });
@@ -213,14 +236,14 @@ export async function markPropertyVerifiedAction(
     select: { id: true },
   });
 
-  await prisma.$transaction(async (tx) => {
+  const newAgreementId = await prisma.$transaction(async (tx) => {
     await tx.property.update({
       where: { id: propertyId },
       data: { status: PropertyStatus.ACTIVE },
     });
     if (!existingActiveAgreement) {
       const now = new Date();
-      await tx.managementAgreement.create({
+      const agreement = await tx.managementAgreement.create({
         data: {
           propertyId,
           termMonths: terms.termMonths,
@@ -232,9 +255,34 @@ export async function markPropertyVerifiedAction(
           status: AgreementStatus.SENT,
           sentAt: now,
         },
+        select: { id: true },
       });
+      return agreement.id;
     }
+    return null;
   });
+
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: propertyId,
+    action: "property.verified",
+    summary: `Property marked active`,
+    metadata: {
+      ownerId: property.ownerId,
+      issuedAgreementId: newAgreementId,
+    },
+  });
+  if (newAgreementId) {
+    await recordAudit({
+      actor,
+      entity: "AGREEMENT",
+      entityId: newAgreementId,
+      action: "agreement.issued",
+      summary: `Management agreement issued`,
+      metadata: { propertyId },
+    });
+  }
 
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
@@ -247,7 +295,7 @@ export async function markPropertyVerifiedAction(
 export async function markPropertyExitedAction(
   propertyId: string,
 ): Promise<LifecycleResult> {
-  await requireAdmin();
+  const actor = await currentAuditActor();
 
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
@@ -261,6 +309,14 @@ export async function markPropertyExitedAction(
   await prisma.property.update({
     where: { id: propertyId },
     data: { status: PropertyStatus.EXITED },
+  });
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: propertyId,
+    action: "property.exited",
+    summary: `Property marked exited`,
+    metadata: { ownerId: property.ownerId },
   });
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
