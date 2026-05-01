@@ -114,7 +114,7 @@ export function PropertyForm({
         label="Description"
         name="description"
         defaultValue={defaults.description ?? ""}
-        placeholder="Internal notes for ops. Not visible to the landlord."
+        placeholder="Internal notes for ops. Not visible to the owner."
         error={fieldError("description")}
       />
 

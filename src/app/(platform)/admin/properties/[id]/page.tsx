@@ -239,7 +239,7 @@ export default async function PropertyDetailPage({
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <h3 className="text-base font-medium text-stone-900">Details</h3>
           <p className="mt-1 text-sm text-stone-500">
-            Updates are visible to the landlord on next page load.
+            Updates are visible to the owner on next page load.
           </p>
           <div className="mt-5">
             <PropertyForm
@@ -382,7 +382,7 @@ export default async function PropertyDetailPage({
             <p className="mt-1 text-sm text-stone-500">
               Title deeds, sale agreements, leases, invoices, and any
               other paperwork backing this property. Visible to the
-              landlord on their portal.
+              owner on their portal.
             </p>
 
             <div className="mt-5 border-b border-stone-100 pb-5">
@@ -579,8 +579,8 @@ function AgreementCard({
             Management agreement
           </h3>
           <p className="mt-1 text-sm text-stone-500">
-            12-month management contract with the landlord.
-            Auto-issued on verification; landlord signs through their
+            12-month management contract with the owner.
+            Auto-issued on verification; owner signs through their
             portal.
           </p>
         </div>
@@ -653,7 +653,7 @@ function AgreementCard({
             </a>
           ) : current.status === "SENT" ? (
             <p className="text-xs text-stone-500">
-              Landlord can sign at /owner/agreements/{current.id}
+              Owner can sign at /owner/agreements/{current.id}
             </p>
           ) : null}
         </div>

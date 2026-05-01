@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { LoginForm } from "./LoginForm";
 
 export const metadata: Metadata = {
-  title: "Landlord login",
+  title: "Owner login",
   description:
-    "Sign in to the Goldstay landlord platform to track your properties, leases, and monthly statements.",
+    "Sign in to the Goldstay owner platform to track your properties, leases, and monthly statements.",
   robots: { index: false, follow: false },
 };
 
@@ -15,7 +15,7 @@ export default function LoginPage({
 }) {
   return (
     <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-6 py-16">
-      <h1 className="text-3xl font-serif text-stone-900">Landlord sign in</h1>
+      <h1 className="text-3xl font-serif text-stone-900">Owner sign in</h1>
       <p className="mt-3 text-stone-600">
         Enter the email address Goldstay has on file. We will send you a
         one-tap sign-in link. No password required.

@@ -147,7 +147,7 @@ export function LeaseForm({
         label="Notes"
         name="notes"
         defaultValue={defaults.notes ?? ""}
-        placeholder="Internal notes. Not visible to the landlord."
+        placeholder="Internal notes. Not visible to the owner."
         error={fieldError("notes")}
       />
 

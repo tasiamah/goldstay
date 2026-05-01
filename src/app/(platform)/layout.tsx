@@ -16,7 +16,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: "Goldstay portal",
-  description: "Goldstay landlord and operations portal.",
+  description: "Goldstay owner and operations portal.",
   // Logged-in surfaces are not for search engines.
   robots: { index: false, follow: false },
 };

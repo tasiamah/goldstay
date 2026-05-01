@@ -38,7 +38,7 @@ export default async function OwnerPendingPage() {
           but we have not finished linking this email to a portfolio yet.
         </p>
         <p className="mt-3 text-stone-600">
-          Goldstay onboards every landlord by hand so the right title
+          Goldstay onboards every owner by hand so the right title
           deeds, leases, and bank details are in place from day one.
           You should hear from us within{" "}
           <span className="font-medium text-stone-900">24 hours</span>.

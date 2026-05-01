@@ -112,7 +112,7 @@ export default async function PropertiesListPage({
             ) : (
               <>
                 {totalCount} {totalCount === 1 ? "property" : "properties"}{" "}
-                across all landlords
+                across all owners
               </>
             )}
           </p>

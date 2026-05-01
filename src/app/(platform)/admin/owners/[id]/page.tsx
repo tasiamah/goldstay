@@ -74,7 +74,7 @@ export default async function OwnerDetailPage({
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <h3 className="text-base font-medium text-stone-900">Details</h3>
           <p className="mt-1 text-sm text-stone-500">
-            Updates apply immediately and are visible to the landlord on next
+            Updates apply immediately and are visible to the owner on next
             page load.
           </p>
           <div className="mt-5">

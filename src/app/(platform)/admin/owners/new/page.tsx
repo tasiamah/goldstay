@@ -14,7 +14,7 @@ export default function NewOwnerPage() {
         </Link>
         <h2 className="mt-2 text-xl font-medium text-stone-900">Add owner</h2>
         <p className="text-sm text-stone-500">
-          Create a landlord record. They will be able to sign in with this
+          Create an owner record. They will be able to sign in with this
           email address as soon as they request a magic link.
         </p>
       </div>

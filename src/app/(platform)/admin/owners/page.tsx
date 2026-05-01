@@ -68,11 +68,11 @@ export default async function OwnersListPage({
               <>
                 Showing <strong className="text-stone-700">{owners.length}</strong>{" "}
                 of {totalCount}{" "}
-                {totalCount === 1 ? "landlord" : "landlords"}
+                {totalCount === 1 ? "owner" : "owners"}
               </>
             ) : (
               <>
-                {totalCount} {totalCount === 1 ? "landlord" : "landlords"} in
+                {totalCount} {totalCount === 1 ? "owner" : "owners"} in
                 the platform
               </>
             )}
@@ -207,7 +207,7 @@ function EmptyState() {
     <div className="rounded-lg border border-dashed border-stone-300 bg-white p-10 text-center">
       <h3 className="text-base font-medium text-stone-900">No owners yet</h3>
       <p className="mt-1 text-sm text-stone-500">
-        Add your first landlord to start tracking properties and leases.
+        Add your first owner to start tracking properties and leases.
       </p>
       <Link
         href="/admin/owners/new"

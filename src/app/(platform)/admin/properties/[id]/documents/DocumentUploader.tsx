@@ -187,7 +187,7 @@ export function DocumentUploader({ propertyId }: { propertyId: string }) {
         </button>
         <p className="text-xs text-stone-500">
           File goes straight to encrypted storage. Visible to the
-          landlord on next page load.
+          owner on next page load.
         </p>
       </div>
     </form>

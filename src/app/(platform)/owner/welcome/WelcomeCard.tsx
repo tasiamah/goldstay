@@ -114,8 +114,8 @@ export function WelcomeCard({
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-stone-600">
             {isReplay
-              ? "A quick refresher on the four corners of your landlord portal. Hide it again whenever you're done."
-              : "This is your landlord portal. Goldstay handles the day-to-day; you get a single place to track how your property is performing. Here's a tour of where everything lives — it'll take less than a minute."}
+              ? "A quick refresher on the four corners of your owner portal. Hide it again whenever you're done."
+              : "This is your owner portal. Goldstay handles the day-to-day; you get a single place to track how your property is performing. Here's a tour of where everything lives — it'll take less than a minute."}
           </p>
         </div>
         {isReplay ? (

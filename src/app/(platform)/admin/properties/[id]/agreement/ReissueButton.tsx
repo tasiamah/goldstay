@@ -22,7 +22,7 @@ export function ReissueAgreementButton({
   function onClick() {
     const message = hasOpenAgreement
       ? "Cancel the current agreement and issue a new one with today's terms?"
-      : "Issue a new management agreement to the landlord with today's terms?";
+      : "Issue a new management agreement to the owner with today's terms?";
     if (!confirm(message)) return;
     start(async () => {
       const res = await reissueAgreementAction(propertyId);

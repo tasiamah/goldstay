@@ -36,7 +36,7 @@ export default async function OwnerLayout({
       <header className="mb-10 flex items-center justify-between border-b border-stone-200 pb-6">
         <div>
           <p className="text-xs uppercase tracking-wider text-stone-500">
-            Landlord portal
+            Owner portal
           </p>
           <h1 className="mt-1 text-2xl font-serif text-stone-900">
             Welcome back
