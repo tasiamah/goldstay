@@ -1,3 +1,22 @@
+# GitHub Actions CI for Goldstay.
+#
+# Default state: dormant. Vercel runs the same `next build` on every
+# push, so this workflow is duplicate work and the deploy fails fast
+# enough on its own. We keep the file in the repo (rather than
+# deleting it) so re-enabling is a one-toggle change in the GitHub
+# UI rather than a code change + review cycle.
+#
+# To re-enable on every push and PR:
+#   GitHub → Settings → Secrets and variables → Actions → Variables
+#   → New repository variable → name: CI_ENABLED, value: true
+#
+# To re-enable for a single ad-hoc run without flipping the variable:
+#   GitHub → Actions → CI → Run workflow
+#
+# A workflow that's gated by `if:` and skipped reports as "Skipped"
+# (neutral grey) on the commit / PR — it doesn't show as failure
+# and doesn't block branch protection rules that don't list it.
+
 name: CI
 
 on:
@@ -5,6 +24,7 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -14,6 +34,10 @@ jobs:
   verify:
     name: Lint · Build
     runs-on: ubuntu-latest
+    # Single source of truth for "is CI on?". Manual workflow_dispatch
+    # always runs so the team can sanity-check the build on demand
+    # without having to flip the repo variable first.
+    if: ${{ vars.CI_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - uses: actions/checkout@v4
 
