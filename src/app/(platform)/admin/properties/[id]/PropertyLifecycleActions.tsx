@@ -6,9 +6,15 @@
 // because the server-side check will refuse the call anyway and we'd
 // rather tell the admin upfront. For ACTIVE, shows a Mark exited
 // button behind a window.confirm.
+//
+// Errors and successes both flow through Sonner so the feedback
+// matches the rest of the admin chrome (ArchiveButton, bulk actions,
+// imports). The previous alert() popup was the only one left in the
+// admin surface and broke muscle memory.
 
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import {
   markPropertyExitedAction,
   markPropertyVerifiedAction,
@@ -41,9 +47,10 @@ export function PropertyLifecycleActions({
             startTransition(async () => {
               const res = await markPropertyVerifiedAction(propertyId);
               if (!res.ok) {
-                alert(res.error);
+                toast.error(res.error);
                 return;
               }
+              toast.success("Property marked as verified");
               router.refresh();
             });
           }}
@@ -76,9 +83,10 @@ export function PropertyLifecycleActions({
         startTransition(async () => {
           const res = await markPropertyExitedAction(propertyId);
           if (!res.ok) {
-            alert(res.error);
+            toast.error(res.error);
             return;
           }
+          toast.success("Property marked as exited");
           router.refresh();
         });
       }}

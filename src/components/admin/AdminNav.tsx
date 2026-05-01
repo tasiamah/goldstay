@@ -27,15 +27,26 @@ type NavItem = {
   visibleToRoles?: readonly AdminRole[];
 };
 
+// `visibleToRoles` here mirrors the permission matrix in
+// `src/lib/admin/roles.ts` for the corresponding action key —
+// e.g. Archive is gated to roles with `archive.write` so a SUPPORT
+// hire doesn't see a tab that silently bounces them back to /admin
+// when clicked. Keep the two in sync when adding actions there.
 const ITEMS: readonly NavItem[] = [
   { href: "/admin", label: "Overview", exact: true },
   { href: "/admin/leads", label: "Leads" },
   { href: "/admin/owners", label: "Owners" },
   { href: "/admin/properties", label: "Properties" },
+  { href: "/admin/leases", label: "Leases" },
+  { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/transactions", label: "Transactions" },
   { href: "/admin/tasks", label: "Tasks" },
   { href: "/admin/health", label: "Health" },
-  { href: "/admin/archive", label: "Archive" },
+  {
+    href: "/admin/archive",
+    label: "Archive",
+    visibleToRoles: ["SUPER_ADMIN", "OPS", "COUNTRY_MANAGER"],
+  },
   {
     href: "/admin/finance",
     label: "Finance",

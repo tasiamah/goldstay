@@ -2,7 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { currentAuditActor } from "@/lib/auth";
+import { currentAuditActor, requireRole } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { setImpersonationCookie } from "@/lib/admin/impersonation";
@@ -14,9 +14,17 @@ const DEFAULT_SITE = "https://goldstay.co.ke";
 // impersonation cookie, and redirects the admin to a tiny page that
 // opens the link in a new tab. We avoid returning the URL to the
 // caller because doing so leaks it into the admin's HTML diff.
+//
+// `impersonate.owner` is only granted to OPS / COUNTRY_MANAGER /
+// SUPER_ADMIN per the role matrix — SUPPORT and ACCOUNTING were
+// previously able to invoke this action because the gate was only
+// at the UI layer. The requireRole call closes that hole; the
+// button is also conditionally rendered now so the failure mode
+// is "no button" rather than "button that throws on submit".
 export async function startImpersonationAction(
   ownerId: string,
 ): Promise<void> {
+  await requireRole("impersonate.owner");
   const actor = await currentAuditActor();
 
   const owner = await prisma.owner.findUnique({
