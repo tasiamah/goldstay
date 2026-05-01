@@ -149,17 +149,25 @@ export default async function PropertiesListPage({
             )}
           </p>
         </div>
-        <Link
-          href={`/admin/properties/export${toQueryString({
-            q: filters.q,
-            country: filters.country,
-            status: filters.status,
-            type: filters.type,
-          })}`}
-          className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
-        >
-          Export CSV
-        </Link>
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href={`/admin/properties/export${toQueryString({
+              q: filters.q,
+              country: filters.country,
+              status: filters.status,
+              type: filters.type,
+            })}`}
+            className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+          >
+            Export CSV
+          </Link>
+          <Link
+            href="/admin/properties/import"
+            className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+          >
+            Import CSV
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-wrap items-center gap-3">

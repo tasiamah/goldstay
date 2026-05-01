@@ -27,6 +27,7 @@ import {
   sortToParam,
   type SortState,
 } from "@/lib/admin/table";
+import { BulkActionBar } from "./BulkSelectClient";
 
 export const dynamic = "force-dynamic";
 
@@ -120,6 +121,12 @@ export default async function OwnersListPage({
             Export CSV
           </Link>
           <Link
+            href="/admin/owners/import"
+            className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
+          >
+            Import CSV
+          </Link>
+          <Link
             href="/admin/owners/new"
             className="inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
           >
@@ -158,10 +165,13 @@ export default async function OwnersListPage({
           <EmptyState />
         )
       ) : (
-        <div className="overflow-hidden rounded-lg border border-stone-200 bg-white">
+        <form id="owners-bulk-form" className="overflow-hidden rounded-lg border border-stone-200 bg-white">
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
+                <PlainHeader>
+                  <span className="sr-only">Select</span>
+                </PlainHeader>
                 <SortableHeader
                   column="fullName"
                   label="Name"
@@ -198,6 +208,15 @@ export default async function OwnersListPage({
                 const secondary = formatOwnerSecondaryName(o);
                 return (
                   <tr key={o.id} className="hover:bg-stone-50/60">
+                    <td className="px-4 py-3 align-top">
+                      <input
+                        type="checkbox"
+                        name="ids"
+                        value={o.id}
+                        aria-label={`Select ${formatOwnerDisplayName(o)}`}
+                        className="h-4 w-4 rounded border-stone-300 text-stone-900 focus:ring-stone-500"
+                      />
+                    </td>
                     <td className="px-4 py-3">
                       <Link
                         href={`/admin/owners/${o.id}`}
@@ -242,8 +261,9 @@ export default async function OwnersListPage({
             pageSize={pageSize}
             totalRows={filteredCount}
           />
-        </div>
+        </form>
       )}
+      <BulkActionBar formId="owners-bulk-form" />
     </div>
   );
 }
