@@ -21,6 +21,7 @@ import {
   type SetupStepKey,
 } from "@/lib/owner/setup-status";
 import { listPayoutMethodsFor } from "@/lib/payouts";
+import { syncOwnerNotifications } from "@/lib/notifications/sync";
 
 const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
@@ -53,6 +54,8 @@ export default async function OwnerDashboardPage() {
     pendingAgreements,
     payoutMethods,
     kycCounts,
+    latestStatement,
+    latestPayout,
   ] = await Promise.all([
     prisma.property.findMany({
       where: { ownerId: owner.id },
@@ -135,6 +138,33 @@ export default async function OwnerDashboardPage() {
       },
       _count: { _all: true },
     }),
+    // Latest statement + latest payout drive the bell. Both pull
+    // one row each so even an owner with hundreds of transactions
+    // stays cheap. We restrict latestPayout to the last 60 days
+    // so an old statement doesn't keep ringing the bell forever
+    // — the sync helper applies its own 14-day window inside that.
+    prisma.statementSend.findFirst({
+      where: { ownerId: owner.id, sentAt: { not: null } },
+      orderBy: [{ periodYear: "desc" }, { periodMonth: "desc" }],
+      select: { periodYear: true, periodMonth: true, sentAt: true },
+    }),
+    prisma.transaction.findFirst({
+      where: {
+        property: { ownerId: owner.id },
+        type: "PAYOUT",
+        direction: "OUTFLOW",
+        occurredOn: {
+          gte: new Date(Date.now() - 60 * 24 * 60 * 60 * 1000),
+        },
+      },
+      orderBy: { occurredOn: "desc" },
+      select: {
+        id: true,
+        amount: true,
+        currency: true,
+        occurredOn: true,
+      },
+    }),
   ]);
 
   const kycByKind = Object.fromEntries(
@@ -153,6 +183,28 @@ export default async function OwnerDashboardPage() {
     payoutMethodCount: payoutMethods.length,
   });
   const setupComplete = setup.doneCount === setup.totalCount;
+
+  // Refresh the bell against current state. Idempotent + cheap (one
+  // findMany + at most one transaction). We deliberately don't await
+  // this in a way that blocks the page — but we do need it before
+  // the bell renders in the layout, so a sequential await it is.
+  // The layout reads from OwnerNotification after this completes.
+  await syncOwnerNotifications(owner.id, {
+    setup,
+    pendingAgreements: pendingAgreements.map((a) => ({
+      id: a.id,
+      property: a.property,
+    })),
+    latestStatement,
+    latestPayout: latestPayout
+      ? {
+          id: latestPayout.id,
+          amount: latestPayout.amount,
+          currency: latestPayout.currency,
+          occurredOn: latestPayout.occurredOn,
+        }
+      : null,
+  });
 
   const propertyOccupancy = properties.map((p) => ({
     id: p.id,

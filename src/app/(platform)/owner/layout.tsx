@@ -14,6 +14,8 @@ import Link from "next/link";
 import { requireUser } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
+import { NotificationBell } from "@/components/owner/NotificationBell";
+import { listOwnerNotifications } from "@/lib/notifications/list";
 
 export default async function OwnerLayout({
   children,
@@ -31,6 +33,16 @@ export default async function OwnerLayout({
       })
     : null;
   const isLinkedOwner = Boolean(owner);
+
+  // The bell reads whatever the dashboard sync most recently wrote
+  // to OwnerNotification. We don't sync here — that runs on /owner
+  // — so the bell on a deep page can be at most one navigation
+  // stale. Acceptable for a notifications surface and saves four
+  // round-trips on every layout render.
+  const notifications =
+    isLinkedOwner && owner
+      ? await listOwnerNotifications(owner.id)
+      : { items: [], unreadCount: 0 };
 
   // First name only — full names look formal in a header. Falls
   // back to "back" so an unlinked Supabase user still gets a clean
@@ -84,6 +96,12 @@ export default async function OwnerLayout({
                 Profile
               </Link>
             </>
+          ) : null}
+          {isLinkedOwner ? (
+            <NotificationBell
+              items={notifications.items}
+              unreadCount={notifications.unreadCount}
+            />
           ) : null}
           <form action="/auth/sign-out" method="post">
             <button

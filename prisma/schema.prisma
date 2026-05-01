@@ -214,6 +214,7 @@ model Owner {
   payoutMethods  OwnerPayoutMethod[]
   documents      Document[]
   statementSends StatementSend[]
+  notifications  OwnerNotification[]
 
   @@index([country])
   @@index([archivedAt])
@@ -1046,4 +1047,82 @@ model StatementSend {
   @@unique([ownerId, periodYear, periodMonth])
   @@index([periodYear, periodMonth])
   @@index([status])
+}
+
+// Owner-facing notification surface, rendered as a bell in the
+// owner header. Two production styles:
+//
+//   * DERIVED — created/resolved by syncOwnerNotifications() on
+//     /owner page renders. Rows are idempotent via the (ownerId,
+//     kind, sourceRef) unique key — sourceRef is "agreementId:xyz"
+//     for an agreement, "period:2026-04" for a statement, etc. When
+//     the underlying condition stops being true (agreement signed,
+//     setup completed) we set resolvedAt instead of deleting, so
+//     the owner has a faint history they can scroll back to.
+//
+//   * BROADCAST — created by an admin via a future "Send notice"
+//     action. sourceRef is null; resolvedAt is set manually.
+//
+// We deliberately don't have an in-app inbox page yet — the bell
+// dropdown is the entire surface — so the schema stays small. Add
+// pagination + a /owner/notifications route the moment we have
+// more than ~20 active items per owner in the wild.
+model OwnerNotification {
+  id         String                  @id @default(cuid())
+  ownerId    String
+  owner      Owner                   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  kind       OwnerNotificationKind
+  tone       OwnerNotificationTone   @default(INFO)
+  title      String
+  body       String?
+  // Optional deep link into the portal so a click on the bell row
+  // takes the owner straight to the relevant page (signing an
+  // agreement, finishing setup, downloading a statement).
+  href       String?
+  // De-dupe key for derived notifications. NULL for BROADCAST. The
+  // same (ownerId, kind, sourceRef) must never produce two rows;
+  // syncOwnerNotifications relies on this for idempotency.
+  sourceRef  String?
+  // null = unread. Set when the owner opens the dropdown (we mark
+  // everything currently visible as read in one click).
+  readAt     DateTime?
+  // null = still active. Set by sync when the source condition is
+  // no longer true (e.g. setup finished, statement archived). We
+  // don't show resolved items in the bell count or default list.
+  resolvedAt DateTime?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+
+  @@unique([ownerId, kind, sourceRef])
+  @@index([ownerId, readAt])
+  @@index([ownerId, resolvedAt])
+}
+
+enum OwnerNotificationKind {
+  // Derived. One row per missing setup step (sourceRef is the step
+  // key). Resolved when the step flips to done.
+  SETUP_INCOMPLETE
+  // Derived. One row per pending management agreement (sourceRef is
+  // the agreementId). Resolved when the owner signs.
+  AGREEMENT_PENDING
+  // Derived. One row per available monthly statement (sourceRef is
+  // "period:YYYY-MM"). Auto-marked read after 30 days.
+  STATEMENT_AVAILABLE
+  // Derived. One row per recent payout transaction (sourceRef is
+  // the transactionId). Auto-marked read after 14 days.
+  PAYOUT_PAID
+  // Manually pushed by an admin. sourceRef is null; the admin is
+  // responsible for setting resolvedAt when the broadcast expires.
+  ADMIN_BROADCAST
+}
+
+enum OwnerNotificationTone {
+  // Default. Stone palette, no emphasis.
+  INFO
+  // Amber. The owner needs to do something for life to continue
+  // (sign an agreement, finish setup).
+  WARNING
+  // Emerald. Something good happened (payout paid, statement ready
+  // for the latest period).
+  SUCCESS
 }
