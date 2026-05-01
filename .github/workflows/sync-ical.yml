@@ -4,12 +4,26 @@
 # plan rejects sub-daily cron schedules; Actions is free and gives
 # us minute-level scheduling without bumping to Vercel Pro.
 #
+# Default state: dormant. We don't have enough connected iCal
+# feeds yet to justify the every-15-minute traffic; for the moment
+# operators trigger manual syncs from the property page when they
+# need fresh availability. The file stays in the repo so flipping
+# this back on is a one-toggle change rather than a code change.
+#
+# To re-enable the scheduled poll:
+#   GitHub → Settings → Secrets and variables → Actions → Variables
+#   → New repository variable → name: ICAL_SYNC_ENABLED, value: true
+#
+# To run a one-off sync without flipping the variable:
+#   GitHub → Actions → Sync iCal feeds → Run workflow
+#
 # The endpoint requires Authorization: Bearer $CRON_SECRET. Set
 # CRON_SECRET both as a Vercel project env var (so the route can
 # verify) and as a GitHub repo secret (so this workflow can send).
 #
-# Manual trigger ("Run workflow" button) is enabled for ad-hoc
-# syncs without waiting for the next 15-minute slot.
+# A workflow that's gated by `if:` and skipped reports as "Skipped"
+# (neutral grey) on the commit, doesn't show as failure, and
+# doesn't block branch protection rules that don't list it.
 
 name: Sync iCal feeds
 
@@ -25,6 +39,10 @@ jobs:
   sync:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    # Single source of truth for "is the scheduled iCal poll on?".
+    # Manual workflow_dispatch always runs so an operator can force a
+    # sync from the Actions UI without flipping the repo variable.
+    if: ${{ vars.ICAL_SYNC_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
     steps:
       - name: Ping sync endpoint
         env:
