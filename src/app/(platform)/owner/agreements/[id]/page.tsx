@@ -21,6 +21,7 @@ import {
 } from "@/lib/agreements/format";
 import { signAgreementAction } from "./actions";
 import { SignAgreementForm } from "./SignAgreementForm";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,7 @@ export default async function OwnerAgreementPage({
         select: {
           id: true,
           name: true,
+          unitNumber: true,
           city: true,
           address: true,
           propertyType: true,
@@ -53,10 +55,14 @@ export default async function OwnerAgreementPage({
     agreement.earlyExitFeeCurrency,
   );
   const commissionPct = formatCommissionPct(agreement.commissionRate.toString());
+  const propertyDisplayName = formatPropertyDisplayName(
+    agreement.property.name,
+    agreement.property.unitNumber,
+  );
   const sections = buildAgreementSections({
     ownerName: owner.fullName,
     ownerCompany: owner.companyName,
-    propertyName: agreement.property.name,
+    propertyName: propertyDisplayName,
     propertyAddress: agreement.property.address,
     propertyCity: agreement.property.city,
     governingLaw: agreement.governingLaw,
@@ -77,7 +83,7 @@ export default async function OwnerAgreementPage({
           href={`/owner/properties/${agreement.property.id}`}
           className="text-sm text-stone-500 hover:text-stone-900"
         >
-          ← {agreement.property.name}
+          ← {propertyDisplayName}
         </Link>
         <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
           <div>
@@ -85,7 +91,7 @@ export default async function OwnerAgreementPage({
               Goldstay management agreement
             </h1>
             <p className="mt-1 text-sm text-stone-500">
-              {agreement.property.name} · {agreement.property.city}
+              {propertyDisplayName} · {agreement.property.city}
             </p>
           </div>
           <span

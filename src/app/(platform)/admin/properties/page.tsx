@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ export default async function PropertiesListPage() {
                       href={`/admin/properties/${p.id}`}
                       className="font-medium text-stone-900 hover:underline"
                     >
-                      {p.name}
+                      {formatPropertyDisplayName(p.name, p.unitNumber)}
                     </Link>
                     <p className="text-xs text-stone-500">
                       {p.neighbourhood ? `${p.neighbourhood}, ` : ""}

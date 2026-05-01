@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 
@@ -107,7 +108,7 @@ export default async function OwnerDetailPage({
                       href={`/admin/properties/${p.id}`}
                       className="font-medium text-stone-900 hover:underline"
                     >
-                      {p.name}
+                      {formatPropertyDisplayName(p.name, p.unitNumber)}
                     </Link>
                     <p className="text-xs text-stone-500">
                       {p.neighbourhood ? `${p.neighbourhood}, ` : ""}

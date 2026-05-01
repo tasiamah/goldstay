@@ -21,6 +21,7 @@ function fromForm(formData: FormData) {
   return {
     ownerId: String(formData.get("ownerId") ?? ""),
     name: String(formData.get("name") ?? ""),
+    unitNumber: String(formData.get("unitNumber") ?? ""),
     city: String(formData.get("city") ?? ""),
     neighbourhood: String(formData.get("neighbourhood") ?? ""),
     address: String(formData.get("address") ?? ""),

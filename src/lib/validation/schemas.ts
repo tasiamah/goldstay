@@ -50,6 +50,7 @@ export const OwnerInput = z.object({
 export const PropertyInput = z.object({
   ownerId: z.string().min(1),
   name: z.string().trim().min(2).max(120),
+  unitNumber: optionalString,
   city: z.string().trim().min(2).max(80),
   neighbourhood: optionalString,
   address: z.string().trim().min(3).max(240),

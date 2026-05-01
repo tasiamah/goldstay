@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
 
@@ -60,7 +61,7 @@ export default async function AdminOverviewPage() {
           href="/admin/properties"
           items={recentProperties.map((p) => ({
             id: p.id,
-            primary: p.name,
+            primary: formatPropertyDisplayName(p.name, p.unitNumber),
             secondary: `${p.city} · ${p.owner.fullName}`,
             href: `/admin/properties/${p.id}`,
             trailing: <PropertyStatusBadge status={p.status} />,

@@ -5,6 +5,7 @@ import {
   aggregateTransactionsByCurrency,
   occupancyPercent,
 } from "@/lib/owner-dashboard";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -61,7 +62,7 @@ export default async function OwnerDashboardPage() {
       orderBy: { occurredOn: "desc" },
       take: 10,
       include: {
-        property: { select: { id: true, name: true } },
+        property: { select: { id: true, name: true, unitNumber: true } },
         lease: { select: { tenantName: true } },
       },
     }),
@@ -76,7 +77,9 @@ export default async function OwnerDashboardPage() {
         status: "SENT",
       },
       orderBy: { sentAt: "asc" },
-      include: { property: { select: { id: true, name: true } } },
+      include: {
+        property: { select: { id: true, name: true, unitNumber: true } },
+      },
     }),
   ]);
 
@@ -111,7 +114,10 @@ export default async function OwnerDashboardPage() {
               </p>
               <h2 className="mt-1 text-base font-medium text-amber-950">
                 {pendingAgreements.length === 1
-                  ? `Sign your management agreement for ${pendingAgreements[0].property.name}`
+                  ? `Sign your management agreement for ${formatPropertyDisplayName(
+                      pendingAgreements[0].property.name,
+                      pendingAgreements[0].property.unitNumber,
+                    )}`
                   : `${pendingAgreements.length} management agreements awaiting your signature`}
               </h2>
               <p className="mt-1 text-sm text-amber-900/80">
@@ -227,7 +233,7 @@ export default async function OwnerDashboardPage() {
                         href={`/owner/properties/${p.id}`}
                         className="font-medium text-stone-900 hover:underline"
                       >
-                        {p.name}
+                        {formatPropertyDisplayName(p.name, p.unitNumber)}
                       </Link>
                       <p className="text-xs text-stone-500">
                         {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
@@ -284,7 +290,10 @@ export default async function OwnerDashboardPage() {
                         href={`/owner/properties/${t.property.id}`}
                         className="hover:text-stone-900 hover:underline"
                       >
-                        {t.property.name}
+                        {formatPropertyDisplayName(
+                          t.property.name,
+                          t.property.unitNumber,
+                        )}
                       </Link>{" "}
                       ·{" "}
                       {t.occurredOn.toLocaleDateString("en-GB", {

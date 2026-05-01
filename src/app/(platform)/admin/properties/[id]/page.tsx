@@ -10,6 +10,7 @@ import {
   PropertyStatusBadge,
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
   OccupancyCalendar,
   clampHeatmapMonths,
@@ -164,7 +165,7 @@ export default async function PropertyDetailPage({
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h2 className="text-xl font-medium text-stone-900">
-                {property.name}
+                {formatPropertyDisplayName(property.name, property.unitNumber)}
               </h2>
               <PropertyStatusBadge status={property.status} />
               <PropertyTypeBadge type={property.propertyType} />
@@ -229,6 +230,7 @@ export default async function PropertyDetailPage({
               defaults={{
                 ownerId: property.owner.id,
                 name: property.name,
+                unitNumber: property.unitNumber,
                 city: property.city,
                 neighbourhood: property.neighbourhood,
                 address: property.address,

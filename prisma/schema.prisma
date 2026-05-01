@@ -149,6 +149,12 @@ model Property {
   neighbourhood String?
   address       String
   name          String
+  // Apartment / house / unit identifier within the building. Kept
+  // separate from `name` so admins can't accidentally publish a
+  // property called "Luminara" with no way to tell which apartment
+  // is being managed. Optional because standalone houses don't
+  // have one.
+  unitNumber    String?
   description   String?
   bedrooms      Int?
   bathrooms     Int?

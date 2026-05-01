@@ -29,6 +29,7 @@ import {
   HEATMAP_MAX_MONTHS,
   HEATMAP_STEP,
 } from "@/components/OccupancyCalendar";
+import { formatPropertyDisplayName } from "@/lib/format-property";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
@@ -168,7 +169,7 @@ export default async function OwnerPropertyDetailPage({
         </Link>
         <div className="mt-2 flex flex-wrap items-center gap-3">
           <h2 className="text-2xl font-serif text-stone-900">
-            {property.name}
+            {formatPropertyDisplayName(property.name, property.unitNumber)}
           </h2>
           <PropertyStatusBadge status={property.status} />
           <PropertyTypeBadge type={property.propertyType} />

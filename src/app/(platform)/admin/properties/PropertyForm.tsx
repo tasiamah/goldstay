@@ -19,6 +19,7 @@ type FormAction = (
 type Defaults = {
   ownerId: string;
   name?: string;
+  unitNumber?: string | null;
   city?: string;
   neighbourhood?: string | null;
   address?: string;
@@ -55,14 +56,30 @@ export function PropertyForm({
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="ownerId" value={defaults.ownerId} />
 
-      <Field
-        label="Property name"
-        name="name"
-        defaultValue={defaults.name ?? ""}
-        placeholder="Pinetree Plaza A4B"
-        required
-        error={fieldError("name")}
-      />
+      {/* Building name and unit number sit side-by-side so it's visually
+          obvious that "Pinetree Plaza" alone isn't a complete address.
+          Operators were leaving the apartment number out and we couldn't
+          tell which unit a statement referred to. Unit number is
+          optional because standalone houses don't have one. */}
+      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        <div className="sm:col-span-2">
+          <Field
+            label="Building / property name"
+            name="name"
+            defaultValue={defaults.name ?? ""}
+            placeholder="Pinetree Plaza"
+            required
+            error={fieldError("name")}
+          />
+        </div>
+        <Field
+          label="Unit / house no."
+          name="unitNumber"
+          defaultValue={defaults.unitNumber ?? ""}
+          placeholder="A4B"
+          error={fieldError("unitNumber")}
+        />
+      </fieldset>
 
       <LocationFields
         defaults={{
