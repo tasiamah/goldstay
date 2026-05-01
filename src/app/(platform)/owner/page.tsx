@@ -671,12 +671,13 @@ export default async function OwnerDashboardPage() {
               </h2>
               <HelpHint label="Recent activity">
                 Every rent payment, expense, refund and payout — the
-                numbers behind your statement. Filterable by property
-                and month on the full transactions page.
+                numbers behind your statement. Filter by property
+                and month, or download the signed monthly PDF, on
+                the Statements page.
               </HelpHint>
             </div>
             <Link
-              href="/owner/transactions"
+              href="/owner/statements"
               className="text-xs text-stone-500 hover:text-stone-900"
             >
               See all →

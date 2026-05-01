@@ -157,8 +157,8 @@ export function buildDesiredNotifications(
         body: `On ${inputs.latestPayout.occurredOn.toLocaleDateString(
           "en-GB",
           { day: "2-digit", month: "short", year: "numeric" },
-        )}. See the matching receipt under Transactions.`,
-        href: "/owner/transactions",
+        )}. See the matching receipt on the Statements page.`,
+        href: "/owner/statements",
       });
     }
   }

@@ -46,7 +46,7 @@ export function EarningsOverview({
       <div className="flex flex-wrap items-start justify-between gap-3">
         <h2 className="text-base font-medium text-stone-900">Your earnings</h2>
         <Link
-          href="/owner/transactions"
+          href="/owner/statements"
           className="text-sm font-medium text-stone-700 hover:text-stone-900 hover:underline"
         >
           All my stats →

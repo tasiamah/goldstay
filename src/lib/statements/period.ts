@@ -101,9 +101,9 @@ export function recentPeriods(now: Date, count: number): Period[] {
 
 // Generates every month from `earliest` (inclusive) up to `now`,
 // most recent first, capped at `maxCount` so a 5-year-old account
-// doesn't blow up the dropdown. Used by the owner statements grid
-// and the /owner/transactions month filter so we never show months
-// that predate the landlord's first activity with Goldstay.
+// doesn't blow up the dropdown. Used by the owner statements
+// month filter so we never show months that predate the
+// landlord's first activity with Goldstay.
 export function periodsSince(
   earliest: Date,
   now: Date,

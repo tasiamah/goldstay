@@ -1,10 +1,10 @@
 // Layout for every /owner/* surface.
 //
 // We do one extra Owner lookup here on top of requireUser() so the
-// nav can drop the Transactions / Statements links for landlords
-// who are still in the pending state. Showing a nav full of links
-// that all bounce back to /owner/pending is confusing; better to
-// hide them entirely until the account is wired up.
+// nav can drop the Statements / Payouts / Profile links for
+// landlords who are still in the pending state. Showing a nav full
+// of links that all bounce back to /owner/pending is confusing;
+// better to hide them entirely until the account is wired up.
 //
 // The Owner lookup mirrors the one in requireOwner() — match by
 // authUserId first, fall back to email — so a single source of
@@ -70,12 +70,6 @@ export default async function OwnerLayout({
                 className="text-stone-700 hover:text-stone-900"
               >
                 Overview
-              </Link>
-              <Link
-                href="/owner/transactions"
-                className="text-stone-700 hover:text-stone-900"
-              >
-                Transactions
               </Link>
               <Link
                 href="/owner/statements"
