@@ -76,10 +76,10 @@ enum TransactionType {
   MANAGEMENT_FEE
   PAYOUT
   // Short-term rental flavours.
-  OTA_COMMISSION       // Airbnb / Booking.com / Vrbo cut
-  CLEANING_FEE         // paid out to cleaner (or absorbed)
-  GUEST_REFUND         // chargeback / discount returned to a guest
-  GOLDSTAY_COMMISSION  // our cut on a short-term booking
+  OTA_COMMISSION // Airbnb / Booking.com / Vrbo cut
+  CLEANING_FEE // paid out to cleaner (or absorbed)
+  GUEST_REFUND // chargeback / discount returned to a guest
+  GOLDSTAY_COMMISSION // our cut on a short-term booking
   OTHER
 }
 
@@ -124,108 +124,119 @@ enum AgreementStatus {
 // owner can be a natural person or a company; we capture both shapes
 // in a single denormalised row to keep the early product simple.
 model Owner {
-  id             String     @id @default(cuid())
-  authUserId     String?    @unique
-  email          String     @unique
-  fullName       String
-  phone          String?
-  companyName    String?
-  country        Country
-  preferredCurrency String  @default("USD")
+  id                 String    @id @default(cuid())
+  authUserId         String?   @unique
+  email              String    @unique
+  fullName           String
+  phone              String?
+  companyName        String?
+  country            Country
+  preferredCurrency  String    @default("USD")
   // Set the first time the landlord clicks "Got it" on the welcome
   // tour. Lets us show the introductory guide cards on first login
   // and quietly stand down once they've been there. Nullable so a
   // backfill isn't needed: null === never dismissed.
   welcomeCompletedAt DateTime?
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
+  // Soft-delete column. Default Prisma queries filter `archivedAt: null`;
+  // archived rows survive 30 days for restore via /admin/archive.
+  archivedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
 
   properties     Property[]
+  communications CommunicationLog[]
 
   @@index([country])
+  @@index([archivedAt])
 }
 
 model Property {
-  id            String         @id @default(cuid())
-  ownerId       String
-  owner         Owner          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  country       Country
-  city          String
-  neighbourhood String?
-  address       String
-  name          String
+  id                  String         @id @default(cuid())
+  ownerId             String
+  owner               Owner          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  country             Country
+  city                String
+  neighbourhood       String?
+  address             String
+  name                String
   // Apartment / house / unit identifier within the building. Kept
   // separate from `name` so admins can't accidentally publish a
   // property called "Luminara" with no way to tell which apartment
   // is being managed. Optional because standalone houses don't
   // have one.
-  unitNumber    String?
-  description   String?
-  bedrooms      Int?
-  bathrooms     Int?
-  sizeSqm       Int?
-  acquiredOn    DateTime?
-  acquisitionPrice Decimal?    @db.Decimal(14, 2)
-  acquisitionCurrency String?  @default("USD")
-  status        PropertyStatus @default(ONBOARDING)
-  propertyType  PropertyType   @default(LONG_TERM)
+  unitNumber          String?
+  description         String?
+  bedrooms            Int?
+  bathrooms           Int?
+  sizeSqm             Int?
+  acquiredOn          DateTime?
+  acquisitionPrice    Decimal?       @db.Decimal(14, 2)
+  acquisitionCurrency String?        @default("USD")
+  status              PropertyStatus @default(ONBOARDING)
+  propertyType        PropertyType   @default(LONG_TERM)
   // Hostaway listing id for SHORT_TERM properties. Used by the
   // webhook receiver to map external reservations back to a property.
-  hostawayListingId String?    @unique
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  hostawayListingId   String?        @unique
+  // Soft-delete column. See Owner.archivedAt.
+  archivedAt          DateTime?
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
-  units         Unit[]
-  documents     Document[]
-  valuations    Valuation[]
-  transactions  Transaction[]
-  bookings      Booking[]
-  icalFeeds     PropertyIcalFeed[]
-  agreements    ManagementAgreement[]
+  units        Unit[]
+  documents    Document[]
+  valuations   Valuation[]
+  transactions Transaction[]
+  bookings     Booking[]
+  icalFeeds    PropertyIcalFeed[]
+  agreements   ManagementAgreement[]
 
   @@index([ownerId])
   @@index([country])
   @@index([propertyType])
+  @@index([archivedAt])
 }
 
 model Unit {
-  id          String      @id @default(cuid())
-  propertyId  String
-  property    Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  label       String
-  bedrooms    Int?
-  bathrooms   Int?
-  sizeSqm     Int?
-  status      UnitStatus  @default(VACANT)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
+  id         String     @id @default(cuid())
+  propertyId String
+  property   Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  label      String
+  bedrooms   Int?
+  bathrooms  Int?
+  sizeSqm    Int?
+  status     UnitStatus @default(VACANT)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 
-  leases      Lease[]
+  leases Lease[]
 
   @@index([propertyId])
 }
 
 model Lease {
-  id           String      @id @default(cuid())
-  unitId       String
-  unit         Unit        @relation(fields: [unitId], references: [id], onDelete: Cascade)
-  tenantName   String
-  tenantEmail  String?
-  tenantPhone  String?
-  startDate    DateTime
-  endDate      DateTime?
-  monthlyRent  Decimal     @db.Decimal(12, 2)
-  currency     String      @default("KES")
-  depositAmount Decimal?   @db.Decimal(12, 2)
-  status       LeaseStatus @default(ACTIVE)
-  notes        String?
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id            String      @id @default(cuid())
+  unitId        String
+  unit          Unit        @relation(fields: [unitId], references: [id], onDelete: Cascade)
+  tenantName    String
+  tenantEmail   String?
+  tenantPhone   String?
+  startDate     DateTime
+  endDate       DateTime?
+  monthlyRent   Decimal     @db.Decimal(12, 2)
+  currency      String      @default("KES")
+  depositAmount Decimal?    @db.Decimal(12, 2)
+  status        LeaseStatus @default(ACTIVE)
+  notes         String?
+  // Soft-delete column. See Owner.archivedAt.
+  archivedAt    DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 
   transactions Transaction[]
 
   @@index([unitId])
   @@index([status])
+  @@index([archivedAt])
 }
 
 model Transaction {
@@ -243,12 +254,15 @@ model Transaction {
   currency    String               @default("KES")
   description String?
   reference   String?
+  // Soft-delete column. See Owner.archivedAt.
+  archivedAt  DateTime?
   createdAt   DateTime             @default(now())
   updatedAt   DateTime             @updatedAt
 
   @@index([propertyId, occurredOn])
   @@index([leaseId])
   @@index([bookingId])
+  @@index([archivedAt])
 }
 
 // One row per nightly stay. Created either manually in the admin or
@@ -261,27 +275,27 @@ model Transaction {
 // commission, which lands as a separate Transaction row of type
 // GOLDSTAY_COMMISSION so it stays auditable.
 model Booking {
-  id            String         @id @default(cuid())
+  id            String        @id @default(cuid())
   propertyId    String
-  property      Property       @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  property      Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   source        BookingSource
-  externalId    String?        // upstream reservation id (Hostaway / Airbnb / etc); null for direct
+  externalId    String? // upstream reservation id (Hostaway / Airbnb / etc); null for direct
   guestName     String
   guestEmail    String?
   checkIn       DateTime
   checkOut      DateTime
   nights        Int
-  grossAmount   Decimal        @db.Decimal(12, 2)
-  otaCommission Decimal?       @db.Decimal(12, 2)
-  cleaningFee   Decimal?       @db.Decimal(12, 2)
-  netPayout     Decimal        @db.Decimal(12, 2)
-  currency      String         @default("KES")
-  status        BookingStatus  @default(CONFIRMED)
+  grossAmount   Decimal       @db.Decimal(12, 2)
+  otaCommission Decimal?      @db.Decimal(12, 2)
+  cleaningFee   Decimal?      @db.Decimal(12, 2)
+  netPayout     Decimal       @db.Decimal(12, 2)
+  currency      String        @default("KES")
+  status        BookingStatus @default(CONFIRMED)
   notes         String?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
-  transactions  Transaction[]
+  transactions Transaction[]
 
   // Postgres treats NULL as distinct in unique constraints, so direct
   // bookings with no externalId never collide. Upstream-sourced rows
@@ -299,16 +313,16 @@ model Booking {
 // placeholder Booking rows so the occupancy calendar lights up;
 // the operator backfills financials later from the OTA dashboard.
 model PropertyIcalFeed {
-  id             String        @id @default(cuid())
-  propertyId     String
-  property       Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  source         BookingSource
-  url            String
-  lastSyncedAt   DateTime?
-  lastSuccessAt  DateTime?
-  lastError      String?
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
+  id            String        @id @default(cuid())
+  propertyId    String
+  property      Property      @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  source        BookingSource
+  url           String
+  lastSyncedAt  DateTime?
+  lastSuccessAt DateTime?
+  lastError     String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 
   @@unique([propertyId, source])
   @@index([propertyId])
@@ -319,15 +333,15 @@ model PropertyIcalFeed {
 // the owner dashboard. Source is a free-text label ("Knight Frank",
 // "Goldstay internal", "Hass Index") so we don't lock the schema in.
 model Valuation {
-  id          String   @id @default(cuid())
-  propertyId  String
-  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  valuedOn    DateTime
-  amount      Decimal  @db.Decimal(14, 2)
-  currency    String   @default("USD")
-  source      String?
-  notes       String?
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  valuedOn   DateTime
+  amount     Decimal  @db.Decimal(14, 2)
+  currency   String   @default("USD")
+  source     String?
+  notes      String?
+  createdAt  DateTime @default(now())
 
   @@index([propertyId, valuedOn])
 }
@@ -347,7 +361,7 @@ model Document {
   // Backlink for management agreements that materialise themselves
   // as a Document row on signing. Optional because most documents
   // (title deeds, leases, KYC) have no source agreement.
-  agreement   ManagementAgreement?
+  agreement ManagementAgreement?
 
   @@index([propertyId, kind])
 }
@@ -362,38 +376,235 @@ model Document {
 // onto the row at generation time. Future changes to the defaults
 // helper never retroactively alter a signed contract.
 model ManagementAgreement {
-  id                   String          @id @default(cuid())
-  propertyId           String
-  property             Property        @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
 
   // Snapshot of terms agreed for this specific property.
   termMonths           Int
-  commissionRate       Decimal         @db.Decimal(5, 4) // 0.2000 = 20%
-  earlyExitFee         Decimal         @db.Decimal(12, 2)
+  commissionRate       Decimal @db.Decimal(5, 4) // 0.2000 = 20%
+  earlyExitFee         Decimal @db.Decimal(12, 2)
   earlyExitFeeCurrency String
   noticePeriodDays     Int
-  governingLaw         String          // "Kenya" or "Ghana"
+  governingLaw         String // "Kenya" or "Ghana"
 
-  status               AgreementStatus @default(DRAFT)
+  status AgreementStatus @default(DRAFT)
 
   // Lifecycle timestamps; null until the corresponding event happens.
-  generatedAt          DateTime        @default(now())
-  sentAt               DateTime?
-  signedAt             DateTime?
+  generatedAt DateTime  @default(now())
+  sentAt      DateTime?
+  signedAt    DateTime?
 
   // Click-to-accept signature record. Captured server-side from the
   // request the owner submits, never trusted from form input.
-  signedByName         String?
-  signedByIp           String?
-  signedByUserAgent    String?
+  signedByName      String?
+  signedByIp        String?
+  signedByUserAgent String?
 
   // Once SIGNED we render the PDF and attach it as a Document.
-  documentId           String?         @unique
-  document             Document?       @relation(fields: [documentId], references: [id], onDelete: SetNull)
+  documentId String?   @unique
+  document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
 
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([propertyId])
   @@index([status])
+}
+
+// ---------- Ops infrastructure ----------
+//
+// Everything below this line backs the admin portal's operator
+// experience: who has admin access, who did what, who said what to
+// whom, and which background jobs ran. None of it is exposed to
+// owners; admin pages and server actions read it directly.
+
+enum AdminRole {
+  // Founders. Can do anything, including managing other admins.
+  SUPER_ADMIN
+  // Day-to-day operations: verify properties, record transactions,
+  // send statements. Can't manage admins or change billing terms.
+  OPS
+  // Read everything; write transactions and statements only.
+  ACCOUNTING
+  // Read-only on owners + properties; can log communications and
+  // create tasks. Used for outsourced front-desk help.
+  SUPPORT
+  // Like OPS but scoped to a single country (set on AdminUser.country).
+  COUNTRY_MANAGER
+}
+
+enum AuditEntity {
+  OWNER
+  PROPERTY
+  LEASE
+  BOOKING
+  TRANSACTION
+  DOCUMENT
+  AGREEMENT
+  ADMIN_USER
+}
+
+enum CommunicationChannel {
+  EMAIL
+  WHATSAPP
+  CALL
+  SMS
+}
+
+enum CommunicationDirection {
+  OUTBOUND
+  INBOUND
+}
+
+enum CommunicationStatus {
+  QUEUED
+  SENT
+  DELIVERED
+  BOUNCED
+  FAILED
+}
+
+enum JobStatus {
+  SUCCESS
+  FAILURE
+}
+
+// One row per Goldstay employee or external contractor with admin
+// access. Replaces the env-only allowlist; the env var is now just a
+// bootstrap seed for the very first SUPER_ADMIN row. authUserId is
+// populated on first sign-in so we can read it cheaply from cookies.
+model AdminUser {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  fullName           String
+  role               AdminRole @default(OPS)
+  // For COUNTRY_MANAGER, scope mutations to this country. Null for
+  // every other role.
+  country            Country?
+  authUserId         String?   @unique
+  lastLoginAt        DateTime?
+  welcomeCompletedAt DateTime?
+  archivedAt         DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  auditEvents        AuditEvent[]
+  notes              Note[]
+  tasksAssigned      Task[]             @relation("AssignedTasks")
+  tasksCreated       Task[]             @relation("CreatedTasks")
+  communicationsSent CommunicationLog[]
+
+  @@index([role])
+  @@index([archivedAt])
+}
+
+// Append-only audit trail. Every server action that mutates state
+// writes one row through src/lib/audit.ts. The (entity, entityId)
+// composite index drives the per-entity activity timeline; the
+// createdAt index drives the global "recent activity" admin page.
+model AuditEvent {
+  id           String      @id @default(cuid())
+  actorAdminId String?
+  actorAdmin   AdminUser?  @relation(fields: [actorAdminId], references: [id], onDelete: SetNull)
+  // Email is captured even when actorAdminId resolves so the audit
+  // row survives an admin row being deleted in future. Defensive
+  // duplication, intentional.
+  actorEmail   String
+  entity       AuditEntity
+  entityId     String
+  // Free-form action key, e.g. "property.verified",
+  // "agreement.signed", "owner.created". Matched on by the queue
+  // and timeline filters.
+  action       String
+  summary      String
+  metadata     Json?
+  createdAt    DateTime    @default(now())
+
+  @@index([entity, entityId, createdAt])
+  @@index([actorAdminId])
+  @@index([createdAt])
+}
+
+// Internal notes on any entity. Visible only inside /admin. Notes
+// flow into the activity timeline so a new hire reading the timeline
+// gets both system events and human context in one place.
+model Note {
+  id            String      @id @default(cuid())
+  entity        AuditEntity
+  entityId      String
+  body          String
+  authorAdminId String?
+  authorAdmin   AdminUser?  @relation(fields: [authorAdminId], references: [id], onDelete: SetNull)
+  authorEmail   String
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([entity, entityId, createdAt])
+}
+
+// Lightweight follow-up tasks. Optionally pinned to an entity
+// (entityId + entity), or freestanding for personal admin to-dos.
+// Filtered by assignee + completedAt for the "My tasks" page and
+// the admin attention queue.
+model Task {
+  id               String       @id @default(cuid())
+  entity           AuditEntity?
+  entityId         String?
+  title            String
+  notes            String?
+  dueAt            DateTime?
+  completedAt      DateTime?
+  assigneeAdminId  String?
+  assigneeAdmin    AdminUser?   @relation("AssignedTasks", fields: [assigneeAdminId], references: [id], onDelete: SetNull)
+  createdByAdminId String?
+  createdByAdmin   AdminUser?   @relation("CreatedTasks", fields: [createdByAdminId], references: [id], onDelete: SetNull)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+
+  @@index([entity, entityId])
+  @@index([assigneeAdminId, completedAt])
+  @@index([dueAt, completedAt])
+}
+
+// Every email / WhatsApp / SMS / phone call in either direction.
+// Outbound emails through Resend write a row before the network call
+// (status=QUEUED) and update on success; manual logs (a phone call
+// with the owner) are inserted directly with status=SENT. The owner
+// detail page renders these in a "Communications" tab.
+model CommunicationLog {
+  id            String                 @id @default(cuid())
+  ownerId       String
+  owner         Owner                  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  channel       CommunicationChannel
+  direction     CommunicationDirection
+  subject       String?
+  body          String?
+  // Provider message id (Resend, Twilio, etc.) for cross-referencing
+  // bounces and delivery webhooks.
+  providerId    String?
+  status        CommunicationStatus    @default(SENT)
+  sentByAdminId String?
+  sentByAdmin   AdminUser?             @relation(fields: [sentByAdminId], references: [id], onDelete: SetNull)
+  createdAt     DateTime               @default(now())
+
+  @@index([ownerId, createdAt])
+  @@index([status])
+}
+
+// One row per cron / background job execution. Powers the system
+// health page (last-24h success rate, longest-running, last error).
+// Wrapped via lib/admin/job-run.ts:wrapJob().
+model JobRun {
+  id         String    @id @default(cuid())
+  name       String
+  status     JobStatus
+  startedAt  DateTime
+  finishedAt DateTime
+  summary    String?
+  error      String?
+  createdAt  DateTime  @default(now())
+
+  @@index([name, startedAt])
+  @@index([startedAt])
 }
