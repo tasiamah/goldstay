@@ -18,8 +18,27 @@ import {
   toQueryString,
   type RawSearchParams,
 } from "@/lib/admin/list-search";
+import {
+  PlainHeader,
+  SortableHeader,
+} from "@/components/admin/table/SortableHeader";
+import { Pagination } from "@/components/admin/table/Pagination";
+import {
+  parsePagination,
+  parseSort,
+  sortToParam,
+  type SortState,
+} from "@/lib/admin/table";
 
 export const dynamic = "force-dynamic";
+
+const SORTABLE_PROPERTY_COLUMNS = [
+  "name",
+  "country",
+  "propertyType",
+  "status",
+  "createdAt",
+] as const;
 
 export default async function PropertiesListPage({
   searchParams,
@@ -27,8 +46,15 @@ export default async function PropertiesListPage({
   searchParams?: RawSearchParams;
 }) {
   const filters = parsePropertyListFilters(searchParams);
+  const rawParams = (searchParams ?? {}) as Record<string, string>;
+  const sort = parseSort(
+    rawParams.sort,
+    SORTABLE_PROPERTY_COLUMNS,
+    { column: "createdAt", direction: "desc" },
+  );
+  const { page, pageSize } = parsePagination(rawParams);
 
-  const where: Prisma.PropertyWhereInput = {};
+  const where: Prisma.PropertyWhereInput = { archivedAt: null };
   if (filters.country) where.country = filters.country;
   if (filters.status) where.status = filters.status;
   if (filters.type) where.propertyType = filters.type;
@@ -56,15 +82,22 @@ export default async function PropertiesListPage({
     ];
   }
 
-  const [properties, totalCount] = await Promise.all([
+  const orderBy: Prisma.PropertyOrderByWithRelationInput = {
+    [sort.column]: sort.direction,
+  } as Prisma.PropertyOrderByWithRelationInput;
+
+  const [properties, filteredCount, totalCount] = await Promise.all([
     prisma.property.findMany({
       where,
-      orderBy: { createdAt: "desc" },
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: {
         owner: { select: { id: true, fullName: true, companyName: true } },
       },
     }),
-    prisma.property.count(),
+    prisma.property.count({ where }),
+    prisma.property.count({ where: { archivedAt: null } }),
   ]);
 
   const isFiltered =
@@ -104,10 +137,9 @@ export default async function PropertiesListPage({
           <p className="text-sm text-stone-500">
             {isFiltered ? (
               <>
-                Showing{" "}
-                <strong className="text-stone-700">{properties.length}</strong>{" "}
-                of {totalCount}{" "}
-                {totalCount === 1 ? "property" : "properties"}
+                <strong className="text-stone-700">{filteredCount}</strong> of{" "}
+                {totalCount}{" "}
+                {totalCount === 1 ? "property" : "properties"} match
               </>
             ) : (
               <>
@@ -184,11 +216,35 @@ export default async function PropertiesListPage({
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
-                <Th>Property</Th>
-                <Th>Owner</Th>
-                <Th>Country</Th>
-                <Th>Model</Th>
-                <Th>Status</Th>
+                <SortableHeader
+                  column="name"
+                  label="Property"
+                  current={sort}
+                  basePath="/admin/properties"
+                  params={propertiesTableParams(filters, sort, pageSize)}
+                />
+                <PlainHeader>Owner</PlainHeader>
+                <SortableHeader
+                  column="country"
+                  label="Country"
+                  current={sort}
+                  basePath="/admin/properties"
+                  params={propertiesTableParams(filters, sort, pageSize)}
+                />
+                <SortableHeader
+                  column="propertyType"
+                  label="Model"
+                  current={sort}
+                  basePath="/admin/properties"
+                  params={propertiesTableParams(filters, sort, pageSize)}
+                />
+                <SortableHeader
+                  column="status"
+                  label="Status"
+                  current={sort}
+                  basePath="/admin/properties"
+                  params={propertiesTableParams(filters, sort, pageSize)}
+                />
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -227,26 +283,33 @@ export default async function PropertiesListPage({
               ))}
             </tbody>
           </table>
+          <Pagination
+            basePath="/admin/properties"
+            params={propertiesTableParams(filters, sort, pageSize)}
+            page={page}
+            pageSize={pageSize}
+            totalRows={filteredCount}
+          />
         </div>
       )}
     </div>
   );
 }
 
-function Th({
-  children,
-  align = "left",
-}: {
-  children: React.ReactNode;
-  align?: "left" | "right";
-}) {
-  return (
-    <th
-      className={`px-4 py-2 ${align === "right" ? "text-right" : "text-left"} text-xs font-semibold uppercase tracking-wider text-stone-500`}
-    >
-      {children}
-    </th>
-  );
+function propertiesTableParams(
+  filters: ReturnType<typeof parsePropertyListFilters>,
+  sort: SortState,
+  pageSize: number,
+): Record<string, string> {
+  const out: Record<string, string> = {
+    sort: sortToParam(sort),
+    pageSize: String(pageSize),
+  };
+  if (filters.q) out.q = filters.q;
+  if (filters.country) out.country = filters.country;
+  if (filters.status) out.status = filters.status;
+  if (filters.type) out.type = filters.type;
+  return out;
 }
 
 function EmptyState() {

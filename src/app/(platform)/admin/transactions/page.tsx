@@ -1,17 +1,60 @@
 import Link from "next/link";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import {
+  PlainHeader,
+  SortableHeader,
+} from "@/components/admin/table/SortableHeader";
+import { Pagination } from "@/components/admin/table/Pagination";
+import {
+  parsePagination,
+  parseSort,
+  sortToParam,
+  type SortState,
+} from "@/lib/admin/table";
 
 export const dynamic = "force-dynamic";
 
-export default async function TransactionsListPage() {
-  const txs = await prisma.transaction.findMany({
-    orderBy: { occurredOn: "desc" },
-    take: 200,
-    include: {
-      property: { select: { id: true, name: true, city: true } },
-      lease: { select: { id: true, tenantName: true } },
-    },
-  });
+const SORTABLE_TX_COLUMNS = [
+  "occurredOn",
+  "type",
+  "amount",
+  "currency",
+  "createdAt",
+] as const;
+
+export default async function TransactionsListPage({
+  searchParams,
+}: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
+  const rawParams = (searchParams ?? {}) as Record<string, string>;
+  const sort = parseSort(
+    rawParams.sort,
+    SORTABLE_TX_COLUMNS,
+    { column: "occurredOn", direction: "desc" },
+  );
+  const { page, pageSize } = parsePagination(rawParams);
+
+  const where: Prisma.TransactionWhereInput = { archivedAt: null };
+
+  const orderBy: Prisma.TransactionOrderByWithRelationInput = {
+    [sort.column]: sort.direction,
+  } as Prisma.TransactionOrderByWithRelationInput;
+
+  const [txs, totalCount] = await Promise.all([
+    prisma.transaction.findMany({
+      where,
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+      include: {
+        property: { select: { id: true, name: true, city: true } },
+        lease: { select: { id: true, tenantName: true } },
+      },
+    }),
+    prisma.transaction.count({ where }),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -19,9 +62,8 @@ export default async function TransactionsListPage() {
         <div>
           <h2 className="text-xl font-medium text-stone-900">Transactions</h2>
           <p className="text-sm text-stone-500">
-            {txs.length === 200
-              ? "Showing the 200 most recent transactions"
-              : `${txs.length} ${txs.length === 1 ? "transaction" : "transactions"}`}
+            {totalCount} {totalCount === 1 ? "transaction" : "transactions"}{" "}
+            recorded
           </p>
         </div>
         <Link
@@ -53,11 +95,30 @@ export default async function TransactionsListPage() {
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
-                <Th>Date</Th>
-                <Th>Property</Th>
-                <Th>Lease</Th>
-                <Th>Type</Th>
-                <Th align="right">Amount</Th>
+                <SortableHeader
+                  column="occurredOn"
+                  label="Date"
+                  current={sort}
+                  basePath="/admin/transactions"
+                  params={txTableParams(sort, pageSize)}
+                />
+                <PlainHeader>Property</PlainHeader>
+                <PlainHeader>Lease</PlainHeader>
+                <SortableHeader
+                  column="type"
+                  label="Type"
+                  current={sort}
+                  basePath="/admin/transactions"
+                  params={txTableParams(sort, pageSize)}
+                />
+                <SortableHeader
+                  column="amount"
+                  label="Amount"
+                  current={sort}
+                  basePath="/admin/transactions"
+                  params={txTableParams(sort, pageSize)}
+                  align="right"
+                />
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -119,24 +180,25 @@ export default async function TransactionsListPage() {
               ))}
             </tbody>
           </table>
+          <Pagination
+            basePath="/admin/transactions"
+            params={txTableParams(sort, pageSize)}
+            page={page}
+            pageSize={pageSize}
+            totalRows={totalCount}
+          />
         </div>
       )}
     </div>
   );
 }
 
-function Th({
-  children,
-  align = "left",
-}: {
-  children: React.ReactNode;
-  align?: "left" | "right";
-}) {
-  return (
-    <th
-      className={`px-4 py-2 ${align === "right" ? "text-right" : "text-left"} text-xs font-semibold uppercase tracking-wider text-stone-500`}
-    >
-      {children}
-    </th>
-  );
+function txTableParams(
+  sort: SortState,
+  pageSize: number,
+): Record<string, string> {
+  return {
+    sort: sortToParam(sort),
+    pageSize: String(pageSize),
+  };
 }

@@ -16,8 +16,26 @@ import {
   toQueryString,
   type RawSearchParams,
 } from "@/lib/admin/list-search";
+import {
+  PlainHeader,
+  SortableHeader,
+} from "@/components/admin/table/SortableHeader";
+import { Pagination } from "@/components/admin/table/Pagination";
+import {
+  parsePagination,
+  parseSort,
+  sortToParam,
+  type SortState,
+} from "@/lib/admin/table";
 
 export const dynamic = "force-dynamic";
+
+const SORTABLE_OWNER_COLUMNS = [
+  "fullName",
+  "email",
+  "country",
+  "createdAt",
+] as const;
 
 export default async function OwnersListPage({
   searchParams,
@@ -25,11 +43,18 @@ export default async function OwnersListPage({
   searchParams?: RawSearchParams;
 }) {
   const filters = parseOwnerListFilters(searchParams);
+  const rawParams = (searchParams ?? {}) as Record<string, string>;
+  const sort = parseSort(
+    rawParams.sort,
+    SORTABLE_OWNER_COLUMNS,
+    { column: "createdAt", direction: "desc" },
+  );
+  const { page, pageSize } = parsePagination(rawParams);
 
   // Build a Prisma where clause from the parsed filters. Search
   // covers the four fields a Goldstay ops person reasonably types
   // when looking for a landlord: name, company, email, phone.
-  const where: Prisma.OwnerWhereInput = {};
+  const where: Prisma.OwnerWhereInput = { archivedAt: null };
   if (filters.country) where.country = filters.country;
   if (filters.q) {
     where.OR = [
@@ -40,13 +65,20 @@ export default async function OwnersListPage({
     ];
   }
 
-  const [owners, totalCount] = await Promise.all([
+  const orderBy: Prisma.OwnerOrderByWithRelationInput = {
+    [sort.column]: sort.direction,
+  } as Prisma.OwnerOrderByWithRelationInput;
+
+  const [owners, filteredCount, totalCount] = await Promise.all([
     prisma.owner.findMany({
       where,
-      orderBy: { createdAt: "desc" },
+      orderBy,
+      skip: (page - 1) * pageSize,
+      take: pageSize,
       include: { _count: { select: { properties: true } } },
     }),
-    prisma.owner.count(),
+    prisma.owner.count({ where }),
+    prisma.owner.count({ where: { archivedAt: null } }),
   ]);
 
   const isFiltered = filters.q !== "" || filters.country !== null;
@@ -66,14 +98,13 @@ export default async function OwnersListPage({
           <p className="text-sm text-stone-500">
             {isFiltered ? (
               <>
-                Showing <strong className="text-stone-700">{owners.length}</strong>{" "}
-                of {totalCount}{" "}
-                {totalCount === 1 ? "owner" : "owners"}
+                <strong className="text-stone-700">{filteredCount}</strong> of{" "}
+                {totalCount} {totalCount === 1 ? "owner" : "owners"} match
               </>
             ) : (
               <>
-                {totalCount} {totalCount === 1 ? "owner" : "owners"} in
-                the platform
+                {totalCount} {totalCount === 1 ? "owner" : "owners"} in the
+                platform
               </>
             )}
           </p>
@@ -131,11 +162,35 @@ export default async function OwnersListPage({
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
-                <Th>Name</Th>
-                <Th>Email</Th>
-                <Th>Country</Th>
-                <Th align="right">Properties</Th>
-                <Th>Joined</Th>
+                <SortableHeader
+                  column="fullName"
+                  label="Name"
+                  current={sort}
+                  basePath="/admin/owners"
+                  params={ownersTableParams(filters, sort, pageSize)}
+                />
+                <SortableHeader
+                  column="email"
+                  label="Email"
+                  current={sort}
+                  basePath="/admin/owners"
+                  params={ownersTableParams(filters, sort, pageSize)}
+                />
+                <SortableHeader
+                  column="country"
+                  label="Country"
+                  current={sort}
+                  basePath="/admin/owners"
+                  params={ownersTableParams(filters, sort, pageSize)}
+                />
+                <PlainHeader align="right">Properties</PlainHeader>
+                <SortableHeader
+                  column="createdAt"
+                  label="Joined"
+                  current={sort}
+                  basePath="/admin/owners"
+                  params={ownersTableParams(filters, sort, pageSize)}
+                />
               </tr>
             </thead>
             <tbody className="divide-y divide-stone-100">
@@ -180,26 +235,31 @@ export default async function OwnersListPage({
               })}
             </tbody>
           </table>
+          <Pagination
+            basePath="/admin/owners"
+            params={ownersTableParams(filters, sort, pageSize)}
+            page={page}
+            pageSize={pageSize}
+            totalRows={filteredCount}
+          />
         </div>
       )}
     </div>
   );
 }
 
-function Th({
-  children,
-  align = "left",
-}: {
-  children: React.ReactNode;
-  align?: "left" | "right";
-}) {
-  return (
-    <th
-      className={`px-4 py-2 ${align === "right" ? "text-right" : "text-left"} text-xs font-semibold uppercase tracking-wider text-stone-500`}
-    >
-      {children}
-    </th>
-  );
+function ownersTableParams(
+  filters: { q: string; country: "KE" | "GH" | null },
+  sort: SortState,
+  pageSize: number,
+): Record<string, string> {
+  const out: Record<string, string> = {
+    sort: sortToParam(sort),
+    pageSize: String(pageSize),
+  };
+  if (filters.q) out.q = filters.q;
+  if (filters.country) out.country = filters.country;
+  return out;
 }
 
 function EmptyState() {
