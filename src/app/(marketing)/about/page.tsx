@@ -144,6 +144,10 @@ function Thesis({ city }: { city: "nairobi" | "accra" | null }) {
 }
 
 function Principles() {
+  // Re-derive city here so the lede stays single-market on the localised
+  // domains (.co.ke / .com.gh) without having to thread the prop down
+  // from the page component.
+  const city = getServerCity();
   const pillars = [
     {
       title: "Owner-first accounting",
@@ -169,7 +173,13 @@ function Principles() {
         <SectionHeader
           eyebrow="How we work"
           title="Boring in the best ways."
-          lede="We are not the cheapest manager in Nairobi or Accra. We do not try to be. We try to be the one you can stop worrying about."
+          lede={`We are not the cheapest manager in ${
+            city === "nairobi"
+              ? "Nairobi"
+              : city === "accra"
+                ? "Accra"
+                : "Nairobi or Accra"
+          }. We do not try to be. We try to be the one you can stop worrying about.`}
         />
         <div className="mt-16 grid gap-5 sm:grid-cols-2">
           {pillars.map((p, i) => (

@@ -9,6 +9,7 @@ import { CalculatorTeaser } from "@/components/CalculatorTeaser";
 import { WhySection } from "@/components/WhySection";
 import { GuaranteesSection } from "@/components/GuaranteesSection";
 import { StatementPreview } from "@/components/StatementPreview";
+import { DashboardPreview } from "@/components/DashboardPreview";
 import { PortfolioGallery } from "@/components/PortfolioGallery";
 import { LocationsSection } from "@/components/LocationsSection";
 import { HowItWorks } from "@/components/HowItWorks";
@@ -30,6 +31,7 @@ export default function Home() {
       <WhySection />
       <GuaranteesSection />
       <StatementPreview />
+      <DashboardPreview />
       <PortfolioGallery />
       <LocationsSection />
       <HowItWorks />

@@ -8,6 +8,7 @@ import { CalculatorTeaser } from "./CalculatorTeaser";
 import { WhySection } from "./WhySection";
 import { GuaranteesSection } from "./GuaranteesSection";
 import { StatementPreview } from "./StatementPreview";
+import { DashboardPreview } from "./DashboardPreview";
 import { NeighbourhoodEconomics } from "./NeighbourhoodEconomics";
 import { HowItWorks } from "./HowItWorks";
 import { FAQSection } from "./FAQSection";
@@ -125,6 +126,7 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       <WhySection city={city} />
       <GuaranteesSection />
       <StatementPreview city={city} />
+      <DashboardPreview city={city} />
 
       <section className="section">
         <div className="container-gs">
