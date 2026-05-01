@@ -68,6 +68,12 @@ export default async function OwnerDetailPage({
             <p className="mt-2 flex flex-wrap items-center gap-2">
               <ResendWelcomeButton ownerId={owner.id} />
               <ImpersonateButton ownerId={owner.id} />
+              <Link
+                href={`/admin/owners/${owner.id}/statement`}
+                className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-1.5 text-xs font-medium text-stone-900 hover:bg-stone-50"
+              >
+                Statement preview
+              </Link>
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">
