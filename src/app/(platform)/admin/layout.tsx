@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { AdminToaster } from "@/components/admin/Toaster";
+import { CommandPalette } from "@/components/admin/CommandPalette";
 import { ROLE_LABEL } from "@/lib/admin/roles";
 
 export default async function AdminLayout({
@@ -28,10 +29,21 @@ export default async function AdminLayout({
             ) : null}
           </p>
         </div>
-        <AdminNav role={admin.role} />
+        <div className="flex items-center gap-3">
+          <span
+            className="hidden items-center gap-1.5 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-500 sm:inline-flex"
+            aria-hidden="true"
+          >
+            <kbd className="font-sans">⌘</kbd>
+            <kbd className="font-sans">K</kbd>
+            <span>to search</span>
+          </span>
+          <AdminNav role={admin.role} />
+        </div>
       </header>
       {children}
       <AdminToaster />
+      <CommandPalette />
     </div>
   );
 }
