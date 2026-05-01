@@ -176,6 +176,20 @@ export function ListPropertyForm() {
   const field =
     "mt-2 block w-full rounded-xl border border-charcoal/15 bg-white px-4 py-3 text-sm text-charcoal placeholder:text-charcoal/40 focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/30";
 
+  // Conversion-funnel rule: ask for the minimum we need to call the
+  // landlord back, hide everything else behind a deliberate click.
+  // The four required fields below are the smallest set that lets ops
+  // (a) reach the person, (b) know which market they're in, and
+  // (c) decide whether to staff a Nairobi or Accra agent on the call.
+  // Everything else (bedrooms, furnishing, availability, notes,
+  // service preference) is useful-but-not-blocking; we surface it
+  // under a "Tell us more" disclosure so a landlord who *wants* to
+  // give context can, but a landlord who just wants a callback isn't
+  // forced through 9 extra fields on mobile. Server contract is
+  // unchanged: undefined fields just don't appear on the Resend email
+  // or the Airtable row, both of which already tolerate that.
+  const [moreOpen, setMoreOpen] = useState(false);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit, onInvalid)}
@@ -195,24 +209,17 @@ export function ListPropertyForm() {
           ) : null}
         </div>
         <div>
-          <label className="eyebrow">Email</label>
-          <input
-            type="email"
-            className={field}
-            placeholder="you@example.com"
-            {...register("email", { required: true })}
-          />
-          {errors.email ? (
-            <p className="mt-1 text-xs text-red-700">Valid email required</p>
-          ) : null}
-        </div>
-        <div>
           <label className="eyebrow">Phone / WhatsApp</label>
           <input
             className={field}
             placeholder="+44 7..."
             {...register("phone", { required: true })}
           />
+          {errors.phone ? (
+            <p className="mt-1 text-xs text-red-700">
+              We need a number to call you back on.
+            </p>
+          ) : null}
         </div>
         <div>
           <label className="eyebrow">Country you live in</label>
@@ -242,95 +249,129 @@ export function ListPropertyForm() {
             ))}
           </select>
         </div>
-        <div>
-          <label className="eyebrow">Neighbourhood</label>
-          <input
-            className={field}
-            placeholder={neighbourhoodPlaceholder}
-            {...register("neighbourhood")}
-          />
-        </div>
-        <div>
-          <label className="eyebrow">Property type</label>
-          <select
-            className={field}
-            defaultValue=""
-            {...register("propertyType", { required: true })}
+      </div>
+
+      <div className="border-t border-charcoal/10 pt-5">
+        <button
+          type="button"
+          onClick={() => setMoreOpen((v) => !v)}
+          className="flex w-full items-center justify-between text-left text-sm text-charcoal/70 hover:text-charcoal"
+          aria-expanded={moreOpen}
+          aria-controls="list-property-more"
+        >
+          <span>
+            <span className="font-medium text-charcoal">
+              Tell us more (optional)
+            </span>{" "}
+            <span className="text-charcoal/55">
+              — speeds up the call, but not required.
+            </span>
+          </span>
+          <span aria-hidden className="text-charcoal/55">
+            {moreOpen ? "−" : "+"}
+          </span>
+        </button>
+
+        {moreOpen ? (
+          <div
+            id="list-property-more"
+            className="mt-5 grid gap-6 md:grid-cols-2"
           >
-            <option value="" disabled>
-              Pick the property type
-            </option>
-            {PROPERTY_TYPES.map((p) => (
-              <option key={p}>{p}</option>
-            ))}
-          </select>
-          {errors.propertyType ? (
-            <p className="mt-1 text-xs text-red-700">
-              Please pick a property type.
-            </p>
-          ) : null}
-        </div>
-        <div>
-          <label className="eyebrow">Bedrooms</label>
-          <select
-            className={field}
-            {...register("bedrooms", { required: true })}
-          >
-            <option>Studio</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5+</option>
-          </select>
-        </div>
-        <div>
-          <label className="eyebrow">Furnishing</label>
-          <select className={field} {...register("furnished")}>
-            <option>Furnished</option>
-            <option>Unfurnished</option>
-            <option>Part-furnished</option>
-          </select>
-        </div>
-        <div>
-          <label className="eyebrow">Preferred service</label>
-          <select className={field} {...register("service")}>
-            <option>Long-term</option>
-            <option>Short-stay / Airbnb</option>
-            <option>Help me buy a property</option>
-            <option>Tenant finding only</option>
-            <option>Not sure</option>
-          </select>
-        </div>
-        <div className="md:col-span-2">
-          <label className="eyebrow">When is the property available?</label>
-          <select
-            className={field}
-            defaultValue=""
-            {...register("availability", { required: true })}
-          >
-            <option value="" disabled>
-              Select availability
-            </option>
-            {AVAILABILITY_OPTIONS.map((a) => (
-              <option key={a}>{a}</option>
-            ))}
-          </select>
-          {errors.availability ? (
-            <p className="mt-1 text-xs text-red-700">
-              Please pick when the property is available.
-            </p>
-          ) : null}
-        </div>
-        <div className="md:col-span-2">
-          <label className="eyebrow">Anything else we should know?</label>
-          <textarea
-            rows={4}
-            className={field}
-            placeholder="Current tenant situation, previous agent, goals…"
-            {...register("notes")}
-          />
-        </div>
+            <div>
+              <label className="eyebrow">Email</label>
+              <input
+                type="email"
+                className={field}
+                placeholder="you@example.com"
+                {...register("email")}
+              />
+              <p className="mt-1 text-xs text-charcoal/55">
+                Helps us send a written summary after the call.
+              </p>
+            </div>
+            <div>
+              <label className="eyebrow">Neighbourhood</label>
+              <input
+                className={field}
+                placeholder={neighbourhoodPlaceholder}
+                {...register("neighbourhood")}
+              />
+            </div>
+            <div>
+              <label className="eyebrow">Property type</label>
+              <select
+                className={field}
+                defaultValue=""
+                {...register("propertyType")}
+              >
+                <option value="">Pick the property type</option>
+                {PROPERTY_TYPES.map((p) => (
+                  <option key={p}>{p}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className="eyebrow">Bedrooms</label>
+              <select
+                className={field}
+                defaultValue=""
+                {...register("bedrooms")}
+              >
+                <option value="">Pick bedrooms</option>
+                <option>Studio</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5+</option>
+              </select>
+            </div>
+            <div>
+              <label className="eyebrow">Furnishing</label>
+              <select className={field} {...register("furnished")}>
+                <option>Furnished</option>
+                <option>Unfurnished</option>
+                <option>Part-furnished</option>
+              </select>
+            </div>
+            <div>
+              <label className="eyebrow">Preferred service</label>
+              <select className={field} {...register("service")}>
+                <option>Not sure</option>
+                <option>Long-term</option>
+                <option>Short-stay / Airbnb</option>
+                <option>Help me buy a property</option>
+                <option>Tenant finding only</option>
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="eyebrow">
+                When is the property available?
+              </label>
+              <select
+                className={field}
+                defaultValue=""
+                {...register("availability")}
+              >
+                <option value="">Select availability</option>
+                {AVAILABILITY_OPTIONS.map((a) => (
+                  <option key={a}>{a}</option>
+                ))}
+              </select>
+            </div>
+            <div className="md:col-span-2">
+              <label className="eyebrow">
+                Anything else we should know?
+              </label>
+              <textarea
+                rows={4}
+                className={field}
+                placeholder="Current tenant situation, previous agent, goals…"
+                {...register("notes")}
+              />
+            </div>
+          </div>
+        ) : null}
       </div>
 
       <div>
