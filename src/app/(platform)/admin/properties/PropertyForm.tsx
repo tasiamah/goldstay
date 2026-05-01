@@ -39,11 +39,21 @@ export function PropertyForm({
   defaults,
   submitLabel,
   ownerCountry,
+  isEditing = false,
 }: {
   action: FormAction;
   defaults: Defaults;
   submitLabel: string;
   ownerCountry: "KE" | "GH";
+  // When true the form is editing an existing property. The rental
+  // model (LONG_TERM / SHORT_TERM) is locked because switching it
+  // mid-life would invalidate the snapshotted commission rate on
+  // any open management agreement and silently change how every
+  // future booking is treated by the statement aggregator. The
+  // change has to be deliberate and is gated on a back-office
+  // override; the server action enforces the same lock so a
+  // direct POST can't bypass it.
+  isEditing?: boolean;
 }) {
   // Status is intentionally not on this form. It's a lifecycle state
   // (Onboarding → Active → Exited) driven by explicit actions on the
@@ -109,17 +119,23 @@ export function PropertyForm({
       />
 
       <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Select
-          label="Rental model"
-          name="propertyType"
-          defaultValue={defaults.propertyType ?? "LONG_TERM"}
-          required
-          options={[
-            { value: "LONG_TERM", label: "Long-term lease" },
-            { value: "SHORT_TERM", label: "Short-term (Airbnb)" },
-          ]}
-          error={fieldError("propertyType")}
-        />
+        {isEditing ? (
+          <RentalModelLocked
+            value={defaults.propertyType ?? "LONG_TERM"}
+          />
+        ) : (
+          <Select
+            label="Rental model"
+            name="propertyType"
+            defaultValue={defaults.propertyType ?? "LONG_TERM"}
+            required
+            options={[
+              { value: "LONG_TERM", label: "Long-term lease" },
+              { value: "SHORT_TERM", label: "Short-term (Airbnb)" },
+            ]}
+            error={fieldError("propertyType")}
+          />
+        )}
         <Field
           label="Hostaway listing ID"
           name="hostawayListingId"
@@ -348,6 +364,44 @@ function LocationFields({
           ) : null}
         </label>
       )}
+    </div>
+  );
+}
+
+// Read-only display for the rental model on edit. Hidden input is
+// a defence-in-depth move so a stale form payload still posts the
+// existing value; the server action enforces the real lock by
+// reading the current value from the DB and ignoring the form input.
+function RentalModelLocked({
+  value,
+}: {
+  value: "LONG_TERM" | "SHORT_TERM";
+}) {
+  const label =
+    value === "SHORT_TERM" ? "Short-term (Airbnb)" : "Long-term lease";
+  return (
+    <div>
+      <span className="block text-sm font-medium text-stone-700">
+        Rental model
+      </span>
+      <div className="mt-1 flex items-center gap-2 rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm text-stone-700">
+        <span className="font-medium text-stone-900">{label}</span>
+        <span className="text-xs uppercase tracking-wider text-stone-500">
+          Locked
+        </span>
+      </div>
+      <p className="mt-1 text-xs text-stone-500">
+        Switching the rental model rewrites commission terms and
+        statement structure. Email{" "}
+        <a
+          href="mailto:hello@goldstay.co.ke"
+          className="underline-offset-2 hover:underline"
+        >
+          hello@goldstay.co.ke
+        </a>{" "}
+        to make the change.
+      </p>
+      <input type="hidden" name="propertyType" value={value} />
     </div>
   );
 }

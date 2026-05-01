@@ -245,6 +245,7 @@ export default async function PropertyDetailPage({
             <PropertyForm
               action={boundUpdate}
               ownerCountry={property.owner.country}
+              isEditing
               defaults={{
                 ownerId: property.owner.id,
                 name: property.name,

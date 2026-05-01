@@ -115,10 +115,28 @@ export async function updatePropertyAction(
   }
 
   try {
-    const { ownerId: _ignored, ...rest } = parsed.data;
+    // Rental model is locked once a property exists. Switching it
+    // mid-life would silently rewrite the snapshotted commission
+    // rate on any open management agreement and change how every
+    // future booking is treated by the statement aggregator. The
+    // form already renders a read-only display in edit mode, but
+    // we also defend server-side so a direct POST or stale form
+    // payload can't slip a switch through. Updates require an
+    // explicit back-office action (changeRentalModelAction) that
+    // hasn't been built yet — the placeholder is intentional.
+    const existing = await prisma.property.findUnique({
+      where: { id: propertyId },
+      select: { propertyType: true },
+    });
+    if (!existing) {
+      return { ok: false, error: "Property not found." };
+    }
+
+    const { ownerId: _ignored, propertyType: _attempted, ...rest } =
+      parsed.data;
     await prisma.property.update({
       where: { id: propertyId },
-      data: rest,
+      data: { ...rest, propertyType: existing.propertyType },
     });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
