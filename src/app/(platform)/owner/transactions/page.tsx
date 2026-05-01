@@ -298,7 +298,7 @@ function Th({
 }) {
   return (
     <th
-      className={`px-4 py-2 text-${align} text-xs font-semibold uppercase tracking-wider text-stone-500`}
+      className={`px-4 py-2 ${align === "right" ? "text-right" : "text-left"} text-xs font-semibold uppercase tracking-wider text-stone-500`}
     >
       {children}
     </th>

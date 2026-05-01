@@ -17,6 +17,10 @@ export const airtableTables = {
   vacancy: process.env.AIRTABLE_VACANCY_TABLE || "Vacancy Leads",
   units: process.env.AIRTABLE_UNITS_TABLE || "Units",
   waitlist: process.env.AIRTABLE_WAITLIST_TABLE || "Tenant waitlist",
+  acquisition:
+    process.env.AIRTABLE_ACQUISITION_TABLE || "Acquisition Targets",
+  yieldReports:
+    process.env.AIRTABLE_YIELD_REPORTS_TABLE || "Yield Reports",
 } as const;
 
 function getConfig() {
@@ -81,6 +85,68 @@ export async function createAirtableRecord(
   } catch (e) {
     console.error(`[airtable] create error on "${table}":`, e);
   }
+}
+
+// Patch (partial update) for an existing record by id. Returns true on
+// success, false on any error. Best-effort like the rest of this module.
+export async function patchAirtableRecord(
+  table: string,
+  recordId: string,
+  fields: AirtableFields,
+): Promise<boolean> {
+  const cfg = getConfig();
+  if (!cfg) return false;
+
+  const cleaned = cleanFields(fields);
+  if (Object.keys(cleaned).length === 0) return true;
+
+  try {
+    const res = await fetch(
+      `${AIRTABLE_API}/${cfg.baseId}/${encodeURIComponent(table)}/${recordId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${cfg.apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ fields: cleaned, typecast: true }),
+      },
+    );
+    if (!res.ok) {
+      const body = await res.text();
+      console.error(
+        `[airtable] patch failed on "${table}/${recordId}": ${res.status} ${body}`,
+      );
+      return false;
+    }
+    return true;
+  } catch (e) {
+    console.error(`[airtable] patch error on "${table}/${recordId}":`, e);
+    return false;
+  }
+}
+
+// Lookup-or-null helper for dedupe paths (e.g. "is this listing URL
+// already in Acquisition Targets?"). Returns the first matching record
+// or null. Single-purpose convenience over listAirtableRecords.
+export async function findFirstAirtableRecord<T extends AirtableFields>(
+  table: string,
+  filterByFormula: string,
+  fields?: string[],
+): Promise<{ id: string; fields: T } | null> {
+  const records = await listAirtableRecords<T>(table, {
+    filterByFormula,
+    fields,
+    maxRecords: 1,
+  });
+  return records[0] ?? null;
+}
+
+// Escape a value to be safe inside an Airtable filterByFormula string
+// literal. Airtable formulas use single-quoted strings, so backslashes
+// and single quotes are the only chars that need escaping.
+export function escapeFormulaValue(input: string): string {
+  return input.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
 }
 
 // Generic reader. Returns an empty array when Airtable isn't configured or

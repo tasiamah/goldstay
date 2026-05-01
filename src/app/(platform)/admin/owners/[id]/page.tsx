@@ -6,6 +6,7 @@ import {
   formatOwnerDisplayName,
   formatOwnerSecondaryName,
 } from "@/lib/format-owner";
+import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 import { ResendWelcomeButton } from "./ResendWelcomeButton";
@@ -33,12 +34,12 @@ export default async function OwnerDetailPage({
   return (
     <div className="space-y-8">
       <div>
-        <Link
-          href="/admin/owners"
-          className="text-sm text-stone-500 hover:text-stone-900"
-        >
-          ← Owners
-        </Link>
+        <Breadcrumbs
+          items={[
+            { label: "Owners", href: "/admin/owners" },
+            { label: formatOwnerDisplayName(owner) },
+          ]}
+        />
         <div className="mt-2 flex items-end justify-between gap-4">
           <div>
             <h2 className="text-xl font-medium text-stone-900">

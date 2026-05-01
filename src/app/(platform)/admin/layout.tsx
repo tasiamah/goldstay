@@ -1,5 +1,6 @@
-import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
+import { AdminNav } from "@/components/admin/AdminNav";
+import { ROLE_LABEL } from "@/lib/admin/roles";
 
 export default async function AdminLayout({
   children,
@@ -10,7 +11,7 @@ export default async function AdminLayout({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-6 py-10">
-      <header className="mb-10 flex items-center justify-between border-b border-stone-200 pb-6">
+      <header className="mb-10 flex flex-wrap items-center justify-between gap-4 border-b border-stone-200 pb-6">
         <div>
           <p className="text-xs uppercase tracking-wider text-stone-500">
             Goldstay admin
@@ -19,40 +20,14 @@ export default async function AdminLayout({
             Operations
           </h1>
           <p className="mt-1 text-sm text-stone-500">
-            {admin.fullName} · {admin.email}
+            {admin.fullName} · {admin.email} ·{" "}
+            <span className="text-stone-700">{ROLE_LABEL[admin.role]}</span>
+            {admin.country ? (
+              <span className="text-stone-500"> ({admin.country})</span>
+            ) : null}
           </p>
         </div>
-        <nav className="flex items-center gap-4 text-sm">
-          <Link href="/admin" className="text-stone-700 hover:text-stone-900">
-            Overview
-          </Link>
-          <Link
-            href="/admin/owners"
-            className="text-stone-700 hover:text-stone-900"
-          >
-            Owners
-          </Link>
-          <Link
-            href="/admin/properties"
-            className="text-stone-700 hover:text-stone-900"
-          >
-            Properties
-          </Link>
-          <Link
-            href="/admin/transactions"
-            className="text-stone-700 hover:text-stone-900"
-          >
-            Transactions
-          </Link>
-          <form action="/auth/sign-out" method="post">
-            <button
-              type="submit"
-              className="rounded-md border border-stone-300 px-3 py-1.5 text-stone-700 hover:bg-white"
-            >
-              Sign out
-            </button>
-          </form>
-        </nav>
+        <AdminNav role={admin.role} />
       </header>
       {children}
     </div>

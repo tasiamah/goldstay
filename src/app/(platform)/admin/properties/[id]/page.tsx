@@ -33,6 +33,8 @@ import {
   revenueTotalsByCurrency,
   type BookingLike,
 } from "@/lib/bookings/aggregate";
+import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
+import { Tip } from "@/components/admin/Tip";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
@@ -173,20 +175,37 @@ export default async function PropertyDetailPage({
   return (
     <div className="space-y-8">
       <div>
-        <Link
-          href={`/admin/owners/${property.owner.id}`}
-          className="text-sm text-stone-500 hover:text-stone-900"
-        >
-          ← {formatOwnerDisplayName(property.owner)}
-        </Link>
+        <Breadcrumbs
+          items={[
+            { label: "Properties", href: "/admin/properties" },
+            {
+              label: formatOwnerDisplayName(property.owner),
+              href: `/admin/owners/${property.owner.id}`,
+            },
+            {
+              label: formatPropertyDisplayName(
+                property.name,
+                property.unitNumber,
+              ),
+            },
+          ]}
+        />
         <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex flex-wrap items-center gap-3">
               <h2 className="text-xl font-medium text-stone-900">
                 {formatPropertyDisplayName(property.name, property.unitNumber)}
               </h2>
-              <PropertyStatusBadge status={property.status} />
-              <PropertyTypeBadge type={property.propertyType} />
+              <Tip term={<PropertyStatusBadge status={property.status} />}>
+                ONBOARDING — verifying documents.
+                ACTIVE — under management; statements run.
+                EXITED — left the portfolio; data retained.
+              </Tip>
+              <Tip term={<PropertyTypeBadge type={property.propertyType} />}>
+                LONG_TERM rents to a single tenant under a Lease.
+                SHORT_TERM lights up the calendar from Bookings
+                (Airbnb, Booking.com, direct).
+              </Tip>
             </div>
             <p className="mt-1 text-sm text-stone-500">
               {property.neighbourhood ? `${property.neighbourhood}, ` : ""}

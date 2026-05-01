@@ -36,6 +36,7 @@ const text = () => ({ type: "singleLineText" });
 const longText = () => ({ type: "multilineText" });
 const email = () => ({ type: "email" });
 const phone = () => ({ type: "phoneNumber" });
+const url = () => ({ type: "url" });
 const checkbox = () => ({
   type: "checkbox",
   options: { icon: "check", color: "greenBright" },
@@ -47,6 +48,10 @@ const dateTime = () => ({
     timeFormat: { name: "24hour" },
     timeZone: "client",
   },
+});
+const dateOnly = () => ({
+  type: "date",
+  options: { dateFormat: { name: "iso" } },
 });
 const numberInt = () => ({
   type: "number",
@@ -247,6 +252,85 @@ const tablesSpec = [
       { name: "Description", ...longText() },
       { name: "Photo URL", type: "url" },
       { name: "Internal notes", ...longText() },
+    ],
+  },
+  {
+    name: "Acquisition Targets",
+    description:
+      "Outbound acquisition pipeline. Rows are appended by the nightly scrape cron (Airbnb, BuyRentKenya, etc.) and worked top-down by ops. Owner score 70+ is the prioritised call list; lister type 'Likely agent' is hidden by default.",
+    fields: [
+      // Primary is Listing URL because (source, url) is the natural
+      // dedupe key — the same property posted on two networks is two
+      // rows on purpose, so ops can decide which channel to mention.
+      { name: "Listing URL", ...url() },
+      {
+        name: "Source",
+        ...singleSelect([
+          "Airbnb",
+          "BuyRentKenya",
+          "Property24",
+          "Jiji",
+          "Hauzisha",
+          "Facebook group",
+          "Manual",
+        ]),
+      },
+      { name: "City", ...singleSelect(["Nairobi", "Accra", "Other"]) },
+      { name: "Neighbourhood", ...text() },
+      { name: "Title", ...text() },
+      { name: "Bedrooms", ...numberInt() },
+      { name: "Asking price USD", ...currency() },
+      { name: "Listed on", ...dateOnly() },
+      { name: "Days on market", ...numberInt() },
+      { name: "Lister name", ...text() },
+      { name: "Lister phone", ...phone() },
+      {
+        name: "Lister type",
+        ...singleSelect(["Likely owner", "Likely agent", "Unknown"]),
+      },
+      // 0..100 likelihood that the lister is the actual owner (not an
+      // agent). Higher = better target. Computed by classify().
+      { name: "Owner score", ...numberInt() },
+      // 0..100 likelihood the listing represents vacancy pain (stale,
+      // discounted, repeated relistings). Higher = warmer outbound.
+      { name: "Pain score", ...numberInt() },
+      { name: "Notes", ...longText() },
+      { name: "First seen", ...dateTime() },
+      { name: "Last seen", ...dateTime() },
+      {
+        name: "Status",
+        ...singleSelect([
+          "New",
+          "Contacted",
+          "Pitched",
+          "Signed",
+          "Not interested",
+          "Not an owner",
+        ]),
+      },
+    ],
+  },
+  {
+    name: "Yield Reports",
+    description:
+      "Lead magnet captures from /yield-calculator. Each row is a landlord who entered a property and downloaded a PDF report. Treat as a high-intent lead and follow up within 24h.",
+    fields: [
+      { name: "Email", ...email() },
+      { name: "Name", ...text() },
+      { name: "Phone", ...phone() },
+      { name: "City", ...singleSelect(["Nairobi", "Accra", "Other"]) },
+      { name: "Neighbourhood", ...text() },
+      { name: "Bedrooms", ...numberInt() },
+      { name: "Stay strategy", ...singleSelect(["Long-term", "Short-stay"]) },
+      { name: "Self-managed monthly USD", ...currency() },
+      { name: "Goldstay net monthly USD", ...currency() },
+      { name: "Annual uplift USD", ...currency() },
+      { name: "Submitted", ...dateTime() },
+      { name: "Source", ...text() },
+      {
+        name: "Status",
+        ...singleSelect(["New", "Contacted", "Onboarded", "Lost"]),
+      },
     ],
   },
   {
