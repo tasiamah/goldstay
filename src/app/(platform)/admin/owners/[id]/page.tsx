@@ -15,6 +15,7 @@ import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 import { ResendWelcomeButton } from "./ResendWelcomeButton";
 import { ImpersonateButton } from "@/components/admin/ImpersonateButton";
+import { ArchiveButton } from "@/components/admin/ArchiveButton";
 import { PayoutMethodsCard } from "./payouts/PayoutMethodsCard";
 import { OwnerDocumentsCard } from "./documents/OwnerDocumentsCard";
 
@@ -74,6 +75,12 @@ export default async function OwnerDetailPage({
               >
                 Statement preview
               </Link>
+              <ArchiveButton
+                entity="OWNER"
+                id={owner.id}
+                returnPath={`/admin/owners/${owner.id}`}
+                redirectAfter="/admin/owners"
+              />
             </p>
           </div>
           <div className="flex shrink-0 items-center gap-2">

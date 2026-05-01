@@ -29,11 +29,13 @@ type NavItem = {
 
 const ITEMS: readonly NavItem[] = [
   { href: "/admin", label: "Overview", exact: true },
+  { href: "/admin/leads", label: "Leads" },
   { href: "/admin/owners", label: "Owners" },
   { href: "/admin/properties", label: "Properties" },
   { href: "/admin/transactions", label: "Transactions" },
   { href: "/admin/tasks", label: "Tasks" },
   { href: "/admin/health", label: "Health" },
+  { href: "/admin/archive", label: "Archive" },
   {
     href: "/admin/team",
     label: "Team",
