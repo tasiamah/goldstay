@@ -3,10 +3,13 @@ import { prisma } from "@/lib/db";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { requireAdmin } from "@/lib/auth";
+import { AdminWelcomeCard } from "./welcome/AdminWelcomeCard";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminOverviewPage() {
+  const admin = await requireAdmin();
   const [
     ownerCount,
     propertyCount,
@@ -35,6 +38,7 @@ export default async function AdminOverviewPage() {
 
   return (
     <div className="space-y-10">
+      <AdminWelcomeCard admin={admin} />
       <section className="grid grid-cols-3 gap-4">
         <Stat label="Owners" value={ownerCount} href="/admin/owners" />
         <Stat
