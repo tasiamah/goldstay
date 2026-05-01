@@ -68,6 +68,8 @@ export async function createOwnerAction(
       fullName: owner.fullName,
       companyName: owner.companyName,
       country: owner.country,
+      ownerId: owner.id,
+      actor,
     }).catch((err) => {
       console.error("[createOwnerAction] welcome email failed", err);
     });
@@ -115,7 +117,7 @@ export async function resendOwnerWelcomeAction(
   });
   if (!owner) return { ok: false, error: "Owner not found." };
 
-  const result = await sendOwnerWelcomeEmail(owner);
+  const result = await sendOwnerWelcomeEmail({ ...owner, ownerId, actor });
   if (!result.ok) {
     return {
       ok: false,

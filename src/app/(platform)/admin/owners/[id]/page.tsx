@@ -10,6 +10,7 @@ import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
+import { CommsTab } from "@/components/admin/comms/CommsTab";
 import { OwnerForm } from "../OwnerForm";
 import { updateOwnerAction } from "../actions";
 import { ResendWelcomeButton } from "./ResendWelcomeButton";
@@ -161,6 +162,10 @@ export default async function OwnerDetailPage({
           returnPath={`/admin/owners/${owner.id}`}
         />
       </section>
+      <CommsTab
+        ownerId={owner.id}
+        returnPath={`/admin/owners/${owner.id}`}
+      />
       <ActivityTimeline
         entity="OWNER"
         entityId={owner.id}

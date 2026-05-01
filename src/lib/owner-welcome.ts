@@ -20,12 +20,23 @@
 //                          ready, head to /login" note.
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { logCommunication } from "@/lib/comms";
+import type { CurrentActor } from "@/lib/auth";
 
 type WelcomeInput = {
   email: string;
   fullName: string;
   companyName?: string | null;
   country: "KE" | "GH";
+  // Owner row id, if known. When supplied, we mirror the send into
+  // CommunicationLog so the owner detail page renders it under
+  // "Communications". Optional so this module can still be called
+  // from places where we don't have the id (e.g. ad-hoc scripts).
+  ownerId?: string | null;
+  // The admin who triggered the send (for manual resends). System-
+  // initiated sends pass null and the audit trail attributes the
+  // event to "system".
+  actor?: CurrentActor | null;
 };
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
@@ -59,23 +70,58 @@ export async function sendOwnerWelcomeEmail(input: WelcomeInput): Promise<{
     // can copy the magic link out of Vercel logs and email it
     // manually if needed. Production Vercel env always has the key.
     console.log(`[owner-welcome] would send to ${input.email}\n${text}`);
+    await maybeLogComms(input, "QUEUED", null, subject);
     return { ok: true, reason: "logged-only" };
   }
 
   try {
     const { Resend } = await import("resend");
     const resend = new Resend(apiKey);
-    await resend.emails.send({
+    const result = await resend.emails.send({
       from,
       to: [input.email],
       subject,
       text,
       html,
     });
+    await maybeLogComms(
+      input,
+      "SENT",
+      (result?.data?.id as string | undefined) ?? null,
+      subject,
+    );
     return { ok: true };
   } catch (err) {
     console.error("[owner-welcome] Resend send failed", err);
+    await maybeLogComms(input, "FAILED", null, subject);
     return { ok: false, reason: "send-failed" };
+  }
+}
+
+// Mirror the send into CommunicationLog when we have the owner row.
+// Errors here are intentionally swallowed: a logging hiccup must
+// never roll back the actual send. Status reflects what we attempted
+// rather than what eventually delivered (Resend webhooks would tell
+// us the latter; that's a separate plumbing pass).
+async function maybeLogComms(
+  input: WelcomeInput,
+  status: "QUEUED" | "SENT" | "FAILED",
+  providerId: string | null,
+  subject: string,
+): Promise<void> {
+  if (!input.ownerId) return;
+  try {
+    await logCommunication({
+      ownerId: input.ownerId,
+      channel: "EMAIL",
+      direction: "OUTBOUND",
+      subject,
+      status,
+      providerId,
+      actor: input.actor ?? null,
+    });
+  } catch (err) {
+    console.warn("[owner-welcome] logCommunication failed", err);
   }
 }
 

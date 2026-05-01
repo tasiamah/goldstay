@@ -55,7 +55,7 @@ export function AdminWelcomeCard({ admin }: { admin: AdminUser }) {
           </h2>
           <p className="mt-2 max-w-2xl text-sm text-stone-600">
             This is the operations cockpit. Every mutation in here writes
-            an audit row attributed to your email, so it's safe to click
+            an audit row attributed to your email, so it&apos;s safe to click
             around and learn the surface. Below are the four places you
             will live.
           </p>
