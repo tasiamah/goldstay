@@ -13,7 +13,7 @@ import {
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { FirstVisitHint } from "./welcome/FirstVisitHint";
 import { KpiCard } from "@/components/owner/KpiCard";
-import { MonthlyNetChart } from "@/components/owner/MonthlyNetChart";
+import { EarningsOverview } from "@/components/owner/EarningsOverview";
 import { HelpHint } from "@/components/owner/HelpHint";
 import { SetupChecklist } from "@/components/owner/SetupChecklist";
 import {
@@ -57,7 +57,7 @@ export default async function OwnerDashboardPage() {
 
   const [
     properties,
-    activeLeaseCount,
+    activeLeases,
     totals,
     kpiTransactions,
     recentTransactions,
@@ -86,11 +86,18 @@ export default async function OwnerDashboardPage() {
         documents: { select: { kind: true } },
       },
     }),
-    prisma.lease.count({
+    // We pull the monthlyRent + currency for every active lease so the
+    // dashboard can show both "how many leases are live" and the
+    // "expected this month" headline KPI without a second round-trip.
+    // The lease list per owner is small (single-digit to low-tens for
+    // even our largest landlords), so taking the rows is cheaper than
+    // a separate count + groupBy.
+    prisma.lease.findMany({
       where: {
         unit: { property: { ownerId: owner.id } },
         status: "ACTIVE",
       },
+      select: { monthlyRent: true, currency: true },
     }),
     prisma.transaction.groupBy({
       by: ["currency", "direction"],
@@ -221,6 +228,19 @@ export default async function OwnerDashboardPage() {
       : null,
   });
 
+  // Bucket active leases by currency so we can pick the one matching
+  // the dashboard's primary currency. Mixed-currency portfolios get a
+  // "+ N other currencies" footnote rather than a misleading sum.
+  const activeLeaseCount = activeLeases.length;
+  const rentByCurrency = new Map<string, number>();
+  for (const lease of activeLeases) {
+    const c = lease.currency;
+    rentByCurrency.set(
+      c,
+      (rentByCurrency.get(c) ?? 0) + Number(lease.monthlyRent),
+    );
+  }
+
   const propertyOccupancy = properties.map((p) => ({
     id: p.id,
     occupied: p.units.some((u) => u.leases.length > 0),
@@ -262,6 +282,29 @@ export default async function OwnerDashboardPage() {
   const activePropertyCount = properties.filter(
     (p) => p.status === "ACTIVE",
   ).length;
+
+  // "Expected this month" = sum of monthlyRent for the active leases
+  // that bill in the dashboard's primary currency. We deliberately
+  // don't FX-convert other currencies into that primary — owners
+  // would rather see one currency clean than a soft-converted total.
+  const expectedPrimaryCurrency = primary?.currency
+    ?? owner.preferredCurrency
+    ?? Array.from(rentByCurrency.keys())[0]
+    ?? null;
+  const expectedAmount = expectedPrimaryCurrency
+    ? rentByCurrency.get(expectedPrimaryCurrency) ?? 0
+    : 0;
+  const expectedThisMonth =
+    expectedPrimaryCurrency && activeLeaseCount > 0
+      ? {
+          amount: expectedAmount,
+          currency: expectedPrimaryCurrency,
+          activeLeaseCount: activeLeases.filter(
+            (l) => l.currency === expectedPrimaryCurrency,
+          ).length,
+          otherCurrencyCount: Math.max(0, rentByCurrency.size - 1),
+        }
+      : null;
 
   // Properties that don't yet have every kind in
   // REQUIRED_PROPERTY_DOC_KINDS on file. Drives the second banner.
@@ -421,14 +464,40 @@ export default async function OwnerDashboardPage() {
         </section>
       ) : null}
 
-      {/* Top-level KPI strip. The four tiles answer the four
-          questions a landlord opens this page to ask: "what did I
-          make recently", "what did I make this year", "is my
-          portfolio working", "am I full". The right-most tile
-          deliberately doubles as the link into the trend chart
-          below — landlords lean on the strip and ignore the chart
-          on tiny screens, so we don't hide one behind the other. */}
-      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Headline earnings card. Anchors the dashboard at the
+          top because "what did I make and is it growing" is the
+          single question every owner opens this page to answer.
+          The KPI tiles below cover the operational angles (recent
+          run-rate, occupancy, properties on the books); the
+          per-currency breakdown sits at the bottom for owners
+          who actually need it. */}
+      {primary ? (
+        <EarningsOverview
+          primary={primary}
+          otherCurrencyCount={otherCurrencyCount}
+          expectedThisMonth={expectedThisMonth}
+          activeLeaseCount={activeLeaseCount}
+          windowStart={twelveMonthsAgo}
+          windowEnd={now}
+        />
+      ) : (
+        <section className="rounded-lg border border-stone-200 bg-white p-6">
+          <h2 className="text-base font-medium text-stone-900">
+            Your earnings
+          </h2>
+          <p className="mt-2 text-sm text-stone-500">
+            No transactions recorded in the last 12 months. Once
+            Goldstay logs your first rent collection or expense, the
+            running totals and trend chart will appear here.
+          </p>
+        </section>
+      )}
+
+      {/* Secondary operational KPIs — 30-day run-rate (with the
+          prior-period delta), property count, and occupancy. Net
+          last 12 months is not duplicated here; it lives in the
+          headline card above. */}
+      <section className="grid gap-4 sm:grid-cols-3">
         <KpiCard
           label="Net last 30 days"
           value={
@@ -451,15 +520,6 @@ export default async function OwnerDashboardPage() {
                 }
               : undefined
           }
-        />
-        <KpiCard
-          label="Net last 12 months"
-          value={
-            primary
-              ? `${primary.currency} ${fmt(primary.twelveMonthNet)}`
-              : "—"
-          }
-          sub="Year-to-now in primary currency"
         />
         <KpiCard
           label="Active properties"
@@ -485,50 +545,25 @@ export default async function OwnerDashboardPage() {
         />
       </section>
 
-      <section className="rounded-lg border border-stone-200 bg-white p-6">
-        <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-medium text-stone-900">
-                Net by month
-              </h2>
-              <HelpHint label="Net by month">
-                A signed PDF statement is also issued on the 5th of
-                every month — open it from the &ldquo;Download
-                statement&rdquo; button to see the same numbers with
-                supporting receipts attached.
-              </HelpHint>
-            </div>
-            <p className="mt-1 text-sm text-stone-500">
-              Inflows minus outflows by calendar month. Goldstay
-              commission and out-of-pocket expenses are already
-              netted off — these bars are what landed on your side
-              of the ledger.
-            </p>
+      {/* Per-currency breakdown is only useful when there are at
+          least two currencies in the ledger — for the single-
+          currency case the headline card already gives the
+          definitive number. Hidden otherwise to keep the
+          dashboard from sprawling. */}
+      {currencyRows.length > 1 ? (
+        <section className="rounded-lg border border-stone-200 bg-white p-6">
+          <div className="flex items-center gap-2">
+            <h2 className="text-base font-medium text-stone-900">
+              By currency
+            </h2>
+            <HelpHint label="By currency">
+              Owners with portfolios across Kenya, Ghana and the
+              diaspora often collect in more than one currency. We
+              never auto-FX between them — each row is the real
+              ledger total in that currency.
+            </HelpHint>
           </div>
-          <Link
-            href="/owner/statements"
-            className="shrink-0 self-start rounded-md border border-stone-300 px-3 py-1.5 text-xs font-medium text-stone-700 hover:bg-white"
-          >
-            Download statement
-          </Link>
-        </div>
-
-        {primary ? (
-          <div className="mt-6">
-            <MonthlyNetChart
-              series={primary.monthlyNet}
-              currency={primary.currency}
-            />
-          </div>
-        ) : (
-          <p className="mt-6 text-sm text-stone-500">
-            No transactions recorded in the last 12 months.
-          </p>
-        )}
-
-        {currencyRows.length > 0 ? (
-          <div className="mt-6 overflow-hidden rounded-md border border-stone-200">
+          <div className="mt-4 overflow-hidden rounded-md border border-stone-200">
             <table className="min-w-full divide-y divide-stone-200">
               <thead className="bg-stone-50">
                 <tr>
@@ -562,8 +597,8 @@ export default async function OwnerDashboardPage() {
               </tbody>
             </table>
           </div>
-        ) : null}
-      </section>
+        </section>
+      ) : null}
 
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-6">
