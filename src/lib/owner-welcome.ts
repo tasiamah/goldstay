@@ -50,15 +50,23 @@ export async function sendOwnerWelcomeEmail(input: WelcomeInput): Promise<{
   const from = process.env.RESEND_FROM_OWNERS || DEFAULT_FROM;
   const siteUrl = process.env.PUBLIC_SITE_URL || DEFAULT_SITE;
 
-  // Always try to mint a magic link, but tolerate failure: if Supabase
-  // is misconfigured (missing service key in dev) we still want the
-  // welcome note to land. The fallback note tells the landlord to use
-  // /login, which is the same flow they'd land on anyway.
+  // Always try to mint a "set your password" recovery link, but
+  // tolerate failure: if Supabase is misconfigured (missing service
+  // key in dev) we still want the welcome note to land. The fallback
+  // note tells the landlord to use /login, which is the same flow
+  // they'd land on anyway.
+  //
+  // We deliberately use a recovery link rather than a one-shot magic
+  // link here: new owners should leave their first session with a
+  // password set so subsequent sign-ins are instant. The recovery
+  // landing page (/account/password) is gated on a valid session, so
+  // the same link both authenticates them and drops them into the
+  // form to choose credentials.
   let magicLink: string | null = null;
   try {
-    magicLink = await mintMagicLink(input.email, siteUrl);
+    magicLink = await mintSetPasswordLink(input.email, siteUrl);
   } catch (err) {
-    console.warn("[owner-welcome] magic-link generation failed", err);
+    console.warn("[owner-welcome] set-password link generation failed", err);
   }
 
   const subject = "Welcome to Goldstay";
@@ -125,12 +133,27 @@ async function maybeLogComms(
   }
 }
 
-async function mintMagicLink(
+async function mintSetPasswordLink(
   email: string,
   siteUrl: string,
 ): Promise<string | null> {
   const supabase = createSupabaseAdminClient();
-  const redirectTo = new URL("/auth/callback?next=/owner", siteUrl).toString();
+  // We point the post-exchange redirect at /account/password so the
+  // first thing a brand-new owner sees after clicking the link is
+  // the "choose a password" form. The form's onward redirect, in
+  // turn, puts them on /owner once saved — same end state as the
+  // old magic-link flow but with credentials on file so future
+  // sign-ins are instant.
+  //
+  // We stick with type: "magiclink" rather than "recovery" because
+  // magiclink works for both existing and brand-new auth users
+  // (Supabase provisions on demand), whereas recovery requires the
+  // user to already exist. The first call from createOwnerAction is
+  // always for a fresh email, so this matters.
+  const redirectTo = new URL(
+    "/auth/callback?next=/account/password",
+    siteUrl,
+  ).toString();
   const { data, error } = await supabase.auth.admin.generateLink({
     type: "magiclink",
     email,
@@ -163,13 +186,14 @@ function renderText({
 
   const linkBlock = magicLink
     ? [
-        "One-click sign-in (valid for 60 minutes):",
+        "Set your password and open your portal (link valid for 60 minutes):",
         magicLink,
         "",
-        "If the link expires, just request a fresh one at",
+        "If the link expires, request a fresh one at",
         `${siteUrl}/login`,
+        "by entering your email and clicking \"Forgot password?\".",
       ].join("\n")
-    : `Head to ${siteUrl}/login and we'll email you a one-click sign-in link.`;
+    : `Head to ${siteUrl}/login, enter ${"your email"} and click "Forgot password?" — we'll email you a link to set your password.`;
 
   return [
     greeting,
@@ -207,8 +231,8 @@ function renderHtml({
     country === "KE" ? "Kenya (Nairobi)" : country === "GH" ? "Ghana (Accra)" : "your market";
 
   const cta = magicLink
-    ? `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(magicLink)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Open my landlord portal →</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">One-click sign-in. Link valid for 60 minutes.</p>`
-    : `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(siteUrl)}/login" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Sign in to my portal →</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">We'll email you a one-click sign-in link.</p>`;
+    ? `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(magicLink)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Set my password &amp; open my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">Link valid for 60 minutes. You\u2019ll set a password so future sign-ins are instant.</p>`
+    : `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(siteUrl)}/login" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Sign in to my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">Use \u201cForgot password?\u201d to set a password — sign-ins are instant after that.</p>`;
 
   return `<!doctype html>
 <html lang="en">

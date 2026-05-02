@@ -90,6 +90,17 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(errorUrl);
   }
 
+  // Password recovery (and the "set your password" link we email new
+  // owners) always lands on /account/password so the user can finish
+  // setting credentials before we drop them into a real surface.
+  // We honour ?next= as a deep-link target after they save the new
+  // password — the form preserves it onward.
+  if (type === "recovery") {
+    const passwordUrl = new URL(`${origin}/account/password`);
+    if (next) passwordUrl.searchParams.set("next", next);
+    return NextResponse.redirect(passwordUrl);
+  }
+
   const fallback = isAdminEmail(userEmail) ? "/admin" : "/owner";
   const target = next && next.startsWith("/") ? next : fallback;
   return NextResponse.redirect(`${origin}${target}`);

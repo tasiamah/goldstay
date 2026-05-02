@@ -30,7 +30,7 @@ import {
 import { isValidReferrerCode } from "@/lib/referrals/codes";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PLATFORM_PATH_PREFIXES = ["/owner", "/admin", "/auth"];
+const PLATFORM_PATH_PREFIXES = ["/owner", "/admin", "/auth", "/account"];
 
 function isPlatformPath(pathname: string): boolean {
   return PLATFORM_PATH_PREFIXES.some(
