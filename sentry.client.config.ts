@@ -8,8 +8,14 @@ import * as Sentry from "@sentry/nextjs";
 //   which is what we want under KDPA and UK GDPR for our diaspora users.
 // - Tracing is sampled lightly; we care about errors first, performance
 //   second.
-// - Session Replay only records *on error* at 100%, and is disabled entirely
-//   while idle so we aren't bleeding bandwidth on every visitor.
+// - Session Replay is intentionally NOT loaded. The Replay integration
+//   pulls in rrweb on every visitor and adds ~50 KB gzipped to the
+//   critical-path JS, which on Kenyan and Ghanaian mobile networks (where
+//   most owners actually live) translates into roughly a second of FCP.
+//   Stack traces, breadcrumbs and source-mapped errors all still work
+//   without it; we just lose the "watch the user repro it" video. If we
+//   ever need that for a specific bug hunt, we can re-enable Replay
+//   temporarily for a few days and pull it back out again.
 //
 // If NEXT_PUBLIC_SENTRY_DSN is not set, init() becomes a no-op: the SDK
 // simply doesn't capture anything. That makes Sentry opt-in via env var, in
@@ -22,15 +28,7 @@ if (dsn) {
     environment: process.env.NEXT_PUBLIC_VERCEL_ENV || "development",
     release: process.env.NEXT_PUBLIC_VERCEL_GIT_COMMIT_SHA,
     tracesSampleRate: 0.1,
-    replaysSessionSampleRate: 0,
-    replaysOnErrorSampleRate: 1.0,
     sendDefaultPii: false,
-    integrations: [
-      Sentry.replayIntegration({
-        maskAllText: true,
-        blockAllMedia: true,
-      }),
-    ],
     // Drop a few high-volume noise events that aren't actionable.
     ignoreErrors: [
       "ResizeObserver loop limit exceeded",
