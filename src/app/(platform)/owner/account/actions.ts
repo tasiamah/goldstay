@@ -75,7 +75,8 @@ export async function ownerCreatePayoutMethodAction(
     };
   }
 
-  revalidatePath("/owner/payouts");
+  revalidatePath("/owner/account");
+  revalidatePath("/owner");
   return { ok: true };
 }
 
@@ -96,7 +97,7 @@ export async function ownerSetDefaultPayoutMethodAction(
   const actor = { adminId: null, email: owner.email };
   const result = await setDefaultPayoutMethod(payoutMethodId, actor);
   if (!result.ok) return { ok: false, error: result.error };
-  revalidatePath("/owner/payouts");
+  revalidatePath("/owner/account");
   return { ok: true };
 }
 
@@ -114,6 +115,6 @@ export async function ownerArchivePayoutMethodAction(
   const actor = { adminId: null, email: owner.email };
   const result = await archivePayoutMethod(payoutMethodId, actor);
   if (!result.ok) return { ok: false, error: result.error };
-  revalidatePath("/owner/payouts");
+  revalidatePath("/owner/account");
   return { ok: true };
 }

@@ -82,9 +82,9 @@ const STEP_TITLE: Record<SetupStepKey, string> = {
 };
 
 const STEP_HREF: Record<SetupStepKey, string> = {
-  details: "/owner/profile#details",
-  legal: "/owner/payouts?step=legal#legal",
-  bank: "/owner/payouts?step=bank#bank",
+  details: "/owner/account?step=details#details",
+  legal: "/owner/account?step=legal#legal",
+  bank: "/owner/account?step=bank#bank",
 };
 
 // Pure: no DB access. Returns the ideal set of derived

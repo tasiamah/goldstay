@@ -286,7 +286,7 @@ export default function Page() {
               <p className="mt-6 max-w-2xl text-sm text-cream/60">
                 Already a landlord with us?{" "}
                 <Link
-                  href="/owner/payouts"
+                  href="/owner/account?step=bank#bank"
                   className="underline-offset-2 hover:text-cream hover:underline"
                 >
                   Add or verify a payout method in the portal →
@@ -513,7 +513,7 @@ export default function Page() {
               </ul>
               <p className="mt-8">
                 <Link
-                  href="/owner/payouts"
+                  href="/owner/account?step=bank#bank"
                   className="inline-flex items-center gap-2 font-medium text-charcoal underline-offset-4 hover:underline"
                 >
                   Open the portal and verify a payout method{" "}

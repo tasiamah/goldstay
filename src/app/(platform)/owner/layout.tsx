@@ -56,8 +56,7 @@ export default async function OwnerLayout({
     ? [
         { href: "/owner", label: "Overview" },
         { href: "/owner/statements", label: "Statements" },
-        { href: "/owner/payouts", label: "Payouts" },
-        { href: "/owner/profile", label: "Profile" },
+        { href: "/owner/account", label: "Account" },
       ]
     : [];
 

@@ -115,11 +115,11 @@ export async function updateYourDetailsAction(
     },
   });
 
-  // Both /owner/profile and /owner/payouts render the details block
-  // (or its checklist row), and the dashboard surfaces the same
-  // checklist banner — revalidate all three.
+  // /owner/account renders the details form and the dashboard
+  // surfaces the same checklist banner, so revalidate both. The
+  // legacy /owner/profile and /owner/payouts paths just redirect
+  // and don't hold cached output worth busting.
   revalidatePath("/owner");
-  revalidatePath("/owner/profile");
-  revalidatePath("/owner/payouts");
+  revalidatePath("/owner/account");
   return { ok: true };
 }

@@ -15,10 +15,7 @@ import { FirstVisitHint } from "./welcome/FirstVisitHint";
 import { KpiCard } from "@/components/owner/KpiCard";
 import { EarningsOverview } from "@/components/owner/EarningsOverview";
 import { HelpHint } from "@/components/owner/HelpHint";
-import {
-  computeSetupChecklist,
-  type SetupStepKey,
-} from "@/lib/owner/setup-status";
+import { computeSetupChecklist } from "@/lib/owner/setup-status";
 import { listPayoutMethodsFor } from "@/lib/payouts";
 import { syncOwnerNotifications } from "@/lib/notifications/sync";
 import { computePropertyReadiness } from "@/lib/owner/property-readiness";
@@ -31,8 +28,6 @@ import {
   labelForRequiredDoc,
   missingPropertyDocKinds,
 } from "@/lib/owner/property-documents";
-
-const PAYOUTS_STEPS = new Set<SetupStepKey>(["legal", "bank"]);
 
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
@@ -149,7 +144,7 @@ export default async function OwnerDashboardPage() {
     // Two cheap reads that drive the setup checklist banner below.
     // We only need the count of payout methods and a kind-grouped
     // count of KYC documents — the underlying rows are the source
-    // of truth on /owner/payouts and /owner/profile.
+    // of truth on /owner/account.
     listPayoutMethodsFor(owner.id, { includeArchived: false }),
     prisma.document.groupBy({
       by: ["kind"],
@@ -335,10 +330,10 @@ export default async function OwnerDashboardPage() {
         // above the agreement banner (amber) and the missing-docs
         // banner (amber). Deliberately a one-liner with a single
         // CTA: the full step-by-step checklist already lives on
-        // /owner/payouts and /owner/profile where the owner is
-        // about to fill the fields anyway, so duplicating it
-        // inside the banner just made the dashboard noisier
-        // without giving the owner a faster path to the work.
+        // /owner/account where the owner is about to fill the
+        // fields anyway, so duplicating it inside the banner just
+        // made the dashboard noisier without giving the owner a
+        // faster path to the work.
         <section className="rounded-lg border border-rose-300 bg-rose-50 p-5">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div>
@@ -356,9 +351,9 @@ export default async function OwnerDashboardPage() {
             </div>
             <Link
               href={
-                setup.firstIncomplete && PAYOUTS_STEPS.has(setup.firstIncomplete)
-                  ? `/owner/payouts?step=${setup.firstIncomplete}#${setup.firstIncomplete}`
-                  : "/owner/profile#details"
+                setup.firstIncomplete
+                  ? `/owner/account?step=${setup.firstIncomplete}#${setup.firstIncomplete}`
+                  : "/owner/account#details"
               }
               className="shrink-0 rounded-md bg-rose-700 px-3 py-1.5 text-sm font-medium text-white hover:bg-rose-800"
             >

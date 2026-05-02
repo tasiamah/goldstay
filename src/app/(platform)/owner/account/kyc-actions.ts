@@ -169,6 +169,7 @@ export async function ownerFinaliseKycUploadAction(
     metadata: { documentId, kind: doc.kind, scope: "owner-self-serve" },
   });
 
-  revalidatePath("/owner/payouts");
+  revalidatePath("/owner/account");
+  revalidatePath("/owner");
   return { ok: true };
 }
