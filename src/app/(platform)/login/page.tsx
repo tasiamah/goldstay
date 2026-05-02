@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { LoginForm } from "./LoginForm";
 import { OAuthButtons, oauthAvailable } from "./OAuthButtons";
 
@@ -21,45 +22,64 @@ export default function LoginPage({
   const ssoOn = oauthAvailable();
 
   return (
-    <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-6 py-16">
-      <h1 className="text-3xl font-serif text-stone-900">Sign in to Goldstay</h1>
-      <p className="mt-3 text-stone-600">
-        {ssoOn
-          ? "Sign in with Google, Apple, or a one-tap email link. The same login works for landlords and Goldstay operators; we'll route you to the right place once you're signed in."
-          : "Enter the email address Goldstay has on file. We'll send you a one-tap sign-in link, no password required. The same link works for landlords and Goldstay operators; we'll route you to the right place after you're signed in."}
-      </p>
+    <div className="min-h-screen">
+      {/* Escape hatch for visitors who clicked the header "Sign in"
+          link by accident. The Platform layout doesn't ship the
+          marketing nav, so without this they're stuck on a page
+          that has no obvious way back to goldstay.co.ke. */}
+      <header className="px-6 pt-6">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm text-stone-600 transition-colors hover:text-stone-900"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M10 12L6 8l4-4"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          Back to Goldstay
+        </Link>
+      </header>
 
-      {ssoOn ? (
-        <div className="mt-8 space-y-5">
-          <OAuthButtons next={searchParams.next} />
-          <Divider />
-          {searchParams.sent ? (
-            <SentNotice />
-          ) : (
-            <LoginForm next={searchParams.next} />
-          )}
-        </div>
-      ) : (
-        <>
-          <p className="mt-2 text-sm text-stone-500">
-            Tip: open the link in the same browser you requested it from,
-            otherwise you&apos;ll need to request a new one.
-          </p>
-          {searchParams.sent ? (
-            <div className="mt-8">
+      <div className="mx-auto flex min-h-[60vh] w-full max-w-md flex-col justify-center px-6 py-12">
+        <h1 className="text-3xl font-serif text-stone-900">
+          Sign in to Goldstay
+        </h1>
+
+        {ssoOn ? (
+          <div className="mt-8 space-y-5">
+            <OAuthButtons next={searchParams.next} />
+            <Divider />
+            {searchParams.sent ? (
               <SentNotice />
-            </div>
-          ) : (
-            <div className="mt-8">
+            ) : (
               <LoginForm next={searchParams.next} />
-            </div>
-          )}
-        </>
-      )}
+            )}
+          </div>
+        ) : (
+          <div className="mt-8">
+            {searchParams.sent ? (
+              <SentNotice />
+            ) : (
+              <LoginForm next={searchParams.next} />
+            )}
+          </div>
+        )}
 
-      {searchParams.error ? (
-        <SignInError code={searchParams.error} />
-      ) : null}
+        {searchParams.error ? (
+          <SignInError code={searchParams.error} />
+        ) : null}
+      </div>
     </div>
   );
 }
@@ -76,7 +96,7 @@ function Divider() {
     >
       <span className="flex-1 border-t border-stone-200" />
       <span className="px-3 text-xs uppercase tracking-wider text-stone-500">
-        or continue with email
+        or
       </span>
       <span className="flex-1 border-t border-stone-200" />
     </div>
@@ -84,9 +104,18 @@ function Divider() {
 }
 
 function SentNotice() {
+  // The "open in the same browser" tip used to live above the form
+  // unconditionally. It's only actionable after a link has been
+  // requested, so we surface it here instead. Keeps the unsubmitted
+  // page clean and puts the guidance exactly where it can prevent
+  // the most common mistake (opening on phone after requesting on
+  // laptop, then hitting the PKCE-different-device error).
   return (
     <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-      Check your inbox. The sign-in link expires in 60 minutes.
+      <p className="font-medium">Check your inbox.</p>
+      <p className="mt-1">
+        The link expires in 60 minutes. Open it in this same browser.
+      </p>
     </div>
   );
 }
@@ -99,31 +128,13 @@ function SignInError({ code }: { code: string }) {
   const message = (() => {
     switch (code) {
       case "different-device":
-        return (
-          <>
-            That sign-in link was requested in a different browser or
-            device. For security, magic links can only be opened in the
-            same browser they were requested from. Request a new link
-            here and open it in this browser.
-          </>
-        );
+        return "That sign-in link was opened in a different browser. For security, the link only works in the browser that requested it. Please request a new one below.";
       case "exchange-failed":
-        return (
-          <>
-            That sign-in link has already been used or has expired
-            (links are valid for 60 minutes). Request a fresh one
-            below.
-          </>
-        );
+        return "That sign-in link has already been used or has expired. Please request a fresh one below.";
       case "missing-params":
-        return (
-          <>
-            We didn&apos;t receive a valid sign-in token. Please request
-            a new link below.
-          </>
-        );
+        return "We didn't receive a valid sign-in token. Please request a new link below.";
       default:
-        return <>We couldn&apos;t sign you in. Please request a new link below.</>;
+        return "We couldn't sign you in. Please request a new link below.";
     }
   })();
 

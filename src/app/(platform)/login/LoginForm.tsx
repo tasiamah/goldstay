@@ -177,6 +177,6 @@ function translateAuthError(err: {
   return {
     tone: "error",
     message:
-      "We couldn't send your sign-in link just now. Please check the email address and try again — if it keeps failing, email support@goldstay.co.ke.",
+      "We couldn't send your sign-in link just now. Please check the email address and try again. If it keeps failing, email support@goldstay.co.ke.",
   };
 }
