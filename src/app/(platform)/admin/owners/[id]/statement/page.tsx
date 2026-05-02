@@ -194,7 +194,8 @@ export default async function AdminStatementPreviewPage({
             No transactions recorded for this period.
           </p>
         ) : (
-          <table className="mt-3 w-full text-sm tabular-nums">
+          <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm tabular-nums">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
                 <th className="py-2">Currency</th>
@@ -224,6 +225,7 @@ export default async function AdminStatementPreviewPage({
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </section>
 
@@ -241,7 +243,8 @@ export default async function AdminStatementPreviewPage({
               {group.transactions.length === 1 ? "transaction" : "transactions"}
             </p>
           </div>
-          <table className="mt-3 w-full text-sm tabular-nums">
+          <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm tabular-nums">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
                 <th className="py-2">Date</th>
@@ -261,7 +264,9 @@ export default async function AdminStatementPreviewPage({
                     })}
                   </td>
                   <td className="py-2 text-stone-900">
-                    {t.description || t.tenantName || t.reference || "—"}
+                    {t.description || t.tenantName || t.reference || (
+                      <span className="italic text-stone-400">No description</span>
+                    )}
                   </td>
                   <td className="py-2 text-xs uppercase tracking-wider text-stone-500">
                     {t.type}
@@ -281,6 +286,7 @@ export default async function AdminStatementPreviewPage({
               ))}
             </tbody>
           </table>
+          </div>
         </section>
       ))}
     </div>

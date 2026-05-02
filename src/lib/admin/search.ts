@@ -270,7 +270,7 @@ export async function adminSearch(
       ? formatPropertyDisplayName(d.property.name, d.property.unitNumber)
       : d.owner
         ? formatOwnerDisplayName(d.owner)
-        : "—";
+        : "Unattached";
     const href = d.propertyId
       ? `/admin/properties/${d.propertyId}/documents`
       : d.ownerId

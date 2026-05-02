@@ -41,12 +41,12 @@ function PulseStrip({ kpis }: { kpis: OverviewKpis }) {
           label="Occupancy"
           value={
             kpis.occupancy.pct === null
-              ? "—"
+              ? "No units"
               : `${formatPct(kpis.occupancy.pct, 0)}%`
           }
           sub={
             kpis.occupancy.totalUnits === 0
-              ? "No units yet"
+              ? "Add a property to start tracking occupancy"
               : `${kpis.occupancy.leasedUnits} of ${kpis.occupancy.totalUnits} units leased`
           }
           // Drill to live properties — onboarding/exited would muddy
@@ -122,7 +122,7 @@ function GrowthStrip({ kpis }: { kpis: OverviewKpis }) {
         <KpiCard
           label="Lead conversion"
           value={
-            conv.pct === null ? "—" : `${formatPct(conv.pct, 0)}%`
+            conv.pct === null ? "No data" : `${formatPct(conv.pct, 0)}%`
           }
           sub={
             conv.leadsCreated === 0
@@ -134,7 +134,7 @@ function GrowthStrip({ kpis }: { kpis: OverviewKpis }) {
           label="Lead → owner days"
           value={
             kpis.avgDaysToConvert === null
-              ? "—"
+              ? "No data"
               : `${kpis.avgDaysToConvert.toFixed(1)} d`
           }
           sub={
@@ -220,12 +220,14 @@ function DeltaBadge({ delta }: { delta: Delta }) {
 
   // Prior-zero case: print "new" instead of an infinite percentage.
   // The only honest read of "0 → N" is "this is a new metric this
-  // period," not "+infinity%".
+  // period," not "+infinity%". When both periods are zero we say
+  // "flat" so the badge still reads as a real signal rather than a
+  // visually-mute placeholder character.
   const text =
     delta.pct === null
       ? delta.current > 0
         ? "new"
-        : "—"
+        : "flat"
       : `${delta.pct >= 0 ? "+" : ""}${formatPct(delta.pct, 0)}%`;
 
   return (

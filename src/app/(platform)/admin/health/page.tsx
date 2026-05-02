@@ -71,7 +71,8 @@ export default async function SystemHealthPage() {
             No job runs recorded in the last 24 hours.
           </p>
         ) : (
-          <table className="mt-3 w-full text-sm">
+          <div className="mt-3 overflow-x-auto">
+          <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
                 <th className="py-2">Job</th>
@@ -124,7 +125,9 @@ export default async function SystemHealthPage() {
                           {last.summary ? ` · ${last.summary}` : ""}
                         </>
                       ) : (
-                        "—"
+                        <span className="italic text-stone-400">
+                          No runs yet
+                        </span>
                       )}
                     </td>
                   </tr>
@@ -132,6 +135,7 @@ export default async function SystemHealthPage() {
               })}
             </tbody>
           </table>
+          </div>
         )}
       </section>
 
@@ -154,7 +158,7 @@ export default async function SystemHealthPage() {
                       className="text-sm font-medium text-stone-900 hover:underline"
                     >
                       {formatPropertyDisplayName(
-                        f.property?.name ?? "—",
+                        f.property?.name ?? "Untitled property",
                         f.property?.unitNumber ?? null,
                       )}
                     </Link>{" "}

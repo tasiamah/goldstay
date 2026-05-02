@@ -91,7 +91,7 @@ export default async function TransactionsListPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-lg border border-stone-200 bg-white">
+        <div className="overflow-x-auto rounded-lg border border-stone-200 bg-white">
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
@@ -154,7 +154,7 @@ export default async function TransactionsListPage({
                         {t.lease.tenantName}
                       </Link>
                     ) : (
-                      <span className="text-stone-400">—</span>
+                      <span className="italic text-stone-400">No tenant</span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-xs uppercase tracking-wider text-stone-500">

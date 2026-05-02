@@ -61,7 +61,7 @@ export default async function LeaseDetailPage({
           month: "short",
           year: "numeric",
         })
-      : "—";
+      : "Open-ended";
 
   return (
     <div className="space-y-8">
@@ -140,16 +140,16 @@ export default async function LeaseDetailPage({
               value={
                 lease.depositAmount
                   ? `${lease.currency} ${Number(lease.depositAmount).toLocaleString("en-GB")}`
-                  : "—"
+                  : "None recorded"
               }
             />
             <Row
               label="Tenant email"
-              value={lease.tenantEmail ?? "—"}
+              value={lease.tenantEmail ?? "Not on file"}
             />
             <Row
               label="Tenant phone"
-              value={lease.tenantPhone ?? "—"}
+              value={lease.tenantPhone ?? "Not on file"}
             />
             <Row
               label="Owner"

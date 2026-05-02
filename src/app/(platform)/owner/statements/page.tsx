@@ -479,7 +479,11 @@ function LedgerTable({
               <td className="px-4 py-2.5 text-sm text-stone-500">
                 {[t.description, t.lease?.tenantName, t.reference]
                   .filter(Boolean)
-                  .join(" · ") || "—"}
+                  .join(" · ") || (
+                  <span className="italic text-stone-400">
+                    No description
+                  </span>
+                )}
               </td>
               <td
                 className={`px-4 py-2.5 text-right text-sm tabular-nums ${

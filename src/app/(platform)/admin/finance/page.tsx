@@ -176,6 +176,7 @@ export default async function FinancePage({
             No commission revenue or cost recorded in this window yet.
           </p>
         ) : (
+          <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50 text-left text-xs uppercase tracking-wider text-stone-500">
               <tr>
@@ -191,6 +192,7 @@ export default async function FinancePage({
               ))}
             </tbody>
           </table>
+          </div>
         )}
       </section>
 
@@ -227,19 +229,19 @@ function HeadlineCards({
     <section className="grid gap-4 sm:grid-cols-3">
       <Tile
         label={`Revenue (${primary?.currency ?? ""})`}
-        value={primary ? fmt(primary.revenue) : "—"}
+        value={primary ? fmt(primary.revenue) : "No revenue yet"}
         sub="Commission OUTFLOWs from owner ledgers"
         accent="emerald"
       />
       <Tile
         label={`Cost (${primary?.currency ?? ""})`}
-        value={primary ? fmt(primary.cost) : "—"}
+        value={primary ? fmt(primary.cost) : "No cost yet"}
         sub="OTA + absorbed cleaning we ate before payout"
         accent="rose"
       />
       <Tile
         label={`Net (${primary?.currency ?? ""})`}
-        value={primary ? fmt(primary.net) : "—"}
+        value={primary ? fmt(primary.net) : "No data yet"}
         sub={
           otherCount > 0
             ? `+ ${otherCount} other ${

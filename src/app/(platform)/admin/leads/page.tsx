@@ -224,7 +224,7 @@ export default async function LeadsListPage({
           <EmptyState />
         )
       ) : (
-        <div className="overflow-hidden rounded-lg border border-stone-200 bg-white">
+        <div className="overflow-x-auto rounded-lg border border-stone-200 bg-white">
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
@@ -247,7 +247,14 @@ export default async function LeadsListPage({
                       {l.fullName}
                     </Link>
                     <p className="mt-0.5 text-xs text-stone-500">
-                      {l.email ?? "—"} · {l.phone}
+                      {l.email ? (
+                        l.email
+                      ) : (
+                        <span className="italic text-stone-400">
+                          No email
+                        </span>
+                      )}{" "}
+                      · {l.phone}
                     </p>
                   </td>
                   <td className="px-4 py-3">
@@ -258,7 +265,13 @@ export default async function LeadsListPage({
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-stone-700">
-                    {l.city ?? "—"}
+                    {l.city ? (
+                      l.city
+                    ) : (
+                      <span className="italic text-stone-400">
+                        Location not given
+                      </span>
+                    )}
                     {l.neighbourhood ? `, ${l.neighbourhood}` : ""}
                     {l.country ? (
                       <span className="ml-1 text-xs text-stone-400">

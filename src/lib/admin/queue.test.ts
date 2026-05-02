@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { computeDelta, daysAgo, meanDaysBetween } from "./queue";
+import { computeDelta, daysAgo, daysUntil, meanDaysBetween } from "./queue";
 
 // daysAgo is the only pure helper in queue.ts beyond computeDelta.
 // The rest of the file is Prisma I/O, exercised via integration
@@ -82,5 +82,27 @@ describe("meanDaysBetween", () => {
 
   it("returns null for an empty cohort instead of NaN or 0", () => {
     expect(meanDaysBetween([])).toBeNull();
+  });
+});
+
+describe("daysUntil", () => {
+  // Powers the "ends in Nd" hint on the leases-expiring-soon
+  // attention bucket. The two corners that matter:
+  //   * sub-day windows still read as 1d, never 0d (otherwise a
+  //     lease ending tonight looks like it's already over).
+  //   * past dates clamp to 0 so we don't print negative days for a
+  //     just-expired lease that's still awaiting cleanup.
+  it("rounds partial days up to a whole day of warning", () => {
+    const now = new Date("2026-05-01T12:00:00.000Z");
+    const sixHoursLater = new Date("2026-05-01T18:00:00.000Z");
+    const fiveDaysLater = new Date("2026-05-06T12:00:00.000Z");
+    expect(daysUntil(sixHoursLater, now)).toBe(1);
+    expect(daysUntil(fiveDaysLater, now)).toBe(5);
+  });
+
+  it("clamps to zero for past dates instead of going negative", () => {
+    const now = new Date("2026-05-01T12:00:00.000Z");
+    const yesterday = new Date("2026-04-30T12:00:00.000Z");
+    expect(daysUntil(yesterday, now)).toBe(0);
   });
 });

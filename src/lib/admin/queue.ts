@@ -15,9 +15,12 @@
 //                                        from iCal that still need
 //                                        gross / net entered
 //   4. Failed iCal feeds               → silent breakage of occupancy
-//   5. Stale welcomes                  → owners we created days ago
+//   5. Owners missing payout method    → can't actually pay them when
+//                                        the next statement runs
+//   6. Leases expiring soon            → renewal radar (next 60 days)
+//   7. Stale welcomes                  → owners we created days ago
 //                                        who never logged in
-//   6. My overdue tasks                → personal queue
+//   8. My overdue tasks                → personal queue
 //
 // All Prisma queries filter `archivedAt: null` so soft-deleted rows
 // never surface in the queue.
@@ -56,6 +59,12 @@ const PER_BUCKET_LIMIT = 5;
 // is not the explanation; short enough that we can still recover.
 const STALE_WELCOME_DAYS = 3;
 
+// How far ahead we look for lease renewals on the radar bucket.
+// 60 days is enough to give an operator a real heads-up: at 30 days
+// the conversation is rushed; at 90 the tenant hasn't started
+// thinking about it yet. This number falls neatly between the two.
+const LEASE_EXPIRING_WINDOW_DAYS = 60;
+
 export async function getAttentionQueue(
   admin: AdminUser,
 ): Promise<AttentionQueue> {
@@ -63,6 +72,12 @@ export async function getAttentionQueue(
     admin.role === "COUNTRY_MANAGER" && admin.country
       ? { country: admin.country }
       : {};
+
+  // Window used by the "leases expiring" bucket. Computed once so
+  // the query and the bucket label agree on the same boundary.
+  const expiringWindowEnd = new Date(
+    Date.now() + LEASE_EXPIRING_WINDOW_DAYS * 24 * 60 * 60 * 1000,
+  );
 
   const [
     pendingProperties,
@@ -73,6 +88,10 @@ export async function getAttentionQueue(
     bookingsMissingFinancialsTotal,
     failedFeeds,
     failedFeedsTotal,
+    ownersMissingPayoutMethod,
+    ownersMissingPayoutMethodTotal,
+    expiringLeases,
+    expiringLeasesTotal,
     staleOwners,
     staleOwnersTotal,
     myTasks,
@@ -185,6 +204,96 @@ export async function getAttentionQueue(
         property: { archivedAt: null, ...countryFilter },
       },
     }),
+    // Owners with at least one live property but no verified payout
+    // method on file. These are the cases where statement-day will
+    // hit and we'll have nowhere to send the money — by far the most
+    // common cause of an embarrassing "where's my rent?" email.
+    // We require an active property so we don't flag prospects we
+    // haven't even started managing yet.
+    prisma.owner.findMany({
+      where: {
+        archivedAt: null,
+        ...countryFilter,
+        // Require at least one live property so we don't flag fresh
+        // prospects we haven't actually started managing yet.
+        properties: { some: { archivedAt: null } },
+        // Empty-relation match: every payout method is either
+        // archived or unverified. Mirrors what statement generation
+        // actually checks before deciding it can pay out.
+        payoutMethods: {
+          none: {
+            archivedAt: null,
+            verifiedAt: { not: null },
+          },
+        },
+      },
+      orderBy: { createdAt: "asc" },
+      take: PER_BUCKET_LIMIT,
+      select: {
+        id: true,
+        fullName: true,
+        companyName: true,
+        email: true,
+        country: true,
+      },
+    }),
+    prisma.owner.count({
+      where: {
+        archivedAt: null,
+        ...countryFilter,
+        properties: { some: { archivedAt: null } },
+        payoutMethods: {
+          none: {
+            archivedAt: null,
+            verifiedAt: { not: null },
+          },
+        },
+      },
+    }),
+    // Active leases whose endDate is between today and +60d. We
+    // surface these so renewals are a planned conversation, not an
+    // accidental month-to-month rollover. Open-ended leases
+    // (endDate: null) are intentionally excluded — they're not
+    // "expiring" in any operational sense.
+    prisma.lease.findMany({
+      where: {
+        archivedAt: null,
+        status: "ACTIVE",
+        endDate: { gte: new Date(), lte: expiringWindowEnd },
+        unit: {
+          property: { archivedAt: null, ...countryFilter },
+        },
+      },
+      orderBy: { endDate: "asc" },
+      take: PER_BUCKET_LIMIT,
+      select: {
+        id: true,
+        tenantName: true,
+        endDate: true,
+        unit: {
+          select: {
+            property: {
+              select: {
+                id: true,
+                name: true,
+                unitNumber: true,
+                city: true,
+              },
+            },
+          },
+        },
+      },
+    }),
+    prisma.lease.count({
+      where: {
+        archivedAt: null,
+        status: "ACTIVE",
+        endDate: { gte: new Date(), lte: expiringWindowEnd },
+        unit: {
+          property: { archivedAt: null, ...countryFilter },
+        },
+      },
+    }),
     prisma.owner.findMany({
       where: {
         archivedAt: null,
@@ -294,6 +403,36 @@ export async function getAttentionQueue(
       label: `${formatPropertyDisplayName(f.property.name, f.property.unitNumber)} · ${f.source}`,
       href: `/admin/properties/${f.property.id}/ical`,
       hint: f.lastError?.slice(0, 80) ?? undefined,
+    })),
+  });
+
+  buckets.push({
+    key: "owners-no-payout-method",
+    title: "Owners with no verified payout method",
+    description:
+      "Active landlords we can't actually pay. Statement-day will fail until a verified method lands.",
+    total: ownersMissingPayoutMethodTotal,
+    items: ownersMissingPayoutMethod.map((o) => ({
+      id: o.id,
+      label: formatOwnerDisplayName(o),
+      href: `/admin/owners/${o.id}/payouts`,
+      hint: `${o.email} · ${o.country === "KE" ? "Kenya" : "Ghana"}`,
+    })),
+  });
+
+  buckets.push({
+    key: "leases-expiring-soon",
+    title: `Leases expiring in ${LEASE_EXPIRING_WINDOW_DAYS} days`,
+    description:
+      "Renewal radar. Reach out before they roll month-to-month or vacate without a heads-up.",
+    total: expiringLeasesTotal,
+    items: expiringLeases.map((l) => ({
+      id: l.id,
+      label: `${l.tenantName} · ${formatPropertyDisplayName(l.unit.property.name, l.unit.property.unitNumber)}`,
+      href: `/admin/leases/${l.id}`,
+      hint: l.endDate
+        ? `Ends ${l.endDate.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })} · ${daysUntil(l.endDate)}d left`
+        : undefined,
     })),
   });
 
@@ -653,8 +792,9 @@ export async function getOverviewKpis(
 }
 
 // Mean number of whole days between paired timestamps. Returns null
-// for an empty input so the caller can render a friendly "—" instead
-// of "NaN days". Pure — no Prisma — and trivially testable.
+// for an empty input so the caller can render a friendly empty-state
+// label instead of "NaN days". Pure — no Prisma — and trivially
+// testable.
 export function meanDaysBetween(
   pairs: { from: Date; to: Date }[],
 ): number | null {
@@ -689,6 +829,14 @@ export function computeDelta(current: number, prior: number): Delta {
 
 export function daysAgo(days: number, from: Date = new Date()): Date {
   return new Date(from.getTime() - days * 24 * 60 * 60 * 1000);
+}
+
+// Whole days from `now` to `target`, rounded up so a lease ending
+// in 6 hours still reads as "1d left" rather than "0d". Pure helper
+// surfaced for unit testing of the expiring-leases bucket.
+export function daysUntil(target: Date, now: Date = new Date()): number {
+  const ms = target.getTime() - now.getTime();
+  return Math.max(0, Math.ceil(ms / (24 * 60 * 60 * 1000)));
 }
 
 function entityHref(entity: string, id: string): string {

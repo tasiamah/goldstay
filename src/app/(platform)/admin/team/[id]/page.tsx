@@ -67,7 +67,7 @@ export default async function AdminDetailPage({
                     hour: "2-digit",
                     minute: "2-digit",
                   })
-                : "—"}
+                : "Never"}
             </p>
           </div>
           <div className="flex items-center gap-2">

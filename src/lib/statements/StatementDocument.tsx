@@ -401,7 +401,7 @@ export function StatementDocument({
                       <Text style={styles.txDesc}>
                         {[t.description, t.tenantName, t.reference]
                           .filter(Boolean)
-                          .join(" · ") || "—"}
+                          .join(" · ") || "No description"}
                       </Text>
                       <Text
                         style={[

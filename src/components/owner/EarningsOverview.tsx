@@ -73,7 +73,7 @@ export function EarningsOverview({
             value={
               expectedThisMonth
                 ? `${expectedThisMonth.currency} ${fmt(expectedThisMonth.amount)}`
-                : "—"
+                : "No active leases"
             }
             sub={
               expectedThisMonth

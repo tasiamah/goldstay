@@ -558,7 +558,7 @@ export default async function OwnerDashboardPage() {
           value={
             primary
               ? `${primary.currency} ${fmt(primary.thirtyDayNet)}`
-              : "—"
+              : "No activity yet"
           }
           sub={
             otherCurrencyCount > 0
@@ -589,7 +589,7 @@ export default async function OwnerDashboardPage() {
         />
         <KpiCard
           label="Occupancy"
-          value={occupancyPct === null ? "—" : `${occupancyPct}%`}
+          value={occupancyPct === null ? "No units" : `${occupancyPct}%`}
           sub={
             activeLeaseCount === 0
               ? "No active leases yet"

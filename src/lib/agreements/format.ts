@@ -22,7 +22,7 @@ export const AGREEMENT_STATUS_CLASSES: Record<AgreementStatus, string> = {
 
 export function formatCommissionPct(rate: number | string): string {
   const n = typeof rate === "string" ? Number(rate) : rate;
-  if (!Number.isFinite(n)) return "—";
+  if (!Number.isFinite(n)) return "Not set";
   return `${Math.round(n * 100)}%`;
 }
 
@@ -31,7 +31,7 @@ export function formatMoney(
   currency: string,
 ): string {
   const n = typeof amount === "string" ? Number(amount) : amount;
-  if (!Number.isFinite(n)) return "—";
+  if (!Number.isFinite(n)) return "Not set";
   return `${currency} ${n.toLocaleString("en-GB", {
     maximumFractionDigits: 0,
   })}`;

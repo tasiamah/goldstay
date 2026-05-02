@@ -169,7 +169,9 @@ function Tile({
             </span>
           </>
         ) : (
-          <span className="text-stone-400">—</span>
+          <span className="font-sans text-sm font-normal text-stone-400">
+            No revenue yet
+          </span>
         )}
       </p>
       <p className="mt-1 text-xs text-stone-500">

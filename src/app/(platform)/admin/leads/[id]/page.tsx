@@ -54,7 +54,10 @@ export default async function LeadDetailPage({
               {lead.fullName}
             </h2>
             <p className="text-sm text-stone-500">
-              {lead.email ?? "—"} · {lead.phone}
+              {lead.email ?? (
+                <span className="italic text-stone-400">No email</span>
+              )}{" "}
+              · {lead.phone}
             </p>
             <p className="mt-1 text-xs text-stone-500">
               {LEAD_SOURCE_LABEL[lead.source]} · submitted{" "}
@@ -207,7 +210,7 @@ function Term({
         {value && value.trim() !== "" ? (
           value
         ) : (
-          <span className="text-stone-400">—</span>
+          <span className="italic text-stone-400">Not provided</span>
         )}
       </dd>
     </div>

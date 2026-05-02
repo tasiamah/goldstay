@@ -44,7 +44,7 @@ export default async function AdminTeamPage() {
         </Link>
       </div>
 
-      <section className="rounded-lg border border-stone-200 bg-white">
+      <section className="overflow-x-auto rounded-lg border border-stone-200 bg-white">
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
@@ -84,7 +84,7 @@ export default async function AdminTeamPage() {
                         hour: "2-digit",
                         minute: "2-digit",
                       })
-                    : "—"}
+                    : "Never"}
                 </td>
                 <td className="px-4 py-3 text-right text-sm">
                   <Link
