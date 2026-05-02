@@ -24,13 +24,20 @@ export default async function AdminOverviewPage({
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   const admin = await requireAdmin();
-  const [
-    queue,
-    totals,
-    kpis,
-    recentOwners,
-    recentProperties,
-  ] = await Promise.all([
+
+  // Settled instead of all so a single failing query doesn't blank the
+  // overview behind a generic "Something went wrong". Each rejection
+  // is logged with full Prisma context (which Vercel surfaces in
+  // Runtime Logs un-truncated, unlike the platform error boundary's
+  // sanitised digest), then we substitute a safe default and the page
+  // renders with the data that did come back. This was added after a
+  // production incident where the page consistently 500'd for admin
+  // users while /owner kept working — the root cause was hidden by
+  // Promise.all collapsing the 15-query rejection storm into one
+  // opaque error. Defensive readers are correct on infra hiccups too:
+  // a transient pgbouncer blip or Supabase pause now degrades the
+  // dashboard gracefully instead of taking it down entirely.
+  const settled = await Promise.allSettled([
     getAttentionQueue(admin),
     getMonthlyTotals(),
     getOverviewKpis(admin),
@@ -52,6 +59,26 @@ export default async function AdminOverviewPage({
     }),
   ]);
 
+  const [
+    queueRes,
+    totalsRes,
+    kpisRes,
+    recentOwnersRes,
+    recentPropertiesRes,
+  ] = settled;
+
+  const queue = unwrap(queueRes, "getAttentionQueue", {
+    buckets: [],
+    totalItems: 0,
+  });
+  const totals = unwrap(totalsRes, "getMonthlyTotals", {
+    monthLabel: "",
+    totals: [],
+  });
+  const kpis = unwrap(kpisRes, "getOverviewKpis", null);
+  const recentOwners = unwrap(recentOwnersRes, "recentOwners", []);
+  const recentProperties = unwrap(recentPropertiesRes, "recentProperties", []);
+
   return (
     <div className="space-y-10">
       <PermissionDeniedBanner deniedRaw={searchParams?.denied} />
@@ -67,9 +94,11 @@ export default async function AdminOverviewPage({
           subsumed: occupancy already encodes active leases, and the
           inventory totals were never action-driving — anyone who
           needs them opens /admin/owners or /admin/properties. */}
-      <KpiStrip kpis={kpis} />
+      {kpis ? <KpiStrip kpis={kpis} /> : null}
       <AttentionQueue queue={queue} />
-      <CurrencyTotals monthLabel={totals.monthLabel} totals={totals.totals} />
+      {totals.monthLabel ? (
+        <CurrencyTotals monthLabel={totals.monthLabel} totals={totals.totals} />
+      ) : null}
 
       <section className="grid gap-8 lg:grid-cols-2">
         <RecentList
@@ -106,6 +135,24 @@ export default async function AdminOverviewPage({
       </section>
     </div>
   );
+}
+
+// Defensive Promise.allSettled unwrap. On reject, logs the full error
+// to console.error (Vercel surfaces these in Runtime Logs without
+// truncation, which is exactly what we need to root-cause Prisma /
+// connection failures) and returns a caller-supplied default so the
+// page still renders. Pure function, side-effect is the log only.
+function unwrap<T>(
+  res: PromiseSettledResult<T>,
+  label: string,
+  fallback: T,
+): T {
+  if (res.status === "fulfilled") return res.value;
+  console.error(
+    `[admin/overview] ${label} failed; falling back to default.`,
+    res.reason,
+  );
+  return fallback;
 }
 
 function RecentList({

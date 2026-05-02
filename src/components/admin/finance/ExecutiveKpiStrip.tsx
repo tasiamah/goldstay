@@ -60,20 +60,18 @@ export async function ExecutiveKpiStrip() {
     windows[0]!.start,
   );
 
-  const txns = await prisma.transaction.findMany({
-    where: {
-      occurredOn: { gte: earliest },
-      type: { in: [...GOLDSTAY_REVENUE_TYPES, ...GOLDSTAY_COST_TYPES] },
-    },
-    select: {
-      occurredOn: true,
-      amount: true,
-      currency: true,
-      type: true,
-      direction: true,
-      propertyId: true,
-    },
-  });
+  // Self-contain query failures. The strip is decorative; the rest of
+  // the overview must keep rendering even if Transaction queries hit
+  // a transient pgbouncer / connection-pool issue. Log the full Prisma
+  // error to Vercel Runtime Logs so we can root-cause without
+  // depending on the platform error boundary's sanitised digest.
+  let txns: Awaited<ReturnType<typeof loadTxns>> = [];
+  try {
+    txns = await loadTxns(earliest);
+  } catch (err) {
+    console.error("[admin/ExecutiveKpiStrip] transaction.findMany failed", err);
+    return null;
+  }
 
   const normalised: GoldstayTxn[] = txns
     .filter((t): t is typeof t & { propertyId: string } =>
@@ -207,5 +205,25 @@ function fmt(n: number): string {
   return n.toLocaleString("en-GB", {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
+  });
+}
+
+// Extracted so the calling component can wrap it in a try/catch
+// without nesting the query body inside a try block (which would
+// cost us the inferred row type from prisma.findMany).
+function loadTxns(earliest: Date) {
+  return prisma.transaction.findMany({
+    where: {
+      occurredOn: { gte: earliest },
+      type: { in: [...GOLDSTAY_REVENUE_TYPES, ...GOLDSTAY_COST_TYPES] },
+    },
+    select: {
+      occurredOn: true,
+      amount: true,
+      currency: true,
+      type: true,
+      direction: true,
+      propertyId: true,
+    },
   });
 }
