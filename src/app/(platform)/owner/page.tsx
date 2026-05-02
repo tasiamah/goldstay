@@ -454,10 +454,10 @@ export default async function OwnerDashboardPage() {
       {/* Headline earnings card. Anchors the dashboard at the
           top because "what did I make and is it growing" is the
           single question every owner opens this page to answer.
-          The KPI tiles below cover the operational angles (recent
-          run-rate, occupancy, properties on the books); the
-          per-currency breakdown sits at the bottom for owners
-          who actually need it. */}
+          The portfolio list directly below answers the natural
+          follow-on ("what is producing this?"); the KPI tiles
+          and per-currency breakdown sit further down as
+          operational detail. */}
       {primary ? (
         <EarningsOverview
           primary={primary}
@@ -479,6 +479,74 @@ export default async function OwnerDashboardPage() {
           </p>
         </section>
       )}
+
+      {/* Portfolio — what's behind the earnings number. Sits
+          directly under the headline so the reading order is
+          "result -> what produced it". Full width because the
+          per-row readiness summary needs room to breathe; the
+          previous 2-col layout cramped it next to the activity
+          feed. */}
+      <section className="rounded-lg border border-stone-200 bg-white p-6">
+        <div className="flex items-center gap-2">
+          <h2 className="text-base font-medium text-stone-900">
+            Your portfolio
+          </h2>
+          <HelpHint label="Your portfolio">
+            Every property Goldstay manages for you. Tap into a
+            property to see live occupancy, recent bookings, and the
+            documents we hold for it.
+          </HelpHint>
+        </div>
+        {properties.length === 0 ? (
+          <p className="mt-4 text-sm text-stone-500">
+            Goldstay has not attached any properties to your account yet.
+            We&rsquo;ll be in touch as soon as your portfolio is live in the
+            portal.
+          </p>
+        ) : (
+          <ul className="mt-4 divide-y divide-stone-100">
+            {properties.map((p) => {
+              const occupied = p.units.some((u) => u.leases.length > 0);
+              // We have agreement-pending state owner-wide; this
+              // narrows it to "is there one for *this* property".
+              const hasPendingAgreement = pendingAgreements.some(
+                (a) => a.property.id === p.id,
+              );
+              const readiness = computePropertyReadiness({
+                propertyStatus: p.status,
+                hasPendingAgreement,
+                setupComplete,
+              });
+              return (
+                <li key={p.id} className="py-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <Link
+                        href={`/owner/properties/${p.id}`}
+                        className="font-medium text-stone-900 hover:underline"
+                      >
+                        {formatPropertyDisplayName(p.name, p.unitNumber)}
+                      </Link>
+                      <p className="text-xs text-stone-500">
+                        {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
+                        {p.city}
+                        {readiness.isActive ? (
+                          <> · {occupied ? "Occupied" : "Vacant"}</>
+                        ) : null}
+                      </p>
+                    </div>
+                    <PropertyReadinessBadge
+                      status={p.status}
+                      ownerSideDone={readiness.ownerSideDone}
+                    />
+                  </div>
+                  <PropertyReadinessSummary readiness={readiness} />
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
 
       {/* Secondary operational KPIs — 30-day run-rate (with the
           prior-period delta), property count, and occupancy. Net
@@ -587,145 +655,85 @@ export default async function OwnerDashboardPage() {
         </section>
       ) : null}
 
-      <section className="grid gap-8 lg:grid-cols-2">
-        <div className="rounded-lg border border-stone-200 bg-white p-6">
+      {/* Recent activity — drill-down ledger preview. Full width
+          because it's the last section before /owner/statements,
+          and the previous 2-col layout pinched the property-name
+          column on long property names. */}
+      <section className="rounded-lg border border-stone-200 bg-white p-6">
+        <div className="flex items-start justify-between gap-4">
           <div className="flex items-center gap-2">
             <h2 className="text-base font-medium text-stone-900">
-              Your portfolio
+              Recent activity
             </h2>
-            <HelpHint label="Your portfolio">
-              Every property Goldstay manages for you. Tap into a
-              property to see live occupancy, recent bookings, and the
-              documents we hold for it.
+            <HelpHint label="Recent activity">
+              Every rent payment, expense, refund and payout, all
+              the numbers behind your statement. Filter by property
+              and month, or download the signed monthly PDF, on
+              the Statements page.
             </HelpHint>
           </div>
-          {properties.length === 0 ? (
-            <p className="mt-4 text-sm text-stone-500">
-              Goldstay has not attached any properties to your account yet.
-              We&rsquo;ll be in touch as soon as your portfolio is live in the
-              portal.
-            </p>
-          ) : (
-            <ul className="mt-4 divide-y divide-stone-100">
-              {properties.map((p) => {
-                const occupied = p.units.some((u) => u.leases.length > 0);
-                // We have agreement-pending state owner-wide; this
-                // narrows it to "is there one for *this* property".
-                const hasPendingAgreement = pendingAgreements.some(
-                  (a) => a.property.id === p.id,
-                );
-                const readiness = computePropertyReadiness({
-                  propertyStatus: p.status,
-                  hasPendingAgreement,
-                  setupComplete,
-                });
-                return (
-                  <li key={p.id} className="py-3">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <Link
-                          href={`/owner/properties/${p.id}`}
-                          className="font-medium text-stone-900 hover:underline"
-                        >
-                          {formatPropertyDisplayName(p.name, p.unitNumber)}
-                        </Link>
-                        <p className="text-xs text-stone-500">
-                          {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
-                          {p.city}
-                          {readiness.isActive ? (
-                            <> · {occupied ? "Occupied" : "Vacant"}</>
-                          ) : null}
-                        </p>
-                      </div>
-                      <PropertyReadinessBadge
-                        status={p.status}
-                        ownerSideDone={readiness.ownerSideDone}
-                      />
-                    </div>
-                    <PropertyReadinessSummary readiness={readiness} />
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+          <Link
+            href="/owner/statements"
+            className="text-xs text-stone-500 hover:text-stone-900"
+          >
+            See all →
+          </Link>
         </div>
-
-        <div className="rounded-lg border border-stone-200 bg-white p-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <h2 className="text-base font-medium text-stone-900">
-                Recent activity
-              </h2>
-              <HelpHint label="Recent activity">
-                Every rent payment, expense, refund and payout, all
-                the numbers behind your statement. Filter by property
-                and month, or download the signed monthly PDF, on
-                the Statements page.
-              </HelpHint>
-            </div>
-            <Link
-              href="/owner/statements"
-              className="text-xs text-stone-500 hover:text-stone-900"
-            >
-              See all →
-            </Link>
-          </div>
-          {recentTransactions.length === 0 ? (
-            <p className="mt-4 text-sm text-stone-500">
-              No transactions yet. Goldstay logs every rent payment, expense,
-              and payout here so you can audit the numbers behind your monthly
-              statement.
-            </p>
-          ) : (
-            <ul className="mt-4 divide-y divide-stone-100">
-              {recentTransactions.map((t) => (
-                <li
-                  key={t.id}
-                  className="flex items-start justify-between py-3"
+        {recentTransactions.length === 0 ? (
+          <p className="mt-4 text-sm text-stone-500">
+            No transactions yet. Goldstay logs every rent payment, expense,
+            and payout here so you can audit the numbers behind your monthly
+            statement.
+          </p>
+        ) : (
+          <ul className="mt-4 divide-y divide-stone-100">
+            {recentTransactions.map((t) => (
+              <li
+                key={t.id}
+                className="flex items-start justify-between py-3"
+              >
+                <div>
+                  <p className="text-sm font-medium text-stone-900">
+                    {t.type.replace(/_/g, " ")}
+                    {t.lease ? (
+                      <span className="font-normal text-stone-500">
+                        {" "}
+                        · {t.lease.tenantName}
+                      </span>
+                    ) : null}
+                  </p>
+                  <p className="text-xs text-stone-500">
+                    <Link
+                      href={`/owner/properties/${t.property.id}`}
+                      className="hover:text-stone-900 hover:underline"
+                    >
+                      {formatPropertyDisplayName(
+                        t.property.name,
+                        t.property.unitNumber,
+                      )}
+                    </Link>{" "}
+                    ·{" "}
+                    {t.occurredOn.toLocaleDateString("en-GB", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                </div>
+                <span
+                  className={`text-sm tabular-nums ${
+                    t.direction === "INFLOW"
+                      ? "text-emerald-700"
+                      : "text-red-700"
+                  }`}
                 >
-                  <div>
-                    <p className="text-sm font-medium text-stone-900">
-                      {t.type.replace(/_/g, " ")}
-                      {t.lease ? (
-                        <span className="font-normal text-stone-500">
-                          {" "}
-                          · {t.lease.tenantName}
-                        </span>
-                      ) : null}
-                    </p>
-                    <p className="text-xs text-stone-500">
-                      <Link
-                        href={`/owner/properties/${t.property.id}`}
-                        className="hover:text-stone-900 hover:underline"
-                      >
-                        {formatPropertyDisplayName(
-                          t.property.name,
-                          t.property.unitNumber,
-                        )}
-                      </Link>{" "}
-                      ·{" "}
-                      {t.occurredOn.toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                  <span
-                    className={`text-sm tabular-nums ${
-                      t.direction === "INFLOW"
-                        ? "text-emerald-700"
-                        : "text-red-700"
-                    }`}
-                  >
-                    {t.direction === "INFLOW" ? "+" : "−"}
-                    {fmt(Number(t.amount))} {t.currency}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
+                  {t.direction === "INFLOW" ? "+" : "−"}
+                  {fmt(Number(t.amount))} {t.currency}
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
       </section>
 
     </div>
