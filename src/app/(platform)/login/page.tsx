@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import { LoginForm } from "./LoginForm";
+import { OAuthButtons, oauthAvailable } from "./OAuthButtons";
 
 export const metadata: Metadata = {
   // Single sign-in surface for both landlords and Goldstay operators
-  // (admins). The destination is decided after the magic link is
-  // exchanged in /auth/callback, based on the email's role, so the
-  // copy here stays role-neutral on purpose.
+  // (admins). The destination is decided after the magic link or
+  // OAuth code is exchanged in /auth/callback, based on the email's
+  // role, so the copy here stays role-neutral on purpose.
   title: "Sign in",
   description:
     "Sign in to Goldstay to access your owner dashboard or admin console.",
@@ -17,33 +18,75 @@ export default function LoginPage({
 }: {
   searchParams: { next?: string; error?: string; sent?: string };
 }) {
+  const ssoOn = oauthAvailable();
+
   return (
     <div className="mx-auto flex min-h-[70vh] w-full max-w-md flex-col justify-center px-6 py-16">
       <h1 className="text-3xl font-serif text-stone-900">Sign in to Goldstay</h1>
       <p className="mt-3 text-stone-600">
-        Enter the email address Goldstay has on file. We&apos;ll send you a
-        one-tap sign-in link — no password required. The same link works
-        for landlords and Goldstay operators; we&apos;ll route you to the
-        right place after you&apos;re signed in.
-      </p>
-      <p className="mt-2 text-sm text-stone-500">
-        Tip: open the link in the same browser you requested it from,
-        otherwise you&apos;ll need to request a new one.
+        {ssoOn
+          ? "Sign in with Google, Apple, or a one-tap email link. The same login works for landlords and Goldstay operators; we'll route you to the right place once you're signed in."
+          : "Enter the email address Goldstay has on file. We'll send you a one-tap sign-in link, no password required. The same link works for landlords and Goldstay operators; we'll route you to the right place after you're signed in."}
       </p>
 
-      {searchParams.sent ? (
-        <div className="mt-8 rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
-          Check your inbox. The sign-in link expires in 60 minutes.
+      {ssoOn ? (
+        <div className="mt-8 space-y-5">
+          <OAuthButtons next={searchParams.next} />
+          <Divider />
+          {searchParams.sent ? (
+            <SentNotice />
+          ) : (
+            <LoginForm next={searchParams.next} />
+          )}
         </div>
       ) : (
-        <div className="mt-8">
-          <LoginForm next={searchParams.next} />
-        </div>
+        <>
+          <p className="mt-2 text-sm text-stone-500">
+            Tip: open the link in the same browser you requested it from,
+            otherwise you&apos;ll need to request a new one.
+          </p>
+          {searchParams.sent ? (
+            <div className="mt-8">
+              <SentNotice />
+            </div>
+          ) : (
+            <div className="mt-8">
+              <LoginForm next={searchParams.next} />
+            </div>
+          )}
+        </>
       )}
 
       {searchParams.error ? (
         <SignInError code={searchParams.error} />
       ) : null}
+    </div>
+  );
+}
+
+// Visual separator between the OAuth buttons and the email magic-link
+// form. Pulled out so the page reads cleanly and the styling lives
+// in one place.
+function Divider() {
+  return (
+    <div
+      role="separator"
+      aria-label="or"
+      className="relative flex items-center"
+    >
+      <span className="flex-1 border-t border-stone-200" />
+      <span className="px-3 text-xs uppercase tracking-wider text-stone-500">
+        or continue with email
+      </span>
+      <span className="flex-1 border-t border-stone-200" />
+    </div>
+  );
+}
+
+function SentNotice() {
+  return (
+    <div className="rounded-lg border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-900">
+      Check your inbox. The sign-in link expires in 60 minutes.
     </div>
   );
 }
