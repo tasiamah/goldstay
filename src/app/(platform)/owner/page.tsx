@@ -200,11 +200,12 @@ export default async function OwnerDashboardPage() {
   });
   const setupComplete = setup.doneCount === setup.totalCount;
 
-  // Refresh the bell against current state. Idempotent + cheap (one
-  // findMany + at most one transaction). We deliberately don't await
-  // this in a way that blocks the page — but we do need it before
-  // the bell renders in the layout, so a sequential await it is.
-  // The layout reads from OwnerNotification after this completes.
+  // Refresh the bell against current state. Idempotent + cheap
+  // (one findMany + at most one transaction). The layout reads
+  // from OwnerNotification right after this completes, so a
+  // sequential await is correct here. Once we move to Next 15
+  // this can move into `after()` to render the page before the
+  // bell catch-up runs.
   await syncOwnerNotifications(owner.id, {
     setup,
     pendingAgreements: pendingAgreements.map((a) => ({

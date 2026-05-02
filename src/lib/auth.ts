@@ -9,8 +9,9 @@
 // reads from the DB. This means an outsourced contractor can be
 // granted SUPPORT and revoked again without redeploying the app.
 
+import { cache } from "react";
 import { redirect } from "next/navigation";
-import type { AdminUser } from "@prisma/client";
+import type { AdminUser, Owner } from "@prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/db";
 import { isAdminEmail } from "@/lib/admin-allowlist";
@@ -22,7 +23,14 @@ import {
 
 export { isAdminEmail };
 
-export async function getCurrentUser() {
+// Wrapped in React `cache` so that within a single render pass the
+// Supabase JWT is validated exactly once. Without this the layout
+// (`requireUser`), the page (`requireOwner` -> `requireUser`) and
+// any nested helper each fired their own getUser() round-trip,
+// stacking ~150–400ms apiece on the post-magic-link cold landing.
+// `cache` keys on the call's arguments — there are none here, so
+// every caller in the same request hits the same memoized promise.
+export const getCurrentUser = cache(async () => {
   // Supabase's getUser() can throw on transient network blips,
   // malformed cookies, or missing env vars. We mirror the
   // defensive try/catch from src/lib/supabase/middleware.ts so
@@ -38,7 +46,7 @@ export async function getCurrentUser() {
   } catch {
     return null;
   }
-}
+});
 
 export async function requireUser() {
   const user = await getCurrentUser();
@@ -185,36 +193,60 @@ export async function currentAuditActor(): Promise<CurrentActor> {
 // are created by an admin during onboarding; we look up by authUserId
 // first (set when the owner first logs in) and fall back to email
 // match so the very first login automatically claims their record.
-export async function requireOwner() {
-  const user = await requireUser();
+// Owner row for the currently logged-in user, or null if there's no
+// match (signed-in Supabase user but no Owner record in our DB).
+//
+// Wrapped in React `cache` so the layout's lookup, the page's
+// requireOwner() and any other helper that needs the owner all
+// share a single Prisma round-trip per request. Without this the
+// dashboard was doing 2–4 separate Owner queries on every render.
+//
+// We do the lookup as one `findFirst({ OR: [authUserId, email] })`
+// rather than two sequential `findUnique` calls so the common
+// "first sign-in after invite" path is one DB hop instead of two.
+// The best-effort claim that binds authUserId to the owner row
+// only fires when the row was email-matched and has no authUserId
+// yet — same behaviour as before, just folded into the helper.
+export const getCurrentOwner = cache(async (): Promise<Owner | null> => {
+  const user = await getCurrentUser();
+  if (!user) return null;
 
-  let owner = await prisma.owner.findUnique({
-    where: { authUserId: user.id },
-  });
+  const email = user.email ?? null;
 
-  if (!owner && user.email) {
-    owner = await prisma.owner.findUnique({ where: { email: user.email } });
-    if (owner) {
-      // Best-effort claim of the owner row by authUserId. If the
-      // write hits a transient error we still know who they are
-      // from the email match — return the row as-is and let the
-      // next page load retry the bind.
-      try {
-        owner = await prisma.owner.update({
-          where: { id: owner.id },
-          data: { authUserId: user.id },
-        });
-      } catch {
-        // Fall through with the email-matched owner.
-      }
+  const owner = email
+    ? await prisma.owner.findFirst({
+        where: {
+          OR: [{ authUserId: user.id }, { email }],
+        },
+      })
+    : await prisma.owner.findUnique({ where: { authUserId: user.id } });
+
+  if (!owner) return null;
+
+  // First sign-in: bind the auth user id to the owner row so future
+  // lookups hit the indexed path directly. Best-effort and silent —
+  // a transient failure just means we'll retry on the next visit.
+  if (!owner.authUserId || owner.authUserId !== user.id) {
+    try {
+      const claimed = await prisma.owner.update({
+        where: { id: owner.id },
+        data: { authUserId: user.id },
+      });
+      return claimed;
+    } catch {
+      // Return the unclaimed row; the page can still render off it.
     }
   }
+  return owner;
+});
 
+export async function requireOwner() {
+  const user = await requireUser();
+  const owner = await getCurrentOwner();
   if (!owner) {
     // Logged in but not yet an owner in our DB. Send them somewhere
     // safe; the page itself decides what to show.
     redirect("/owner/pending");
   }
-
   return { user, owner };
 }

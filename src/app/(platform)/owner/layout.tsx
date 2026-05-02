@@ -11,8 +11,7 @@
 // truth for "is this user a real owner?" without two round-trips.
 
 import Link from "next/link";
-import { requireUser } from "@/lib/auth";
-import { prisma } from "@/lib/db";
+import { getCurrentOwner, requireUser } from "@/lib/auth";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { NotificationBell } from "@/components/owner/NotificationBell";
 import { listOwnerNotifications } from "@/lib/notifications/list";
@@ -23,15 +22,9 @@ export default async function OwnerLayout({
   children: React.ReactNode;
 }) {
   const user = await requireUser();
-
-  const owner = user.email
-    ? await prisma.owner.findFirst({
-        where: {
-          OR: [{ authUserId: user.id }, { email: user.email }],
-        },
-        select: { id: true, fullName: true },
-      })
-    : null;
+  // Same cached helper requireOwner() uses, so the page's later
+  // call doesn't re-hit Prisma — one Owner round-trip per request.
+  const owner = await getCurrentOwner();
   const isLinkedOwner = Boolean(owner);
 
   // The bell reads whatever the dashboard sync most recently wrote
