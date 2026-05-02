@@ -18,9 +18,12 @@ const TONE_FOR_STATUS: Record<
   PropertyStatus,
   { label: string; className: string }
 > = {
+  // Owner-facing label leans on the trust signal: a property the
+  // operator has signed off on shows as "Verified by Goldstay" with
+  // a check, not the internal lifecycle word "Active".
   ACTIVE: {
-    label: "Active",
-    className: "border-emerald-200 bg-emerald-50 text-emerald-800",
+    label: "Verified by Goldstay",
+    className: "border-emerald-300 bg-emerald-50 text-emerald-800",
   },
   ONBOARDING: {
     label: "Setup in progress",
@@ -49,10 +52,31 @@ export function PropertyReadinessBadge({
       : tone.label;
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wider ${tone.className}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wider ${tone.className}`}
     >
+      {status === "ACTIVE" ? <VerifiedCheckIcon /> : null}
       {label}
     </span>
+  );
+}
+
+function VerifiedCheckIcon() {
+  return (
+    <svg
+      width="11"
+      height="11"
+      viewBox="0 0 12 12"
+      aria-hidden
+      fill="none"
+    >
+      <path
+        d="M2.5 6.5l2.5 2.5L9.5 4"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 

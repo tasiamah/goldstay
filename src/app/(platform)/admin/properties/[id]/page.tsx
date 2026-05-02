@@ -5,6 +5,7 @@ import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
 import { DocumentUploader } from "./documents/DocumentUploader";
 import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
+import { VerifyDocumentButton } from "./documents/VerifyDocumentButton";
 import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
 import {
   PropertyStatusBadge,
@@ -102,6 +103,16 @@ export default async function PropertyDetailPage({
       },
       documents: {
         orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          title: true,
+          kind: true,
+          sizeBytes: true,
+          createdAt: true,
+          verifiedAt: true,
+          uploadedBy: true,
+          storagePath: true,
+        },
       },
       // All bookings whose stay overlaps the heatmap window. The
       // BookingsCard then takes the most recent slice for display,
@@ -235,7 +246,13 @@ export default async function PropertyDetailPage({
               <span className="text-stone-500">
                 Occupancy (30d){" "}
                 <span className="ml-1 text-base font-serif text-stone-900">
-                  {occPct30 === null ? "—" : `${occPct30}%`}
+                  {occPct30 === null ? (
+                    <span className="text-sm font-sans text-stone-400">
+                      No bookings yet
+                    </span>
+                  ) : (
+                    `${occPct30}%`
+                  )}
                 </span>
               </span>
               {revenue30.map((r) => (
@@ -421,17 +438,22 @@ export default async function PropertyDetailPage({
                 {property.documents.map((d) => (
                   <li
                     key={d.id}
-                    className="flex items-start justify-between gap-4 py-3"
+                    className="flex flex-col gap-2 py-3 sm:flex-row sm:items-start sm:justify-between"
                   >
-                    <div className="min-w-0">
-                      <a
-                        href={`/admin/documents/${d.id}/download`}
-                        target="_blank"
-                        rel="noopener"
-                        className="block truncate font-medium text-stone-900 hover:underline"
-                      >
-                        {d.title}
-                      </a>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <a
+                          href={`/admin/documents/${d.id}/download`}
+                          target="_blank"
+                          rel="noopener"
+                          className="truncate font-medium text-stone-900 hover:underline"
+                        >
+                          {d.title}
+                        </a>
+                        <AdminDocumentVerificationBadge
+                          verified={Boolean(d.verifiedAt)}
+                        />
+                      </div>
                       <p className="mt-0.5 text-xs text-stone-500">
                         {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
                         {d.sizeBytes
@@ -443,12 +465,19 @@ export default async function PropertyDetailPage({
                           month: "short",
                           year: "numeric",
                         })}
+                        {d.uploadedBy ? ` · uploaded by ${d.uploadedBy}` : ""}
                       </p>
                     </div>
-                    <DeleteDocumentButton
-                      documentId={d.id}
-                      title={d.title}
-                    />
+                    <div className="flex items-center gap-3">
+                      <VerifyDocumentButton
+                        documentId={d.id}
+                        verified={Boolean(d.verifiedAt)}
+                      />
+                      <DeleteDocumentButton
+                        documentId={d.id}
+                        title={d.title}
+                      />
+                    </div>
                   </li>
                 ))}
               </ul>
@@ -484,6 +513,46 @@ function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}
+
+// Mirror of the owner-side badge; same vocabulary so admins and
+// landlords describe the same row the same way during a support
+// call. Local to the admin page because the styling differs
+// slightly (smaller, sits inline with the title) — extracting to a
+// shared component would force both pages to agree on the wrapper
+// markup, which we don't want yet.
+function AdminDocumentVerificationBadge({
+  verified,
+}: {
+  verified: boolean;
+}) {
+  if (verified) {
+    return (
+      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-800">
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 12 12"
+          aria-hidden
+          fill="none"
+        >
+          <path
+            d="M2.5 6.5l2.5 2.5L9.5 4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Verified
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-800">
+      Pending
+    </span>
+  );
 }
 
 function BookingsCard({

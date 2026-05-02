@@ -175,6 +175,88 @@ export async function finaliseDocumentUploadAction(input: unknown) {
   return { ok: true as const };
 }
 
+// Verify a property document — flips the badge on the owner's view
+// from "Pending verification" to "Verified by Goldstay" and writes
+// an audit row attributing the action. Idempotent: re-verifying an
+// already-verified row updates `verifiedByAdminId` to whoever last
+// confirmed it but leaves `verifiedAt` untouched, so the original
+// timestamp survives multi-admin double-checks.
+export async function verifyPropertyDocumentAction(documentId: string) {
+  const admin = await requireAdmin();
+  const actor = { adminId: admin.id, email: admin.email };
+
+  const doc = await prisma.document.findUnique({
+    where: { id: documentId },
+    select: {
+      id: true,
+      title: true,
+      kind: true,
+      propertyId: true,
+      verifiedAt: true,
+      storagePath: true,
+    },
+  });
+  if (!doc || !doc.propertyId) {
+    return { ok: false as const, error: "Document not found" };
+  }
+  if (doc.storagePath === "pending") {
+    return {
+      ok: false as const,
+      error: "File still uploading. Try again in a moment.",
+    };
+  }
+
+  await prisma.document.update({
+    where: { id: doc.id },
+    data: {
+      verifiedAt: doc.verifiedAt ?? new Date(),
+      verifiedByAdminId: admin.id,
+    },
+  });
+
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: doc.propertyId,
+    action: "document.verified",
+    summary: `Document "${doc.title}" (${doc.kind}) verified`,
+    metadata: { documentId },
+  });
+  revalidatePath(`/admin/properties/${doc.propertyId}`);
+  revalidatePath(`/owner/properties/${doc.propertyId}`);
+  return { ok: true as const };
+}
+
+export async function unverifyPropertyDocumentAction(documentId: string) {
+  const admin = await requireAdmin();
+  const actor = { adminId: admin.id, email: admin.email };
+
+  const doc = await prisma.document.findUnique({
+    where: { id: documentId },
+    select: { id: true, title: true, kind: true, propertyId: true },
+  });
+  if (!doc || !doc.propertyId) {
+    return { ok: false as const, error: "Document not found" };
+  }
+
+  await prisma.document.update({
+    where: { id: doc.id },
+    data: { verifiedAt: null, verifiedByAdminId: null },
+  });
+
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: doc.propertyId,
+    action: "document.unverified",
+    summary: `Verification removed from "${doc.title}" (${doc.kind})`,
+    metadata: { documentId },
+  });
+  revalidatePath(`/admin/properties/${doc.propertyId}`);
+  revalidatePath(`/owner/properties/${doc.propertyId}`);
+  return { ok: true as const };
+}
+
 export async function deleteDocumentAction(documentId: string) {
   const actor = await currentAuditActor();
   const doc = await prisma.document.findUnique({

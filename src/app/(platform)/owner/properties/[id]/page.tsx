@@ -44,16 +44,21 @@ import {
   revenueTotalsByCurrency,
   type BookingLike,
 } from "@/lib/bookings/aggregate";
+import { OwnerPropertyDocumentUploader } from "./OwnerPropertyDocumentUploader";
+import { OwnerPropertyDocumentRow } from "./OwnerPropertyDocumentRow";
 
 const DOCUMENT_KIND_LABELS: Record<string, string> = {
   TITLE_DEED: "Title deed",
   SALE_AGREEMENT: "Sale agreement",
   LEASE: "Lease",
   KYC: "KYC",
+  ID_DOCUMENT: "ID document",
+  PROOF_OF_PAYOUT_ACCOUNT: "Proof of payout account",
   INVOICE: "Invoice",
   RECEIPT: "Receipt",
   STATEMENT: "Statement",
   PHOTO: "Photo",
+  MANAGEMENT_AGREEMENT: "Management agreement",
   OTHER: "Other",
 };
 
@@ -95,6 +100,15 @@ export default async function OwnerPropertyDetailPage({
       },
       documents: {
         orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          title: true,
+          kind: true,
+          sizeBytes: true,
+          createdAt: true,
+          verifiedAt: true,
+          uploadedBy: true,
+        },
       },
       transactions: {
         orderBy: { occurredOn: "desc" },
@@ -259,14 +273,14 @@ export default async function OwnerPropertyDetailPage({
           <>
             <Stat
               label="Occupancy (30d)"
-              value={occPct30 === null ? "—" : `${occPct30}%`}
+              value={occPct30 === null ? "No bookings" : `${occPct30}%`}
             />
-            <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
+            <Stat label="Bedrooms" value={property.bedrooms ?? "Not set"} />
             <Stat
               label="Gross (30d)"
               value={
                 revenue30.length === 0
-                  ? "—"
+                  ? "No revenue"
                   : `${revenue30[0].currency} ${fmt(revenue30[0].gross)}`
               }
             />
@@ -274,13 +288,13 @@ export default async function OwnerPropertyDetailPage({
         ) : (
           <>
             <Stat label="Status" value={occupancyLabel} />
-            <Stat label="Bedrooms" value={property.bedrooms ?? "—"} />
+            <Stat label="Bedrooms" value={property.bedrooms ?? "Not set"} />
             <Stat
               label="Monthly rent"
               value={
                 activeLease
                   ? `${activeLease.currency} ${fmt(Number(activeLease.monthlyRent))}`
-                  : "—"
+                  : "No active lease"
               }
             />
           </>
@@ -377,10 +391,17 @@ export default async function OwnerPropertyDetailPage({
 
         <Card title="Documents">
           {(() => {
-            const missing = missingPropertyDocKinds(
-              property.documents.map((d) => d.kind),
-            );
+            // We treat any uploaded document of a required kind as
+            // "supplied" for the missing-kinds check — even if it's
+            // still pending verification — because the owner has done
+            // their part. The pending badge on the row tells them
+            // Goldstay still needs to look at it. This split avoids
+            // the previous "We still need title deed" callout
+            // re-appearing the moment they upload one.
+            const uploadedKinds = property.documents.map((d) => d.kind);
+            const missing = missingPropertyDocKinds(uploadedKinds);
             if (missing.length === 0) return null;
+            const primaryMissing = missing[0];
             return (
               <div className="mt-3 rounded-md border border-amber-200 bg-amber-50/60 px-4 py-3">
                 <p className="text-xs font-medium uppercase tracking-wider text-amber-900">
@@ -401,58 +422,99 @@ export default async function OwnerPropertyDetailPage({
                   ))}
                 </ul>
                 <p className="mt-2 text-xs text-amber-900/80">
-                  The Goldstay team usually attaches these on your behalf.
-                  Email{" "}
-                  <a
-                    href="mailto:support@goldstay.co.ke"
-                    className="font-medium text-amber-900 underline-offset-2 hover:underline"
-                  >
-                    support@goldstay.co.ke
-                  </a>{" "}
-                  if you have copies handy and we&rsquo;ll get them on file.
+                  Upload these below — a phone photo or PDF is fine.
+                  Goldstay will verify and confirm, usually within one
+                  working day.
                 </p>
+                <div className="mt-3 rounded-md border border-amber-200 bg-white p-3">
+                  <OwnerPropertyDocumentUploader
+                    propertyId={property.id}
+                    presetKind={
+                      primaryMissing === "TITLE_DEED" ||
+                      primaryMissing === "SALE_AGREEMENT" ||
+                      primaryMissing === "LEASE" ||
+                      primaryMissing === "PHOTO" ||
+                      primaryMissing === "OTHER"
+                        ? primaryMissing
+                        : undefined
+                    }
+                  />
+                </div>
               </div>
             );
           })()}
+
           {property.documents.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">
-              Goldstay has not uploaded any paperwork for this property
-              yet. Title deeds, sale agreements, and leases will appear
-              here as they are filed.
+              No paperwork on file for this property yet. Upload your
+              title deed (or any other proof of ownership) below — a
+              phone photo of the original is fine. Goldstay will review
+              and verify the document, usually within one working day.
             </p>
           ) : (
             <ul className="mt-4 divide-y divide-stone-100">
-              {property.documents.map((d) => (
-                <li
-                  key={d.id}
-                  className="flex items-start justify-between gap-4 py-3"
-                >
-                  <div className="min-w-0">
-                    <a
-                      href={`/owner/documents/${d.id}/download`}
-                      target="_blank"
-                      rel="noopener"
-                      className="block truncate font-medium text-stone-900 hover:underline"
-                    >
-                      {d.title}
-                    </a>
-                    <p className="mt-0.5 text-xs text-stone-500">
-                      {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
-                      {d.sizeBytes
-                        ? ` · ${formatBytes(d.sizeBytes)}`
-                        : ""}
-                      {" · "}
-                      {d.createdAt.toLocaleDateString("en-GB", {
-                        day: "2-digit",
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                  </div>
-                </li>
-              ))}
+              {property.documents.map((d) => {
+                const isOwnerUpload = d.uploadedBy === owner.email;
+                return (
+                  <li
+                    key={d.id}
+                    className="flex flex-col gap-2 py-3 sm:flex-row sm:items-start sm:justify-between"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <a
+                          href={`/owner/documents/${d.id}/download`}
+                          target="_blank"
+                          rel="noopener"
+                          className="truncate font-medium text-stone-900 hover:underline"
+                        >
+                          {d.title}
+                        </a>
+                        <DocumentVerificationBadge
+                          verified={Boolean(d.verifiedAt)}
+                        />
+                      </div>
+                      <p className="mt-0.5 text-xs text-stone-500">
+                        {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
+                        {d.sizeBytes
+                          ? ` · ${formatBytes(d.sizeBytes)}`
+                          : ""}
+                        {" · "}
+                        Uploaded{" "}
+                        {d.createdAt.toLocaleDateString("en-GB", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                        })}
+                        {isOwnerUpload ? " by you" : " by Goldstay"}
+                      </p>
+                    </div>
+                    {isOwnerUpload && !d.verifiedAt ? (
+                      <OwnerPropertyDocumentRow
+                        documentId={d.id}
+                        title={d.title}
+                      />
+                    ) : null}
+                  </li>
+                );
+              })}
             </ul>
           )}
+
+          {property.documents.length > 0 ? (
+            <div className="mt-6 border-t border-stone-100 pt-5">
+              <h4 className="text-sm font-medium text-stone-900">
+                Add another document
+              </h4>
+              <p className="mt-0.5 text-xs text-stone-500">
+                Title deeds, sale agreements, leases, or photos. New
+                uploads land as pending until Goldstay verifies them.
+              </p>
+              <div className="mt-3">
+                <OwnerPropertyDocumentUploader propertyId={property.id} />
+              </div>
+            </div>
+          ) : null}
         </Card>
       </section>
 
@@ -499,7 +561,11 @@ export default async function OwnerPropertyDetailPage({
                     <td className="px-4 py-2.5 text-sm text-stone-500">
                       {[t.description, t.lease?.tenantName, t.reference]
                         .filter(Boolean)
-                        .join(" · ") || "—"}
+                        .join(" · ") || (
+                        <span className="italic text-stone-400">
+                          No description
+                        </span>
+                      )}
                     </td>
                     <td
                       className={`px-4 py-2.5 text-right text-sm tabular-nums ${
@@ -567,6 +633,40 @@ function Th({
     >
       {children}
     </th>
+  );
+}
+
+// Per-document badge mirroring the OwnerKycSlot vocabulary: amber
+// while Goldstay still has to look at the file, emerald once an
+// admin has stamped Document.verifiedAt. Pure presentational; the
+// authoritative state lives on the row.
+function DocumentVerificationBadge({ verified }: { verified: boolean }) {
+  if (verified) {
+    return (
+      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-800">
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 12 12"
+          aria-hidden
+          fill="none"
+        >
+          <path
+            d="M2.5 6.5l2.5 2.5L9.5 4"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+        Verified
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-800">
+      Pending verification
+    </span>
   );
 }
 

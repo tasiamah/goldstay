@@ -442,6 +442,15 @@ model Document {
   mimeType    String?
   sizeBytes   Int?
   uploadedBy  String?
+  // Verification state. Documents start unverified; an admin reviews
+  // the file and stamps `verifiedAt` (with their admin id) once the
+  // contents check out. Surfaces in both the owner UI ("Pending
+  // verification" vs "Verified by Goldstay") and the admin UI
+  // (verify / un-verify actions on the property documents list). The
+  // managementagreement.sign flow writes verifiedAt at creation time
+  // because a click-to-accept signature is the verification.
+  verifiedAt        DateTime?
+  verifiedByAdminId String?
   createdAt   DateTime     @default(now())
 
   // Backlink for management agreements that materialise themselves

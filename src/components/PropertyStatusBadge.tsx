@@ -12,10 +12,14 @@ const STYLES: Record<Status, { label: string; className: string }> = {
     className:
       "border-amber-200 bg-amber-50 text-amber-900",
   },
+  // ACTIVE = the property has cleared Goldstay's onboarding review
+  // (documents are on file and verified, owner KYC is signed off).
+  // Surface that as "Verified" with a checkmark so the trust signal
+  // is visible at a glance instead of buried behind ops jargon.
   ACTIVE: {
-    label: "Active",
+    label: "Verified",
     className:
-      "border-emerald-200 bg-emerald-50 text-emerald-900",
+      "border-emerald-300 bg-emerald-50 text-emerald-900",
   },
   EXITED: {
     label: "Exited",
@@ -27,10 +31,31 @@ export function PropertyStatusBadge({ status }: { status: Status }) {
   const { label, className } = STYLES[status];
   return (
     <span
-      className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider ${className}`}
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[11px] font-medium uppercase tracking-wider ${className}`}
     >
+      {status === "ACTIVE" ? <VerifiedCheckIcon /> : null}
       {label}
     </span>
+  );
+}
+
+function VerifiedCheckIcon() {
+  return (
+    <svg
+      width="11"
+      height="11"
+      viewBox="0 0 12 12"
+      aria-hidden
+      fill="none"
+    >
+      <path
+        d="M2.5 6.5l2.5 2.5L9.5 4"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
