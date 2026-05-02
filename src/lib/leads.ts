@@ -34,6 +34,14 @@ export type CreateLeadInput = {
   // Optional actor; the public form has no admin actor (the lead
   // creates itself). Manual logs from /admin/leads/new include one.
   actor?: AuditActor | null;
+  // Optional override for the dedupe key. The default derivation
+  // (email + phone + name + source) is the right thing for inbound
+  // form submissions — same person, same form, same minute → one
+  // row. Outbound flows that have a more stable identifier (e.g. an
+  // acquisition scrape with a canonical listing URL) should pass
+  // their own key so re-scrapes collapse onto the same row instead
+  // of churning new ones every night.
+  submissionHash?: string;
 };
 
 // Same person hitting submit twice on a flaky mobile network
@@ -52,7 +60,7 @@ function deriveSubmissionHash(input: CreateLeadInput): string {
 }
 
 export async function createLead(input: CreateLeadInput): Promise<Lead> {
-  const submissionHash = deriveSubmissionHash(input);
+  const submissionHash = input.submissionHash ?? deriveSubmissionHash(input);
   try {
     const lead = await prisma.lead.create({
       data: {

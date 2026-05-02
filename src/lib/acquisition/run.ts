@@ -11,6 +11,7 @@
 
 import { classify, isWorthSurfacing } from "./classify";
 import { upsertAcquisitionTarget } from "./airtable";
+import { persistScrapedLead } from "./leads";
 import { scrapeAirbnb } from "./sources/airbnb";
 import { scrapeBuyRentKenya } from "./sources/buyrentkenya";
 import type { ClassifiedListing, RawListing } from "./types";
@@ -20,9 +21,19 @@ export type SourceRunSummary = {
   pagesFetched: number;
   rawCount: number;
   surfacedCount: number;
+  // Airtable mirror — historical fields, ops still uses these to
+  // measure how the Acquisition Targets table is filling up.
   inserted: number;
   updated: number;
   skipped: number;
+  // Postgres `Lead` mirror — drives /admin/leads. leadsInserted is
+  // a brand-new Lead row; leadsDeduped is a re-scrape of a listing
+  // we already saw on a previous night; leadsSkipped is a listing
+  // with no usable phone/name (we can't action it without a
+  // callback channel) or a Likely-agent that slipped through.
+  leadsInserted: number;
+  leadsDeduped: number;
+  leadsSkipped: number;
   blocked: boolean;
   notes: string[];
   errored?: string;
@@ -38,6 +49,8 @@ export type AcquisitionRunSummary = {
     surfacedCount: number;
     inserted: number;
     updated: number;
+    leadsInserted: number;
+    leadsDeduped: number;
   };
 };
 
@@ -68,6 +81,9 @@ async function runOne(job: SourceJob): Promise<SourceRunSummary> {
     inserted: 0,
     updated: 0,
     skipped: 0,
+    leadsInserted: 0,
+    leadsDeduped: 0,
+    leadsSkipped: 0,
     blocked: false,
     notes: [],
   };
@@ -85,11 +101,33 @@ async function runOne(job: SourceJob): Promise<SourceRunSummary> {
   let inserted = 0;
   let updated = 0;
   let skipped = 0;
+  let leadsInserted = 0;
+  let leadsDeduped = 0;
+  let leadsSkipped = 0;
   for (const c of surfaced) {
     const r = await upsertAcquisitionTarget(c);
     if (r === "inserted") inserted++;
     else if (r === "updated") updated++;
     else skipped++;
+
+    // Mirror the surfaced listing into Postgres so /admin/leads
+    // shows it. Failures here are isolated per-listing — we don't
+    // want one bad row to stop the rest of the night's Lead
+    // mirror or the Airtable upsert that already happened.
+    try {
+      const leadResult = await persistScrapedLead(c);
+      if (leadResult === "inserted") leadsInserted++;
+      else if (leadResult === "deduped") leadsDeduped++;
+      else leadsSkipped++;
+    } catch (e) {
+      leadsSkipped++;
+      // Surfacing in the workflow log is enough; the Airtable row
+      // is the safety net, ops will still see the listing there.
+      console.error(
+        `[acquisition] persistScrapedLead failed for ${c.url}`,
+        e,
+      );
+    }
   }
 
   return {
@@ -100,6 +138,9 @@ async function runOne(job: SourceJob): Promise<SourceRunSummary> {
     inserted,
     updated,
     skipped,
+    leadsInserted,
+    leadsDeduped,
+    leadsSkipped,
     blocked: result.blocked,
     notes: result.notes,
   };
@@ -119,8 +160,17 @@ export async function runAcquisitionScan(
       surfacedCount: acc.surfacedCount + s.surfacedCount,
       inserted: acc.inserted + s.inserted,
       updated: acc.updated + s.updated,
+      leadsInserted: acc.leadsInserted + s.leadsInserted,
+      leadsDeduped: acc.leadsDeduped + s.leadsDeduped,
     }),
-    { rawCount: 0, surfacedCount: 0, inserted: 0, updated: 0 },
+    {
+      rawCount: 0,
+      surfacedCount: 0,
+      inserted: 0,
+      updated: 0,
+      leadsInserted: 0,
+      leadsDeduped: 0,
+    },
   );
 
   return {
