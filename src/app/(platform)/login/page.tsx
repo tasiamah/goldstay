@@ -1,7 +1,18 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { LoginForm } from "./LoginForm";
-import { OAuthButtons, oauthAvailable } from "./OAuthButtons";
+import { OAuthButtons } from "./OAuthButtons";
+
+// Whether either SSO button is enabled. Read here as a server-side
+// expression rather than imported from OAuthButtons.tsx (which is a
+// client component) because Next.js cannot call a function that
+// lives behind a "use client" reference during prerender.
+// NEXT_PUBLIC_* values are inlined into both server and client
+// bundles at build time, so this evaluates the same way in both
+// contexts and stays consistent with what OAuthButtons reads.
+const SSO_ENABLED =
+  process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true" ||
+  process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === "true";
 
 export const metadata: Metadata = {
   // Single sign-in surface for both landlords and Goldstay operators
@@ -19,7 +30,7 @@ export default function LoginPage({
 }: {
   searchParams: { next?: string; error?: string; sent?: string };
 }) {
-  const ssoOn = oauthAvailable();
+  const ssoOn = SSO_ENABLED;
 
   return (
     <div className="min-h-screen">

@@ -21,15 +21,14 @@ const GOOGLE_ENABLED =
   process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true";
 const APPLE_ENABLED = process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === "true";
 
-export function oauthAvailable(): boolean {
-  return GOOGLE_ENABLED || APPLE_ENABLED;
-}
-
 export function OAuthButtons({ next }: { next?: string }) {
   const [pending, setPending] = useState<Provider | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  if (!oauthAvailable()) return null;
+  // Defensive: parents should already have checked the same env flags
+  // before rendering this component, but a stray render with neither
+  // provider enabled would emit an empty container, so bail explicitly.
+  if (!GOOGLE_ENABLED && !APPLE_ENABLED) return null;
 
   async function startOAuth(provider: Provider) {
     setError(null);
