@@ -3,16 +3,18 @@ import Link from "next/link";
 import { LoginForm } from "./LoginForm";
 import { OAuthButtons } from "./OAuthButtons";
 
-// Whether either SSO button is enabled. Read here as a server-side
-// expression rather than imported from OAuthButtons.tsx (which is a
-// client component) because Next.js cannot call a function that
-// lives behind a "use client" reference during prerender.
-// NEXT_PUBLIC_* values are inlined into both server and client
-// bundles at build time, so this evaluates the same way in both
-// contexts and stays consistent with what OAuthButtons reads.
-const SSO_ENABLED =
-  process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true" ||
-  process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === "true";
+// Provider gating. We resolve these in the Server Component (real
+// Node process.env) and forward the booleans into the client
+// component as props. Reading process.env from inside the client
+// "use client" module looked equivalent but in practice Sentry's
+// webpack wrap caused Next.js's DefinePlugin to skip some chunks,
+// shipping `process.env.NEXT_PUBLIC_AUTH_*` as a runtime lookup
+// against an empty `process` polyfill (always undefined in the
+// browser). Computing here and passing down sidesteps that entirely.
+const GOOGLE_SSO =
+  process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true";
+const APPLE_SSO = process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === "true";
+const SSO_ENABLED = GOOGLE_SSO || APPLE_SSO;
 
 export const metadata: Metadata = {
   // Single sign-in surface for both landlords and Goldstay operators
@@ -69,7 +71,11 @@ export default function LoginPage({
 
         {ssoOn ? (
           <div className="mt-8 space-y-5">
-            <OAuthButtons next={searchParams.next} />
+            <OAuthButtons
+              google={GOOGLE_SSO}
+              apple={APPLE_SSO}
+              next={searchParams.next}
+            />
             <Divider />
             {searchParams.sent ? (
               <SentNotice />

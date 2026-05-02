@@ -8,27 +8,28 @@ import { createSupabaseBrowserClient } from "@/lib/supabase/client";
 // Supabase exchange, our /auth/callback) is identical to the magic
 // link path, so this file owns nothing beyond the click and the icon.
 //
-// Both providers are gated behind public env flags
-// (NEXT_PUBLIC_AUTH_GOOGLE_ENABLED, NEXT_PUBLIC_AUTH_APPLE_ENABLED) so
-// that the buttons only appear once the corresponding provider has
-// been wired up in the Supabase dashboard. This means the code can
-// ship ahead of the dashboard work without users hitting a broken
-// "provider not enabled" error.
+// IMPORTANT: provider availability is decided by the parent Server
+// Component reading process.env directly and passing booleans down.
+// We deliberately do NOT read process.env from this client component:
+// the Sentry webpack wrapping causes Next.js's DefinePlugin to miss
+// some client modules, leaving NEXT_PUBLIC_* references unreplaced
+// and resolving to a runtime `process` polyfill that returns
+// undefined in the browser. Passing the resolved values as props
+// sidesteps that whole class of failure.
 
 type Provider = "google" | "apple";
 
-const GOOGLE_ENABLED =
-  process.env.NEXT_PUBLIC_AUTH_GOOGLE_ENABLED === "true";
-const APPLE_ENABLED = process.env.NEXT_PUBLIC_AUTH_APPLE_ENABLED === "true";
+type Props = {
+  google: boolean;
+  apple: boolean;
+  next?: string;
+};
 
-export function OAuthButtons({ next }: { next?: string }) {
+export function OAuthButtons({ google, apple, next }: Props) {
   const [pending, setPending] = useState<Provider | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  // Defensive: parents should already have checked the same env flags
-  // before rendering this component, but a stray render with neither
-  // provider enabled would emit an empty container, so bail explicitly.
-  if (!GOOGLE_ENABLED && !APPLE_ENABLED) return null;
+  if (!google && !apple) return null;
 
   async function startOAuth(provider: Provider) {
     setError(null);
@@ -65,7 +66,7 @@ export function OAuthButtons({ next }: { next?: string }) {
 
   return (
     <div className="space-y-2.5">
-      {GOOGLE_ENABLED ? (
+      {google ? (
         <button
           type="button"
           onClick={() => startOAuth("google")}
@@ -77,7 +78,7 @@ export function OAuthButtons({ next }: { next?: string }) {
         </button>
       ) : null}
 
-      {APPLE_ENABLED ? (
+      {apple ? (
         <button
           type="button"
           onClick={() => startOAuth("apple")}
