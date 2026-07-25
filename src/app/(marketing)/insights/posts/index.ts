@@ -853,6 +853,21 @@ import BuyFirstNairobiProperty12Months, {
 import MortgageRatesKenyaBanksWontTellYou2026, {
   meta as mortgageRatesKenyaBanksWontTellYou2026Meta,
 } from "./mortgage-rates-kenya-banks-wont-tell-you-2026";
+import NairobiPropertyMarketReview2026H2, {
+  meta as nairobiPropertyMarketReview2026H2Meta,
+} from "./nairobi-property-market-review-2026-h2";
+import DiasporaInheritedNairobiProperty, {
+  meta as diasporaInheritedNairobiPropertyMeta,
+} from "./diaspora-inherited-nairobi-property-what-to-do";
+import ShouldIFireMyNairobiPropertyManager2026, {
+  meta as shouldIFireMyNairobiPropertyManager2026Meta,
+} from "./should-i-fire-my-nairobi-property-manager-2026";
+import KenyaFinanceAct2026PropertyOwnersGuide, {
+  meta as kenyaFinanceAct2026PropertyOwnersGuideMeta,
+} from "./kenya-finance-act-2026-property-owners-guide";
+import NairobiPropertyInsurance2026DiasporaGuide, {
+  meta as nairobiPropertyInsurance2026DiasporaGuideMeta,
+} from "./nairobi-property-insurance-2026-diaspora-guide";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1402,6 +1417,26 @@ export const posts: readonly Post[] = [
   {
     meta: mortgageRatesKenyaBanksWontTellYou2026Meta,
     Component: MortgageRatesKenyaBanksWontTellYou2026,
+  },
+  {
+    meta: nairobiPropertyMarketReview2026H2Meta,
+    Component: NairobiPropertyMarketReview2026H2,
+  },
+  {
+    meta: diasporaInheritedNairobiPropertyMeta,
+    Component: DiasporaInheritedNairobiProperty,
+  },
+  {
+    meta: shouldIFireMyNairobiPropertyManager2026Meta,
+    Component: ShouldIFireMyNairobiPropertyManager2026,
+  },
+  {
+    meta: kenyaFinanceAct2026PropertyOwnersGuideMeta,
+    Component: KenyaFinanceAct2026PropertyOwnersGuide,
+  },
+  {
+    meta: nairobiPropertyInsurance2026DiasporaGuideMeta,
+    Component: NairobiPropertyInsurance2026DiasporaGuide,
   },
 ];
 
