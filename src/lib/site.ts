@@ -195,20 +195,21 @@ export function emailFor(city?: "nairobi" | "accra" | null) {
   return site.emails.default;
 }
 
-// TEMPORARY: until a Kenyan WhatsApp Business number is live, the Nairobi
-// surface (and the neutral .com fallback) route to the founder's UAE
-// WhatsApp so inbound leads reach a real human instead of a dead
-// placeholder. Override with NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI in Vercel
-// the moment the Kenyan number is provisioned. Accra still uses its
-// placeholder because .com.gh is not live yet.
-const TEMP_UAE_FOUNDER_NUMBER = "971504833050";
+// Kenyan WhatsApp line. Every Nairobi CTA and the neutral .com fallback
+// route here. Kept in the source as a default so a Vercel env-var typo
+// or unset environment doesn't silently 404 our inbound funnel; the
+// NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI override still wins so we can
+// swap in an alternate line (e.g. a WhatsApp Business API number)
+// without a code deploy. Accra keeps its placeholder because .com.gh
+// is not live yet.
+const NAIROBI_WHATSAPP_NUMBER = "254702471993";
 export const whatsapp = {
   number:
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ||
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI ||
-    TEMP_UAE_FOUNDER_NUMBER,
+    NAIROBI_WHATSAPP_NUMBER,
   nairobi:
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI || TEMP_UAE_FOUNDER_NUMBER,
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI || NAIROBI_WHATSAPP_NUMBER,
   accra: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_ACCRA || "233500000000",
 };
 

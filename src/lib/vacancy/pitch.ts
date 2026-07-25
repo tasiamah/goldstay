@@ -103,7 +103,7 @@ export function buildPitchEmail(landlord: VacancyFields): {
     "  · 10% management fee; everything else (maintenance, KRA, communication) is on us.",
     "  · USD remittance to whichever bank you prefer, every month, on the 5th.",
     "",
-    "Would a 15-minute call this week make sense? Reply to this email or message me on WhatsApp on +254 700 000 000 (your dedicated line goes here).",
+    "Would a 15-minute call this week make sense? Reply to this email or message me on WhatsApp on +254 702 471 993.",
     "",
     "Best,",
     "The Goldstay team",

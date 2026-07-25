@@ -51,9 +51,9 @@ submissions even without them. Add them in the Vercel dashboard under
 
 | Key | Purpose | Example |
 | --- | --- | --- |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI` | WhatsApp number for Nairobi CTAs | `254712345678` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI` | WhatsApp number for Nairobi CTAs | `254702471993` |
 | `NEXT_PUBLIC_WHATSAPP_NUMBER_ACCRA` | WhatsApp number for Accra CTAs | `233501234567` |
-| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Fallback WhatsApp number | `254712345678` |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Fallback WhatsApp number | `254702471993` |
 | `CONTACT_INBOX` | Email that receives landlord enquiries | `hello@goldstay.com` |
 | `RESEND_API_KEY` | Enables real email via Resend (else logs to server) | `re_xxx` |
 | `NEXT_PUBLIC_GA_MEASUREMENT_ID` | Google Analytics 4 | `G-XXXXXXXXXX` |
