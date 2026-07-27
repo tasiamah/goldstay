@@ -906,6 +906,44 @@ import SendingMoneyToGhanaPropertyClosing2026, {
   meta as sendingMoneyToGhanaPropertyClosing2026Meta,
 } from "./sending-money-to-ghana-property-closing-2026";
 
+// Kenya thin-cluster batch (Q2–Q3 2026). Fills genuinely under-served
+// clusters in the Kenya catalogue rather than adding another mortgage
+// or off-plan review: coastal Kenya (Mombasa Old Town, Diani/Watamu/
+// Malindi comparison, Kilifi title diligence), selling from abroad
+// (playbook, cost breakdown, CGT), landlord remedies (eviction
+// playbook, arrears 30/60/90), plus tenant negotiation and 2026
+// short-stay licensing.
+import BuyingPropertyMombasaOldTown2026Diaspora, {
+  meta as buyingPropertyMombasaOldTown2026DiasporaMeta,
+} from "./buying-property-mombasa-old-town-2026-diaspora";
+import DianiVsWatamuVsMalindiDiaspora2026, {
+  meta as dianiVsWatamuVsMalindiDiaspora2026Meta,
+} from "./diani-vs-watamu-vs-malindi-diaspora-2026";
+import KilifiCountyLandTitleDiligenceDiaspora, {
+  meta as kilifiCountyLandTitleDiligenceDiasporaMeta,
+} from "./kilifi-county-land-title-diligence-diaspora";
+import SellingNairobiApartmentFromAbroad2026Playbook, {
+  meta as sellingNairobiApartmentFromAbroad2026PlaybookMeta,
+} from "./selling-nairobi-apartment-from-abroad-2026-playbook";
+import KenyaPropertySaleCostBreakdown2026Seller, {
+  meta as kenyaPropertySaleCostBreakdown2026SellerMeta,
+} from "./kenya-property-sale-cost-breakdown-2026-seller";
+import CapitalGainsTaxKenyaPropertySaleDiaspora2026, {
+  meta as capitalGainsTaxKenyaPropertySaleDiaspora2026Meta,
+} from "./capital-gains-tax-kenya-property-sale-diaspora-2026";
+import EvictionKenya2026LandlordPlaybook, {
+  meta as evictionKenya2026LandlordPlaybookMeta,
+} from "./eviction-kenya-2026-landlord-playbook";
+import RentArrearsKenya306090DayLandlordPlaybook, {
+  meta as rentArrearsKenya306090DayLandlordPlaybookMeta,
+} from "./rent-arrears-kenya-30-60-90-day-landlord-playbook";
+import HowToNegotiateRentNairobi2026Tenant, {
+  meta as howToNegotiateRentNairobi2026TenantMeta,
+} from "./how-to-negotiate-rent-nairobi-2026-tenant";
+import NairobiShortStayLicensing2026WhatChanged, {
+  meta as nairobiShortStayLicensing2026WhatChangedMeta,
+} from "./nairobi-short-stay-licensing-2026-what-changed";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1516,6 +1554,47 @@ export const posts: readonly Post[] = [
   {
     meta: sendingMoneyToGhanaPropertyClosing2026Meta,
     Component: SendingMoneyToGhanaPropertyClosing2026,
+  },
+  // Kenya thin-cluster Q2–Q3 2026 batch. All country: "kenya".
+  {
+    meta: buyingPropertyMombasaOldTown2026DiasporaMeta,
+    Component: BuyingPropertyMombasaOldTown2026Diaspora,
+  },
+  {
+    meta: dianiVsWatamuVsMalindiDiaspora2026Meta,
+    Component: DianiVsWatamuVsMalindiDiaspora2026,
+  },
+  {
+    meta: kilifiCountyLandTitleDiligenceDiasporaMeta,
+    Component: KilifiCountyLandTitleDiligenceDiaspora,
+  },
+  {
+    meta: sellingNairobiApartmentFromAbroad2026PlaybookMeta,
+    Component: SellingNairobiApartmentFromAbroad2026Playbook,
+  },
+  {
+    meta: kenyaPropertySaleCostBreakdown2026SellerMeta,
+    Component: KenyaPropertySaleCostBreakdown2026Seller,
+  },
+  {
+    meta: capitalGainsTaxKenyaPropertySaleDiaspora2026Meta,
+    Component: CapitalGainsTaxKenyaPropertySaleDiaspora2026,
+  },
+  {
+    meta: evictionKenya2026LandlordPlaybookMeta,
+    Component: EvictionKenya2026LandlordPlaybook,
+  },
+  {
+    meta: rentArrearsKenya306090DayLandlordPlaybookMeta,
+    Component: RentArrearsKenya306090DayLandlordPlaybook,
+  },
+  {
+    meta: howToNegotiateRentNairobi2026TenantMeta,
+    Component: HowToNegotiateRentNairobi2026Tenant,
+  },
+  {
+    meta: nairobiShortStayLicensing2026WhatChangedMeta,
+    Component: NairobiShortStayLicensing2026WhatChanged,
   },
 ];
 
