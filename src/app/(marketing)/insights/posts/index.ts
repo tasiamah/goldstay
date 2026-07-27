@@ -869,6 +869,43 @@ import NairobiPropertyInsurance2026DiasporaGuide, {
   meta as nairobiPropertyInsurance2026DiasporaGuideMeta,
 } from "./nairobi-property-insurance-2026-diaspora-guide";
 
+// Ghana / Accra deep-dive batch (Q2–Q3 2026). Builds out the .com.gh
+// catalogue from the two-post base to a proper city footprint:
+// neighbourhood guides for East Legon, Airport Residential and
+// Cantonments; legal diligence pieces on title chain and stool land;
+// updated GRA withholding tax operating manual; remote-buying and
+// funds-transfer playbooks; H1 market review and a USD-yield ranking.
+import BuyingPropertyEastLegonDiaspora2026, {
+  meta as buyingPropertyEastLegonDiaspora2026Meta,
+} from "./buying-property-east-legon-diaspora-2026";
+import AirportResidentialAccra2026BuyerGuide, {
+  meta as airportResidentialAccra2026BuyerGuideMeta,
+} from "./airport-residential-accra-2026-buyer-guide";
+import CantonmentsAccraDiplomaticPremium2026, {
+  meta as cantonmentsAccraDiplomaticPremium2026Meta,
+} from "./cantonments-accra-diplomatic-premium-2026";
+import GhanaLandTitleChainDiligenceLandsCommission, {
+  meta as ghanaLandTitleChainDiligenceLandsCommissionMeta,
+} from "./ghana-land-title-chain-diligence-lands-commission";
+import GhanaStoolLandDiasporaBuyerTrap, {
+  meta as ghanaStoolLandDiasporaBuyerTrapMeta,
+} from "./ghana-stool-land-diaspora-buyer-trap";
+import Gra8PercentRentalWithholdingTax2026Guide, {
+  meta as gra8PercentRentalWithholdingTax2026GuideMeta,
+} from "./gra-8-percent-rental-withholding-tax-2026-guide";
+import BuyingAccraPropertyFromAbroadRemoteDiligence, {
+  meta as buyingAccraPropertyFromAbroadRemoteDiligenceMeta,
+} from "./buying-accra-property-from-abroad-remote-diligence";
+import AccraPropertyMarketReview2026H1, {
+  meta as accraPropertyMarketReview2026H1Meta,
+} from "./accra-property-market-review-2026-h1";
+import BestAccraNeighbourhoodsUsdYield2026, {
+  meta as bestAccraNeighbourhoodsUsdYield2026Meta,
+} from "./best-accra-neighbourhoods-usd-yield-2026";
+import SendingMoneyToGhanaPropertyClosing2026, {
+  meta as sendingMoneyToGhanaPropertyClosing2026Meta,
+} from "./sending-money-to-ghana-property-closing-2026";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1437,6 +1474,48 @@ export const posts: readonly Post[] = [
   {
     meta: nairobiPropertyInsurance2026DiasporaGuideMeta,
     Component: NairobiPropertyInsurance2026DiasporaGuide,
+  },
+  // Ghana / Accra Q2–Q3 2026 batch. Country routing to .com.gh is
+  // handled per-post via meta.country === "ghana".
+  {
+    meta: buyingPropertyEastLegonDiaspora2026Meta,
+    Component: BuyingPropertyEastLegonDiaspora2026,
+  },
+  {
+    meta: airportResidentialAccra2026BuyerGuideMeta,
+    Component: AirportResidentialAccra2026BuyerGuide,
+  },
+  {
+    meta: cantonmentsAccraDiplomaticPremium2026Meta,
+    Component: CantonmentsAccraDiplomaticPremium2026,
+  },
+  {
+    meta: ghanaLandTitleChainDiligenceLandsCommissionMeta,
+    Component: GhanaLandTitleChainDiligenceLandsCommission,
+  },
+  {
+    meta: ghanaStoolLandDiasporaBuyerTrapMeta,
+    Component: GhanaStoolLandDiasporaBuyerTrap,
+  },
+  {
+    meta: gra8PercentRentalWithholdingTax2026GuideMeta,
+    Component: Gra8PercentRentalWithholdingTax2026Guide,
+  },
+  {
+    meta: buyingAccraPropertyFromAbroadRemoteDiligenceMeta,
+    Component: BuyingAccraPropertyFromAbroadRemoteDiligence,
+  },
+  {
+    meta: accraPropertyMarketReview2026H1Meta,
+    Component: AccraPropertyMarketReview2026H1,
+  },
+  {
+    meta: bestAccraNeighbourhoodsUsdYield2026Meta,
+    Component: BestAccraNeighbourhoodsUsdYield2026,
+  },
+  {
+    meta: sendingMoneyToGhanaPropertyClosing2026Meta,
+    Component: SendingMoneyToGhanaPropertyClosing2026,
   },
 ];
 
