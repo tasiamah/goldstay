@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Most diaspora Kenyans who lose money on Kenyan property do not lose it to strangers. They lose it to relatives or family friends managing the project on the ground. Here are the patterns, the red flags, the ways to verify quietly, and what to do when the suspicion is correct.",
   publishedAt: "2025-01-29",
+  updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.editors,
   tags: [
@@ -57,6 +58,28 @@ export default function Article() {
         the pattern early and acting on it without
         destroying the relationship in the process.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated with new 2026 patterns (WhatsApp
+        impersonation, AI-generated site
+        photographs, off-plan family introductions)
+        and cross-linked to related content on{" "}
+        <Link
+          href="/insights/how-diaspora-kenyans-get-scammed-buying-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the seven most common Kenya property scams
+        </Link>{" "}
+        and, for the Ghana equivalent of the
+        family-introduction pattern,{" "}
+        <Link
+          href="/insights/ghana-stool-land-diaspora-buyer-trap"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the Ghana stool-land trap
+        </Link>
+        .
+      </Callout>
 
       <H2 id="setup">The setup that makes this possible</H2>
 

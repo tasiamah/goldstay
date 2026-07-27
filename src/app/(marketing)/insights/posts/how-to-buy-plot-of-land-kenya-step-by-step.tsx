@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Buying a plot of land in Kenya is not the same process as buying an apartment. Different documents, different consents, different risks. This is the full step by step from finding the plot to registering the title in your name, written for diaspora buyers and first time land owners.",
   publishedAt: "2025-05-18",
+  updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.legal,
   tags: [
@@ -55,6 +56,27 @@ export default function Article() {
         written for first time land buyers and diaspora
         Kenyans buying remotely.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with current Ardhi House and
+        Land Control Board timelines, and cross-linked
+        to two new pieces that expand the coastal and
+        cross-market diligence picture:{" "}
+        <Link
+          href="/insights/kilifi-county-land-title-diligence-diaspora"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the Kilifi County title-diligence guide
+        </Link>{" "}
+        for coastal plots, and{" "}
+        <Link
+          href="/insights/ghana-land-title-chain-diligence-lands-commission"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the Ghana Lands Commission title-chain guide
+        </Link>{" "}
+        for buyers looking across borders.
+      </Callout>
 
       <H2 id="step-1">Step 1: Decide what you actually want</H2>
 

@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Real numbers on what Kenyan property managers charge in 2026, what's quoted vs what's actually deducted, and the eight hidden line items that determine whether a 10% fee is cheap or expensive.",
   publishedAt: "2025-06-09",
+  updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.poonam,
   tags: ["Kenya", "Costs", "Fees", "Management", "Diaspora"],
@@ -49,6 +50,26 @@ export default function Article() {
         whether a quoted 10% is genuinely 10% or 14% by the time
         the year is over.
       </P>
+
+      <Callout title="Refreshed for July 2026">
+        Updated with H2 2026 fee benchmarks and
+        cross-linked to two new operational pieces:{" "}
+        <Link
+          href="/insights/rent-arrears-kenya-30-60-90-day-landlord-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 30/60/90 day rent-arrears playbook
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/eviction-kenya-2026-landlord-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 2026 eviction playbook
+        </Link>
+        , both of which flesh out the recovery costs
+        that sit under the headline management fee.
+      </Callout>
 
       <H2 id="long-term">Long-term residential management</H2>
 

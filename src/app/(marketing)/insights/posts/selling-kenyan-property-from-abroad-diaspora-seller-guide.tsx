@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Selling a Kenyan property from London, New York, Dubai or anywhere else takes more than picking a broker. Pricing, legal preparation, capital gains tax, power of attorney, completion logistics and getting the proceeds out of Kenya cleanly. Here is the full 2026 playbook for diaspora sellers.",
   publishedAt: "2025-05-04",
+  updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.editors,
   tags: [
@@ -53,6 +54,34 @@ export default function Article() {
         covers the full sale process from the position of
         a diaspora seller in 2026.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with current CGT and
+        transaction-cost benchmarks, and cross-linked
+        to the deeper 2026 seller cluster:{" "}
+        <Link
+          href="/insights/selling-nairobi-apartment-from-abroad-2026-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the Nairobi apartment sale playbook
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/kenya-property-sale-cost-breakdown-2026-seller"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the full sale cost breakdown with worked
+          example
+        </Link>
+        , and{" "}
+        <Link
+          href="/insights/capital-gains-tax-kenya-property-sale-diaspora-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the diaspora CGT guide
+        </Link>
+        .
+      </Callout>
 
       <H2 id="prepare">Stage one: prepare the property and the file</H2>
 

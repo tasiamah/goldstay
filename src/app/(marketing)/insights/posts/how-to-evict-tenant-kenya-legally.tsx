@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "The exact legal process for evicting a non-paying or breaching tenant in Nairobi in 2026. Notice periods, the right court, the four common mistakes that add six months to a case, and how to avoid ever needing the process at all.",
   publishedAt: "2025-03-22",
+  updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.legal,
   tags: ["Kenya", "Eviction", "Legal", "Tenants", "Nairobi"],
@@ -42,6 +43,26 @@ export default function Article() {
         wreck cases, and the practical playbook for keeping
         timelines short.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with current tribunal and
+        Magistrates Court timing benchmarks. For the
+        deeper operational sequence, see{" "}
+        <Link
+          href="/insights/eviction-kenya-2026-landlord-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 2026 eviction playbook with sample notices
+        </Link>{" "}
+        and, for prevention,{" "}
+        <Link
+          href="/insights/rent-arrears-kenya-30-60-90-day-landlord-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 30/60/90 day rent-arrears playbook
+        </Link>
+        .
+      </Callout>
 
       <H2 id="legal-framework">The legal framework</H2>
 

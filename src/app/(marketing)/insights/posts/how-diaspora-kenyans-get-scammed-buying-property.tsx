@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Forged titles, the same plot sold twice, deposits to the wrong account, fake developers, family member side deals, ghost service charges and off-plan vanish acts. Real patterns we see every quarter and the specific diligence that catches each one before money moves.",
   publishedAt: "2025-08-20",
+  updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.legal,
   tags: [
@@ -53,6 +54,28 @@ export default function Article() {
         diligence step that catches it before any money
         moves.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with new scam patterns
+        (fake off-plan, WhatsApp impersonation of
+        advocates, AI-generated site photos) and
+        cross-linked to two new title-diligence
+        pieces:{" "}
+        <Link
+          href="/insights/kilifi-county-land-title-diligence-diaspora"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Kilifi County title diligence
+        </Link>{" "}
+        for coastal plots and{" "}
+        <Link
+          href="/insights/ghana-stool-land-diaspora-buyer-trap"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the Ghana stool-land trap
+        </Link>{" "}
+        for cross-market buyers.
+      </Callout>
 
       <H2 id="forged-title">1. The forged title</H2>
 

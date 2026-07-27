@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "Almost every diaspora Kenyan who owns property back home eventually faces some version of black tax. School fees, hospital bills, the family land project, the cousin who needs a deposit. Here is the honest 2026 guide to handling family financial pressure without ruining your investment plan or your relationships.",
   publishedAt: "2025-02-07",
+  updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.editors,
   tags: [
@@ -53,6 +54,22 @@ export default function Article() {
         without ruining your investment plan or your
         relationships back home.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Refreshed with new anecdotes from the 2025
+        and H1 2026 diaspora client cohort. For the
+        specific sub-problem of family managing
+        the project on the ground and how to catch
+        it early, see{" "}
+        <Link
+          href="/insights/how-to-tell-if-relative-kenya-scamming-you"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our companion piece on relative-managed
+          projects
+        </Link>
+        .
+      </Callout>
 
       <H2 id="reality">The reality nobody puts in writing</H2>
 

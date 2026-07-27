@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "If you own residential property in Kenya from abroad, KRA is already counting on its 7.5%. A plain-English breakdown of what MRI is, who pays it, the actual filing mechanic, and the three mistakes diaspora landlords make every year.",
   publishedAt: "2025-09-17",
+  updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.poonam,
   tags: ["Kenya", "Tax", "Diaspora", "MRI", "KRA", "Compliance"],
@@ -38,6 +39,28 @@ export default function Article() {
         Rental Income tax works, who pays it, when, and the three mistakes
         diaspora landlords make every single year.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated to reflect the position after the Kenya
+        Finance Act 2026 and current KRA iTax
+        practice. For the full Finance Act 2026
+        summary see{" "}
+        <Link
+          href="/insights/kenya-finance-act-2026-property-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our Finance Act 2026 guide
+        </Link>
+        ; for the Ghanaian equivalent of this piece
+        see{" "}
+        <Link
+          href="/insights/gra-8-percent-rental-withholding-tax-2026-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the GRA 8% withholding tax operating manual
+        </Link>
+        .
+      </Callout>
 
       <H2 id="what-is-mri">What MRI actually is</H2>
 

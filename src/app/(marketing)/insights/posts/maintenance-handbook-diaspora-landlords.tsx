@@ -18,6 +18,7 @@ export const meta: PostMeta = {
   description:
     "How to keep a Nairobi or Accra apartment in good repair from 6,000 miles away. The four-tier authority structure, the items that should be on planned maintenance, the failures we see most often, and how to budget realistically.",
   publishedAt: "2024-12-03",
+  updatedAt: "2026-07-27",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Maintenance", "Operations", "Diaspora", "Budget"],
@@ -42,6 +43,27 @@ export default function Article() {
         2% a year by avoiding the damage that follows
         delayed repairs. Here is how we run it.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with current Nairobi
+        vendor rate ranges and service-charge norm
+        updates. Read alongside{" "}
+        <Link
+          href="/insights/cost-of-property-management-kenya-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 2026 property-management cost guide
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/rent-arrears-kenya-30-60-90-day-landlord-playbook"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the rent-arrears playbook
+        </Link>{" "}
+        for the recovery costs that sit under the
+        maintenance line.
+      </Callout>
 
       <H2 id="four-tier">The four-tier authority structure</H2>
 

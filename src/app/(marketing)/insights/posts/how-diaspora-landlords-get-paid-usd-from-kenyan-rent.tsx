@@ -19,6 +19,7 @@ export const meta: PostMeta = {
   description:
     "The unsexy mechanics of moving rental income out of Kenya without losing 4% to FX spread, 6 weeks to bank delays, or your nerves. A practical guide to wires, mobile money, FX rates, and the rules that actually apply.",
   publishedAt: "2025-05-08",
+  updatedAt: "2026-07-27",
   readingMinutes: 7,
   author: authors.poonam,
   tags: ["Kenya", "FX", "USD", "Remittance", "Diaspora"],
@@ -40,6 +41,20 @@ export default function Article() {
         how the money actually moves, and what to insist on so
         you keep most of it.
       </Lede>
+
+      <Callout title="Refreshed for July 2026">
+        Updated for 2026 with current FX benchmarks,
+        Wise / CBK notes, and refreshed wire-timing
+        data. For the Ghanaian mirror of this
+        process (moving USD in, not out), see{" "}
+        <Link
+          href="/insights/sending-money-to-ghana-property-closing-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the 2026 Ghana funds-transfer guide
+        </Link>
+        .
+      </Callout>
 
       <H2 id="the-default">The default that costs you 4 to 6%</H2>
 
