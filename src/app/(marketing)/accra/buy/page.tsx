@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { CityBuyPage } from "@/components/CityBuyPage";
+import { enforceCityHost } from "@/lib/enforceCityHost";
 import { alternateLanguagesFor } from "@/lib/site";
 
 export const metadata: Metadata = {
@@ -13,5 +14,6 @@ export const metadata: Metadata = {
 };
 
 export default function Page() {
+  enforceCityHost("accra", "/accra/buy");
   return <CityBuyPage city="accra" />;
 }

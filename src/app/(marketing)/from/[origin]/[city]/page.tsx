@@ -7,6 +7,7 @@ import {
   findDiasporaOrigin,
   type DiasporaOrigin,
 } from "@/lib/diaspora-origins";
+import { enforceCityHost } from "@/lib/enforceCityHost";
 import { alternateLanguagesFor, site, waLink } from "@/lib/site";
 
 // Programmatic diaspora-origin pages.
@@ -65,6 +66,7 @@ export function generateMetadata({ params }: Props): Metadata {
 export default function Page({ params }: Props) {
   const r = resolve(params);
   if (!r) notFound();
+  enforceCityHost(r.city, `/from/${r.origin.code}/${r.city}`);
   return <DiasporaOriginPage origin={r.origin} city={r.city} />;
 }
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { NeighbourhoodPage } from "@/components/NeighbourhoodPage";
+import { enforceCityHost } from "@/lib/enforceCityHost";
 import {
   alternateLanguagesFor,
   cities,
@@ -48,5 +49,6 @@ export function generateMetadata({ params }: Props): Metadata {
 export default function Page({ params }: Props) {
   const n = findNeighbourhood("accra", params.neighbourhood);
   if (!n) notFound();
+  enforceCityHost("accra", `/accra/${neighbourhoodSlug(n.name)}`);
   return <NeighbourhoodPage city="accra" neighbourhood={n} />;
 }
