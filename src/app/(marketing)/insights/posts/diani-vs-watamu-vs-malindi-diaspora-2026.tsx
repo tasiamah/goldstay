@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Diani vs Watamu vs Malindi: which coastal Kenya market for diaspora buyers?",
   description:
     "Three coastal Kenya markets. Three very different buyer profiles, tenant bases and yield structures. This is the honest 2026 comparison for diaspora buyers deciding where to place coastal capital.",
-  publishedAt: "2026-05-17",
+  publishedAt: "2026-05-19",
   updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.research,

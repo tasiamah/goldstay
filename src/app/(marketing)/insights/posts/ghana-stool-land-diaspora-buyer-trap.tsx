@@ -16,7 +16,7 @@ export const meta: PostMeta = {
     "Ghana stool land: what diaspora buyers must never assume",
   description:
     "The majority of land in Accra and Kumasi is stool land, not freehold. Understanding how it actually works, who really controls it, and what a diaspora buyer takes on when they buy it is the single most important thing to get right.",
-  publishedAt: "2026-06-05",
+  publishedAt: "2026-06-10",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.legal,

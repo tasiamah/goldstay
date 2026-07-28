@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Accra property market review: the honest H1 2026 update",
   description:
     "Six months of Accra property data, with no marketing gloss. What actually happened to prices, rents, yields, off-plan and the cedi in H1 2026, and what it means for a diaspora buyer looking at H2.",
-  publishedAt: "2026-06-26",
+  publishedAt: "2026-07-01",
   updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.research,

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Eviction in Kenya 2026: the honest landlord playbook (with sample notices)",
   description:
     "Eviction of a defaulting tenant in Kenya is legally clear but procedurally slow. This is the honest 2026 landlord playbook: which tenancies fall under which law, the exact notices required, realistic timelines, and where landlords usually break the process.",
-  publishedAt: "2026-06-21",
+  publishedAt: "2026-06-24",
   updatedAt: "2026-07-27",
   readingMinutes: 9,
   author: authors.legal,

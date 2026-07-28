@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Kilifi County land: title diligence for diaspora buyers",
   description:
     "Kilifi County has produced more diaspora land-buying complaints than any other coastal Kenya county over the last decade. Understanding why and running the diligence to avoid the traps is the single most valuable thing a diaspora buyer can do here.",
-  publishedAt: "2026-05-24",
+  publishedAt: "2026-05-27",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.legal,

@@ -18,7 +18,7 @@ export const meta: PostMeta = {
     "Buying property in East Legon: the complete 2026 diaspora guide",
   description:
     "East Legon is Accra's single biggest diaspora buying zone. This is the honest 2026 guide to the pockets, the price ranges, the diligence traps, and the tenant economics that decide whether you buy well or badly.",
-  publishedAt: "2026-05-08",
+  publishedAt: "2026-05-13",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.legal,

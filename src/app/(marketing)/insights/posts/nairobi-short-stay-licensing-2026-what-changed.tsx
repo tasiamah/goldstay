@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Nairobi short-stay licensing 2026: what changed and what didn't",
   description:
     "Short-stay licensing in Nairobi in 2026 is neither the wild west it was five years ago nor the fully-regulated regime some landlords fear. This is the honest 2026 snapshot: what the law actually says, what enforcement actually does, and what a compliant operator looks like.",
-  publishedAt: "2026-07-12",
+  publishedAt: "2026-07-15",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.legal,

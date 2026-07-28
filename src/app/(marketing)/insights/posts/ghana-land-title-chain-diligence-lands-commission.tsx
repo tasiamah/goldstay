@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Ghana property title chain: how to verify at the Lands Commission before you wire",
   description:
     "The single most expensive mistake a diaspora buyer makes in Ghana is trusting the document the seller is holding. This is the step-by-step of what an actual Lands Commission title-chain diligence looks like in 2026.",
-  publishedAt: "2026-05-29",
+  publishedAt: "2026-06-02",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.legal,

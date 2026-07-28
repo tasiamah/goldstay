@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Cantonments Accra: is the diplomatic premium still worth it in 2026?",
   description:
     "Cantonments still carries the highest per-square-metre pricing in Accra, and the tenant covenants that justify it. But the arithmetic has shifted in 2026. Here is what the numbers actually say and where they still stack up.",
-  publishedAt: "2026-05-22",
+  publishedAt: "2026-05-26",
   updatedAt: "2026-07-27",
   readingMinutes: 7,
   author: authors.research,

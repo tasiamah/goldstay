@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Selling your Nairobi apartment from abroad: the 2026 seller playbook",
   description:
     "Selling a Nairobi apartment while living overseas is genuinely doable in 2026, but the sequence matters. This is the honest playbook: pricing, presentation, professional stack, and the decisions that determine whether the sale takes three months or fifteen.",
-  publishedAt: "2026-05-31",
+  publishedAt: "2026-06-04",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.editors,

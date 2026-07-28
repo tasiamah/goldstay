@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "How to buy Accra property from London or the US: the remote diligence playbook",
   description:
     "Buying in Accra from London, New York or Toronto is now a routine process, provided the diligence stack is right. This is the exact sequence we run for diaspora clients who never set foot in Ghana before completion.",
-  publishedAt: "2026-06-19",
+  publishedAt: "2026-06-25",
   updatedAt: "2026-07-27",
   readingMinutes: 8,
   author: authors.editors,

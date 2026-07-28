@@ -17,7 +17,7 @@ export const meta: PostMeta = {
     "Airport Residential Accra: the honest 2026 buyer guide",
   description:
     "Airport Residential has quietly become the most watched Accra buying zone in 2026. This is what actually drives the pricing, which pockets are underwriting what tenant, and where the diligence is easiest to get wrong.",
-  publishedAt: "2026-05-15",
+  publishedAt: "2026-05-20",
   updatedAt: "2026-07-27",
   readingMinutes: 7,
   author: authors.research,
