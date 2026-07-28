@@ -190,7 +190,7 @@ export default function Article() {
       </P>
 
       <P>
-        <strong>Net proceeds to the seller's
+        <strong>Net proceeds to the seller’s
         overseas account:</strong> approximately
         KES 21,680,000, or roughly 86.7 per cent
         of the headline sale price.

@@ -33,7 +33,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        The mechanics of Ghana's 8 per cent residential
+        The mechanics of Ghana’s 8 per cent residential
         rental withholding tax are simple in the
         headline and detailed in the practice. The
         diaspora landlord version, where the landlord
@@ -48,8 +48,8 @@ export default function Article() {
       <P>
         Ghana applies a final withholding tax of 8 per
         cent on gross rental income from residential
-        property. "Final" means the withholding
-        satisfies the landlord's income tax obligation
+        property. “Final” means the withholding
+        satisfies the landlord’s income tax obligation
         on that rental stream in full. There is no
         further filing obligation on that income and
         no ability to deduct expenses against it. The
@@ -75,7 +75,7 @@ export default function Article() {
         Where the tenant is a company registered in
         Ghana, the tenant withholds. The tenant
         deducts 8 per cent of gross rent at the point
-        of payment, remits to GRA on the landlord's
+        of payment, remits to GRA on the landlord’s
         behalf, and issues the landlord a withholding
         tax credit certificate. This is the cleanest
         model, and it is why diaspora landlords with
@@ -87,10 +87,10 @@ export default function Article() {
       <P>
         Where the tenant is an individual, the tenant
         does not withhold. The landlord (or the
-        landlord's agent) is responsible for the
+        landlord’s agent) is responsible for the
         remittance. This is where most compliance
         errors happen with diaspora landlords: the
-        assumption that "the tenant handles it"
+        assumption that “the tenant handles it”
         applies to every case, when in reality it
         only applies to corporate tenants.
       </P>
@@ -114,7 +114,7 @@ export default function Article() {
         withholds when only a corporate tenant does.
       </Pullquote>
 
-      <H2 id="the-base">What counts as "gross rent"</H2>
+      <H2 id="the-base">What counts as “gross rent”</H2>
 
       <UL>
         <LI>
@@ -218,12 +218,12 @@ export default function Article() {
           <strong>By the 15th of the following
           month:</strong> remit to GRA and obtain the
           acknowledgement. Filing is done through the
-          GRA taxpayer portal on the landlord's TIN.
+          GRA taxpayer portal on the landlord’s TIN.
         </LI>
         <LI>
           <strong>Retain the acknowledgement</strong>{" "}
           in the property file. You will need it on
-          any future sale for the buyer's diligence,
+          any future sale for the buyer’s diligence,
           on any mortgage application, and if a GRA
           enquiry arises.
         </LI>

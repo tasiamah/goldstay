@@ -52,13 +52,13 @@ export default function Article() {
         advocates run for us in 2026.
       </Lede>
 
-      <H2 id="why-a-search-alone-is-not-enough">Why a "Lands Commission search" is not enough</H2>
+      <H2 id="why-a-search-alone-is-not-enough">Why a “Lands Commission search” is not enough</H2>
 
       <P>
         Most casual diligence stops at what advocates
         call the basic search: a Lands Commission
         confirmation that the property is registered
-        in the seller's name and that no obvious
+        in the seller’s name and that no obvious
         caveats or encumbrances are recorded. That
         search is necessary but nowhere near
         sufficient. It confirms the current position;
@@ -69,7 +69,7 @@ export default function Article() {
       <P>
         The title-chain diligence goes back through
         every assignment, sub-lease, deed of gift and
-        succession event that connects today's
+        succession event that connects today’s
         registered position back to the original
         grant. It confirms that each of those transfers
         was properly executed, properly stamped,
@@ -102,8 +102,8 @@ export default function Article() {
         <LI>
           <strong>Reconcile the chain document by
           document.</strong> Every assignment between
-          the root and today's registered position
-          should appear both on the seller's chain
+          the root and today’s registered position
+          should appear both on the seller’s chain
           recital and in the Lands Commission
           register. Any assignment that appears on one
           and not the other is a flag.
@@ -117,7 +117,7 @@ export default function Article() {
           taking title today inherits the exposure.
         </LI>
         <LI>
-          <strong>Verify the grantor's authority at
+          <strong>Verify the grantor’s authority at
           each step.</strong> For stool land, this
           means confirming that the granting chief
           held authority at the date of grant. Stool
@@ -138,7 +138,7 @@ export default function Article() {
           confirmation.</strong> Speak to the
           immediate neighbours and, where the plot is
           stool land, to a member of the stool council
-          who is not the seller's introducer. Parallel
+          who is not the seller’s introducer. Parallel
           grants and dual sales sometimes only surface
           in this conversation.
         </LI>
@@ -156,7 +156,7 @@ export default function Article() {
         <LI>
           <strong>Missing intermediate assignments.</strong>{" "}
           If the recital jumps from a 1998 grant to
-          today's owner without documenting the
+          today’s owner without documenting the
           transfers in between, the chain is
           incomplete on its face.
         </LI>
@@ -202,7 +202,7 @@ export default function Article() {
         A full title-chain diligence for an Accra
         apartment or plot, including certified copies,
         cadastral survey, neighbour confirmation and
-        the advocate's opinion, runs USD 800 to USD
+        the advocate’s opinion, runs USD 800 to USD
         1,600. On a USD 250,000 to USD 500,000
         purchase, this is under 0.5 per cent. It is
         the single cheapest line item on the
@@ -219,11 +219,11 @@ export default function Article() {
         stool authority is at issue, a fresh grant
         obtained from the current recognised stool.
         This can be arranged and takes three to six
-        months, during which the buyer's deposit sits
+        months, during which the buyer’s deposit sits
         in escrow. If the seller is not cooperative,
         the buyer walks and forfeits any non-refundable
         deposit paid outside escrow. This is the reason
-        we insist on lawyer's escrow and on refundable
+        we insist on lawyer’s escrow and on refundable
         deposit structures for every diaspora client.
       </P>
 
@@ -233,7 +233,7 @@ export default function Article() {
         For every property we source in Accra, our
         partner law firm runs the full title-chain
         diligence before any deposit is committed. The
-        buyer sees the advocate's opinion in writing
+        buyer sees the advocate’s opinion in writing
         before signing the sale agreement. Where the
         chain shows any weakness, we either negotiate
         the seller into rectification (with the deposit

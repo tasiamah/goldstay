@@ -196,7 +196,7 @@ export default function Article() {
           <strong>Change the locks.</strong>{" "}
           Self-help eviction (changing locks,
           disconnecting services, removing
-          the tenant's possessions) is
+          the tenant’s possessions) is
           unlawful even where the tenant is
           in default. It exposes the landlord
           to damages, criminal complaints for
@@ -211,8 +211,8 @@ export default function Article() {
           and gives rise to damages.
         </LI>
         <LI>
-          <strong>Sell the tenant's
-          possessions.</strong> A landlord's
+          <strong>Sell the tenant’s
+          possessions.</strong> A landlord’s
           distress-for-rent process (formal
           seizure of tenant chattels for
           arrears) exists but is technically

@@ -78,7 +78,7 @@ export default function Article() {
       <P>
         Short-stay operations require a
         Nairobi County single business permit
-        under the "accommodation" category.
+        under the “accommodation” category.
         Fees vary by property size and
         classification but for a typical
         residential apartment operated as a
@@ -91,7 +91,7 @@ export default function Article() {
         The Tourism Levy of 2 per cent on
         accommodation charges continues to
         apply. VAT registration is required
-        where the operator's turnover exceeds
+        where the operator’s turnover exceeds
         the KES 5m annual threshold, which is
         genuinely reachable for a small
         multi-unit short-stay operator.
@@ -133,9 +133,9 @@ export default function Article() {
           consent from other unit owners in a
           sectional-title building to operate
           short-stay from your unit, subject
-          to the specific building's
+          to the specific building’s
           management company rules. The
-          building's own rules are the
+          building’s own rules are the
           practical constraint, not the
           statutory framework.
         </LI>
@@ -181,7 +181,7 @@ export default function Article() {
         <LI>
           <strong>Nairobi County business
           permit.</strong> Current-year
-          permit issued in the operator's
+          permit issued in the operator’s
           name, referencing the property
           address.
         </LI>
@@ -224,7 +224,7 @@ export default function Article() {
           <strong>Building consent.</strong>{" "}
           Where the property is in a
           managed sectional block, the
-          management company's consent or
+          management company’s consent or
           notification is often required
           by the building rules. Non-
           compliance here typically

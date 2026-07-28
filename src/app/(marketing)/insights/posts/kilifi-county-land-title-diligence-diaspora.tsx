@@ -186,7 +186,7 @@ export default function Article() {
         <LI>
           <strong>Rapid sale after inheritance.</strong>{" "}
           A property presented for sale by an heir
-          within months of the deceased's passing,
+          within months of the deceased’s passing,
           without a completed grant of letters of
           administration, is not saleable and the
           transaction can be undone.
@@ -194,11 +194,11 @@ export default function Article() {
         <LI>
           <strong>Brokers with no verifiable
           principal.</strong> A common Kilifi pattern
-          is a broker representing "the seller" who
+          is a broker representing “the seller” who
           the buyer never meets, with instructions
           to wire deposit to the broker. Meet the
           registered proprietor. Deposit into a
-          lawyer's escrow, not to a broker.
+          lawyer’s escrow, not to a broker.
         </LI>
         <LI>
           <strong>NEMA-restricted plots.</strong>{" "}
@@ -237,7 +237,7 @@ export default function Article() {
         consent where required. Community land
         inquiry cleared. NEMA position confirmed for
         coastal or riparian plots. Deposit paid into
-        the advocate's escrow. Completion on transfer
+        the advocate’s escrow. Completion on transfer
         registration, keys and clearance of land
         rates. This is the sequence we run for every
         diaspora buyer we assist in Kilifi County.

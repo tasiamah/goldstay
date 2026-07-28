@@ -44,7 +44,7 @@ export default function Article() {
         Softening on the mid-market apartment
         stock, oversupply in specific suburbs,
         and landlords facing longer void periods
-        than they used to means the "asking rent"
+        than they used to means the “asking rent”
         on many listings is not the number a
         good tenant actually needs to pay. This
         piece is the honest playbook for
@@ -95,9 +95,9 @@ export default function Article() {
         enough; same building or same street
         matters. Property portals will show you
         asking rents; agent conversations will
-        get you achieved rents ("what did the
+        get you achieved rents (“what did the
         similar unit on the second floor
-        actually let for last month?"). The gap
+        actually let for last month?”). The gap
         between the two is your negotiating
         space.
       </P>
@@ -105,11 +105,11 @@ export default function Article() {
       <H3 id="know-void-history">Know the void history</H3>
       <P>
         If a listing has been on the market for
-        more than four weeks, the landlord's
+        more than four weeks, the landlord’s
         position has already weakened. Portals
         sometimes show listing history; where
         they do not, ask the agent directly
-        "how long has this been on the market"
+        “how long has this been on the market”
         and pay attention to the answer.
       </P>
 
@@ -132,8 +132,8 @@ export default function Article() {
       </H2>
 
       <P>
-        There are more levers than "reduce the
-        rent". A good negotiation moves several
+        There are more levers than “reduce the
+        rent”. A good negotiation moves several
         of them.
       </P>
 
@@ -231,18 +231,18 @@ export default function Article() {
           gets a better outcome than a
           tenant who negotiates hard and
           rudely. This is true even where
-          the tenant's factual position is
+          the tenant’s factual position is
           strong.
         </LI>
         <LI>
           <strong>Reference the comparables
-          directly.</strong> "The unit on
+          directly.</strong> “The unit on
           the third floor of the same block
           let for KES 92,000 last month, so
           I am proposing KES 90,000 for
-          this one." Specific evidence is
+          this one.” Specific evidence is
           more persuasive than generic
-          "the market is soft".
+          “the market is soft”.
         </LI>
         <LI>
           <strong>Make one clear offer,
@@ -260,7 +260,7 @@ export default function Article() {
         landlords who care about vacancy risk,
         respond very well to tenants who
         demonstrate they have thought about
-        the landlord's position: void cost,
+        the landlord’s position: void cost,
         the friction of finding a new tenant,
         the value of a longer-term reliable
         occupier. A tenant who shows this

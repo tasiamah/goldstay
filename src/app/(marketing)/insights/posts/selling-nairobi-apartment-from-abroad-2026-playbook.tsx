@@ -74,11 +74,11 @@ export default function Article() {
       </P>
 
       <P>
-        The right frame is not "what will this
-        sell for" but "what is the highest and
+        The right frame is not “what will this
+        sell for” but “what is the highest and
         best use of this capital over the next
         five years, and does selling now enable
-        that better than holding?" A pure sell
+        that better than holding?” A pure sell
         decision made on emotion or fatigue with
         the property rarely produces the strongest
         outcome. If the diligence says hold, hold.
@@ -177,7 +177,7 @@ export default function Article() {
           you can time the sale to coincide with
           a tenant departure, do so. If the tenant
           is in place, price the property with a
-          modest discount to reflect the buyer's
+          modest discount to reflect the buyer’s
           reduced flexibility.
         </LI>
         <LI>
@@ -212,7 +212,7 @@ export default function Article() {
         A well-priced, well-presented Nairobi
         apartment sale in 2026 typically runs 12
         to 20 weeks from listing to funds cleared
-        in the seller's account.
+        in the seller’s account.
       </P>
 
       <UL>
@@ -283,7 +283,7 @@ export default function Article() {
 
       <P>
         Repatriation of sale proceeds to the
-        seller's overseas account is permitted
+        seller’s overseas account is permitted
         under CBK exchange control rules,
         provided the sale is documented and CGT
         has been paid. Timing of the repatriation

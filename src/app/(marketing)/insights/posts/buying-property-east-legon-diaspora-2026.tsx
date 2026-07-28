@@ -187,7 +187,7 @@ export default function Article() {
         <LI>
           <strong>Ground rent arrears.</strong> On stool
           leasehold, arrears on ground rent can travel
-          with the property. Confirm with the seller's
+          with the property. Confirm with the seller’s
           lawyer and directly with the relevant stool
           that ground rent is current at completion.
         </LI>
@@ -250,7 +250,7 @@ export default function Article() {
         cover the Lands Commission search, cadastral
         survey and chief or grantor verification through
         our partner law firm, and we register the
-        assignment on the buyer's behalf. The buyer pays
+        assignment on the buyer’s behalf. The buyer pays
         nothing for the sourcing service.
       </P>
 

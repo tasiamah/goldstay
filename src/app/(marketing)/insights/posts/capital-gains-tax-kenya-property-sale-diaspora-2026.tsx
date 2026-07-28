@@ -41,7 +41,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Kenya's capital gains tax on property is
+        Kenya’s capital gains tax on property is
         currently 15 per cent of the gain,
         payable within 30 days of transfer
         registration. It is the single largest
@@ -74,7 +74,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Filing mechanism:</strong>{" "}
-          through the seller's iTax account, on
+          through the seller’s iTax account, on
           the standard CGT return, with
           supporting documentation uploaded.
         </LI>
@@ -205,7 +205,7 @@ export default function Article() {
       <P>
         Kenyan CGT applies to gains from the
         disposal of Kenyan immovable property
-        regardless of the seller's residency
+        regardless of the seller’s residency
         status. Living in London, New York,
         Dubai or Sydney does not exempt a
         diaspora seller from CGT. Two things
@@ -263,7 +263,7 @@ export default function Article() {
         of less than the exemption threshold
         (currently KES 3m). It also does not
         apply to a property that qualifies as
-        the seller's principal residence at
+        the seller’s principal residence at
         the time of sale (which is not
         typically available to a diaspora
         seller whose principal residence is

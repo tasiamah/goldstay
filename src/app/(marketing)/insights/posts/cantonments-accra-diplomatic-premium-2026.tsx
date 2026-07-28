@@ -56,7 +56,7 @@ export default function Article() {
         The core of the neighbourhood, roughly the strip
         south of the Independence Avenue continuation
         into the diplomatic enclave proper, still houses
-        the majority of Accra's embassy residences and a
+        the majority of Accra’s embassy residences and a
         real share of senior corporate expat leasing.
         For a landlord who can present a genuinely
         embassy-standard unit, the covenants remain the

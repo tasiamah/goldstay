@@ -119,7 +119,7 @@ export default function Article() {
       <P>
         Held or nudged up 2 to 4 per cent across
         embassy and senior corporate segments. This
-        is the segment that continues to hold Accra's
+        is the segment that continues to hold Accra’s
         rental economics up, because the tenants
         setting these prices are indexed to USD
         headquarters budgets and are largely
@@ -244,7 +244,7 @@ export default function Article() {
 
       <P>
         For buyers with USD to deploy, H2 2026 is
-        a more favourable buyer's market than H1
+        a more favourable buyer’s market than H1
         2025 was. Softening on the mid-market
         apartment segment, in particular, is
         creating price-discovery on properties
@@ -265,7 +265,7 @@ export default function Article() {
         achievable, and honest conversations with
         existing tenants at renewal about whether
         the current rent still supports the
-        asset. Silent renewal at last year's cedi
+        asset. Silent renewal at last year’s cedi
         rent is a decision to accept a real-terms
         rent cut.
       </P>

@@ -215,8 +215,8 @@ export default function Article() {
         lease permits, arrears at termination.
         It is not a legitimate substitute for
         current rent during the tenancy. A
-        tenant who proposes to "use the
-        deposit" as rent has already signalled
+        tenant who proposes to “use the
+        deposit” as rent has already signalled
         the intention to leave on unfavourable
         terms. Treat that signal as
         information; do not accept the
@@ -284,7 +284,7 @@ export default function Article() {
         remainder that proceeded to formal
         action, possession was achieved on
         94 per cent of cases within the
-        landlord's target timeline.
+        landlord’s target timeline.
       </P>
 
       <P>

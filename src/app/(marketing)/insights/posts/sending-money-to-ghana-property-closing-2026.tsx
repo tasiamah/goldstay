@@ -40,7 +40,7 @@ export default function Article() {
     <>
       <Lede>
         You have signed the sale agreement. The
-        advocate's escrow account is waiting. Now
+        advocate’s escrow account is waiting. Now
         you need to move USD 200,000, USD 400,000
         or more from your foreign account into
         Ghana without losing 2 to 4 per cent to
@@ -60,7 +60,7 @@ export default function Article() {
 
       <P>
         The all-in cost of moving USD 300,000 to
-        an Accra advocate's escrow, from a
+        an Accra advocate’s escrow, from a
         London or New York account, ranges from
         roughly 0.5 per cent (best case) to
         roughly 3 per cent (worst case). The
@@ -96,7 +96,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Currency of receipt.</strong>{" "}
-          Whether the advocate's escrow
+          Whether the advocate’s escrow
           receives USD or cedis. Sending USD
           and letting the advocate hold it in
           a foreign-currency account until
@@ -112,7 +112,7 @@ export default function Article() {
       <H2 id="high-street-bank">High-street bank to Ghanaian bank (worst)</H2>
       <P>
         Direct outbound wire from your regular
-        current account to the advocate's
+        current account to the advocate’s
         escrow. Slow (three to five business
         days), expensive on FX (typically 2 to
         3 per cent all-in), and increasingly
@@ -171,7 +171,7 @@ export default function Article() {
         Two things move the money efficiently
         into Ghana: a currency specialist for
         the FX, and a USD-denominated
-        advocate's escrow to hold it until
+        advocate’s escrow to hold it until
         completion. Skip either and you pay a
         3 per cent tax on your own transaction.
       </Pullquote>
@@ -192,8 +192,8 @@ export default function Article() {
           property purchase is permitted</strong>{" "}
           and does not require prior approval.
           The declaration to the receiving bank
-          identifies the purpose as "real
-          estate purchase" and the supporting
+          identifies the purpose as “real
+          estate purchase” and the supporting
           documentation (sale agreement, Lands
           Commission search) is retained by
           the receiving bank.
@@ -229,7 +229,7 @@ export default function Article() {
         <LI>
           <strong>Written wire instruction from
           the advocate</strong>{" "}
-          on the advocate's letterhead,
+          on the advocate’s letterhead,
           identifying the escrow account name,
           account number, SWIFT/BIC code,
           receiving bank, and the property
@@ -272,7 +272,7 @@ export default function Article() {
       </OL>
 
       <Callout title="The wire fraud discipline">
-        Once you have the advocate's written
+        Once you have the advocate’s written
         wire instruction, confirm the account
         details by voice call to a phone
         number you already had on file, not

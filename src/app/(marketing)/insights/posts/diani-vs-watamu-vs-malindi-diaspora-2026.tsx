@@ -42,7 +42,7 @@ export default function Article() {
       <Lede>
         Diani, Watamu and Malindi are the three coastal
         Kenya markets that show up on almost every
-        diaspora buyer's shortlist. They are not
+        diaspora buyer’s shortlist. They are not
         interchangeable. Each has a different tenant
         base, a different seasonal profile, a different
         pricing structure and a different set of
@@ -140,7 +140,7 @@ export default function Article() {
       <P>
         Blended short-stay yields on well-run stock: 6
         to 10 per cent, but very sensitive to European
-        tourism trends and to the operator's booking
+        tourism trends and to the operator’s booking
         and marketing capability.
       </P>
 

@@ -84,10 +84,10 @@ export default function Article() {
         Four things diaspora buyers assume wrongly
       </H2>
 
-      <H2 id="assumption-one">"The chief signed, so it must be valid"</H2>
+      <H2 id="assumption-one">”The chief signed, so it must be valid”</H2>
 
       <P>
-        Not every person presented as "the chief" is
+        Not every person presented as “the chief” is
         the currently recognised occupant of the
         stool. Chieftaincy disputes are common,
         succession is not always uncontested, and
@@ -101,7 +101,7 @@ export default function Article() {
         House of Chiefs.
       </P>
 
-      <H2 id="assumption-two">"If it is on the Lands Commission register, it is safe"</H2>
+      <H2 id="assumption-two">”If it is on the Lands Commission register, it is safe”</H2>
 
       <P>
         The Lands Commission is a registration
@@ -123,7 +123,7 @@ export default function Article() {
         was clean.
       </Pullquote>
 
-      <H2 id="assumption-three">"My family will help me sort out any issue"</H2>
+      <H2 id="assumption-three">”My family will help me sort out any issue”</H2>
 
       <P>
         Family introductions are the reason many
@@ -143,7 +143,7 @@ export default function Article() {
         your family.
       </P>
 
-      <H2 id="assumption-four">"The ground rent is a nominal formality"</H2>
+      <H2 id="assumption-four">”The ground rent is a nominal formality”</H2>
 
       <P>
         On some Accra stools, annual ground rent is
@@ -179,8 +179,8 @@ export default function Article() {
           with the stool and sub-leased individual
           units to buyers. The unit-level lease is
           straightforward; the stool relationship is
-          the developer's problem, not each individual
-          apartment buyer's.
+          the developer’s problem, not each individual
+          apartment buyer’s.
         </LI>
         <LI>
           Long-standing family properties that have
@@ -197,14 +197,14 @@ export default function Article() {
 
       <UL>
         <LI>
-          "Land guard" occupied plots. If a plot
+          “Land guard” occupied plots. If a plot
           requires private security to hold physical
           possession, someone else has a competing
           claim to the same plot. Walk.
         </LI>
         <LI>
           Grants made during a documented chieftaincy
-          dispute where the grantor's authority was
+          dispute where the grantor’s authority was
           contested at the time. Even if
           subsequently regularised, resale is
           harder and takes a discount.
@@ -241,7 +241,7 @@ export default function Article() {
         (1) the full Lands Commission title chain, (2)
         cadastral survey and physical boundary
         verification, (3) a direct enquiry to the
-        Regional House of Chiefs on the stool's
+        Regional House of Chiefs on the stool’s
         recognised authority at the date of the
         original grant, and (4) a ground-rent
         confirmation directly with the stool

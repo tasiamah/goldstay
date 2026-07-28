@@ -149,7 +149,7 @@ export default function Article() {
       <P>
         On a pure long-let underwriting the
         numbers do not stack. On a short-stay
-        underwriting they can, but 2026's
+        underwriting they can, but 2026’s
         softer short-stay demand has pulled
         blended annualised yield down. Median
         purchase price USD 260,000, blended

@@ -132,7 +132,7 @@ export default function Article() {
         property in the Old Town requires prior
         approval from the National Museums of Kenya
         under the National Museums and Heritage Act.
-        The definition of "significant alteration" is
+        The definition of “significant alteration” is
         broad and includes changes to elevations,
         openings, roofscape, and internal layouts that
         affect structural walls. A property purchased
@@ -231,7 +231,7 @@ export default function Article() {
         </LI>
         <LI>
           Properties presented with speculative
-          "development potential" that ignores the
+          “development potential” that ignores the
           National Museums approval process.
         </LI>
         <LI>

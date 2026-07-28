@@ -68,7 +68,7 @@ export default function Article() {
           The advocate, the surveyor, the property
           sourcing firm and the tax adviser all work
           for you. Pick each one on your own
-          diligence, not on a relative's
+          diligence, not on a relative’s
           recommendation, and pay each one directly
           rather than through an intermediary.
         </LI>
@@ -122,7 +122,7 @@ export default function Article() {
         chain, cadastral survey, stool authority
         confirmation (on stool land), service charge
         history pull, and reserve fund review. The
-        output is a written advocate's opinion
+        output is a written advocate’s opinion
         confirming clean title or listing the
         defects that require rectification before
         completion.
@@ -133,7 +133,7 @@ export default function Article() {
         The sourcing firm negotiates the price
         against the comparable evidence. The advocate
         drafts the sale agreement with (1) a
-        refundable deposit held in the advocate's
+        refundable deposit held in the advocate’s
         escrow, (2) all title-rectification items
         listed as conditions precedent to
         completion, and (3) a clear currency and FX
@@ -144,8 +144,8 @@ export default function Article() {
 
       <H2 id="weeks-eleven-to-fourteen">Weeks 11 to 14: Completion and registration</H2>
       <P>
-        Funds move from the buyer's bank into the
-        advocate's escrow, then from escrow to the
+        Funds move from the buyer’s bank into the
+        advocate’s escrow, then from escrow to the
         seller on completion. The advocate lodges
         the assignment at the Lands Commission,
         obtains the registered indenture, and
@@ -209,7 +209,7 @@ export default function Article() {
       <Callout title="The escrow discipline that matters most">
         Do not send funds directly to the seller at
         any stage of the process. Every payment goes
-        into the advocate's escrow first and is
+        into the advocate’s escrow first and is
         released against defined completion
         milestones. This one discipline eliminates
         the majority of the risk that diaspora

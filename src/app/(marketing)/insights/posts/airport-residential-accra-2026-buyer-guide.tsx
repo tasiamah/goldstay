@@ -89,8 +89,8 @@ export default function Article() {
         Short-stay and serviced apartment demand runs
         year-round with almost no seasonality. This is
         the segment that has quietly held Airport
-        Residential's short-stay economics up while
-        East Legon's have softened.
+        Residential’s short-stay economics up while
+        East Legon’s have softened.
       </P>
 
       <H3 id="ngo">NGO and development</H3>
@@ -144,7 +144,7 @@ export default function Article() {
       <H2 id="diligence">Diligence you cannot skip</H2>
 
       <P>
-        Airport Residential's newer developments have
+        Airport Residential’s newer developments have
         been coming to market at speed and the paperwork
         has not always kept up. Three specific things to
         run before wiring on any 2026 apartment here.
@@ -186,8 +186,8 @@ export default function Article() {
       </UL>
 
       <Callout title="What we tell diaspora buyers to ignore">
-        Marketing that leans heavily on "walking distance
-        to the airport" is not the signal it sounds
+        Marketing that leans heavily on “walking distance
+        to the airport” is not the signal it sounds
         like. The tenant segments that actually pay
         premium rents in this pocket are driven and
         rarely walk. Amenity depth, finish standard and
@@ -208,7 +208,7 @@ export default function Article() {
         challenging; (5) run the Lands Commission
         search and cadastral survey; (6) negotiate
         against comparable evidence, not against the
-        seller's asking. If you skip step one you will
+        seller’s asking. If you skip step one you will
         end up with a unit that is priced for one
         segment and finished for another.
       </P>
