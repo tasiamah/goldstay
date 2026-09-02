@@ -77,9 +77,46 @@ npm run build
 npm run start
 ```
 
+`build` is just `next build` — it does not touch the database. You can
+build and deploy with the database paused, unreachable, or not yet
+migrated.
+
 ## Deployment
 
-The site is designed for **Vercel**: zero config deploy. Set the environment variables above in the Vercel project dashboard.
+The site is designed for **Vercel**: zero config deploy. Set the
+environment variables above in the Vercel project dashboard.
+
+### Migrations are a separate step
+
+Schema changes are **not** applied by the build. `build` used to be
+`prisma migrate deploy && next build`, which meant an unreachable
+database took the whole site down with it: no migration, no build, no
+deploy, even for a change that was pure marketing copy. Coupling the two
+turned a database problem into a deployment problem.
+
+So the contract is now explicit — when a deploy includes a new folder
+under `prisma/migrations`, apply it yourself:
+
+```bash
+pnpm db:status        # what's applied vs pending
+pnpm db:deploy:local  # apply pending migrations using .env.local
+```
+
+`db:deploy` is the same command without the `.env.local` wrapper, for
+anywhere the environment is already injected (CI, `vercel env`, a
+one-off shell).
+
+**Order matters.** Every migration in this repo is written to be
+additive — new columns are nullable or carry defaults — so the safe
+sequence is migrate first, then deploy. Old code ignores new columns
+quite happily; new code querying a column that doesn't exist yet throws.
+Deploying code ahead of its migration is the one combination that
+breaks, and it's the combination you get by forgetting this step.
+
+If you'd rather not remember: add `DATABASE_URL` as a GitHub Actions
+secret and run `pnpm db:deploy` in a workflow on push to `main`. That
+keeps migrations automatic while still leaving a failed migration as a
+red check rather than a dead site.
 
 ### Domain routing
 
