@@ -54,7 +54,20 @@ export function NotificationBell({
         ) : null}
       </summary>
 
-      <div className="absolute right-0 z-30 mt-2 w-[min(22rem,calc(100vw-2rem))] overflow-hidden rounded-lg border border-stone-200 bg-white shadow-lg">
+      {/* The panel hangs left from the bell's right edge, so its width
+          has to stop at the page gutter or it runs off the left of a
+          phone screen and the text is unreadable.
+          calc(100vw-2rem) was wrong because it assumed the bell sits
+          1rem from the viewport's right edge. On mobile it does not:
+          the layout adds px-6 (1.5rem) and the hamburger plus its gap
+          take another 3rem, putting the bell's right edge 4.5rem in.
+          A 22rem panel on a 390px screen therefore started at -34px.
+          6rem = that 4.5rem offset plus a 1.5rem left gutter, so the
+          panel lands flush with the page's own padding. If the
+          hamburger ever goes away this only makes the panel narrower
+          than it could be, which is the safe direction to be wrong
+          in. */}
+      <div className="absolute right-0 z-30 mt-2 w-[min(22rem,calc(100vw-6rem))] overflow-hidden rounded-lg border border-stone-200 bg-white shadow-lg">
         <header className="flex items-center justify-between gap-3 border-b border-stone-100 px-4 py-3">
           <div>
             <p className="text-sm font-medium text-stone-900">Notifications</p>
@@ -107,7 +120,9 @@ function Item({ notification }: { notification: ClientNotification }) {
           TONE_DOT[notification.tone]
         }`}
       />
-      <div className="min-w-0 flex-1">
+      {/* Room for the dismiss X, which is permanently visible below
+          md and would otherwise sit on top of the title. */}
+      <div className="min-w-0 flex-1 pr-5 md:pr-0">
         <p
           className={`text-sm ${
             isUnread ? "font-medium text-stone-900" : "text-stone-700"
@@ -141,7 +156,10 @@ function Item({ notification }: { notification: ClientNotification }) {
         <div className="px-4 py-3">{Inner}</div>
       )}
       {/* Dismiss is a separate form so the click is predictable
-          (clicking the row navigates, clicking the X dismisses). */}
+          (clicking the row navigates, clicking the X dismisses).
+          Reveal-on-hover only from md up: a touch device has no
+          hover, so below that the button stayed at opacity-0 and
+          notifications could not be dismissed on a phone at all. */}
       <form
         action={dismissNotificationAction.bind(null, notification.id)}
         className="absolute right-2 top-2"
@@ -150,7 +168,7 @@ function Item({ notification }: { notification: ClientNotification }) {
           type="submit"
           aria-label="Dismiss"
           title="Dismiss"
-          className="rounded-md p-1 text-stone-400 opacity-0 transition hover:bg-stone-100 hover:text-stone-700 group-hover/row:opacity-100 focus:opacity-100"
+          className="rounded-md p-1 text-stone-400 transition hover:bg-stone-100 hover:text-stone-700 focus:opacity-100 md:opacity-0 md:group-hover/row:opacity-100"
         >
           <X aria-hidden className="h-3.5 w-3.5" />
         </button>
