@@ -16,7 +16,7 @@ import {
 } from "@/lib/storage";
 import { prisma } from "@/lib/db";
 import { AgreementDocument } from "./AgreementDocument";
-import { buildAgreementSections } from "./text";
+import { AGREEMENT_TEMPLATE_TITLE, renderAgreement } from "./template";
 import { formatCommissionPct, formatMoney } from "./format";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
@@ -39,8 +39,20 @@ export async function materialiseSignedAgreement(
           city: true,
           address: true,
           propertyType: true,
+          bedrooms: true,
+          maxOccupancy: true,
+          launchedAt: true,
           client: {
-            select: { fullName: true, email: true, companyName: true },
+            select: {
+              fullName: true,
+              email: true,
+              companyName: true,
+              companyRegistrationNumber: true,
+              idNumber: true,
+              kraPin: true,
+              address: true,
+              preferredCurrency: true,
+            },
           },
         },
       },
@@ -69,44 +81,73 @@ export async function materialiseSignedAgreement(
     agreement.property.name,
     agreement.property.unitNumber,
   );
-  const sections = buildAgreementSections({
-    clientName: agreement.property.client.fullName,
-    clientCompany: agreement.property.client.companyName,
+  const client = agreement.property.client;
+  const currency = agreement.earlyExitFeeCurrency;
+  const money = (value: typeof agreement.forecastMonthlyFee) =>
+    value === null ? null : formatMoney(value.toString(), currency);
+
+  const commissionPct = formatCommissionPct(agreement.commissionRate.toString());
+  const earlyExitFeeFormatted = formatMoney(
+    agreement.earlyExitFee.toString(),
+    currency,
+  );
+  const title = AGREEMENT_TEMPLATE_TITLE[agreement.template];
+
+  // Rendered from the row's stored template, so an agreement reprints
+  // as the contract it was accepted under even after we add or change
+  // templates.
+  const sections = renderAgreement({
+    template: agreement.template,
+    clientName: client.fullName,
+    clientCompany: client.companyName,
+    clientIdNumber: client.companyName
+      ? client.companyRegistrationNumber
+      : client.idNumber,
+    clientKraPin: client.kraPin,
+    clientAddress: client.address,
     propertyName: propertyDisplayName,
     propertyAddress: agreement.property.address,
     propertyCity: agreement.property.city,
-    governingLaw: agreement.governingLaw,
-    termMonths: agreement.termMonths,
-    commissionPct: formatCommissionPct(agreement.commissionRate.toString()),
-    earlyExitFeeFormatted: formatMoney(
-      agreement.earlyExitFee.toString(),
-      agreement.earlyExitFeeCurrency,
-    ),
-    noticePeriodDays: agreement.noticePeriodDays,
+    bedrooms: agreement.property.bedrooms,
+    maxOccupancy: agreement.property.maxOccupancy,
     isShortTerm: agreement.property.propertyType === "SHORT_TERM",
     signingCapacity: agreement.signingCapacity,
+    governingLaw: agreement.governingLaw,
+    termMonths: agreement.termMonths,
+    commissionPct,
+    earlyExitFeeFormatted,
+    noticePeriodDays: agreement.noticePeriodDays,
+    payoutCurrency: client.preferredCurrency,
+    forecastMonthlyFeeFormatted: money(agreement.forecastMonthlyFee),
+    startupCostsBudgetFormatted: money(agreement.startupCostsBudget),
+    operatingReserveFormatted: money(agreement.operatingReserve),
+    reference: agreement.reference,
+    startDate: agreement.sentAt ?? agreement.generatedAt,
+    launchDate: agreement.property.launchedAt,
   });
 
   const pdfBuffer = await renderToBuffer(
     AgreementDocument({
       agreementId: agreement.id,
-      clientName: agreement.property.client.fullName,
-      clientEmail: agreement.property.client.email,
+      clientName: client.fullName,
+      clientEmail: client.email,
       propertyDisplayName,
       governingLaw: agreement.governingLaw,
       termMonths: agreement.termMonths,
-      commissionPct: formatCommissionPct(agreement.commissionRate.toString()),
+      commissionPct,
       noticePeriodDays: agreement.noticePeriodDays,
-      earlyExitFeeFormatted: formatMoney(
-        agreement.earlyExitFee.toString(),
-        agreement.earlyExitFeeCurrency,
-      ),
+      earlyExitFeeFormatted,
       sections,
+      title,
+      templateVersion: agreement.templateVersion,
+      reference: agreement.reference,
       signingCapacity: agreement.signingCapacity,
       signedAt: agreement.signedAt,
       signedByName: agreement.signedByName,
       signedByIp: agreement.signedByIp,
       signedByUserAgent: agreement.signedByUserAgent,
+      acceptedByUserId: agreement.acceptedByUserId,
+      acceptanceReference: agreement.acceptanceReference,
     }),
   );
 
@@ -121,7 +162,7 @@ export async function materialiseSignedAgreement(
       data: {
         propertyId: agreement.property.id,
         kind: "MANAGEMENT_AGREEMENT",
-        title: `Goldstay management agreement: ${propertyDisplayName}`,
+        title: `GoldStay ${title.toLowerCase()}: ${propertyDisplayName}`,
         // Real path is filled in immediately below; keeping a
         // sentinel here means a half-failed upload doesn't leave a
         // misleading "this row points to a real file" record around.

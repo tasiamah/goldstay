@@ -38,6 +38,18 @@ export const SIGNING_CAPACITY_HINT: Record<SigningCapacity, string> = {
     "The client signs for the registered owner under a power of attorney, board resolution, or executor or trustee appointment.",
 };
 
+// Schedule 1 of the short-let agreement offers three capacities:
+// "REGISTERED OWNER / TENANT OR LESSEE / AUTHORISED OPERATOR". These
+// map one-to-one onto our enum, but the contract's words differ from
+// the admin labels above, so the Schedule prints from here. Changing
+// the admin labels must not silently reword an issued contract.
+export const SIGNING_CAPACITY_SCHEDULE_LABEL: Record<SigningCapacity, string> =
+  {
+    REGISTERED_OWNER: "Registered owner",
+    AUTHORISED_LEASEHOLDER: "Tenant or lessee with written short-let rights",
+    AUTHORISED_REPRESENTATIVE: "Authorised operator",
+  };
+
 export const SIGNING_CAPACITY_ATTESTATION: Record<SigningCapacity, string> = {
   REGISTERED_OWNER:
     "I am the registered owner of this property, or a co-owner signing with the authority of the others.",

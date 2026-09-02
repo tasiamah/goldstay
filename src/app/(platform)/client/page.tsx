@@ -426,17 +426,17 @@ export default async function ClientDashboardPage() {
               </p>
               <h2 className="mt-1 text-base font-medium text-amber-950">
                 {pendingAgreements.length === 1
-                  ? `Sign your management agreement for ${formatPropertyDisplayName(
+                  ? `Accept your management agreement for ${formatPropertyDisplayName(
                       pendingAgreements[0].property.name,
                       pendingAgreements[0].property.unitNumber,
                     )}`
-                  : `${pendingAgreements.length} management agreements awaiting your signature`}
+                  : `${pendingAgreements.length} management agreements awaiting your acceptance`}
               </h2>
               <p className="mt-1 text-sm text-amber-900/80">
-                Goldstay has issued a 12-month management agreement
-                covering your property. It takes about two minutes to
-                review and sign. Your statements and payouts depend on
-                it being in place.
+                Goldstay has issued a management agreement covering your
+                property. Read it through and accept in one click — no
+                printing, no signing, no paperwork. Your statements and
+                payouts depend on it being in place.
               </p>
             </div>
             <Link
@@ -444,7 +444,7 @@ export default async function ClientDashboardPage() {
               className="shrink-0 rounded-md bg-amber-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800"
             >
               {pendingAgreements.length === 1
-                ? "Review and sign"
+                ? "Review and accept"
                 : "Start with the first"}
             </Link>
           </div>

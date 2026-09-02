@@ -70,6 +70,20 @@ export const PropertyInput = z.object({
   // REGISTERED_OWNER so existing forms and CSV imports keep working;
   // the admin property form makes it an explicit choice.
   signingCapacity: z.nativeEnum(SigningCapacity).default("REGISTERED_OWNER"),
+  // Schedule 1 terms for the short-let agreement. All optional: the
+  // Schedule expressly allows an operational selection to be
+  // "confirmed through the agreed GoldStay onboarding workflow", and
+  // the contract prints "to be confirmed" rather than a wrong number
+  // when one is blank. Requiring them would block property creation on
+  // figures nobody has yet at that point.
+  maxOccupancy: optionalInt,
+  forecastMonthlyFee: optionalDecimal,
+  startupCostsBudget: optionalDecimal,
+  operatingReserve: optionalDecimal,
+  // Clause 1.4 "Launch Date" — when the listing first went live. The
+  // three-month Initial Commitment Period runs from it, so it is set
+  // deliberately by an operator rather than inferred.
+  launchedAt: optionalDate,
   hostawayListingId: optionalString,
 });
 

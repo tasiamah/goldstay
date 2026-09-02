@@ -19,10 +19,27 @@
 // property at generation time.
 
 import type { SigningCapacity } from "@prisma/client";
+import { MANAGER } from "./manager";
+
+// A row of a Schedule table ("ITEM" / "AGREED DETAIL"). `value` is a
+// list because a single Schedule 1 item routinely carries several
+// lines — the Client row alone holds legal name, ID number, KRA PIN
+// and address.
+export type AgreementScheduleRow = {
+  label: string;
+  value: string[];
+};
 
 export type AgreementSection = {
   heading: string;
   body: string[]; // paragraphs; rendered with blank line between
+  // Schedules aren't prose. Schedule 1 of the short-let agreement is
+  // an item/detail table and Schedule 2 is a bulleted service list, so
+  // sections can carry either instead of (or alongside) paragraphs.
+  // Both renderers — the HTML sign page and the React-PDF template —
+  // handle all three shapes.
+  rows?: AgreementScheduleRow[];
+  bullets?: string[];
 };
 
 export type AgreementContext = {
@@ -141,7 +158,7 @@ export function buildAgreementSections(ctx: AgreementContext): AgreementSection[
     {
       heading: "1. Parties",
       body: [
-        `This Property Management Agreement ("Agreement") is entered into between Goldstay Limited ("Goldstay") and ${clientLabel} ("Client") in respect of the property at ${ctx.propertyAddress}, ${ctx.propertyCity} ("Property").`,
+        `This Property Management Agreement ("Agreement") is entered into between ${MANAGER.legalName}, trading as "${MANAGER.tradingName}", of ${MANAGER.registeredOffice} ("Goldstay") and ${clientLabel} ("Client") in respect of the property at ${ctx.propertyAddress}, ${ctx.propertyCity} ("Property").`,
         `"Client" means the person or entity signing this Agreement, being the person entitled to let the Property and to appoint a managing agent for it. Goldstay contracts with, accounts to, and remits payouts to the Client. ${capacityRecital(ctx.signingCapacity)}`,
       ],
     },

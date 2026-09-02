@@ -1,7 +1,11 @@
-// /client/agreements/[id] — review and sign the Goldstay management
+// /client/agreements/[id] — review and accept the GoldStay management
 // agreement for a single property. Linked from the dashboard banner
-// and the property detail card. Read-only after signing (the same
+// and the property detail card. Read-only after acceptance (the same
 // route renders the executed copy and a download link).
+//
+// Which contract renders is decided by the agreement row's stored
+// template, not by the property's current country/type, so an accepted
+// agreement always reprints as the text that was accepted.
 //
 // Authorisation: scoped via client.properties; a landlord can only
 // load an agreement for a property they own. We return notFound()
@@ -11,8 +15,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireClient } from "@/lib/auth";
+import { readImpersonationCookie } from "@/lib/admin/impersonation";
 import { prisma } from "@/lib/db";
-import { buildAgreementSections } from "@/lib/agreements/text";
+import { AgreementSectionBody } from "@/components/AgreementSectionBody";
+import {
+  AGREEMENT_TEMPLATE_TITLE,
+  renderAgreement,
+} from "@/lib/agreements/template";
 import {
   AGREEMENT_STATUS_CLASSES,
   AGREEMENT_STATUS_LABEL,
@@ -43,6 +52,9 @@ export default async function ClientAgreementPage({
           city: true,
           address: true,
           propertyType: true,
+          bedrooms: true,
+          maxOccupancy: true,
+          launchedAt: true,
         },
       },
     },
@@ -50,32 +62,58 @@ export default async function ClientAgreementPage({
   if (!agreement) notFound();
 
   const isShortTerm = agreement.property.propertyType === "SHORT_TERM";
+  const currency = agreement.earlyExitFeeCurrency;
+  const money = (value: typeof agreement.forecastMonthlyFee) =>
+    value === null ? null : formatMoney(value.toString(), currency);
+
   const earlyExitFeeFormatted = formatMoney(
     agreement.earlyExitFee.toString(),
-    agreement.earlyExitFeeCurrency,
+    currency,
   );
   const commissionPct = formatCommissionPct(agreement.commissionRate.toString());
   const propertyDisplayName = formatPropertyDisplayName(
     agreement.property.name,
     agreement.property.unitNumber,
   );
-  const sections = buildAgreementSections({
+  const agreementTitle = AGREEMENT_TEMPLATE_TITLE[agreement.template];
+  const isShortLet = agreement.template === "SHORT_LET_KE_V1";
+
+  const sections = renderAgreement({
+    template: agreement.template,
     clientName: client.fullName,
     clientCompany: client.companyName,
+    clientIdNumber: client.companyName
+      ? client.companyRegistrationNumber
+      : client.idNumber,
+    clientKraPin: client.kraPin,
+    clientAddress: client.address,
     propertyName: propertyDisplayName,
     propertyAddress: agreement.property.address,
     propertyCity: agreement.property.city,
+    bedrooms: agreement.property.bedrooms,
+    maxOccupancy: agreement.property.maxOccupancy,
+    isShortTerm,
+    signingCapacity: agreement.signingCapacity,
     governingLaw: agreement.governingLaw,
     termMonths: agreement.termMonths,
     commissionPct,
     earlyExitFeeFormatted,
     noticePeriodDays: agreement.noticePeriodDays,
-    isShortTerm,
-    signingCapacity: agreement.signingCapacity,
+    payoutCurrency: client.preferredCurrency,
+    forecastMonthlyFeeFormatted: money(agreement.forecastMonthlyFee),
+    startupCostsBudgetFormatted: money(agreement.startupCostsBudget),
+    operatingReserveFormatted: money(agreement.operatingReserve),
+    reference: agreement.reference,
+    // The Start Date is when the agreement went out, not when it is
+    // being read, so a client revisiting the page next week still sees
+    // the date the contract was actually issued on.
+    startDate: agreement.sentAt ?? agreement.generatedAt,
+    launchDate: agreement.property.launchedAt,
   });
 
   const isSigned = agreement.status === "SIGNED";
   const boundSign = signAgreementAction.bind(null, agreement.id);
+  const impersonation = await readImpersonationCookie();
 
   return (
     <div className="mx-auto max-w-3xl space-y-8">
@@ -89,10 +127,11 @@ export default async function ClientAgreementPage({
         <div className="mt-2 flex flex-wrap items-start justify-between gap-4">
           <div>
             <h1 className="text-2xl font-serif text-stone-900">
-              Goldstay management agreement
+              {agreementTitle}
             </h1>
             <p className="mt-1 text-sm text-stone-500">
               {propertyDisplayName} · {agreement.property.city}
+              {agreement.reference ? ` · ${agreement.reference}` : ""}
             </p>
           </div>
           <span
@@ -111,26 +150,33 @@ export default async function ClientAgreementPage({
           Snapshot of the terms specific to this property.
         </p>
         <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4">
-          <Term label="Term" value={`${agreement.termMonths} months`} />
-          <Term label="Commission" value={commissionPct} />
-          <Term label="Notice period" value={`${agreement.noticePeriodDays} days`} />
-          <Term label="Early-exit fee" value={earlyExitFeeFormatted} />
+          <Term
+            label={isShortLet ? "Minimum term" : "Term"}
+            value={`${agreement.termMonths} months`}
+          />
+          <Term label="Management fee" value={commissionPct} />
+          <Term
+            label="Notice period"
+            value={`${agreement.noticePeriodDays} days`}
+          />
+          {isShortLet ? (
+            // Clause 10.3 makes early exit a calculation rather than a
+            // fixed fee, so quoting a single number here would misstate
+            // it. We surface the input to that calculation instead.
+            <Term
+              label="Forecast monthly fee"
+              value={money(agreement.forecastMonthlyFee) ?? "To be confirmed"}
+            />
+          ) : (
+            <Term label="Early-exit fee" value={earlyExitFeeFormatted} />
+          )}
         </dl>
       </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-8">
-        <article className="prose prose-stone max-w-none text-stone-800">
+        <article className="max-w-none text-stone-800">
           {sections.map((s) => (
-            <section key={s.heading} className="mb-6">
-              <h3 className="text-base font-semibold text-stone-900">
-                {s.heading}
-              </h3>
-              {s.body.map((p, i) => (
-                <p key={i} className="mt-2 text-sm leading-6">
-                  {p}
-                </p>
-              ))}
-            </section>
+            <AgreementSectionBody key={s.heading} section={s} />
           ))}
         </article>
       </section>
@@ -138,10 +184,10 @@ export default async function ClientAgreementPage({
       {isSigned ? (
         <section className="rounded-lg border border-emerald-200 bg-emerald-50 p-6">
           <h2 className="text-base font-medium text-emerald-900">
-            Signed and on file
+            Accepted and on file
           </h2>
           <p className="mt-2 text-sm text-emerald-900/80">
-            Signed by{" "}
+            Accepted by{" "}
             <span className="font-medium">{agreement.signedByName}</span> on{" "}
             {agreement.signedAt?.toLocaleDateString("en-GB", {
               day: "2-digit",
@@ -157,6 +203,14 @@ export default async function ClientAgreementPage({
             </Link>
             .
           </p>
+          {agreement.acceptanceReference ? (
+            <p className="mt-2 text-sm text-emerald-900/80">
+              Acceptance receipt{" "}
+              <span className="font-mono text-xs font-medium">
+                {agreement.acceptanceReference}
+              </span>
+            </p>
+          ) : null}
           <div className="mt-4">
             <a
               href={`/client/agreements/${agreement.id}/pdf`}
@@ -168,7 +222,7 @@ export default async function ClientAgreementPage({
         </section>
       ) : agreement.status === "CANCELLED" ? (
         <section className="rounded-lg border border-stone-200 bg-stone-50 p-6 text-sm text-stone-700">
-          This agreement was cancelled by Goldstay. We will issue a fresh
+          This agreement was cancelled by GoldStay. We will issue a fresh
           copy shortly. Email{" "}
           <a
             href="mailto:hello@goldstay.co.ke"
@@ -178,11 +232,27 @@ export default async function ClientAgreementPage({
           </a>{" "}
           if you need it sooner.
         </section>
+      ) : impersonation ? (
+        // Matches the guard in signAgreementAction. Showing the button
+        // and failing on click would just look like a bug.
+        <section className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900">
+          You are viewing this portal as{" "}
+          <span className="font-medium">{impersonation.clientLabel}</span>.
+          Only the client can accept their own agreement, so the accept
+          button is hidden here. Stop impersonating to return to your
+          admin session.
+        </section>
       ) : (
         <SignAgreementForm
           action={boundSign}
-          clientName={client.fullName}
-          signingCapacity={agreement.signingCapacity}
+          clientName={
+            client.companyName
+              ? `${client.companyName} (${client.fullName})`
+              : client.fullName
+          }
+          propertyDisplayName={propertyDisplayName}
+          agreementTitle={agreementTitle}
+          reference={agreement.reference}
         />
       )}
     </div>

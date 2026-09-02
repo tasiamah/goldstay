@@ -20,6 +20,8 @@ export function YourDetailsForm({
   defaultEntityType,
   defaultCompanyName,
   defaultCompanyRegistrationNumber,
+  defaultIdNumber,
+  defaultKraPin,
   defaultCountry,
   email,
 }: {
@@ -29,6 +31,8 @@ export function YourDetailsForm({
   defaultEntityType: ClientEntityType;
   defaultCompanyName: string;
   defaultCompanyRegistrationNumber: string;
+  defaultIdNumber: string;
+  defaultKraPin: string;
   defaultCountry: "KE" | "GH";
   // Read-only — shown alongside the editable fields so the client
   // sees the account they're editing, but locked because email is
@@ -134,6 +138,31 @@ export function YourDetailsForm({
           />
         </div>
       </fieldset>
+
+      {/* Both appear on Schedule 1 of the short-let agreement, and
+          clause 5.10 asks the Client for a valid KRA PIN. Optional, so
+          a client can accept today and fill these in during onboarding
+          — the contract prints "to be confirmed" for a blank. */}
+      <Field
+        label="ID or passport number"
+        name="idNumber"
+        defaultValue={defaultIdNumber}
+        placeholder="Optional"
+        helperText="National ID or passport. Printed on your management agreement."
+        error={fieldErrors.idNumber}
+      />
+      <Field
+        label="KRA PIN"
+        name="kraPin"
+        defaultValue={defaultKraPin}
+        placeholder="Optional"
+        helperText={
+          defaultCountry === "KE"
+            ? "Required before your first payout so we can account for tax correctly."
+            : "Only needed if you also let a property in Kenya."
+        }
+        error={fieldErrors.kraPin}
+      />
 
       {entityType === "COMPANY" ? (
         <>

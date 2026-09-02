@@ -110,6 +110,8 @@ export default async function ClientAccountPage({
           defaultCompanyRegistrationNumber={
             client.companyRegistrationNumber ?? ""
           }
+          defaultIdNumber={client.idNumber ?? ""}
+          defaultKraPin={client.kraPin ?? ""}
           defaultCountry={client.country}
           email={client.email}
         />

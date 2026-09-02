@@ -38,6 +38,13 @@ type Defaults = {
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
   propertyType?: "LONG_TERM" | "SHORT_TERM";
   signingCapacity?: SigningCapacity;
+  // Schedule 1 of the short-let agreement. Dates arrive as
+  // yyyy-mm-dd strings so they can go straight into a date input.
+  maxOccupancy?: number | null;
+  forecastMonthlyFee?: string | number | null;
+  startupCostsBudget?: string | number | null;
+  operatingReserve?: string | number | null;
+  launchedAt?: string | null;
   hostawayListingId?: string | null;
 };
 
@@ -212,6 +219,12 @@ export function PropertyForm({
           error={fieldError("acquisitionCurrency")}
         />
       </fieldset>
+
+      <ScheduleOneFields
+        defaults={defaults}
+        clientCountry={clientCountry}
+        fieldError={fieldError}
+      />
 
       {/*
         Status used to be editable here. It's now driven by lifecycle
@@ -481,6 +494,95 @@ function SubmitButton({ label }: { label: string }) {
     >
       {pending ? "Saving..." : label}
     </button>
+  );
+}
+
+// Schedule 1 of the Kenyan short-let agreement.
+//
+// Shown for every property rather than only Kenyan short-lets: the
+// rental model is an uncontrolled select on this form, so we can't
+// react to it without turning the whole thing into controlled state,
+// and these are harmless to leave blank. The contract prints "to be
+// confirmed through GoldStay onboarding" for anything empty — which
+// Schedule 1 expressly allows — so a blank costs nothing, while a
+// forecast fee filled in before the agreement is issued is what makes
+// the clause 10.3 early-exit calculation enforceable.
+function ScheduleOneFields({
+  defaults,
+  clientCountry,
+  fieldError,
+}: {
+  defaults: Defaults;
+  clientCountry: "KE" | "GH";
+  fieldError: (name: string) => string | undefined;
+}) {
+  const currency = clientCountry === "KE" ? "KES" : "GHS";
+  const asInput = (value: string | number | null | undefined) =>
+    value === null || value === undefined ? "" : String(value);
+
+  return (
+    <fieldset className="rounded-lg border border-stone-200 bg-stone-50 p-5">
+      <legend className="px-1 text-sm font-medium text-stone-700">
+        Short-let agreement terms
+      </legend>
+      <p className="mb-4 text-xs text-stone-500">
+        Printed on Schedule 1 of the short-let management agreement.
+        Anything left blank reads &ldquo;to be confirmed through GoldStay
+        onboarding&rdquo; on the contract, so fill in what you know. The
+        forecast monthly fee is the basis of the early-exit calculation
+        in clause 10.3 — without it, there is nothing to charge on an
+        early exit.
+      </p>
+
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+        <Field
+          label="Maximum occupancy"
+          name="maxOccupancy"
+          type="number"
+          defaultValue={asInput(defaults.maxOccupancy)}
+          min={1}
+          placeholder="e.g. 4"
+          error={fieldError("maxOccupancy")}
+        />
+        <Field
+          label="Launch date (listing first live)"
+          name="launchedAt"
+          type="date"
+          defaultValue={asInput(defaults.launchedAt)}
+          error={fieldError("launchedAt")}
+        />
+        <Field
+          label={`Forecast monthly management fee (${currency})`}
+          name="forecastMonthlyFee"
+          type="number"
+          step="0.01"
+          defaultValue={asInput(defaults.forecastMonthlyFee)}
+          min={0}
+          placeholder="Good-faith estimate"
+          error={fieldError("forecastMonthlyFee")}
+        />
+        <Field
+          label={`Startup costs budget (${currency})`}
+          name="startupCostsBudget"
+          type="number"
+          step="0.01"
+          defaultValue={asInput(defaults.startupCostsBudget)}
+          min={0}
+          placeholder="Photography, deep clean, linen"
+          error={fieldError("startupCostsBudget")}
+        />
+        <Field
+          label={`Operating reserve (${currency})`}
+          name="operatingReserve"
+          type="number"
+          step="0.01"
+          defaultValue={asInput(defaults.operatingReserve)}
+          min={0}
+          placeholder="Float retained between payouts"
+          error={fieldError("operatingReserve")}
+        />
+      </div>
+    </fieldset>
   );
 }
 

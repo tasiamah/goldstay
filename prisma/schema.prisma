@@ -200,6 +200,17 @@ model Client {
   // we don't want to validate too eagerly — collected if the client has
   // it, never required to mark setup complete.
   companyRegistrationNumber String?
+  // National ID or passport number for an individual client. Schedule 1
+  // of the short-let agreement asks for "ID / registration no." — this
+  // is the individual half of that, companyRegistrationNumber is the
+  // entity half. Free text because KE national IDs, passports and GH
+  // Ghana Cards all have different shapes.
+  idNumber                  String?
+  // Kenya Revenue Authority PIN. Required by clause 5.10 of the
+  // short-let agreement ("The Client must provide a valid KRA PIN")
+  // and printed on Schedule 1. Nullable: Ghana clients don't have one,
+  // and Kenyan clients often supply it after acceptance.
+  kraPin                    String?
   country                   Country
   preferredCurrency         String           @default("USD")
   // Set the first time the landlord clicks "Got it" on the welcome
@@ -276,6 +287,22 @@ model Property {
   // backfill is needed. Admins set it during onboarding when the
   // client is a rent-to-rent operator or signing for someone else.
   signingCapacity     SigningCapacity @default(REGISTERED_OWNER)
+  // Schedule 1 of the short-let agreement. Maximum occupancy is a
+  // listing and house-rules input; the three money fields feed the
+  // Schedule 1 table and the clause 10.3 early-exit calculation. All
+  // nullable — Schedule 1 permits them to be confirmed through
+  // onboarding rather than before acceptance, and the contract renders
+  // "to be confirmed" instead of inventing a number.
+  maxOccupancy        Int?
+  forecastMonthlyFee  Decimal?        @db.Decimal(12, 2)
+  startupCostsBudget  Decimal?        @db.Decimal(12, 2)
+  operatingReserve    Decimal?        @db.Decimal(12, 2)
+  // "Launch Date" per clause 1.4: the date the Property is first
+  // published and bookable on an approved Booking Channel. The
+  // three-month Initial Commitment Period runs from here rather than
+  // from the Start Date, so this is a commercially load-bearing
+  // timestamp. System-recorded, hence null until the listing is live.
+  launchedAt          DateTime?
   // Hostaway listing id for SHORT_TERM properties. Used by the
   // webhook receiver to map external reservations back to a property.
   hostawayListingId   String?         @unique
@@ -503,10 +530,39 @@ model Document {
 // Term, commission rate and early-termination fee are snapshotted
 // onto the row at generation time. Future changes to the defaults
 // helper never retroactively alter a signed contract.
+// Which contract body a ManagementAgreement was issued under. The
+// clause text lives in code (src/lib/agreements/), so the row has to
+// record which module rendered it — otherwise reprinting a signed PDF
+// after we add a template would silently re-render it under different
+// terms. Snapshotting the template is the same discipline as
+// snapshotting the commercial terms.
+enum AgreementTemplate {
+  // The original cross-market management agreement. Still used for
+  // long-term lettings and for every Ghana property.
+  GENERIC_MANAGEMENT_V1
+  // GoldStay Short-Let Property Management Agreement, Kenya. Issued
+  // by EAR TADCO LIMITED t/a GoldStay under Kenyan law; assumes Gross
+  // Booking Revenue, Booking Channels and a KRA PIN, so it only fits
+  // KE + SHORT_TERM.
+  SHORT_LET_KE_V1
+}
+
 model ManagementAgreement {
   id         String   @id @default(cuid())
   propertyId String
   property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Which clause set this row was issued under, and the exact version
+  // string printed on the acceptance record (clause 12.3 of the
+  // short-let agreement requires the record to identify the version).
+  template        AgreementTemplate @default(GENERIC_MANAGEMENT_V1)
+  templateVersion String            @default("generic-management-v1")
+
+  // Human-quotable reference printed at the top of the contract, in
+  // the form GS-YYYY-### (e.g. GS-2026-004). Nullable because rows
+  // issued before references existed don't have one; unique so a
+  // concurrent issue can't mint a duplicate.
+  reference String? @unique
 
   // Snapshot of terms agreed for this specific property.
   termMonths           Int
@@ -521,6 +577,19 @@ model ManagementAgreement {
   // we correct the property's capacity afterwards.
   signingCapacity      SigningCapacity @default(REGISTERED_OWNER)
 
+  // Schedule 1 money terms for the short-let agreement. All nullable:
+  // Schedule 1 explicitly allows an operational selection to be
+  // "confirmed through the agreed GoldStay onboarding workflow", and
+  // the contract renders a "to be confirmed" row rather than a wrong
+  // number when one is absent.
+  //
+  // forecastMonthlyFee drives the clause 10.3 early-exit calculation
+  // (50% per remaining month, capped at one month's fee), which is why
+  // earlyExitFee above holds that cap as the worst case for reporting.
+  forecastMonthlyFee Decimal? @db.Decimal(12, 2)
+  startupCostsBudget Decimal? @db.Decimal(12, 2)
+  operatingReserve   Decimal? @db.Decimal(12, 2)
+
   status AgreementStatus @default(DRAFT)
 
   // Lifecycle timestamps; null until the corresponding event happens.
@@ -528,11 +597,26 @@ model ManagementAgreement {
   sentAt      DateTime?
   signedAt    DateTime?
 
-  // Click-to-accept signature record. Captured server-side from the
+  // Click-to-accept acceptance record. Captured server-side from the
   // request the client submits, never trusted from form input.
-  signedByName      String?
-  signedByIp        String?
-  signedByUserAgent String?
+  //
+  // Acceptance is one click: the client is already authenticated, so
+  // the session is the identity confirmation and signedByName is taken
+  // from their record rather than typed. Clause 12.3 of the short-let
+  // agreement asks the record to identify the user, the version, the
+  // identity confirmation and the timestamp — that is authUserId,
+  // templateVersion, signedByIp/UserAgent and signedAt respectively.
+  signedByName        String?
+  signedByIp          String?
+  signedByUserAgent   String?
+  // Supabase auth.users.id of whoever clicked accept. Distinct from
+  // the Client row: it proves which login was used, which is the part
+  // a dispute actually turns on.
+  acceptedByUserId    String?
+  // Short receipt reference quoted back to the client on the
+  // confirmation screen and printed on the PDF, so they have a
+  // stable handle to reference in email.
+  acceptanceReference String? @unique
 
   // Once SIGNED we render the PDF and attach it as a Document.
   documentId String?   @unique

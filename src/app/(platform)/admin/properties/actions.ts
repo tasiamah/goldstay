@@ -11,7 +11,10 @@ import { prisma } from "@/lib/db";
 import { currentAuditActor } from "@/lib/auth";
 import { PropertyInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
-import { defaultAgreementTerms } from "@/lib/agreements/defaults";
+import {
+  AGREEMENT_ISSUE_PROPERTY_SELECT,
+  buildAgreementIssueData,
+} from "@/lib/agreements/issue";
 import { recordAudit } from "@/lib/audit";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
@@ -38,6 +41,12 @@ function fromForm(formData: FormData) {
     signingCapacity: String(
       formData.get("signingCapacity") ?? "REGISTERED_OWNER",
     ),
+    // Schedule 1 of the short-let agreement.
+    maxOccupancy: String(formData.get("maxOccupancy") ?? ""),
+    forecastMonthlyFee: String(formData.get("forecastMonthlyFee") ?? ""),
+    startupCostsBudget: String(formData.get("startupCostsBudget") ?? ""),
+    operatingReserve: String(formData.get("operatingReserve") ?? ""),
+    launchedAt: String(formData.get("launchedAt") ?? ""),
     hostawayListingId: String(formData.get("hostawayListingId") ?? ""),
   };
 }
@@ -192,11 +201,9 @@ export async function markPropertyVerifiedAction(
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
     select: {
+      ...AGREEMENT_ISSUE_PROPERTY_SELECT,
       status: true,
       clientId: true,
-      country: true,
-      propertyType: true,
-      signingCapacity: true,
       name: true,
       unitNumber: true,
       _count: { select: { documents: true } },
@@ -228,10 +235,6 @@ export async function markPropertyVerifiedAction(
   // (e.g. an admin verified, then exited, then re-verified), we
   // leave it alone. Re-issuing terms is a deliberate admin action,
   // not a side effect of the lifecycle button.
-  const terms = defaultAgreementTerms({
-    country: property.country,
-    propertyType: property.propertyType,
-  });
   const existingActiveAgreement = await prisma.managementAgreement.findFirst({
     where: {
       propertyId,
@@ -246,22 +249,10 @@ export async function markPropertyVerifiedAction(
       data: { status: PropertyStatus.ACTIVE },
     });
     if (!existingActiveAgreement) {
-      const now = new Date();
       const agreement = await tx.managementAgreement.create({
         data: {
-          propertyId,
-          termMonths: terms.termMonths,
-          commissionRate: terms.commissionRate,
-          earlyExitFee: terms.earlyExitFee,
-          earlyExitFeeCurrency: terms.earlyExitFeeCurrency,
-          noticePeriodDays: terms.noticePeriodDays,
-          governingLaw: terms.governingLaw,
-          // Snapshotted alongside the commercial terms: the authority
-          // warranty the client signs under has to stay fixed even if
-          // the property's capacity is corrected later.
-          signingCapacity: property.signingCapacity,
-          status: AgreementStatus.SENT,
-          sentAt: now,
+          ...(await buildAgreementIssueData(tx, property)),
+          property: { connect: { id: propertyId } },
         },
         select: { id: true },
       });

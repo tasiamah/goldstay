@@ -49,6 +49,25 @@ const YourDetailsInput = z
       .max(64)
       .optional()
       .transform((v) => (v && v.length > 0 ? v : null)),
+    // Both print on Schedule 1 of the short-let agreement, and clause
+    // 5.10 obliges the Client to provide a valid KRA PIN. Optional
+    // here on purpose: the contract renders "to be confirmed through
+    // GoldStay onboarding" for a blank, which Schedule 1 permits, and
+    // we would rather have the agreement accepted today and the PIN
+    // tomorrow than block onboarding on a number the client has to go
+    // and look up.
+    idNumber: z
+      .string()
+      .trim()
+      .max(64)
+      .optional()
+      .transform((v) => (v && v.length > 0 ? v : null)),
+    kraPin: z
+      .string()
+      .trim()
+      .max(32)
+      .optional()
+      .transform((v) => (v && v.length > 0 ? v.toUpperCase() : null)),
     country: z.enum(["KE", "GH"]),
   })
   .superRefine((val, ctx) => {
@@ -80,6 +99,8 @@ export async function updateYourDetailsAction(
     companyName: formData.get("companyName") ?? "",
     companyRegistrationNumber:
       formData.get("companyRegistrationNumber") ?? "",
+    idNumber: formData.get("idNumber") ?? "",
+    kraPin: formData.get("kraPin") ?? "",
     country: formData.get("country") ?? client.country,
   });
   if (!parsed.success) {
@@ -108,6 +129,8 @@ export async function updateYourDetailsAction(
         "entityType",
         "companyName",
         "companyRegistrationNumber",
+        "idNumber",
+        "kraPin",
         "country",
       ],
       entityType: parsed.data.entityType,

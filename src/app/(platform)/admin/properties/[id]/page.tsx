@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { SigningCapacity } from "@prisma/client";
+import type { AgreementTemplate, SigningCapacity } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
@@ -29,6 +29,7 @@ import {
   formatCommissionPct,
   formatMoney,
 } from "@/lib/agreements/format";
+import { AGREEMENT_TEMPLATE_TITLE } from "@/lib/agreements/template";
 import { SIGNING_CAPACITY_LABEL } from "@/lib/signing-capacity";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
@@ -304,6 +305,15 @@ export default async function PropertyDetailPage({
                 status: property.status,
                 propertyType: property.propertyType,
                 signingCapacity: property.signingCapacity,
+                maxOccupancy: property.maxOccupancy,
+                forecastMonthlyFee: property.forecastMonthlyFee?.toString(),
+                startupCostsBudget: property.startupCostsBudget?.toString(),
+                operatingReserve: property.operatingReserve?.toString(),
+                // A date input needs yyyy-mm-dd, and the column is a
+                // calendar date rather than an instant, so slice off
+                // the UTC time rather than going through local time.
+                launchedAt:
+                  property.launchedAt?.toISOString().slice(0, 10) ?? null,
                 hostawayListingId: property.hostawayListingId,
               }}
               submitLabel="Save changes"
@@ -410,10 +420,14 @@ export default async function PropertyDetailPage({
                 earlyExitFeeCurrency: a.earlyExitFeeCurrency,
                 noticePeriodDays: a.noticePeriodDays,
                 signingCapacity: a.signingCapacity,
+                template: a.template,
+                reference: a.reference,
+                forecastMonthlyFee: a.forecastMonthlyFee?.toString() ?? null,
                 generatedAt: a.generatedAt,
                 sentAt: a.sentAt,
                 signedAt: a.signedAt,
                 signedByName: a.signedByName,
+                acceptanceReference: a.acceptanceReference,
                 documentId: a.documentId,
               }))}
               propertySigningCapacity={property.signingCapacity}
@@ -668,10 +682,14 @@ type AgreementRow = {
   earlyExitFeeCurrency: string;
   noticePeriodDays: number;
   signingCapacity: SigningCapacity;
+  template: AgreementTemplate;
+  reference: string | null;
+  forecastMonthlyFee: string | null;
   generatedAt: Date;
   sentAt: Date | null;
   signedAt: Date | null;
   signedByName: string | null;
+  acceptanceReference: string | null;
   documentId: string | null;
 };
 
@@ -700,12 +718,14 @@ function AgreementCard({
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
           <h3 className="text-base font-medium text-stone-900">
-            Management agreement
+            {current
+              ? AGREEMENT_TEMPLATE_TITLE[current.template]
+              : "Management agreement"}
           </h3>
           <p className="mt-1 text-sm text-stone-500">
-            12-month management contract with the client.
-            Auto-issued on verification; client signs through their
-            portal.
+            Auto-issued on verification; the client accepts it in one
+            click through their portal.
+            {current?.reference ? ` Reference ${current.reference}.` : ""}
           </p>
         </div>
         <ReissueAgreementButton
@@ -758,18 +778,48 @@ function AgreementCard({
               label="Notice"
               value={`${current.noticePeriodDays} days`}
             />
-            <Term
-              label="Early-exit fee"
-              value={formatMoney(
-                current.earlyExitFee,
-                current.earlyExitFeeCurrency,
-              )}
-            />
+            {current.template === "SHORT_LET_KE_V1" ? (
+              // Clause 10.3 makes the early-exit amount a calculation
+              // off this figure, not a fixed fee, so showing a single
+              // "early-exit fee" here would misstate what we can
+              // actually charge.
+              <Term
+                label="Forecast monthly fee"
+                value={
+                  current.forecastMonthlyFee
+                    ? formatMoney(
+                        current.forecastMonthlyFee,
+                        current.earlyExitFeeCurrency,
+                      )
+                    : "Not set"
+                }
+              />
+            ) : (
+              <Term
+                label="Early-exit fee"
+                value={formatMoney(
+                  current.earlyExitFee,
+                  current.earlyExitFeeCurrency,
+                )}
+              />
+            )}
             <Term
               label="Signed as"
               value={SIGNING_CAPACITY_LABEL[current.signingCapacity]}
             />
           </dl>
+
+          {current.template === "SHORT_LET_KE_V1" &&
+          !current.forecastMonthlyFee &&
+          current.status !== "CANCELLED" ? (
+            <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+              No Forecast Monthly Management Fee is set, so Schedule 1
+              reads &ldquo;to be confirmed&rdquo; and limb (b) of the
+              clause 10.3 early-exit calculation yields nothing. Set it
+              on the property above and reissue before the client
+              accepts.
+            </p>
+          ) : null}
           {current.signingCapacity !== propertySigningCapacity ? (
             <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
               This agreement carries the authority clause for{" "}
@@ -794,7 +844,14 @@ function AgreementCard({
             </a>
           ) : current.status === "SENT" ? (
             <p className="text-xs text-stone-500">
-              Client can sign at /client/agreements/{current.id}
+              Client can accept at /client/agreements/{current.id}
+            </p>
+          ) : null}
+
+          {current.acceptanceReference ? (
+            <p className="text-xs text-stone-500">
+              Acceptance receipt{" "}
+              <span className="font-mono">{current.acceptanceReference}</span>
             </p>
           ) : null}
         </div>

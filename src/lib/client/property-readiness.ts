@@ -80,7 +80,7 @@ export function computePropertyReadiness(
   if (inputs.hasPendingAgreement) {
     blockers.push({
       key: "agreement",
-      label: "Sign your management agreement",
+      label: "Accept your management agreement",
       // Caller can override with a more specific /client/agreements/:id
       // link when it has the agreement id; this default is the list.
       href: "/client",

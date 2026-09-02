@@ -4,7 +4,10 @@ import { revalidatePath } from "next/cache";
 import { AgreementStatus } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { currentAuditActor } from "@/lib/auth";
-import { defaultAgreementTerms } from "@/lib/agreements/defaults";
+import {
+  AGREEMENT_ISSUE_PROPERTY_SELECT,
+  buildAgreementIssueData,
+} from "@/lib/agreements/issue";
 import { recordAudit } from "@/lib/audit";
 
 export type AgreementAdminResult =
@@ -22,20 +25,9 @@ export async function reissueAgreementAction(
 
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
-    select: {
-      id: true,
-      country: true,
-      propertyType: true,
-      signingCapacity: true,
-      clientId: true,
-    },
+    select: { ...AGREEMENT_ISSUE_PROPERTY_SELECT, clientId: true },
   });
   if (!property) return { ok: false, error: "Property not found." };
-
-  const terms = defaultAgreementTerms({
-    country: property.country,
-    propertyType: property.propertyType,
-  });
 
   const newAgreement = await prisma.$transaction(async (tx) => {
     // Soft-cancel any open agreement so we never have two parallel
@@ -48,20 +40,13 @@ export async function reissueAgreementAction(
       },
       data: { status: AgreementStatus.CANCELLED },
     });
+    // Re-snapshotted from the property, so correcting a capacity — or
+    // filling in a Schedule 1 figure — and reissuing is how you fix a
+    // contract that went out with the wrong terms on it.
     return tx.managementAgreement.create({
       data: {
-        propertyId,
-        termMonths: terms.termMonths,
-        commissionRate: terms.commissionRate,
-        earlyExitFee: terms.earlyExitFee,
-        earlyExitFeeCurrency: terms.earlyExitFeeCurrency,
-        noticePeriodDays: terms.noticePeriodDays,
-        governingLaw: terms.governingLaw,
-        // Re-snapshotted from the property, so correcting a capacity
-        // and reissuing is how you fix a wrong authority clause.
-        signingCapacity: property.signingCapacity,
-        status: AgreementStatus.SENT,
-        sentAt: new Date(),
+        ...(await buildAgreementIssueData(tx, property)),
+        property: { connect: { id: propertyId } },
       },
     });
   });

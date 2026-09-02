@@ -6,6 +6,11 @@
 // "current" defaults again. That snapshot is what makes a signed
 // contract immutable even when we later tweak commission rates.
 //
+// Kenyan short-term properties are issued under the short-let
+// agreement, which states its own term, notice period and early-exit
+// mechanism. Those win — the numbers below describe the generic
+// contract, and the notes explaining them apply to it alone.
+//
 // Reasoning behind the numbers (consult before changing):
 //
 //   - Term length: 12 months for both flavours. Short-term setup
@@ -27,11 +32,13 @@
 //     term needs longer because we may have an in-place tenant on a
 //     fixed lease that we need to honour or hand off cleanly.
 
+import { AgreementTemplate } from "@prisma/client";
 import type { Country, PropertyType } from "@prisma/client";
 import {
   LONG_TERM_COMMISSION_RATE,
   SHORT_TERM_COMMISSION_RATE,
 } from "@/lib/commission";
+import { templateFor } from "./template";
 
 export type AgreementDefaults = {
   termMonths: number;
@@ -69,8 +76,37 @@ const EARLY_EXIT_FEE_BY_COUNTRY_TYPE: Record<
 export function defaultAgreementTerms(input: {
   country: Country;
   propertyType: PropertyType;
+  // Forecast Monthly Management Fee from the property, where the
+  // operator has estimated one. Only consulted for the short-let
+  // agreement, whose early-exit amount is capped at one month's fee.
+  forecastMonthlyFee?: number | null;
 }): AgreementDefaults {
   const isShort = input.propertyType === "SHORT_TERM";
+
+  // Kenyan short-lets are issued under the short-let agreement, whose
+  // own terms differ from the generic contract's and take precedence:
+  // a three-month Initial Commitment Period running from the Launch
+  // Date (clause 10.1), 30 days' notice thereafter (clause 10.2), and
+  // an early-exit amount computed under clause 10.3 rather than fixed.
+  if (templateFor(input) === AgreementTemplate.SHORT_LET_KE_V1) {
+    return {
+      termMonths: 3,
+      commissionRate: SHORT_TERM_COMMISSION_RATE,
+      // Clause 10.3 makes early exit a calculation, not a fixed fee:
+      // the greater of unrecovered Startup Costs or 50% of the
+      // Forecast Monthly Management Fee per remaining month, capped at
+      // one month's fee. We store that cap so admin reporting has the
+      // worst-case exposure in a column, while the contract prose
+      // carries the formula that actually governs. Zero when no
+      // forecast has been set, which is honest: with no forecast,
+      // limb (b) of the calculation yields nothing.
+      earlyExitFee: input.forecastMonthlyFee ?? 0,
+      earlyExitFeeCurrency: COUNTRY_TO_CURRENCY[input.country],
+      noticePeriodDays: 30,
+      governingLaw: COUNTRY_TO_LAW[input.country],
+    };
+  }
+
   return {
     termMonths: 12,
     commissionRate: isShort
@@ -82,24 +118,4 @@ export function defaultAgreementTerms(input: {
     noticePeriodDays: isShort ? 60 : 90,
     governingLaw: COUNTRY_TO_LAW[input.country],
   };
-}
-
-// Loose equality check used at sign time. We don't need exact-string
-// match — landlords commonly type "Jane M Doe" when their record
-// says "Jane Margaret Doe" or vice versa. We collapse whitespace,
-// drop punctuation, and compare case-insensitively. Tighten later
-// if disputes arise.
-export function namesPlausiblyMatch(typed: string, expected: string): boolean {
-  const norm = (s: string) =>
-    s
-      .toLowerCase()
-      .replace(/[^\p{L}\s]/gu, "")
-      .split(/\s+/)
-      .filter(Boolean);
-  const a = norm(typed);
-  const b = norm(expected);
-  // Require at least a first + last token on both sides — a single
-  // first name is not a signature.
-  if (a.length < 2 || b.length < 2) return false;
-  return a[0] === b[0] && a[a.length - 1] === b[b.length - 1];
 }
