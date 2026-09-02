@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
+import type { LeadSource } from "@prisma/client";
 import {
   airtableTables,
   createAirtableRecord,
   isAirtableConfigured,
 } from "@/lib/airtable";
 import { enrichLead } from "@/lib/lead-enrichment";
-import { createLead } from "@/lib/leads";
+import { createLead, parseLeadSource } from "@/lib/leads";
 import { rateLimitOr429 } from "@/lib/rateLimit";
 import { readReferralCookie } from "@/lib/referrals/attribution";
 import { attachLeadToReferrer } from "@/lib/referrals/db";
@@ -122,6 +123,11 @@ export async function POST(req: Request) {
   const source = referralCode
     ? `referral:${referralCode}`
     : str(data.source) ?? "list-your-property";
+  // A referral cookie is durable attribution set by middleware, so it
+  // outranks whatever channel the client nominated in the payload.
+  const leadSource: LeadSource = referralCode
+    ? "REFERRAL"
+    : parseLeadSource(data.leadSource);
 
   const sendEmail = async () => {
     if (!apiKey) {
@@ -183,7 +189,7 @@ export async function POST(req: Request) {
     if (!fullName || !phone) return;
     try {
       await createLead({
-        source: "WEBSITE",
+        source: leadSource,
         fullName,
         email: str(data.email),
         phone,

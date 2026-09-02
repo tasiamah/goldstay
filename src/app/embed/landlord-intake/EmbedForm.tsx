@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import {
+  RESIDENCE_COUNTRIES as COUNTRIES,
+  SERVICE_OPTIONS as SERVICES,
+} from "@/lib/lead-options";
 
 // Compact embeddable landlord intake form. Posts to /api/lead with
 // a Source of "embed:<partner>" so ops can attribute every signed
@@ -11,38 +15,13 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const COUNTRIES = [
-  "Australia",
-  "Canada",
-  "Germany",
-  "Ghana",
-  "Ireland",
-  "Kenya",
-  "Netherlands",
-  "Qatar",
-  "Saudi Arabia",
-  "South Africa",
-  "United Arab Emirates",
-  "United Kingdom",
-  "United States",
-  "Other",
-];
-
-const SERVICES = [
-  "Long-term",
-  "Short-stay / Airbnb",
-  "Help me buy a property",
-  "Tenant finding only",
-  "Not sure",
-];
-
 export function EmbedForm({ partner }: { partner: string }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [country, setCountry] = useState("United Kingdom");
   const [city, setCity] = useState<"Nairobi" | "Accra">("Nairobi");
-  const [service, setService] = useState(SERVICES[0]!);
+  const [service, setService] = useState<string>(SERVICES[0]);
   const [notes, setNotes] = useState("");
 
   const [status, setStatus] = useState<Status>("idle");

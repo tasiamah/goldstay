@@ -5,6 +5,10 @@
 // and the lifecycle (CONTACTED → QUALIFIED → CONVERTED|LOST) is driven
 // by buttons on the detail page.
 //
+// Landlords who reach us on WhatsApp instead of the form arrive here
+// too, via the /start intake link ops shares from the panel below the
+// header — see CopyIntakeLink.
+//
 // Filters: status, country, source, free-text on name/email/phone. The
 // Convert column links straight to /admin/leads/[id]/convert which
 // pre-fills /admin/clients/new — that's the whole point of this page.
@@ -17,6 +21,7 @@ import {
   LEAD_STATUS_CLASSES,
   LEAD_STATUS_LABEL,
 } from "@/lib/leads";
+import { CopyIntakeLink } from "./CopyIntakeLink";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { FilterSelect } from "@/components/admin/FilterSelect";
 import {
@@ -166,6 +171,8 @@ export default async function LeadsListPage({
           Log a lead manually
         </Link>
       </div>
+
+      <CopyIntakeLink />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-wrap items-center gap-3">

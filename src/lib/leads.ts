@@ -270,6 +270,23 @@ export const LEAD_SOURCE_LABEL: Record<LeadSource, string> = {
   OTHER: "Other",
 };
 
+export const LEAD_SOURCES = Object.keys(LEAD_SOURCE_LABEL) as LeadSource[];
+
+// Coerce an untrusted channel string from a public form post into a
+// LeadSource. /api/lead previously filed every row it wrote as WEBSITE
+// regardless of origin, which made the source filter on /admin/leads
+// blind to anything but the canonical form.
+//
+// Unrecognised input deliberately falls back to WEBSITE rather than
+// OTHER: the endpoint is public, so a bad value is far more likely to be
+// an old client or a typo'd integration than a genuinely novel channel,
+// and silently inventing an "Other" lead would misreport the funnel.
+export function parseLeadSource(value: unknown): LeadSource {
+  if (typeof value !== "string") return "WEBSITE";
+  const candidate = value.trim().toUpperCase();
+  return LEAD_SOURCES.find((s) => s === candidate) ?? "WEBSITE";
+}
+
 // Small badge palette used by the list page. Centralised so the
 // detail page and the list stay in lockstep.
 export const LEAD_STATUS_CLASSES: Record<Lead["status"], string> = {

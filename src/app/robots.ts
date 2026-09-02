@@ -21,6 +21,11 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [
           "/apply",
           "/apply/",
+          // Private intake link shared in WhatsApp threads. Kept out of
+          // search so it doesn't compete with /list-your-property for
+          // landlord intent.
+          "/start",
+          "/start/",
           "/api/",
           "/auth/",
           "/login",
