@@ -25,6 +25,7 @@
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { logCommunication } from "@/lib/comms";
+import { recordAudit } from "@/lib/audit";
 import type { CurrentActor } from "@/lib/auth";
 
 type WelcomeInput = {
@@ -41,6 +42,12 @@ type WelcomeInput = {
   // initiated sends pass null and the audit trail attributes the
   // event to "system".
   actor?: CurrentActor | null;
+  // Which event this send represents on the client's audit timeline.
+  // An operator reading the history needs to tell "we welcomed them"
+  // apart from "we welcomed them again", so the two get distinct
+  // actions. Defaults to the initial send, which is every caller
+  // except the resend button.
+  auditAction?: "client.welcomed" | "client.welcomed.resent";
 };
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
@@ -86,6 +93,7 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
     // manually if needed. Production Vercel env always has the key.
     console.log(`[client-welcome] would send to ${input.email}\n${text}`);
     await maybeLogComms(input, "QUEUED", null, subject);
+    await maybeRecordAudit(input);
     return { ok: true, reason: "logged-only" };
   }
 
@@ -105,6 +113,7 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
       (result?.data?.id as string | undefined) ?? null,
       subject,
     );
+    await maybeRecordAudit(input);
     return { ok: true };
   } catch (err) {
     console.error("[client-welcome] Resend send failed", err);
@@ -137,6 +146,39 @@ async function maybeLogComms(
     });
   } catch (err) {
     console.warn("[client-welcome] logCommunication failed", err);
+  }
+}
+
+// Record the send on the client's audit timeline.
+//
+// Separate from maybeLogComms, which feeds the client-facing
+// "Communications" tab. This is the operator-facing "who did what"
+// trail, and until now it only ever showed resends: the audit label
+// `client.welcomed` was defined but never recorded anywhere, so a
+// client's history could open with "welcome email resent" and no
+// original send above it.
+//
+// Swallows its own errors for the same reason as the comms mirror —
+// a bookkeeping failure must never make a successful send look like
+// a failed one. Requires an actor because recordAudit attributes
+// every row to an admin email, and a system-initiated send has
+// nobody to attribute it to.
+async function maybeRecordAudit(input: WelcomeInput): Promise<void> {
+  if (!input.clientId || !input.actor) return;
+  const action = input.auditAction ?? "client.welcomed";
+  try {
+    await recordAudit({
+      actor: input.actor,
+      entity: "CLIENT",
+      entityId: input.clientId,
+      action,
+      summary:
+        action === "client.welcomed.resent"
+          ? `Welcome email resent to ${input.email}`
+          : `Welcome email sent to ${input.email}`,
+    });
+  } catch (err) {
+    console.warn("[client-welcome] recordAudit failed", err);
   }
 }
 

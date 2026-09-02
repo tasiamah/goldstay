@@ -117,7 +117,15 @@ export async function resendClientWelcomeAction(
   });
   if (!client) return { ok: false, error: "Client not found." };
 
-  const result = await sendClientWelcomeEmail({ ...client, clientId, actor });
+  // sendClientWelcomeEmail owns the audit entry now, so a resend and
+  // an initial send are recorded the same way rather than only the
+  // resend being written from the call site.
+  const result = await sendClientWelcomeEmail({
+    ...client,
+    clientId,
+    actor,
+    auditAction: "client.welcomed.resent",
+  });
   if (!result.ok) {
     return {
       ok: false,
@@ -125,13 +133,6 @@ export async function resendClientWelcomeAction(
         "Welcome email could not be sent. Check Resend logs and try again.",
     };
   }
-  await recordAudit({
-    actor,
-    entity: "CLIENT",
-    entityId: clientId,
-    action: "client.welcomed.resent",
-    summary: `Welcome email resent to ${client.email}`,
-  });
   return { ok: true };
 }
 
