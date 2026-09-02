@@ -86,6 +86,37 @@ migrated.
 The site is designed for **Vercel**: zero config deploy. Set the
 environment variables above in the Vercel project dashboard.
 
+### Functions run in Frankfurt, on purpose
+
+`vercel.json` pins `"regions": ["fra1"]`. **If the database moves,
+move this with it.**
+
+Supabase is in `eu-central-1`. Without the pin, Vercel defaults to
+`iad1` (Washington DC), so every query became a transatlantic round
+trip of roughly 90ms. That is not one slow page — it is a tax on every
+authenticated request, because the session check, the layout and the
+page each pay it in sequence.
+
+Adding a property was the worst case at roughly 25–30 sequential round
+trips: 5 for the create transaction, 10 for the property page it
+redirects to (Prisma expands its six `include`s into 7 `SELECT`s), and
+the rest on auth, the client lookup, the audit write and the layout.
+Two to three seconds of pure waiting before any work happened.
+Co-located, each hop is 1–5ms.
+
+Note `vercel.json` is schema-validated and rejects unknown keys, so it
+cannot carry comments — a `"//regions"` note next to the setting fails
+the deploy outright. Explanations go here instead.
+
+To check which region actually served a request, read the middle
+segment of the `x-vercel-id` response header:
+
+```bash
+curl -sSD- -o /dev/null https://goldstay.co.ke/login | grep x-vercel-id
+# x-vercel-id: cpt1::fra1::…
+#              edge  function
+```
+
 ### Migrations are a separate step
 
 Schema changes are **not** applied by the build. `build` used to be

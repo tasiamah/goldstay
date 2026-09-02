@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
-  "//regions": "Run functions next to the database. Supabase is in eu-central-1 (Frankfurt); without this Vercel defaults to iad1 (Washington DC), so every query was a transatlantic round trip of ~90ms. Adding a property costs ~25-30 sequential round trips once auth, the create transaction, the audit write and the redirect target's own 10 queries are counted, which is 2-3 seconds of pure network wait. Same region makes each hop ~1-5ms. Frankfurt is also closer than Washington to Kenya, Ghana and the UK. If the database ever moves, move this with it.",
   "regions": ["fra1"],
   "cleanUrls": true,
   "trailingSlash": false,
