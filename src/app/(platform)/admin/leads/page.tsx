@@ -239,7 +239,12 @@ export default async function LeadsListPage({
                 <Th>Status</Th>
                 <Th>Property</Th>
                 <Th>Source</Th>
-                <Th>Client</Th>
+                {/* The lead's assigned Goldstay operator, not the
+                    landlord — `Lead.ownerAdmin` is an AdminUser. The
+                    owner -> client rename caught this column by
+                    mistake and labelled it "Client", which read as
+                    though a lead had a client attached to it. */}
+                <Th>Assigned to</Th>
                 <Th>Submitted</Th>
               </tr>
             </thead>

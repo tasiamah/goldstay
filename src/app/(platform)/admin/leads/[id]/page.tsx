@@ -102,8 +102,14 @@ export default async function LeadDetailPage({
             <Term label="Furnished" value={lead.furnished} />
             <Term label="Service interest" value={lead.serviceInterest} />
             <Term label="Availability" value={lead.availability} />
+            {/* `ownerAdmin` is the Goldstay operator working this
+                lead, not the landlord — the landlord is the lead
+                itself, shown above. The owner -> client rename
+                mislabelled this "Client", which sat in a list of the
+                lead's own attributes and read as if the enquiry had a
+                client of its own. */}
             <Term
-              label="Client"
+              label="Assigned to"
               value={
                 lead.ownerAdmin
                   ? `${lead.ownerAdmin.fullName} (${lead.ownerAdmin.email})`
