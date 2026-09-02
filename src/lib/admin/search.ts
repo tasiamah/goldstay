@@ -9,12 +9,12 @@
 // scoping the rest of the admin surface uses.
 
 import { prisma } from "@/lib/db";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import type { AdminUser, Country } from "@prisma/client";
 
 export type SearchEntity =
-  | "owner"
+  | "client"
   | "property"
   | "lease"
   | "booking"
@@ -54,7 +54,7 @@ export async function adminSearch(
     : {};
 
   const [
-    owners,
+    clients,
     properties,
     leases,
     bookings,
@@ -62,7 +62,7 @@ export async function adminSearch(
     documents,
     leads,
   ] = await Promise.all([
-    prisma.owner.findMany({
+    prisma.client.findMany({
       where: {
         archivedAt: null,
         ...countryFilter,
@@ -101,7 +101,7 @@ export async function adminSearch(
         unitNumber: true,
         city: true,
         neighbourhood: true,
-        owner: { select: { fullName: true, companyName: true } },
+        client: { select: { fullName: true, companyName: true } },
       },
     }),
     prisma.lease.findMany({
@@ -190,7 +190,7 @@ export async function adminSearch(
           ? {
               OR: [
                 { property: { country } },
-                { owner: { country } },
+                { client: { country } },
               ],
             }
           : {}),
@@ -202,9 +202,9 @@ export async function adminSearch(
         title: true,
         kind: true,
         propertyId: true,
-        ownerId: true,
+        clientId: true,
         property: { select: { name: true, unitNumber: true } },
-        owner: { select: { fullName: true, companyName: true } },
+        client: { select: { fullName: true, companyName: true } },
       },
     }),
     safeLeadSearch(q, country),
@@ -212,13 +212,13 @@ export async function adminSearch(
 
   const hits: SearchHit[] = [];
 
-  for (const o of owners) {
+  for (const o of clients) {
     hits.push({
       id: o.id,
-      entity: "owner",
-      label: formatOwnerDisplayName(o),
+      entity: "client",
+      label: formatClientDisplayName(o),
       hint: `${o.email} · ${o.country}`,
-      href: `/admin/owners/${o.id}`,
+      href: `/admin/clients/${o.id}`,
     });
   }
 
@@ -227,7 +227,7 @@ export async function adminSearch(
       id: p.id,
       entity: "property",
       label: formatPropertyDisplayName(p.name, p.unitNumber),
-      hint: `${p.neighbourhood ? `${p.neighbourhood}, ` : ""}${p.city} · ${formatOwnerDisplayName(p.owner)}`,
+      hint: `${p.neighbourhood ? `${p.neighbourhood}, ` : ""}${p.city} · ${formatClientDisplayName(p.client)}`,
       href: `/admin/properties/${p.id}`,
     });
   }
@@ -268,13 +268,13 @@ export async function adminSearch(
   for (const d of documents) {
     const parentLabel = d.property
       ? formatPropertyDisplayName(d.property.name, d.property.unitNumber)
-      : d.owner
-        ? formatOwnerDisplayName(d.owner)
+      : d.client
+        ? formatClientDisplayName(d.client)
         : "Unattached";
     const href = d.propertyId
       ? `/admin/properties/${d.propertyId}/documents`
-      : d.ownerId
-        ? `/admin/owners/${d.ownerId}`
+      : d.clientId
+        ? `/admin/clients/${d.clientId}`
         : "/admin";
     hits.push({
       id: d.id,
@@ -367,10 +367,10 @@ export type PaletteAction = {
 
 export const PALETTE_ACTIONS: PaletteAction[] = [
   {
-    id: "create-owner",
-    label: "Create owner",
+    id: "create-client",
+    label: "Create client",
     hint: "New landlord record",
-    href: "/admin/owners/new",
+    href: "/admin/clients/new",
     group: "Create",
   },
   {
@@ -386,9 +386,9 @@ export const PALETTE_ACTIONS: PaletteAction[] = [
     group: "Navigate",
   },
   {
-    id: "open-owners",
-    label: "Open owners",
-    href: "/admin/owners",
+    id: "open-clients",
+    label: "Open clients",
+    href: "/admin/clients",
     group: "Navigate",
   },
   {

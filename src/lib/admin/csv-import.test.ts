@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseCsv, summariseImport, validateRows } from "./csv-import";
 
-// CSV import for ops bulk-loads (owners, properties, transactions).
+// CSV import for ops bulk-loads (clients, properties, transactions).
 // The senior risks are:
 //   - mishandling RFC 4180 quoting (would split a field with a comma
 //     into two columns and corrupt downstream rows), and

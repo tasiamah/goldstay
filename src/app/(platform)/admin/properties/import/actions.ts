@@ -12,12 +12,12 @@ import {
   type ValidatedRow,
 } from "@/lib/admin/csv-import";
 
-// One row per property. ownerEmail is the join key — admins always
+// One row per property. clientEmail is the join key — admins always
 // know the email already, and importing properties before the
-// matching owner exists is a workflow bug we want to surface
+// matching client exists is a workflow bug we want to surface
 // loudly rather than silently auto-create.
 const RowSchema = z.object({
-  ownerEmail: z.string().trim().toLowerCase().email(),
+  clientEmail: z.string().trim().toLowerCase().email(),
   name: z.string().trim().min(2),
   unitNumber: z.string().trim().optional(),
   city: z.string().trim().min(2),
@@ -82,18 +82,18 @@ export async function applyPropertyImportAction(
   let unmatched = 0;
   for (const row of validated) {
     if (!row.ok) continue;
-    const owner = await prisma.owner.findUnique({
-      where: { email: row.value.ownerEmail },
+    const client = await prisma.client.findUnique({
+      where: { email: row.value.clientEmail },
       select: { id: true },
     });
-    if (!owner) {
+    if (!client) {
       unmatched += 1;
       continue;
     }
     try {
       const property = await prisma.property.create({
         data: {
-          ownerId: owner.id,
+          clientId: client.id,
           name: row.value.name,
           unitNumber: row.value.unitNumber || null,
           city: row.value.city,
@@ -112,7 +112,7 @@ export async function applyPropertyImportAction(
         entity: "PROPERTY",
         entityId: property.id,
         action: "property.imported",
-        summary: `Imported via CSV row ${row.rowIndex} for owner ${row.value.ownerEmail}`,
+        summary: `Imported via CSV row ${row.rowIndex} for client ${row.value.clientEmail}`,
         metadata: { rowIndex: row.rowIndex, source: "csv" },
       });
     } catch (err) {
@@ -131,7 +131,16 @@ function normaliseAndValidate(
   | { ok: true; value: z.infer<typeof RowSchema> }
   | { ok: false; errors: string[] } {
   const normalised = {
-    ownerEmail: raw.ownerEmail ?? raw.owner_email ?? raw.owner ?? "",
+    // The owner_* aliases predate the owner -> client rename. Kept
+    // because operators have spreadsheet templates with those headers.
+    clientEmail:
+      raw.clientEmail ??
+      raw.client_email ??
+      raw.client ??
+      raw.ownerEmail ??
+      raw.owner_email ??
+      raw.owner ??
+      "",
     name: raw.name ?? raw.building ?? "",
     unitNumber: raw.unitNumber ?? raw.unit_number ?? raw.unit ?? "",
     city: raw.city ?? "",

@@ -71,7 +71,7 @@ export const requiredAmount = z.preprocess(
   z.number().min(0),
 );
 
-// Person full-name validator. Owner / lead / admin sign-up forms all
+// Person full-name validator. Client / lead / admin sign-up forms all
 // take a single "Full name" input rather than separate first/last
 // fields, but downstream we still want both halves to be present:
 //

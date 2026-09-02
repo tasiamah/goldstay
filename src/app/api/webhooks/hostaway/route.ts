@@ -156,9 +156,9 @@ export async function POST(request: Request) {
       });
     }
     // Goldstay's 20% short-stay commission is auto-recorded against
-    // the gross at the same time, so the owner statement reconciles
-    // without anyone having to write the row by hand. Bespoke owner
-    // rates can override this later via the (yet-to-add) per-owner
+    // the gross at the same time, so the client statement reconciles
+    // without anyone having to write the row by hand. Bespoke client
+    // rates can override this later via the (yet-to-add) per-client
     // commissionRate field.
     const goldstayCommission =
       Math.round(mapped.grossAmount * SHORT_TERM_COMMISSION_RATE * 100) / 100;

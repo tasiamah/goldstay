@@ -1,5 +1,5 @@
 // React-PDF template for the executed Goldstay management agreement.
-// Mirrors the HTML view at /owner/agreements/[id] section-for-section,
+// Mirrors the HTML view at /client/agreements/[id] section-for-section,
 // then appends a signature page with the captured forensic record.
 //
 // Style notes: same stone palette and Times-Roman / Helvetica pairing
@@ -14,7 +14,12 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import type { SigningCapacity } from "@prisma/client";
 import type { AgreementSection } from "./text";
+import {
+  SIGNING_CAPACITY_ATTESTATION,
+  SIGNING_CAPACITY_LABEL,
+} from "@/lib/signing-capacity";
 
 const colors = {
   ink: "#1c1917",
@@ -151,8 +156,8 @@ const styles = StyleSheet.create({
 
 export type AgreementPdfInput = {
   agreementId: string;
-  ownerName: string;
-  ownerEmail: string;
+  clientName: string;
+  clientEmail: string;
   propertyDisplayName: string;
   governingLaw: string;
   termMonths: number;
@@ -160,6 +165,9 @@ export type AgreementPdfInput = {
   noticePeriodDays: number;
   earlyExitFeeFormatted: string;
   sections: AgreementSection[];
+  // Printed under the client's signature so the executed copy records
+  // the capacity they signed in, not just the name they typed.
+  signingCapacity: SigningCapacity;
   signedAt: Date;
   signedByName: string;
   signedByIp: string | null;
@@ -227,7 +235,7 @@ export function AgreementDocument(input: AgreementPdfInput) {
         </View>
 
         <View style={styles.sigBlock}>
-          <Text style={styles.forensicLabel}>For the Owner</Text>
+          <Text style={styles.forensicLabel}>For the Client</Text>
           <Text style={styles.sigName}>{input.signedByName}</Text>
           <Text style={styles.sigCaption}>
             Click-to-accept signature captured through the Goldstay
@@ -241,8 +249,17 @@ export function AgreementDocument(input: AgreementPdfInput) {
           </Text>
         </View>
 
+        <Text style={styles.forensicLabel}>Signing capacity</Text>
+        <Text style={styles.forensicValue}>
+          {SIGNING_CAPACITY_LABEL[input.signingCapacity]}
+        </Text>
+        <Text style={styles.sigCaption}>
+          Confirmed at signing: “
+          {SIGNING_CAPACITY_ATTESTATION[input.signingCapacity]}”
+        </Text>
+
         <Text style={styles.forensicLabel}>Account email</Text>
-        <Text style={styles.forensicValue}>{input.ownerEmail}</Text>
+        <Text style={styles.forensicValue}>{input.clientEmail}</Text>
 
         <Text style={styles.forensicLabel}>Agreement ID</Text>
         <Text style={styles.forensicValue}>{input.agreementId}</Text>

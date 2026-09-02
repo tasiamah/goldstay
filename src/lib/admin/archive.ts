@@ -1,6 +1,6 @@
 // Soft-delete helpers.
 //
-// Every model that we archive (Owner, Property, Lease, Transaction)
+// Every model that we archive (Client, Property, Lease, Transaction)
 // has an `archivedAt: DateTime?` column. Default queries everywhere
 // filter `archivedAt: null`; the archive view explicitly inverts.
 //
@@ -14,7 +14,7 @@ import type { AuditEntity } from "@prisma/client";
 
 export const ARCHIVE_RESTORE_WINDOW_DAYS = 30;
 
-export type ArchivableEntity = "OWNER" | "PROPERTY" | "LEASE" | "TRANSACTION";
+export type ArchivableEntity = "CLIENT" | "PROPERTY" | "LEASE" | "TRANSACTION";
 
 async function setArchivedAt(
   entity: ArchivableEntity,
@@ -22,8 +22,8 @@ async function setArchivedAt(
   archivedAt: Date | null,
 ): Promise<void> {
   switch (entity) {
-    case "OWNER":
-      await prisma.owner.update({ where: { id }, data: { archivedAt } });
+    case "CLIENT":
+      await prisma.client.update({ where: { id }, data: { archivedAt } });
       return;
     case "PROPERTY":
       await prisma.property.update({ where: { id }, data: { archivedAt } });
@@ -97,8 +97,8 @@ export function isWithinRestoreWindow(
 
 export function formatEntity(entity: ArchivableEntity): string {
   switch (entity) {
-    case "OWNER":
-      return "Owner";
+    case "CLIENT":
+      return "Client";
     case "PROPERTY":
       return "Property";
     case "LEASE":

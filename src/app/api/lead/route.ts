@@ -16,8 +16,8 @@ export const runtime = "nodejs";
 // fans it out to three places in parallel:
 //
 //   1. Postgres `Lead` row (system of record from this point forward).
-//      Powers /admin/leads, the convert-to-owner button, and the
-//      lead-to-owner conversion analytics.
+//      Powers /admin/leads, the convert-to-client button, and the
+//      lead-to-client conversion analytics.
 //   2. Resend email to the ops inbox so a human sees it in their normal
 //      workflow within seconds.
 //   3. Airtable "Leads" table so the lead is trackable alongside future

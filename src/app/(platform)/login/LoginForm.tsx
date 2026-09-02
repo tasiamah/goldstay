@@ -82,7 +82,7 @@ export function LoginForm({ next }: { next?: string }) {
       }
 
       // Hand off to a small server route that resolves whether this
-      // user belongs in /admin or /owner and redirects accordingly.
+      // user belongs in /admin or /client and redirects accordingly.
       // Doing it server-side keeps the role logic in one place
       // (mirrors what /auth/callback does for magic-link sign-ins).
       const target = next

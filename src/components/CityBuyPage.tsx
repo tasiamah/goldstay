@@ -76,7 +76,7 @@ export function CityBuyPage({ city }: { city: City }) {
     {
       k: "03",
       title: "In-person inspection",
-      body: `We physically inspect every property on the short list, write condition reports and flag anything that would concern an owner who had not been to ${cityName} recently.`,
+      body: `We physically inspect every property on the short list, write condition reports and flag anything that would concern a client who had not been to ${cityName} recently.`,
     },
     {
       k: "04",

@@ -16,7 +16,7 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: "Goldstay portal",
-  description: "Goldstay owner and operations portal.",
+  description: "Goldstay client and operations portal.",
   // Logged-in surfaces are not for search engines.
   robots: { index: false, follow: false },
 };
@@ -31,7 +31,7 @@ export const viewport: Viewport = {
 // Platform root layout. This is the second of two root layouts in
 // the app (the marketing one lives at (marketing)/layout.tsx).
 // Intentionally lean: no Navbar, no Footer, no marketing CTAs. The
-// /admin and /owner sub-layouts add their own headers; /login renders
+// /admin and /client sub-layouts add their own headers; /login renders
 // edge-to-edge.
 export default function PlatformRootLayout({
   children,

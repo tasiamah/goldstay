@@ -4,7 +4,7 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { csvResponse, toCsv } from "@/lib/admin/csv";
 import { parsePropertyListFilters } from "@/lib/admin/list-search";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
       { neighbourhood: { contains: filters.q, mode: "insensitive" } },
       { city: { contains: filters.q, mode: "insensitive" } },
       {
-        owner: {
+        client: {
           is: {
             OR: [
               { fullName: { contains: filters.q, mode: "insensitive" } },
@@ -51,7 +51,7 @@ export async function GET(request: NextRequest) {
     where,
     orderBy: { createdAt: "desc" },
     include: {
-      owner: {
+      client: {
         select: { id: true, fullName: true, companyName: true, email: true },
       },
     },
@@ -67,8 +67,8 @@ export async function GET(request: NextRequest) {
     type: p.propertyType,
     status: p.status,
     bedrooms: p.bedrooms ?? "",
-    owner: formatOwnerDisplayName(p.owner),
-    owner_email: p.owner.email,
+    client: formatClientDisplayName(p.client),
+    client_email: p.client.email,
     created_at: p.createdAt,
   }));
 

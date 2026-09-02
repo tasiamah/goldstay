@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import type { ArchivableEntity } from "@/lib/admin/archive";
 import { archiveAction, restoreAction } from "@/app/(platform)/admin/archive/actions";
 
-// Generic archive trigger used on owner / property / lease /
+// Generic archive trigger used on client / property / lease /
 // transaction detail pages. Triggers an optimistic toast with an
 // "Undo" button that immediately calls restoreAction. We bind the
 // returnPath so revalidation refreshes whatever surface the operator

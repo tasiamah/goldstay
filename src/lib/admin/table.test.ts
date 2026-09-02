@@ -37,11 +37,11 @@ describe("admin table helpers", () => {
   it("buildHref merges params, drops empties, and URL-encodes", () => {
     expect(
       buildHref(
-        "/admin/owners",
+        "/admin/clients",
         { q: "asha", country: "KE", page: undefined },
         { sort: "fullName:asc", page: "2" },
       ),
-    ).toBe("/admin/owners?q=asha&country=KE&page=2&sort=fullName%3Aasc");
+    ).toBe("/admin/clients?q=asha&country=KE&page=2&sort=fullName%3Aasc");
   });
 
   it("totalPages ceilings the count and pageWindow shifts at both edges", () => {

@@ -8,7 +8,7 @@ import {
   type PropertyImportPreview,
 } from "./actions";
 
-// Same shape as the owner ImportClient. We don't share a single
+// Same shape as the client ImportClient. We don't share a single
 // component because the state shape (validated row type) differs and
 // generic-ifying it adds more friction than the small duplication.
 

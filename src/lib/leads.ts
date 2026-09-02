@@ -4,12 +4,12 @@
 // readable from /admin/leads. Lifecycle goes
 //   NEW → CONTACTED → QUALIFIED → CONVERTED (or LOST)
 // and each transition writes an AuditEvent so the timeline reads
-// continuously from "lead landed at 14:02" through "owner created".
+// continuously from "lead landed at 14:02" through "client created".
 //
 // The Airtable mirror inside /api/lead stays as a parallel write
 // for the ops team's existing pipeline, but the row created here
 // is the system of record from this point forward — that's what
-// the convert-to-owner action reads back.
+// the convert-to-client action reads back.
 
 import { Prisma, type Lead, type LeadSource } from "@prisma/client";
 import { prisma } from "@/lib/db";
@@ -197,24 +197,24 @@ export async function markLeadLost(
   return { ok: true, lead: updated };
 }
 
-// Wires a converted lead to the resulting Owner row. Caller is
-// responsible for actually creating the Owner; we just close out
+// Wires a converted lead to the resulting Client row. Caller is
+// responsible for actually creating the Client; we just close out
 // the lead. Idempotent: a second call against an already-CONVERTED
-// row returns ok if it points at the same owner.
-export async function attachOwnerToLead(
+// row returns ok if it points at the same client.
+export async function attachClientToLead(
   leadId: string,
-  ownerId: string,
+  clientId: string,
   actor: AuditActor,
 ): Promise<LeadTransitionResult> {
   const lead = await prisma.lead.findUnique({ where: { id: leadId } });
   if (!lead) return { ok: false, error: "Lead not found." };
   if (lead.status === "CONVERTED") {
-    if (lead.convertedOwnerId === ownerId) {
+    if (lead.convertedClientId === clientId) {
       return { ok: true, lead };
     }
     return {
       ok: false,
-      error: `Lead already converted to a different owner (${lead.convertedOwnerId}).`,
+      error: `Lead already converted to a different client (${lead.convertedClientId}).`,
     };
   }
   const updated = await prisma.lead.update({
@@ -222,7 +222,7 @@ export async function attachOwnerToLead(
     data: {
       status: "CONVERTED",
       convertedAt: new Date(),
-      convertedOwnerId: ownerId,
+      convertedClientId: clientId,
       contactedAt: lead.contactedAt ?? new Date(),
       qualifiedAt: lead.qualifiedAt ?? new Date(),
     },
@@ -230,20 +230,20 @@ export async function attachOwnerToLead(
   // Two audit rows so the timeline is clean from both sides:
   //   - On the LEAD: "lead.converted" (so the lead detail / list
   //     shows the closing event before the redirect).
-  //   - On the OWNER: "lead.converted" so the owner detail page's
-  //     activity timeline starts with where this owner came from.
+  //   - On the CLIENT: "lead.converted" so the client detail page's
+  //     activity timeline starts with where this client came from.
   await recordAudit({
     actor,
     entity: "LEAD",
     entityId: leadId,
     action: "lead.converted",
-    summary: `Converted to owner`,
-    metadata: { ownerId, source: lead.source },
+    summary: `Converted to client`,
+    metadata: { clientId, source: lead.source },
   });
   await recordAudit({
     actor,
-    entity: "OWNER",
-    entityId: ownerId,
+    entity: "CLIENT",
+    entityId: clientId,
     action: "lead.converted",
     summary: `Converted from lead ${lead.fullName}`,
     metadata: { leadId, source: lead.source },

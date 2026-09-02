@@ -15,10 +15,10 @@
 //                                        from iCal that still need
 //                                        gross / net entered
 //   4. Failed iCal feeds               → silent breakage of occupancy
-//   5. Owners missing payout method    → can't actually pay them when
+//   5. Clients missing payout method    → can't actually pay them when
 //                                        the next statement runs
 //   6. Leases expiring soon            → renewal radar (next 60 days)
-//   7. Stale welcomes                  → owners we created days ago
+//   7. Stale welcomes                  → clients we created days ago
 //                                        who never logged in
 //   8. My overdue tasks                → personal queue
 //
@@ -26,7 +26,7 @@
 // never surface in the queue.
 
 import { prisma } from "@/lib/db";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import type { AdminUser } from "@prisma/client";
 
@@ -34,7 +34,7 @@ export type QueueItem = {
   id: string;
   label: string;
   href: string;
-  // Optional secondary line (city, owner, etc.) so the operator can
+  // Optional secondary line (city, client, etc.) so the operator can
   // disambiguate without opening every link.
   hint?: string;
 };
@@ -54,7 +54,7 @@ export type AttentionQueue = {
 
 const PER_BUCKET_LIMIT = 5;
 
-// Owners we created more than this many days ago that still have
+// Clients we created more than this many days ago that still have
 // `welcomeCompletedAt: null`. Long enough that "they're on holiday"
 // is not the explanation; short enough that we can still recover.
 const STALE_WELCOME_DAYS = 3;
@@ -88,12 +88,12 @@ export async function getAttentionQueue(
     bookingsMissingFinancialsTotal,
     failedFeeds,
     failedFeedsTotal,
-    ownersMissingPayoutMethod,
-    ownersMissingPayoutMethodTotal,
+    clientsMissingPayoutMethod,
+    clientsMissingPayoutMethodTotal,
     expiringLeases,
     expiringLeasesTotal,
-    staleOwners,
-    staleOwnersTotal,
+    staleClients,
+    staleClientsTotal,
     myTasks,
     myTasksTotal,
   ] = await Promise.all([
@@ -110,7 +110,7 @@ export async function getAttentionQueue(
         name: true,
         unitNumber: true,
         city: true,
-        owner: { select: { fullName: true, companyName: true } },
+        client: { select: { fullName: true, companyName: true } },
       },
     }),
     prisma.property.count({
@@ -135,7 +135,7 @@ export async function getAttentionQueue(
             id: true,
             name: true,
             unitNumber: true,
-            owner: { select: { fullName: true, companyName: true } },
+            client: { select: { fullName: true, companyName: true } },
           },
         },
       },
@@ -204,13 +204,13 @@ export async function getAttentionQueue(
         property: { archivedAt: null, ...countryFilter },
       },
     }),
-    // Owners with at least one live property but no verified payout
+    // Clients with at least one live property but no verified payout
     // method on file. These are the cases where statement-day will
     // hit and we'll have nowhere to send the money — by far the most
     // common cause of an embarrassing "where's my rent?" email.
     // We require an active property so we don't flag prospects we
     // haven't even started managing yet.
-    prisma.owner.findMany({
+    prisma.client.findMany({
       where: {
         archivedAt: null,
         ...countryFilter,
@@ -237,7 +237,7 @@ export async function getAttentionQueue(
         country: true,
       },
     }),
-    prisma.owner.count({
+    prisma.client.count({
       where: {
         archivedAt: null,
         ...countryFilter,
@@ -294,7 +294,7 @@ export async function getAttentionQueue(
         },
       },
     }),
-    prisma.owner.findMany({
+    prisma.client.findMany({
       where: {
         archivedAt: null,
         welcomeCompletedAt: null,
@@ -312,7 +312,7 @@ export async function getAttentionQueue(
         createdAt: true,
       },
     }),
-    prisma.owner.count({
+    prisma.client.count({
       where: {
         archivedAt: null,
         welcomeCompletedAt: null,
@@ -357,7 +357,7 @@ export async function getAttentionQueue(
       id: p.id,
       label: formatPropertyDisplayName(p.name, p.unitNumber),
       href: `/admin/properties/${p.id}`,
-      hint: `${p.city} · ${formatOwnerDisplayName(p.owner)}`,
+      hint: `${p.city} · ${formatClientDisplayName(p.client)}`,
     })),
   });
 
@@ -374,7 +374,7 @@ export async function getAttentionQueue(
         a.property.unitNumber,
       ),
       href: `/admin/properties/${a.property.id}/agreement`,
-      hint: `${a.status === "SENT" ? "Sent · awaiting signature" : "Draft"} · ${formatOwnerDisplayName(a.property.owner)}`,
+      hint: `${a.status === "SENT" ? "Sent · awaiting signature" : "Draft"} · ${formatClientDisplayName(a.property.client)}`,
     })),
   });
 
@@ -407,15 +407,15 @@ export async function getAttentionQueue(
   });
 
   buckets.push({
-    key: "owners-no-payout-method",
-    title: "Owners with no verified payout method",
+    key: "clients-no-payout-method",
+    title: "Clients with no verified payout method",
     description:
       "Active landlords we can't actually pay. Statement-day will fail until a verified method lands.",
-    total: ownersMissingPayoutMethodTotal,
-    items: ownersMissingPayoutMethod.map((o) => ({
+    total: clientsMissingPayoutMethodTotal,
+    items: clientsMissingPayoutMethod.map((o) => ({
       id: o.id,
-      label: formatOwnerDisplayName(o),
-      href: `/admin/owners/${o.id}/payouts`,
+      label: formatClientDisplayName(o),
+      href: `/admin/clients/${o.id}/payouts`,
       hint: `${o.email} · ${o.country === "KE" ? "Kenya" : "Ghana"}`,
     })),
   });
@@ -438,13 +438,13 @@ export async function getAttentionQueue(
 
   buckets.push({
     key: "stale-welcomes",
-    title: "Owners who never logged in",
+    title: "Clients who never logged in",
     description: `Created ${STALE_WELCOME_DAYS}+ days ago, welcome card never dismissed. Resend the magic link.`,
-    total: staleOwnersTotal,
-    items: staleOwners.map((o) => ({
+    total: staleClientsTotal,
+    items: staleClients.map((o) => ({
       id: o.id,
-      label: formatOwnerDisplayName(o),
-      href: `/admin/owners/${o.id}`,
+      label: formatClientDisplayName(o),
+      href: `/admin/clients/${o.id}`,
       hint: `${o.email} · ${o.country === "KE" ? "Kenya" : "Ghana"}`,
     })),
   });
@@ -540,7 +540,7 @@ export async function getMonthlyTotals(now: Date = new Date()): Promise<{
 //   1. Occupancy %        — units leased / total units (the headline)
 //   2. Vacant units       — actionable subset of #1
 //   3. New leads MTD      — top of funnel + delta vs prior month
-//   4. New owners MTD     — bottom of funnel proxy + delta vs prior
+//   4. New clients MTD     — bottom of funnel proxy + delta vs prior
 //   5. Active referrers   — channel health (the new acquisition rail)
 //   6. Referrals signed   — channel output, MTD
 //
@@ -570,11 +570,11 @@ export type OverviewKpis = {
   };
   vacantUnits: number;
   leads: Delta;
-  owners: Delta;
+  clients: Delta;
   activeReferrers: number;
   referralsSignedThisMonth: number;
   // ---- Growth & funnel (rendered as a second strip on /admin) ----
-  // Conversion of leads → owners over a rolling 30-day window. Same
+  // Conversion of leads → clients over a rolling 30-day window. Same
   // cohort in numerator and denominator (leads created in the window)
   // so the rate is attributable. The lag from leads created in the
   // last few days that haven't had time to convert pulls the number
@@ -592,10 +592,10 @@ export type OverviewKpis = {
   avgDaysToConvert: number | null;
   // Properties added this month vs prior month — pure growth signal.
   properties: Delta;
-  // Owners archived this month vs prior — churn signal. `up` here is
+  // Clients archived this month vs prior — churn signal. `up` here is
   // a *bad* thing and the strip surfaces that with a coloured badge
   // anyway; the operator will know what they're looking at.
-  ownerChurn: Delta;
+  clientChurn: Delta;
 };
 
 export async function getOverviewKpis(
@@ -612,22 +612,22 @@ export async function getOverviewKpis(
       : {};
 
   // Lead.country is a Country? enum; we filter the same way as
-  // Property.country. Owners don't carry a direct country column but
+  // Property.country. Clients don't carry a direct country column but
   // they're scoped through their leads/properties; for the overview
-  // KPI we count *new* owners by createdAt and accept the small
-  // imprecision that an owner created without any property yet won't
-  // be country-attributable. In practice ops creates an owner with
+  // KPI we count *new* clients by createdAt and accept the small
+  // imprecision that a client created without any property yet won't
+  // be country-attributable. In practice ops creates a client with
   // a property in the same flow.
   const leadCountryFilter =
     admin.role === "COUNTRY_MANAGER" && admin.country
       ? { country: admin.country }
       : {};
 
-  // Owner has no country column — country attribution lives on the
-  // owner's properties. For COUNTRY_MANAGER we narrow to owners with
-  // at least one property in their country so the "new owners" delta
-  // doesn't double-count cross-country owners under both managers.
-  const ownerCountryFilter =
+  // Client has no country column — country attribution lives on the
+  // client's properties. For COUNTRY_MANAGER we narrow to clients with
+  // at least one property in their country so the "new clients" delta
+  // doesn't double-count cross-country clients under both managers.
+  const clientCountryFilter =
     admin.role === "COUNTRY_MANAGER" && admin.country
       ? { properties: { some: { country: admin.country } } }
       : {};
@@ -639,8 +639,8 @@ export async function getOverviewKpis(
     totalUnits,
     leadsThisMonth,
     leadsPriorMonth,
-    ownersThisMonth,
-    ownersPriorMonth,
+    clientsThisMonth,
+    clientsPriorMonth,
     activeReferrers,
     referralsSignedThisMonth,
     leadsCreatedLast30,
@@ -648,8 +648,8 @@ export async function getOverviewKpis(
     convertedRecently,
     propertiesThisMonth,
     propertiesPriorMonth,
-    ownersChurnedThisMonth,
-    ownersChurnedPriorMonth,
+    clientsChurnedThisMonth,
+    clientsChurnedPriorMonth,
   ] = await Promise.all([
     // Occupancy numerator: distinct units with at least one ACTIVE
     // lease today. We count units (not leases) because a unit
@@ -678,22 +678,22 @@ export async function getOverviewKpis(
         ...leadCountryFilter,
       },
     }),
-    prisma.owner.count({
+    prisma.client.count({
       where: {
         archivedAt: null,
         createdAt: { gte: monthStart, lt: monthEnd },
-        ...ownerCountryFilter,
+        ...clientCountryFilter,
       },
     }),
-    prisma.owner.count({
+    prisma.client.count({
       where: {
         archivedAt: null,
         createdAt: { gte: priorMonthStart, lt: monthStart },
-        ...ownerCountryFilter,
+        ...clientCountryFilter,
       },
     }),
     // Referrers and referrals are not country-scoped: a UK-based
-    // agent may bring deals in either market. The dashboard owner
+    // agent may bring deals in either market. The dashboard client
     // is global-by-default for this rail.
     prisma.referrer.count({ where: { status: "ACTIVE", archivedAt: null } }),
     prisma.referral.count({
@@ -746,15 +746,15 @@ export async function getOverviewKpis(
         ...propertyCountryFilter,
       },
     }),
-    // Churn: owners *archived* this month. We don't apply the
-    // ownerCountryFilter because an archived owner with no
+    // Churn: clients *archived* this month. We don't apply the
+    // clientCountryFilter because an archived client with no
     // remaining properties has no country attribution path. The
     // small over-counting risk for COUNTRY_MANAGER is preferable
     // to silently dropping churn events from their view.
-    prisma.owner.count({
+    prisma.client.count({
       where: { archivedAt: { gte: monthStart, lt: monthEnd } },
     }),
-    prisma.owner.count({
+    prisma.client.count({
       where: { archivedAt: { gte: priorMonthStart, lt: monthStart } },
     }),
   ]);
@@ -774,7 +774,7 @@ export async function getOverviewKpis(
     },
     vacantUnits: Math.max(0, totalUnits - leasedUnits),
     leads: computeDelta(leadsThisMonth, leadsPriorMonth),
-    owners: computeDelta(ownersThisMonth, ownersPriorMonth),
+    clients: computeDelta(clientsThisMonth, clientsPriorMonth),
     activeReferrers,
     referralsSignedThisMonth,
     leadConversion: {
@@ -787,7 +787,7 @@ export async function getOverviewKpis(
     },
     avgDaysToConvert,
     properties: computeDelta(propertiesThisMonth, propertiesPriorMonth),
-    ownerChurn: computeDelta(ownersChurnedThisMonth, ownersChurnedPriorMonth),
+    clientChurn: computeDelta(clientsChurnedThisMonth, clientsChurnedPriorMonth),
   };
 }
 
@@ -841,8 +841,8 @@ export function daysUntil(target: Date, now: Date = new Date()): number {
 
 function entityHref(entity: string, id: string): string {
   switch (entity) {
-    case "OWNER":
-      return `/admin/owners/${id}`;
+    case "CLIENT":
+      return `/admin/clients/${id}`;
     case "PROPERTY":
       return `/admin/properties/${id}`;
     case "LEASE":

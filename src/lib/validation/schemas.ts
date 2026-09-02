@@ -11,6 +11,7 @@ import {
   PayoutMethodKind,
   PropertyStatus,
   PropertyType,
+  SigningCapacity,
   TransactionDirection,
   TransactionType,
   UnitStatus,
@@ -25,7 +26,7 @@ import {
   requiredDate,
 } from "./preprocessors";
 
-export const OwnerInput = z.object({
+export const ClientInput = z.object({
   email: z.string().trim().toLowerCase().email(),
   fullName: personFullName,
   phone: z
@@ -51,7 +52,7 @@ export const OwnerInput = z.object({
 });
 
 export const PropertyInput = z.object({
-  ownerId: z.string().min(1),
+  clientId: z.string().min(1),
   name: z.string().trim().min(2).max(120),
   unitNumber: optionalString,
   city: z.string().trim().min(2).max(80),
@@ -65,6 +66,10 @@ export const PropertyInput = z.object({
   acquisitionCurrency: z.string().trim().toUpperCase().min(3).max(3).optional(),
   status: z.nativeEnum(PropertyStatus).default("ONBOARDING"),
   propertyType: z.nativeEnum(PropertyType).default("LONG_TERM"),
+  // Capacity the client signs the management agreement in. Defaults to
+  // REGISTERED_OWNER so existing forms and CSV imports keep working;
+  // the admin property form makes it an explicit choice.
+  signingCapacity: z.nativeEnum(SigningCapacity).default("REGISTERED_OWNER"),
   hostawayListingId: optionalString,
 });
 
@@ -158,12 +163,12 @@ export const LeadInput = z.object({
   notes: optionalString,
 });
 
-// Owner payout method capture. The conditional fields
+// Client payout method capture. The conditional fields
 // (wiseEmail vs accountNumber vs mpesaPhone) are validated by the
 // helper layer because the rules are kind-dependent and zod's
 // discriminated unions get loud quickly with optional siblings.
 export const PayoutMethodInput = z.object({
-  ownerId: z.string().min(1),
+  clientId: z.string().min(1),
   kind: z.nativeEnum(PayoutMethodKind),
   label: z.string().trim().min(2).max(80),
   currency: z.string().trim().toUpperCase().min(3).max(3),

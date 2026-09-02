@@ -1,6 +1,6 @@
 // Branded one-page yield report PDF. Same react-pdf primitives used
 // in StatementDocument, same colour palette, so a landlord who later
-// becomes an owner sees a continuous visual identity from lead-magnet
+// becomes a client sees a continuous visual identity from lead-magnet
 // to monthly statement. Keeps the trust ladder consistent.
 
 import {

@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { LeaseForm } from "../LeaseForm";
 import { endLeaseAction, updateLeaseAction } from "../actions";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
@@ -24,7 +24,7 @@ export default async function LeaseDetailPage({
               name: true,
               unitNumber: true,
               country: true,
-              owner: {
+              client: {
                 select: {
                   id: true,
                   fullName: true,
@@ -52,7 +52,7 @@ export default async function LeaseDetailPage({
       ? "KES"
       : lease.unit.property.country === "GH"
         ? "GHS"
-        : (lease.unit.property.owner.preferredCurrency ?? "USD");
+        : (lease.unit.property.client.preferredCurrency ?? "USD");
 
   const formatDate = (d: Date | null) =>
     d
@@ -152,13 +152,13 @@ export default async function LeaseDetailPage({
               value={lease.tenantPhone ?? "Not on file"}
             />
             <Row
-              label="Owner"
+              label="Client"
               value={
                 <Link
-                  href={`/admin/owners/${lease.unit.property.owner.id}`}
+                  href={`/admin/clients/${lease.unit.property.client.id}`}
                   className="text-stone-900 hover:underline"
                 >
-                  {formatOwnerDisplayName(lease.unit.property.owner)}
+                  {formatClientDisplayName(lease.unit.property.client)}
                 </Link>
               }
             />

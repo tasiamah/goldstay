@@ -11,7 +11,7 @@ describe("can", () => {
   it("locks admin.write and finance.read to SUPER_ADMIN and lets SUPER_ADMIN do everything", () => {
     expect(can("SUPER_ADMIN", "admin.write")).toBe(true);
     expect(can("SUPER_ADMIN", "finance.read")).toBe(true);
-    expect(can("SUPER_ADMIN", "owner.write")).toBe(true);
+    expect(can("SUPER_ADMIN", "client.write")).toBe(true);
     for (const role of ALL_ROLES) {
       if (role === "SUPER_ADMIN") continue;
       expect(can(role, "admin.write")).toBe(false);
@@ -22,21 +22,21 @@ describe("can", () => {
   it("draws the high-trust lines: ACCOUNTING ≠ OPS, SUPPORT is read-only on entities", () => {
     expect(can("ACCOUNTING", "transaction.write")).toBe(true);
     expect(can("ACCOUNTING", "property.write")).toBe(false);
-    expect(can("ACCOUNTING", "impersonate.owner")).toBe(false);
-    expect(can("OPS", "impersonate.owner")).toBe(true);
-    expect(can("SUPPORT", "owner.write")).toBe(false);
+    expect(can("ACCOUNTING", "impersonate.client")).toBe(false);
+    expect(can("OPS", "impersonate.client")).toBe(true);
+    expect(can("SUPPORT", "client.write")).toBe(false);
     expect(can("SUPPORT", "comms.write")).toBe(true);
   });
 });
 
 describe("canForCountry", () => {
   it("scopes COUNTRY_MANAGER to their country and never lets them escalate", () => {
-    expect(canForCountry("COUNTRY_MANAGER", "owner.write", null, "KE")).toBe(false);
+    expect(canForCountry("COUNTRY_MANAGER", "client.write", null, "KE")).toBe(false);
     expect(canForCountry("COUNTRY_MANAGER", "property.write", "KE", "KE")).toBe(true);
     expect(canForCountry("COUNTRY_MANAGER", "property.write", "KE", "GH")).toBe(false);
     expect(canForCountry("COUNTRY_MANAGER", "task.write", "KE", null)).toBe(true);
     expect(canForCountry("COUNTRY_MANAGER", "admin.write", "KE", "KE")).toBe(false);
     // Non-country roles ignore the country check entirely.
-    expect(canForCountry("OPS", "owner.write", "KE", "GH")).toBe(true);
+    expect(canForCountry("OPS", "client.write", "KE", "GH")).toBe(true);
   });
 });

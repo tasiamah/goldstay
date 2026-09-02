@@ -1,6 +1,6 @@
 // Root middleware. Two responsibilities:
 //
-//   1. On any platform request (/owner, /admin, /auth) refresh the
+//   1. On any platform request (/client, /admin, /auth) refresh the
 //      Supabase auth session and write the rotated access + refresh
 //      tokens back into the response cookies. This is the only
 //      place we can persist refreshed tokens to the browser —
@@ -30,7 +30,7 @@ import {
 import { isValidReferrerCode } from "@/lib/referrals/codes";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PLATFORM_PATH_PREFIXES = ["/owner", "/admin", "/auth", "/account"];
+const PLATFORM_PATH_PREFIXES = ["/client", "/admin", "/auth", "/account"];
 
 function isPlatformPath(pathname: string): boolean {
   return PLATFORM_PATH_PREFIXES.some(

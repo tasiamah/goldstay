@@ -1,6 +1,6 @@
-// /admin/properties/import — same shape as the owner import. The
-// only twist is the ownerEmail join: we resolve each row's email to
-// an existing Owner and skip rows whose email doesn't match. We
+// /admin/properties/import — same shape as the client import. The
+// only twist is the clientEmail join: we resolve each row's email to
+// an existing Client and skip rows whose email doesn't match. We
 // surface the unmatched count in the redirect query so the apply
 // step gives feedback.
 
@@ -10,7 +10,7 @@ import { ImportClient } from "./ImportClient";
 
 export const dynamic = "force-dynamic";
 
-const SAMPLE = `ownerEmail,name,unitNumber,city,address,neighbourhood,country,propertyType,bedrooms,bathrooms,sizeSqm
+const SAMPLE = `clientEmail,name,unitNumber,city,address,neighbourhood,country,propertyType,bedrooms,bathrooms,sizeSqm
 asha@example.com,Luminara Apartments,3B,Nairobi,123 Riverside Drive,Westlands,KE,LONG_TERM,2,2,80
 kwame@example.com,Cantonments House,,Accra,12 Cantonments Rd,Cantonments,GH,SHORT_TERM,3,2,120`;
 
@@ -30,9 +30,9 @@ export default async function PropertyImportPage() {
           Import properties from CSV
         </h2>
         <p className="text-sm text-stone-500">
-          Each row is attached to an existing owner via{" "}
-          <code>ownerEmail</code>. Rows whose email doesn&apos;t match an
-          owner are skipped (we never auto-create owners during a property
+          Each row is attached to an existing client via{" "}
+          <code>clientEmail</code>. Rows whose email doesn&apos;t match an
+          client are skipped (we never auto-create clients during a property
           import; that would hide data quality issues).
         </p>
       </div>
@@ -43,7 +43,7 @@ export default async function PropertyImportPage() {
         </h3>
         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-stone-700">
           <li>
-            <code>ownerEmail</code> · the existing owner row&apos;s email
+            <code>clientEmail</code> · the existing client row&apos;s email
           </li>
           <li>
             <code>name</code> · building / property name

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { SigningCapacity } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
@@ -12,7 +13,7 @@ import {
   PropertyTypeBadge,
 } from "@/components/PropertyStatusBadge";
 import { formatPropertyDisplayName } from "@/lib/format-property";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import {
   OccupancyCalendar,
   clampHeatmapMonths,
@@ -28,6 +29,7 @@ import {
   formatCommissionPct,
   formatMoney,
 } from "@/lib/agreements/format";
+import { SIGNING_CAPACITY_LABEL } from "@/lib/signing-capacity";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
 import {
   occupancyPercentForPeriod,
@@ -72,7 +74,7 @@ export default async function PropertyDetailPage({
   const property = await prisma.property.findUnique({
     where: { id: params.id },
     include: {
-      owner: {
+      client: {
         select: {
           id: true,
           fullName: true,
@@ -194,8 +196,8 @@ export default async function PropertyDetailPage({
           items={[
             { label: "Properties", href: "/admin/properties" },
             {
-              label: formatOwnerDisplayName(property.owner),
-              href: `/admin/owners/${property.owner.id}`,
+              label: formatClientDisplayName(property.client),
+              href: `/admin/clients/${property.client.id}`,
             },
             {
               label: formatPropertyDisplayName(
@@ -279,15 +281,15 @@ export default async function PropertyDetailPage({
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <h3 className="text-base font-medium text-stone-900">Details</h3>
           <p className="mt-1 text-sm text-stone-500">
-            Updates are visible to the owner on next page load.
+            Updates are visible to the client on next page load.
           </p>
           <div className="mt-5">
             <PropertyForm
               action={boundUpdate}
-              ownerCountry={property.owner.country}
+              clientCountry={property.client.country}
               isEditing
               defaults={{
-                ownerId: property.owner.id,
+                clientId: property.client.id,
                 name: property.name,
                 unitNumber: property.unitNumber,
                 city: property.city,
@@ -301,6 +303,7 @@ export default async function PropertyDetailPage({
                 acquisitionCurrency: property.acquisitionCurrency,
                 status: property.status,
                 propertyType: property.propertyType,
+                signingCapacity: property.signingCapacity,
                 hostawayListingId: property.hostawayListingId,
               }}
               submitLabel="Save changes"
@@ -406,12 +409,14 @@ export default async function PropertyDetailPage({
                 earlyExitFee: a.earlyExitFee.toString(),
                 earlyExitFeeCurrency: a.earlyExitFeeCurrency,
                 noticePeriodDays: a.noticePeriodDays,
+                signingCapacity: a.signingCapacity,
                 generatedAt: a.generatedAt,
                 sentAt: a.sentAt,
                 signedAt: a.signedAt,
                 signedByName: a.signedByName,
                 documentId: a.documentId,
               }))}
+              propertySigningCapacity={property.signingCapacity}
             />
           ) : null}
 
@@ -422,7 +427,7 @@ export default async function PropertyDetailPage({
             <p className="mt-1 text-sm text-stone-500">
               Title deeds, sale agreements, leases, invoices, and any
               other paperwork backing this property. Visible to the
-              owner on their portal.
+              client on their portal.
             </p>
 
             <div className="mt-5 border-b border-stone-100 pb-5">
@@ -503,7 +508,7 @@ export default async function PropertyDetailPage({
       <ActivityTimeline
         entity="PROPERTY"
         entityId={property.id}
-        ownerId={property.owner.id}
+        clientId={property.client.id}
       />
     </div>
   );
@@ -515,7 +520,7 @@ function formatBytes(bytes: number): string {
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
 
-// Mirror of the owner-side badge; same vocabulary so admins and
+// Mirror of the client-side badge; same vocabulary so admins and
 // landlords describe the same row the same way during a support
 // call. Local to the admin page because the styling differs
 // slightly (smaller, sits inline with the title) — extracting to a
@@ -662,6 +667,7 @@ type AgreementRow = {
   earlyExitFee: string;
   earlyExitFeeCurrency: string;
   noticePeriodDays: number;
+  signingCapacity: SigningCapacity;
   generatedAt: Date;
   sentAt: Date | null;
   signedAt: Date | null;
@@ -672,9 +678,15 @@ type AgreementRow = {
 function AgreementCard({
   propertyId,
   agreements,
+  propertySigningCapacity,
 }: {
   propertyId: string;
   agreements: AgreementRow[];
+  // The property's current capacity, which can differ from the one
+  // snapshotted on the agreement if someone corrected it after issue.
+  // We show the drift rather than hide it, because the fix is to
+  // reissue and the operator needs to know that.
+  propertySigningCapacity: SigningCapacity;
 }) {
   const current =
     agreements.find((a) => a.status !== "CANCELLED") ?? agreements[0] ?? null;
@@ -691,8 +703,8 @@ function AgreementCard({
             Management agreement
           </h3>
           <p className="mt-1 text-sm text-stone-500">
-            12-month management contract with the owner.
-            Auto-issued on verification; owner signs through their
+            12-month management contract with the client.
+            Auto-issued on verification; client signs through their
             portal.
           </p>
         </div>
@@ -753,7 +765,24 @@ function AgreementCard({
                 current.earlyExitFeeCurrency,
               )}
             />
+            <Term
+              label="Signed as"
+              value={SIGNING_CAPACITY_LABEL[current.signingCapacity]}
+            />
           </dl>
+          {current.signingCapacity !== propertySigningCapacity ? (
+            <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
+              This agreement carries the authority clause for{" "}
+              <strong>
+                {SIGNING_CAPACITY_LABEL[current.signingCapacity].toLowerCase()}
+              </strong>
+              , but the property is now set to{" "}
+              <strong>
+                {SIGNING_CAPACITY_LABEL[propertySigningCapacity].toLowerCase()}
+              </strong>
+              . Reissue the agreement so the clause matches the paperwork.
+            </p>
+          ) : null}
           {current.status === "SIGNED" && current.documentId ? (
             <a
               href={`/admin/documents/${current.documentId}/download`}
@@ -765,7 +794,7 @@ function AgreementCard({
             </a>
           ) : current.status === "SENT" ? (
             <p className="text-xs text-stone-500">
-              Owner can sign at /owner/agreements/{current.id}
+              Client can sign at /client/agreements/{current.id}
             </p>
           ) : null}
         </div>

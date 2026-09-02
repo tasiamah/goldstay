@@ -1,9 +1,9 @@
 "use client";
 
-// Inline owner-create form on the lead detail page. Mirrors
-// /admin/owners/new but pre-fills from the lead so the operator
+// Inline client-create form on the lead detail page. Mirrors
+// /admin/clients/new but pre-fills from the lead so the operator
 // only has to confirm + add the country/currency. On success the
-// action redirects to the new owner detail page.
+// action redirects to the new client detail page.
 
 import { useFormState, useFormStatus } from "react-dom";
 import { convertLeadAction } from "../actions";
@@ -54,7 +54,7 @@ export function ConvertLeadForm({
         label="Company name (optional)"
         name="companyName"
         error={fieldErrors.companyName}
-        helperText="Set when the legal owner is a holding company / SPV."
+        helperText="Set when the legal client is a holding company / SPV."
       />
       <div className="grid gap-4 sm:grid-cols-2">
         <Select
@@ -95,7 +95,7 @@ function SubmitButton() {
       disabled={status.pending}
       className="inline-flex items-center rounded-md bg-emerald-700 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-800 disabled:opacity-60"
     >
-      {status.pending ? "Converting…" : "Create owner & send welcome email"}
+      {status.pending ? "Converting…" : "Create client & send welcome email"}
     </button>
   );
 }

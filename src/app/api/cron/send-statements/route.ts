@@ -2,7 +2,7 @@
 //
 // Configured in vercel.json to run on the 5th of every month at
 // 07:00 UTC (≈ 10:00 EAT, 10:00 GMT/WAT). For each non-archived
-// owner with at least one ACTIVE property:
+// client with at least one ACTIVE property:
 //   • compute the previous calendar month
 //   • skip if a StatementSend row already exists for that period
 //   • render the statement PDF + email it through Resend
@@ -10,20 +10,20 @@
 //
 // Idempotent: any subsequent invocation (Vercel retry, manual hit
 // from a terminal with the right Bearer token) skips already-sent
-// owners. Failures per owner are recorded but never abort the run.
+// clients. Failures per client are recorded but never abort the run.
 //
 // Auth: identical to the iCal cron — Bearer token via CRON_SECRET.
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { wrapJob } from "@/lib/admin/job-run";
-import { sendStatementForOwner } from "@/lib/statements/send";
+import { sendStatementForClient } from "@/lib/statements/send";
 import { previousPeriod } from "@/lib/statements/period";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 // Pro-tier ceiling. The render+send loop is sequential, so a
-// portfolio of 100 owners * ~2s/owner = 200s, comfortably inside.
+// portfolio of 100 clients * ~2s/client = 200s, comfortably inside.
 export const maxDuration = 300;
 
 function isAuthorized(request: Request): boolean {
@@ -48,11 +48,11 @@ export async function GET(request: Request) {
   }
 
   const summary = await wrapJob("send-monthly-statements", async () => {
-    const owners = await prisma.owner.findMany({
+    const clients = await prisma.client.findMany({
       where: {
         archivedAt: null,
-        // Restrict to owners with at least one non-archived
-        // property: empty owners (just-converted leads, paused
+        // Restrict to clients with at least one non-archived
+        // property: empty clients (just-converted leads, paused
         // accounts) get no statement.
         properties: { some: { archivedAt: null } },
       },
@@ -68,13 +68,13 @@ export async function GET(request: Request) {
     let sent = 0;
     let skipped = 0;
     let failed = 0;
-    const failures: Array<{ ownerId: string; error: string }> = [];
+    const failures: Array<{ clientId: string; error: string }> = [];
 
-    for (const owner of owners) {
-      const result = await sendStatementForOwner(owner, period);
+    for (const client of clients) {
+      const result = await sendStatementForClient(client, period);
       if (!result.ok) {
         failed++;
-        failures.push({ ownerId: owner.id, error: result.error });
+        failures.push({ clientId: client.id, error: result.error });
       } else if (result.status === "skipped") {
         skipped++;
       } else {
@@ -83,12 +83,12 @@ export async function GET(request: Request) {
     }
 
     return {
-      summary: `period=${period.year}-${String(period.month).padStart(2, "0")} owners=${owners.length} sent=${sent} skipped=${skipped} failed=${failed}`,
+      summary: `period=${period.year}-${String(period.month).padStart(2, "0")} clients=${clients.length} sent=${sent} skipped=${skipped} failed=${failed}`,
       // Returning extras through the wrap layer (currently unused
       // by JobRun.summary, but the route returns them in the JSON).
       _extras: {
         period,
-        ownersConsidered: owners.length,
+        clientsConsidered: clients.length,
         sent,
         skipped,
         failed,

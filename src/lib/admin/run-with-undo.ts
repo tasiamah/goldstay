@@ -24,7 +24,7 @@ import { toast } from "sonner";
 export type UndoableActionResult = void | { ok: boolean; error?: string };
 
 export type RunWithUndoOptions = {
-  // Headline shown in the success toast: "Owner archived",
+  // Headline shown in the success toast: "Client archived",
   // "Property archived", etc.
   successMessage: string;
   // Subtext shown under the headline. Optional.

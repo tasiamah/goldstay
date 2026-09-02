@@ -44,7 +44,7 @@ type NavItem = {
 const ITEMS: readonly NavItem[] = [
   { href: "/admin", label: "Overview", exact: true },
   { href: "/admin/leads", label: "Leads" },
-  { href: "/admin/owners", label: "Owners" },
+  { href: "/admin/clients", label: "Clients" },
   { href: "/admin/properties", label: "Properties" },
   { href: "/admin/leases", label: "Leases" },
   { href: "/admin/bookings", label: "Bookings" },

@@ -3,7 +3,7 @@
 // signInWithPassword runs entirely in the browser, so unlike the
 // magic-link flow we never round-trip through /auth/callback after
 // success. That means we lose the natural seam where role-based
-// destination ("admin → /admin, everyone else → /owner") is decided.
+// destination ("admin → /admin, everyone else → /client") is decided.
 // This route restores that seam: the LoginForm bounces here right
 // after a successful password sign-in and we redirect to the right
 // surface based on the freshly-established session cookie.
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${origin}/login`);
   }
 
-  const fallback = isAdminEmail(userEmail) ? "/admin" : "/owner";
+  const fallback = isAdminEmail(userEmail) ? "/admin" : "/client";
   const target = next && next.startsWith("/") ? next : fallback;
   return NextResponse.redirect(`${origin}${target}`);
 }

@@ -2,12 +2,12 @@ import { describe, expect, it } from "vitest";
 import { bucketFor, pickPrimary, summariseFinance } from "./finance";
 
 // Goldstay-side P&L. The senior risks are:
-//   1. Counting an owner-side flow (RENT, EXPENSE, PAYOUT) as our
-//      revenue or cost — would double-book the entire owner ledger
+//   1. Counting a client-side flow (RENT, EXPENSE, PAYOUT) as our
+//      revenue or cost — would double-book the entire client ledger
 //      into the company P&L.
 //   2. Booking a commission INFLOW as cost (or vice versa). Each
 //      transaction's TransactionDirection is recorded relative to
-//      the owner's column, so a MANAGEMENT_FEE OUTFLOW is the bit
+//      the client's column, so a MANAGEMENT_FEE OUTFLOW is the bit
 //      that lands in our pocket.
 
 const t = (
@@ -36,12 +36,12 @@ const t = (
 });
 
 describe("Goldstay finance summary", () => {
-  it("buckets only commission OUTFLOWs as revenue and ignores owner-side flows", () => {
+  it("buckets only commission OUTFLOWs as revenue and ignores client-side flows", () => {
     expect(bucketFor(t("MANAGEMENT_FEE", "OUTFLOW", 1))).toBe("revenue");
     expect(bucketFor(t("GOLDSTAY_COMMISSION", "OUTFLOW", 1))).toBe("revenue");
     expect(bucketFor(t("OTA_COMMISSION", "OUTFLOW", 1))).toBe("cost");
     expect(bucketFor(t("CLEANING_FEE", "OUTFLOW", 1))).toBe("cost");
-    // The full owner-side ledger must stay out of the company P&L.
+    // The full client-side ledger must stay out of the company P&L.
     expect(bucketFor(t("RENT", "INFLOW", 1))).toBe("ignored");
     expect(bucketFor(t("PAYOUT", "OUTFLOW", 1))).toBe("ignored");
     expect(bucketFor(t("EXPENSE", "OUTFLOW", 1))).toBe("ignored");
@@ -68,7 +68,7 @@ describe("Goldstay finance summary", () => {
         currency: "USD",
         propertyId: "p_2",
       }),
-      // Owner-side noise that must NOT affect the totals.
+      // Client-side noise that must NOT affect the totals.
       t("RENT", "INFLOW", 50000),
       t("PAYOUT", "OUTFLOW", 40000),
     ]);

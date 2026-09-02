@@ -1,7 +1,7 @@
 // /api/admin/search?q=...
 //
 // JSON endpoint backing the command palette. Authenticates as an
-// admin (so impersonation tokens / owner sessions can't drain the
+// admin (so impersonation tokens / client sessions can't drain the
 // dataset by guessing this URL), then delegates to lib/admin/search.
 
 import { NextResponse } from "next/server";

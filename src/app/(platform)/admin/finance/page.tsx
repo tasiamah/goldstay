@@ -143,7 +143,7 @@ export default async function FinancePage({
         <div>
           <h2 className="text-xl font-medium text-stone-900">Finance</h2>
           <p className="text-sm text-stone-500">
-            Goldstay revenue, cost and net: what we keep after every owner
+            Goldstay revenue, cost and net: what we keep after every client
             statement clears. {PERIOD_LABEL[period]}.
           </p>
         </div>
@@ -230,7 +230,7 @@ function HeadlineCards({
       <Tile
         label={`Revenue (${primary?.currency ?? ""})`}
         value={primary ? fmt(primary.revenue) : "No revenue yet"}
-        sub="Commission OUTFLOWs from owner ledgers"
+        sub="Commission OUTFLOWs from client ledgers"
         accent="emerald"
       />
       <Tile

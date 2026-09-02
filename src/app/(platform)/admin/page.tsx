@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { PropertyStatusBadge } from "@/components/PropertyStatusBadge";
 import { formatPropertyDisplayName } from "@/lib/format-property";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { requireAdmin } from "@/lib/auth";
 import { AdminWelcomeCard } from "./welcome/AdminWelcomeCard";
 import { AttentionQueue } from "@/components/admin/AttentionQueue";
@@ -32,7 +32,7 @@ export default async function AdminOverviewPage({
   // sanitised digest), then we substitute a safe default and the page
   // renders with the data that did come back. This was added after a
   // production incident where the page consistently 500'd for admin
-  // users while /owner kept working — the root cause was hidden by
+  // users while /client kept working — the root cause was hidden by
   // Promise.all collapsing the 15-query rejection storm into one
   // opaque error. Defensive readers are correct on infra hiccups too:
   // a transient pgbouncer blip or Supabase pause now degrades the
@@ -41,7 +41,7 @@ export default async function AdminOverviewPage({
     getAttentionQueue(admin),
     getMonthlyTotals(),
     getOverviewKpis(admin),
-    prisma.owner.findMany({
+    prisma.client.findMany({
       where: { archivedAt: null },
       orderBy: { createdAt: "desc" },
       take: 5,
@@ -52,7 +52,7 @@ export default async function AdminOverviewPage({
       orderBy: { createdAt: "desc" },
       take: 5,
       include: {
-        owner: {
+        client: {
           select: { fullName: true, companyName: true, id: true },
         },
       },
@@ -63,7 +63,7 @@ export default async function AdminOverviewPage({
     queueRes,
     totalsRes,
     kpisRes,
-    recentOwnersRes,
+    recentClientsRes,
     recentPropertiesRes,
   ] = settled;
 
@@ -76,7 +76,7 @@ export default async function AdminOverviewPage({
     totals: [],
   });
   const kpis = unwrap(kpisRes, "getOverviewKpis", null);
-  const recentOwners = unwrap(recentOwnersRes, "recentOwners", []);
+  const recentClients = unwrap(recentClientsRes, "recentClients", []);
   const recentProperties = unwrap(recentPropertiesRes, "recentProperties", []);
 
   return (
@@ -89,11 +89,11 @@ export default async function AdminOverviewPage({
       <ExecutiveKpiStrip />
       {/* Operational pulse, visible to every admin. Country-scoped
           for COUNTRY_MANAGER so a Kenya manager doesn't see Ghana's
-          numbers and vice versa. The three legacy "Owners /
+          numbers and vice versa. The three legacy "Clients /
           Properties / Active leases" tiles below this strip are now
           subsumed: occupancy already encodes active leases, and the
           inventory totals were never action-driving — anyone who
-          needs them opens /admin/owners or /admin/properties. */}
+          needs them opens /admin/clients or /admin/properties. */}
       {kpis ? <KpiStrip kpis={kpis} /> : null}
       <AttentionQueue queue={queue} />
       {totals.monthLabel ? (
@@ -102,32 +102,32 @@ export default async function AdminOverviewPage({
 
       <section className="grid gap-8 lg:grid-cols-2">
         <RecentList
-          title="Recent owners"
-          emptyHint="No owners yet. Add the first one to get started."
-          href="/admin/owners"
-          primaryAction={{ href: "/admin/owners/new", label: "+ Add owner" }}
-          items={recentOwners.map((o) => ({
+          title="Recent clients"
+          emptyHint="No clients yet. Add the first one to get started."
+          href="/admin/clients"
+          primaryAction={{ href: "/admin/clients/new", label: "+ Add client" }}
+          items={recentClients.map((o) => ({
             id: o.id,
-            primary: formatOwnerDisplayName(o),
+            primary: formatClientDisplayName(o),
             // We deliberately keep email + property count as the
             // secondary line here rather than the personal name; the
             // operator already has the legal entity on the primary
             // line and the email is the more useful piece of context
-            // when scanning the recent-owners feed.
+            // when scanning the recent-clients feed.
             secondary: `${o.email} · ${o._count.properties} ${
               o._count.properties === 1 ? "property" : "properties"
             }`,
-            href: `/admin/owners/${o.id}`,
+            href: `/admin/clients/${o.id}`,
           }))}
         />
         <RecentList
           title="Recent properties"
-          emptyHint="No properties yet. Open an owner to add their first property."
+          emptyHint="No properties yet. Open a client to add their first property."
           href="/admin/properties"
           items={recentProperties.map((p) => ({
             id: p.id,
             primary: formatPropertyDisplayName(p.name, p.unitNumber),
-            secondary: `${p.city} · ${formatOwnerDisplayName(p.owner)}`,
+            secondary: `${p.city} · ${formatClientDisplayName(p.client)}`,
             href: `/admin/properties/${p.id}`,
             trailing: <PropertyStatusBadge status={p.status} />,
           }))}

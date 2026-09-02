@@ -2,7 +2,7 @@
 //
 // Personal to-dos created here aren't pinned to an entity; they're
 // the operator's own list. Tasks pinned from a property /
-// owner panel show up here too (because the assignee defaults to
+// client panel show up here too (because the assignee defaults to
 // the creator). The categorise helper from lib/tasks runs through
 // sortTasksByPriority so overdue floats to the top.
 
@@ -41,7 +41,7 @@ export default async function MyTasksPage() {
         <h2 className="mt-2 text-xl font-medium text-stone-900">My tasks</h2>
         <p className="mt-1 text-sm text-stone-500">
           Personal to-dos plus anything assigned to you from a property or
-          owner page. Linked tasks show the entity below the title.
+          client page. Linked tasks show the entity below the title.
         </p>
       </div>
 
@@ -72,7 +72,7 @@ export default async function MyTasksPage() {
         {tasks.length === 0 ? (
           <p className="mt-6 text-sm text-stone-500">
             Inbox zero. Add a personal to-do above, or pin a task from any
-            owner / property detail page.
+            client / property detail page.
           </p>
         ) : (
           <ul className="mt-6 divide-y divide-stone-100">

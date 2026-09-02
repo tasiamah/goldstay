@@ -1,7 +1,7 @@
 "use client";
 
 // Verify / un-verify toggle for a single property document. Mirrors
-// the affordances on OwnerPayoutMethod verification: a single
+// the affordances on ClientPayoutMethod verification: a single
 // primary button when the doc is pending, and a quieter "Mark
 // unverified" link when it's already been signed off.
 
@@ -43,7 +43,7 @@ export function VerifyDocumentButton({
   function onUnverify() {
     if (
       !window.confirm(
-        "Mark this document as unverified? The owner will see a pending badge again until you re-verify it.",
+        "Mark this document as unverified? The client will see a pending badge again until you re-verify it.",
       )
     ) {
       return;

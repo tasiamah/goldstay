@@ -16,7 +16,7 @@ export type TenantApplicationInput = {
     | "salaried"
     | "self-employed"
     | "contract"
-    | "business-owner"
+    | "business-client"
     | "unemployed"
     | "student"
     | "other";
@@ -73,7 +73,7 @@ export function scoreTenantApplication(
   );
 
   // Employment stability: 25 points. Salaried applicants with 24+ months of
-  // tenure are the gold standard. Self-employed and business owners can still
+  // tenure are the gold standard. Self-employed and business clients can still
   // score well but need the verification layer (statement, registration).
   let employmentPoints = 0;
   if (!input.currentlyEmployed) {
@@ -90,7 +90,7 @@ export function scoreTenantApplication(
     const typeBonus =
       input.employmentType === "salaried"
         ? 5
-        : input.employmentType === "business-owner"
+        : input.employmentType === "business-client"
           ? 4
           : input.employmentType === "contract"
             ? 3

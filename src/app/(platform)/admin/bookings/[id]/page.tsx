@@ -36,7 +36,7 @@ export default async function BookingDetailPage({
           id: true,
           name: true,
           country: true,
-          owner: { select: { preferredCurrency: true } },
+          client: { select: { preferredCurrency: true } },
         },
       },
       transactions: {
@@ -61,7 +61,7 @@ export default async function BookingDetailPage({
       ? "KES"
       : booking.property.country === "GH"
         ? "GHS"
-        : (booking.property.owner.preferredCurrency ?? "USD");
+        : (booking.property.client.preferredCurrency ?? "USD");
 
   const boundUpdate = updateBookingAction.bind(null, booking.id);
   const isPlaceholder = Number(booking.grossAmount) === 0;
@@ -94,7 +94,7 @@ export default async function BookingDetailPage({
           This booking was imported from an iCal feed. Financials are
           placeholders. Fill in the real gross, OTA fee, cleaning, and
           payout from the {SOURCE_LABEL[booking.source]} dashboard so the
-          owner statement reconciles.
+          client statement reconciles.
         </div>
       ) : null}
 

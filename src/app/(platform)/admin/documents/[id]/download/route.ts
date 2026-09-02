@@ -1,6 +1,6 @@
 // Admin download endpoint. Mints a 5-minute signed URL and 302s the
 // browser to it. Admin sees every document; the per-property
-// authorisation check that the owner side needs is unnecessary here.
+// authorisation check that the client side needs is unnecessary here.
 import { NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/auth";
 import { prisma } from "@/lib/db";

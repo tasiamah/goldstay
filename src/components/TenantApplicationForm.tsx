@@ -39,7 +39,7 @@ type FormValues = {
     | "salaried"
     | "self-employed"
     | "contract"
-    | "business-owner"
+    | "business-client"
     | "unemployed"
     | "student"
     | "other";
@@ -426,7 +426,7 @@ export function TenantApplicationForm({
               <option value="salaried">Salaried employee</option>
               <option value="contract">Contract / consulting</option>
               <option value="self-employed">Self-employed</option>
-              <option value="business-owner">Business owner</option>
+              <option value="business-client">Business client</option>
               <option value="student">Student</option>
               <option value="unemployed">Between jobs</option>
               <option value="other">Other</option>

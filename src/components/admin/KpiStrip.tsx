@@ -71,11 +71,11 @@ function PulseStrip({ kpis }: { kpis: OverviewKpis }) {
           href="/admin/leads?period=this-month"
         />
         <KpiCard
-          label="New owners"
-          value={kpis.owners.current.toString()}
+          label="New clients"
+          value={kpis.clients.current.toString()}
           sub="Signed and onboarded this month"
-          delta={kpis.owners}
-          href="/admin/owners?period=this-month"
+          delta={kpis.clients}
+          href="/admin/clients?period=this-month"
         />
         {/* Referrers + signed referrals don't have a dedicated admin
             list page yet (the dashboards live behind a per-referrer
@@ -131,7 +131,7 @@ function GrowthStrip({ kpis }: { kpis: OverviewKpis }) {
           }
         />
         <KpiCard
-          label="Lead → owner days"
+          label="Lead → client days"
           value={
             kpis.avgDaysToConvert === null
               ? "No data"
@@ -140,7 +140,7 @@ function GrowthStrip({ kpis }: { kpis: OverviewKpis }) {
           sub={
             kpis.avgDaysToConvert === null
               ? "Nobody converted in the last 30 days"
-              : "Mean time from first contact to signed owner"
+              : "Mean time from first contact to signed client"
           }
         />
         <KpiCard
@@ -151,17 +151,17 @@ function GrowthStrip({ kpis }: { kpis: OverviewKpis }) {
           href="/admin/properties"
         />
         <KpiCard
-          label="Owner churn"
-          value={kpis.ownerChurn.current.toString()}
+          label="Client churn"
+          value={kpis.clientChurn.current.toString()}
           // Inverted semantics: when churn goes up, the badge will
           // be green by default — the operator reads it correctly
           // because the sub-line frames it as exits, not growth.
           // Eventually we may want a `negativeIsGood` flip on Delta;
           // for now keep the colour neutral by not passing delta.
           sub={
-            kpis.ownerChurn.current === 0
+            kpis.clientChurn.current === 0
               ? "Nobody offboarded this month"
-              : `${kpis.ownerChurn.current} this month vs ${kpis.ownerChurn.prior} last`
+              : `${kpis.clientChurn.current} this month vs ${kpis.clientChurn.prior} last`
           }
         />
       </div>

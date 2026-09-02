@@ -1,5 +1,5 @@
 // Small visual badge for a property's lifecycle status. Used in
-// admin and owner property detail headers so the state is glanceable
+// admin and client property detail headers so the state is glanceable
 // rather than a buried uppercase string. Kept dependency-light: just
 // Tailwind classes, no client JS.
 
@@ -13,7 +13,7 @@ const STYLES: Record<Status, { label: string; className: string }> = {
       "border-amber-200 bg-amber-50 text-amber-900",
   },
   // ACTIVE = the property has cleared Goldstay's onboarding review
-  // (documents are on file and verified, owner KYC is signed off).
+  // (documents are on file and verified, client KYC is signed off).
   // Surface that as "Verified" with a checkmark so the trust signal
   // is visible at a glance instead of buried behind ops jargon.
   ACTIVE: {

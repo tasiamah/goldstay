@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 
 // Loader shared by /admin/transactions/new and /admin/transactions/[id]
 // to feed the property + lease pickers in TransactionForm. We expose
@@ -10,7 +10,7 @@ export async function loadPropertyOptions() {
   const properties = await prisma.property.findMany({
     orderBy: [{ city: "asc" }, { name: "asc" }],
     include: {
-      owner: {
+      client: {
         select: {
           fullName: true,
           companyName: true,
@@ -44,14 +44,14 @@ export async function loadPropertyOptions() {
     id: p.id,
     name: p.name,
     city: p.city,
-    ownerName: formatOwnerDisplayName(p.owner),
+    clientName: formatClientDisplayName(p.client),
     propertyType: p.propertyType,
     defaultCurrency:
       p.country === "KE"
         ? "KES"
         : p.country === "GH"
           ? "GHS"
-          : (p.owner.preferredCurrency ?? "USD"),
+          : (p.client.preferredCurrency ?? "USD"),
     // Goldstay rents each property as a whole, so we flatten the
     // implicit unit out of the picker and just expose the active
     // tenants on this property.

@@ -2,7 +2,7 @@
 //
 // Single Postgres database hosted on Supabase. Multi-country support is
 // expressed via the `country` enum on Property (and indirectly on every
-// child entity through the property relation). Owner is the principal
+// child entity through the property relation). Client is the principal
 // entity that authenticates against Supabase Auth; `authUserId` is the
 // Supabase user id (uuid) and is the join key used everywhere we filter
 // data per logged-in landlord.
@@ -93,13 +93,13 @@ enum DocumentKind {
   SALE_AGREEMENT
   LEASE
   KYC
-  // Government-issued ID for the owner (passport, national ID,
+  // Government-issued ID for the client (passport, national ID,
   // driver's licence). Distinct from the property-attached KYC
-  // because owner identity verification is a one-time per-person
+  // because client identity verification is a one-time per-person
   // event, not a per-property document.
   ID_DOCUMENT
   // Proof of beneficiary banking detail (bank letter, voided
-  // cheque, M-Pesa till statement). Held against an owner so we
+  // cheque, M-Pesa till statement). Held against a client so we
   // can match a payout to the source.
   PROOF_OF_PAYOUT_ACCOUNT
   INVOICE
@@ -112,7 +112,7 @@ enum DocumentKind {
   OTHER
 }
 
-// Where a payout actually lands. One owner has zero or more rows;
+// Where a payout actually lands. One client has zero or more rows;
 // exactly one is `isDefault`. Captured fields vary by `method`:
 //
 //   WISE         → wiseEmail (the email the Wise account is linked to)
@@ -128,7 +128,7 @@ enum DocumentKind {
 //                  fees, instant settlement, but capped per txn.
 //
 // Verification: an admin reviews the matching PROOF_OF_PAYOUT_ACCOUNT
-// document on the owner and sets verifiedAt + verifiedByAdminId. We
+// document on the client and sets verifiedAt + verifiedByAdminId. We
 // refuse to record a Transaction.PAYOUT against an unverified row.
 enum PayoutMethodKind {
   WISE
@@ -138,13 +138,13 @@ enum PayoutMethodKind {
 }
 
 enum AgreementStatus {
-  // Created server-side but not yet shown to the owner. Surfaces in
+  // Created server-side but not yet shown to the client. Surfaces in
   // the admin UI so we can review / regenerate before sending.
   DRAFT
-  // Visible to the owner with a clear "review and sign" call to
+  // Visible to the client with a clear "review and sign" call to
   // action. Default state immediately after a property is verified.
   SENT
-  // Owner has clicked "I agree" and we have captured a signature
+  // Client has clicked "I agree" and we have captured a signature
   // record (typed name, IP, UA, timestamp). The PDF lives as a
   // Document on the property.
   SIGNED
@@ -153,7 +153,7 @@ enum AgreementStatus {
   CANCELLED
 }
 
-enum OwnerEntityType {
+enum ClientEntityType {
   // The landlord lets in their personal capacity. We keep the
   // companyName and companyRegistrationNumber columns nullable so we
   // don't have to wipe them on toggle back from COMPANY, but the UI
@@ -163,24 +163,28 @@ enum OwnerEntityType {
   // companyName becomes a required field for setup-complete in this
   // mode; companyRegistrationNumber stays optional.
   COMPANY
+
+  // Physical enum name predates the owner -> client rename. Kept as-is
+  // so the rename needed no data migration.
+  @@map("OwnerEntityType")
 }
 
 // One row per landlord. authUserId is the Supabase auth.users.id so we
-// can match a logged-in session straight back to a Goldstay owner. An
-// owner can be a natural person or a company; we capture both shapes
+// can match a logged-in session straight back to a Goldstay client. An
+// client can be a natural person or a company; we capture both shapes
 // in a single denormalised row to keep the early product simple.
-model Owner {
-  id                 String    @id @default(cuid())
-  authUserId         String?   @unique
-  email              String    @unique
-  fullName           String
-  phone              String?
+model Client {
+  id                        String           @id @default(cuid())
+  authUserId                String?          @unique
+  email                     String           @unique
+  fullName                  String
+  phone                     String?
   // Free-form postal address. Used on KYC paperwork and on the
   // statement PDF return-address line. Kept as a single text blob
   // because formats vary wildly across KE / GH / diaspora origins
   // (apartment numbers, estates, P.O. boxes); we don't structure
   // per line until a real downstream needs it.
-  address            String?
+  address                   String?
   // Whether the landlord lets in their personal capacity or through
   // a registered company. Default INDIVIDUAL because that's how most
   // KE / GH first-property landlords come to us; the COMPANY path is
@@ -189,41 +193,63 @@ model Owner {
   // semantically meaningful when entityType === COMPANY, but we keep
   // them nullable on the column so we don't have to round-trip an
   // empty string when toggling back to INDIVIDUAL.
-  entityType         OwnerEntityType @default(INDIVIDUAL)
-  companyName        String?
+  entityType                ClientEntityType @default(INDIVIDUAL)
+  companyName               String?
   // Country-specific ID for the registered company (KE: CR. number,
   // GH: RGD registration number). Free text because formats vary and
-  // we don't want to validate too eagerly — collected if the owner has
+  // we don't want to validate too eagerly — collected if the client has
   // it, never required to mark setup complete.
   companyRegistrationNumber String?
-  country            Country
-  preferredCurrency  String    @default("USD")
+  country                   Country
+  preferredCurrency         String           @default("USD")
   // Set the first time the landlord clicks "Got it" on the welcome
   // tour. Lets us show the introductory guide cards on first login
   // and quietly stand down once they've been there. Nullable so a
   // backfill isn't needed: null === never dismissed.
-  welcomeCompletedAt DateTime?
+  welcomeCompletedAt        DateTime?
   // Soft-delete column. Default Prisma queries filter `archivedAt: null`;
   // archived rows survive 30 days for restore via /admin/archive.
-  archivedAt         DateTime?
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  archivedAt                DateTime?
+  createdAt                 DateTime         @default(now())
+  updatedAt                 DateTime         @updatedAt
 
   properties     Property[]
   communications CommunicationLog[]
-  payoutMethods  OwnerPayoutMethod[]
+  payoutMethods  ClientPayoutMethod[]
   documents      Document[]
   statementSends StatementSend[]
-  notifications  OwnerNotification[]
+  notifications  ClientNotification[]
 
   @@index([country])
   @@index([archivedAt])
+  // Physical table name predates the owner -> client rename.
+  @@map("Owner")
+}
+
+// The capacity in which a client signs the management agreement for a
+// property. Not every client owns what they let to us: rent-to-rent
+// operators hold a head lease and sublet with the owner's written
+// consent, and diaspora clients often sign through an attorney or a
+// company director. The agreement renders a different authority
+// warranty per capacity (see src/lib/agreements/text.ts), so we hold
+// this per property rather than per client — the same person can own
+// one unit outright and rent-to-rent the next.
+enum SigningCapacity {
+  // The client is the registered owner (or a co-owner) of the property.
+  REGISTERED_OWNER
+  // Rent-to-rent. The client holds a lease or tenancy over the
+  // property and has the owner's written authority to let or sublet it
+  // and to appoint a managing agent.
+  AUTHORISED_LEASEHOLDER
+  // The client signs on the registered owner's behalf under a power of
+  // attorney, a directorship, or an executor / trustee appointment.
+  AUTHORISED_REPRESENTATIVE
 }
 
 model Property {
-  id                  String         @id @default(cuid())
-  ownerId             String
-  owner               Owner          @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id                  String          @id @default(cuid())
+  clientId            String          @map("ownerId")
+  client              Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
   country             Country
   city                String
   neighbourhood       String?
@@ -240,17 +266,23 @@ model Property {
   bathrooms           Int?
   sizeSqm             Int?
   acquiredOn          DateTime?
-  acquisitionPrice    Decimal?       @db.Decimal(14, 2)
-  acquisitionCurrency String?        @default("USD")
-  status              PropertyStatus @default(ONBOARDING)
-  propertyType        PropertyType   @default(LONG_TERM)
+  acquisitionPrice    Decimal?        @db.Decimal(14, 2)
+  acquisitionCurrency String?         @default("USD")
+  status              PropertyStatus  @default(ONBOARDING)
+  propertyType        PropertyType    @default(LONG_TERM)
+  // Capacity the client signs the management agreement in. Defaults to
+  // REGISTERED_OWNER: it is the common case, and it leaves existing
+  // rows on the warranty they were already signing under, so no
+  // backfill is needed. Admins set it during onboarding when the
+  // client is a rent-to-rent operator or signing for someone else.
+  signingCapacity     SigningCapacity @default(REGISTERED_OWNER)
   // Hostaway listing id for SHORT_TERM properties. Used by the
   // webhook receiver to map external reservations back to a property.
-  hostawayListingId   String?        @unique
-  // Soft-delete column. See Owner.archivedAt.
+  hostawayListingId   String?         @unique
+  // Soft-delete column. See Client.archivedAt.
   archivedAt          DateTime?
-  createdAt           DateTime       @default(now())
-  updatedAt           DateTime       @updatedAt
+  createdAt           DateTime        @default(now())
+  updatedAt           DateTime        @updatedAt
 
   units        Unit[]
   documents    Document[]
@@ -260,7 +292,7 @@ model Property {
   icalFeeds    PropertyIcalFeed[]
   agreements   ManagementAgreement[]
 
-  @@index([ownerId])
+  @@index([clientId])
   @@index([country])
   @@index([propertyType])
   @@index([archivedAt])
@@ -297,7 +329,7 @@ model Lease {
   depositAmount Decimal?    @db.Decimal(12, 2)
   status        LeaseStatus @default(ACTIVE)
   notes         String?
-  // Soft-delete column. See Owner.archivedAt.
+  // Soft-delete column. See Client.archivedAt.
   archivedAt    DateTime?
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -310,30 +342,30 @@ model Lease {
 }
 
 model Transaction {
-  id              String               @id @default(cuid())
-  propertyId      String
-  property        Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  leaseId         String?
-  lease           Lease?               @relation(fields: [leaseId], references: [id], onDelete: SetNull)
-  bookingId       String?
-  booking         Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
+  id             String               @id @default(cuid())
+  propertyId     String
+  property       Property             @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  leaseId        String?
+  lease          Lease?               @relation(fields: [leaseId], references: [id], onDelete: SetNull)
+  bookingId      String?
+  booking        Booking?             @relation(fields: [bookingId], references: [id], onDelete: SetNull)
   // Set ONLY for type=PAYOUT rows: which beneficiary account the
   // money actually went to. SetNull on delete because we never want
-  // to lose the underlying ledger entry just because an owner
+  // to lose the underlying ledger entry just because a client
   // archived an old bank account; the payout itself stays.
-  payoutMethodId  String?
-  payoutMethod    OwnerPayoutMethod?   @relation(fields: [payoutMethodId], references: [id], onDelete: SetNull)
-  occurredOn      DateTime
-  type            TransactionType
-  direction       TransactionDirection
-  amount          Decimal              @db.Decimal(12, 2)
-  currency        String               @default("KES")
-  description     String?
-  reference       String?
-  // Soft-delete column. See Owner.archivedAt.
-  archivedAt      DateTime?
-  createdAt       DateTime             @default(now())
-  updatedAt       DateTime             @updatedAt
+  payoutMethodId String?
+  payoutMethod   ClientPayoutMethod?  @relation(fields: [payoutMethodId], references: [id], onDelete: SetNull)
+  occurredOn     DateTime
+  type           TransactionType
+  direction      TransactionDirection
+  amount         Decimal              @db.Decimal(12, 2)
+  currency       String               @default("KES")
+  description    String?
+  reference      String?
+  // Soft-delete column. See Client.archivedAt.
+  archivedAt     DateTime?
+  createdAt      DateTime             @default(now())
+  updatedAt      DateTime             @updatedAt
 
   @@index([propertyId, occurredOn])
   @@index([leaseId])
@@ -348,7 +380,7 @@ model Transaction {
 //
 // grossAmount is what the guest paid. otaCommission is what the OTA
 // retained. cleaningFee is what we paid (or absorbed) for the
-// turnover. netPayout is what the owner sees before Goldstay's own
+// turnover. netPayout is what the client sees before Goldstay's own
 // commission, which lands as a separate Transaction row of type
 // GOLDSTAY_COMMISSION so it stays auditable.
 model Booking {
@@ -407,7 +439,7 @@ model PropertyIcalFeed {
 
 // Snapshot of an estimated property valuation at a point in time.
 // Multiple snapshots per property build the value-over-time chart in
-// the owner dashboard. Source is a free-text label ("Knight Frank",
+// the client dashboard. Source is a free-text label ("Knight Frank",
 // "Goldstay internal", "Hass Index") so we don't lock the schema in.
 model Valuation {
   id         String   @id @default(cuid())
@@ -425,33 +457,33 @@ model Valuation {
 
 // Polymorphic by parent: a document is attached to *either* a
 // property (most docs: title deed, lease, signed agreement) *or*
-// an owner (ID_DOCUMENT, PROOF_OF_PAYOUT_ACCOUNT, owner-level KYC).
+// a client (ID_DOCUMENT, PROOF_OF_PAYOUT_ACCOUNT, client-level KYC).
 // Both FKs are nullable; an app-level invariant enforces exactly
 // one is set on every row. The two indexes below mirror this:
 // the property-attached query path stays unchanged from before
-// the migration; the owner path is new for KYC.
+// the migration; the client path is new for KYC.
 model Document {
-  id          String       @id @default(cuid())
-  propertyId  String?
-  property    Property?    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
-  ownerId     String?
-  owner       Owner?       @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  kind        DocumentKind
-  title       String
-  storagePath String
-  mimeType    String?
-  sizeBytes   Int?
-  uploadedBy  String?
+  id                String       @id @default(cuid())
+  propertyId        String?
+  property          Property?    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  clientId          String?      @map("ownerId")
+  client            Client?      @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  kind              DocumentKind
+  title             String
+  storagePath       String
+  mimeType          String?
+  sizeBytes         Int?
+  uploadedBy        String?
   // Verification state. Documents start unverified; an admin reviews
   // the file and stamps `verifiedAt` (with their admin id) once the
-  // contents check out. Surfaces in both the owner UI ("Pending
+  // contents check out. Surfaces in both the client UI ("Pending
   // verification" vs "Verified by Goldstay") and the admin UI
   // (verify / un-verify actions on the property documents list). The
   // managementagreement.sign flow writes verifiedAt at creation time
   // because a click-to-accept signature is the verification.
   verifiedAt        DateTime?
   verifiedByAdminId String?
-  createdAt   DateTime     @default(now())
+  createdAt         DateTime     @default(now())
 
   // Backlink for management agreements that materialise themselves
   // as a Document row on signing. Optional because most documents
@@ -459,12 +491,12 @@ model Document {
   agreement ManagementAgreement?
 
   @@index([propertyId, kind])
-  @@index([ownerId, kind])
+  @@index([clientId, kind])
 }
 
 // Goldstay's management agreement with the landlord, scoped to a
 // single property. Generated automatically when a property is marked
-// verified; sent to the owner for click-to-accept signature; the
+// verified; sent to the client for click-to-accept signature; the
 // signed snapshot is materialised as a Document row attached to the
 // same property so it lives next to the rest of the paper trail.
 //
@@ -478,11 +510,16 @@ model ManagementAgreement {
 
   // Snapshot of terms agreed for this specific property.
   termMonths           Int
-  commissionRate       Decimal @db.Decimal(5, 4) // 0.2000 = 20%
-  earlyExitFee         Decimal @db.Decimal(12, 2)
+  commissionRate       Decimal         @db.Decimal(5, 4) // 0.2000 = 20%
+  earlyExitFee         Decimal         @db.Decimal(12, 2)
   earlyExitFeeCurrency String
   noticePeriodDays     Int
   governingLaw         String // "Kenya" or "Ghana"
+  // Snapshotted from Property.signingCapacity at generation time, for
+  // the same reason the commercial terms are: a signed contract must
+  // keep the authority warranty it was actually signed under, even if
+  // we correct the property's capacity afterwards.
+  signingCapacity      SigningCapacity @default(REGISTERED_OWNER)
 
   status AgreementStatus @default(DRAFT)
 
@@ -492,7 +529,7 @@ model ManagementAgreement {
   signedAt    DateTime?
 
   // Click-to-accept signature record. Captured server-side from the
-  // request the owner submits, never trusted from form input.
+  // request the client submits, never trusted from form input.
   signedByName      String?
   signedByIp        String?
   signedByUserAgent String?
@@ -513,7 +550,7 @@ model ManagementAgreement {
 // Everything below this line backs the admin portal's operator
 // experience: who has admin access, who did what, who said what to
 // whom, and which background jobs ran. None of it is exposed to
-// owners; admin pages and server actions read it directly.
+// clients; admin pages and server actions read it directly.
 
 enum AdminRole {
   // Founders. Can do anything, including managing other admins.
@@ -523,7 +560,7 @@ enum AdminRole {
   OPS
   // Read everything; write transactions and statements only.
   ACCOUNTING
-  // Read-only on owners + properties; can log communications and
+  // Read-only on clients + properties; can log communications and
   // create tasks. Used for outsourced front-desk help.
   SUPPORT
   // Like OPS but scoped to a single country (set on AdminUser.country).
@@ -531,7 +568,8 @@ enum AdminRole {
 }
 
 enum AuditEntity {
-  OWNER
+  // Physical value predates the owner -> client rename.
+  CLIENT        @map("OWNER")
   PROPERTY
   LEASE
   BOOKING
@@ -542,13 +580,13 @@ enum AuditEntity {
   // Inbound landlord lead. Lifecycle audit rows (lead.created,
   // lead.contacted, lead.qualified, lead.lost, lead.converted) are
   // keyed by entity=LEAD so the per-lead timeline / notes panel can
-  // find them. Once a lead converts, the resulting owner.created
-  // audit row is keyed by entity=OWNER, and the conversion crumb
+  // find them. Once a lead converts, the resulting client.created
+  // audit row is keyed by entity=CLIENT, and the conversion crumb
   // links the two.
   LEAD
-  // Owner payout method. payout.added / verified / archived /
+  // Client payout method. payout.added / verified / archived /
   // defaulted events live here so a per-method timeline can be
-  // shown on the owner payout card.
+  // shown on the client payout card.
   PAYOUT_METHOD
 }
 
@@ -622,7 +660,7 @@ model AuditEvent {
   entity       AuditEntity
   entityId     String
   // Free-form action key, e.g. "property.verified",
-  // "agreement.signed", "owner.created". Matched on by the queue
+  // "agreement.signed", "client.created". Matched on by the queue
   // and timeline filters.
   action       String
   summary      String
@@ -678,12 +716,12 @@ model Task {
 // Every email / WhatsApp / SMS / phone call in either direction.
 // Outbound emails through Resend write a row before the network call
 // (status=QUEUED) and update on success; manual logs (a phone call
-// with the owner) are inserted directly with status=SENT. The owner
+// with the client) are inserted directly with status=SENT. The client
 // detail page renders these in a "Communications" tab.
 model CommunicationLog {
   id            String                 @id @default(cuid())
-  ownerId       String
-  owner         Owner                  @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  clientId      String                 @map("ownerId")
+  client        Client                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
   channel       CommunicationChannel
   direction     CommunicationDirection
   subject       String?
@@ -696,7 +734,7 @@ model CommunicationLog {
   sentByAdmin   AdminUser?             @relation(fields: [sentByAdminId], references: [id], onDelete: SetNull)
   createdAt     DateTime               @default(now())
 
-  @@index([ownerId, createdAt])
+  @@index([clientId, createdAt])
   @@index([status])
 }
 
@@ -704,14 +742,14 @@ model CommunicationLog {
 //
 // Goldstay pays third parties — existing landlords, estate agents,
 // adjacent professionals — for sourced landlords. Referrers live in
-// their own table (not Owner) because most are *not* customers and
+// their own table (not Client) because most are *not* customers and
 // will never authenticate against Supabase. They access their
 // dashboard via a long, opaque, signed token in the URL — see
 // src/lib/referrals/codes.ts.
 //
 // Postgres holds the system of record for codes, referrals and
 // payout schedules; Airtable is mirrored for ops visibility, same
-// pattern as Owner/Property + lead leads.
+// pattern as Client/Property + lead leads.
 
 enum ReferrerType {
   // Existing or past Goldstay landlord referring another landlord.
@@ -772,31 +810,31 @@ enum PayoutStatus {
 // `dashboardToken` is the long, secret part that lets the referrer
 // see their own page without a Supabase account.
 model Referrer {
-  id             String         @id @default(cuid())
-  code           String         @unique
-  dashboardToken String         @unique
-  type           ReferrerType
-  status         ReferrerStatus @default(ACTIVE)
-  fullName       String
-  email          String         @unique
-  phone          String?
-  companyName    String?
+  id                   String         @id @default(cuid())
+  code                 String         @unique
+  dashboardToken       String         @unique
+  type                 ReferrerType
+  status               ReferrerStatus @default(ACTIVE)
+  fullName             String
+  email                String         @unique
+  phone                String?
+  companyName          String?
   // Country the referrer is based in. Drives payout currency
   // defaults and which DTA we cite in the welcome email.
-  country        String?
+  country              String?
   // Per-referrer commission overrides. Null means "use the type's
   // default rate". Stored as fractional decimals (0.25 = 25%).
-  longTermPctOverride  Decimal? @db.Decimal(5, 4)
-  shortStayPctOverride Decimal? @db.Decimal(5, 4)
+  longTermPctOverride  Decimal?       @db.Decimal(5, 4)
+  shortStayPctOverride Decimal?       @db.Decimal(5, 4)
   // Months over which the recurring share is paid. Null → default
   // for the referrer type.
   payoutMonthsOverride Int?
   // Free-text notes ops keeps on the relationship: KYC checks,
   // payout-detail confirmations, why we paused them.
-  notes          String?
-  archivedAt     DateTime?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
+  notes                String?
+  archivedAt           DateTime?
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 
   referrals Referral[]
 
@@ -809,30 +847,30 @@ model Referrer {
 // id is mirrored in for cross-system audit; the management terms
 // snapshotted on `signedAt` drive the payout schedule.
 model Referral {
-  id              String         @id @default(cuid())
-  referrerId      String
-  referrer        Referrer       @relation(fields: [referrerId], references: [id], onDelete: Restrict)
+  id               String         @id @default(cuid())
+  referrerId       String
+  referrer         Referrer       @relation(fields: [referrerId], references: [id], onDelete: Restrict)
   // Airtable record id from the Landlord leads table when this
   // referral was attached. Null if attribution happened before the
   // Airtable mirror could write (rare, but defensible).
-  airtableLeadId  String?
-  landlordName    String
-  landlordEmail   String?
-  landlordPhone   String?
-  city            String?
-  status          ReferralStatus @default(ATTRIBUTED)
+  airtableLeadId   String?
+  landlordName     String
+  landlordEmail    String?
+  landlordPhone    String?
+  city             String?
+  status           ReferralStatus @default(ATTRIBUTED)
   // Lifecycle timestamps. Nullable until the corresponding event
   // happens; mirrored to Airtable on each transition.
-  contactedAt     DateTime?
-  signedAt        DateTime?
+  contactedAt      DateTime?
+  signedAt         DateTime?
   // Snapshot of the management terms as of `signedAt`. Used by
   // generatePayouts() and frozen even if the live agreement later
   // changes — the referrer was promised what they were promised.
-  monthlyRentUsd   Decimal? @db.Decimal(12, 2)
-  managementFeePct Decimal? @db.Decimal(5, 4)
+  monthlyRentUsd   Decimal?       @db.Decimal(12, 2)
+  managementFeePct Decimal?       @db.Decimal(5, 4)
   notes            String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
 
   payouts ReferralPayout[]
 
@@ -892,10 +930,10 @@ enum LeadStatus {
   CONTACTED
   // A meaningful conversation has happened; we expect to convert.
   QUALIFIED
-  // Converted into an Owner row. Once set, the lead is read-only;
-  // its `convertedOwnerId` points at the resulting owner.
+  // Converted into a Client row. Once set, the lead is read-only;
+  // its `convertedClientId` points at the resulting client.
   CONVERTED
-  // Owner declined, didn't engage after multiple attempts, or the
+  // Client declined, didn't engage after multiple attempts, or the
   // property doesn't fit the Goldstay portfolio. Free-text reason
   // is captured on `lostReason` for retro analysis.
   LOST
@@ -921,21 +959,21 @@ enum LeadSource {
 // website form route still mirrors to Resend + Airtable so ops
 // keeps its existing inbox + spreadsheet workflow, but the row
 // here is the system of record from this point on. Conversion
-// flips the row to CONVERTED and links to the resulting Owner.
+// flips the row to CONVERTED and links to the resulting Client.
 //
 // The schema deliberately overlaps the Airtable "Landlord leads"
 // table 1:1 so a lead created on either side stays comparable.
 model Lead {
-  id                String      @id @default(cuid())
+  id                String     @id @default(cuid())
   source            LeadSource
-  status            LeadStatus  @default(NEW)
+  status            LeadStatus @default(NEW)
   // Headline contact details. Phone is required for callback,
   // email is optional because some inbound channels (a WhatsApp-
   // only landlord) genuinely don't have one we should keep.
   fullName          String
   email             String?
   phone             String
-  residenceCountry  String?     // free-text, e.g. "United Kingdom"
+  residenceCountry  String? // free-text, e.g. "United Kingdom"
   // Property-side context. country is the asset country (KE/GH);
   // city + neighbourhood + propertyType are free-text because the
   // form lets the lead be vague at first.
@@ -951,21 +989,21 @@ model Lead {
   // The cuid of the request that generated the row. Useful for
   // de-dupe when the form is double-submitted on flaky mobile
   // connections — same hash within 60s is treated as one lead.
-  submissionHash    String?     @unique
+  submissionHash    String?    @unique
   // Lifecycle.
   contactedAt       DateTime?
   qualifiedAt       DateTime?
   convertedAt       DateTime?
-  convertedOwnerId  String?     @unique
+  convertedClientId String?    @unique @map("convertedOwnerId")
   lostAt            DateTime?
   lostReason        String?
   // Who owns this lead inside Goldstay (the ops person actively
   // working it). SetNull on admin removal so the lead survives.
   ownerAdminId      String?
-  ownerAdmin        AdminUser?  @relation("LeadOwner", fields: [ownerAdminId], references: [id], onDelete: SetNull)
+  ownerAdmin        AdminUser? @relation("LeadOwner", fields: [ownerAdminId], references: [id], onDelete: SetNull)
   archivedAt        DateTime?
-  createdAt         DateTime    @default(now())
-  updatedAt         DateTime    @updatedAt
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
 
   @@index([status, createdAt])
   @@index([country, status])
@@ -973,146 +1011,150 @@ model Lead {
   @@index([archivedAt])
 }
 
-// Where Goldstay should send the owner's net payout each month.
-// One owner has zero or more rows; exactly one is `isDefault`.
+// Where Goldstay should send the client's net payout each month.
+// One client has zero or more rows; exactly one is `isDefault`.
 // Fields the schema accepts vary by `kind` — see the
 // PayoutMethodKind enum docstring for the rules. The form layer
 // validates that the right combination is set per kind.
 //
 // Verification: an admin reviews a matching
-// PROOF_OF_PAYOUT_ACCOUNT document on the owner and sets
+// PROOF_OF_PAYOUT_ACCOUNT document on the client and sets
 // verifiedAt + verifiedByAdminId. Server-side guards refuse to
 // record a Transaction.PAYOUT against an unverified row, so the
 // platform can't accidentally remit money to an unverified
 // beneficiary.
-model OwnerPayoutMethod {
-  id                  String           @id @default(cuid())
-  ownerId             String
-  owner               Owner            @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  kind                PayoutMethodKind
-  // Display label the owner picks ("Wise USD", "KCB Westlands").
+model ClientPayoutMethod {
+  id                 String           @id @default(cuid())
+  clientId           String           @map("ownerId")
+  client             Client           @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  kind               PayoutMethodKind
+  // Display label the client picks ("Wise USD", "KCB Westlands").
   // Surfaced in admin dropdowns + on statements.
-  label               String
-  currency            String           // ISO-4217
-  beneficiaryName     String
+  label              String
+  currency           String // ISO-4217
+  beneficiaryName    String
   // Bank-shaped fields (LOCAL_BANK / SWIFT_BANK).
-  bankName            String?
-  bankCountry         String?          // ISO-3166-1 alpha-2 free-text
-  branchCode          String?
-  accountNumber       String?
-  iban                String?
-  swift               String?
+  bankName           String?
+  bankCountry        String? // ISO-3166-1 alpha-2 free-text
+  branchCode         String?
+  accountNumber      String?
+  iban               String?
+  swift              String?
   // Wise-shaped fields.
-  wiseEmail           String?
+  wiseEmail          String?
   // M-Pesa-shaped fields. Phone in international format, no leading +.
-  mpesaPhone          String?
+  mpesaPhone         String?
   // Free-text address used by SWIFT remittances; some banks reject
   // wires without a beneficiary address line.
-  beneficiaryAddress  String?
+  beneficiaryAddress String?
   // Operator-only context: notes from the verification call, why we
-  // picked one method over another, etc. Never shown to the owner.
-  internalNotes       String?
-  isDefault           Boolean          @default(false)
-  verifiedAt          DateTime?
-  verifiedByAdminId   String?
-  archivedAt          DateTime?
-  createdAt           DateTime         @default(now())
-  updatedAt           DateTime         @updatedAt
+  // picked one method over another, etc. Never shown to the client.
+  internalNotes      String?
+  isDefault          Boolean          @default(false)
+  verifiedAt         DateTime?
+  verifiedByAdminId  String?
+  archivedAt         DateTime?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
 
-  payouts             Transaction[]
+  payouts Transaction[]
 
-  @@index([ownerId, archivedAt])
+  @@index([clientId, archivedAt])
   // Partial-unique enforced at the application layer ("only one
-  // default per owner") because Postgres partial-unique with
+  // default per client") because Postgres partial-unique with
   // `WHERE archivedAt IS NULL` requires raw SQL we'd rather not
   // bake into Prisma migrations yet.
-  @@index([ownerId, isDefault])
+  @@index([clientId, isDefault])
+  // Physical table name predates the owner -> client rename.
+  @@map("OwnerPayoutMethod")
 }
 
-// One row per (owner, period) statement we've sent. Idempotency
+// One row per (client, period) statement we've sent. Idempotency
 // guard for the monthly cron: before generating + emailing, the
 // job checks for an existing row and skips. Captured fields make
-// the system-health page useful: which owner got which month,
+// the system-health page useful: which client got which month,
 // when, via which provider, with what status.
 model StatementSend {
-  id           String              @id @default(cuid())
-  ownerId      String
-  owner        Owner               @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  id          String              @id @default(cuid())
+  clientId    String              @map("ownerId")
+  client      Client              @relation(fields: [clientId], references: [id], onDelete: Cascade)
   // Period the statement covers. Year + month combo so we can
-  // (owner, year, month) unique without juggling Date semantics.
-  periodYear   Int
-  periodMonth  Int
-  status       CommunicationStatus @default(QUEUED)
-  providerId   String?
+  // (client, year, month) unique without juggling Date semantics.
+  periodYear  Int
+  periodMonth Int
+  status      CommunicationStatus @default(QUEUED)
+  providerId  String?
   // Free-text human summary surfaced in admin / health views.
   // E.g. "12 transactions, KES 215,000 net". Cheap to compute at
   // send time, expensive to recompute later.
-  summary      String?
-  error        String?
-  sentAt       DateTime?
-  createdAt    DateTime            @default(now())
-  updatedAt    DateTime            @updatedAt
+  summary     String?
+  error       String?
+  sentAt      DateTime?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
 
-  @@unique([ownerId, periodYear, periodMonth])
+  @@unique([clientId, periodYear, periodMonth])
   @@index([periodYear, periodMonth])
   @@index([status])
 }
 
-// Owner-facing notification surface, rendered as a bell in the
-// owner header. Two production styles:
+// Client-facing notification surface, rendered as a bell in the
+// client header. Two production styles:
 //
-//   * DERIVED — created/resolved by syncOwnerNotifications() on
-//     /owner page renders. Rows are idempotent via the (ownerId,
+//   * DERIVED — created/resolved by syncClientNotifications() on
+//     /client page renders. Rows are idempotent via the (clientId,
 //     kind, sourceRef) unique key — sourceRef is "agreementId:xyz"
 //     for an agreement, "period:2026-04" for a statement, etc. When
 //     the underlying condition stops being true (agreement signed,
 //     setup completed) we set resolvedAt instead of deleting, so
-//     the owner has a faint history they can scroll back to.
+//     the client has a faint history they can scroll back to.
 //
 //   * BROADCAST — created by an admin via a future "Send notice"
 //     action. sourceRef is null; resolvedAt is set manually.
 //
 // We deliberately don't have an in-app inbox page yet — the bell
 // dropdown is the entire surface — so the schema stays small. Add
-// pagination + a /owner/notifications route the moment we have
-// more than ~20 active items per owner in the wild.
-model OwnerNotification {
-  id         String                  @id @default(cuid())
-  ownerId    String
-  owner      Owner                   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-  kind       OwnerNotificationKind
-  tone       OwnerNotificationTone   @default(INFO)
+// pagination + a /client/notifications route the moment we have
+// more than ~20 active items per client in the wild.
+model ClientNotification {
+  id         String                 @id @default(cuid())
+  clientId   String                 @map("ownerId")
+  client     Client                 @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  kind       ClientNotificationKind
+  tone       ClientNotificationTone @default(INFO)
   title      String
   body       String?
   // Optional deep link into the portal so a click on the bell row
-  // takes the owner straight to the relevant page (signing an
+  // takes the client straight to the relevant page (signing an
   // agreement, finishing setup, downloading a statement).
   href       String?
   // De-dupe key for derived notifications. NULL for BROADCAST. The
-  // same (ownerId, kind, sourceRef) must never produce two rows;
-  // syncOwnerNotifications relies on this for idempotency.
+  // same (clientId, kind, sourceRef) must never produce two rows;
+  // syncClientNotifications relies on this for idempotency.
   sourceRef  String?
-  // null = unread. Set when the owner opens the dropdown (we mark
+  // null = unread. Set when the client opens the dropdown (we mark
   // everything currently visible as read in one click).
   readAt     DateTime?
   // null = still active. Set by sync when the source condition is
   // no longer true (e.g. setup finished, statement archived). We
   // don't show resolved items in the bell count or default list.
   resolvedAt DateTime?
-  createdAt  DateTime                @default(now())
-  updatedAt  DateTime                @updatedAt
+  createdAt  DateTime               @default(now())
+  updatedAt  DateTime               @updatedAt
 
-  @@unique([ownerId, kind, sourceRef])
-  @@index([ownerId, readAt])
-  @@index([ownerId, resolvedAt])
+  @@unique([clientId, kind, sourceRef])
+  @@index([clientId, readAt])
+  @@index([clientId, resolvedAt])
+  // Physical table name predates the owner -> client rename.
+  @@map("OwnerNotification")
 }
 
-enum OwnerNotificationKind {
+enum ClientNotificationKind {
   // Derived. One row per missing setup step (sourceRef is the step
   // key). Resolved when the step flips to done.
   SETUP_INCOMPLETE
   // Derived. One row per pending management agreement (sourceRef is
-  // the agreementId). Resolved when the owner signs.
+  // the agreementId). Resolved when the client signs.
   AGREEMENT_PENDING
   // Derived. One row per available monthly statement (sourceRef is
   // "period:YYYY-MM"). Auto-marked read after 30 days.
@@ -1123,15 +1165,21 @@ enum OwnerNotificationKind {
   // Manually pushed by an admin. sourceRef is null; the admin is
   // responsible for setting resolvedAt when the broadcast expires.
   ADMIN_BROADCAST
+
+  // Physical enum name predates the owner -> client rename.
+  @@map("OwnerNotificationKind")
 }
 
-enum OwnerNotificationTone {
+enum ClientNotificationTone {
   // Default. Stone palette, no emphasis.
   INFO
-  // Amber. The owner needs to do something for life to continue
+  // Amber. The client needs to do something for life to continue
   // (sign an agreement, finish setup).
   WARNING
   // Emerald. Something good happened (payout paid, statement ready
   // for the latest period).
   SUCCESS
+
+  // Physical enum name predates the owner -> client rename.
+  @@map("OwnerNotificationTone")
 }

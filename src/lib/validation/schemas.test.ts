@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   LeaseInput,
-  OwnerInput,
+  ClientInput,
   PropertyInput,
   TransactionInput,
 } from "./schemas";
@@ -28,7 +28,7 @@ function unwrap<T>(
   return parsed.data;
 }
 
-describe("OwnerInput", () => {
+describe("ClientInput", () => {
   const valid = {
     email: "Hello@Goldstay.co.ke",
     fullName: "  Asha Kimani  ",
@@ -38,7 +38,7 @@ describe("OwnerInput", () => {
   };
 
   it("normalises email, name, currency, and turns empty optionals into undefined", () => {
-    const data = unwrap(OwnerInput.safeParse(valid));
+    const data = unwrap(ClientInput.safeParse(valid));
     expect(data.email).toBe("hello@goldstay.co.ke");
     expect(data.fullName).toBe("Asha Kimani");
     expect(data.preferredCurrency).toBe("USD");
@@ -46,9 +46,9 @@ describe("OwnerInput", () => {
   });
 
   it("rejects unknown country and single-token / too-short names", () => {
-    expect(OwnerInput.safeParse({ ...valid, country: "ZW" }).success).toBe(false);
-    expect(OwnerInput.safeParse({ ...valid, fullName: "Asha" }).success).toBe(false);
-    expect(OwnerInput.safeParse({ ...valid, fullName: "A Kimani" }).success).toBe(false);
+    expect(ClientInput.safeParse({ ...valid, country: "ZW" }).success).toBe(false);
+    expect(ClientInput.safeParse({ ...valid, fullName: "Asha" }).success).toBe(false);
+    expect(ClientInput.safeParse({ ...valid, fullName: "A Kimani" }).success).toBe(false);
   });
 });
 
@@ -57,7 +57,7 @@ describe("PropertyInput + LeaseInput + TransactionInput", () => {
     // Monetary string → number. A bug here corrupts a real payment.
     const prop = unwrap(
       PropertyInput.safeParse({
-        ownerId: "cuid-owner-1",
+        clientId: "cuid-client-1",
         name: "Pinetree 4B",
         city: "Nairobi",
         address: "Pinetree Plaza",

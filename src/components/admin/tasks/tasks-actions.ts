@@ -6,7 +6,7 @@ import { completeTask, createTask, reopenTask } from "@/lib/tasks";
 import { currentAuditActor, requireAdmin } from "@/lib/auth";
 
 // Pinned-to-entity task creation. Bound from <TasksPanel> at the
-// detail-page level so the panel is generic across owners /
+// detail-page level so the panel is generic across clients /
 // properties / leases / bookings.
 export async function createEntityTaskAction(
   entity: AuditEntity,

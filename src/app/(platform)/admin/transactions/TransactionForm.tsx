@@ -13,7 +13,7 @@ type PropertyOption = {
   id: string;
   name: string;
   city: string;
-  ownerName: string;
+  clientName: string;
   propertyType: "LONG_TERM" | "SHORT_TERM";
   defaultCurrency: string;
   leases: { id: string; tenantName: string }[];
@@ -44,7 +44,7 @@ const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[]
       label: "Management fee",
       direction: "OUTFLOW",
     },
-    { value: "PAYOUT", label: "Payout to owner", direction: "OUTFLOW" },
+    { value: "PAYOUT", label: "Payout to client", direction: "OUTFLOW" },
     {
       value: "OTA_COMMISSION",
       label: "OTA commission (Airbnb)",
@@ -100,7 +100,7 @@ export function TransactionForm({
           { value: "", label: "Select a property…", disabled: true },
           ...properties.map((p) => ({
             value: p.id,
-            label: `${p.name} · ${p.city} · ${p.ownerName}`,
+            label: `${p.name} · ${p.city} · ${p.clientName}`,
           })),
         ]}
       />

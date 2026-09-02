@@ -8,7 +8,7 @@
 export type Period = {
   year: number;
   // 1..12, NOT the JavaScript 0..11 month index. We accept human input
-  // in the URL (/owner/statements/2026/4) and storing 1-12 internally
+  // in the URL (/client/statements/2026/4) and storing 1-12 internally
   // avoids off-by-one bugs at every boundary.
   month: number;
 };
@@ -82,7 +82,7 @@ export function previousPeriod(now: Date): Period {
 }
 
 // Generates the previous N periods including the current one, ordered
-// most recent first. Used by /owner/statements to list 12 months of
+// most recent first. Used by /client/statements to list 12 months of
 // statements as a clickable grid.
 export function recentPeriods(now: Date, count: number): Period[] {
   const out: Period[] = [];
@@ -101,7 +101,7 @@ export function recentPeriods(now: Date, count: number): Period[] {
 
 // Generates every month from `earliest` (inclusive) up to `now`,
 // most recent first, capped at `maxCount` so a 5-year-old account
-// doesn't blow up the dropdown. Used by the owner statements
+// doesn't blow up the dropdown. Used by the client statements
 // month filter so we never show months that predate the
 // landlord's first activity with Goldstay.
 export function periodsSince(

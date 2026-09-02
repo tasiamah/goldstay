@@ -3,8 +3,8 @@
 // Every email / WhatsApp / SMS / phone call in either direction is
 // recorded here. Outbound emails through Resend write a row before
 // the network call (status=QUEUED) and update on success; manual
-// logs (a phone call with the owner) are inserted directly with
-// status=SENT. The owner detail page renders these in a dedicated
+// logs (a phone call with the client) are inserted directly with
+// status=SENT. The client detail page renders these in a dedicated
 // "Communications" tab so anybody picking up the account knows
 // exactly what's been said and when.
 
@@ -18,16 +18,16 @@ import type {
 import { recordAudit, type AuditActor } from "@/lib/audit";
 
 export type LogCommunicationInput = {
-  ownerId: string;
+  clientId: string;
   channel: CommunicationChannel;
   direction: CommunicationDirection;
   subject?: string | null;
   body?: string | null;
   providerId?: string | null;
   status?: CommunicationStatus;
-  // Set for manual logs ("ops emailed/called the owner") so the audit
+  // Set for manual logs ("ops emailed/called the client") so the audit
   // event is attributed correctly. Null for system-driven sends
-  // (welcome email triggered by createOwnerAction).
+  // (welcome email triggered by createClientAction).
   actor?: AuditActor | null;
 };
 
@@ -36,7 +36,7 @@ export async function logCommunication(
 ): Promise<CommunicationLog> {
   const log = await prisma.communicationLog.create({
     data: {
-      ownerId: input.ownerId,
+      clientId: input.clientId,
       channel: input.channel,
       direction: input.direction,
       subject: input.subject ?? null,
@@ -50,8 +50,8 @@ export async function logCommunication(
   if (input.actor) {
     await recordAudit({
       actor: input.actor,
-      entity: "OWNER",
-      entityId: input.ownerId,
+      entity: "CLIENT",
+      entityId: input.clientId,
       action: "comms.sent",
       summary: summariseLog(log),
       metadata: { logId: log.id, channel: log.channel },
@@ -76,11 +76,11 @@ export async function updateCommunicationStatus(
 }
 
 export async function listCommunicationsFor(
-  ownerId: string,
+  clientId: string,
   limit = 50,
 ): Promise<CommunicationLog[]> {
   return prisma.communicationLog.findMany({
-    where: { ownerId },
+    where: { clientId },
     orderBy: { createdAt: "desc" },
     take: limit,
   });
@@ -96,8 +96,8 @@ const CHANNEL_LABEL: Record<CommunicationChannel, string> = {
 };
 
 const DIRECTION_LABEL: Record<CommunicationDirection, string> = {
-  OUTBOUND: "to owner",
-  INBOUND: "from owner",
+  OUTBOUND: "to client",
+  INBOUND: "from client",
 };
 
 export function summariseLog(

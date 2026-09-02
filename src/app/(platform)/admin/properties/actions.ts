@@ -21,7 +21,7 @@ export type PropertyActionResult =
 
 function fromForm(formData: FormData) {
   return {
-    ownerId: String(formData.get("ownerId") ?? ""),
+    clientId: String(formData.get("clientId") ?? ""),
     name: String(formData.get("name") ?? ""),
     unitNumber: String(formData.get("unitNumber") ?? ""),
     city: String(formData.get("city") ?? ""),
@@ -35,6 +35,9 @@ function fromForm(formData: FormData) {
     acquisitionCurrency: String(formData.get("acquisitionCurrency") ?? "USD"),
     status: String(formData.get("status") ?? "ONBOARDING"),
     propertyType: String(formData.get("propertyType") ?? "LONG_TERM"),
+    signingCapacity: String(
+      formData.get("signingCapacity") ?? "REGISTERED_OWNER",
+    ),
     hostawayListingId: String(formData.get("hostawayListingId") ?? ""),
   };
 }
@@ -54,13 +57,13 @@ export async function createPropertyAction(
     };
   }
 
-  // Country is inherited from the owner so we don't ask for it twice.
-  const owner = await prisma.owner.findUnique({
-    where: { id: parsed.data.ownerId },
+  // Country is inherited from the client so we don't ask for it twice.
+  const client = await prisma.client.findUnique({
+    where: { id: parsed.data.clientId },
     select: { country: true },
   });
-  if (!owner) {
-    return { ok: false, error: "Owner not found." };
+  if (!client) {
+    return { ok: false, error: "Client not found." };
   }
 
   try {
@@ -74,7 +77,7 @@ export async function createPropertyAction(
       const property = await tx.property.create({
         data: {
           ...parsed.data,
-          country: owner.country as Country,
+          country: client.country as Country,
         },
       });
       await tx.unit.create({
@@ -95,14 +98,14 @@ export async function createPropertyAction(
       action: "property.created",
       summary: `Property ${formatPropertyDisplayName(created.name, created.unitNumber)} created`,
       metadata: {
-        ownerId: created.ownerId,
+        clientId: created.clientId,
         country: created.country,
         propertyType: created.propertyType,
       },
     });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
-    revalidatePath(`/admin/owners/${parsed.data.ownerId}`);
+    revalidatePath(`/admin/clients/${parsed.data.clientId}`);
     redirect(`/admin/properties/${created.id}`);
   } catch (e) {
     if ((e as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")) {
@@ -146,7 +149,7 @@ export async function updatePropertyAction(
       return { ok: false, error: "Property not found." };
     }
 
-    const { ownerId: _ignored, propertyType: _attempted, ...rest } =
+    const { clientId: _ignored, propertyType: _attempted, ...rest } =
       parsed.data;
     const updated = await prisma.property.update({
       where: { id: propertyId },
@@ -162,7 +165,7 @@ export async function updatePropertyAction(
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
     revalidatePath(`/admin/properties/${propertyId}`);
-    revalidatePath(`/admin/owners/${parsed.data.ownerId}`);
+    revalidatePath(`/admin/clients/${parsed.data.clientId}`);
     return { ok: true, propertyId };
   } catch {
     return { ok: false, error: "Could not save changes. Please retry." };
@@ -190,9 +193,10 @@ export async function markPropertyVerifiedAction(
     where: { id: propertyId },
     select: {
       status: true,
-      ownerId: true,
+      clientId: true,
       country: true,
       propertyType: true,
+      signingCapacity: true,
       name: true,
       unitNumber: true,
       _count: { select: { documents: true } },
@@ -218,7 +222,7 @@ export async function markPropertyVerifiedAction(
   // defaults onto the row so future tweaks to the defaults helper
   // don't retroactively alter terms shown to a landlord. The agreement
   // is created in SENT state in a single transaction with the status
-  // bump so the owner banner appears the moment they refresh.
+  // bump so the client banner appears the moment they refresh.
   //
   // Idempotency: if a non-CANCELLED agreement somehow already exists
   // (e.g. an admin verified, then exited, then re-verified), we
@@ -252,6 +256,10 @@ export async function markPropertyVerifiedAction(
           earlyExitFeeCurrency: terms.earlyExitFeeCurrency,
           noticePeriodDays: terms.noticePeriodDays,
           governingLaw: terms.governingLaw,
+          // Snapshotted alongside the commercial terms: the authority
+          // warranty the client signs under has to stay fixed even if
+          // the property's capacity is corrected later.
+          signingCapacity: property.signingCapacity,
           status: AgreementStatus.SENT,
           sentAt: now,
         },
@@ -269,7 +277,7 @@ export async function markPropertyVerifiedAction(
     action: "property.verified",
     summary: `Property marked active`,
     metadata: {
-      ownerId: property.ownerId,
+      clientId: property.clientId,
       issuedAgreementId: newAgreementId,
     },
   });
@@ -287,8 +295,8 @@ export async function markPropertyVerifiedAction(
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
   revalidatePath(`/admin/properties/${propertyId}`);
-  revalidatePath(`/admin/owners/${property.ownerId}`);
-  revalidatePath("/owner");
+  revalidatePath(`/admin/clients/${property.clientId}`);
+  revalidatePath("/client");
   return { ok: true };
 }
 
@@ -299,7 +307,7 @@ export async function markPropertyExitedAction(
 
   const property = await prisma.property.findUnique({
     where: { id: propertyId },
-    select: { status: true, ownerId: true },
+    select: { status: true, clientId: true },
   });
   if (!property) return { ok: false, error: "Property not found." };
   if (property.status === PropertyStatus.EXITED) {
@@ -316,11 +324,11 @@ export async function markPropertyExitedAction(
     entityId: propertyId,
     action: "property.exited",
     summary: `Property marked exited`,
-    metadata: { ownerId: property.ownerId },
+    metadata: { clientId: property.clientId },
   });
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
   revalidatePath(`/admin/properties/${propertyId}`);
-  revalidatePath(`/admin/owners/${property.ownerId}`);
+  revalidatePath(`/admin/clients/${property.clientId}`);
   return { ok: true };
 }

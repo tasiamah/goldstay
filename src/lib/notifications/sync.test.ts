@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { buildDesiredNotifications } from "./sync";
-import type { SetupChecklist } from "@/lib/owner/setup-status";
+import type { SetupChecklist } from "@/lib/client/setup-status";
 
 // buildDesiredNotifications is the pure heart of the bell — given a
 // snapshot of state, what notifications *should* exist? The DB diff
@@ -57,7 +57,7 @@ describe("buildDesiredNotifications", () => {
     const setupRows = out.filter((n) => n.kind === "SETUP_INCOMPLETE");
     expect(setupRows.map((n) => n.sourceRef).sort()).toEqual(["bank", "details"]);
     expect(setupRows.every((n) => n.tone === "WARNING")).toBe(true);
-    expect(setupRows.every((n) => n.href?.startsWith("/owner/"))).toBe(true);
+    expect(setupRows.every((n) => n.href?.startsWith("/client/"))).toBe(true);
   });
 
   it("emits AGREEMENT_PENDING with the agreementId as sourceRef", () => {
@@ -75,7 +75,7 @@ describe("buildDesiredNotifications", () => {
     const a = out.find((n) => n.kind === "AGREEMENT_PENDING");
     expect(a?.sourceRef).toBe("agr_1");
     expect(a?.tone).toBe("WARNING");
-    expect(a?.href).toBe("/owner/agreements/agr_1");
+    expect(a?.href).toBe("/client/agreements/agr_1");
     expect(a?.body).toContain("Pinetree A4");
   });
 

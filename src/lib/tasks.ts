@@ -1,6 +1,6 @@
 // Lightweight follow-up tasks for the admin team.
 //
-// A task is either pinned to an entity (a property, an owner, etc.)
+// A task is either pinned to an entity (a property, a client, etc.)
 // or freestanding for personal admin to-dos. The /admin/tasks page
 // reads `myOpenTasks(adminId)`, the per-entity panels read
 // `tasksForEntity(...)`, and the attention queue uses

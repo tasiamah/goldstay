@@ -1,47 +1,47 @@
 "use server";
 
-// Server actions for the owner notification bell. Two surfaces:
+// Server actions for the client notification bell. Two surfaces:
 //
-//   * markAllNotificationsReadAction — called when the owner opens
+//   * markAllNotificationsReadAction — called when the client opens
 //     the bell. We mark every still-unread, unresolved notification
 //     as read in one go. The dropdown stays visible afterwards so
-//     the owner can scan + act; only the bell badge clears.
+//     the client can scan + act; only the bell badge clears.
 //
 //   * dismissNotificationAction — called from a per-row "×" so the
-//     owner can hide a specific item without opening the link.
+//     client can hide a specific item without opening the link.
 //     Dismissing flips resolvedAt, which removes the row from
-//     listOwnerNotifications. If the underlying condition is still
+//     listClientNotifications. If the underlying condition is still
 //     true on the next sync (e.g. setup is still incomplete), we
 //     re-create the row — that's intentional, the bell shouldn't
 //     lie about open work.
 
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/db";
-import { requireOwner } from "@/lib/auth";
+import { requireClient } from "@/lib/auth";
 
 export async function markAllNotificationsReadAction(): Promise<void> {
-  const { owner } = await requireOwner();
-  await prisma.ownerNotification.updateMany({
-    where: { ownerId: owner.id, readAt: null, resolvedAt: null },
+  const { client } = await requireClient();
+  await prisma.clientNotification.updateMany({
+    where: { clientId: client.id, readAt: null, resolvedAt: null },
     data: { readAt: new Date() },
   });
-  // The bell renders inside the owner layout, so we revalidate
-  // every page where it would be visible. /owner is the most
+  // The bell renders inside the client layout, so we revalidate
+  // every page where it would be visible. /client is the most
   // important — the dashboard renders the same data behind the
   // bell so a refresh keeps everything consistent.
-  revalidatePath("/owner");
+  revalidatePath("/client");
 }
 
 export async function dismissNotificationAction(
   notificationId: string,
 ): Promise<void> {
-  const { owner } = await requireOwner();
-  // Scoped delete: only the owner's own rows. We don't trust the
+  const { client } = await requireClient();
+  // Scoped delete: only the client's own rows. We don't trust the
   // client-provided id past this filter — Prisma will silently
-  // no-op if a malicious owner tries to dismiss someone else's row.
-  await prisma.ownerNotification.updateMany({
-    where: { id: notificationId, ownerId: owner.id, resolvedAt: null },
+  // no-op if a malicious client tries to dismiss someone else's row.
+  await prisma.clientNotification.updateMany({
+    where: { id: notificationId, clientId: client.id, resolvedAt: null },
     data: { resolvedAt: new Date(), readAt: new Date() },
   });
-  revalidatePath("/owner");
+  revalidatePath("/client");
 }

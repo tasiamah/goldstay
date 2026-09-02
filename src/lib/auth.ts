@@ -11,7 +11,7 @@
 
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import type { AdminUser, Owner } from "@prisma/client";
+import type { AdminUser, Client } from "@prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/db";
 import { isAdminEmail } from "@/lib/admin-allowlist";
@@ -25,7 +25,7 @@ export { isAdminEmail };
 
 // Wrapped in React `cache` so that within a single render pass the
 // Supabase JWT is validated exactly once. Without this the layout
-// (`requireUser`), the page (`requireOwner` -> `requireUser`) and
+// (`requireUser`), the page (`requireClient` -> `requireUser`) and
 // any nested helper each fired their own getUser() round-trip,
 // stacking ~150–400ms apiece on the post-magic-link cold landing.
 // `cache` keys on the call's arguments — there are none here, so
@@ -59,14 +59,14 @@ export async function requireUser() {
 // allowlist. Bumps lastLoginAt on every refresh so the team page can
 // show "active 2 days ago".
 //
-// Redirects to /owner if:
+// Redirects to /client if:
 //   * the user has no email (impossible for magic-link, defensive)
 //   * the email isn't allowlisted AND has no existing AdminUser row
 //   * the AdminUser row is archived
 export async function requireAdmin(): Promise<AdminUser> {
   const user = await requireUser();
   const email = (user.email ?? "").toLowerCase();
-  if (!email) redirect("/owner");
+  if (!email) redirect("/client");
 
   let admin = await prisma.adminUser.findUnique({ where: { email } });
 
@@ -75,10 +75,10 @@ export async function requireAdmin(): Promise<AdminUser> {
     // AdminUser row was created for them. Provision now. The first
     // such row gets SUPER_ADMIN so the founder isn't immediately
     // locked out of the team-management page.
-    if (!isAdminEmail(email)) redirect("/owner");
+    if (!isAdminEmail(email)) redirect("/client");
     admin = await provisionAdmin(email, user.id);
   } else if (admin.archivedAt) {
-    redirect("/owner");
+    redirect("/client");
   }
 
   // Update authUserId on first login + bump lastLoginAt at most
@@ -151,7 +151,7 @@ function deriveNameFromEmail(email: string): string {
 // the action key — much better than the previous silent bounce
 // that made permission-gated routes feel broken to new hires.
 // Server actions inherit the same UX: if a SUPPORT user submits
-// a form behind impersonate.owner they land on the overview with
+// a form behind impersonate.client they land on the overview with
 // a clear "you don't have access to..." message instead of just
 // an unexplained jump.
 export async function requireRole(
@@ -189,47 +189,47 @@ export async function currentAuditActor(): Promise<CurrentActor> {
   return { adminId: admin.id, email: admin.email };
 }
 
-// Resolves the Owner row for the logged-in Supabase user. Owner rows
+// Resolves the Client row for the logged-in Supabase user. Client rows
 // are created by an admin during onboarding; we look up by authUserId
-// first (set when the owner first logs in) and fall back to email
+// first (set when the client first logs in) and fall back to email
 // match so the very first login automatically claims their record.
-// Owner row for the currently logged-in user, or null if there's no
-// match (signed-in Supabase user but no Owner record in our DB).
+// Client row for the currently logged-in user, or null if there's no
+// match (signed-in Supabase user but no Client record in our DB).
 //
 // Wrapped in React `cache` so the layout's lookup, the page's
-// requireOwner() and any other helper that needs the owner all
+// requireClient() and any other helper that needs the client all
 // share a single Prisma round-trip per request. Without this the
-// dashboard was doing 2–4 separate Owner queries on every render.
+// dashboard was doing 2–4 separate Client queries on every render.
 //
 // We do the lookup as one `findFirst({ OR: [authUserId, email] })`
 // rather than two sequential `findUnique` calls so the common
 // "first sign-in after invite" path is one DB hop instead of two.
-// The best-effort claim that binds authUserId to the owner row
+// The best-effort claim that binds authUserId to the client row
 // only fires when the row was email-matched and has no authUserId
 // yet — same behaviour as before, just folded into the helper.
-export const getCurrentOwner = cache(async (): Promise<Owner | null> => {
+export const getCurrentClient = cache(async (): Promise<Client | null> => {
   const user = await getCurrentUser();
   if (!user) return null;
 
   const email = user.email ?? null;
 
-  const owner = email
-    ? await prisma.owner.findFirst({
+  const client = email
+    ? await prisma.client.findFirst({
         where: {
           OR: [{ authUserId: user.id }, { email }],
         },
       })
-    : await prisma.owner.findUnique({ where: { authUserId: user.id } });
+    : await prisma.client.findUnique({ where: { authUserId: user.id } });
 
-  if (!owner) return null;
+  if (!client) return null;
 
-  // First sign-in: bind the auth user id to the owner row so future
+  // First sign-in: bind the auth user id to the client row so future
   // lookups hit the indexed path directly. Best-effort and silent —
   // a transient failure just means we'll retry on the next visit.
-  if (!owner.authUserId || owner.authUserId !== user.id) {
+  if (!client.authUserId || client.authUserId !== user.id) {
     try {
-      const claimed = await prisma.owner.update({
-        where: { id: owner.id },
+      const claimed = await prisma.client.update({
+        where: { id: client.id },
         data: { authUserId: user.id },
       });
       return claimed;
@@ -237,16 +237,16 @@ export const getCurrentOwner = cache(async (): Promise<Owner | null> => {
       // Return the unclaimed row; the page can still render off it.
     }
   }
-  return owner;
+  return client;
 });
 
-export async function requireOwner() {
+export async function requireClient() {
   const user = await requireUser();
-  const owner = await getCurrentOwner();
-  if (!owner) {
-    // Logged in but not yet an owner in our DB. Send them somewhere
+  const client = await getCurrentClient();
+  if (!client) {
+    // Logged in but not yet a client in our DB. Send them somewhere
     // safe; the page itself decides what to show.
-    redirect("/owner/pending");
+    redirect("/client/pending");
   }
-  return { user, owner };
+  return { user, client };
 }

@@ -16,7 +16,7 @@ function readString(
   return (v ?? "").toString().trim();
 }
 
-// Period filter shared by /admin/owners and /admin/leads. Used by the
+// Period filter shared by /admin/clients and /admin/leads. Used by the
 // admin overview KPI strip to deep-link straight to "the rows that
 // fed this number this month". Kept as a single closed enum so the
 // page parsers stay one line and the URL stays human-readable
@@ -49,15 +49,15 @@ export const PERIOD_LABEL: Record<Exclude<PeriodFilter, null>, string> = {
   "last-month": "Last month",
 };
 
-export type OwnerListFilters = {
+export type ClientListFilters = {
   q: string;
   country: "KE" | "GH" | null;
   period: PeriodFilter;
 };
 
-export function parseOwnerListFilters(
+export function parseClientListFilters(
   searchParams?: RawSearchParams,
-): OwnerListFilters {
+): ClientListFilters {
   const country = readString(searchParams, "country");
   return {
     q: readString(searchParams, "q"),

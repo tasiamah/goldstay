@@ -7,7 +7,7 @@
 // We treat these as defaults applied automatically when bookings are
 // ingested (Hostaway webhook) or when the admin emits transactions
 // for a manual booking. For bespoke deals we'll later store an
-// override on Owner or Property; until then the constants below are
+// override on Client or Property; until then the constants below are
 // the single source of truth so they can't drift between the PDF,
 // the webhook, and the admin UI.
 

@@ -165,13 +165,13 @@ export async function deleteBookingAction(bookingId: string): Promise<void> {
 }
 
 // Records the booking's monetary footprint as Transactions so the
-// owner statement can reconcile against bank reality without us
+// client statement can reconcile against bank reality without us
 // needing to re-derive numbers from Booking columns. Idempotent: if
 // the booking already has emitted transactions, do nothing. Used by
 // the Hostaway webhook on first ingest and exposed manually for
 // direct bookings.
 // Defaults to Goldstay's published 20% short-stay commission. Pass
-// 0 explicitly to skip (e.g. when invoicing the owner directly).
+// 0 explicitly to skip (e.g. when invoicing the client directly).
 export async function emitBookingTransactionsAction(
   bookingId: string,
   goldstayCommissionRate: number = SHORT_TERM_COMMISSION_RATE,

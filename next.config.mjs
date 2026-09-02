@@ -23,6 +23,35 @@ const nextConfig = {
       },
     ],
   },
+  // The portal moved from /owner to /client when we accepted that a
+  // good share of the people who sign with us are not owners. These
+  // have to stay indefinitely: every statement email we have ever sent
+  // links to /owner/statements/{year}/{month}, and those land in
+  // inboxes that people scroll back through years later.
+  async redirects() {
+    return [
+      {
+        source: "/owner",
+        destination: "/client",
+        permanent: true,
+      },
+      {
+        source: "/owner/:path*",
+        destination: "/client/:path*",
+        permanent: true,
+      },
+      {
+        source: "/admin/owners",
+        destination: "/admin/clients",
+        permanent: true,
+      },
+      {
+        source: "/admin/owners/:path*",
+        destination: "/admin/clients/:path*",
+        permanent: true,
+      },
+    ];
+  },
   // Host-based rewrites. This is what makes goldstay.co.ke serve the
   // Nairobi city page and goldstay.com.gh serve the Accra city page at
   // the root path. These run at Vercel's edge router before static

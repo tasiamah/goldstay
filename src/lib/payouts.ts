@@ -1,6 +1,6 @@
-// Owner payout method helper.
+// Client payout method helper.
 //
-// One owner has zero or more payout methods; exactly one is the
+// One client has zero or more payout methods; exactly one is the
 // default. Each row is unverified at creation; an admin reviews
 // the matching PROOF_OF_PAYOUT_ACCOUNT document and flips
 // `verifiedAt`. Server-side guards (see recordPayoutAction) refuse
@@ -16,14 +16,14 @@
 
 import {
   Prisma,
-  type OwnerPayoutMethod,
+  type ClientPayoutMethod,
   type PayoutMethodKind,
 } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { recordAudit, type AuditActor } from "@/lib/audit";
 
 export type CreatePayoutMethodInput = {
-  ownerId: string;
+  clientId: string;
   kind: PayoutMethodKind;
   label: string;
   currency: string;
@@ -42,8 +42,8 @@ export type CreatePayoutMethodInput = {
   // Optional address line for SWIFT remittances.
   beneficiaryAddress?: string | null;
   internalNotes?: string | null;
-  // Whether to make this the new default for the owner. The action
-  // promotes atomically; if the owner has another default, it gets
+  // Whether to make this the new default for the client. The action
+  // promotes atomically; if the client has another default, it gets
   // demoted in the same transaction.
   isDefault?: boolean;
   actor: AuditActor;
@@ -77,7 +77,7 @@ function requiredFieldErrors(
 }
 
 export type PayoutMethodResult =
-  | { ok: true; method: OwnerPayoutMethod }
+  | { ok: true; method: ClientPayoutMethod }
   | { ok: false; error: string; missing?: string[] };
 
 export async function createPayoutMethod(
@@ -88,29 +88,29 @@ export async function createPayoutMethod(
     return { ok: false, error: "Missing required fields.", missing };
   }
 
-  const owner = await prisma.owner.findUnique({
-    where: { id: input.ownerId },
+  const client = await prisma.client.findUnique({
+    where: { id: input.clientId },
     select: { id: true },
   });
-  if (!owner) return { ok: false, error: "Owner not found." };
+  if (!client) return { ok: false, error: "Client not found." };
 
   // Promote-as-default is atomic with the create so we never have
   // a momentary state of two defaults (which the application layer
-  // is the only thing enforcing single-default-per-owner against).
+  // is the only thing enforcing single-default-per-client against).
   const method = await prisma.$transaction(async (tx) => {
     if (input.isDefault) {
-      await tx.ownerPayoutMethod.updateMany({
+      await tx.clientPayoutMethod.updateMany({
         where: {
-          ownerId: input.ownerId,
+          clientId: input.clientId,
           isDefault: true,
           archivedAt: null,
         },
         data: { isDefault: false },
       });
     }
-    return tx.ownerPayoutMethod.create({
+    return tx.clientPayoutMethod.create({
       data: {
-        ownerId: input.ownerId,
+        clientId: input.clientId,
         kind: input.kind,
         label: input.label.trim(),
         currency: input.currency.trim().toUpperCase(),
@@ -131,7 +131,7 @@ export async function createPayoutMethod(
   });
 
   // Twin audit rows: PAYOUT_METHOD-keyed for the per-method
-  // timeline + activity feed, OWNER-keyed so the owner detail's
+  // timeline + activity feed, CLIENT-keyed so the client detail's
   // overall timeline keeps a continuous account of significant
   // changes. Same pattern used by lead.converted.
   await Promise.all([
@@ -141,12 +141,12 @@ export async function createPayoutMethod(
       entityId: method.id,
       action: "payout.added",
       summary: `Payout method "${method.label}" added (${method.kind})`,
-      metadata: { payoutMethodId: method.id, ownerId: input.ownerId, kind: method.kind },
+      metadata: { payoutMethodId: method.id, clientId: input.clientId, kind: method.kind },
     }),
     recordAudit({
       actor: input.actor,
-      entity: "OWNER",
-      entityId: input.ownerId,
+      entity: "CLIENT",
+      entityId: input.clientId,
       action: "payout.added",
       summary: `Payout method "${method.label}" added (${method.kind})`,
       metadata: { payoutMethodId: method.id, kind: method.kind },
@@ -160,7 +160,7 @@ export async function setDefaultPayoutMethod(
   payoutMethodId: string,
   actor: AuditActor,
 ): Promise<PayoutMethodResult> {
-  const target = await prisma.ownerPayoutMethod.findUnique({
+  const target = await prisma.clientPayoutMethod.findUnique({
     where: { id: payoutMethodId },
   });
   if (!target) return { ok: false, error: "Payout method not found." };
@@ -168,15 +168,15 @@ export async function setDefaultPayoutMethod(
     return { ok: false, error: "Cannot set an archived method as default." };
   }
   const updated = await prisma.$transaction(async (tx) => {
-    await tx.ownerPayoutMethod.updateMany({
+    await tx.clientPayoutMethod.updateMany({
       where: {
-        ownerId: target.ownerId,
+        clientId: target.clientId,
         isDefault: true,
         id: { not: payoutMethodId },
       },
       data: { isDefault: false },
     });
-    return tx.ownerPayoutMethod.update({
+    return tx.clientPayoutMethod.update({
       where: { id: payoutMethodId },
       data: { isDefault: true },
     });
@@ -188,12 +188,12 @@ export async function setDefaultPayoutMethod(
       entityId: payoutMethodId,
       action: "payout.defaulted",
       summary: `Set as default payout method`,
-      metadata: { ownerId: target.ownerId },
+      metadata: { clientId: target.clientId },
     }),
     recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: target.ownerId,
+      entity: "CLIENT",
+      entityId: target.clientId,
       action: "payout.defaulted",
       summary: `Default payout set to "${updated.label}"`,
       metadata: { payoutMethodId },
@@ -209,14 +209,14 @@ export async function verifyPayoutMethod(
   if (!actor.adminId) {
     return { ok: false, error: "Only admins can verify payout methods." };
   }
-  const target = await prisma.ownerPayoutMethod.findUnique({
+  const target = await prisma.clientPayoutMethod.findUnique({
     where: { id: payoutMethodId },
   });
   if (!target) return { ok: false, error: "Payout method not found." };
   if (target.archivedAt) {
     return { ok: false, error: "Cannot verify an archived method." };
   }
-  const updated = await prisma.ownerPayoutMethod.update({
+  const updated = await prisma.clientPayoutMethod.update({
     where: { id: payoutMethodId },
     data: {
       verifiedAt: new Date(),
@@ -230,12 +230,12 @@ export async function verifyPayoutMethod(
       entityId: payoutMethodId,
       action: "payout.verified",
       summary: `Payout method verified`,
-      metadata: { ownerId: target.ownerId },
+      metadata: { clientId: target.clientId },
     }),
     recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: target.ownerId,
+      entity: "CLIENT",
+      entityId: target.clientId,
       action: "payout.verified",
       summary: `Payout method "${updated.label}" verified`,
       metadata: { payoutMethodId },
@@ -248,14 +248,14 @@ export async function archivePayoutMethod(
   payoutMethodId: string,
   actor: AuditActor,
 ): Promise<PayoutMethodResult> {
-  const target = await prisma.ownerPayoutMethod.findUnique({
+  const target = await prisma.clientPayoutMethod.findUnique({
     where: { id: payoutMethodId },
   });
   if (!target) return { ok: false, error: "Payout method not found." };
   if (target.archivedAt) {
     return { ok: true, method: target };
   }
-  const updated = await prisma.ownerPayoutMethod.update({
+  const updated = await prisma.clientPayoutMethod.update({
     where: { id: payoutMethodId },
     data: {
       archivedAt: new Date(),
@@ -271,12 +271,12 @@ export async function archivePayoutMethod(
       entityId: payoutMethodId,
       action: "payout.archived",
       summary: `Payout method archived`,
-      metadata: { ownerId: target.ownerId },
+      metadata: { clientId: target.clientId },
     }),
     recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: target.ownerId,
+      entity: "CLIENT",
+      entityId: target.clientId,
       action: "payout.archived",
       summary: `Payout method "${updated.label}" archived`,
       metadata: { payoutMethodId },
@@ -288,11 +288,11 @@ export async function archivePayoutMethod(
 // Used by the admin record-payout dialog and the cron statement
 // note: only verified, non-archived methods are payable.
 export async function listPayablePayoutMethods(
-  ownerId: string,
-): Promise<OwnerPayoutMethod[]> {
-  return prisma.ownerPayoutMethod.findMany({
+  clientId: string,
+): Promise<ClientPayoutMethod[]> {
+  return prisma.clientPayoutMethod.findMany({
     where: {
-      ownerId,
+      clientId,
       archivedAt: null,
       verifiedAt: { not: null },
     },
@@ -301,12 +301,12 @@ export async function listPayablePayoutMethods(
 }
 
 export async function listPayoutMethodsFor(
-  ownerId: string,
+  clientId: string,
   options: { includeArchived?: boolean } = {},
-): Promise<OwnerPayoutMethod[]> {
-  const where: Prisma.OwnerPayoutMethodWhereInput = { ownerId };
+): Promise<ClientPayoutMethod[]> {
+  const where: Prisma.ClientPayoutMethodWhereInput = { clientId };
   if (!options.includeArchived) where.archivedAt = null;
-  return prisma.ownerPayoutMethod.findMany({
+  return prisma.clientPayoutMethod.findMany({
     where,
     orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
   });
@@ -326,7 +326,7 @@ export const PAYOUT_METHOD_LABEL: Record<PayoutMethodKind, string> = {
 // account numbers and IBANs get masked except for the last four
 // digits, which is enough to disambiguate without leaking on
 // shared screens.
-export function summarisePayoutMethod(method: OwnerPayoutMethod): string {
+export function summarisePayoutMethod(method: ClientPayoutMethod): string {
   if (method.kind === "WISE") {
     return `Wise · ${method.wiseEmail ?? "?"} (${method.currency})`;
   }

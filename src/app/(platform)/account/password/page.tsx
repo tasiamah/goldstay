@@ -1,6 +1,6 @@
 // /account/password
 //
-// Where signed-in users (admins or owners) set or change their
+// Where signed-in users (admins or clients) set or change their
 // account password. Two main entry points:
 //
 //   1. The "Forgot password?" / "Set your password" recovery email

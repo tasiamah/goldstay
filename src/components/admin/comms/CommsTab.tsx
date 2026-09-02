@@ -1,4 +1,4 @@
-// CommsTab — owner-detail panel that renders the communication log
+// CommsTab — client-detail panel that renders the communication log
 // in reverse-chronological order, with a small form to log a
 // manual call / WhatsApp / SMS / inbound email.
 //
@@ -20,14 +20,14 @@ const STATUS_TONE: Record<string, string> = {
 };
 
 export async function CommsTab({
-  ownerId,
+  clientId,
   returnPath,
 }: {
-  ownerId: string;
+  clientId: string;
   returnPath: string;
 }) {
-  const logs = await listCommunicationsFor(ownerId);
-  const logBound = logManualCommAction.bind(null, ownerId, returnPath);
+  const logs = await listCommunicationsFor(clientId);
+  const logBound = logManualCommAction.bind(null, clientId, returnPath);
 
   return (
     <section className="rounded-lg border border-stone-200 bg-white p-6">
@@ -62,8 +62,8 @@ export async function CommsTab({
           className="rounded-md border border-stone-300 px-2 py-1.5 text-sm text-stone-900 focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500"
           defaultValue="OUTBOUND"
         >
-          <option value="OUTBOUND">→ to owner</option>
-          <option value="INBOUND">← from owner</option>
+          <option value="OUTBOUND">→ to client</option>
+          <option value="INBOUND">← from client</option>
         </select>
         <input
           name="subject"

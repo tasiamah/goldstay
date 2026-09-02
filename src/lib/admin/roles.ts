@@ -6,7 +6,7 @@
 // based because the role count is small and explicit reading is
 // more important than generality.
 //
-// Action keys are dot-namespaced (`owner.write`, `transaction.write`,
+// Action keys are dot-namespaced (`client.write`, `transaction.write`,
 // `admin.write`, etc.) so future product surfaces can extend without
 // touching every existing call site. Unknown actions deny by default.
 
@@ -16,8 +16,8 @@ import type { AdminRole, Country } from "@prisma/client";
 // line change in the matrix below; missing it means the action is
 // unreachable for non-SUPER_ADMIN, which is the safe default.
 export type AdminAction =
-  | "owner.read"
-  | "owner.write"
+  | "client.read"
+  | "client.write"
   | "property.read"
   | "property.write"
   | "property.verify"
@@ -39,7 +39,7 @@ export type AdminAction =
   | "note.write"
   | "admin.read"
   | "admin.write"
-  | "impersonate.owner"
+  | "impersonate.client"
   | "health.read"
   | "import.write"
   | "archive.write"
@@ -51,8 +51,8 @@ const SUPER_ADMIN_ALLOWED: ReadonlySet<AdminAction> = new Set(
 );
 
 const OPS_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
-  "owner.read",
-  "owner.write",
+  "client.read",
+  "client.write",
   "property.read",
   "property.write",
   "property.verify",
@@ -73,14 +73,14 @@ const OPS_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "note.read",
   "note.write",
   "admin.read",
-  "impersonate.owner",
+  "impersonate.client",
   "health.read",
   "import.write",
   "archive.write",
 ]);
 
 const ACCOUNTING_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
-  "owner.read",
+  "client.read",
   "property.read",
   "lease.read",
   "booking.read",
@@ -97,7 +97,7 @@ const ACCOUNTING_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
 ]);
 
 const SUPPORT_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
-  "owner.read",
+  "client.read",
   "property.read",
   "lease.read",
   "booking.read",
@@ -130,7 +130,7 @@ const MATRIX: Record<AdminRole, ReadonlySet<AdminAction>> = {
 // without searching the matrix. finance.read is the gate for any
 // view that exposes Goldstay-side P&L (commission revenue, the
 // margin that lands in our pocket per property, the all-up monthly
-// totals). Operators don't see those numbers — they work on owner
+// totals). Operators don't see those numbers — they work on client
 // money flow only.
 const SUPER_ADMIN_ONLY: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "admin.write",

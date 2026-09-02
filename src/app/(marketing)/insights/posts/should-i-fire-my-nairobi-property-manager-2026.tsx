@@ -324,10 +324,10 @@ export default function Article() {
         <LI>
           A live portal at{" "}
           <Link
-            href="/owner"
+            href="/client"
             className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
           >
-            goldstay.co.ke/owner
+            goldstay.co.ke/client
           </Link>{" "}
           where you can pull any of the above on your own at
           any hour.

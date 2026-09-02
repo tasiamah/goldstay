@@ -8,7 +8,7 @@
 //
 // Returns rows as Record<header, value>. Validation is the caller's
 // problem — schema-driven coercion lives in the per-entity import
-// page (zod schema for owners, zod schema for properties, etc.).
+// page (zod schema for clients, zod schema for properties, etc.).
 
 export type ParsedCsv = {
   headers: string[];

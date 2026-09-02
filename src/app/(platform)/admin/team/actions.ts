@@ -33,9 +33,9 @@ const UpdateInput = z.object({
 const DEFAULT_SITE = "https://goldstay.co.ke";
 
 // Adds a new admin row, mints a magic link, and emails it. The
-// invite is logged into CommunicationLog as an OWNER-style outbound
-// (we reuse the comms log; AdminUser is the pseudo-owner of the
-// audit trail) — except CommunicationLog is keyed to ownerId. For
+// invite is logged into CommunicationLog as a CLIENT-style outbound
+// (we reuse the comms log; AdminUser is the pseudo-client of the
+// audit trail) — except CommunicationLog is keyed to clientId. For
 // admins we skip the comms row and rely on the audit + the magic
 // link landing in the new admin's inbox.
 export async function inviteAdminAction(formData: FormData): Promise<void> {

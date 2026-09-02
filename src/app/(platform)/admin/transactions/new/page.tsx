@@ -34,7 +34,7 @@ export default async function NewTransactionPage({
         {properties.length === 0 ? (
           <p className="text-sm text-stone-500">
             You need at least one property before you can log a transaction.
-            Add an owner and a property first.
+            Add a client and a property first.
           </p>
         ) : (
           <TransactionForm

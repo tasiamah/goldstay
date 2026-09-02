@@ -63,14 +63,31 @@ export async function listAuditFor(
 // doesn't supply a custom one. Pure for testability. Unknown actions
 // fall back to the raw action string so we never silently swallow.
 const DEFAULT_SUMMARIES: Record<string, string> = {
-  "owner.created": "Owner created",
-  "owner.updated": "Owner updated",
-  "owner.archived": "Owner archived",
-  "owner.restored": "Owner restored",
+  "client.created": "Client created",
+  "client.updated": "Client updated",
+  "client.archived": "Client archived",
+  "client.restored": "Client restored",
+  "client.welcomed": "Welcome email sent",
+  "client.welcomed.resent": "Welcome email resent",
+  "client.imported": "Client imported",
+  "client.impersonation.started": "Admin opened client portal",
+  "client.impersonation.stopped": "Admin closed client portal",
+  // Action keys written before the owner -> client rename. AuditEvent
+  // rows are append-only and `action` is a plain string column, so
+  // every event logged before the rename still carries an "owner.*"
+  // key. Kept here so the fallback renders them as prose rather than
+  // dumping the raw key into the timeline.
+  "owner.created": "Client created",
+  "owner.updated": "Client updated",
+  "owner.archived": "Client archived",
+  "owner.restored": "Client restored",
   "owner.welcomed": "Welcome email sent",
   "owner.welcomed.resent": "Welcome email resent",
-  "owner.impersonated": "Admin opened owner portal",
-  "owner.impersonated.stopped": "Admin closed owner portal",
+  "owner.imported": "Client imported",
+  "owner.impersonated": "Admin opened client portal",
+  "owner.impersonated.stopped": "Admin closed client portal",
+  "owner.impersonation.started": "Admin opened client portal",
+  "owner.impersonation.stopped": "Admin closed client portal",
   "property.created": "Property created",
   "property.updated": "Property updated",
   "property.verified": "Property marked active",
@@ -106,7 +123,7 @@ const DEFAULT_SUMMARIES: Record<string, string> = {
   "lead.contacted": "Lead marked contacted",
   "lead.qualified": "Lead marked qualified",
   "lead.lost": "Lead marked lost",
-  "lead.converted": "Lead converted to owner",
+  "lead.converted": "Lead converted to client",
   "payout.added": "Payout method added",
   "payout.defaulted": "Default payout method changed",
   "payout.verified": "Payout method verified",

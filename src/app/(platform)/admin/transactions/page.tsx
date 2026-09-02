@@ -81,7 +81,7 @@ export default async function TransactionsListPage({
           </h3>
           <p className="mt-1 text-sm text-stone-500">
             Record rent payments, expenses, payouts, and refunds here. They
-            roll up into the owner&rsquo;s monthly statement.
+            roll up into the client&rsquo;s monthly statement.
           </p>
           <Link
             href="/admin/transactions/new"

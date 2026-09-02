@@ -1,4 +1,4 @@
-// First-login welcome panel for new admins. Mirrors the owner
+// First-login welcome panel for new admins. Mirrors the client
 // welcome card pattern but tuned for ops:
 //
 //   * pointers to the surfaces a new hire actually uses in week one,
@@ -25,16 +25,16 @@ type QuickLink = {
   label: string;
   hint: string;
   // The role-matrix action that gates visibility. Omit for links
-  // that are visible to every admin role (e.g. Owners, Properties,
+  // that are visible to every admin role (e.g. Clients, Properties,
   // Leads — Lead is not action-gated in the matrix).
   requires?: AdminAction;
 };
 
 const QUICK_LINKS: ReadonlyArray<QuickLink> = [
   {
-    href: "/admin/owners",
-    label: "Owners",
-    hint: "Add an owner, send the welcome email, verify their first property here.",
+    href: "/admin/clients",
+    label: "Clients",
+    hint: "Add a client, send the welcome email, verify their first property here.",
   },
   {
     href: "/admin/properties",
@@ -44,24 +44,24 @@ const QUICK_LINKS: ReadonlyArray<QuickLink> = [
   {
     href: "/admin/leads",
     label: "Leads",
-    hint: "Inbound enquiries from /list-your-property and WhatsApp. Convert qualified leads to owners.",
+    hint: "Inbound enquiries from /list-your-property and WhatsApp. Convert qualified leads to clients.",
   },
   {
     href: "/admin/transactions",
     label: "Transactions",
-    hint: "Every rent, expense, payout and refund. The numbers behind the owner statements.",
+    hint: "Every rent, expense, payout and refund. The numbers behind the client statements.",
     requires: "transaction.read",
   },
   {
     href: "/admin/tasks",
     label: "Tasks",
-    hint: "Personal follow-ups and anything pinned to an owner or property.",
+    hint: "Personal follow-ups and anything pinned to a client or property.",
     requires: "task.read",
   },
   {
-    href: "/admin/owners/import",
+    href: "/admin/clients/import",
     label: "Imports",
-    hint: "Bulk-add owners or properties from a CSV. Validates before writing anything.",
+    hint: "Bulk-add clients or properties from a CSV. Validates before writing anything.",
     requires: "import.write",
   },
   {
@@ -73,7 +73,7 @@ const QUICK_LINKS: ReadonlyArray<QuickLink> = [
   {
     href: "/admin/archive",
     label: "Archive",
-    hint: "Soft-deleted owners, properties and transactions for the last 30 days. Restore from here.",
+    hint: "Soft-deleted clients, properties and transactions for the last 30 days. Restore from here.",
     requires: "archive.write",
   },
 ];
@@ -132,7 +132,7 @@ export function AdminWelcomeCard({ admin }: { admin: AdminUser }) {
       <p className="mt-5 text-xs text-stone-500">
         Press <kbd className="rounded border border-stone-300 bg-white px-1 py-0.5 font-sans text-[10px]">⌘</kbd>
         <kbd className="ml-1 rounded border border-stone-300 bg-white px-1 py-0.5 font-sans text-[10px]">K</kbd>{" "}
-        anywhere to jump to an owner, property, lease or booking.
+        anywhere to jump to a client, property, lease or booking.
       </p>
     </section>
   );

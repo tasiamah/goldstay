@@ -1,5 +1,5 @@
 // Magic-link callback. Supabase emails the user a URL of the form
-//   https://goldstay.co.ke/auth/callback?code=<otp>&next=/owner       (PKCE)
+//   https://goldstay.co.ke/auth/callback?code=<otp>&next=/client       (PKCE)
 // or, when the email template uses {{ .TokenHash }} instead of
 // {{ .ConfirmationURL }}:
 //   https://goldstay.co.ke/auth/callback?token_hash=<hash>&type=email (cross-device)
@@ -9,7 +9,7 @@
 // its code-verifier cookie) or on a different device entirely
 // (token_hash + verifyOtp avoids the cookie round-trip altogether).
 //
-// On success: route admin emails to /admin, everyone else to /owner,
+// On success: route admin emails to /admin, everyone else to /client,
 // honouring an optional ?next= override that must be a same-origin
 // path so we don't get used as an open-redirect.
 import { NextResponse, type NextRequest } from "next/server";
@@ -91,7 +91,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Password recovery (and the "set your password" link we email new
-  // owners) always lands on /account/password so the user can finish
+  // clients) always lands on /account/password so the user can finish
   // setting credentials before we drop them into a real surface.
   // We honour ?next= as a deep-link target after they save the new
   // password — the form preserves it onward.
@@ -101,7 +101,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(passwordUrl);
   }
 
-  const fallback = isAdminEmail(userEmail) ? "/admin" : "/owner";
+  const fallback = isAdminEmail(userEmail) ? "/admin" : "/client";
   const target = next && next.startsWith("/") ? next : fallback;
   return NextResponse.redirect(`${origin}${target}`);
 }

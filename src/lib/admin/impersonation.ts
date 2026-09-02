@@ -1,17 +1,17 @@
-// Open-as-owner impersonation primitives.
+// Open-as-client impersonation primitives.
 //
 // We deliberately do NOT do anything fancy here: no JWT signing, no
 // session replication. The flow is:
 //
-//   1. An admin clicks "Open as owner" on the owner detail page.
-//   2. A server action mints a Supabase magic link for the owner's
+//   1. An admin clicks "Open as client" on the client detail page.
+//   2. A server action mints a Supabase magic link for the client's
 //      email via supabase.auth.admin.generateLink, writes an audit
 //      event, sets a same-site cookie with the metadata we need to
 //      render an ImpersonationBanner, and returns the magic link URL.
 //   3. The client opens the magic link in a new tab. That tab signs
-//      the admin in as the owner (cookies are shared), and the
+//      the admin in as the client (cookies are shared), and the
 //      ImpersonationBanner reads the metadata cookie to show the
-//      "you're acting as <owner>" warning + stop-impersonating action.
+//      "you're acting as <client>" warning + stop-impersonating action.
 //
 // The cookie is intentionally `httpOnly: false` so we can flag the
 // banner client-side too if needed; nothing about it is a credential.
@@ -23,8 +23,8 @@ export const IMPERSONATION_COOKIE = "gs_impersonation";
 const COOKIE_MAX_AGE_SECONDS = 60 * 60 * 8; // one workday
 
 export type ImpersonationCookie = {
-  ownerId: string;
-  ownerLabel: string;
+  clientId: string;
+  clientLabel: string;
   adminEmail: string;
   startedAt: string;
 };
@@ -60,19 +60,43 @@ export function encodeCookie(payload: ImpersonationCookie): string {
   return Buffer.from(JSON.stringify(payload), "utf8").toString("base64url");
 }
 
+// Legacy payload shape, written before the owner -> client rename.
+// Cookies live for a workday, so at deploy time there are admins
+// mid-impersonation holding one of these. Without this the banner
+// silently vanishes and they carry on operating inside a client's
+// session with no warning showing — the opposite of what the banner
+// is for. Safe to delete once no cookie older than the deploy can
+// still be alive (8h).
+type LegacyImpersonationCookie = {
+  ownerId: string;
+  ownerLabel: string;
+  adminEmail: string;
+  startedAt: string;
+};
+
 export function decodeCookie(raw: string): ImpersonationCookie | null {
   try {
     const json = Buffer.from(raw, "base64url").toString("utf8");
-    const parsed = JSON.parse(json) as Partial<ImpersonationCookie>;
+    const parsed = JSON.parse(json) as Partial<
+      ImpersonationCookie & LegacyImpersonationCookie
+    >;
     if (
-      typeof parsed.ownerId !== "string" ||
-      typeof parsed.ownerLabel !== "string" ||
       typeof parsed.adminEmail !== "string" ||
       typeof parsed.startedAt !== "string"
     ) {
       return null;
     }
-    return parsed as ImpersonationCookie;
+    const id = parsed.clientId ?? parsed.ownerId;
+    const label = parsed.clientLabel ?? parsed.ownerLabel;
+    if (typeof id !== "string" || typeof label !== "string") {
+      return null;
+    }
+    return {
+      clientId: id,
+      clientLabel: label,
+      adminEmail: parsed.adminEmail,
+      startedAt: parsed.startedAt,
+    };
   } catch {
     return null;
   }

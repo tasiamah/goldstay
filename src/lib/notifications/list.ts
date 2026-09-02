@@ -1,4 +1,4 @@
-// Read-side for the owner notification bell.
+// Read-side for the client notification bell.
 //
 // One round-trip returns: the active (unresolved) notifications to
 // render, plus the unread-count for the bell badge. Sorted with
@@ -6,7 +6,7 @@
 // hides under a friendly "your statement is ready" row.
 
 import { prisma } from "@/lib/db";
-import type { OwnerNotification } from "@prisma/client";
+import type { ClientNotification } from "@prisma/client";
 
 const TONE_PRIORITY: Record<string, number> = {
   WARNING: 0,
@@ -14,18 +14,18 @@ const TONE_PRIORITY: Record<string, number> = {
   SUCCESS: 2,
 };
 
-export type OwnerNotificationListing = {
-  items: OwnerNotification[];
+export type ClientNotificationListing = {
+  items: ClientNotification[];
   unreadCount: number;
 };
 
-export async function listOwnerNotifications(
-  ownerId: string,
+export async function listClientNotifications(
+  clientId: string,
   opts?: { limit?: number },
-): Promise<OwnerNotificationListing> {
+): Promise<ClientNotificationListing> {
   const limit = opts?.limit ?? 8;
-  const items = await prisma.ownerNotification.findMany({
-    where: { ownerId, resolvedAt: null },
+  const items = await prisma.clientNotification.findMany({
+    where: { clientId, resolvedAt: null },
     // Pull a few extra so the in-memory tone sort doesn't leave a
     // gap when there are more than `limit` rows. We slice to limit
     // after sorting.

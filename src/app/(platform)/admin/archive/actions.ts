@@ -9,7 +9,7 @@ import {
   type ArchivableEntity,
 } from "@/lib/admin/archive";
 
-const EntityEnum = z.enum(["OWNER", "PROPERTY", "LEASE", "TRANSACTION"]);
+const EntityEnum = z.enum(["CLIENT", "PROPERTY", "LEASE", "TRANSACTION"]);
 
 // Result returned to runWithUndo so the toast can offer an Undo
 // button bound to the inverse server action.

@@ -1,6 +1,6 @@
 // Aggregation logic for a single monthly statement.
 //
-// Takes a flat list of transactions for one owner across one month
+// Takes a flat list of transactions for one client across one month
 // and folds them into the per-property + per-currency rollups we
 // render on the PDF. Pure — no Prisma — so the test suite can
 // exercise the rules with hand-crafted data.

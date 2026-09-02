@@ -8,7 +8,7 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { getSystemHealth } from "@/lib/admin/health";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 
@@ -201,10 +201,10 @@ export default async function SystemHealthPage() {
               <li key={s.id} className="flex items-start justify-between py-3">
                 <div>
                   <Link
-                    href={`/admin/owners/${s.ownerId}/statement?month=${s.periodYear}-${String(s.periodMonth).padStart(2, "0")}`}
+                    href={`/admin/clients/${s.clientId}/statement?month=${s.periodYear}-${String(s.periodMonth).padStart(2, "0")}`}
                     className="text-sm font-medium text-stone-900 hover:underline"
                   >
-                    {s.owner ? formatOwnerDisplayName(s.owner) : s.ownerId}
+                    {s.client ? formatClientDisplayName(s.client) : s.clientId}
                   </Link>
                   <p className="text-xs text-stone-500">
                     {s.periodYear}-{String(s.periodMonth).padStart(2, "0")} ·{" "}

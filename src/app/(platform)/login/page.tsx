@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   // role, so the copy here stays role-neutral on purpose.
   title: "Sign in",
   description:
-    "Sign in to Goldstay to access your owner dashboard or admin console.",
+    "Sign in to Goldstay to access your client dashboard or admin console.",
   robots: { index: false, follow: false },
 };
 

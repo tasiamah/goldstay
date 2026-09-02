@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/nextjs";
 import Link from "next/link";
 import { useEffect } from "react";
 
-// Error boundary for /admin and /owner. Plain stone palette to match
+// Error boundary for /admin and /client. Plain stone palette to match
 // the rest of the platform; no marketing chrome, no WhatsApp CTA —
 // staff and landlords here have a direct support channel and don't
 // want to be funnelled through a sales surface when something breaks.
@@ -48,7 +48,7 @@ export default function PlatformError({
             Try again
           </button>
           <Link
-            href="/owner"
+            href="/client"
             className="rounded-md border border-stone-300 px-4 py-2 text-sm text-stone-700 hover:bg-stone-50"
           >
             Back to portal

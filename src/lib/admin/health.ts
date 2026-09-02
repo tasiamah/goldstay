@@ -33,7 +33,7 @@ export type IcalFeedHealth = Pick<
 export type StatementSendHealth = Pick<
   StatementSend,
   | "id"
-  | "ownerId"
+  | "clientId"
   | "periodYear"
   | "periodMonth"
   | "status"
@@ -41,7 +41,7 @@ export type StatementSendHealth = Pick<
   | "sentAt"
   | "error"
 > & {
-  owner: {
+  client: {
     fullName: string;
     companyName: string | null;
   } | null;
@@ -75,7 +75,7 @@ export async function getSystemHealth(): Promise<SystemHealth> {
       orderBy: { createdAt: "desc" },
       take: 10,
       include: {
-        owner: { select: { fullName: true, companyName: true } },
+        client: { select: { fullName: true, companyName: true } },
       },
     }),
   ]);

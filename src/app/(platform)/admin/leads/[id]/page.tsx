@@ -1,6 +1,6 @@
 // /admin/leads/[id] — single lead, all the context, all the buttons
 // to advance it. Convert renders inline rather than as a separate
-// route so the operator can see the lead facts and the owner-create
+// route so the operator can see the lead facts and the client-create
 // form side-by-side on the same screen.
 
 import Link from "next/link";
@@ -33,10 +33,10 @@ export default async function LeadDetailPage({
 
   if (!lead) notFound();
 
-  // Already converted: short-circuit to the resulting owner. No
+  // Already converted: short-circuit to the resulting client. No
   // useful action remains on a CONVERTED lead.
-  if (lead.status === "CONVERTED" && lead.convertedOwnerId) {
-    redirect(`/admin/owners/${lead.convertedOwnerId}`);
+  if (lead.status === "CONVERTED" && lead.convertedClientId) {
+    redirect(`/admin/clients/${lead.convertedClientId}`);
   }
 
   return (
@@ -103,7 +103,7 @@ export default async function LeadDetailPage({
             <Term label="Service interest" value={lead.serviceInterest} />
             <Term label="Availability" value={lead.availability} />
             <Term
-              label="Owner"
+              label="Client"
               value={
                 lead.ownerAdmin
                   ? `${lead.ownerAdmin.fullName} (${lead.ownerAdmin.email})`
@@ -148,10 +148,10 @@ export default async function LeadDetailPage({
           ) : (
             <div className="rounded-lg border border-stone-200 bg-white p-6">
               <h3 className="text-base font-medium text-stone-900">
-                Convert to owner
+                Convert to client
               </h3>
               <p className="mt-1 text-sm text-stone-500">
-                Creates an Owner row, sends the welcome email with a magic
+                Creates a Client row, sends the welcome email with a magic
                 sign-in link, and stamps this lead as CONVERTED.
               </p>
               <div className="mt-5">

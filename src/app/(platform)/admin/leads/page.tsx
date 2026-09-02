@@ -7,7 +7,7 @@
 //
 // Filters: status, country, source, free-text on name/email/phone. The
 // Convert column links straight to /admin/leads/[id]/convert which
-// pre-fills /admin/owners/new — that's the whole point of this page.
+// pre-fills /admin/clients/new — that's the whole point of this page.
 
 import Link from "next/link";
 import type { Prisma } from "@prisma/client";
@@ -232,7 +232,7 @@ export default async function LeadsListPage({
                 <Th>Status</Th>
                 <Th>Property</Th>
                 <Th>Source</Th>
-                <Th>Owner</Th>
+                <Th>Client</Th>
                 <Th>Submitted</Th>
               </tr>
             </thead>

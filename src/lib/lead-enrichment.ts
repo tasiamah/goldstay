@@ -196,7 +196,7 @@ export function enrichLead(input: EnrichmentInput): EnrichmentResult {
   }
 
   // Bedrooms ≥ 2 is a meaningful signal because studios/1BRs at
-  // mid-premium price points are typically owner-occupied side hustles
+  // mid-premium price points are typically client-occupied side hustles
   // we sign less often than 2-3BR family / corporate stock.
   const beds = parseInt(lower(input.bedrooms), 10);
   if (!Number.isNaN(beds) && beds >= 2) {

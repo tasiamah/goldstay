@@ -10,7 +10,7 @@ describe("enrichLead", () => {
       service: "Long-term",
       bedrooms: "3",
       availability: "Within 1 month",
-      email: "owner@example.com",
+      email: "client@example.com",
       phone: "+44 7700 900123",
     });
     expect(r.tier).toBe("A");

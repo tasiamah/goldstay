@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
-import type { OwnerPayoutMethod } from "@prisma/client";
+import type { ClientPayoutMethod } from "@prisma/client";
 import { summarisePayoutMethod } from "./payouts";
 
 function makeMethod(
-  overrides: Partial<OwnerPayoutMethod> = {},
-): OwnerPayoutMethod {
+  overrides: Partial<ClientPayoutMethod> = {},
+): ClientPayoutMethod {
   return {
     id: "p_1",
-    ownerId: "o_1",
+    clientId: "o_1",
     kind: "LOCAL_BANK",
     label: "KCB Westlands",
     currency: "KES",

@@ -26,7 +26,8 @@ export async function reissueAgreementAction(
       id: true,
       country: true,
       propertyType: true,
-      ownerId: true,
+      signingCapacity: true,
+      clientId: true,
     },
   });
   if (!property) return { ok: false, error: "Property not found." };
@@ -56,6 +57,9 @@ export async function reissueAgreementAction(
         earlyExitFeeCurrency: terms.earlyExitFeeCurrency,
         noticePeriodDays: terms.noticePeriodDays,
         governingLaw: terms.governingLaw,
+        // Re-snapshotted from the property, so correcting a capacity
+        // and reissuing is how you fix a wrong authority clause.
+        signingCapacity: property.signingCapacity,
         status: AgreementStatus.SENT,
         sentAt: new Date(),
       },
@@ -68,13 +72,13 @@ export async function reissueAgreementAction(
     entityId: newAgreement.id,
     action: "agreement.reissued",
     summary: "Management agreement reissued",
-    metadata: { propertyId, ownerId: property.ownerId },
+    metadata: { propertyId, clientId: property.clientId },
   });
 
   revalidatePath("/admin");
   revalidatePath(`/admin/properties/${propertyId}`);
-  revalidatePath(`/admin/owners/${property.ownerId}`);
-  revalidatePath("/owner");
-  revalidatePath(`/owner/properties/${propertyId}`);
+  revalidatePath(`/admin/clients/${property.clientId}`);
+  revalidatePath("/client");
+  revalidatePath(`/client/properties/${propertyId}`);
   return { ok: true, agreementId: newAgreement.id };
 }

@@ -13,7 +13,7 @@ export default function PlatformNotFound() {
           access to it.
         </p>
         <Link
-          href="/owner"
+          href="/client"
           className="mt-6 inline-flex rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-700"
         >
           Back to portal

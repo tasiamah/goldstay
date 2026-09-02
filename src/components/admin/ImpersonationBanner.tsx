@@ -1,15 +1,15 @@
-// Renders at the top of every /owner/* page when an admin is
-// currently impersonating an owner. Reads the cookie set by
+// Renders at the top of every /client/* page when an admin is
+// currently impersonating a client. Reads the cookie set by
 // startImpersonationAction; absent cookie = nothing rendered.
 //
 // Stop-impersonating is intentionally a server action that clears
 // the cookie + records an audit event before redirecting back to
 // /admin. We don't sign the admin out of Supabase here because the
-// magic link gave them an owner-scoped session anyway; clearing the
+// magic link gave them a client-scoped session anyway; clearing the
 // cookie is enough to stop the banner from showing.
 
 import { readImpersonationCookie } from "@/lib/admin/impersonation";
-import { stopImpersonationAction } from "@/app/(platform)/admin/owners/[id]/impersonate-actions";
+import { stopImpersonationAction } from "@/app/(platform)/admin/clients/[id]/impersonate-actions";
 
 export async function ImpersonationBanner() {
   const cookie = await readImpersonationCookie();
@@ -22,7 +22,7 @@ export async function ImpersonationBanner() {
           Impersonating
         </span>
         <span>
-          Acting as <strong>{cookie.ownerLabel}</strong> · admin{" "}
+          Acting as <strong>{cookie.clientLabel}</strong> · admin{" "}
           <span className="font-mono text-xs">{cookie.adminEmail}</span>
         </span>
       </div>

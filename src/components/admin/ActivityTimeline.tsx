@@ -60,23 +60,23 @@ const KIND_LABEL: Record<Row["kind"], string> = {
 export async function ActivityTimeline({
   entity,
   entityId,
-  // Owner-only sources (Communications) are read separately because
-  // CommunicationLog is keyed by ownerId, not (entity, entityId).
+  // Client-only sources (Communications) are read separately because
+  // CommunicationLog is keyed by clientId, not (entity, entityId).
   // For a property, we still surface comms when the caller passes
-  // the property's ownerId; for an owner, ownerId === entityId.
-  ownerId,
+  // the property's clientId; for a client, clientId === entityId.
+  clientId,
   title = "Activity",
 }: {
   entity: AuditEntity;
   entityId: string;
-  ownerId?: string | null;
+  clientId?: string | null;
   title?: string;
 }) {
   const [audits, notes, comms] = await Promise.all([
     listAuditFor(entity, entityId, 50),
     listNotesFor(entity, entityId, 50),
-    ownerId
-      ? listCommunicationsFor(ownerId, 50)
+    clientId
+      ? listCommunicationsFor(clientId, 50)
       : Promise.resolve([]),
   ]);
 
@@ -100,7 +100,7 @@ export async function ActivityTimeline({
       kind: "comm" as const,
       id: c.id,
       createdAt: c.createdAt,
-      who: c.sentByAdminId ? "ops" : c.direction === "INBOUND" ? "owner" : "system",
+      who: c.sentByAdminId ? "ops" : c.direction === "INBOUND" ? "client" : "system",
       summary: summariseLog(c),
     })),
   ].sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());

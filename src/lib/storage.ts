@@ -8,11 +8,18 @@
 //
 // Bucket layout:
 //   properties/<propertyId>/<docId>-<safeFilename>   ← property docs
-//   owners/<ownerId>/<docId>-<safeFilename>          ← owner KYC docs
+//   owners/<clientId>/<docId>-<safeFilename>         ← client KYC docs
 //
 // Both live in the same private bucket; the prefix tells us which
-// table the row in `Document` points back to (propertyId vs ownerId
+// table the row in `Document` points back to (propertyId vs clientId
 // — exactly one is non-null per row, enforced by the application).
+//
+// The `owners/` prefix predates the owner -> client rename and is
+// deliberately left alone, for the same reason the Postgres tables
+// are (see @@map in prisma/schema.prisma): every existing object is
+// already at that key and `Document.storagePath` points at it. Moving
+// new uploads to `clients/` would only split the bucket across two
+// prefixes for no gain.
 
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
@@ -30,18 +37,18 @@ export function buildStoragePath(opts: {
   return `properties/${opts.propertyId}/${opts.documentId}-${safe}`;
 }
 
-// Owner-scoped path. Owner-attached documents (ID_DOCUMENT, KYC,
+// Client-scoped path. Client-attached documents (ID_DOCUMENT, KYC,
 // PROOF_OF_PAYOUT_ACCOUNT) live here. Kept separate from
 // `buildStoragePath` to make the call sites unambiguous: a function
-// signature with `ownerId` only can never accidentally write to a
+// signature with `clientId` only can never accidentally write to a
 // property prefix and vice versa.
-export function buildOwnerStoragePath(opts: {
-  ownerId: string;
+export function buildClientStoragePath(opts: {
+  clientId: string;
   documentId: string;
   filename: string;
 }): string {
   const safe = sanitiseFilename(opts.filename);
-  return `owners/${opts.ownerId}/${opts.documentId}-${safe}`;
+  return `owners/${opts.clientId}/${opts.documentId}-${safe}`;
 }
 
 export function sanitiseFilename(name: string): string {

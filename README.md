@@ -152,7 +152,7 @@ Create the three tables described below. Field names are case-sensitive and must
 | Income/rent ratio | Number (2 decimals) |
 | Monthly income USD | Currency (USD) |
 | Target rent USD | Currency (USD) |
-| Employment type | Single select (salaried, self-employed, contract, business-owner, unemployed, student, other) |
+| Employment type | Single select (salaried, self-employed, contract, business-client, unemployed, student, other) |
 | Employer | Single line text |
 | Months in role | Number (integer) |
 | Has previous landlord | Checkbox |
@@ -192,9 +192,9 @@ Create the three tables described below. Field names are case-sensitive and must
 
 ## Outbound acquisition pipeline
 
-A nightly GitHub Actions cron (`.github/workflows/acquisition-scan.yml`) hits `/api/cron/acquisition-scan` on the production deployment, which runs the Airbnb + BuyRentKenya scrapers, scores each result with the owner-vs-agent classifier in `src/lib/acquisition/classify.ts`, and upserts surviving rows into the Airtable **Acquisition Targets** table.
+A nightly GitHub Actions cron (`.github/workflows/acquisition-scan.yml`) hits `/api/cron/acquisition-scan` on the production deployment, which runs the Airbnb + BuyRentKenya scrapers, scores each result with the client-vs-agent classifier in `src/lib/acquisition/classify.ts`, and upserts surviving rows into the Airtable **Acquisition Targets** table.
 
-- **Owner vs agent**: Most BuyRentKenya / Property24 listings are agency-posted. The classifier is what turns the firehose into a useful pipe — it weights phone-frequency, lister-name shape, owner-direct phrasing in the description, and a manually-curated phone blocklist (`ACQUISITION_AGENT_PHONE_BLOCKLIST`). Likely-agent rows are filtered out before they reach Airtable; ops only sees what's worth calling.
+- **Client vs agent**: Most BuyRentKenya / Property24 listings are agency-posted. The classifier is what turns the firehose into a useful pipe — it weights phone-frequency, lister-name shape, client-direct phrasing in the description, and a manually-curated phone blocklist (`ACQUISITION_AGENT_PHONE_BLOCKLIST`). Likely-agent rows are filtered out before they reach Airtable; ops only sees what's worth calling.
 - **Pain score**: Stale listings (45+ days), repeat re-listings and mid-market asking prices score higher. Sort the table by Pain score descending for the warmest outbound.
 - **Blocking**: Some sources will eventually 403 a Vercel-IP request. When that happens, set `ACQUISITION_PROXY_URL` to a residential proxy (Bright Data, ScraperAPI, etc.) and the existing `fetchHtml` helper will start routing through it.
 - **Manual run**: trigger the GitHub Actions workflow with the *Run workflow* button, or POST `Authorization: Bearer $CRON_SECRET` to `/api/cron/acquisition-scan` from your terminal.
@@ -203,7 +203,7 @@ Vacancy auto-pitch (`/api/cron/vacancy-pitch`) runs daily on the same Bearer-tok
 
 ## Yield calculator lead magnet
 
-`/yield-calculator` is the highest-intent inbound surface. It renders a live comparison of self-managed vs. Goldstay-managed economics, then captures the landlord's email in exchange for a branded PDF report (rendered server-side via `@react-pdf/renderer`, reuses the `StatementDocument` styling so the visual identity is continuous from lead to live owner). Every download mirrors to the Airtable Yield Reports table tagged `Source = yield-calculator`.
+`/yield-calculator` is the highest-intent inbound surface. It renders a live comparison of self-managed vs. Goldstay-managed economics, then captures the landlord's email in exchange for a branded PDF report (rendered server-side via `@react-pdf/renderer`, reuses the `StatementDocument` styling so the visual identity is continuous from lead to live client). Every download mirrors to the Airtable Yield Reports table tagged `Source = yield-calculator`.
 
 Edit assumptions (occupancy, leakage, OTA fees, tax) in one place: `src/lib/yield/calc.ts`. Tests in `calc.test.ts` lock in the directional behaviour (Goldstay > self-managed, scales with rent, Accra tax > Nairobi tax).
 

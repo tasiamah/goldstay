@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPropertyDisplayName } from "@/lib/format-property";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import {
   PropertyStatusBadge,
   PropertyTypeBadge,
@@ -74,7 +74,7 @@ export default async function PropertiesListPage({
   if (filters.q) {
     // Search across the things an operator types when looking up a
     // property: building name, unit/door, address, neighbourhood,
-    // city, and the owner's display name (full or company).
+    // city, and the client's display name (full or company).
     where.OR = [
       { name: { contains: filters.q, mode: "insensitive" } },
       { unitNumber: { contains: filters.q, mode: "insensitive" } },
@@ -82,7 +82,7 @@ export default async function PropertiesListPage({
       { neighbourhood: { contains: filters.q, mode: "insensitive" } },
       { city: { contains: filters.q, mode: "insensitive" } },
       {
-        owner: {
+        client: {
           is: {
             OR: [
               { fullName: { contains: filters.q, mode: "insensitive" } },
@@ -106,7 +106,7 @@ export default async function PropertiesListPage({
       skip: (page - 1) * pageSize,
       take: pageSize,
       include: {
-        owner: { select: { id: true, fullName: true, companyName: true } },
+        client: { select: { id: true, fullName: true, companyName: true } },
       },
     }),
     prisma.property.count({ where }),
@@ -163,7 +163,7 @@ export default async function PropertiesListPage({
             ) : (
               <>
                 {totalCount} {totalCount === 1 ? "property" : "properties"}{" "}
-                across all owners
+                across all clients
               </>
             )}
           </p>
@@ -192,7 +192,7 @@ export default async function PropertiesListPage({
 
       <div className="flex flex-1 flex-wrap items-center gap-3">
         <ListSearchBar
-          placeholder="Search property, address, owner…"
+          placeholder="Search property, address, client…"
           ariaLabel="Search properties"
         />
         <FilterSelect
@@ -252,7 +252,7 @@ export default async function PropertiesListPage({
                   basePath="/admin/properties"
                   params={propertiesTableParams(filters, sort, pageSize)}
                 />
-                <PlainHeader>Owner</PlainHeader>
+                <PlainHeader>Client</PlainHeader>
                 <SortableHeader
                   column="country"
                   label="Country"
@@ -293,10 +293,10 @@ export default async function PropertiesListPage({
                   </td>
                   <td className="px-4 py-3 text-sm">
                     <Link
-                      href={`/admin/owners/${p.owner.id}`}
+                      href={`/admin/clients/${p.client.id}`}
                       className="text-stone-700 hover:underline"
                     >
-                      {formatOwnerDisplayName(p.owner)}
+                      {formatClientDisplayName(p.client)}
                     </Link>
                   </td>
                   <td className="px-4 py-3 text-sm text-stone-700">
@@ -349,13 +349,13 @@ function EmptyState() {
         No properties yet
       </h3>
       <p className="mt-1 text-sm text-stone-500">
-        Add an owner first, then attach a property from their detail page.
+        Add a client first, then attach a property from their detail page.
       </p>
       <Link
-        href="/admin/owners"
+        href="/admin/clients"
         className="mt-4 inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
       >
-        Go to owners
+        Go to clients
       </Link>
     </div>
   );

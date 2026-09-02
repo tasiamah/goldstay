@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
-  parseOwnerListFilters,
+  parseClientListFilters,
   parsePropertyListFilters,
   periodRange,
   toQueryString,
@@ -15,18 +15,18 @@ import {
 //     and KPI drill-in deep-links.
 // Defaults / array-handling / trim are exercised in the same tests.
 
-describe("parseOwnerListFilters + parsePropertyListFilters", () => {
+describe("parseClientListFilters + parsePropertyListFilters", () => {
   it("only accepts known enum values and trims free-text", () => {
-    expect(parseOwnerListFilters({ q: "  asha  " })).toEqual({
+    expect(parseClientListFilters({ q: "  asha  " })).toEqual({
       q: "asha",
       country: null,
       period: null,
     });
-    expect(parseOwnerListFilters({ country: "ZA" }).country).toBeNull();
-    expect(parseOwnerListFilters({ country: "KE" }).country).toBe("KE");
-    expect(parseOwnerListFilters({ q: ["asha", "kim"] }).q).toBe("asha");
-    expect(parseOwnerListFilters({ period: "yesterday" }).period).toBeNull();
-    expect(parseOwnerListFilters({ period: "this-month" }).period).toBe(
+    expect(parseClientListFilters({ country: "ZA" }).country).toBeNull();
+    expect(parseClientListFilters({ country: "KE" }).country).toBe("KE");
+    expect(parseClientListFilters({ q: ["asha", "kim"] }).q).toBe("asha");
+    expect(parseClientListFilters({ period: "yesterday" }).period).toBeNull();
+    expect(parseClientListFilters({ period: "this-month" }).period).toBe(
       "this-month",
     );
 

@@ -1,23 +1,23 @@
 // Monthly statement push.
 //
 // Called from /api/cron/send-statements on the 5th of every month
-// (Vercel cron). For each owner with at least one ACTIVE property:
+// (Vercel cron). For each client with at least one ACTIVE property:
 //
 //   1. Skip if a StatementSend row already exists for the period.
 //      Idempotency is the entire point of this layer — the cron
 //      can fire twice (Vercel retry, manual run) and never double-
 //      send.
-//   2. Render the same PDF the owner can download from
-//      /owner/statements/<year>/<month>.
+//   2. Render the same PDF the client can download from
+//      /client/statements/<year>/<month>.
 //   3. Send via Resend with the PDF attached.
 //   4. Record a CommunicationLog row + write the StatementSend row
 //      with status, providerId, and a one-line summary.
 //
 // Failures are recorded (status=FAILED, error captured) but never
-// thrown to the caller — one bad owner shouldn't kill the run.
+// thrown to the caller — one bad client shouldn't kill the run.
 
 import { renderToBuffer } from "@react-pdf/renderer";
-import type { Owner } from "@prisma/client";
+import type { Client } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { logCommunication, updateCommunicationStatus } from "@/lib/comms";
 import { StatementDocument } from "./StatementDocument";
@@ -37,9 +37,9 @@ export type SendStatementResult =
   | { ok: true; status: "sent" | "skipped"; sendId: string | null }
   | { ok: false; status: "failed"; sendId: string | null; error: string };
 
-export async function sendStatementForOwner(
-  owner: Pick<
-    Owner,
+export async function sendStatementForClient(
+  client: Pick<
+    Client,
     "id" | "email" | "fullName" | "companyName" | "preferredCurrency"
   >,
   period: Period,
@@ -48,8 +48,8 @@ export async function sendStatementForOwner(
   // delivered for this period.
   const existing = await prisma.statementSend.findUnique({
     where: {
-      ownerId_periodYear_periodMonth: {
-        ownerId: owner.id,
+      clientId_periodYear_periodMonth: {
+        clientId: client.id,
         periodYear: period.year,
         periodMonth: period.month,
       },
@@ -65,7 +65,7 @@ export async function sendStatementForOwner(
     prisma.transaction.findMany({
       where: {
         occurredOn: { gte: start, lt: end },
-        property: { ownerId: owner.id },
+        property: { clientId: client.id },
       },
       include: {
         property: { select: { id: true, name: true } },
@@ -75,7 +75,7 @@ export async function sendStatementForOwner(
     }),
     prisma.booking.findMany({
       where: {
-        property: { ownerId: owner.id, propertyType: "SHORT_TERM" },
+        property: { clientId: client.id, propertyType: "SHORT_TERM" },
         checkIn: { lt: end },
         checkOut: { gt: start },
       },
@@ -106,7 +106,7 @@ export async function sendStatementForOwner(
       leaseId: t.leaseId,
       tenantName: t.lease?.tenantName ?? null,
     })),
-    { preferredCurrency: owner.preferredCurrency },
+    { preferredCurrency: client.preferredCurrency },
   );
 
   const shortTerm = buildShortTermSummary(
@@ -142,8 +142,8 @@ export async function sendStatementForOwner(
   // of silently no-show.
   const send = await prisma.statementSend.upsert({
     where: {
-      ownerId_periodYear_periodMonth: {
-        ownerId: owner.id,
+      clientId_periodYear_periodMonth: {
+        clientId: client.id,
         periodYear: period.year,
         periodMonth: period.month,
       },
@@ -154,7 +154,7 @@ export async function sendStatementForOwner(
       error: null,
     },
     create: {
-      ownerId: owner.id,
+      clientId: client.id,
       periodYear: period.year,
       periodMonth: period.month,
       status: "QUEUED",
@@ -166,11 +166,11 @@ export async function sendStatementForOwner(
     const pdfBuffer = await renderToBuffer(
       StatementDocument({
         period,
-        owner: {
-          fullName: owner.fullName,
-          companyName: owner.companyName,
-          email: owner.email,
-          preferredCurrency: owner.preferredCurrency,
+        client: {
+          fullName: client.fullName,
+          companyName: client.companyName,
+          email: client.email,
+          preferredCurrency: client.preferredCurrency,
         },
         statement,
         shortTerm,
@@ -187,12 +187,12 @@ export async function sendStatementForOwner(
     // Log the comms row first (status QUEUED) so an outage between
     // Resend ack and DB write doesn't leave the timeline missing.
     const log = await logCommunication({
-      ownerId: owner.id,
+      clientId: client.id,
       channel: "EMAIL",
       direction: "OUTBOUND",
       subject,
       body: renderEmailBody({
-        owner,
+        client,
         period,
         siteUrl,
         isEmpty,
@@ -210,7 +210,7 @@ export async function sendStatementForOwner(
       // bouncing on a missing secret. Production CI must set the
       // key; the system-health page will surface this state too.
       console.log(
-        `[statements] would send to ${owner.email} for ${formatPeriod(period)}\n${summary}`,
+        `[statements] would send to ${client.email} for ${formatPeriod(period)}\n${summary}`,
       );
       await updateCommunicationStatus(log.id, "SENT");
       const updated = await prisma.statementSend.update({
@@ -229,10 +229,10 @@ export async function sendStatementForOwner(
     const resend = new Resend(apiKey);
     const result = await resend.emails.send({
       from,
-      to: [owner.email],
+      to: [client.email],
       subject,
-      text: renderEmailBody({ owner, period, siteUrl, isEmpty, summary }),
-      html: renderEmailHtml({ owner, period, siteUrl, isEmpty, summary }),
+      text: renderEmailBody({ client, period, siteUrl, isEmpty, summary }),
+      html: renderEmailHtml({ client, period, siteUrl, isEmpty, summary }),
       attachments: [
         {
           filename,
@@ -297,13 +297,13 @@ function formatNumber(n: number): string {
 }
 
 function renderEmailBody(opts: {
-  owner: Pick<Owner, "fullName" | "companyName">;
+  client: Pick<Client, "fullName" | "companyName">;
   period: Period;
   siteUrl: string;
   isEmpty: boolean;
   summary: string;
 }): string {
-  const greeting = `Hi ${opts.owner.fullName.split(/\s+/)[0] || "there"},`;
+  const greeting = `Hi ${opts.client.fullName.split(/\s+/)[0] || "there"},`;
   const lead = opts.isEmpty
     ? `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. There was no rent or booking activity to report this month — the cover page confirms a clean ledger.`
     : `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. ${opts.summary}.`;
@@ -313,7 +313,7 @@ function renderEmailBody(opts: {
     lead,
     "",
     `You can also browse the same statement, line-by-line, in your portal:`,
-    `${opts.siteUrl}/owner/statements/${opts.period.year}/${opts.period.month}`,
+    `${opts.siteUrl}/client/statements/${opts.period.year}/${opts.period.month}`,
     "",
     "Net payouts are remitted by the 10th of every month per your management agreement. If anything in this statement looks off, reply to this email and we'll investigate same-day.",
     "",
@@ -322,17 +322,17 @@ function renderEmailBody(opts: {
 }
 
 function renderEmailHtml(opts: {
-  owner: Pick<Owner, "fullName" | "companyName">;
+  client: Pick<Client, "fullName" | "companyName">;
   period: Period;
   siteUrl: string;
   isEmpty: boolean;
   summary: string;
 }): string {
-  const firstName = opts.owner.fullName.split(/\s+/)[0] || "there";
+  const firstName = opts.client.fullName.split(/\s+/)[0] || "there";
   const lead = opts.isEmpty
     ? `Your Goldstay statement for <strong>${formatPeriod(opts.period)}</strong> is attached. There was no rent or booking activity to report this month — the cover page confirms a clean ledger.`
     : `Your Goldstay statement for <strong>${formatPeriod(opts.period)}</strong> is attached. ${escapeHtml(opts.summary)}.`;
-  const url = `${opts.siteUrl}/owner/statements/${opts.period.year}/${opts.period.month}`;
+  const url = `${opts.siteUrl}/client/statements/${opts.period.year}/${opts.period.month}`;
   return `<!doctype html>
 <html lang="en">
   <body style="margin:0;background:#fafaf9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1c1917">

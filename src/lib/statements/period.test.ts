@@ -5,7 +5,7 @@ import {
   previousPeriod,
 } from "./period";
 
-// Statement-period maths. Every monthly owner statement, every "last
+// Statement-period maths. Every monthly client statement, every "last
 // month" comparison and every URL slug runs through here, so the
 // only interesting failure modes are:
 //   - month / year rollover at boundaries (Jan, Dec)

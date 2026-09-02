@@ -18,7 +18,7 @@ function tx(partial: Partial<StatementTransaction>): StatementTransaction {
   };
 }
 
-// Statement aggregator. It's the document the owner sees every month;
+// Statement aggregator. It's the document the client sees every month;
 // the failure modes that actually matter are:
 //   - summing across currencies (would wire wrong USD amount)
 //   - mishandling Decimal-as-string values from Prisma (would zero

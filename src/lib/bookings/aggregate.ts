@@ -1,6 +1,6 @@
 // Pure aggregation helpers for short-term booking analytics. Operate
 // on plain objects so they're trivial to unit test and easy to call
-// from both the server-rendered owner dashboard and the statement
+// from both the server-rendered client dashboard and the statement
 // PDF route. No Prisma imports here.
 
 import { nightsBetween } from "./nights";

@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
+import type { SigningCapacity } from "@prisma/client";
 import type { PropertyActionResult } from "./actions";
 import {
   findCanonicalNairobiNeighbourhood,
   isNairobiCity,
   NAIROBI_NEIGHBOURHOODS,
 } from "@/lib/nairobi-neighbourhoods";
+import {
+  SIGNING_CAPACITIES,
+  SIGNING_CAPACITY_HINT,
+  SIGNING_CAPACITY_LABEL,
+} from "@/lib/signing-capacity";
 
 const OTHER_NEIGHBOURHOOD_VALUE = "__other__";
 
@@ -17,7 +23,7 @@ type FormAction = (
 ) => Promise<PropertyActionResult>;
 
 type Defaults = {
-  ownerId: string;
+  clientId: string;
   name?: string;
   unitNumber?: string | null;
   city?: string;
@@ -31,6 +37,7 @@ type Defaults = {
   acquisitionCurrency?: string | null;
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
   propertyType?: "LONG_TERM" | "SHORT_TERM";
+  signingCapacity?: SigningCapacity;
   hostawayListingId?: string | null;
 };
 
@@ -38,13 +45,13 @@ export function PropertyForm({
   action,
   defaults,
   submitLabel,
-  ownerCountry,
+  clientCountry,
   isEditing = false,
 }: {
   action: FormAction;
   defaults: Defaults;
   submitLabel: string;
-  ownerCountry: "KE" | "GH";
+  clientCountry: "KE" | "GH";
   // When true the form is editing an existing property. The rental
   // model (LONG_TERM / SHORT_TERM) is locked because switching it
   // mid-life would invalidate the snapshotted commission rate on
@@ -64,7 +71,7 @@ export function PropertyForm({
 
   return (
     <form action={formAction} className="space-y-6">
-      <input type="hidden" name="ownerId" value={defaults.ownerId} />
+      <input type="hidden" name="clientId" value={defaults.clientId} />
 
       {/* Building name and unit number sit side-by-side so it's visually
           obvious that "Pinetree Plaza" alone isn't a complete address.
@@ -93,10 +100,10 @@ export function PropertyForm({
 
       <LocationFields
         defaults={{
-          city: defaults.city ?? (ownerCountry === "KE" ? "Nairobi" : "Accra"),
+          city: defaults.city ?? (clientCountry === "KE" ? "Nairobi" : "Accra"),
           neighbourhood: defaults.neighbourhood ?? "",
         }}
-        ownerCountry={ownerCountry}
+        clientCountry={clientCountry}
         cityError={fieldError("city")}
         neighbourhoodError={fieldError("neighbourhood")}
       />
@@ -114,7 +121,7 @@ export function PropertyForm({
         label="Description"
         name="description"
         defaultValue={defaults.description ?? ""}
-        placeholder="Internal notes for ops. Not visible to the owner."
+        placeholder="Internal notes for ops. Not visible to the client."
         error={fieldError("description")}
       />
 
@@ -144,6 +151,11 @@ export function PropertyForm({
           error={fieldError("hostawayListingId")}
         />
       </fieldset>
+
+      <SigningCapacityField
+        defaultValue={defaults.signingCapacity ?? "REGISTERED_OWNER"}
+        error={fieldError("signingCapacity")}
+      />
 
       <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
         <Field
@@ -237,12 +249,12 @@ export function PropertyForm({
 // without nagging the operator with a validation error.
 function LocationFields({
   defaults,
-  ownerCountry,
+  clientCountry,
   cityError,
   neighbourhoodError,
 }: {
   defaults: { city: string; neighbourhood: string };
-  ownerCountry: "KE" | "GH";
+  clientCountry: "KE" | "GH";
   cityError?: string;
   neighbourhoodError?: string;
 }) {
@@ -349,7 +361,7 @@ function LocationFields({
             name="neighbourhood"
             value={neighbourhood}
             onChange={(e) => setNeighbourhood(e.target.value)}
-            placeholder={ownerCountry === "GH" ? "East Legon" : "Suburb name"}
+            placeholder={clientCountry === "GH" ? "East Legon" : "Suburb name"}
             aria-invalid={Boolean(neighbourhoodError) || undefined}
             className={`mt-1 block w-full rounded-md border px-3 py-2 text-stone-900 shadow-sm focus:outline-none focus:ring-1 ${
               neighbourhoodError
@@ -372,6 +384,59 @@ function LocationFields({
 // a defence-in-depth move so a stale form payload still posts the
 // existing value; the server action enforces the real lock by
 // reading the current value from the DB and ignoring the form input.
+// Who signs the management agreement for this property, and on what
+// basis. A radio group rather than a select because each option carries
+// a different warranty in clause 2 of the agreement — an operator
+// picking from a collapsed dropdown can't see what they're committing
+// the client to. Changing this on an already-issued agreement requires
+// reissuing it; the property detail page says so.
+function SigningCapacityField({
+  defaultValue,
+  error,
+}: {
+  defaultValue: SigningCapacity;
+  error?: string;
+}) {
+  return (
+    <fieldset>
+      <legend className="text-sm font-medium text-stone-700">
+        Who signs the management agreement?
+      </legend>
+      <p className="mt-1 text-xs text-stone-500">
+        Sets the authority clause in the agreement. Pick the option that
+        matches the paperwork — not every client owns what they let to us.
+      </p>
+      <div className="mt-3 space-y-2">
+        {SIGNING_CAPACITIES.map((capacity) => (
+          <label
+            key={capacity}
+            className="flex cursor-pointer items-start gap-3 rounded-md border border-stone-200 bg-white px-3 py-2.5 hover:bg-stone-50"
+          >
+            <input
+              type="radio"
+              name="signingCapacity"
+              value={capacity}
+              defaultChecked={capacity === defaultValue}
+              className="mt-0.5 h-4 w-4 border-stone-300 text-stone-900 focus:ring-stone-500"
+            />
+            <span>
+              <span className="block text-sm font-medium text-stone-900">
+                {SIGNING_CAPACITY_LABEL[capacity]}
+              </span>
+              <span className="mt-0.5 block text-xs text-stone-500">
+                {SIGNING_CAPACITY_HINT[capacity]}
+              </span>
+            </span>
+          </label>
+        ))}
+      </div>
+      {error ? (
+        <span className="mt-1 block text-xs text-red-700">{error}</span>
+      ) : null}
+    </fieldset>
+  );
+}
+
 function RentalModelLocked({
   value,
 }: {

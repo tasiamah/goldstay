@@ -1,29 +1,29 @@
-// Owner notifications — derived sync.
+// Client notifications — derived sync.
 //
-// Called from the owner dashboard render path. Reconciles
-// OwnerNotification rows against the owner's current state so the
+// Called from the client dashboard render path. Reconciles
+// ClientNotification rows against the client's current state so the
 // bell always shows what's actionable right now.
 //
 // We avoid an event bus / cron for the MVP because:
 //
 //   * The four derived sources are all cheap to query alongside the
 //     dashboard's existing reads.
-//   * "Right when the owner opens the page" is the only moment the
+//   * "Right when the client opens the page" is the only moment the
 //     bell is going to be looked at, so eventual consistency is fine.
 //   * A separate cron risks the bell going stale between runs and
 //     would need a way to coalesce duplicate inserts anyway.
 //
-// Idempotency is enforced by the (ownerId, kind, sourceRef) unique
-// index on OwnerNotification — see the schema comment. We never
+// Idempotency is enforced by the (clientId, kind, sourceRef) unique
+// index on ClientNotification — see the schema comment. We never
 // delete derived rows: when the source condition is no longer true,
-// we set resolvedAt so the owner can scroll through "what was true
+// we set resolvedAt so the client can scroll through "what was true
 // when" without losing context. ADMIN_BROADCAST rows are never
 // touched here.
 
 import {
   type ManagementAgreement,
-  type OwnerNotificationKind,
-  type OwnerNotificationTone,
+  type ClientNotificationKind,
+  type ClientNotificationTone,
   type Prisma,
   type StatementSend,
   type Transaction,
@@ -32,15 +32,15 @@ import { prisma } from "@/lib/db";
 import type {
   SetupChecklist,
   SetupStepKey,
-} from "@/lib/owner/setup-status";
+} from "@/lib/client/setup-status";
 
 // Each desired derived notification we'd like to exist right now.
 // The sync diffs this against the active rows in the database and
 // applies the minimum set of inserts + resolves.
 export type DesiredNotification = {
-  kind: OwnerNotificationKind;
+  kind: ClientNotificationKind;
   sourceRef: string;
-  tone: OwnerNotificationTone;
+  tone: ClientNotificationTone;
   title: string;
   body?: string;
   href?: string;
@@ -58,13 +58,13 @@ export type SyncInputs = {
   >[];
   // Most recent statement that's been sent + its month label. Pass
   // null if none. We only ever surface one row for the latest period
-  // — if an owner needs to scroll, they go to /owner/statements.
+  // — if a client needs to scroll, they go to /client/statements.
   latestStatement: Pick<
     StatementSend,
     "periodYear" | "periodMonth" | "sentAt"
   > | null;
   // Most recent OUTFLOW transaction that's actually a payout (i.e.
-  // a wire we sent the owner) within the last `payoutWindowDays`.
+  // a wire we sent the client) within the last `payoutWindowDays`.
   // Pass null if none. We only ever surface one.
   latestPayout: Pick<
     Transaction,
@@ -82,9 +82,9 @@ const STEP_TITLE: Record<SetupStepKey, string> = {
 };
 
 const STEP_HREF: Record<SetupStepKey, string> = {
-  details: "/owner/account?step=details#details",
-  legal: "/owner/account?step=legal#legal",
-  bank: "/owner/account?step=bank#bank",
+  details: "/client/account?step=details#details",
+  legal: "/client/account?step=legal#legal",
+  bank: "/client/account?step=bank#bank",
 };
 
 // Pure: no DB access. Returns the ideal set of derived
@@ -116,7 +116,7 @@ export function buildDesiredNotifications(
       tone: "WARNING",
       title: `Sign your management agreement`,
       body: `For ${propertyLabel}. Until this is signed, payouts and statements stay paused.`,
-      href: `/owner/agreements/${agreement.id}`,
+      href: `/client/agreements/${agreement.id}`,
     });
   }
 
@@ -133,7 +133,7 @@ export function buildDesiredNotifications(
         inputs.latestStatement.periodMonth,
       )} statement is ready`,
       body: "Download the signed PDF for your records.",
-      href: "/owner/statements",
+      href: "/client/statements",
     });
   }
 
@@ -158,7 +158,7 @@ export function buildDesiredNotifications(
           "en-GB",
           { day: "2-digit", month: "short", year: "numeric" },
         )}. See the matching receipt on the Statements page.`,
-        href: "/owner/statements",
+        href: "/client/statements",
       });
     }
   }
@@ -173,16 +173,16 @@ function monthLabel(year: number, month: number): string {
 
 // Applies the desired set against the database in a single
 // transaction. Returns nothing; the caller refetches via
-// listOwnerNotifications. Idempotent: safe to call on every render.
-export async function syncOwnerNotifications(
-  ownerId: string,
+// listClientNotifications. Idempotent: safe to call on every render.
+export async function syncClientNotifications(
+  clientId: string,
   inputs: SyncInputs,
 ): Promise<void> {
   const desired = buildDesiredNotifications(inputs);
   // Active = unresolved derived rows. We never touch BROADCAST.
-  const existing = await prisma.ownerNotification.findMany({
+  const existing = await prisma.clientNotification.findMany({
     where: {
-      ownerId,
+      clientId,
       kind: { not: "ADMIN_BROADCAST" },
       resolvedAt: null,
     },
@@ -202,23 +202,23 @@ export async function syncOwnerNotifications(
   await prisma.$transaction([
     ...(toResolve.length > 0
       ? [
-          prisma.ownerNotification.updateMany({
+          prisma.clientNotification.updateMany({
             where: { id: { in: toResolve.map((r) => r.id) } },
             data: { resolvedAt: new Date() },
           }),
         ]
       : []),
     ...toUpsert.map((d) =>
-      prisma.ownerNotification.upsert({
+      prisma.clientNotification.upsert({
         where: {
-          ownerId_kind_sourceRef: {
-            ownerId,
+          clientId_kind_sourceRef: {
+            clientId,
             kind: d.kind,
             sourceRef: d.sourceRef,
           },
         },
         create: {
-          ownerId,
+          clientId,
           kind: d.kind,
           tone: d.tone,
           title: d.title,
@@ -227,7 +227,7 @@ export async function syncOwnerNotifications(
           sourceRef: d.sourceRef,
         },
         // If a previously-resolved row exists for the same key, we
-        // re-open it (clear resolvedAt + readAt) so the owner sees
+        // re-open it (clear resolvedAt + readAt) so the client sees
         // it again. This handles "they completed setup, then we
         // added a new step that's now incomplete" gracefully.
         update: {

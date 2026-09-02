@@ -147,9 +147,9 @@ export async function finaliseDocumentUploadAction(input: unknown) {
       mimeType: mimeType ?? undefined,
       sizeBytes: sizeBytes ?? undefined,
     },
-    select: { propertyId: true, ownerId: true, title: true, kind: true },
+    select: { propertyId: true, clientId: true, title: true, kind: true },
   });
-  // Documents can attach to either a property or an owner (owner-
+  // Documents can attach to either a property or a client (client-
   // level KYC etc.). Audit against whichever scope is set.
   if (doc.propertyId) {
     await recordAudit({
@@ -161,21 +161,21 @@ export async function finaliseDocumentUploadAction(input: unknown) {
       metadata: { documentId, kind: doc.kind },
     });
     revalidatePath(`/admin/properties/${doc.propertyId}`);
-  } else if (doc.ownerId) {
+  } else if (doc.clientId) {
     await recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: doc.ownerId,
+      entity: "CLIENT",
+      entityId: doc.clientId,
       action: "document.uploaded",
       summary: `Document "${doc.title}" (${doc.kind}) uploaded`,
       metadata: { documentId, kind: doc.kind },
     });
-    revalidatePath(`/admin/owners/${doc.ownerId}`);
+    revalidatePath(`/admin/clients/${doc.clientId}`);
   }
   return { ok: true as const };
 }
 
-// Verify a property document — flips the badge on the owner's view
+// Verify a property document — flips the badge on the client's view
 // from "Pending verification" to "Verified by Goldstay" and writes
 // an audit row attributing the action. Idempotent: re-verifying an
 // already-verified row updates `verifiedByAdminId` to whoever last
@@ -223,7 +223,7 @@ export async function verifyPropertyDocumentAction(documentId: string) {
     metadata: { documentId },
   });
   revalidatePath(`/admin/properties/${doc.propertyId}`);
-  revalidatePath(`/owner/properties/${doc.propertyId}`);
+  revalidatePath(`/client/properties/${doc.propertyId}`);
   return { ok: true as const };
 }
 
@@ -253,7 +253,7 @@ export async function unverifyPropertyDocumentAction(documentId: string) {
     metadata: { documentId },
   });
   revalidatePath(`/admin/properties/${doc.propertyId}`);
-  revalidatePath(`/owner/properties/${doc.propertyId}`);
+  revalidatePath(`/client/properties/${doc.propertyId}`);
   return { ok: true as const };
 }
 
@@ -264,7 +264,7 @@ export async function deleteDocumentAction(documentId: string) {
     select: {
       id: true,
       propertyId: true,
-      ownerId: true,
+      clientId: true,
       storagePath: true,
       title: true,
     },
@@ -288,16 +288,16 @@ export async function deleteDocumentAction(documentId: string) {
       metadata: { documentId },
     });
     revalidatePath(`/admin/properties/${doc.propertyId}`);
-  } else if (doc.ownerId) {
+  } else if (doc.clientId) {
     await recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: doc.ownerId,
+      entity: "CLIENT",
+      entityId: doc.clientId,
       action: "document.deleted",
       summary: `Document "${doc.title}" deleted`,
       metadata: { documentId },
     });
-    revalidatePath(`/admin/owners/${doc.ownerId}`);
+    revalidatePath(`/admin/clients/${doc.clientId}`);
   }
   return { ok: true as const };
 }

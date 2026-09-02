@@ -24,7 +24,7 @@ export default async function NewLeaseForPropertyPage({
       id: true,
       name: true,
       country: true,
-      owner: { select: { preferredCurrency: true } },
+      client: { select: { preferredCurrency: true } },
       units: {
         select: {
           id: true,
@@ -54,7 +54,7 @@ export default async function NewLeaseForPropertyPage({
       ? "KES"
       : property.country === "GH"
         ? "GHS"
-        : (property.owner.preferredCurrency ?? "USD");
+        : (property.client.preferredCurrency ?? "USD");
 
   return (
     <div className="mx-auto w-full max-w-2xl space-y-6">

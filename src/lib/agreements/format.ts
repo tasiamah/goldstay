@@ -1,5 +1,5 @@
 // Display helpers for ManagementAgreement rows. Pure formatters so
-// they can be unit-tested and reused in admin/owner pages and PDF
+// they can be unit-tested and reused in admin/client pages and PDF
 // without dragging React in.
 
 import type { AgreementStatus } from "@prisma/client";

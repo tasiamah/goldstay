@@ -1,5 +1,5 @@
 // Short-term rental statement aggregation. Pure inputs/outputs so the
-// PDF template, owner dashboard, and any future endpoint can share
+// PDF template, client dashboard, and any future endpoint can share
 // the same numbers. The period boundary handling matches the
 // bookings/aggregate helper: nights are clipped to the window so a
 // Jan 28 → Feb 4 stay contributes 4 nights to a January statement.

@@ -4,10 +4,10 @@
 //
 // All transitions go through the helper layer (lib/leads.ts) so the
 // audit + side-effects stay in one place. The convert action is the
-// big one: it takes a lead, creates an Owner row, and stamps the
+// big one: it takes a lead, creates a Client row, and stamps the
 // lead as CONVERTED in a single transactional flow. Failure at any
 // step rolls back the lot — we never want a lead marked converted
-// without a matching owner.
+// without a matching client.
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -16,16 +16,16 @@ import { prisma } from "@/lib/db";
 import { currentAuditActor } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
 import {
-  attachOwnerToLead,
+  attachClientToLead,
   createLead,
   markLeadContacted,
   markLeadLost,
   markLeadQualified,
 } from "@/lib/leads";
-import { LeadInput, OwnerInput } from "@/lib/validation/schemas";
+import { LeadInput, ClientInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
-import { sendOwnerWelcomeEmail } from "@/lib/owner-welcome";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { sendClientWelcomeEmail } from "@/lib/client-welcome";
+import { formatClientDisplayName } from "@/lib/format-client";
 
 export type LeadActionResult =
   | { ok: true; leadId: string }
@@ -131,29 +131,29 @@ export async function markLeadLostAction(
   return { ok: true, leadId };
 }
 
-// One-shot conversion: take a lead, create the owner, mark the lead
-// CONVERTED, and fire the welcome email. We do owner-create + lead-
+// One-shot conversion: take a lead, create the client, mark the lead
+// CONVERTED, and fire the welcome email. We do client-create + lead-
 // mark inside the same Prisma transaction so a partial failure
 // rolls both back; the welcome email is best-effort outside the
-// transaction (the same as createOwnerAction).
+// transaction (the same as createClientAction).
 export async function convertLeadAction(
   leadId: string,
   _prev: unknown,
   formData: FormData,
 ): Promise<
-  | { ok: true; ownerId: string }
+  | { ok: true; clientId: string }
   | { ok: false; error: string; fieldErrors?: Record<string, string> }
 > {
   const actor = await currentAuditActor();
 
   const lead = await prisma.lead.findUnique({ where: { id: leadId } });
   if (!lead) return { ok: false, error: "Lead not found." };
-  if (lead.status === "CONVERTED" && lead.convertedOwnerId) {
+  if (lead.status === "CONVERTED" && lead.convertedClientId) {
     // Already converted — just route the operator there. Idempotent.
-    redirect(`/admin/owners/${lead.convertedOwnerId}`);
+    redirect(`/admin/clients/${lead.convertedClientId}`);
   }
 
-  const parsed = OwnerInput.safeParse({
+  const parsed = ClientInput.safeParse({
     email: formData.get("email") ?? lead.email ?? "",
     fullName: formData.get("fullName") ?? lead.fullName,
     phone: formData.get("phone") ?? lead.phone ?? "",
@@ -170,14 +170,14 @@ export async function convertLeadAction(
   }
 
   try {
-    const owner = await prisma.$transaction(async (tx) => {
-      const created = await tx.owner.create({ data: parsed.data });
+    const client = await prisma.$transaction(async (tx) => {
+      const created = await tx.client.create({ data: parsed.data });
       await tx.lead.update({
         where: { id: leadId },
         data: {
           status: "CONVERTED",
           convertedAt: new Date(),
-          convertedOwnerId: created.id,
+          convertedClientId: created.id,
           contactedAt: lead.contactedAt ?? new Date(),
           qualifiedAt: lead.qualifiedAt ?? new Date(),
         },
@@ -185,35 +185,35 @@ export async function convertLeadAction(
       return created;
     });
 
-    // Two audit rows: one on the OWNER (created), one carrying the
-    // conversion provenance through attachOwnerToLead's audit trail.
+    // Two audit rows: one on the CLIENT (created), one carrying the
+    // conversion provenance through attachClientToLead's audit trail.
     await recordAudit({
       actor,
-      entity: "OWNER",
-      entityId: owner.id,
-      action: "owner.created",
-      summary: `Owner ${formatOwnerDisplayName(owner)} created from lead`,
+      entity: "CLIENT",
+      entityId: client.id,
+      action: "client.created",
+      summary: `Client ${formatClientDisplayName(client)} created from lead`,
       metadata: {
-        country: owner.country,
-        email: owner.email,
+        country: client.country,
+        email: client.email,
         fromLeadId: leadId,
       },
     });
-    // Additional audit row keyed off the lead so a single attachOwnerToLead
+    // Additional audit row keyed off the lead so a single attachClientToLead
     // call writes the canonical "lead.converted" timeline entry.
-    await attachOwnerToLead(leadId, owner.id, actor);
+    await attachClientToLead(leadId, client.id, actor);
 
-    // Fire-and-forget welcome email (same as createOwnerAction).
-    await sendOwnerWelcomeEmail({
-      email: owner.email,
-      fullName: owner.fullName,
-      companyName: owner.companyName,
-      country: owner.country,
-      // Threading ownerId + actor through means the welcome email
-      // shows up on the owner's CommunicationLog tab the moment the
-      // operator lands on /admin/owners/<id>, attributed to them
+    // Fire-and-forget welcome email (same as createClientAction).
+    await sendClientWelcomeEmail({
+      email: client.email,
+      fullName: client.fullName,
+      companyName: client.companyName,
+      country: client.country,
+      // Threading clientId + actor through means the welcome email
+      // shows up on the client's CommunicationLog tab the moment the
+      // operator lands on /admin/clients/<id>, attributed to them
       // rather than to the system.
-      ownerId: owner.id,
+      clientId: client.id,
       actor,
     }).catch((err) => {
       console.error("[convertLeadAction] welcome email failed", err);
@@ -222,8 +222,8 @@ export async function convertLeadAction(
     revalidatePath("/admin");
     revalidatePath("/admin/leads");
     revalidatePath(`/admin/leads/${leadId}`);
-    revalidatePath("/admin/owners");
-    redirect(`/admin/owners/${owner.id}`);
+    revalidatePath("/admin/clients");
+    redirect(`/admin/clients/${client.id}`);
   } catch (e) {
     if ((e as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")) {
       throw e;
@@ -234,7 +234,7 @@ export async function convertLeadAction(
     ) {
       return {
         ok: false,
-        error: "An owner with that email already exists.",
+        error: "A client with that email already exists.",
         fieldErrors: { email: "Already in use" },
       };
     }

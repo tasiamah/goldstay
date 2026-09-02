@@ -3,7 +3,7 @@ import { ArrowUpRight, TrendingUp, Wallet, Home, Receipt } from "lucide-react";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
 
-// Marketing-side preview of the live owner dashboard at /owner. The
+// Marketing-side preview of the live client dashboard at /client. The
 // real dashboard is gated behind Supabase auth, so the marketing site
 // has no credible way to surface "look, the product exists" without
 // either a screenshot (drifts the moment we touch the dashboard) or
@@ -14,7 +14,7 @@ import { Reveal } from "./Reveal";
 // sync with the brand because it uses the same Tailwind tokens as the
 // real product. Numbers are obviously illustrative — printed in muted
 // type next to a "sample data" tag so we never accidentally read as
-// real owner figures.
+// real client figures.
 //
 // City-aware: on .co.ke the currency tag is KES, on .com.gh it's GHS,
 // on the neutral .com it's USD because the dual-market homepage only
@@ -57,7 +57,7 @@ export function DashboardPreview({ city }: Props) {
         <div className="grid gap-16 lg:grid-cols-[1fr_1.15fr] lg:items-center lg:gap-24">
           <div>
             <SectionHeader
-              eyebrow="Live owner dashboard"
+              eyebrow="Live client dashboard"
               title="Open the app at 2 a.m. in Dubai. See exactly where you stand."
               lede="Every collection, every payout, every active lease. Live, not monthly. The same dashboard your statement is generated from — so the numbers can't disagree."
             />
@@ -68,7 +68,7 @@ export function DashboardPreview({ city }: Props) {
                 transactions.
               </Bullet>
               <Bullet icon={<Wallet className="h-4 w-4" />}>
-                30-day vs. prior-30 comparison for the KPI that owners
+                30-day vs. prior-30 comparison for the KPI that clients
                 actually ask about.
               </Bullet>
               <Bullet icon={<Home className="h-4 w-4" />}>
@@ -121,7 +121,7 @@ function Bullet({
 }
 
 // The mockup itself. Built with the same tailwind tokens as the live
-// owner dashboard (charcoal text, cream surfaces, gold accents, soft
+// client dashboard (charcoal text, cream surfaces, gold accents, soft
 // shadow, rounded-2xl) so it reads as "the real product, just shown
 // here for marketing." The "Sample data" badge is non-negotiable —
 // readers must not mistake the illustrative numbers for a real
@@ -148,7 +148,7 @@ function DashboardMockup({
             <span className="h-2.5 w-2.5 rounded-full bg-stone-300" />
           </div>
           <div className="ml-3 flex-1 truncate rounded-md bg-white/80 px-3 py-1 font-mono text-[0.65rem] text-stone-500">
-            goldstay.com/owner
+            goldstay.com/client
           </div>
           <span className="hidden rounded-full bg-charcoal/5 px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest-xl text-charcoal/60 sm:inline">
             Sample data

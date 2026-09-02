@@ -1,6 +1,6 @@
 // /admin/archive — restore window for soft-deleted rows.
 //
-// Lists every archived owner, property, lease, transaction in one
+// Lists every archived client, property, lease, transaction in one
 // place, ordered most-recently-archived first. Restore returns the
 // row to default queries; archived rows older than the 30-day window
 // stay visible but the restore button is disabled (a future cleanup
@@ -15,7 +15,7 @@ import {
   ARCHIVE_RESTORE_WINDOW_DAYS,
   isWithinRestoreWindow,
 } from "@/lib/admin/archive";
-import { formatOwnerDisplayName } from "@/lib/format-owner";
+import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
@@ -23,8 +23,8 @@ export const dynamic = "force-dynamic";
 export default async function AdminArchivePage() {
   await requireRole("archive.write");
 
-  const [owners, properties, leases, transactions] = await Promise.all([
-    prisma.owner.findMany({
+  const [clients, properties, leases, transactions] = await Promise.all([
+    prisma.client.findMany({
       where: { archivedAt: { not: null } },
       orderBy: { archivedAt: "desc" },
       select: {
@@ -73,7 +73,7 @@ export default async function AdminArchivePage() {
 
   const now = new Date();
   const totalCount =
-    owners.length + properties.length + leases.length + transactions.length;
+    clients.length + properties.length + leases.length + transactions.length;
 
   return (
     <div className="space-y-8">
@@ -88,16 +88,16 @@ export default async function AdminArchivePage() {
       </div>
 
       <ArchiveSection
-        title="Owners"
-        emptyHint="No archived owners."
-        rows={owners.map((o) => ({
+        title="Clients"
+        emptyHint="No archived clients."
+        rows={clients.map((o) => ({
           id: o.id,
-          entity: "OWNER" as const,
-          label: formatOwnerDisplayName(o),
+          entity: "CLIENT" as const,
+          label: formatClientDisplayName(o),
           hint: o.email,
           archivedAt: o.archivedAt,
           restorable: isWithinRestoreWindow(o.archivedAt, now),
-          returnPath: `/admin/owners/${o.id}`,
+          returnPath: `/admin/clients/${o.id}`,
         }))}
       />
 
@@ -155,7 +155,7 @@ function ArchiveSection({
   emptyHint: string;
   rows: Array<{
     id: string;
-    entity: "OWNER" | "PROPERTY" | "LEASE" | "TRANSACTION";
+    entity: "CLIENT" | "PROPERTY" | "LEASE" | "TRANSACTION";
     label: string;
     hint: string;
     archivedAt: Date | null;

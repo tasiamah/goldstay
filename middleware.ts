@@ -3,7 +3,7 @@
 //
 //   1. Refresh the Supabase auth session on every navigation so access
 //      tokens never silently expire mid-session.
-//   2. Gate platform routes (`/owner/*`, `/admin/*`). Unauthenticated
+//   2. Gate platform routes (`/client/*`, `/admin/*`). Unauthenticated
 //      visitors are bounced to /login with a `next` param so we can
 //      send them straight back to where they were after sign-in.
 //
@@ -13,7 +13,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
-const PROTECTED_PREFIXES = ["/owner", "/admin"];
+const PROTECTED_PREFIXES = ["/client", "/admin"];
 
 export async function middleware(request: NextRequest) {
   const { response: sessionResponse, user } = await updateSession(request);
@@ -35,7 +35,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/owner/:path*",
+    "/client/:path*",
     "/admin/:path*",
     "/login",
     "/auth/:path*",

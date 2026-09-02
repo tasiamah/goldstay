@@ -3,7 +3,7 @@
 // Global cmd-K command palette. Mounted once in the admin layout.
 //
 // - cmd/ctrl+K toggles the palette.
-// - Empty query shows static "jump to" actions (open owners, my
+// - Empty query shows static "jump to" actions (open clients, my
 //   tasks, system health, etc.). As the operator types, we hit
 //   /api/admin/search?q= with a small debounce and merge entity hits
 //   in. Selection navigates immediately.
@@ -21,7 +21,7 @@ import {
 } from "@/lib/admin/search";
 
 const ENTITY_LABEL: Record<SearchHit["entity"], string> = {
-  owner: "Owners",
+  client: "Clients",
   property: "Properties",
   lease: "Leases",
   booking: "Bookings",
@@ -31,7 +31,7 @@ const ENTITY_LABEL: Record<SearchHit["entity"], string> = {
 };
 
 const ENTITY_ORDER: SearchHit["entity"][] = [
-  "owner",
+  "client",
   "property",
   "lease",
   "booking",
@@ -153,7 +153,7 @@ export function CommandPalette() {
           <Command.Input
             value={query}
             onValueChange={setQuery}
-            placeholder="Search owners, properties, leases, bookings, transactions, documents…"
+            placeholder="Search clients, properties, leases, bookings, transactions, documents…"
             className="w-full bg-transparent py-4 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none"
           />
           {loading ? (

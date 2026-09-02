@@ -41,7 +41,7 @@ export async function NotesPanel({
       </div>
       <p className="mt-1 text-sm text-stone-500">
         Visible only inside /admin. Use this for context the next operator
-        will need: outstanding paperwork, owner preferences, things said in
+        will need: outstanding paperwork, client preferences, things said in
         a phone call. Notes flow into the activity timeline below.
       </p>
 

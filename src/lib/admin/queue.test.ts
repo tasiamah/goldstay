@@ -60,7 +60,7 @@ describe("computeDelta", () => {
 });
 
 describe("meanDaysBetween", () => {
-  // Powers the "Lead → owner days" KPI on the admin growth strip.
+  // Powers the "Lead → client days" KPI on the admin growth strip.
   // The empty-input case is the one that matters: returning 0 (or
   // NaN) instead of null would print "0.0 d" on the dashboard for
   // a market with no recent conversions, which is materially

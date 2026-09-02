@@ -3,7 +3,7 @@
 // Idempotent: the second call returns the existing Document without
 // re-rendering or re-uploading.
 //
-// Called from the owner PDF route on first download after signature
+// Called from the client PDF route on first download after signature
 // (so the user doesn't pay the render latency at sign time) and can
 // also be invoked from a backfill script.
 
@@ -39,7 +39,7 @@ export async function materialiseSignedAgreement(
           city: true,
           address: true,
           propertyType: true,
-          owner: {
+          client: {
             select: { fullName: true, email: true, companyName: true },
           },
         },
@@ -70,8 +70,8 @@ export async function materialiseSignedAgreement(
     agreement.property.unitNumber,
   );
   const sections = buildAgreementSections({
-    ownerName: agreement.property.owner.fullName,
-    ownerCompany: agreement.property.owner.companyName,
+    clientName: agreement.property.client.fullName,
+    clientCompany: agreement.property.client.companyName,
     propertyName: propertyDisplayName,
     propertyAddress: agreement.property.address,
     propertyCity: agreement.property.city,
@@ -84,13 +84,14 @@ export async function materialiseSignedAgreement(
     ),
     noticePeriodDays: agreement.noticePeriodDays,
     isShortTerm: agreement.property.propertyType === "SHORT_TERM",
+    signingCapacity: agreement.signingCapacity,
   });
 
   const pdfBuffer = await renderToBuffer(
     AgreementDocument({
       agreementId: agreement.id,
-      ownerName: agreement.property.owner.fullName,
-      ownerEmail: agreement.property.owner.email,
+      clientName: agreement.property.client.fullName,
+      clientEmail: agreement.property.client.email,
       propertyDisplayName,
       governingLaw: agreement.governingLaw,
       termMonths: agreement.termMonths,
@@ -101,6 +102,7 @@ export async function materialiseSignedAgreement(
         agreement.earlyExitFeeCurrency,
       ),
       sections,
+      signingCapacity: agreement.signingCapacity,
       signedAt: agreement.signedAt,
       signedByName: agreement.signedByName,
       signedByIp: agreement.signedByIp,

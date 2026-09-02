@@ -24,8 +24,12 @@
 
 import { Resend } from "resend";
 
-const RESEND_FROM_OWNERS =
-  process.env.RESEND_FROM_OWNERS || "Goldstay <hello@goldstay.co.ke>";
+const RESEND_FROM_CLIENTS =
+  process.env.RESEND_FROM_CLIENTS ||
+  // Name before the owner -> client rename; still read so a stale
+  // local .env keeps working.
+  process.env.RESEND_FROM_OWNERS ||
+  "Goldstay <hello@goldstay.co.ke>";
 const RESEND_FROM_STATEMENTS =
   process.env.RESEND_FROM_STATEMENTS ||
   "Goldstay Statements <statements@goldstay.co.ke>";
@@ -61,7 +65,7 @@ async function mintMagicLink(email) {
     body: JSON.stringify({
       type: "magiclink",
       email,
-      options: { redirect_to: `${SITE}/auth/callback?next=/owner` },
+      options: { redirect_to: `${SITE}/auth/callback?next=/client` },
     }),
   });
   if (!r.ok) {
@@ -85,11 +89,11 @@ async function sendWelcome(resend, email) {
     `welcome path is healthy.\n\n${linkBlock}\n\n— The Goldstay team`;
   const html = `<!doctype html><html><body style="font-family:system-ui;color:#1c1917;max-width:560px;margin:40px auto;padding:0 16px"><h1 style="font-family:Georgia,serif">Goldstay deliverability test</h1><p>If you can read this, your Resend domain is verified, SPF/DKIM/DMARC are passing, and the welcome path is healthy.</p>${
     link
-      ? `<p style="margin:24px 0;text-align:center"><a href="${escapeHtml(link)}" style="background:#1c1917;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:600;display:inline-block">Open landlord portal →</a></p>`
+      ? `<p style="margin:24px 0;text-align:center"><a href="${escapeHtml(link)}" style="background:#1c1917;color:#fff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:600;display:inline-block">Open client portal →</a></p>`
       : `<p>No magic link minted (Supabase env missing). Head to ${escapeHtml(SITE)}/login.</p>`
   }<p style="color:#78716c;font-size:13px">— The Goldstay team</p></body></html>`;
   return resend.emails.send({
-    from: RESEND_FROM_OWNERS,
+    from: RESEND_FROM_CLIENTS,
     to: [email],
     subject: "[Goldstay] Welcome email deliverability test",
     text,
@@ -110,7 +114,7 @@ async function sendStatementMock(resend, email) {
     text:
       `Hi there,\n\nThis is a Goldstay statement-channel deliverability ` +
       `test. The real monthly statements ship with the PDF attached and ` +
-      `link to ${SITE}/owner/statements. If THIS message lands, your ` +
+      `link to ${SITE}/client/statements. If THIS message lands, your ` +
       `statements@ alias is configured correctly.\n\n— The Goldstay team`,
     html: `<!doctype html><html><body style="font-family:system-ui;color:#1c1917;max-width:560px;margin:40px auto;padding:0 16px"><h1 style="font-family:Georgia,serif">Statement-channel deliverability test</h1><p>If THIS message lands, your <code>statements@</code> alias is configured correctly. The real monthly statements ship with the PDF attached.</p></body></html>`,
   });
@@ -134,7 +138,7 @@ async function main() {
 
   const resend = new Resend(apiKey);
 
-  console.log(`\n→ Sending welcome to ${email} from ${RESEND_FROM_OWNERS} …`);
+  console.log(`\n→ Sending welcome to ${email} from ${RESEND_FROM_CLIENTS} …`);
   try {
     const r = await sendWelcome(resend, email);
     if (r?.error) {

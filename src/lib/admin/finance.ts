@@ -1,6 +1,6 @@
 // Goldstay-side P&L aggregation.
 //
-// Most of the existing transaction code is owner-centric: rent in,
+// Most of the existing transaction code is client-centric: rent in,
 // expenses out, payout to landlord. This module instead asks "what
 // did Goldstay actually keep?", which the SUPER_ADMIN finance page
 // renders.
@@ -18,8 +18,8 @@
 //     instead of passing it on (ad-hoc, currently rare).
 //
 // Everything else (RENT, DEPOSIT, EXPENSE, PAYOUT, REFUND,
-// GUEST_REFUND) is pass-through to the owner ledger and explicitly
-// excluded so the P&L doesn't double-count owner-side flows.
+// GUEST_REFUND) is pass-through to the client ledger and explicitly
+// excluded so the P&L doesn't double-count client-side flows.
 //
 // The aggregator is currency-aware: there's no FX pass anywhere in
 // the codebase, so we group by currency and let the consumer decide
@@ -51,7 +51,7 @@ export type Bucket = "revenue" | "cost" | "ignored";
 export function bucketFor(t: Pick<GoldstayTxn, "type" | "direction">): Bucket {
   if (
     GOLDSTAY_REVENUE_TYPES.includes(t.type) &&
-    t.direction === "OUTFLOW" // commission OUT of the owner's column = IN for us
+    t.direction === "OUTFLOW" // commission OUT of the client's column = IN for us
   ) {
     return "revenue";
   }

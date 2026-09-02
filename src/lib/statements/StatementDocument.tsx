@@ -18,9 +18,9 @@ import type { Statement } from "./aggregate";
 import { formatPeriod, type Period } from "./period";
 import type { ShortTermPropertyRow } from "./short-term";
 import {
-  formatOwnerDisplayName,
-  formatOwnerSecondaryName,
-} from "@/lib/format-owner";
+  formatClientDisplayName,
+  formatClientSecondaryName,
+} from "@/lib/format-client";
 
 const colors = {
   ink: "#1c1917", // stone-900
@@ -188,13 +188,13 @@ const fmt = (n: number) =>
 
 export function StatementDocument({
   period,
-  owner,
+  client,
   statement,
   shortTerm,
   generatedAt,
 }: {
   period: Period;
-  owner: {
+  client: {
     fullName: string;
     companyName?: string | null;
     email: string;
@@ -204,11 +204,11 @@ export function StatementDocument({
   shortTerm?: ShortTermPropertyRow[];
   generatedAt: Date;
 }) {
-  const ownerPrimary = formatOwnerDisplayName(owner);
-  const ownerSecondary = formatOwnerSecondaryName(owner);
+  const clientPrimary = formatClientDisplayName(client);
+  const clientSecondary = formatClientSecondaryName(client);
   return (
     <Document
-      title={`Goldstay statement ${formatPeriod(period)} — ${ownerPrimary}`}
+      title={`Goldstay statement ${formatPeriod(period)} — ${clientPrimary}`}
       author="Goldstay"
     >
       <Page size="A4" style={styles.page}>
@@ -223,14 +223,14 @@ export function StatementDocument({
           </View>
           <View style={styles.metaCol}>
             <Text style={styles.metaLabel}>Account</Text>
-            <Text style={styles.metaValue}>{ownerPrimary}</Text>
-            {ownerSecondary ? (
+            <Text style={styles.metaValue}>{clientPrimary}</Text>
+            {clientSecondary ? (
               <Text style={[styles.metaValue, { color: colors.body }]}>
-                {ownerSecondary}
+                {clientSecondary}
               </Text>
             ) : null}
             <Text style={[styles.metaValue, { color: colors.muted }]}>
-              {owner.email}
+              {client.email}
             </Text>
           </View>
           <View style={styles.metaCol}>
