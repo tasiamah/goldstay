@@ -53,8 +53,22 @@ type WelcomeInput = {
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
 
+// Whether outbound email can actually leave the building. False means
+// every send in the app is a no-op that still reports success, so the
+// admin UI needs to say so rather than showing a clean confirmation.
+export function isEmailDeliveryConfigured(): boolean {
+  return Boolean(process.env.RESEND_API_KEY);
+}
+
+// `ok` means "nothing went wrong". `delivered` means "Resend actually
+// accepted it". They come apart when RESEND_API_KEY is missing: the
+// send is a no-op, ok stays true because the client row is fine and
+// there is nothing for the operator to retry, but nothing reached the
+// landlord. Callers that report success to a human must branch on
+// `delivered`, not `ok`.
 export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
   ok: boolean;
+  delivered: boolean;
   reason?: string;
 }> {
   const apiKey = process.env.RESEND_API_KEY;
@@ -93,8 +107,8 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
     // manually if needed. Production Vercel env always has the key.
     console.log(`[client-welcome] would send to ${input.email}\n${text}`);
     await maybeLogComms(input, "QUEUED", null, subject);
-    await maybeRecordAudit(input);
-    return { ok: true, reason: "logged-only" };
+    await maybeRecordAudit(input, false);
+    return { ok: true, delivered: false, reason: "logged-only" };
   }
 
   try {
@@ -113,12 +127,12 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
       (result?.data?.id as string | undefined) ?? null,
       subject,
     );
-    await maybeRecordAudit(input);
-    return { ok: true };
+    await maybeRecordAudit(input, true);
+    return { ok: true, delivered: true };
   } catch (err) {
     console.error("[client-welcome] Resend send failed", err);
     await maybeLogComms(input, "FAILED", null, subject);
-    return { ok: false, reason: "send-failed" };
+    return { ok: false, delivered: false, reason: "send-failed" };
   }
 }
 
@@ -163,19 +177,29 @@ async function maybeLogComms(
 // a failed one. Requires an actor because recordAudit attributes
 // every row to an admin email, and a system-initiated send has
 // nobody to attribute it to.
-async function maybeRecordAudit(input: WelcomeInput): Promise<void> {
+async function maybeRecordAudit(
+  input: WelcomeInput,
+  delivered: boolean,
+): Promise<void> {
   if (!input.clientId || !input.actor) return;
   const action = input.auditAction ?? "client.welcomed";
+  const resent = action === "client.welcomed.resent";
   try {
     await recordAudit({
       actor: input.actor,
       entity: "CLIENT",
       entityId: input.clientId,
       action,
-      summary:
-        action === "client.welcomed.resent"
+      // The summary has to distinguish a real send from a no-op. An
+      // entry reading "Welcome email sent" when RESEND_API_KEY was
+      // missing is worse than no entry: it tells an operator chasing
+      // a landlord who never got their link that the email went out.
+      summary: delivered
+        ? resent
           ? `Welcome email resent to ${input.email}`
-          : `Welcome email sent to ${input.email}`,
+          : `Welcome email sent to ${input.email}`
+        : `Welcome email for ${input.email} was logged only, not delivered — email sending is not configured`,
+      metadata: { delivered, resent },
     });
   } catch (err) {
     console.warn("[client-welcome] recordAudit failed", err);

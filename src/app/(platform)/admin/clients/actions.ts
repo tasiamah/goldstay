@@ -103,7 +103,9 @@ export async function createClientAction(
 // landlord can receive this many times without any DB side effects.
 export async function resendClientWelcomeAction(
   clientId: string,
-): Promise<{ ok: true } | { ok: false; error: string }> {
+): Promise<
+  { ok: true; delivered: boolean } | { ok: false; error: string }
+> {
   const actor = await currentAuditActor();
 
   const client = await prisma.client.findUnique({
@@ -133,7 +135,11 @@ export async function resendClientWelcomeAction(
         "Welcome email could not be sent. Check Resend logs and try again.",
     };
   }
-  return { ok: true };
+  // `delivered: false` means the send was a no-op because email is not
+  // configured. Reporting that as a plain success is how an operator
+  // ends up clicking "resend" repeatedly and wondering why the
+  // landlord never replies.
+  return { ok: true, delivered: result.delivered };
 }
 
 export async function updateClientAction(

@@ -15,6 +15,7 @@ export function ResendWelcomeButton({ clientId }: { clientId: string }) {
   const [status, setStatus] = useState<
     | { kind: "idle" }
     | { kind: "ok" }
+    | { kind: "logged-only" }
     | { kind: "error"; message: string }
   >({ kind: "idle" });
 
@@ -22,7 +23,9 @@ export function ResendWelcomeButton({ clientId }: { clientId: string }) {
     setStatus({ kind: "idle" });
     start(async () => {
       const res = await resendClientWelcomeAction(clientId);
-      if (res.ok) setStatus({ kind: "ok" });
+      // A send that succeeded but was never delivered is not "Sent."
+      // Without this the button confirms an email that does not exist.
+      if (res.ok) setStatus(res.delivered ? { kind: "ok" } : { kind: "logged-only" });
       else setStatus({ kind: "error", message: res.error });
     });
   }
@@ -39,6 +42,10 @@ export function ResendWelcomeButton({ clientId }: { clientId: string }) {
       </button>
       {status.kind === "ok" ? (
         <span className="text-xs text-emerald-700">Sent.</span>
+      ) : status.kind === "logged-only" ? (
+        <span className="text-xs font-medium text-amber-700">
+          Not delivered — email sending is not configured.
+        </span>
       ) : status.kind === "error" ? (
         <span className="text-xs text-red-700">{status.message}</span>
       ) : null}

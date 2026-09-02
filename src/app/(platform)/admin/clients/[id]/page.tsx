@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
+import { isEmailDeliveryConfigured } from "@/lib/client-welcome";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
   formatClientDisplayName,
@@ -99,6 +100,23 @@ export default async function ClientDetailPage({
           </div>
         </div>
       </div>
+
+      {/* Standing warning rather than per-click feedback: when email
+          is unconfigured every welcome send is a silent no-op, so an
+          operator needs to know before they create a client and start
+          waiting for a reply that cannot come. */}
+      {!isEmailDeliveryConfigured() ? (
+        <div className="rounded-lg border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          <strong className="font-medium">
+            Email sending is not configured.
+          </strong>{" "}
+          Welcome emails and magic links are being written to the logs
+          instead of delivered, so this client cannot reach their portal.
+          Set <code className="font-mono text-xs">RESEND_API_KEY</code> in
+          the Vercel project environment and redeploy, then use “Resend
+          welcome email” above.
+        </div>
+      ) : null}
 
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-6">

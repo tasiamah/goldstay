@@ -157,7 +157,10 @@ export async function applyClientImportAction(formData: FormData): Promise<void>
         ),
       );
       for (const r of results) {
-        if (r.status === "fulfilled" && r.value.ok) welcomed += 1;
+        // `delivered`, not `ok`: with email unconfigured every send
+        // resolves ok while delivering nothing, and reporting "25 of
+        // 25 welcome emails sent" would be a straight lie.
+        if (r.status === "fulfilled" && r.value.delivered) welcomed += 1;
       }
     }
   }
