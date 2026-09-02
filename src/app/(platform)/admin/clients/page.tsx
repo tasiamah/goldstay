@@ -239,6 +239,15 @@ export default async function ClientsListPage({
                       >
                         {formatClientDisplayName(o)}
                       </Link>
+                      {/* authUserId is bound on the client's first
+                          authenticated visit, so a null means they have
+                          never once reached their portal — usually a
+                          welcome email that bounced or was never sent. */}
+                      {o.authUserId === null ? (
+                        <span className="ml-2 rounded bg-amber-100 px-1.5 py-0.5 align-middle text-[0.65rem] font-medium uppercase tracking-wider text-amber-800">
+                          Never signed in
+                        </span>
+                      ) : null}
                       {secondary ? (
                         <p className="text-xs text-stone-500">{secondary}</p>
                       ) : null}

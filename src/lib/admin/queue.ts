@@ -54,9 +54,17 @@ export type AttentionQueue = {
 
 const PER_BUCKET_LIMIT = 5;
 
-// Clients we created more than this many days ago that still have
-// `welcomeCompletedAt: null`. Long enough that "they're on holiday"
-// is not the explanation; short enough that we can still recover.
+// Clients we created more than this many days ago who have still
+// never signed in. Long enough that "they're on holiday" is not the
+// explanation; short enough that we can still recover.
+//
+// The signal is `authUserId: null`, which is bound to the client row
+// the first time they complete an authenticated visit. This bucket
+// used to key off `welcomeCompletedAt: null` instead — but that field
+// is set when the client dismisses the first-visit tour, so a client
+// who signed in perfectly happily and ignored the welcome card was
+// reported as never having logged in, while the bucket title claimed
+// otherwise.
 const STALE_WELCOME_DAYS = 3;
 
 // How far ahead we look for lease renewals on the radar bucket.
@@ -297,7 +305,7 @@ export async function getAttentionQueue(
     prisma.client.findMany({
       where: {
         archivedAt: null,
-        welcomeCompletedAt: null,
+        authUserId: null,
         createdAt: { lte: daysAgo(STALE_WELCOME_DAYS) },
         ...countryFilter,
       },
@@ -315,7 +323,7 @@ export async function getAttentionQueue(
     prisma.client.count({
       where: {
         archivedAt: null,
-        welcomeCompletedAt: null,
+        authUserId: null,
         createdAt: { lte: daysAgo(STALE_WELCOME_DAYS) },
         ...countryFilter,
       },
@@ -438,8 +446,8 @@ export async function getAttentionQueue(
 
   buckets.push({
     key: "stale-welcomes",
-    title: "Clients who never logged in",
-    description: `Created ${STALE_WELCOME_DAYS}+ days ago, welcome card never dismissed. Resend the magic link.`,
+    title: "Clients who never signed in",
+    description: `Created ${STALE_WELCOME_DAYS}+ days ago and never signed in once. Resend the magic link from their detail page.`,
     total: staleClientsTotal,
     items: staleClients.map((o) => ({
       id: o.id,
