@@ -31,6 +31,8 @@ export default async function ClientImportPage() {
         <p className="text-sm text-stone-500">
           Upload a CSV with one client per row. We&apos;ll validate every row
           before creating anything; only valid rows get inserted on apply.
+          Welcome emails are sent on apply unless you turn them off in the
+          preview.
         </p>
       </div>
 

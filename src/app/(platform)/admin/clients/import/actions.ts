@@ -5,6 +5,8 @@ import { z } from "zod";
 import { prisma } from "@/lib/db";
 import { currentAuditActor, requireRole } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
+import { sendClientWelcomeEmail } from "@/lib/client-welcome";
+import { WELCOME_SEND_CAP } from "./limits";
 import {
   parseCsv,
   summariseImport,
@@ -63,6 +65,17 @@ export async function previewClientImportAction(
   };
 }
 
+// Most imports are a handful of rows pasted out of a spreadsheet, and
+// for those the welcome email should just go out — an imported client
+// with no email is a client who cannot reach their portal and has no
+// idea an account exists. WELCOME_SEND_CAP is where that stops being
+// safe; see limits.ts for why.
+
+// Sends run a few at a time rather than one after another, which
+// keeps a full 25-row import at roughly five sequential round trips
+// instead of fifty.
+const WELCOME_SEND_CONCURRENCY = 5;
+
 export async function applyClientImportAction(formData: FormData): Promise<void> {
   await requireRole("import.write");
   const actor = await currentAuditActor();
@@ -72,6 +85,8 @@ export async function applyClientImportAction(formData: FormData): Promise<void>
     throw new Error("Re-upload the CSV file before applying.");
   }
 
+  const sendWelcome = formData.get("sendWelcome") === "on";
+
   const text = await file.text();
   const parsed = parseCsv(text);
   const validated = validateRows(parsed.rows, normaliseAndValidate);
@@ -79,7 +94,17 @@ export async function applyClientImportAction(formData: FormData): Promise<void>
     (r): r is Extract<typeof r, { ok: true }> => r.ok,
   );
 
-  let created = 0;
+  // Collected as we go so the emails can be sent after every row is
+  // safely committed. Creating all the rows first means a send that
+  // fails or times out can never cost us a client record.
+  const createdClients: {
+    id: string;
+    email: string;
+    fullName: string;
+    companyName: string | null;
+    country: "KE" | "GH";
+  }[] = [];
+
   for (const row of valid) {
     try {
       const client = await prisma.client.create({
@@ -92,7 +117,13 @@ export async function applyClientImportAction(formData: FormData): Promise<void>
           preferredCurrency: row.value.preferredCurrency ?? "USD",
         },
       });
-      created += 1;
+      createdClients.push({
+        id: client.id,
+        email: client.email,
+        fullName: client.fullName,
+        companyName: client.companyName,
+        country: client.country,
+      });
       await recordAudit({
         actor,
         entity: "CLIENT",
@@ -106,7 +137,42 @@ export async function applyClientImportAction(formData: FormData): Promise<void>
     }
   }
 
-  redirect(`/admin/clients?imported=${created}`);
+  const created = createdClients.length;
+  const overCap = created > WELCOME_SEND_CAP;
+  let welcomed = 0;
+
+  if (sendWelcome && !overCap) {
+    for (let i = 0; i < createdClients.length; i += WELCOME_SEND_CONCURRENCY) {
+      const batch = createdClients.slice(i, i + WELCOME_SEND_CONCURRENCY);
+      const results = await Promise.allSettled(
+        batch.map((c) =>
+          sendClientWelcomeEmail({
+            email: c.email,
+            fullName: c.fullName,
+            companyName: c.companyName,
+            country: c.country,
+            clientId: c.id,
+            actor,
+          }),
+        ),
+      );
+      for (const r of results) {
+        if (r.status === "fulfilled" && r.value.ok) welcomed += 1;
+      }
+    }
+  }
+
+  // Outcome is reported back on the list page rather than swallowed:
+  // "did those people get an email?" is the first thing an operator
+  // wants to know, and it used to be unanswerable.
+  const params = new URLSearchParams({ imported: String(created) });
+  if (sendWelcome) {
+    if (overCap) params.set("welcomeSkipped", "cap");
+    else params.set("welcomed", String(welcomed));
+  } else {
+    params.set("welcomeSkipped", "off");
+  }
+  redirect(`/admin/clients?${params.toString()}`);
 }
 
 function normaliseAndValidate(

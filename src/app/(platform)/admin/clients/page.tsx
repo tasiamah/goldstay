@@ -146,6 +146,12 @@ export default async function ClientsListPage({
         </div>
       </div>
 
+      <ImportResultBanner
+        imported={rawParams.imported}
+        welcomed={rawParams.welcomed}
+        welcomeSkipped={rawParams.welcomeSkipped}
+      />
+
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-1 flex-wrap items-center gap-3">
           <ListSearchBar
@@ -305,6 +311,42 @@ function clientsTableParams(
   if (filters.country) out.country = filters.country;
   if (filters.period) out.period = filters.period;
   return out;
+}
+
+// Feedback after a CSV import. The action used to redirect here with
+// ?imported=<n> and nothing rendered it, so an operator had no
+// confirmation that anything had happened, let alone whether the new
+// clients had been emailed.
+function ImportResultBanner({
+  imported,
+  welcomed,
+  welcomeSkipped,
+}: {
+  imported?: string;
+  welcomed?: string;
+  welcomeSkipped?: string;
+}) {
+  const count = Number(imported);
+  if (!Number.isInteger(count) || count <= 0) return null;
+
+  const noun = count === 1 ? "client" : "clients";
+  const emailLine =
+    welcomeSkipped === "cap"
+      ? "Welcome emails were not sent — too many rows for one batch. Send them from each client's detail page."
+      : welcomeSkipped === "off"
+        ? "Welcome emails were turned off for this import, so nobody has portal access yet."
+        : `${welcomed ?? 0} of ${count} welcome ${
+            Number(welcomed) === 1 ? "email" : "emails"
+          } sent.`;
+
+  return (
+    <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-900">
+      <strong className="font-medium">
+        Imported {count} {noun}.
+      </strong>{" "}
+      {emailLine}
+    </div>
+  );
 }
 
 function EmptyState() {

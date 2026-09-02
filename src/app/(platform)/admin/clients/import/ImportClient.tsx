@@ -7,6 +7,7 @@ import {
   previewClientImportAction,
   type ClientImportPreview,
 } from "./actions";
+import { WELCOME_SEND_CAP } from "./limits";
 
 // Two-step client: preview parses + validates without writing, apply
 // inserts. We hold the actual File in component state so the apply
@@ -74,6 +75,12 @@ function PreviewBlock({
   file: File | null;
   onApply: (formData: FormData) => Promise<void>;
 }) {
+  const overCap = preview.okCount > WELCOME_SEND_CAP;
+  // Defaults to on so the common case — a few rows off a spreadsheet —
+  // behaves like adding a client by hand. Forced off past the cap,
+  // where the action would skip sending anyway.
+  const [sendWelcome, setSendWelcome] = useState(!overCap);
+
   return (
     <section className="rounded-lg border border-stone-200 bg-white">
       <div className="flex flex-wrap items-center justify-between gap-3 border-b border-stone-100 p-4">
@@ -93,6 +100,7 @@ function PreviewBlock({
           </span>
         </div>
         <form
+          className="flex flex-wrap items-center gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
             if (!file) {
@@ -101,9 +109,24 @@ function PreviewBlock({
             }
             const fd = new FormData();
             fd.set("file", file);
+            if (sendWelcome) fd.set("sendWelcome", "on");
             await onApply(fd);
           }}
         >
+          {/* Imports used to create clients silently with no welcome
+              email at all, which left them unable to reach the portal
+              with nothing on screen saying so. Now it's a visible
+              choice, defaulted to sending. */}
+          <label className="flex items-center gap-2 text-sm text-stone-700">
+            <input
+              type="checkbox"
+              checked={sendWelcome}
+              onChange={(e) => setSendWelcome(e.target.checked)}
+              disabled={overCap}
+              className="h-4 w-4 rounded border-stone-300 text-stone-900 focus:ring-stone-500 disabled:opacity-50"
+            />
+            Send welcome emails
+          </label>
           <button
             type="submit"
             disabled={preview.okCount === 0}
@@ -114,6 +137,16 @@ function PreviewBlock({
           </button>
         </form>
       </div>
+
+      {overCap ? (
+        <p className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900">
+          Over {WELCOME_SEND_CAP} rows, so welcome emails are not sent with
+          the import — too many sends to finish inside one request without
+          risking a partial batch. These clients will appear under{" "}
+          <strong>Clients who never signed in</strong> on the overview, and
+          you can send each one from their detail page.
+        </p>
+      ) : null}
 
       {preview.warnings.length > 0 ? (
         <ul className="border-b border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-900">
