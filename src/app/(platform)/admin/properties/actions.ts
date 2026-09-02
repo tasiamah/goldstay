@@ -15,6 +15,7 @@ import {
   AGREEMENT_ISSUE_PROPERTY_SELECT,
   buildAgreementIssueData,
 } from "@/lib/agreements/issue";
+import { decidePropertyGoLive } from "@/lib/properties/go-live";
 import { recordAudit } from "@/lib/audit";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
@@ -87,6 +88,11 @@ export async function createPropertyAction(
         data: {
           ...parsed.data,
           country: client.country as Country,
+          // A property that has just been created cannot have an
+          // accepted agreement, so it can never legitimately start
+          // life as ACTIVE. Pinning it here means the agreement gate
+          // cannot be sidestepped by creating the property live.
+          status: PropertyStatus.ONBOARDING,
         },
       });
       await tx.unit.create({
@@ -152,17 +158,30 @@ export async function updatePropertyAction(
     // hasn't been built yet — the placeholder is intentional.
     const existing = await prisma.property.findUnique({
       where: { id: propertyId },
-      select: { propertyType: true },
+      select: { propertyType: true, status: true },
     });
     if (!existing) {
       return { ok: false, error: "Property not found." };
     }
 
-    const { clientId: _ignored, propertyType: _attempted, ...rest } =
-      parsed.data;
+    // Status is owned by the lifecycle actions below, not this form.
+    // The form only submits a hidden input echoing the current value,
+    // but that made the edit path a way to set ACTIVE directly and
+    // skip the agreement gate entirely with one crafted POST. Pin it
+    // to the stored value, exactly as we already do for propertyType.
+    const {
+      clientId: _ignored,
+      propertyType: _attempted,
+      status: _lifecycleOwned,
+      ...rest
+    } = parsed.data;
     const updated = await prisma.property.update({
       where: { id: propertyId },
-      data: { ...rest, propertyType: existing.propertyType },
+      data: {
+        ...rest,
+        propertyType: existing.propertyType,
+        status: existing.status,
+      },
     });
     await recordAudit({
       actor,
@@ -191,7 +210,9 @@ export async function updatePropertyAction(
 // can't be replayed to skip the rules.
 // ──────────────────────────────────────────────────────────────────
 
-export type LifecycleResult = { ok: true } | { ok: false; error: string };
+export type LifecycleResult =
+  | { ok: true; stage: "agreement_issued" | "went_live" | "exited" }
+  | { ok: false; error: string };
 
 export async function markPropertyVerifiedAction(
   propertyId: string,
@@ -206,7 +227,6 @@ export async function markPropertyVerifiedAction(
       clientId: true,
       name: true,
       unitNumber: true,
-      _count: { select: { documents: true } },
     },
   });
   if (!property) return { ok: false, error: "Property not found." };
@@ -216,79 +236,79 @@ export async function markPropertyVerifiedAction(
       error: "Only onboarding properties can be marked as verified.",
     };
   }
-  if (property._count.documents === 0) {
-    return {
-      ok: false,
-      error:
-        "Upload at least one document (title deed, sale agreement, lease) before marking the property as verified.",
-    };
-  }
 
-  // Verifying a property is also the moment we hand the landlord a
-  // management agreement to sign. We snapshot the country/type-aware
-  // defaults onto the row so future tweaks to the defaults helper
-  // don't retroactively alter terms shown to a landlord. The agreement
-  // is created in SENT state in a single transaction with the status
-  // bump so the client banner appears the moment they refresh.
+  // The document check that used to live here is gone. It required
+  // "at least one document (title deed, sale agreement, lease)"
+  // before a property could be verified, which is the same
+  // prove-you-own-it demand we removed from the client portal — and
+  // it was satisfiable by uploading any file at all, so it was never
+  // really checking ownership.
   //
-  // Idempotency: if a non-CANCELLED agreement somehow already exists
-  // (e.g. an admin verified, then exited, then re-verified), we
-  // leave it alone. Re-issuing terms is a deliberate admin action,
-  // not a side effect of the lifecycle button.
-  const existingActiveAgreement = await prisma.managementAgreement.findFirst({
-    where: {
-      propertyId,
-      status: { not: AgreementStatus.CANCELLED },
-    },
-    select: { id: true },
+  // What gates the property now is the client's acceptance of the
+  // management agreement, which is where authority to let is
+  // actually recorded.
+  const agreements = await prisma.managementAgreement.findMany({
+    where: { propertyId, status: { not: AgreementStatus.CANCELLED } },
+    select: { status: true },
   });
 
-  const newAgreementId = await prisma.$transaction(async (tx) => {
-    await tx.property.update({
-      where: { id: propertyId },
-      data: { status: PropertyStatus.ACTIVE },
-    });
-    if (!existingActiveAgreement) {
-      const agreement = await tx.managementAgreement.create({
+  const decision = decidePropertyGoLive({
+    agreementStatuses: agreements.map((a) => a.status),
+  });
+
+  if (decision.kind === "blocked") {
+    return { ok: false, error: decision.reason };
+  }
+
+  // Step 1: no agreement yet. Issue one and leave the property in
+  // ONBOARDING. We snapshot the country/type-aware defaults onto the
+  // row so later tweaks to the defaults helper can't retroactively
+  // alter terms a landlord has already been shown.
+  if (decision.kind === "issue_agreement") {
+    const agreement = await prisma.$transaction(async (tx) =>
+      tx.managementAgreement.create({
         data: {
           ...(await buildAgreementIssueData(tx, property)),
           property: { connect: { id: propertyId } },
         },
         select: { id: true },
-      });
-      return agreement.id;
-    }
-    return null;
-  });
+      }),
+    );
+    await recordAudit({
+      actor,
+      entity: "AGREEMENT",
+      entityId: agreement.id,
+      action: "agreement.issued",
+      summary: `Management agreement issued`,
+      metadata: { propertyId },
+    });
+    revalidateAfterLifecycle(propertyId, property.clientId);
+    return { ok: true, stage: "agreement_issued" };
+  }
 
+  // Step 2: the client has accepted. Now it can go live.
+  await prisma.property.update({
+    where: { id: propertyId },
+    data: { status: PropertyStatus.ACTIVE },
+  });
   await recordAudit({
     actor,
     entity: "PROPERTY",
     entityId: propertyId,
     action: "property.verified",
     summary: `Property marked active`,
-    metadata: {
-      clientId: property.clientId,
-      issuedAgreementId: newAgreementId,
-    },
+    metadata: { clientId: property.clientId },
   });
-  if (newAgreementId) {
-    await recordAudit({
-      actor,
-      entity: "AGREEMENT",
-      entityId: newAgreementId,
-      action: "agreement.issued",
-      summary: `Management agreement issued`,
-      metadata: { propertyId },
-    });
-  }
+  revalidateAfterLifecycle(propertyId, property.clientId);
+  return { ok: true, stage: "went_live" };
+}
 
+function revalidateAfterLifecycle(propertyId: string, clientId: string): void {
   revalidatePath("/admin");
   revalidatePath("/admin/properties");
   revalidatePath(`/admin/properties/${propertyId}`);
-  revalidatePath(`/admin/clients/${property.clientId}`);
+  revalidatePath(`/admin/clients/${clientId}`);
   revalidatePath("/client");
-  return { ok: true };
 }
 
 export async function markPropertyExitedAction(
@@ -317,9 +337,6 @@ export async function markPropertyExitedAction(
     summary: `Property marked exited`,
     metadata: { clientId: property.clientId },
   });
-  revalidatePath("/admin");
-  revalidatePath("/admin/properties");
-  revalidatePath(`/admin/properties/${propertyId}`);
-  revalidatePath(`/admin/clients/${property.clientId}`);
-  return { ok: true };
+  revalidateAfterLifecycle(propertyId, property.clientId);
+  return { ok: true, stage: "exited" };
 }

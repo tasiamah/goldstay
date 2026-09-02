@@ -1,11 +1,22 @@
 "use client";
 
 // Lifecycle buttons for a property's status. Renders nothing for
-// EXITED (terminal state). For ONBOARDING, shows Mark verified —
-// disabled with a tooltip when no documents have been uploaded yet,
-// because the server-side check will refuse the call anyway and we'd
-// rather tell the admin upfront. For ACTIVE, shows a Mark exited
-// button behind a window.confirm.
+// EXITED (terminal state). For ACTIVE, shows a Mark exited button
+// behind a window.confirm.
+//
+// ONBOARDING is now two steps rather than one, because a property
+// must not go live until the client has accepted its management
+// agreement. The same button does both, and the label says which
+// step it is about to perform:
+//
+//   no agreement yet  -> "Send agreement to client"
+//   accepted          -> "Mark as live"
+//   awaiting the client -> disabled, with the reason underneath
+//
+// The old gate here was documentCount > 0, mirroring a server check
+// that demanded a title deed or similar. Both are gone: we no longer
+// ask clients to prove ownership, and any uploaded file satisfied it
+// anyway, so it never verified what it claimed to.
 //
 // Errors and successes both flow through Sonner so the feedback
 // matches the rest of the admin chrome (ArchiveButton, bulk actions,
@@ -23,13 +34,16 @@ import {
 type Props = {
   propertyId: string;
   status: "ONBOARDING" | "ACTIVE" | "EXITED";
-  documentCount: number;
+  // Which step the property is at, derived server-side from its
+  // agreements so the button never claims an action the server will
+  // then refuse.
+  agreementStage: "none" | "awaiting_acceptance" | "accepted";
 };
 
 export function PropertyLifecycleActions({
   propertyId,
   status,
-  documentCount,
+  agreementStage,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -37,12 +51,16 @@ export function PropertyLifecycleActions({
   if (status === "EXITED") return null;
 
   if (status === "ONBOARDING") {
-    const canVerify = documentCount > 0;
+    const awaiting = agreementStage === "awaiting_acceptance";
+    const label =
+      agreementStage === "accepted"
+        ? "Mark as live"
+        : "Send agreement to client";
     return (
       <div className="flex flex-col items-end gap-1">
         <button
           type="button"
-          disabled={!canVerify || pending}
+          disabled={awaiting || pending}
           onClick={() => {
             startTransition(async () => {
               const res = await markPropertyVerifiedAction(propertyId);
@@ -50,17 +68,22 @@ export function PropertyLifecycleActions({
                 toast.error(res.error);
                 return;
               }
-              toast.success("Property marked as verified");
+              toast.success(
+                res.stage === "agreement_issued"
+                  ? "Agreement sent. The property goes live once the client accepts it."
+                  : "Property is live",
+              );
               router.refresh();
             });
           }}
           className="inline-flex items-center rounded-md bg-emerald-700 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-stone-300"
         >
-          {pending ? "Marking…" : "Mark as verified"}
+          {pending ? "Working…" : label}
         </button>
-        {!canVerify ? (
-          <p className="text-xs text-stone-500">
-            Upload at least one document first.
+        {awaiting ? (
+          <p className="max-w-xs text-right text-xs text-stone-500">
+            Waiting for the client to accept their management
+            agreement. It goes live as soon as they do.
           </p>
         ) : null}
       </div>

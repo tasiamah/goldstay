@@ -158,6 +158,20 @@ export default async function PropertyDetailPage({
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
 
+  // Which step of the go-live sequence this property is at. Derived
+  // from the same rule the server action enforces, so the button can
+  // never offer an action that will be refused. Cancelled agreements
+  // are withdrawn offers and must not hold a property back.
+  const liveAgreements = property.agreements.filter(
+    (a) => a.status !== "CANCELLED",
+  );
+  const agreementStage: "none" | "awaiting_acceptance" | "accepted" =
+    liveAgreements.length === 0
+      ? "none"
+      : liveAgreements.some((a) => a.status === "SIGNED")
+        ? "accepted"
+        : "awaiting_acceptance";
+
   // Last-30-day occupancy stat for short-term properties. Anchored to
   // UTC midnight so it lines up with the booking aggregation.
   const now = new Date();
@@ -234,7 +248,7 @@ export default async function PropertyDetailPage({
           <PropertyLifecycleActions
             propertyId={property.id}
             status={property.status}
-            documentCount={property.documents.length}
+            agreementStage={agreementStage}
           />
         </div>
       </div>

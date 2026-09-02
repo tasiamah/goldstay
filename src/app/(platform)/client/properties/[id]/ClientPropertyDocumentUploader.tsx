@@ -5,9 +5,14 @@
 // Mirrors the admin uploader's two-step flow (signed PUT URL,
 // direct upload to Supabase Storage) so the file body never goes
 // through our serverless function and we avoid the 4.5 MB Vercel
-// ingress cap on client-uploaded title deeds. Title is optional —
-// for the common case of a single deed scan, the action defaults
-// it from the kind label so the client doesn't have to think.
+// ingress cap on scanned paperwork. Title is optional — the action
+// defaults it from the kind label so the client doesn't have to
+// think.
+//
+// Everything here is optional now. We no longer ask a client to
+// prove they own the property, so there is no title-deed option and
+// nothing on this form gates anything; the management agreement is
+// where the right to let the property is established.
 
 import { useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -20,28 +25,20 @@ import {
 const MAX_BYTES = 25 * 1024 * 1024;
 
 const KIND_OPTIONS: { value: ClientPropertyDocKind; label: string }[] = [
-  { value: "TITLE_DEED", label: "Title deed" },
-  { value: "SALE_AGREEMENT", label: "Sale agreement" },
   { value: "LEASE", label: "Lease" },
+  { value: "SALE_AGREEMENT", label: "Sale agreement" },
   { value: "PHOTO", label: "Photo" },
   { value: "OTHER", label: "Other document" },
 ];
 
 export function ClientPropertyDocumentUploader({
   propertyId,
-  // Optional preset so the empty-state callout above can hand the
-  // client a one-click "Upload title deed" affordance instead of a
-  // generic kind picker.
-  presetKind,
 }: {
   propertyId: string;
-  presetKind?: ClientPropertyDocKind;
 }) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
-  const [kind, setKind] = useState<ClientPropertyDocKind>(
-    presetKind ?? "TITLE_DEED",
-  );
+  const [kind, setKind] = useState<ClientPropertyDocKind>("LEASE");
   const [title, setTitle] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -144,7 +141,7 @@ export function ClientPropertyDocumentUploader({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={200}
-            placeholder="e.g. Title deed (signed)"
+            placeholder="e.g. Lease (signed)"
             disabled={busy}
             className="mt-1 block w-full rounded-md border border-stone-300 px-3 py-2 text-sm focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500 disabled:opacity-60"
           />

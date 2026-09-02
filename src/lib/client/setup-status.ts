@@ -96,7 +96,7 @@ export function computeSetupChecklist(input: SetupInput): SetupChecklist {
       key: "bank",
       label: "Bank account",
       description:
-        "At least one verified payout method plus proof of ownership.",
+        "At least one payout method, plus a document showing the account is yours.",
       done: bankDone,
     },
   ];

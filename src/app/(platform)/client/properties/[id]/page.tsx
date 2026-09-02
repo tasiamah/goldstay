@@ -27,10 +27,6 @@ import { computePropertyReadiness } from "@/lib/client/property-readiness";
 import { computeSetupChecklist } from "@/lib/client/setup-status";
 import { listPayoutMethodsFor } from "@/lib/payouts";
 import {
-  labelForRequiredDoc,
-  missingPropertyDocKinds,
-} from "@/lib/client/property-documents";
-import {
   OccupancyCalendar,
   clampHeatmapMonths,
   heatmapWindowStart,
@@ -390,66 +386,13 @@ export default async function ClientPropertyDetailPage({
         )}
 
         <Card title="Documents">
-          {(() => {
-            // We treat any uploaded document of a required kind as
-            // "supplied" for the missing-kinds check — even if it's
-            // still pending verification — because the client has done
-            // their part. The pending badge on the row tells them
-            // Goldstay still needs to look at it. This split avoids
-            // the previous "We still need title deed" callout
-            // re-appearing the moment they upload one.
-            const uploadedKinds = property.documents.map((d) => d.kind);
-            const missing = missingPropertyDocKinds(uploadedKinds);
-            if (missing.length === 0) return null;
-            const primaryMissing = missing[0];
-            return (
-              <div className="mt-3 rounded-md border border-amber-200 bg-amber-50/60 px-4 py-3">
-                <p className="text-xs font-medium uppercase tracking-wider text-amber-900">
-                  We still need
-                </p>
-                <ul className="mt-1 space-y-0.5">
-                  {missing.map((kind) => (
-                    <li
-                      key={kind}
-                      className="flex items-center gap-2 text-sm text-amber-900"
-                    >
-                      <span
-                        aria-hidden
-                        className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500"
-                      />
-                      {labelForRequiredDoc(kind)}
-                    </li>
-                  ))}
-                </ul>
-                <p className="mt-2 text-xs text-amber-900/80">
-                  Upload these below — a phone photo or PDF is fine.
-                  Goldstay will verify and confirm, usually within one
-                  working day.
-                </p>
-                <div className="mt-3 rounded-md border border-amber-200 bg-white p-3">
-                  <ClientPropertyDocumentUploader
-                    propertyId={property.id}
-                    presetKind={
-                      primaryMissing === "TITLE_DEED" ||
-                      primaryMissing === "SALE_AGREEMENT" ||
-                      primaryMissing === "LEASE" ||
-                      primaryMissing === "PHOTO" ||
-                      primaryMissing === "OTHER"
-                        ? primaryMissing
-                        : undefined
-                    }
-                  />
-                </div>
-              </div>
-            );
-          })()}
-
           {property.documents.length === 0 ? (
             <p className="mt-4 text-sm text-stone-500">
-              No paperwork on file for this property yet. Upload your
-              title deed (or any other proof of ownership) below — a
-              phone photo of the original is fine. Goldstay will review
-              and verify the document, usually within one working day.
+              No paperwork on file for this property yet. Nothing is
+              required from you — your management agreement covers the
+              right to let this property. If you do have anything worth
+              keeping here, such as a lease or photos, you can add it
+              below.
             </p>
           ) : (
             <ul className="mt-4 divide-y divide-stone-100">
@@ -507,7 +450,7 @@ export default async function ClientPropertyDetailPage({
                 Add another document
               </h4>
               <p className="mt-0.5 text-xs text-stone-500">
-                Title deeds, sale agreements, leases, or photos. New
+                Leases, sale agreements, or photos — all optional. New
                 uploads land as pending until Goldstay verifies them.
               </p>
               <div className="mt-3">

@@ -3,11 +3,10 @@
 // Client self-serve property document upload actions.
 //
 // Mirrors the admin uploader's two-step flow but scoped per-client
-// instead of per-admin. The client can upload TITLE_DEED,
-// SALE_AGREEMENT, LEASE, PHOTO, OTHER for any property they own;
-// every uploaded row lands as un-verified (`verifiedAt = null`) so
-// admin still has the final word before it counts toward the
-// property's verification status.
+// instead of per-admin. The client can upload SALE_AGREEMENT, LEASE,
+// PHOTO, OTHER for any property they own; every uploaded row lands
+// as un-verified (`verifiedAt = null`) so admin still has the final
+// word before it counts toward the property's verification status.
 //
 // Two-step flow:
 //   1. clientCreatePropertyDocumentUploadAction — verifies ownership,
@@ -19,7 +18,7 @@
 //
 // Delete is also self-serve, but only for documents the client
 // uploaded themselves AND that haven't been verified yet — once
-// Goldstay has signed off on a title deed we don't want a single
+// Goldstay has signed off on a document we don't want a single
 // click to remove it from the file. Verified docs require admin
 // removal, same rule the management agreement obeys.
 
@@ -40,8 +39,16 @@ import {
 // Deliberately narrower than the admin uploader: KYC/INVOICE/
 // RECEIPT/STATEMENT are operationally Goldstay-side artefacts and
 // MANAGEMENT_AGREEMENT is materialised by the click-to-sign flow.
+//
+// TITLE_DEED is absent on purpose. We no longer ask a client to
+// prove they own the property — many of them lease it and sub-let
+// with the owner's written permission, so a deed is a document they
+// cannot produce and never should have been asked for. Authority to
+// let is established by accepting the management agreement instead.
+// The enum value still exists in the schema and admin can still file
+// a deed, so historical rows keep rendering; this list only governs
+// what a client may upload.
 const ClientPropertyDocKindEnum = z.enum([
-  "TITLE_DEED",
   "SALE_AGREEMENT",
   "LEASE",
   "PHOTO",
@@ -51,7 +58,6 @@ const ClientPropertyDocKindEnum = z.enum([
 export type ClientPropertyDocKind = z.infer<typeof ClientPropertyDocKindEnum>;
 
 const KIND_DEFAULT_TITLE: Record<ClientPropertyDocKind, string> = {
-  TITLE_DEED: "Title deed",
   SALE_AGREEMENT: "Sale agreement",
   LEASE: "Lease",
   PHOTO: "Photo",

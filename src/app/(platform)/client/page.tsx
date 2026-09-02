@@ -23,12 +23,6 @@ import {
   PropertyReadinessBadge,
   PropertyReadinessSummary,
 } from "@/components/client/PropertyReadinessBadge";
-import {
-  REQUIRED_PROPERTY_DOC_KINDS,
-  labelForRequiredDoc,
-  missingPropertyDocKinds,
-} from "@/lib/client/property-documents";
-
 // Goldstay rents each property out as a whole, so we treat
 // "occupied" as a per-property boolean (an active lease exists)
 // rather than a per-unit count.
@@ -73,11 +67,6 @@ export default async function ClientDashboardPage() {
             },
           },
         },
-        // Pull just the kind column for every document on the
-        // property — enough to compute "is the required set
-        // complete" without paying for titles, sizes, signed URLs,
-        // etc. Cheap when there are 5–20 documents per property.
-        documents: { select: { kind: true } },
       },
     }),
     // We pull the monthlyRent + currency for every active lease so the
@@ -301,16 +290,6 @@ export default async function ClientDashboardPage() {
         }
       : null;
 
-  // Properties that don't yet have every kind in
-  // REQUIRED_PROPERTY_DOC_KINDS on file. Drives the second banner.
-  // We compute this in memory (already have the documents from the
-  // Promise.all above) so no extra round-trip — the cost is one Set
-  // construction per property.
-  const propertiesMissingDocs = properties.filter(
-    (p) => missingPropertyDocKinds(p.documents.map((d) => d.kind)).length > 0,
-  );
-  const firstPropertyMissingDocs = propertiesMissingDocs[0] ?? null;
-
   // First-visit nudge: a one-line banner above the dashboard
   // pointing at the per-section ? hints. Once dismissed it never
   // comes back — the hints themselves remain available for any
@@ -360,59 +339,6 @@ export default async function ClientDashboardPage() {
             >
               Complete here →
             </Link>
-          </div>
-        </section>
-      ) : null}
-
-      {propertiesMissingDocs.length > 0 ? (
-        // Amber — informational, not blocking. Most property docs
-        // (title deed, sale agreement) are uploaded by the Goldstay
-        // team rather than the client, so we frame this as "what we
-        // need on file" and route the client to the most relevant
-        // property detail page where the per-property "Documents
-        // we still need" callout shows them what to chase support
-        // for. Hidden entirely when every property is documented.
-        <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <p className="text-xs uppercase tracking-wider text-amber-900/80">
-                Documents needed
-              </p>
-              <h2 className="mt-1 text-base font-medium text-amber-950">
-                {propertiesMissingDocs.length === properties.length
-                  ? properties.length === 1
-                    ? "Your property is missing required documents"
-                    : `All ${properties.length} of your properties are missing required documents`
-                  : `${propertiesMissingDocs.length} of your ${
-                      properties.length
-                    } ${
-                      properties.length === 1 ? "property is" : "properties are"
-                    } missing required documents`}
-              </h2>
-              <p className="mt-1 text-sm text-amber-900/80">
-                We need {humanJoin(REQUIRED_PROPERTY_DOC_KINDS.map(labelForRequiredDoc))}{" "}
-                on file for every property. The Goldstay team handles
-                most of these for you. Open the property to see what&rsquo;s
-                missing, or email{" "}
-                <a
-                  href="mailto:support@goldstay.co.ke"
-                  className="font-medium text-amber-900 underline-offset-2 hover:underline"
-                >
-                  support@goldstay.co.ke
-                </a>{" "}
-                if you have copies handy.
-              </p>
-            </div>
-            {firstPropertyMissingDocs ? (
-              <Link
-                href={`/client/properties/${firstPropertyMissingDocs.id}`}
-                className="shrink-0 rounded-md border border-amber-700 bg-white px-3 py-1.5 text-sm font-medium text-amber-900 hover:bg-amber-100"
-              >
-                {propertiesMissingDocs.length === 1
-                  ? "Open property"
-                  : "Open first property"}
-              </Link>
-            ) : null}
           </div>
         </section>
       ) : null}
@@ -763,13 +689,3 @@ function fmt(n: number): string {
   });
 }
 
-// English-style joiner: ["a"] → "a"; ["a","b"] → "a and b";
-// ["a","b","c"] → "a, b and c". Used by the documents banner so a
-// future addition to REQUIRED_PROPERTY_DOC_KINDS reads cleanly
-// without the banner copy needing to change.
-function humanJoin(items: ReadonlyArray<string>): string {
-  if (items.length === 0) return "";
-  if (items.length === 1) return items[0]!;
-  if (items.length === 2) return `${items[0]} and ${items[1]}`;
-  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
-}
