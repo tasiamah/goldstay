@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { currentAuditActor, requireRole } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
-import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { mintCallbackLink } from "@/lib/supabase/magic-link";
 import { setImpersonationCookie } from "@/lib/admin/impersonation";
 import { formatClientDisplayName } from "@/lib/format-client";
 
@@ -40,18 +40,18 @@ export async function startImpersonationAction(
     throw new Error("Client not found");
   }
 
-  const supabase = createSupabaseAdminClient();
   const siteUrl = process.env.PUBLIC_SITE_URL || DEFAULT_SITE;
-  const redirectTo = new URL("/auth/callback?next=/client", siteUrl).toString();
-  const { data, error } = await supabase.auth.admin.generateLink({
-    type: "magiclink",
+  // Same token-hash link the welcome email uses. Supabase's own
+  // action_link returns its session in a URL fragment the server can
+  // never read, so it would land the admin on the "invalid sign-in
+  // token" page instead of the client's portal.
+  const actionLink = await mintCallbackLink({
     email: client.email,
-    options: { redirectTo },
+    siteUrl,
+    next: "/client",
   });
-  if (error || !data?.properties?.action_link) {
-    throw new Error(
-      `Could not mint impersonation link: ${error?.message ?? "no link returned"}`,
-    );
+  if (!actionLink) {
+    throw new Error("Could not mint impersonation link");
   }
 
   const clientLabel = formatClientDisplayName(client);
@@ -77,7 +77,7 @@ export async function startImpersonationAction(
   // never lands in the admin's browser history as an action.
   redirect(
     `/admin/clients/${client.id}/impersonate/launch?token=${encodeURIComponent(
-      data.properties.action_link,
+      actionLink,
     )}`,
   );
 }

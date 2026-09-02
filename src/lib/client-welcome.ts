@@ -23,7 +23,7 @@
 //                          the link and just send a "your account is
 //                          ready, head to /login" note.
 
-import { createSupabaseAdminClient } from "@/lib/supabase/admin";
+import { mintCallbackLink } from "@/lib/supabase/magic-link";
 import { logCommunication } from "@/lib/comms";
 import { recordAudit } from "@/lib/audit";
 import type { CurrentActor } from "@/lib/auth";
@@ -210,7 +210,6 @@ async function mintSetPasswordLink(
   email: string,
   siteUrl: string,
 ): Promise<string | null> {
-  const supabase = createSupabaseAdminClient();
   // We point the post-exchange redirect at /account/password so the
   // first thing a brand-new client sees after clicking the link is
   // the "choose a password" form. The form's onward redirect, in
@@ -223,20 +222,11 @@ async function mintSetPasswordLink(
   // (Supabase provisions on demand), whereas recovery requires the
   // user to already exist. The first call from createClientAction is
   // always for a fresh email, so this matters.
-  const redirectTo = new URL(
-    "/auth/callback?next=/account/password",
-    siteUrl,
-  ).toString();
-  const { data, error } = await supabase.auth.admin.generateLink({
-    type: "magiclink",
+  return mintCallbackLink({
     email,
-    options: { redirectTo },
+    siteUrl,
+    next: "/account/password",
   });
-  if (error) {
-    console.warn("[client-welcome] generateLink error", error);
-    return null;
-  }
-  return data?.properties?.action_link ?? null;
 }
 
 function renderText({
