@@ -12,9 +12,18 @@
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
   }
+  /* Stop sideways scroll without breaking `position: sticky`.
+     `overflow-x: hidden` makes these elements scroll containers, and
+     sticky resolves against the nearest scrolling ancestor — so every
+     sticky bar in the app silently sat in normal flow instead of
+     pinning. `clip` does the same clipping without the scroll
+     container. The hidden declaration stays first as the fallback for
+     browsers that don't know `clip` (Safari below 16): they keep
+     today's behaviour rather than gaining a horizontal scrollbar. */
   html,
   body {
-    @apply overflow-x-hidden;
+    overflow-x: hidden;
+    overflow-x: clip;
   }
   body {
     @apply bg-cream text-charcoal font-sans antialiased;

@@ -11,7 +11,7 @@ type FormAction = (
 
 // One-click acceptance.
 //
-// The contract is on the page above this component; the sticky bar
+// The contract is on the page above this component; the action bar
 // opens a dialog that restates what acceptance means in three lines
 // and offers a single button. No typed signature and no tick-boxes:
 // clause 12.3 provides for acceptance through the platform, and
@@ -57,30 +57,42 @@ export function SignAgreementForm({
 
   return (
     <>
-      <section className="sticky bottom-4 rounded-lg border border-stone-900 bg-stone-900 p-5 shadow-lg sm:flex sm:items-center sm:justify-between sm:gap-6">
-        <div>
-          <h2 className="text-base font-medium text-white">
-            Ready to get started?
-          </h2>
-          <p className="mt-1 text-sm text-stone-300">
-            Accept the agreement and we will begin onboarding{" "}
-            {propertyDisplayName}.
-          </p>
+      {/* Fixed, not sticky. globals.css puts overflow-x:hidden on
+          html and body, which makes them the scroll container and
+          stops position:sticky from ever pinning — the bar used to
+          sit at the very end of a long contract, so the client had to
+          scroll the whole thing before they could see how to accept.
+          Fixed works regardless, which matters more here than
+          anywhere else in the portal: nothing gets let, and nothing
+          earns, until this button is pressed. */}
+      <div className="fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-6">
+        <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 rounded-lg border border-stone-900 bg-stone-900 p-4 shadow-lg sm:gap-6 sm:p-5">
+          {/* Desktop-only prose. On a phone this bar covers part of
+              the contract for the entire read, so it earns its height
+              with the button alone. */}
+          <div className="hidden sm:block">
+            <h2 className="text-base font-medium text-white">
+              Ready to get started?
+            </h2>
+            <p className="mt-1 text-sm text-stone-300">
+              Accept the agreement and we will begin onboarding{" "}
+              {propertyDisplayName}.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setOpen(true)}
+            className="inline-flex w-full items-center justify-center rounded-md bg-white px-5 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-100 sm:w-auto sm:shrink-0"
+          >
+            Accept agreement
+          </button>
         </div>
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          className="mt-4 inline-flex w-full items-center justify-center rounded-md bg-white px-5 py-2.5 text-sm font-medium text-stone-900 hover:bg-stone-100 sm:mt-0 sm:w-auto sm:shrink-0"
-        >
-          Accept agreement
-        </button>
-      </section>
+      </div>
 
-      {state && !state.ok ? (
-        <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">
-          {state.error}
-        </p>
-      ) : null}
+      {/* Reserves the room the fixed bar covers, so the closing
+          clauses and the governing-law note can still be scrolled
+          clear of it. */}
+      <div aria-hidden className="h-24 sm:h-28" />
 
       {open ? (
         <AcceptDialog
@@ -89,6 +101,7 @@ export function SignAgreementForm({
           clientName={clientName}
           agreementTitle={agreementTitle}
           reference={reference}
+          error={state && !state.ok ? state.error : null}
         />
       ) : null}
     </>
@@ -101,12 +114,17 @@ function AcceptDialog({
   clientName,
   agreementTitle,
   reference,
+  error,
 }: {
   onClose: () => void;
   formAction: (formData: FormData) => void;
   clientName: string;
   agreementTitle: string;
   reference: string | null;
+  // Rendered here rather than on the page behind: a failed submit
+  // leaves this dialog open, and the overlay covers everything else,
+  // so an error anywhere else is an error nobody reads.
+  error: string | null;
 }) {
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -173,6 +191,15 @@ function AcceptDialog({
             </span>
           </li>
         </ul>
+
+        {error ? (
+          <p
+            role="alert"
+            className="mt-6 rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800"
+          >
+            {error}
+          </p>
+        ) : null}
 
         <form action={formAction} className="mt-6">
           <AcceptButton />
