@@ -14,6 +14,7 @@ import Link from "next/link";
 import { getCurrentClient, requireUser } from "@/lib/auth";
 import { ImpersonationBanner } from "@/components/admin/ImpersonationBanner";
 import { NotificationBell } from "@/components/client/NotificationBell";
+import { PopoverAutoClose } from "@/components/PopoverAutoClose";
 import { listClientNotifications } from "@/lib/notifications/list";
 
 export default async function ClientLayout({
@@ -71,7 +72,9 @@ export default async function ClientLayout({
           {/* Mobile-only controls: bell stays visible (notifications
               matter), the rest of the nav collapses into a hamburger
               powered by a <details> element so we don't ship a client
-              component just for show/hide. */}
+              component just for show/hide. Closing it after a
+              selection does need a sliver of JS — see
+              PopoverAutoClose. */}
           <div className="flex items-center gap-2 md:hidden">
             {isLinkedClient ? (
               <NotificationBell
@@ -122,6 +125,7 @@ export default async function ClientLayout({
                   </button>
                 </form>
               </div>
+              <PopoverAutoClose />
             </details>
           </div>
 

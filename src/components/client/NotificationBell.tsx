@@ -6,6 +6,10 @@
 // per-row dismiss button is the same. Pages re-render after either
 // action via revalidatePath("/client").
 //
+// PopoverAutoClose adds the one thing <details> can't do on its own —
+// closing once you've picked a notification, clicked away or hit
+// Escape. It's an enhancement, so the bell still opens without it.
+//
 // The bell badge surfaces the unread count, capped at "9+" so a
 // neglected account doesn't blow up the layout. WARNING-tone items
 // are sorted ahead of INFO/SUCCESS by listClientNotifications so a
@@ -18,6 +22,7 @@ import {
   dismissNotificationAction,
   markAllNotificationsReadAction,
 } from "@/lib/notifications/actions";
+import { PopoverAutoClose } from "@/components/PopoverAutoClose";
 
 const TONE_DOT: Record<ClientNotification["tone"], string> = {
   WARNING: "bg-amber-500",
@@ -104,6 +109,7 @@ export function NotificationBell({
           </div>
         )}
       </div>
+      <PopoverAutoClose />
     </details>
   );
 }

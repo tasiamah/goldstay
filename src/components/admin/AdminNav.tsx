@@ -174,6 +174,11 @@ export function AdminNav({ role }: { role: AdminRole }) {
                       href={item.href}
                       role="menuitem"
                       aria-current={active ? "page" : undefined}
+                      // The pathname effect above handles the usual
+                      // case, but picking the section you're already
+                      // in doesn't change the pathname, so the sheet
+                      // would sit there looking stuck.
+                      onClick={() => setMobileOpen(false)}
                       className={
                         active
                           ? "block bg-stone-100 px-4 py-2.5 text-sm font-medium text-stone-900"
