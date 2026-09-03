@@ -13,8 +13,9 @@ import { PropertyInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import {
   AGREEMENT_ISSUE_PROPERTY_SELECT,
-  buildAgreementIssueData,
+  issueAgreementForProperty,
 } from "@/lib/agreements/issue";
+import { notifyClientOfAgreement } from "@/lib/agreements/notify";
 import { decidePropertyGoLive } from "@/lib/properties/go-live";
 import { recordAudit } from "@/lib/audit";
 import { formatPropertyDisplayName } from "@/lib/format-property";
@@ -83,7 +84,13 @@ export async function createPropertyAction(
     // and treat it as the property itself everywhere in the UI. If
     // we ever rent out subparts (a building, a compound) we flip
     // back to the per-unit flow without a migration.
-    const created = await prisma.$transaction(async (tx) => {
+    //
+    // The management agreement is issued here too, rather than behind
+    // a button, because it gates the property going live and an
+    // agreement nobody remembered to send is a property that silently
+    // never launches. Atomic on purpose: a property with no agreement
+    // is an invalid state, not a stage.
+    const issued = await prisma.$transaction(async (tx) => {
       const property = await tx.property.create({
         data: {
           ...parsed.data,
@@ -104,8 +111,12 @@ export async function createPropertyAction(
           sizeSqm: property.sizeSqm,
         },
       });
-      return property;
+      return {
+        property,
+        agreement: await issueAgreementForProperty(tx, property),
+      };
     });
+    const created = issued.property;
     await recordAudit({
       actor,
       entity: "PROPERTY",
@@ -118,9 +129,28 @@ export async function createPropertyAction(
         propertyType: created.propertyType,
       },
     });
+    await recordAudit({
+      actor,
+      entity: "AGREEMENT",
+      entityId: issued.agreement.id,
+      action: "agreement.issued",
+      summary: `Management agreement issued`,
+      metadata: { propertyId: created.id },
+    });
+    // Awaited rather than detached so a Resend timeout can't outlive
+    // the request on Vercel. Never throws — see notifyClientOfAgreement.
+    await notifyClientOfAgreement({
+      agreementId: issued.agreement.id,
+      reference: issued.agreement.reference,
+      propertyId: created.id,
+      actor,
+    });
     revalidatePath("/admin");
     revalidatePath("/admin/properties");
     revalidatePath(`/admin/clients/${parsed.data.clientId}`);
+    // The client now has an agreement waiting, so their dashboard and
+    // notification bell are stale until this lands.
+    revalidatePath("/client");
     redirect(`/admin/properties/${created.id}`);
   } catch (e) {
     if ((e as { digest?: string }).digest?.startsWith("NEXT_REDIRECT")) {
@@ -204,17 +234,17 @@ export async function updatePropertyAction(
 // Lifecycle transitions
 //
 // Status is not a free-form field. The only paths in/out of ACTIVE
-// are the two actions below: a human marks the property verified
-// after reviewing the documents, or marks it exited when it leaves
-// the portfolio. Both are guarded server-side so the UI buttons
-// can't be replayed to skip the rules.
+// are the two actions below: a human marks the property live once the
+// client has accepted its management agreement, or marks it exited
+// when it leaves the portfolio. Both are guarded server-side so the
+// UI buttons can't be replayed to skip the rules.
 // ──────────────────────────────────────────────────────────────────
 
 export type LifecycleResult =
   | { ok: true; stage: "agreement_issued" | "went_live" | "exited" }
   | { ok: false; error: string };
 
-export async function markPropertyVerifiedAction(
+export async function markPropertyLiveAction(
   propertyId: string,
 ): Promise<LifecycleResult> {
   const actor = await currentAuditActor();
@@ -233,7 +263,7 @@ export async function markPropertyVerifiedAction(
   if (property.status !== PropertyStatus.ONBOARDING) {
     return {
       ok: false,
-      error: "Only onboarding properties can be marked as verified.",
+      error: "Only onboarding properties can be marked as live.",
     };
   }
 
@@ -260,19 +290,14 @@ export async function markPropertyVerifiedAction(
     return { ok: false, error: decision.reason };
   }
 
-  // Step 1: no agreement yet. Issue one and leave the property in
-  // ONBOARDING. We snapshot the country/type-aware defaults onto the
-  // row so later tweaks to the defaults helper can't retroactively
-  // alter terms a landlord has already been shown.
+  // Recovery path, not a workflow step. Properties created from here
+  // on get their agreement at creation, so only ones predating that
+  // arrive with none — and they would otherwise be permanently
+  // unlaunchable, since launching needs an acceptance and there is
+  // nothing to accept. Issue one and stop.
   if (decision.kind === "issue_agreement") {
-    const agreement = await prisma.$transaction(async (tx) =>
-      tx.managementAgreement.create({
-        data: {
-          ...(await buildAgreementIssueData(tx, property)),
-          property: { connect: { id: propertyId } },
-        },
-        select: { id: true },
-      }),
+    const agreement = await prisma.$transaction((tx) =>
+      issueAgreementForProperty(tx, property),
     );
     await recordAudit({
       actor,
@@ -280,13 +305,19 @@ export async function markPropertyVerifiedAction(
       entityId: agreement.id,
       action: "agreement.issued",
       summary: `Management agreement issued`,
-      metadata: { propertyId },
+      metadata: { propertyId, reason: "backfill-on-launch" },
+    });
+    await notifyClientOfAgreement({
+      agreementId: agreement.id,
+      reference: agreement.reference,
+      propertyId,
+      actor,
     });
     revalidateAfterLifecycle(propertyId, property.clientId);
     return { ok: true, stage: "agreement_issued" };
   }
 
-  // Step 2: the client has accepted. Now it can go live.
+  // The client has accepted. Now it can go live.
   await prisma.property.update({
     where: { id: propertyId },
     data: { status: PropertyStatus.ACTIVE },

@@ -21,7 +21,7 @@ export function FirstVisitHint({
   // immediately below already steals the eye — don't compete with it.
   // We still render but with quieter copy that defers to the action.
   const message = hasPendingAgreement
-    ? `Welcome, ${clientFirstName}. Sign your agreement first; once that's done, the ? icons next to each section explain what you're looking at.`
+    ? `Welcome, ${clientFirstName}. Accept your agreement first; once that's done, the ? icons next to each section explain what you're looking at.`
     : `Welcome, ${clientFirstName}. Click the ? icons next to each section heading to learn what it shows. They stay there for whenever you want a refresher.`;
 
   return (

@@ -12,12 +12,13 @@
 // to flip it to ACTIVE and issue the agreement in the same
 // transaction, so every property went live before anyone had agreed
 // to anything, and a client who never accepted still had a live
-// listing. Now the same button walks two steps instead:
+// listing. Now acceptance comes first and going live is refused
+// until it arrives.
 //
-//   1. no agreement yet  -> issue one, property stays ONBOARDING
-//   2. agreement accepted -> property goes ACTIVE
-//
-// and refuses in between.
+// The issue_agreement outcome is a recovery path, not a step in the
+// flow: agreements are issued automatically when a property is
+// created, so only properties predating that arrive here without
+// one, and they would otherwise be permanently unlaunchable.
 //
 // Pure so the rule can be tested without a database.
 

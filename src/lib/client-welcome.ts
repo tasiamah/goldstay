@@ -267,7 +267,7 @@ function renderText({
     "  • See every property we manage for you, with live occupancy.",
     "  • Download your monthly statement as a PDF.",
     "  • Browse every transaction behind that statement.",
-    "  • Sign your management agreement when it's ready.",
+    "  • Accept your management agreement in one click.",
     "",
     linkBlock,
     "",
@@ -313,7 +313,7 @@ function renderHtml({
                   <li>See every property we manage for you, with live occupancy.</li>
                   <li>Download your monthly statement as a PDF.</li>
                   <li>Browse every transaction behind that statement.</li>
-                  <li>Sign your management agreement when it's ready.</li>
+                  <li>Accept your management agreement in one click.</li>
                 </ul>
                 ${cta}
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Questions? Reply to this email and you'll reach a real person at Goldstay. We answer within one business day.</p>

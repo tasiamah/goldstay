@@ -114,8 +114,8 @@ export function buildDesiredNotifications(
       kind: "AGREEMENT_PENDING",
       sourceRef: agreement.id,
       tone: "WARNING",
-      title: `Sign your management agreement`,
-      body: `For ${propertyLabel}. Until this is signed, payouts and statements stay paused.`,
+      title: `Accept your management agreement`,
+      body: `For ${propertyLabel}. It's one click, and the property can't go live until you've accepted.`,
       href: `/client/agreements/${agreement.id}`,
     });
   }

@@ -4,14 +4,12 @@
 // EXITED (terminal state). For ACTIVE, shows a Mark exited button
 // behind a window.confirm.
 //
-// ONBOARDING is now two steps rather than one, because a property
-// must not go live until the client has accepted its management
-// agreement. The same button does both, and the label says which
-// step it is about to perform:
-//
-//   no agreement yet  -> "Send agreement to client"
-//   accepted          -> "Mark as live"
-//   awaiting the client -> disabled, with the reason underneath
+// ONBOARDING offers one action, "Mark as live", gated on the client
+// having accepted the property's management agreement. There is no
+// button to send that agreement: it is issued the moment the property
+// is created, so by the time anyone opens this page the client
+// already has it waiting. While they haven't accepted, the button is
+// disabled and says why.
 //
 // The old gate here was documentCount > 0, mirroring a server check
 // that demanded a title deed or similar. Both are gone: we no longer
@@ -26,17 +24,15 @@
 import { useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {
-  markPropertyExitedAction,
-  markPropertyVerifiedAction,
-} from "../actions";
+import { markPropertyExitedAction, markPropertyLiveAction } from "../actions";
 
 type Props = {
   propertyId: string;
   status: "ONBOARDING" | "ACTIVE" | "EXITED";
-  // Which step the property is at, derived server-side from its
-  // agreements so the button never claims an action the server will
-  // then refuse.
+  // Derived server-side from the property's agreements so the button
+  // never offers an action the server will then refuse. "none" only
+  // happens for properties that predate agreements being issued at
+  // creation; clicking through backfills one for them.
   agreementStage: "none" | "awaiting_acceptance" | "accepted";
 };
 
@@ -52,10 +48,6 @@ export function PropertyLifecycleActions({
 
   if (status === "ONBOARDING") {
     const awaiting = agreementStage === "awaiting_acceptance";
-    const label =
-      agreementStage === "accepted"
-        ? "Mark as live"
-        : "Send agreement to client";
     return (
       <div className="flex flex-col items-end gap-1">
         <button
@@ -63,14 +55,14 @@ export function PropertyLifecycleActions({
           disabled={awaiting || pending}
           onClick={() => {
             startTransition(async () => {
-              const res = await markPropertyVerifiedAction(propertyId);
+              const res = await markPropertyLiveAction(propertyId);
               if (!res.ok) {
                 toast.error(res.error);
                 return;
               }
               toast.success(
                 res.stage === "agreement_issued"
-                  ? "Agreement sent. The property goes live once the client accepts it."
+                  ? "This property had no agreement, so we've sent one. It goes live once the client accepts it."
                   : "Property is live",
               );
               router.refresh();
@@ -78,7 +70,7 @@ export function PropertyLifecycleActions({
           }}
           className="inline-flex items-center rounded-md bg-emerald-700 px-3 py-1.5 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-800 disabled:cursor-not-allowed disabled:bg-stone-300"
         >
-          {pending ? "Working…" : label}
+          {pending ? "Working…" : "Mark as live"}
         </button>
         {awaiting ? (
           <p className="max-w-xs text-right text-xs text-stone-500">

@@ -750,8 +750,9 @@ function AgreementCard({
 
       {!current ? (
         <p className="mt-5 text-sm text-stone-500">
-          No agreement on file yet. Mark the property verified to
-          auto-issue one, or click reissue above.
+          No agreement on file. Properties now get one automatically at
+          creation, so this one predates that — click reissue above, or
+          “Mark as live”, to send the client an agreement.
         </p>
       ) : (
         <div className="mt-5 space-y-4">

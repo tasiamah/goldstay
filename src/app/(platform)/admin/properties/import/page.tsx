@@ -31,9 +31,16 @@ export default async function PropertyImportPage() {
         </h2>
         <p className="text-sm text-stone-500">
           Each row is attached to an existing client via{" "}
-          <code>clientEmail</code>. Rows whose email doesn&apos;t match an
+          <code>clientEmail</code>. Rows whose email doesn&apos;t match a
           client are skipped (we never auto-create clients during a property
           import; that would hide data quality issues).
+        </p>
+        <p className="text-sm text-stone-500">
+          Every imported property gets its management agreement issued
+          automatically, but importing does not email anyone — a backfill
+          shouldn&apos;t fire an agreement email at your whole portfolio.
+          Clients see it in their portal; use reissue on a property to send
+          it.
         </p>
       </div>
 

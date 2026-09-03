@@ -8,6 +8,7 @@ import {
   AGREEMENT_ISSUE_PROPERTY_SELECT,
   buildAgreementIssueData,
 } from "@/lib/agreements/issue";
+import { notifyClientOfAgreement } from "@/lib/agreements/notify";
 import { recordAudit } from "@/lib/audit";
 
 export type AgreementAdminResult =
@@ -58,6 +59,17 @@ export async function reissueAgreementAction(
     action: "agreement.reissued",
     summary: "Management agreement reissued",
     metadata: { propertyId, clientId: property.clientId },
+  });
+
+  // A reissue cancels whatever the client was looking at and replaces
+  // it with different terms, so it needs the same email as a first
+  // issue. Without one, a client who had already opened the old link
+  // would be sitting on a cancelled agreement with no idea why.
+  await notifyClientOfAgreement({
+    agreementId: newAgreement.id,
+    reference: newAgreement.reference,
+    propertyId,
+    actor,
   });
 
   revalidatePath("/admin");

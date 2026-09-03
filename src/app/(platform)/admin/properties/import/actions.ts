@@ -11,6 +11,7 @@ import {
   validateRows,
   type ValidatedRow,
 } from "@/lib/admin/csv-import";
+import { issueAgreementForProperty } from "@/lib/agreements/issue";
 
 // One row per property. clientEmail is the join key — admins always
 // know the email already, and importing properties before the
@@ -91,29 +92,57 @@ export async function applyPropertyImportAction(
       continue;
     }
     try {
-      const property = await prisma.property.create({
-        data: {
-          clientId: client.id,
-          name: row.value.name,
-          unitNumber: row.value.unitNumber || null,
-          city: row.value.city,
-          address: row.value.address,
-          neighbourhood: row.value.neighbourhood || null,
-          country: row.value.country,
-          propertyType: row.value.propertyType,
-          bedrooms: row.value.bedrooms ?? null,
-          bathrooms: row.value.bathrooms ?? null,
-          sizeSqm: row.value.sizeSqm ?? null,
-        },
+      // Same as creating a property by hand: its management agreement
+      // is issued in the same transaction. An imported property with
+      // no agreement could never go live, and a CSV of twenty is
+      // exactly where nobody would notice one missing.
+      //
+      // Unlike the single-property path, this deliberately does NOT
+      // email the client. Import is how an existing portfolio gets
+      // backfilled, and one mis-pasted CSV should not fire an
+      // agreement email at every landlord we manage. They still see
+      // it in their portal; use reissue on a property to send one.
+      const issued = await prisma.$transaction(async (tx) => {
+        const property = await tx.property.create({
+          data: {
+            clientId: client.id,
+            name: row.value.name,
+            unitNumber: row.value.unitNumber || null,
+            city: row.value.city,
+            address: row.value.address,
+            neighbourhood: row.value.neighbourhood || null,
+            country: row.value.country,
+            propertyType: row.value.propertyType,
+            bedrooms: row.value.bedrooms ?? null,
+            bathrooms: row.value.bathrooms ?? null,
+            sizeSqm: row.value.sizeSqm ?? null,
+          },
+        });
+        return {
+          property,
+          agreement: await issueAgreementForProperty(tx, property),
+        };
       });
       created += 1;
       await recordAudit({
         actor,
         entity: "PROPERTY",
-        entityId: property.id,
+        entityId: issued.property.id,
         action: "property.imported",
         summary: `Imported via CSV row ${row.rowIndex} for client ${row.value.clientEmail}`,
         metadata: { rowIndex: row.rowIndex, source: "csv" },
+      });
+      await recordAudit({
+        actor,
+        entity: "AGREEMENT",
+        entityId: issued.agreement.id,
+        action: "agreement.issued",
+        summary: `Management agreement issued`,
+        metadata: {
+          propertyId: issued.property.id,
+          source: "csv",
+          emailed: false,
+        },
       });
     } catch (err) {
       console.warn("[property-import] row failed", row.rowIndex, err);

@@ -8,9 +8,21 @@ import { decidePropertyGoLive } from "./go-live";
 // agreed to anything.
 describe("decidePropertyGoLive", () => {
   it("issues an agreement when the property has none", () => {
+    // Only reachable for properties that predate agreements being
+    // issued at creation. Without this they could never go live:
+    // launching needs an acceptance and there is nothing to accept.
     expect(decidePropertyGoLive({ agreementStatuses: [] })).toEqual({
       kind: "issue_agreement",
     });
+  });
+
+  it("never goes live off the back of an issue", () => {
+    // Issuing and going live in one click is exactly the bug this
+    // module exists to prevent, so the recovery path above must not
+    // double as a launch.
+    expect(decidePropertyGoLive({ agreementStatuses: [] }).kind).not.toBe(
+      "go_live",
+    );
   });
 
   it("refuses to go live while the client has not accepted", () => {

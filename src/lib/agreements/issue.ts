@@ -1,10 +1,11 @@
 // Builds the snapshot written onto a new ManagementAgreement row.
 //
-// Two places issue agreements — verifying a property for the first
-// time, and reissuing one from the admin property page — and they must
-// snapshot identically. When they drifted, the only symptom was a
-// reissued contract quietly carrying different terms from the original,
-// which nobody notices until a client disputes one. Hence one helper.
+// Several places issue agreements — creating a property by hand or by
+// CSV import, and reissuing one from the admin property page — and
+// they must snapshot identically. When they drifted, the only symptom
+// was a reissued contract quietly carrying different terms from the
+// original, which nobody notices until a client disputes one. Hence
+// one helper.
 //
 // Call it inside the same transaction as the create: the GS-YYYY-###
 // reference is derived from a count of this year's rows, so it has to
@@ -73,4 +74,29 @@ export async function buildAgreementIssueData(
     status: AgreementStatus.SENT,
     sentAt: now,
   };
+}
+
+// Issue an agreement for a freshly created property.
+//
+// Every property gets one at creation, so there is no separate "send
+// the agreement" step for an operator to remember or forget. Must run
+// inside the same transaction as the property insert: the reference
+// is derived from a count of this year's rows, and a property that
+// exists without an agreement can never go live.
+//
+// Returns the reference alongside the id because the client's "your
+// agreement is ready" email quotes it, and reading it back out would
+// mean a second round trip for a value we just wrote.
+export async function issueAgreementForProperty(
+  tx: Pick<PrismaClient, "managementAgreement">,
+  property: AgreementIssueProperty,
+  now = new Date(),
+): Promise<{ id: string; reference: string | null }> {
+  return tx.managementAgreement.create({
+    data: {
+      ...(await buildAgreementIssueData(tx, property, now)),
+      property: { connect: { id: property.id } },
+    },
+    select: { id: true, reference: true },
+  });
 }

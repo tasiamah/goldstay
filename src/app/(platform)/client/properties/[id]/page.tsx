@@ -247,18 +247,19 @@ export default async function ClientPropertyDetailPage({
                 Action required
               </p>
               <h2 className="mt-1 text-base font-medium text-amber-950">
-                Sign your management agreement
+                Accept your management agreement
               </h2>
               <p className="mt-1 text-sm text-amber-900/80">
-                We need a signed agreement on file before payouts can be
-                released. About two minutes to review and sign.
+                This property can&apos;t go live, and payouts can&apos;t be
+                released, until you&apos;ve accepted its agreement. Read it
+                through and agree in one click.
               </p>
             </div>
             <Link
               href={`/client/agreements/${latestAgreement.id}`}
               className="shrink-0 rounded-md bg-amber-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-amber-800"
             >
-              Review and sign
+              Review and accept
             </Link>
           </div>
         </section>
