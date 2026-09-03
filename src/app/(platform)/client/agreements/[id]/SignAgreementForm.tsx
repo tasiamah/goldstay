@@ -42,9 +42,8 @@ export function SignAgreementForm({
           Accepted. Your agreement is in force.
         </h2>
         <p className="mt-2 text-sm text-emerald-900/80">
-          We have recorded your acceptance and stored a copy in your
-          property documents. Refresh this page to download the executed
-          PDF.
+          We have recorded your acceptance and stored an executed copy.
+          Refresh this page to download the PDF.
         </p>
         <p className="mt-3 text-sm text-emerald-900/80">
           Acceptance receipt{" "}

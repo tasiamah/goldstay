@@ -4,9 +4,6 @@ import type { AgreementTemplate, SigningCapacity } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
-import { DocumentUploader } from "./documents/DocumentUploader";
-import { DeleteDocumentButton } from "./documents/DeleteDocumentButton";
-import { VerifyDocumentButton } from "./documents/VerifyDocumentButton";
 import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
 import {
   PropertyStatusBadge,
@@ -43,18 +40,6 @@ import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { PropertyFinanceCard } from "@/components/admin/finance/PropertyFinanceCard";
-
-const DOCUMENT_KIND_LABELS: Record<string, string> = {
-  TITLE_DEED: "Title deed",
-  SALE_AGREEMENT: "Sale agreement",
-  LEASE: "Lease",
-  KYC: "KYC",
-  INVOICE: "Invoice",
-  RECEIPT: "Receipt",
-  STATEMENT: "Statement",
-  PHOTO: "Photo",
-  OTHER: "Other",
-};
 
 export const dynamic = "force-dynamic";
 
@@ -102,19 +87,6 @@ export default async function PropertyDetailPage({
               currency: true,
             },
           },
-        },
-      },
-      documents: {
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          title: true,
-          kind: true,
-          sizeBytes: true,
-          createdAt: true,
-          verifiedAt: true,
-          uploadedBy: true,
-          storagePath: true,
         },
       },
       // All bookings whose stay overlaps the heatmap window. The
@@ -437,75 +409,6 @@ export default async function PropertyDetailPage({
               propertySigningCapacity={property.signingCapacity}
             />
           ) : null}
-
-          <div className="rounded-lg border border-stone-200 bg-white p-6">
-            <h3 className="text-base font-medium text-stone-900">
-              Documents
-            </h3>
-            <p className="mt-1 text-sm text-stone-500">
-              Title deeds, sale agreements, leases, invoices, and any
-              other paperwork backing this property. Visible to the
-              client on their portal.
-            </p>
-
-            <div className="mt-5 border-b border-stone-100 pb-5">
-              <DocumentUploader propertyId={property.id} />
-            </div>
-
-            {property.documents.length === 0 ? (
-              <p className="mt-5 text-sm text-stone-500">
-                No documents uploaded yet.
-              </p>
-            ) : (
-              <ul className="mt-5 divide-y divide-stone-100">
-                {property.documents.map((d) => (
-                  <li
-                    key={d.id}
-                    className="flex flex-col gap-2 py-3 sm:flex-row sm:items-start sm:justify-between"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <a
-                          href={`/admin/documents/${d.id}/download`}
-                          target="_blank"
-                          rel="noopener"
-                          className="truncate font-medium text-stone-900 hover:underline"
-                        >
-                          {d.title}
-                        </a>
-                        <AdminDocumentVerificationBadge
-                          verified={Boolean(d.verifiedAt)}
-                        />
-                      </div>
-                      <p className="mt-0.5 text-xs text-stone-500">
-                        {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
-                        {d.sizeBytes
-                          ? ` · ${formatBytes(d.sizeBytes)}`
-                          : ""}
-                        {" · "}
-                        {d.createdAt.toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                        {d.uploadedBy ? ` · uploaded by ${d.uploadedBy}` : ""}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <VerifyDocumentButton
-                        documentId={d.id}
-                        verified={Boolean(d.verifiedAt)}
-                      />
-                      <DeleteDocumentButton
-                        documentId={d.id}
-                        title={d.title}
-                      />
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
         </div>
       </section>
 
@@ -529,52 +432,6 @@ export default async function PropertyDetailPage({
         clientId={property.client.id}
       />
     </div>
-  );
-}
-
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}
-
-// Mirror of the client-side badge; same vocabulary so admins and
-// landlords describe the same row the same way during a support
-// call. Local to the admin page because the styling differs
-// slightly (smaller, sits inline with the title) — extracting to a
-// shared component would force both pages to agree on the wrapper
-// markup, which we don't want yet.
-function AdminDocumentVerificationBadge({
-  verified,
-}: {
-  verified: boolean;
-}) {
-  if (verified) {
-    return (
-      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-800">
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 12 12"
-          aria-hidden
-          fill="none"
-        >
-          <path
-            d="M2.5 6.5l2.5 2.5L9.5 4"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        Verified
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-800">
-      Pending
-    </span>
   );
 }
 

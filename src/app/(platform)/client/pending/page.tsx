@@ -51,7 +51,7 @@ export default async function ClientPendingPage() {
           <ol className="mt-3 space-y-2 list-decimal pl-5 text-stone-600">
             <li>
               Our onboarding team verifies your identity and the
-              property documents you shared.
+              details you shared about your properties.
             </li>
             <li>
               We add your portfolio (properties and current

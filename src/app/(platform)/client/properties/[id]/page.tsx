@@ -40,24 +40,6 @@ import {
   revenueTotalsByCurrency,
   type BookingLike,
 } from "@/lib/bookings/aggregate";
-import { ClientPropertyDocumentUploader } from "./ClientPropertyDocumentUploader";
-import { ClientPropertyDocumentRow } from "./ClientPropertyDocumentRow";
-
-const DOCUMENT_KIND_LABELS: Record<string, string> = {
-  TITLE_DEED: "Title deed",
-  SALE_AGREEMENT: "Sale agreement",
-  LEASE: "Lease",
-  KYC: "KYC",
-  ID_DOCUMENT: "ID document",
-  PROOF_OF_PAYOUT_ACCOUNT: "Proof of payout account",
-  INVOICE: "Invoice",
-  RECEIPT: "Receipt",
-  STATEMENT: "Statement",
-  PHOTO: "Photo",
-  MANAGEMENT_AGREEMENT: "Management agreement",
-  OTHER: "Other",
-};
-
 export const dynamic = "force-dynamic";
 
 export default async function ClientPropertyDetailPage({
@@ -92,18 +74,6 @@ export default async function ClientPropertyDetailPage({
               currency: true,
             },
           },
-        },
-      },
-      documents: {
-        orderBy: { createdAt: "desc" },
-        select: {
-          id: true,
-          title: true,
-          kind: true,
-          sizeBytes: true,
-          createdAt: true,
-          verifiedAt: true,
-          uploadedBy: true,
         },
       },
       transactions: {
@@ -310,7 +280,11 @@ export default async function ClientPropertyDetailPage({
         </Card>
       ) : null}
 
-      <section className="grid gap-8 lg:grid-cols-2">
+      {/* Short-let and long-let answer the same question — who is in
+          the property — and only one ever renders. Full width rather
+          than a two-column grid: the second column was the documents
+          card, and a lone half-width card looks like a load failure. */}
+      <section>
         {isShortTerm ? (
           <Card title="Recent stays">
             {property.bookings.length === 0 ? (
@@ -385,81 +359,6 @@ export default async function ClientPropertyDetailPage({
             )}
           </Card>
         )}
-
-        <Card title="Documents">
-          {property.documents.length === 0 ? (
-            <p className="mt-4 text-sm text-stone-500">
-              No paperwork on file for this property yet. Nothing is
-              required from you — your management agreement covers the
-              right to let this property. If you do have anything worth
-              keeping here, such as a lease or photos, you can add it
-              below.
-            </p>
-          ) : (
-            <ul className="mt-4 divide-y divide-stone-100">
-              {property.documents.map((d) => {
-                const isClientUpload = d.uploadedBy === client.email;
-                return (
-                  <li
-                    key={d.id}
-                    className="flex flex-col gap-2 py-3 sm:flex-row sm:items-start sm:justify-between"
-                  >
-                    <div className="min-w-0 flex-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <a
-                          href={`/client/documents/${d.id}/download`}
-                          target="_blank"
-                          rel="noopener"
-                          className="truncate font-medium text-stone-900 hover:underline"
-                        >
-                          {d.title}
-                        </a>
-                        <DocumentVerificationBadge
-                          verified={Boolean(d.verifiedAt)}
-                        />
-                      </div>
-                      <p className="mt-0.5 text-xs text-stone-500">
-                        {DOCUMENT_KIND_LABELS[d.kind] ?? d.kind}
-                        {d.sizeBytes
-                          ? ` · ${formatBytes(d.sizeBytes)}`
-                          : ""}
-                        {" · "}
-                        Uploaded{" "}
-                        {d.createdAt.toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "short",
-                          year: "numeric",
-                        })}
-                        {isClientUpload ? " by you" : " by Goldstay"}
-                      </p>
-                    </div>
-                    {isClientUpload && !d.verifiedAt ? (
-                      <ClientPropertyDocumentRow
-                        documentId={d.id}
-                        title={d.title}
-                      />
-                    ) : null}
-                  </li>
-                );
-              })}
-            </ul>
-          )}
-
-          {property.documents.length > 0 ? (
-            <div className="mt-6 border-t border-stone-100 pt-5">
-              <h4 className="text-sm font-medium text-stone-900">
-                Add another document
-              </h4>
-              <p className="mt-0.5 text-xs text-stone-500">
-                Leases, sale agreements, or photos — all optional. New
-                uploads land as pending until Goldstay verifies them.
-              </p>
-              <div className="mt-3">
-                <ClientPropertyDocumentUploader propertyId={property.id} />
-              </div>
-            </div>
-          ) : null}
-        </Card>
       </section>
 
       <Card title="Transaction history">
@@ -580,40 +479,6 @@ function Th({
   );
 }
 
-// Per-document badge mirroring the ClientKycSlot vocabulary: amber
-// while Goldstay still has to look at the file, emerald once an
-// admin has stamped Document.verifiedAt. Pure presentational; the
-// authoritative state lives on the row.
-function DocumentVerificationBadge({ verified }: { verified: boolean }) {
-  if (verified) {
-    return (
-      <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-800">
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 12 12"
-          aria-hidden
-          fill="none"
-        >
-          <path
-            d="M2.5 6.5l2.5 2.5L9.5 4"
-            stroke="currentColor"
-            strokeWidth="1.6"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-        Verified
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex shrink-0 items-center rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-amber-800">
-      Pending verification
-    </span>
-  );
-}
-
 function fmt(n: number): string {
   return n.toLocaleString("en-GB", {
     minimumFractionDigits: 2,
@@ -621,8 +486,3 @@ function fmt(n: number): string {
   });
 }
 
-function formatBytes(bytes: number): string {
-  if (bytes < 1024) return `${bytes} B`;
-  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
-}

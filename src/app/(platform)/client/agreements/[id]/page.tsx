@@ -190,14 +190,7 @@ export default async function ClientAgreementPage({
               month: "long",
               year: "numeric",
             })}
-            . A countersigned PDF copy lives in your{" "}
-            <Link
-              href={`/client/properties/${agreement.property.id}`}
-              className="underline underline-offset-2 hover:text-emerald-700"
-            >
-              property documents
-            </Link>
-            .
+            . A countersigned PDF copy is available below.
           </p>
           {agreement.acceptanceReference ? (
             <p className="mt-2 text-sm text-emerald-900/80">

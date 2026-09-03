@@ -271,8 +271,13 @@ export async function adminSearch(
       : d.client
         ? formatClientDisplayName(d.client)
         : "Unattached";
+    // Property-attached docs go straight to the file. There is no
+    // per-property document list to land on any more — search is the
+    // only way back to paperwork uploaded before that was removed,
+    // plus executed agreement PDFs. Client-level docs keep their card,
+    // so those still point at the client page.
     const href = d.propertyId
-      ? `/admin/properties/${d.propertyId}/documents`
+      ? `/admin/documents/${d.id}/download`
       : d.clientId
         ? `/admin/clients/${d.clientId}`
         : "/admin";

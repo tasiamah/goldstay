@@ -1,6 +1,7 @@
 // Client-level documents card (KYC + ID + proof-of-payout-account).
-// Companion to the per-property documents block; this surfaces
-// docs that belong to the *person* not a specific asset.
+// The only document surface left in the admin UI: per-property
+// paperwork was removed, so everything an operator uploads or
+// verifies belongs to the *person* rather than a specific asset.
 //
 // Order is reverse-chronological so the most recently uploaded doc
 // (usually the one the operator was just discussing on a call) is
