@@ -33,15 +33,12 @@ type Defaults = {
   bedrooms?: number | null;
   bathrooms?: number | null;
   sizeSqm?: number | null;
-  acquisitionPrice?: string | number | null;
-  acquisitionCurrency?: string | null;
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
   propertyType?: "LONG_TERM" | "SHORT_TERM";
   signingCapacity?: SigningCapacity;
   // Schedule 1 of the short-let agreement. Dates arrive as
   // yyyy-mm-dd strings so they can go straight into a date input.
   maxOccupancy?: number | null;
-  forecastMonthlyFee?: string | number | null;
   startupCostsBudget?: string | number | null;
   operatingReserve?: string | number | null;
   launchedAt?: string | null;
@@ -188,35 +185,6 @@ export function PropertyForm({
           defaultValue={defaults.sizeSqm ?? ""}
           min={0}
           error={fieldError("sizeSqm")}
-        />
-      </fieldset>
-
-      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <Field
-          label="Acquisition price"
-          name="acquisitionPrice"
-          type="number"
-          step="0.01"
-          defaultValue={
-            defaults.acquisitionPrice
-              ? String(defaults.acquisitionPrice)
-              : ""
-          }
-          min={0}
-          error={fieldError("acquisitionPrice")}
-        />
-        <Select
-          label="Currency"
-          name="acquisitionCurrency"
-          defaultValue={defaults.acquisitionCurrency ?? "USD"}
-          options={[
-            { value: "USD", label: "USD" },
-            { value: "KES", label: "KES" },
-            { value: "GHS", label: "GHS" },
-            { value: "EUR", label: "EUR" },
-            { value: "GBP", label: "GBP" },
-          ]}
-          error={fieldError("acquisitionCurrency")}
         />
       </fieldset>
 
@@ -528,10 +496,7 @@ function ScheduleOneFields({
       <p className="mb-4 text-xs text-stone-500">
         Printed on Schedule 1 of the short-let management agreement.
         Anything left blank reads &ldquo;to be confirmed through GoldStay
-        onboarding&rdquo; on the contract, so fill in what you know. The
-        forecast monthly fee is the basis of the early-exit calculation
-        in clause 10.3 — without it, there is nothing to charge on an
-        early exit.
+        onboarding&rdquo; on the contract, so fill in what you know.
       </p>
 
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
@@ -550,16 +515,6 @@ function ScheduleOneFields({
           type="date"
           defaultValue={asInput(defaults.launchedAt)}
           error={fieldError("launchedAt")}
-        />
-        <Field
-          label={`Forecast monthly management fee (${currency})`}
-          name="forecastMonthlyFee"
-          type="number"
-          step="0.01"
-          defaultValue={asInput(defaults.forecastMonthlyFee)}
-          min={0}
-          placeholder="Good-faith estimate"
-          error={fieldError("forecastMonthlyFee")}
         />
         <Field
           label={`Startup costs budget (${currency})`}

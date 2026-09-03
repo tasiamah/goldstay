@@ -61,7 +61,6 @@ const input: AgreementRenderInput = {
   earlyExitFeeFormatted: "KES 90,000",
   noticePeriodDays: 30,
   payoutCurrency: "USD",
-  forecastMonthlyFeeFormatted: "KES 90,000",
   startupCostsBudgetFormatted: null,
   operatingReserveFormatted: null,
   reference: "GS-2026-004",

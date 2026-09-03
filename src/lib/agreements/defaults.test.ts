@@ -6,38 +6,28 @@ import { defaultAgreementTerms } from "./defaults";
 // rate to a customer". Three scenarios cover the decision tree: the
 // Kenyan short-let contract (its own term/notice/exit rules), Kenyan
 // long-term and Ghanaian short-term (both on the generic contract, so
-// they prove the short-let branch doesn't leak).
+// they prove the short-let branch doesn't leak). The generic contract
+// still has a real early-exit fee; only the short-let one dropped it.
 describe("defaultAgreementTerms", () => {
   it("applies the short-let agreement's own terms to KE short-term", () => {
     const ke = defaultAgreementTerms({
       country: "KE",
       propertyType: "SHORT_TERM",
-      forecastMonthlyFee: 90_000,
     });
     expect(ke).toEqual({
       // Clause 10.1: three full calendar months from the Launch Date.
       termMonths: 3,
       commissionRate: 0.2,
-      // Clause 10.3 caps the Early Termination Amount at one Forecast
-      // Monthly Management Fee, so that's the stored worst case.
-      earlyExitFee: 90_000,
+      // Clause 10.3 sets the Early Termination Amount at unrecovered
+      // Startup Costs, which aren't known at issue. Any number here
+      // would claim we can charge something the contract doesn't
+      // entitle us to.
+      earlyExitFee: 0,
       earlyExitFeeCurrency: "KES",
       // Clause 10.2: 30 days after the Initial Commitment Period.
       noticePeriodDays: 30,
       governingLaw: "Kenya",
     });
-  });
-
-  it("stores a zero exit cap when no forecast fee has been set", () => {
-    // A property can be verified before anyone estimates a monthly
-    // fee. Limb (b) of clause 10.3 then yields nothing, and inventing
-    // a number here would overstate what we could actually charge.
-    const ke = defaultAgreementTerms({
-      country: "KE",
-      propertyType: "SHORT_TERM",
-    });
-    expect(ke.earlyExitFee).toBe(0);
-    expect(ke.termMonths).toBe(3);
   });
 
   it("keeps the generic contract's rate card everywhere else", () => {

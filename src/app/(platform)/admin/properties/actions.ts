@@ -36,8 +36,6 @@ function fromForm(formData: FormData) {
     bedrooms: String(formData.get("bedrooms") ?? ""),
     bathrooms: String(formData.get("bathrooms") ?? ""),
     sizeSqm: String(formData.get("sizeSqm") ?? ""),
-    acquisitionPrice: String(formData.get("acquisitionPrice") ?? ""),
-    acquisitionCurrency: String(formData.get("acquisitionCurrency") ?? "USD"),
     status: String(formData.get("status") ?? "ONBOARDING"),
     propertyType: String(formData.get("propertyType") ?? "LONG_TERM"),
     signingCapacity: String(
@@ -45,7 +43,6 @@ function fromForm(formData: FormData) {
     ),
     // Schedule 1 of the short-let agreement.
     maxOccupancy: String(formData.get("maxOccupancy") ?? ""),
-    forecastMonthlyFee: String(formData.get("forecastMonthlyFee") ?? ""),
     startupCostsBudget: String(formData.get("startupCostsBudget") ?? ""),
     operatingReserve: String(formData.get("operatingReserve") ?? ""),
     launchedAt: String(formData.get("launchedAt") ?? ""),

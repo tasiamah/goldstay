@@ -62,8 +62,6 @@ export const PropertyInput = z.object({
   bedrooms: optionalInt,
   bathrooms: optionalInt,
   sizeSqm: optionalInt,
-  acquisitionPrice: optionalDecimal,
-  acquisitionCurrency: z.string().trim().toUpperCase().min(3).max(3).optional(),
   status: z.nativeEnum(PropertyStatus).default("ONBOARDING"),
   propertyType: z.nativeEnum(PropertyType).default("LONG_TERM"),
   // Capacity the client signs the management agreement in. Defaults to
@@ -77,7 +75,6 @@ export const PropertyInput = z.object({
   // when one is blank. Requiring them would block property creation on
   // figures nobody has yet at that point.
   maxOccupancy: optionalInt,
-  forecastMonthlyFee: optionalDecimal,
   startupCostsBudget: optionalDecimal,
   operatingReserve: optionalDecimal,
   // Clause 1.4 "Launch Date" — when the listing first went live. The

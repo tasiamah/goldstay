@@ -24,7 +24,6 @@ export const AGREEMENT_ISSUE_PROPERTY_SELECT = {
   country: true,
   propertyType: true,
   signingCapacity: true,
-  forecastMonthlyFee: true,
   startupCostsBudget: true,
   operatingReserve: true,
 } satisfies Prisma.PropertySelect;
@@ -42,9 +41,6 @@ export async function buildAgreementIssueData(
   const terms = defaultAgreementTerms({
     country: property.country,
     propertyType: property.propertyType,
-    forecastMonthlyFee: property.forecastMonthlyFee
-      ? Number(property.forecastMonthlyFee)
-      : null,
   });
 
   return {
@@ -67,7 +63,6 @@ export async function buildAgreementIssueData(
     // Schedule 1 money terms, frozen at issue for the same reason.
     // Nulls are fine — the contract prints "to be confirmed through
     // GoldStay onboarding", which Schedule 1 expressly allows.
-    forecastMonthlyFee: property.forecastMonthlyFee,
     startupCostsBudget: property.startupCostsBudget,
     operatingReserve: property.operatingReserve,
 

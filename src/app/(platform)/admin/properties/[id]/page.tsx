@@ -198,12 +198,6 @@ export default async function PropertyDetailPage({
 
   const boundUpdate = updatePropertyAction.bind(null, property.id);
 
-  // Decimal serialises to string on the wire; convert for the form
-  // value so the input doesn't crash on a Prisma Decimal instance.
-  const acquisitionPrice = property.acquisitionPrice
-    ? property.acquisitionPrice.toString()
-    : null;
-
   return (
     <div className="space-y-8">
       <div>
@@ -314,13 +308,10 @@ export default async function PropertyDetailPage({
                 bedrooms: property.bedrooms,
                 bathrooms: property.bathrooms,
                 sizeSqm: property.sizeSqm,
-                acquisitionPrice,
-                acquisitionCurrency: property.acquisitionCurrency,
                 status: property.status,
                 propertyType: property.propertyType,
                 signingCapacity: property.signingCapacity,
                 maxOccupancy: property.maxOccupancy,
-                forecastMonthlyFee: property.forecastMonthlyFee?.toString(),
                 startupCostsBudget: property.startupCostsBudget?.toString(),
                 operatingReserve: property.operatingReserve?.toString(),
                 // A date input needs yyyy-mm-dd, and the column is a
@@ -436,7 +427,6 @@ export default async function PropertyDetailPage({
                 signingCapacity: a.signingCapacity,
                 template: a.template,
                 reference: a.reference,
-                forecastMonthlyFee: a.forecastMonthlyFee?.toString() ?? null,
                 generatedAt: a.generatedAt,
                 sentAt: a.sentAt,
                 signedAt: a.signedAt,
@@ -698,7 +688,6 @@ type AgreementRow = {
   signingCapacity: SigningCapacity;
   template: AgreementTemplate;
   reference: string | null;
-  forecastMonthlyFee: string | null;
   generatedAt: Date;
   sentAt: Date | null;
   signedAt: Date | null;
@@ -794,21 +783,11 @@ function AgreementCard({
               value={`${current.noticePeriodDays} days`}
             />
             {current.template === "SHORT_LET_KE_V1" ? (
-              // Clause 10.3 makes the early-exit amount a calculation
-              // off this figure, not a fixed fee, so showing a single
-              // "early-exit fee" here would misstate what we can
-              // actually charge.
-              <Term
-                label="Forecast monthly fee"
-                value={
-                  current.forecastMonthlyFee
-                    ? formatMoney(
-                        current.forecastMonthlyFee,
-                        current.earlyExitFeeCurrency,
-                      )
-                    : "Not set"
-                }
-              />
+              // Clause 10.3 sets early exit at unrecovered Startup
+              // Costs, which are only known once incurred. Printing a
+              // number here would misstate what we can actually
+              // charge, so we state the basis instead.
+              <Term label="Early exit" value="Unrecovered startup costs" />
             ) : (
               <Term
                 label="Early-exit fee"
@@ -824,17 +803,6 @@ function AgreementCard({
             />
           </dl>
 
-          {current.template === "SHORT_LET_KE_V1" &&
-          !current.forecastMonthlyFee &&
-          current.status !== "CANCELLED" ? (
-            <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
-              No Forecast Monthly Management Fee is set, so Schedule 1
-              reads &ldquo;to be confirmed&rdquo; and limb (b) of the
-              clause 10.3 early-exit calculation yields nothing. Set it
-              on the property above and reissue before the client
-              accepts.
-            </p>
-          ) : null}
           {current.signingCapacity !== propertySigningCapacity ? (
             <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
               This agreement carries the authority clause for{" "}

@@ -63,7 +63,7 @@ export default async function ClientAgreementPage({
 
   const isShortTerm = agreement.property.propertyType === "SHORT_TERM";
   const currency = agreement.earlyExitFeeCurrency;
-  const money = (value: typeof agreement.forecastMonthlyFee) =>
+  const money = (value: typeof agreement.startupCostsBudget) =>
     value === null ? null : formatMoney(value.toString(), currency);
 
   const earlyExitFeeFormatted = formatMoney(
@@ -100,7 +100,6 @@ export default async function ClientAgreementPage({
     earlyExitFeeFormatted,
     noticePeriodDays: agreement.noticePeriodDays,
     payoutCurrency: client.preferredCurrency,
-    forecastMonthlyFeeFormatted: money(agreement.forecastMonthlyFee),
     startupCostsBudgetFormatted: money(agreement.startupCostsBudget),
     operatingReserveFormatted: money(agreement.operatingReserve),
     reference: agreement.reference,
@@ -160,13 +159,10 @@ export default async function ClientAgreementPage({
             value={`${agreement.noticePeriodDays} days`}
           />
           {isShortLet ? (
-            // Clause 10.3 makes early exit a calculation rather than a
-            // fixed fee, so quoting a single number here would misstate
-            // it. We surface the input to that calculation instead.
-            <Term
-              label="Forecast monthly fee"
-              value={money(agreement.forecastMonthlyFee) ?? "To be confirmed"}
-            />
+            // Clause 10.3 sets early exit at unrecovered startup costs
+            // rather than a fixed fee, so quoting a number here would
+            // misstate it. We name the basis instead.
+            <Term label="Early exit" value="Unrecovered startup costs" />
           ) : (
             <Term label="Early-exit fee" value={earlyExitFeeFormatted} />
           )}

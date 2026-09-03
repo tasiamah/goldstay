@@ -71,7 +71,6 @@ export type AgreementRenderInput = {
   earlyExitFeeFormatted: string;
   noticePeriodDays: number;
   payoutCurrency: string;
-  forecastMonthlyFeeFormatted: string | null;
   startupCostsBudgetFormatted: string | null;
   operatingReserveFormatted: string | null;
 
@@ -104,7 +103,6 @@ export function renderAgreement(
       termMonths: input.termMonths,
       noticePeriodDays: input.noticePeriodDays,
       payoutCurrency: input.payoutCurrency,
-      forecastMonthlyFeeFormatted: input.forecastMonthlyFeeFormatted,
       startupCostsBudgetFormatted: input.startupCostsBudgetFormatted,
       operatingReserveFormatted: input.operatingReserveFormatted,
       reference: input.reference,

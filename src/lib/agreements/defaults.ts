@@ -76,10 +76,6 @@ const EARLY_EXIT_FEE_BY_COUNTRY_TYPE: Record<
 export function defaultAgreementTerms(input: {
   country: Country;
   propertyType: PropertyType;
-  // Forecast Monthly Management Fee from the property, where the
-  // operator has estimated one. Only consulted for the short-let
-  // agreement, whose early-exit amount is capped at one month's fee.
-  forecastMonthlyFee?: number | null;
 }): AgreementDefaults {
   const isShort = input.propertyType === "SHORT_TERM";
 
@@ -92,15 +88,12 @@ export function defaultAgreementTerms(input: {
     return {
       termMonths: 3,
       commissionRate: SHORT_TERM_COMMISSION_RATE,
-      // Clause 10.3 makes early exit a calculation, not a fixed fee:
-      // the greater of unrecovered Startup Costs or 50% of the
-      // Forecast Monthly Management Fee per remaining month, capped at
-      // one month's fee. We store that cap so admin reporting has the
-      // worst-case exposure in a column, while the contract prose
-      // carries the formula that actually governs. Zero when no
-      // forecast has been set, which is honest: with no forecast,
-      // limb (b) of the calculation yields nothing.
-      earlyExitFee: input.forecastMonthlyFee ?? 0,
+      // Clause 10.3 makes early exit unrecovered Startup Costs, which
+      // are only known once they have been incurred, so there is no
+      // figure to snapshot at issue. Zero rather than a made-up
+      // number: the column would otherwise imply we can charge an
+      // amount the contract does not entitle us to.
+      earlyExitFee: 0,
       earlyExitFeeCurrency: COUNTRY_TO_CURRENCY[input.country],
       noticePeriodDays: 30,
       governingLaw: COUNTRY_TO_LAW[input.country],

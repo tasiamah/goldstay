@@ -23,7 +23,6 @@ const base: ShortLetContext = {
   termMonths: 3,
   noticePeriodDays: 30,
   payoutCurrency: "USD",
-  forecastMonthlyFeeFormatted: "KES 90,000",
   startupCostsBudgetFormatted: "KES 60,000",
   operatingReserveFormatted: "KES 25,000",
   reference: "GS-2026-004",
@@ -124,7 +123,6 @@ describe("buildShortLetKeSections", () => {
       clientAddress: "   ",
       bedrooms: null,
       maxOccupancy: null,
-      forecastMonthlyFeeFormatted: null,
       startupCostsBudgetFormatted: null,
       operatingReserveFormatted: null,
       reference: null,
@@ -154,6 +152,27 @@ describe("buildShortLetKeSections", () => {
     expect(
       flatten({ ...base, launchDate: new Date("2026-10-15T00:00:00Z") }),
     ).toContain("Launch Date: 15 October 2026");
+  });
+
+  it("no longer mentions a Forecast Monthly Management Fee", () => {
+    // v2 dropped it: the Schedule 1 line, its definition, and limb (b)
+    // of clause 10.3. It was never populated on a single property, so
+    // every v1 contract already printed it as "to be confirmed" with
+    // limb (b) yielding nothing. Pinned because the field is gone
+    // from the database — prose referring to it could no longer be
+    // filled in, and would quote a fee we cannot compute.
+    const text = flatten(base);
+    expect(text).not.toMatch(/Forecast Monthly Management Fee/i);
+  });
+
+  it("sets the early-exit amount at unrecovered startup costs alone", () => {
+    const text = flatten(base);
+    expect(text).toContain(
+      "an Early Termination Amount equal to unrecovered Startup Costs",
+    );
+    // The two-limb "greater of (a) ... or (b) ..." wording must not
+    // survive: limb (b) was the only thing the forecast fee drove.
+    expect(text).not.toContain("the greater of");
   });
 
   it("keeps the schedules and the acceptance clause", () => {

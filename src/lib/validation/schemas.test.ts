@@ -62,11 +62,11 @@ describe("PropertyInput + LeaseInput + TransactionInput", () => {
         city: "Nairobi",
         address: "Pinetree Plaza",
         bedrooms: "",
-        acquisitionPrice: "1234567.89",
+        startupCostsBudget: "1234567.89",
       }),
     );
     expect(prop.bedrooms).toBeUndefined();
-    expect(prop.acquisitionPrice).toBe(1_234_567.89);
+    expect(prop.startupCostsBudget).toBe(1_234_567.89);
     expect(prop.status).toBe("ONBOARDING");
 
     // Empty tenantEmail is the canonical regression: plain

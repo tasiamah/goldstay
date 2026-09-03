@@ -33,7 +33,16 @@ import { MANAGER, MANAGER_SIGNING_NAME } from "./manager";
 // Bumped whenever the clause text below changes. Stored on every
 // agreement row at issue and printed on the acceptance record, which
 // clause 12.3 requires to identify the Agreement version.
-export const SHORT_LET_KE_VERSION = "short-let-ke-v1";
+//
+// v2 removed the Forecast Monthly Management Fee: its Schedule 1
+// line, its definition, and limb (b) of the clause 10.3 early-exit
+// calculation, leaving the Early Termination Amount as unrecovered
+// Startup Costs alone. The figure was never once recorded against a
+// property, so every contract issued under v1 already printed it as
+// "to be confirmed" with limb (b) yielding nothing — the change
+// removes wording that had no operative effect rather than altering
+// a term anyone relied on.
+export const SHORT_LET_KE_VERSION = "short-let-ke-v2";
 
 export type ShortLetContext = {
   // Header block and Schedule 1 "Client" row.
@@ -58,7 +67,6 @@ export type ShortLetContext = {
   termMonths: number;
   noticePeriodDays: number;
   payoutCurrency: string;
-  forecastMonthlyFeeFormatted: string | null;
   startupCostsBudgetFormatted: string | null;
   operatingReserveFormatted: string | null;
   // Reference printed at the head of the contract, e.g. GS-2026-004.
@@ -136,9 +144,6 @@ function scheduleOne(ctx: ShortLetContext): AgreementScheduleRow[] {
       label: "Management Fee",
       value: [
         `${ctx.commissionPct} of Gross Booking Revenue, exclusive of applicable VAT or similar tax`,
-        `Forecast Monthly Management Fee (early-exit calculation only): ${orTbc(
-          ctx.forecastMonthlyFeeFormatted,
-        )}`,
       ],
     },
     {
@@ -232,7 +237,6 @@ export function buildShortLetKeSections(
         "1.5 “Net Client Proceeds” means Gross Booking Revenue plus other non-refundable amounts collected for the Property, including separately itemised cleaning or laundry charges, less the Management Fee, channel and processing charges, refunds, chargebacks, taxes, Startup Costs, Property Expenses, reserves, and other authorised deductions.",
         "1.6 “Startup Costs” means reasonable launch costs such as photography, an initial deep clean, linen or consumable setup, access setup, listing assets, and minor styling. They are separate from the Management Fee.",
         "1.7 “Property Expenses” means reasonable third-party operating costs, including cleaning, laundry, consumables, maintenance, repairs, replacements, call-outs, utilities, licences, and approved professional services.",
-        "1.8 “Forecast Monthly Management Fee” means the good-faith estimate stated in Schedule 1 for early-termination calculations only. It is not a guarantee of bookings, revenue, or performance.",
       ],
     },
     {
@@ -317,7 +321,7 @@ export function buildShortLetKeSections(
       body: [
         `10.1 This Agreement starts on the Start Date. The initial commitment runs for ${ctx.termMonths} full calendar months from the Launch Date (the “Initial Commitment Period”).`,
         `10.2 The Client may not terminate for convenience during the Initial Commitment Period. A ${ctx.noticePeriodDays}-day notice may be given during it but cannot take effect before it ends. Afterwards, either party may terminate on at least ${ctx.noticePeriodDays} days’ written notice without an exit fee.`,
-        "10.3 Withdrawing the Property, blocking substantially all availability, withholding access, losing the authority required by clause 7, or otherwise preventing performance during the Initial Commitment Period is a Client-initiated early termination. The Client must pay confirmed-booking costs and Management Fees earned under clause 5.1, plus an Early Termination Amount equal to the greater of: (a) unrecovered Startup Costs; or (b) 50% of the Forecast Monthly Management Fee for each full or partial month remaining in the Initial Commitment Period, capped at one Forecast Monthly Management Fee. This is a reasonable estimate of onboarding, reserved-capacity, and lost-fee costs, not a penalty, and will be reduced to avoid recovery exceeding GoldStay’s reasonably anticipated loss.",
+        "10.3 Withdrawing the Property, blocking substantially all availability, withholding access, losing the authority required by clause 7, or otherwise preventing performance during the Initial Commitment Period is a Client-initiated early termination. The Client must pay confirmed-booking costs and Management Fees earned under clause 5.1, plus an Early Termination Amount equal to unrecovered Startup Costs. This is a reasonable estimate of onboarding and reserved-capacity costs, not a penalty, and will be reduced to avoid recovery exceeding GoldStay’s reasonably anticipated loss.",
         "10.4 If the Property does not launch within 30 days after the Start Date because of the Client, the Manager may terminate and recover properly incurred amounts.",
         "10.5 Either party may terminate for a material breach not remedied within seven days after notice, or immediately if it cannot be remedied. The Manager may suspend Services or payouts for safety, fraud, unlawful use, insufficient funds, serious defects, or material risk.",
         "10.6 Bookings confirmed before termination remain subject to this Agreement and the Management Fee under clause 5.1. Unless otherwise agreed, GoldStay may continue administering those bookings. If the Client or a replacement manager takes them over, the Client must account to GoldStay as revenue is received and pay the same Management Fee, together with reasonable direct handover costs. The Manager may deduct amounts due, retain a reasonable reserve for pending refunds or chargebacks, issue a final reconciliation, and pay the balance.",

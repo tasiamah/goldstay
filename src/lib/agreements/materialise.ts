@@ -83,7 +83,7 @@ export async function materialiseSignedAgreement(
   );
   const client = agreement.property.client;
   const currency = agreement.earlyExitFeeCurrency;
-  const money = (value: typeof agreement.forecastMonthlyFee) =>
+  const money = (value: typeof agreement.startupCostsBudget) =>
     value === null ? null : formatMoney(value.toString(), currency);
 
   const commissionPct = formatCommissionPct(agreement.commissionRate.toString());
@@ -118,7 +118,6 @@ export async function materialiseSignedAgreement(
     earlyExitFeeFormatted,
     noticePeriodDays: agreement.noticePeriodDays,
     payoutCurrency: client.preferredCurrency,
-    forecastMonthlyFeeFormatted: money(agreement.forecastMonthlyFee),
     startupCostsBudgetFormatted: money(agreement.startupCostsBudget),
     operatingReserveFormatted: money(agreement.operatingReserve),
     reference: agreement.reference,
