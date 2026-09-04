@@ -137,6 +137,7 @@ export async function materialiseSignedAgreement(
       noticePeriodDays: agreement.noticePeriodDays,
       earlyExitFeeFormatted,
       sections,
+      template: agreement.template,
       title,
       templateVersion: agreement.templateVersion,
       reference: agreement.reference,

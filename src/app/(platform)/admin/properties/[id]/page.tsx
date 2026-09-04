@@ -23,6 +23,7 @@ import { ReissueAgreementButton } from "./agreement/ReissueButton";
 import {
   AGREEMENT_STATUS_CLASSES,
   AGREEMENT_STATUS_LABEL,
+  agreementTermSummary,
   formatCommissionPct,
   formatMoney,
 } from "@/lib/agreements/format";
@@ -630,30 +631,18 @@ function AgreementCard({
             </span>
           </div>
           <dl className="grid grid-cols-2 gap-x-6 gap-y-3 text-sm sm:grid-cols-4">
-            <Term label="Term" value={`${current.termMonths} months`} />
-            <Term
-              label="Commission"
-              value={formatCommissionPct(current.commissionRate)}
-            />
-            <Term
-              label="Notice"
-              value={`${current.noticePeriodDays} days`}
-            />
-            {current.template === "SHORT_LET_KE_V1" ? (
-              // Clause 10.3 sets early exit at unrecovered Startup
-              // Costs, which are only known once incurred. Printing a
-              // number here would misstate what we can actually
-              // charge, so we state the basis instead.
-              <Term label="Early exit" value="Unrecovered startup costs" />
-            ) : (
-              <Term
-                label="Early-exit fee"
-                value={formatMoney(
-                  current.earlyExitFee,
-                  current.earlyExitFeeCurrency,
-                )}
-              />
-            )}
+            {agreementTermSummary({
+              template: current.template,
+              termMonths: current.termMonths,
+              commissionPct: formatCommissionPct(current.commissionRate),
+              noticePeriodDays: current.noticePeriodDays,
+              earlyExitFeeFormatted: formatMoney(
+                current.earlyExitFee,
+                current.earlyExitFeeCurrency,
+              ),
+            }).map((t) => (
+              <Term key={t.label} label={t.label} value={t.value} />
+            ))}
             <Term
               label="Signed as"
               value={SIGNING_CAPACITY_LABEL[current.signingCapacity]}

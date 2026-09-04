@@ -14,13 +14,14 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import type { SigningCapacity } from "@prisma/client";
+import type { AgreementTemplate, SigningCapacity } from "@prisma/client";
 import type { AgreementSection } from "./text";
 import {
   SIGNING_CAPACITY_ATTESTATION,
   SIGNING_CAPACITY_LABEL,
 } from "@/lib/signing-capacity";
 import { MANAGER, MANAGER_SIGNING_NAME } from "./manager";
+import { agreementTermSummary } from "./format";
 
 const colors = {
   ink: "#1c1917",
@@ -207,6 +208,11 @@ export type AgreementPdfInput = {
   // accepted under. Clause 12.3 of the short-let agreement requires
   // the acceptance record to identify the version, and it is what lets
   // us prove later which words the client actually saw.
+  //
+  // `template` also decides how the headline terms are labelled: the
+  // same termMonths is a minimum commitment under one contract and no
+  // commitment at all under another.
+  template: AgreementTemplate;
   title: string;
   templateVersion: string;
   reference: string | null;
@@ -239,10 +245,15 @@ export function AgreementDocument(input: AgreementPdfInput) {
         </Text>
 
         <View style={styles.termsRow}>
-          <Term label="Term" value={`${input.termMonths} months`} />
-          <Term label="Commission" value={input.commissionPct} />
-          <Term label="Notice" value={`${input.noticePeriodDays} days`} />
-          <Term label="Early-exit fee" value={input.earlyExitFeeFormatted} />
+          {agreementTermSummary({
+            template: input.template,
+            termMonths: input.termMonths,
+            commissionPct: input.commissionPct,
+            noticePeriodDays: input.noticePeriodDays,
+            earlyExitFeeFormatted: input.earlyExitFeeFormatted,
+          }).map((t) => (
+            <Term key={t.label} label={t.label} value={t.value} />
+          ))}
         </View>
 
         {input.sections.map((s) => (

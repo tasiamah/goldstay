@@ -25,6 +25,7 @@ import {
 import {
   AGREEMENT_STATUS_CLASSES,
   AGREEMENT_STATUS_LABEL,
+  agreementTermSummary,
   formatCommissionPct,
   formatMoney,
 } from "@/lib/agreements/format";
@@ -76,7 +77,6 @@ export default async function ClientAgreementPage({
     agreement.property.unitNumber,
   );
   const agreementTitle = AGREEMENT_TEMPLATE_TITLE[agreement.template];
-  const isShortLet = agreement.template === "SHORT_LET_KE_V1";
 
   const sections = renderAgreement({
     template: agreement.template,
@@ -149,23 +149,15 @@ export default async function ClientAgreementPage({
           Snapshot of the terms specific to this property.
         </p>
         <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-4 text-sm sm:grid-cols-4">
-          <Term
-            label={isShortLet ? "Minimum term" : "Term"}
-            value={`${agreement.termMonths} months`}
-          />
-          <Term label="Management fee" value={commissionPct} />
-          <Term
-            label="Notice period"
-            value={`${agreement.noticePeriodDays} days`}
-          />
-          {isShortLet ? (
-            // Clause 10.3 sets early exit at unrecovered startup costs
-            // rather than a fixed fee, so quoting a number here would
-            // misstate it. We name the basis instead.
-            <Term label="Early exit" value="Unrecovered startup costs" />
-          ) : (
-            <Term label="Early-exit fee" value={earlyExitFeeFormatted} />
-          )}
+          {agreementTermSummary({
+            template: agreement.template,
+            termMonths: agreement.termMonths,
+            commissionPct,
+            noticePeriodDays: agreement.noticePeriodDays,
+            earlyExitFeeFormatted,
+          }).map((t) => (
+            <Term key={t.label} label={t.label} value={t.value} />
+          ))}
         </dl>
       </section>
 
