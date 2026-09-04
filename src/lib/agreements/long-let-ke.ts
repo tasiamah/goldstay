@@ -64,9 +64,12 @@ export const LONG_LET_KE_VERSION = "long-let-ke-v1";
 // the fee is right whatever rent the tenancy is eventually let at.
 const TENANT_FINDING_FEE_MONTHS = 1;
 
-// How long after a tenancy starts Goldstay carries the risk of that
-// tenant defaulting, replacing them without charging the fee again.
-const REPLACEMENT_GUARANTEE_MONTHS = 6;
+// The six-month replacement guarantee is written out in the clauses
+// below rather than interpolated from a constant, because the prose
+// spells fixed periods as words the way the short-let agreement does
+// — "seven days", "six months", "five business days". Numerals are
+// reserved for the terms snapshotted from the agreement row, where the
+// figure genuinely varies, and for money and dates.
 
 export type LongLetContext = {
   // Header block and Schedule 1 "Client" row.
@@ -167,7 +170,7 @@ function scheduleOne(ctx: LongLetContext): AgreementScheduleRow[] {
       value: [
         `One-off, equal to ${tenantFindingFeeText()}`,
         "Charged once per tenancy placed, on the Tenancy being signed",
-        `Not charged again where a Tenant is replaced under the ${REPLACEMENT_GUARANTEE_MONTHS}-month guarantee in clause 4.6`,
+        "Not charged again where a Tenant is replaced under the six-month guarantee in clause 4.6",
       ],
     },
     {
@@ -295,7 +298,7 @@ export function buildLongLetKeSections(
         "4.3 The Tenancy is between the Client and the Tenant. The Manager prepares and administers it as agent and is not a party to it, does not guarantee the Tenant’s obligations under it, and does not become liable as landlord.",
         "4.4 The Tenant-Finding Fee is earned when the Tenancy is signed and is charged once for that tenancy. It is deducted from the first collections for the Property, and any shortfall may be carried forward or must be paid within five business days after request.",
         "4.5 Where the Client instructs the Manager to place a Tenant the Manager has advised against, the Tenant-Finding Fee is still earned on that Tenancy and the guarantee in clause 4.6 does not apply to it.",
-        `4.6 If a Tenant placed by the Manager defaults on the Tenancy within ${REPLACEMENT_GUARANTEE_MONTHS} months of the Tenancy starting, the Manager will find a replacement Tenant and will not charge a further Tenant-Finding Fee for doing so. This guarantee applies while the Manager continues to manage the Property under this Agreement, and does not make the Manager liable for the rent the defaulting Tenant failed to pay, for the cost of recovering possession, or for the period the Property stands empty.`,
+        "4.6 If a Tenant placed by the Manager defaults on the Tenancy within six months of the Tenancy starting, the Manager will find a replacement Tenant and will not charge a further Tenant-Finding Fee for doing so. This guarantee applies while the Manager continues to manage the Property under this Agreement, and does not make the Manager liable for the rent the defaulting Tenant failed to pay, for the cost of recovering possession, or for the period the Property stands empty.",
         "4.7 Recovery of arrears, notices to vacate, and any proceedings for possession are conducted in the Client’s name. The Manager will issue routine reminders and standard notices and will coordinate instructed advisers, but legal proceedings, distress for rent and debt collection are outside the Management Fee and require a separate scope and fee.",
       ],
     },

@@ -64,7 +64,7 @@ describe("buildLongLetKeSections", () => {
     expect(text).toContain("within 48 hours");
 
     // Six-month tenant replacement guarantee, at no further fee.
-    expect(text).toContain("within 6 months of the Tenancy starting");
+    expect(text).toContain("within six months of the Tenancy starting");
     expect(text).toContain("will not charge a further Tenant-Finding Fee");
 
     // Landlord has the final say before a lease is signed.
@@ -123,6 +123,16 @@ describe("buildLongLetKeSections", () => {
     expect(text).toContain("Notice to terminate: 45 days");
     expect(text).not.toContain("10%");
     expect(text).not.toContain("30 days’ written notice");
+  });
+
+  it("spells fixed periods as words, like the short-let contract", () => {
+    // Mixing "6 months" into prose that says "seven days" and "five
+    // business days" elsewhere reads as machine-assembled. Numerals
+    // are for the snapshotted terms, money and dates only.
+    const text = flatten();
+    expect(text).toContain("six-month guarantee");
+    expect(text).not.toMatch(/\b6[- ]month/);
+    expect(text).not.toMatch(/\b(7 days|3 business|5 business)\b/);
   });
 
   it("describes a tenancy, not a short stay", () => {
