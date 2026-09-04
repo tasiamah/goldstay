@@ -6,22 +6,25 @@ import {
   type AgreementRenderInput,
 } from "./template";
 import { SHORT_LET_KE_VERSION } from "./short-let-ke";
+import { LONG_LET_KE_VERSION } from "./long-let-ke";
 
 // Template selection decides which contract a client is asked to
 // accept. Getting it wrong doesn't fail loudly — it serves a Ghanaian
 // long-term landlord a Kenyan short-let agreement that talks about
 // Booking Channels and a KRA PIN, which they would then accept.
 describe("templateFor", () => {
-  it("serves the short-let agreement only to Kenyan short-lets", () => {
+  it("gives each Kenyan property type its own contract", () => {
     expect(templateFor({ country: "KE", propertyType: "SHORT_TERM" })).toBe(
       "SHORT_LET_KE_V1",
     );
+    expect(templateFor({ country: "KE", propertyType: "LONG_TERM" })).toBe(
+      "LONG_LET_KE_V1",
+    );
   });
 
-  it("falls back to the generic agreement for long-term and for Ghana", () => {
-    expect(templateFor({ country: "KE", propertyType: "LONG_TERM" })).toBe(
-      "GENERIC_MANAGEMENT_V1",
-    );
+  it("falls back to the generic agreement for Ghana", () => {
+    // Neither Kenyan contract's tax, data-protection or jurisdiction
+    // clauses transfer, so country is checked before type.
     expect(templateFor({ country: "GH", propertyType: "SHORT_TERM" })).toBe(
       "GENERIC_MANAGEMENT_V1",
     );
@@ -37,6 +40,7 @@ describe("templateFor", () => {
     expect(AGREEMENT_TEMPLATE_VERSION.SHORT_LET_KE_V1).toBe(
       SHORT_LET_KE_VERSION,
     );
+    expect(AGREEMENT_TEMPLATE_VERSION.LONG_LET_KE_V1).toBe(LONG_LET_KE_VERSION);
     expect(AGREEMENT_TEMPLATE_VERSION.GENERIC_MANAGEMENT_V1).toBeTruthy();
   });
 });
@@ -94,12 +98,24 @@ describe("renderAgreement", () => {
     expect(generic).toContain("Property Management Agreement");
     expect(generic).not.toContain("Gross Booking Revenue");
     expect(generic).toContain("1. Parties");
+
+    const longLet = flatten(
+      renderAgreement({ ...input, template: "LONG_LET_KE_V1" }),
+    );
+    expect(longLet).toContain("Long-Term Property Management Agreement");
+    expect(longLet).toContain("Collected Rent");
+    // The two Kenyan contracts must not bleed into each other: this
+    // one is about a tenant on a lease, not a guest on a booking.
+    expect(longLet).not.toContain("Gross Booking Revenue");
+    expect(longLet).not.toContain("Booking Channel");
   });
 
   it("uses the company as the contracting party where there is one", () => {
     const text = flatten(
       renderAgreement({ ...input, clientCompany: "Pinetree Holdings Ltd" }),
     );
-    expect(text).toContain("Pinetree Holdings Ltd (acting through Asha Kimani)");
+    expect(text).toContain(
+      "Pinetree Holdings Ltd (acting through Asha Kimani)",
+    );
   });
 });

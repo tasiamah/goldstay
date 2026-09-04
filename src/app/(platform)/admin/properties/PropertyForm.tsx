@@ -472,9 +472,13 @@ function SubmitButton({ label }: { label: string }) {
 // react to it without turning the whole thing into controlled state,
 // and these are harmless to leave blank. The contract prints "to be
 // confirmed through GoldStay onboarding" for anything empty — which
-// Schedule 1 expressly allows — so a blank costs nothing, while a
-// forecast fee filled in before the agreement is issued is what makes
-// the clause 10.3 early-exit calculation enforceable.
+// Schedule 1 expressly allows — so a blank costs nothing.
+//
+// The legend says "short-let" because that is the only contract that
+// prints these. A Kenyan long-term property gets long-let-ke.ts,
+// whose Schedule 1 asks for none of them, and Ghana gets the generic
+// agreement, which asks for none either. Filling them in on those is
+// harmless but pointless.
 function ScheduleOneFields({
   defaults,
   clientCountry,

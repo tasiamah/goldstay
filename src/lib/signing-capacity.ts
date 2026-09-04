@@ -50,6 +50,23 @@ export const SIGNING_CAPACITY_SCHEDULE_LABEL: Record<SigningCapacity, string> =
     AUTHORISED_REPRESENTATIVE: "Authorised operator",
   };
 
+// The long-term agreement's equivalent. Separate map rather than a
+// reworded shared one for the same reason the short-let map exists at
+// all: editing that map would silently restate the capacity on every
+// short-let contract already accepted. The wording differs because
+// what the non-owner needs permission for differs — subletting to a
+// tenant, not short-stay use — and "authorised representative" is the
+// term the long-term document uses where the short-let one says
+// "authorised operator".
+export const SIGNING_CAPACITY_LONG_LET_SCHEDULE_LABEL: Record<
+  SigningCapacity,
+  string
+> = {
+  REGISTERED_OWNER: "Registered owner",
+  AUTHORISED_LEASEHOLDER: "Tenant or lessee with written subletting rights",
+  AUTHORISED_REPRESENTATIVE: "Authorised representative of the owner",
+};
+
 export const SIGNING_CAPACITY_ATTESTATION: Record<SigningCapacity, string> = {
   REGISTERED_OWNER:
     "I am the registered owner of this property, or a co-owner signing with the authority of the others.",

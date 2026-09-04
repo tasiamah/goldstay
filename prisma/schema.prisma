@@ -542,6 +542,11 @@ enum AgreementTemplate {
   // Booking Revenue, Booking Channels and a KRA PIN, so it only fits
   // KE + SHORT_TERM.
   SHORT_LET_KE_V1
+  // GoldStay Long-Term Property Management Agreement, Kenya. Assumes
+  // Collected Rent, a placed Tenant and a KRA PIN, so it only fits
+  // KE + LONG_TERM. Unlike the other two it has no minimum term: it
+  // is terminable on 30 days' notice with no exit fee.
+  LONG_LET_KE_V1
 }
 
 model ManagementAgreement {

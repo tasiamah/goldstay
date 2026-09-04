@@ -14,32 +14,39 @@ import {
   buildShortLetKeSections,
   SHORT_LET_KE_VERSION,
 } from "./short-let-ke";
+import { buildLongLetKeSections, LONG_LET_KE_VERSION } from "./long-let-ke";
 
 export const GENERIC_MANAGEMENT_VERSION = "generic-management-v1";
 
 export const AGREEMENT_TEMPLATE_VERSION: Record<AgreementTemplate, string> = {
   GENERIC_MANAGEMENT_V1: GENERIC_MANAGEMENT_VERSION,
   SHORT_LET_KE_V1: SHORT_LET_KE_VERSION,
+  LONG_LET_KE_V1: LONG_LET_KE_VERSION,
 };
 
 export const AGREEMENT_TEMPLATE_TITLE: Record<AgreementTemplate, string> = {
   GENERIC_MANAGEMENT_V1: "Property management agreement",
   SHORT_LET_KE_V1: "Short-let property management agreement",
+  LONG_LET_KE_V1: "Long-term property management agreement",
 };
 
-// The short-let agreement is drafted around Gross Booking Revenue,
-// Booking Channels, a KRA PIN and Kenyan law, so it only fits a Kenyan
-// short-term property. A Ghanaian client or a long-term letting gets
-// the generic agreement until its own document exists — issuing the
-// Kenyan short-let contract to either would be plainly wrong on its
-// face, not merely imprecise.
+// Both Kenyan contracts are drafted around Kenyan law and a KRA PIN,
+// and each around its own revenue model: Gross Booking Revenue and
+// Booking Channels for short stays, Collected Rent and a placed Tenant
+// for long lets. So each fits exactly one country/type pair.
+//
+// Ghana still gets the generic agreement for both types, because
+// neither Kenyan document's tax, data-protection and jurisdiction
+// clauses transfer — issuing one to a Ghanaian client would be plainly
+// wrong on its face, not merely imprecise.
 export function templateFor(input: {
   country: Country;
   propertyType: PropertyType;
 }): AgreementTemplate {
-  return input.country === "KE" && input.propertyType === "SHORT_TERM"
+  if (input.country !== "KE") return AgreementTemplate.GENERIC_MANAGEMENT_V1;
+  return input.propertyType === "SHORT_TERM"
     ? AgreementTemplate.SHORT_LET_KE_V1
-    : AgreementTemplate.GENERIC_MANAGEMENT_V1;
+    : AgreementTemplate.LONG_LET_KE_V1;
 }
 
 // Everything either contract could need. The two clause modules read
@@ -106,6 +113,25 @@ export function renderAgreement(
       startupCostsBudgetFormatted: input.startupCostsBudgetFormatted,
       operatingReserveFormatted: input.operatingReserveFormatted,
       reference: input.reference,
+    });
+  }
+
+  if (input.template === AgreementTemplate.LONG_LET_KE_V1) {
+    return buildLongLetKeSections({
+      clientLegalName: input.clientCompany
+        ? `${input.clientCompany} (acting through ${input.clientName})`
+        : input.clientName,
+      clientIdNumber: input.clientIdNumber,
+      clientKraPin: input.clientKraPin,
+      clientAddress: input.clientAddress,
+      signingCapacity: input.signingCapacity,
+      propertyDescription: `${input.propertyName}, ${input.propertyAddress}, ${input.propertyCity}`,
+      bedrooms: input.bedrooms,
+      commissionPct: input.commissionPct,
+      noticePeriodDays: input.noticePeriodDays,
+      payoutCurrency: input.payoutCurrency,
+      reference: input.reference,
+      startDate: input.startDate,
     });
   }
 

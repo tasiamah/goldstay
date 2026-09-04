@@ -6,10 +6,11 @@
 // "current" defaults again. That snapshot is what makes a signed
 // contract immutable even when we later tweak commission rates.
 //
-// Kenyan short-term properties are issued under the short-let
-// agreement, which states its own term, notice period and early-exit
-// mechanism. Those win — the numbers below describe the generic
-// contract, and the notes explaining them apply to it alone.
+// Both Kenyan contracts state their own term, notice period and
+// early-exit mechanism, and those win. The numbers below now describe
+// the generic contract alone, which since the Kenyan long-term
+// agreement landed means Ghana only — so the notes explaining them
+// apply to Ghanaian properties, not to anything Kenyan.
 //
 // Reasoning behind the numbers (consult before changing):
 //
@@ -84,6 +85,29 @@ export function defaultAgreementTerms(input: {
   // a three-month Initial Commitment Period running from the Launch
   // Date (clause 10.1), 30 days' notice thereafter (clause 10.2), and
   // an early-exit amount computed under clause 10.3 rather than fixed.
+  // The Kenyan long-term agreement sells "cancel with 30 days notice,
+  // no exit fee, no lock-in" on the service sheet, so its terms are
+  // not negotiable against the generic numbers below: a 12-month term
+  // with a KES 50,000 exit fee would contradict the page the client
+  // was sold on.
+  if (templateFor(input) === AgreementTemplate.LONG_LET_KE_V1) {
+    return {
+      // No minimum term. One rather than zero because the appointment
+      // genuinely runs month to month, and because a bare
+      // `${termMonths} months` slipping through somewhere unbranched
+      // reads better as "1" than "0". Display sites should use
+      // agreementTermSummary rather than print this directly.
+      termMonths: 1,
+      commissionRate: LONG_TERM_COMMISSION_RATE,
+      // No exit fee, per the service sheet. Zero is the term, not a
+      // placeholder for one we haven't computed.
+      earlyExitFee: 0,
+      earlyExitFeeCurrency: COUNTRY_TO_CURRENCY[input.country],
+      noticePeriodDays: 30,
+      governingLaw: COUNTRY_TO_LAW[input.country],
+    };
+  }
+
   if (templateFor(input) === AgreementTemplate.SHORT_LET_KE_V1) {
     return {
       termMonths: 3,
