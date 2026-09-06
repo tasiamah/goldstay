@@ -1,8 +1,10 @@
+import Link from "next/link";
 import { requireAdmin } from "@/lib/auth";
 import { AdminNav } from "@/components/admin/AdminNav";
 import { AdminToaster } from "@/components/admin/Toaster";
 import { CommandPalette } from "@/components/admin/CommandPalette";
 import { ROLE_LABEL } from "@/lib/admin/roles";
+import { APP_VERSION, formatBuildLabel } from "@/lib/version";
 
 export default async function AdminLayout({
   children,
@@ -47,6 +49,17 @@ export default async function AdminLayout({
           </div>
         </div>
         <div className="flex shrink-0 items-center gap-3">
+          {/* Which build you are looking at. Links to the health page,
+              where the sha and environment are spelled out — an
+              operator reporting a bug can read the version off any
+              screen without being asked to go and find it. */}
+          <Link
+            href="/admin/health"
+            title={`Goldstay platform ${formatBuildLabel()}`}
+            className="hidden items-center rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs tabular-nums text-stone-500 hover:bg-stone-50 hover:text-stone-700 sm:inline-flex"
+          >
+            v{APP_VERSION}
+          </Link>
           <span
             className="hidden items-center gap-1.5 rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs text-stone-500 lg:inline-flex"
             aria-hidden="true"

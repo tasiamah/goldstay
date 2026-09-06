@@ -11,12 +11,23 @@ import { getSystemHealth } from "@/lib/admin/health";
 import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
+import { buildInfo } from "@/lib/version";
 
 export const dynamic = "force-dynamic";
+
+const ENVIRONMENT_LABEL: Record<
+  ReturnType<typeof buildInfo>["environment"],
+  string
+> = {
+  production: "Production",
+  preview: "Preview",
+  development: "Local development",
+};
 
 export default async function SystemHealthPage() {
   await requireAdmin();
   const health = await getSystemHealth();
+  const build = buildInfo();
 
   return (
     <div className="space-y-8">
@@ -30,6 +41,45 @@ export default async function SystemHealthPage() {
           {health.generatedAt.toLocaleTimeString("en-GB")}.
         </p>
       </div>
+
+      {/* Build identity. First card on purpose: "which version am I
+          even looking at" is the first question worth answering when
+          something looks wrong, and it decides whether a reported bug
+          is already fixed on a newer deploy. */}
+      <section className="rounded-lg border border-stone-200 bg-white p-6">
+        <h3 className="text-base font-medium text-stone-900">Build</h3>
+        <dl className="mt-3 grid gap-3 sm:grid-cols-3">
+          <div className="rounded-md border border-stone-200 px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-stone-500">
+              Version
+            </dt>
+            <dd className="mt-1 text-sm font-medium tabular-nums text-stone-900">
+              v{build.version}
+            </dd>
+          </div>
+          <div className="rounded-md border border-stone-200 px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-stone-500">
+              Commit
+            </dt>
+            <dd className="mt-1 text-sm font-medium tabular-nums text-stone-900">
+              {build.sha ?? "—"}
+            </dd>
+          </div>
+          <div className="rounded-md border border-stone-200 px-4 py-3">
+            <dt className="text-xs uppercase tracking-wider text-stone-500">
+              Environment
+            </dt>
+            <dd className="mt-1 text-sm font-medium text-stone-900">
+              {ENVIRONMENT_LABEL[build.environment]}
+            </dd>
+          </div>
+        </dl>
+        <p className="mt-3 text-xs text-stone-500">
+          Every release is tagged on GitHub as{" "}
+          <code className="text-stone-600">v{build.version}</code> and
+          described in CHANGELOG.md.
+        </p>
+      </section>
 
       <section className="rounded-lg border border-stone-200 bg-white p-6">
         <h3 className="text-base font-medium text-stone-900">
