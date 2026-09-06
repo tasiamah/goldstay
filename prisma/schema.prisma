@@ -623,11 +623,76 @@ model ManagementAgreement {
   documentId String?   @unique
   document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
 
+  reminders AgreementReminder[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([propertyId])
   @@index([status])
+}
+
+// One row per rung of the reminder ladder that has been attempted for
+// an agreement. See lib/agreements/reminder-schedule.ts for the cadence.
+//
+// This table exists for exactly one reason: at-most-once. The reminder
+// cron runs hourly, Vercel can retry an invocation, and an operator can
+// replay the job by hand, so "have we already sent reminder 2 for this
+// agreement" has to be a question the database answers rather than
+// something inferred from CommunicationLog subject lines. The unique
+// constraint on (agreementId, step) is the guarantee; concurrent runs
+// race to insert and exactly one wins.
+//
+// Rows are claimed before the send, not written after it, so a crash
+// between claiming and sending leaves a QUEUED row that the next run
+// retries rather than a client who silently never got chased.
+model AgreementReminder {
+  id          String              @id @default(cuid())
+  agreementId String
+  agreement   ManagementAgreement @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+
+  // Rung of the ladder. Stable and never renumbered, since the unique
+  // constraint below is what stops a client being emailed twice.
+  step Int
+  kind AgreementReminderKind @default(EMAIL)
+
+  status AgreementReminderStatus @default(QUEUED)
+  // Bounded retries: a transient Resend outage should not cost the
+  // client a reminder, and a permanently dead address should not be
+  // retried every hour forever.
+  attempts Int @default(0)
+
+  // Resend message id, for tracing a specific nudge in their dashboard.
+  providerId String?
+  // Truncated failure reason from the last attempt.
+  error      String?
+
+  sentAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([agreementId, step])
+  @@index([agreementId])
+  @@index([status])
+}
+
+enum AgreementReminderKind {
+  // A nudge to the client with a fresh sign-in link.
+  EMAIL
+  // End of the ladder: stop emailing, raise a task for someone to
+  // phone the client, and tell ops.
+  ESCALATION
+}
+
+enum AgreementReminderStatus {
+  // Claimed, not yet confirmed sent. Retried by the next run.
+  QUEUED
+  SENT
+  FAILED
+  // Came due while nothing was running, and a later rung was sent
+  // instead. Recorded rather than left absent so a recovering cron
+  // does not send the whole ladder at once.
+  SKIPPED
 }
 
 // ---------- Ops infrastructure ----------

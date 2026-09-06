@@ -1,0 +1,70 @@
+# Manual trigger for the unsigned-agreement reminder ladder.
+#
+# The schedule itself lives in vercel.json and runs hourly, so unlike
+# the statements workflow this one carries no cron of its own: a second
+# hourly trigger would double every JobRun row for no benefit, and the
+# thing a once-monthly job needs a safety net for — missing the only
+# window — cannot happen when the window comes round every hour.
+#
+# What this gives ops is a "run it now" button, which is worth having
+# for two cases: verifying the job after a deploy, and pushing a chase
+# out immediately without waiting for the top of the hour.
+#
+# Start with dry_run=true. It reports exactly which agreements are due
+# and at which rung of the ladder, without sending anything, claiming a
+# step or raising a task.
+#
+# Safe to run repeatedly: each rung is claimed through a unique index on
+# (agreementId, step), so a replay cannot re-email a client.
+
+name: Agreement reminders
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report what would be sent, without sending it"
+        type: boolean
+        required: false
+        default: true
+      limit:
+        description: "Max sends this run (default 50)"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Ping agreement-reminders endpoint
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+          LIMIT: ${{ github.event.inputs.limit }}
+        run: |
+          if [ -z "$CRON_SECRET" ]; then
+            echo "::error::CRON_SECRET repo secret is not set"
+            exit 1
+          fi
+          url="https://goldstay.co.ke/api/cron/agreement-reminders"
+          sep="?"
+          if [ "$DRY_RUN" = "true" ]; then
+            url="${url}${sep}dryRun=1"
+            sep="&"
+          fi
+          if [ -n "$LIMIT" ]; then
+            url="${url}${sep}limit=${LIMIT}"
+          fi
+          echo "GET $url"
+          response=$(curl -sS -o /tmp/body -w "%{http_code}" \
+            -H "Authorization: Bearer ${CRON_SECRET}" \
+            "$url")
+          echo "HTTP $response"
+          cat /tmp/body
+          if [ "$response" != "200" ]; then
+            exit 1
+          fi

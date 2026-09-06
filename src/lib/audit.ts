@@ -108,6 +108,8 @@ const DEFAULT_SUMMARIES: Record<string, string> = {
   "agreement.issued": "Management agreement issued",
   "agreement.reissued": "Management agreement reissued",
   "agreement.signed": "Management agreement signed",
+  "agreement.reminder.sent": "Signature reminder sent",
+  "agreement.reminder.escalated": "Unsigned agreement raised for a call",
   "ical.feed.added": "iCal feed connected",
   "ical.feed.removed": "iCal feed removed",
   "ical.synced": "iCal synced",

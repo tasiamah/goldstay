@@ -25,6 +25,10 @@
     {
       "path": "/api/cron/send-statements",
       "schedule": "0 7 5 * *"
+    },
+    {
+      "path": "/api/cron/agreement-reminders",
+      "schedule": "0 * * * *"
     }
   ]
 }
