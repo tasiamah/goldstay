@@ -974,6 +974,21 @@ import AirbnbNairobiPricingStrategy2026, {
 import WhyYourNairobiAirbnbIsntGettingBookings, {
   meta as whyYourNairobiAirbnbIsntGettingBookingsMeta,
 } from "./why-your-nairobi-airbnb-isnt-getting-bookings";
+import GemlandResidenceWestlandsReview2026, {
+  meta as gemlandResidenceWestlandsReview2026Meta,
+} from "./gemland-residence-westlands-review-2026";
+import AuraRiversideReview2026, {
+  meta as auraRiversideReview2026Meta,
+} from "./aura-riverside-review-2026";
+import EmeraldSpringsResidencesReview2026, {
+  meta as emeraldSpringsResidencesReview2026Meta,
+} from "./emerald-springs-residences-review-2026";
+import NairobiHandoverWave2026WhatItMeansForRents, {
+  meta as nairobiHandoverWave2026WhatItMeansForRentsMeta,
+} from "./nairobi-handover-wave-2026-what-it-means-for-rents";
+import NairobiUpcomingDevelopments2027Watchlist, {
+  meta as nairobiUpcomingDevelopments2027WatchlistMeta,
+} from "./nairobi-upcoming-developments-2027-watchlist";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1666,6 +1681,26 @@ export const posts: readonly Post[] = [
   {
     meta: whyYourNairobiAirbnbIsntGettingBookingsMeta,
     Component: WhyYourNairobiAirbnbIsntGettingBookings,
+  },
+  {
+    meta: gemlandResidenceWestlandsReview2026Meta,
+    Component: GemlandResidenceWestlandsReview2026,
+  },
+  {
+    meta: auraRiversideReview2026Meta,
+    Component: AuraRiversideReview2026,
+  },
+  {
+    meta: emeraldSpringsResidencesReview2026Meta,
+    Component: EmeraldSpringsResidencesReview2026,
+  },
+  {
+    meta: nairobiHandoverWave2026WhatItMeansForRentsMeta,
+    Component: NairobiHandoverWave2026WhatItMeansForRents,
+  },
+  {
+    meta: nairobiUpcomingDevelopments2027WatchlistMeta,
+    Component: NairobiUpcomingDevelopments2027Watchlist,
   },
 ];
 
