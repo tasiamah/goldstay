@@ -8,7 +8,15 @@ import {
   type DiasporaOrigin,
 } from "@/lib/diaspora-origins";
 import { enforceCityHost } from "@/lib/enforceCityHost";
-import { alternateLanguagesFor, site, waLink } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { getServerCity } from "@/lib/getServerCity";
+import {
+  alternateLanguagesFor,
+  baseUrlFor,
+  cityTrail,
+  site,
+  waLink,
+} from "@/lib/site";
 
 // Programmatic diaspora-origin pages.
 //
@@ -88,8 +96,24 @@ function DiasporaOriginPage({
 
   const waMsg = `Hi Goldstay, I'm a ${origin.short}-based landlord with property in ${cityName}. I'd like to talk.`;
 
+  // Absolute URLs for the breadcrumb, on whichever host is serving the
+  // page.
+  const domainCity = getServerCity();
+  const baseUrl = baseUrlFor(domainCity);
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          ...cityTrail(city, domainCity),
+          { name: "By where you live", url: `${baseUrl}/from` },
+          {
+            name: `Landlords in ${origin.short}`,
+            url: `${baseUrl}/from/${origin.code}/${city}`,
+          },
+        ]}
+      />
+
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-16 md:pb-24">
@@ -141,6 +165,29 @@ function DiasporaOriginPage({
               </h3>
               <p className="mt-4 text-lg text-stone-700 pretty">
                 {origin.paragraphPain}
+              </p>
+
+              {/* These 20 pages described the problem and then linked
+                  only to each other and the calculator, never to the
+                  two services a long-let landlord actually buys. */}
+              <p className="mt-4 text-lg text-stone-700 pretty">
+                In practice that is one of two pieces of work:{" "}
+                <Link
+                  href="/long-term-management"
+                  className="font-medium text-forest underline-offset-4 hover:underline"
+                >
+                  long-term management
+                </Link>{" "}
+                if the property is let and you want the tenancy run for you,
+                or{" "}
+                <Link
+                  href="/tenant-finding"
+                  className="font-medium text-forest underline-offset-4 hover:underline"
+                >
+                  tenant finding
+                </Link>{" "}
+                if it is standing empty and you only need somebody referenced
+                into it.
               </p>
             </div>
           </Reveal>
@@ -205,6 +252,19 @@ function DiasporaOriginPage({
               >
                 We do {city === "nairobi" ? "Accra" : "Nairobi"} too →
               </Link>
+            </p>
+            {/* Upward link to the hub. The cluster cross-linked
+                sideways between origins but never to its own parent,
+                so there was no path back to the top of it. */}
+            <p className="mt-3 text-sm text-stone-600">
+              Or see the full list on{" "}
+              <Link
+                href="/from"
+                className="font-medium text-forest underline-offset-4 hover:underline"
+              >
+                property management by country
+              </Link>
+              .
             </p>
           </Reveal>
         </div>

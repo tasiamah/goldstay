@@ -15,6 +15,7 @@ import { CalculatorTeaser } from "./CalculatorTeaser";
 import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 import {
   cities,
+  cityTrail,
   citySourcing,
   localizedFaq,
   neighbourhoodSlug,
@@ -57,7 +58,6 @@ export function NeighbourhoodPage({
         ? `https://${site.domains.accra}`
         : `https://${site.domain}`;
   const cityHref = `/${city}`;
-  const cityUrl = `${baseUrl}/${city}`;
   const slug = neighbourhoodSlug(neighbourhood.name);
   const selfUrl = `${baseUrl}/${city}/${slug}`;
 
@@ -111,8 +111,7 @@ export function NeighbourhoodPage({
     <>
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", url: baseUrl },
-          { name: cityName, url: cityUrl },
+          ...cityTrail(city, domainCity),
           { name: neighbourhood.name, url: selfUrl },
         ]}
       />

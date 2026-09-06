@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { DIASPORA_ORIGINS } from "@/lib/diaspora-origins";
-import { alternateLanguagesFor } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
+import { alternateLanguagesFor, baseUrlFor } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   return {
@@ -17,8 +19,17 @@ export function generateMetadata(): Metadata {
 }
 
 export default function Page() {
+  const baseUrl = baseUrlFor(getServerCity());
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "By where you live", url: `${baseUrl}/from` },
+        ]}
+      />
+
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-16 md:pb-24">

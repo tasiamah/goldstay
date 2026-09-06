@@ -231,6 +231,17 @@ export default function Article() {
       </P>
 
       <P>
+        We can take just this stage: here is{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how tenant finding in Nairobi works
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/emerald-springs-residences-review-2026"

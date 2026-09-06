@@ -223,6 +223,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        See how we work through it under{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Goldstay’s tenant finding service
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -209,6 +209,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Referencing at this level is what{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our tenant finding service
+        </Link>{" "}
+        is built around.
+      </P>
     </>
   );
 }

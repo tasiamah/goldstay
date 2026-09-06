@@ -388,6 +388,16 @@ export default function Article() {
         </Link>{" "}
         for the wider context this segment sits inside.
       </P>
+      <P>
+        We also run this as a standalone piece of work:{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

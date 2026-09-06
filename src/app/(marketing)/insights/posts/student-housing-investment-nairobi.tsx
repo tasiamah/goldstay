@@ -228,6 +228,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Handing the tenancy over is the other route: here is{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how our Nairobi long-term management works
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
 import {
   alternateLanguagesFor,
+  baseUrlFor,
   canonicalHostForCountry,
   cityCanonical,
+  cityTrail,
   insightAlternates,
   isLiveDomain,
   liveDomainOr,
@@ -137,6 +139,58 @@ describe("cityCanonical", () => {
     expect(alternateLanguagesFor("/nairobi")["en-KE"]).toBe(
       cityCanonical("nairobi"),
     );
+  });
+});
+
+describe("baseUrlFor", () => {
+  it("never names a domain we do not serve", () => {
+    // Reached on the Ghana host too, which is still dark; an absolute
+    // schema URL on a domain that does not resolve describes a site
+    // that is not there.
+    for (const domainCity of ["nairobi", "accra", null] as const) {
+      expect(isLiveDomain(hostOf(baseUrlFor(domainCity)))).toBe(true);
+    }
+  });
+});
+
+describe("cityTrail", () => {
+  // The bug this locks out: once the Nairobi page became canonical at
+  // the root, a trail of "Home" then "Nairobi" put two different names
+  // on one URL. A BreadcrumbList like that does not say where the page
+  // sits, and Google's guidance is to drop the trail rather than guess.
+  it("collapses to one step when the root is the city page", () => {
+    expect(cityTrail("nairobi", "nairobi")).toEqual([
+      { name: "Nairobi", url: "https://goldstay.co.ke" },
+    ]);
+  });
+
+  it("never repeats a URL under two names", () => {
+    const combinations = [
+      ["nairobi", "nairobi"],
+      ["nairobi", null],
+      ["accra", "accra"],
+      ["accra", null],
+    ] as const;
+    for (const [city, domainCity] of combinations) {
+      const urls = cityTrail(city, domainCity).map((s) => s.url);
+      expect(new Set(urls).size).toBe(urls.length);
+    }
+  });
+
+  it("keeps both steps where the city page is a real subpage", () => {
+    // Accra is dark, so on the neutral domain it genuinely lives one
+    // level below the root and the trail should say so.
+    expect(cityTrail("accra", null)).toEqual([
+      { name: "Home", url: "https://goldstay.co.ke" },
+      { name: "Accra", url: "https://goldstay.co.ke/accra" },
+    ]);
+  });
+
+  it("ends on the URL the city page is canonical at", () => {
+    for (const city of ["nairobi", "accra"] as const) {
+      const trail = cityTrail(city, city);
+      expect(trail[trail.length - 1]?.url).toBe(cityCanonical(city));
+    }
   });
 });
 

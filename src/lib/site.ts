@@ -252,6 +252,45 @@ export function cityCanonical(city: "nairobi" | "accra") {
     : `https://${fallbackDomain()}/${city}`;
 }
 
+// Absolute origin for the host currently being served. Schema and
+// breadcrumb URLs have to be absolute, and on a country domain they
+// have to be that domain rather than the neutral one, or the markup
+// describes a different site to the one the page was served from.
+// Routed through liveDomainOr so this can never name a domain that does
+// not resolve, the way every other URL helper here is.
+export function baseUrlFor(domainCity: "nairobi" | "accra" | null) {
+  const domain =
+    domainCity === "nairobi"
+      ? site.domains.nairobi
+      : domainCity === "accra"
+        ? site.domains.accra
+        : site.domain;
+  return `https://${liveDomainOr(domain)}`;
+}
+
+// The leading steps of a breadcrumb trail: the site root, then the city
+// landing page.
+//
+// On a country domain those are the same URL — goldstay.co.ke IS the
+// Nairobi page — so they collapse into one step. Emitting both would
+// put two different names on one URL, which leaves the trail ambiguous
+// about where the page actually sits and is the kind of thing Google
+// drops the whole BreadcrumbList over.
+export function cityTrail(
+  city: "nairobi" | "accra",
+  domainCity: "nairobi" | "accra" | null,
+): { name: string; url: string }[] {
+  const cityName = city === "nairobi" ? "Nairobi" : "Accra";
+  const home = baseUrlFor(domainCity);
+  const cityUrl = cityCanonical(city);
+  return home === cityUrl
+    ? [{ name: cityName, url: cityUrl }]
+    : [
+        { name: "Home", url: home },
+        { name: cityName, url: cityUrl },
+      ];
+}
+
 // hreflang helper. Drops any alternate whose domain is not live, so we
 // never advertise a translation that 404s, and collapses duplicates
 // (while .com.gh is dark, en-GH and en-KE would both resolve to .co.ke,

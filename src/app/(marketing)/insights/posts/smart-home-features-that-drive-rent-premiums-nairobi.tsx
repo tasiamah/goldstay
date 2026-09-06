@@ -327,6 +327,16 @@ export default function Article() {
         for the operational picture around smart-home
         installs.
       </P>
+      <P>
+        Landlords who would rather not field any of it use our{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term property management
+        </Link>{" "}
+        instead.
+      </P>
     </>
   );
 }

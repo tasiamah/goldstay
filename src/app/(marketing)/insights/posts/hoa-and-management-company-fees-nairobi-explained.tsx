@@ -273,6 +273,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you would rather not run any of this from six time zones away, it is what our{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term property management in Nairobi
+        </Link>{" "}
+        is for.
+      </P>
     </>
   );
 }

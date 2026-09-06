@@ -415,6 +415,16 @@ export default function Article() {
         </Link>{" "}
         for the related strategic context.
       </P>
+      <P>
+        This is the stage we handle under{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding in Nairobi
+        </Link>
+        , for landlords who want to keep the rest themselves.
+      </P>
     </>
   );
 }

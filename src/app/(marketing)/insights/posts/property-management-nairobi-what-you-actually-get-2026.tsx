@@ -299,6 +299,17 @@ export default function Article() {
       </P>
 
       <P>
+        If you would rather not run any of this from six time zones away, it is what our{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term property management in Nairobi
+        </Link>{" "}
+        is for.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/tenant-screening-nairobi-how-we-do-it"

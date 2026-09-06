@@ -21,6 +21,36 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-09-06
+
+### Added
+
+- The 21 "for landlords in <country>" pages are now reachable from the site.
+  The `/from` hub and the 20 origin pages behind it had no inbound link from
+  anywhere — the crawler only ever found them in the sitemap, which gets a URL
+  indexed but sends it none of the site's standing. The footer now links the
+  hub, and each origin page links back up to it.
+- Breadcrumb markup on the `/from` hub and all 20 origin pages, so Google can
+  place them in the site's hierarchy rather than treating each as a loose page.
+- The two long-let service pages now have inbound links from the articles
+  about them: 21 pointing at long-term management and 8 at tenant finding,
+  each one a sentence at the end of the article's "How Goldstay handles it"
+  section with anchor text that varies between articles. Between them they
+  previously had three inbound links, all from the nav and footer, and none at
+  all from the 350 articles — so a hundred-odd pieces on arrears, vetting,
+  vacancy and deposits passed their standing among themselves and none of it
+  to the pages a landlord actually enquires from. The Airbnb service page has
+  had this since it was built and has 49.
+- Each origin page now links to long-term management and tenant finding.
+  They described a landlord's problem in detail and then offered only the
+  yield calculator.
+
+### Fixed
+
+- Neighbourhood breadcrumbs pointed at `/nairobi`, which has redirected to the
+  domain root since 1.0.3, so the city step of every neighbourhood page's
+  breadcrumb went through a hop before it resolved.
+
 ## [1.1.0] - 2026-09-06
 
 ### Added
@@ -172,7 +202,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/tasiamah/goldstay/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/tasiamah/goldstay/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/tasiamah/goldstay/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/tasiamah/goldstay/compare/v1.0.1...v1.0.2

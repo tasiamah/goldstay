@@ -236,6 +236,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        See what else is covered by{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Goldstay’s long-term management in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

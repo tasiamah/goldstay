@@ -154,6 +154,17 @@ export function Footer() {
                   Insights
                 </Link>
               </li>
+              {/* The /from hub and the 20 origin pages behind it had no
+                  inbound link from anywhere on the site: the crawler
+                  only ever reached them through the sitemap, which
+                  gets a URL indexed but sends it no authority. The
+                  hub links every origin, so one link here is enough
+                  to put the whole cluster back in the hierarchy. */}
+              <li>
+                <Link href="/from" className="link-underline">
+                  Property management by country
+                </Link>
+              </li>
               <li>
                 <Link href="/about" className="link-underline">
                   About Goldstay

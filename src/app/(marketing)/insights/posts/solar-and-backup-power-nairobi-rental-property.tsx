@@ -289,6 +289,16 @@ export default function Article() {
         </Link>{" "}
         for the operating reality of a Nairobi rental.
       </P>
+      <P>
+        All of it sits with us under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          full long-term management in Nairobi
+        </Link>
+        , if you would rather hand the tenancy over.
+      </P>
     </>
   );
 }
