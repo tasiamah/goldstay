@@ -30,6 +30,12 @@ import {
   type SortState,
 } from "@/lib/admin/table";
 import { BulkActionBar } from "./BulkSelectClient";
+import {
+  CLIENT_AGREEMENT_FILTER_LABEL,
+  CLIENT_AGREEMENT_INCLUDE,
+  clientAgreementWhere,
+  rollupClientAgreements,
+} from "@/lib/admin/client-agreements";
 
 export const dynamic = "force-dynamic";
 
@@ -47,11 +53,10 @@ export default async function ClientsListPage({
 }) {
   const filters = parseClientListFilters(searchParams);
   const rawParams = (searchParams ?? {}) as Record<string, string>;
-  const sort = parseSort(
-    rawParams.sort,
-    SORTABLE_CLIENT_COLUMNS,
-    { column: "createdAt", direction: "desc" },
-  );
+  const sort = parseSort(rawParams.sort, SORTABLE_CLIENT_COLUMNS, {
+    column: "createdAt",
+    direction: "desc",
+  });
   const { page, pageSize } = parsePagination(rawParams);
 
   // Build a Prisma where clause from the parsed filters. Search
@@ -72,6 +77,11 @@ export default async function ClientsListPage({
       { phone: { contains: filters.q, mode: "insensitive" } },
     ];
   }
+  // Agreement state is filtered in the database rather than over the
+  // fetched page, so the row count and pagination describe the same set
+  // the operator is looking at.
+  const agreementWhere = clientAgreementWhere(filters.agreement);
+  if (agreementWhere) where.AND = agreementWhere;
 
   const orderBy: Prisma.ClientOrderByWithRelationInput = {
     [sort.column]: sort.direction,
@@ -83,14 +93,23 @@ export default async function ClientsListPage({
       orderBy,
       skip: (page - 1) * pageSize,
       take: pageSize,
-      include: { _count: { select: { properties: true } } },
+      include: {
+        _count: { select: { properties: true } },
+        // Statuses only, for the agreement rollup in the Agreement
+        // column. Two small columns per property rather than whole
+        // rows, since nothing else on this page needs them.
+        properties: CLIENT_AGREEMENT_INCLUDE,
+      },
     }),
     prisma.client.count({ where }),
     prisma.client.count({ where: { archivedAt: null } }),
   ]);
 
   const isFiltered =
-    filters.q !== "" || filters.country !== null || filters.period !== null;
+    filters.q !== "" ||
+    filters.country !== null ||
+    filters.period !== null ||
+    filters.agreement !== null;
   const chips: Chip[] = [];
   if (filters.q) chips.push({ key: "q", label: `Search: “${filters.q}”` });
   if (filters.country)
@@ -100,6 +119,11 @@ export default async function ClientsListPage({
     });
   if (filters.period)
     chips.push({ key: "period", label: PERIOD_LABEL[filters.period] });
+  if (filters.agreement)
+    chips.push({
+      key: "agreement",
+      label: CLIENT_AGREEMENT_FILTER_LABEL[filters.agreement],
+    });
 
   return (
     <div className="space-y-6">
@@ -126,6 +150,7 @@ export default async function ClientsListPage({
               q: filters.q,
               country: filters.country,
               period: filters.period,
+              agreement: filters.agreement,
             })}`}
             className="inline-flex items-center rounded-md border border-stone-300 bg-white px-3 py-2 text-sm font-medium text-stone-700 hover:bg-stone-50"
           >
@@ -166,6 +191,15 @@ export default async function ClientsListPage({
               { value: "GH", label: "Ghana" },
             ]}
           />
+          <FilterSelect
+            name="agreement"
+            label="Agreement"
+            options={[
+              { value: "awaiting", label: "Awaiting signature" },
+              { value: "signed", label: "All signed" },
+              { value: "not-issued", label: "No agreement issued" },
+            ]}
+          />
         </div>
       </div>
 
@@ -176,6 +210,7 @@ export default async function ClientsListPage({
           q: filters.q,
           country: filters.country,
           period: filters.period,
+          agreement: filters.agreement,
         }}
       />
 
@@ -186,7 +221,10 @@ export default async function ClientsListPage({
           <EmptyState />
         )
       ) : (
-        <form id="clients-bulk-form" className="overflow-x-auto rounded-lg border border-stone-200 bg-white">
+        <form
+          id="clients-bulk-form"
+          className="overflow-x-auto rounded-lg border border-stone-200 bg-white"
+        >
           <table className="min-w-full divide-y divide-stone-200">
             <thead className="bg-stone-50">
               <tr>
@@ -215,6 +253,7 @@ export default async function ClientsListPage({
                   params={clientsTableParams(filters, sort, pageSize)}
                 />
                 <PlainHeader align="right">Properties</PlainHeader>
+                <PlainHeader>Agreement</PlainHeader>
                 <SortableHeader
                   column="createdAt"
                   label="Joined"
@@ -227,6 +266,7 @@ export default async function ClientsListPage({
             <tbody className="divide-y divide-stone-100">
               {clients.map((o) => {
                 const secondary = formatClientSecondaryName(o);
+                const agreement = rollupClientAgreements(o.properties);
                 return (
                   <tr key={o.id} className="hover:bg-stone-50/60">
                     <td className="px-4 py-3 align-top">
@@ -259,10 +299,7 @@ export default async function ClientsListPage({
                       ) : null}
                     </td>
                     <td className="px-4 py-3 text-sm text-stone-700">
-                      <a
-                        href={`mailto:${o.email}`}
-                        className="hover:underline"
-                      >
+                      <a href={`mailto:${o.email}`} className="hover:underline">
                         {o.email}
                       </a>
                     </td>
@@ -271,6 +308,21 @@ export default async function ClientsListPage({
                     </td>
                     <td className="px-4 py-3 text-right text-sm tabular-nums text-stone-700">
                       {o._count.properties}
+                    </td>
+                    {/* Agreement rollup. Same pill shape and palette as
+                        the agreement card on the property detail page,
+                        so amber still reads as "chase this" wherever an
+                        operator sees it. */}
+                    <td className="px-4 py-3">
+                      {agreement.state === "no-properties" ? (
+                        <span className="text-sm text-stone-400">—</span>
+                      ) : (
+                        <span
+                          className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${agreement.className}`}
+                        >
+                          {agreement.label}
+                        </span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-sm text-stone-500">
                       {o.createdAt.toLocaleDateString("en-GB", {
@@ -310,6 +362,7 @@ function clientsTableParams(
   if (filters.q) out.q = filters.q;
   if (filters.country) out.country = filters.country;
   if (filters.period) out.period = filters.period;
+  if (filters.agreement) out.agreement = filters.agreement;
   return out;
 }
 

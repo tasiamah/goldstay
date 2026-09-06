@@ -21,6 +21,7 @@ describe("parseClientListFilters + parsePropertyListFilters", () => {
       q: "asha",
       country: null,
       period: null,
+      agreement: null,
     });
     expect(parseClientListFilters({ country: "ZA" }).country).toBeNull();
     expect(parseClientListFilters({ country: "KE" }).country).toBe("KE");
@@ -28,6 +29,20 @@ describe("parseClientListFilters + parsePropertyListFilters", () => {
     expect(parseClientListFilters({ period: "yesterday" }).period).toBeNull();
     expect(parseClientListFilters({ period: "this-month" }).period).toBe(
       "this-month",
+    );
+    // Agreement rollup filter. The raw enum values are deliberately not
+    // accepted: the URL speaks in operator terms ("awaiting"), not in
+    // AgreementStatus ("SENT"), because one client rolls up several
+    // agreements and no single status describes them.
+    expect(parseClientListFilters({ agreement: "SENT" }).agreement).toBeNull();
+    expect(parseClientListFilters({ agreement: "awaiting" }).agreement).toBe(
+      "awaiting",
+    );
+    expect(parseClientListFilters({ agreement: "signed" }).agreement).toBe(
+      "signed",
+    );
+    expect(parseClientListFilters({ agreement: "not-issued" }).agreement).toBe(
+      "not-issued",
     );
 
     const props = parsePropertyListFilters({

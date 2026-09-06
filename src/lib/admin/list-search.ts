@@ -5,6 +5,11 @@
 // can paste filtered URLs into Slack. Each helper returns the data
 // the page needs without leaking Prisma into the URL layer.
 
+import {
+  parseClientAgreementFilter,
+  type ClientAgreementFilter,
+} from "./client-agreements";
+
 export type RawSearchParams = Record<string, string | string[] | undefined>;
 
 function readString(
@@ -53,6 +58,10 @@ export type ClientListFilters = {
   q: string;
   country: "KE" | "GH" | null;
   period: PeriodFilter;
+  // Management agreement state, rolled up across the client's
+  // properties. See lib/admin/client-agreements.ts for what each value
+  // means and why it has to be filtered in the database.
+  agreement: ClientAgreementFilter;
 };
 
 export function parseClientListFilters(
@@ -63,6 +72,9 @@ export function parseClientListFilters(
     q: readString(searchParams, "q"),
     country: country === "KE" || country === "GH" ? country : null,
     period: parsePeriod(searchParams),
+    agreement: parseClientAgreementFilter(
+      readString(searchParams, "agreement"),
+    ),
   };
 }
 
@@ -92,8 +104,7 @@ export function parsePropertyListFilters(
       status === "ONBOARDING" || status === "ACTIVE" || status === "EXITED"
         ? status
         : null,
-    type:
-      type === "LONG_TERM" || type === "SHORT_TERM" ? type : null,
+    type: type === "LONG_TERM" || type === "SHORT_TERM" ? type : null,
     vacancy: vacancy === "vacant" || vacancy === "let" ? vacancy : null,
   };
 }

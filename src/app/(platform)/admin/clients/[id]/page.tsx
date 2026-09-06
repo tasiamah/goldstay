@@ -4,6 +4,10 @@ import { prisma } from "@/lib/db";
 import { isEmailDeliveryConfigured } from "@/lib/client-welcome";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
+  AGREEMENT_STATUS_CLASSES,
+  AGREEMENT_STATUS_LABEL,
+} from "@/lib/agreements/format";
+import {
   formatClientDisplayName,
   formatClientSecondaryName,
 } from "@/lib/format-client";
@@ -32,6 +36,18 @@ export default async function ClientDetailPage({
     include: {
       properties: {
         orderBy: { createdAt: "desc" },
+        // Live agreement per property, so the list here says which one
+        // is outstanding. Arriving from the clients list, an operator
+        // already knows this client owes a signature; without this they
+        // have to open each property to find out which.
+        include: {
+          agreements: {
+            where: { status: { not: "CANCELLED" } },
+            orderBy: { generatedAt: "desc" },
+            take: 1,
+            select: { status: true },
+          },
+        },
       },
     },
   });
@@ -110,11 +126,11 @@ export default async function ClientDetailPage({
           <strong className="font-medium">
             Email sending is not configured.
           </strong>{" "}
-          Welcome emails and magic links are being written to the logs
-          instead of delivered, so this client cannot reach their portal.
-          Set <code className="font-mono text-xs">RESEND_API_KEY</code> in
-          the Vercel project environment and redeploy, then use “Resend
-          welcome email” above.
+          Welcome emails and magic links are being written to the logs instead
+          of delivered, so this client cannot reach their portal. Set{" "}
+          <code className="font-mono text-xs">RESEND_API_KEY</code> in the
+          Vercel project environment and redeploy, then use “Resend welcome
+          email” above.
         </div>
       ) : null}
 
@@ -122,8 +138,8 @@ export default async function ClientDetailPage({
         <div className="rounded-lg border border-stone-200 bg-white p-6">
           <h3 className="text-base font-medium text-stone-900">Details</h3>
           <p className="mt-1 text-sm text-stone-500">
-            Updates apply immediately and are visible to the client on next
-            page load.
+            Updates apply immediately and are visible to the client on next page
+            load.
           </p>
           <div className="mt-5">
             <ClientForm
@@ -183,9 +199,25 @@ export default async function ClientDetailPage({
                         : "Long-term"}
                     </p>
                   </div>
-                  <span className="text-xs uppercase tracking-wider text-stone-500">
-                    {p.status}
-                  </span>
+                  <div className="flex shrink-0 items-center gap-2">
+                    {/* Latest non-cancelled agreement. Nothing shown
+                        when none has been issued and the property has
+                        exited, since there is no signature to chase. */}
+                    {p.agreements[0] ? (
+                      <span
+                        className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium ${AGREEMENT_STATUS_CLASSES[p.agreements[0].status]}`}
+                      >
+                        {AGREEMENT_STATUS_LABEL[p.agreements[0].status]}
+                      </span>
+                    ) : p.status === "EXITED" ? null : (
+                      <span className="inline-flex items-center rounded-full border border-stone-200 bg-stone-50 px-2.5 py-0.5 text-xs font-medium text-stone-700">
+                        No agreement
+                      </span>
+                    )}
+                    <span className="text-xs uppercase tracking-wider text-stone-500">
+                      {p.status}
+                    </span>
+                  </div>
                 </li>
               ))}
             </ul>
