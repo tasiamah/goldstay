@@ -235,14 +235,14 @@ export default function Article() {
         ongoing compliance. Read also our
         pieces on{" "}
         <Link
-          href="/insights/property-taxes-fees-buying-kenya"
+          href="/insights/hidden-costs-buying-property-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           property taxes Kenya
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/rental-income-tax-kenya-mri-7-5-explained"
+          href="/insights/kenya-mri-tax-diaspora-landlords"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           rental income tax MRI

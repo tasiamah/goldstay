@@ -161,7 +161,7 @@ export default function Article() {
         residential landlords: the levy applies to salaried
         income only, not to rental income. Rental income is
         already subject to MRI and does not attract a
-        secondary levy. Some tax advisors in 2024–2025 were
+        secondary levy. Some tax advisors in 2024 to 2025 were
         conservatively deducting a second 1.5 percent from
         landlords&apos; net; that is not the correct treatment
         and should be reversed if you are still being charged

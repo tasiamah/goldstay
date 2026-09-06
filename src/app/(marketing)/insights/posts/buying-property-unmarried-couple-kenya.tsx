@@ -217,7 +217,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/property-and-divorce-kenya-honest-guide"
+          href="/insights/spousal-consent-matrimonial-property-act-kenya-transactions"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           property and divorce Kenya

@@ -454,7 +454,7 @@ export default function Article() {
         </Link>{" "}
         and our{" "}
         <Link
-          href="/insights/kenya-as-an-emerging-market-real-estate-thesis"
+          href="/insights/kenya-emerging-market-property-investment-thesis-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Kenya emerging market piece

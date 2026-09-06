@@ -226,7 +226,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/total-cost-buying-property-kenya-2026"
+          href="/insights/hidden-costs-buying-property-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           total cost buying property

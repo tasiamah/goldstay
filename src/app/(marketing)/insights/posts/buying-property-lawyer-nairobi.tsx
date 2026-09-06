@@ -202,7 +202,7 @@ export default function Article() {
         conversation honestly. Read also
         our pieces on{" "}
         <Link
-          href="/insights/lawyer-reading-sale-agreement-kenya"
+          href="/insights/why-have-a-lawyer-read-your-kenyan-sale-agreement"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           lawyer reading sale agreement

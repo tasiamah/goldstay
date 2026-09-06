@@ -203,7 +203,7 @@ export default function Article() {
         counsel and AML-compliant banking
         partners. Read also our pieces on{" "}
         <Link
-          href="/insights/foreigners-buying-kenyan-property-explained"
+          href="/insights/foreign-companies-owning-kenyan-property-structures"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           foreigners buying Kenyan property

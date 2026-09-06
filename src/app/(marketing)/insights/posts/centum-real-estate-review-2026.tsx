@@ -171,7 +171,7 @@ export default function Article() {
         compound and unit diligence. Read
         also our pieces on{" "}
         <Link
-          href="/insights/two-rivers-runda-area-deep-dive-2026"
+          href="/insights/best-runda-compounds-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Two Rivers and Runda area deep dive

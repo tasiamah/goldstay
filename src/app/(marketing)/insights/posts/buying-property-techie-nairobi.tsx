@@ -210,7 +210,7 @@ export default function Article() {
         diligence honestly. Read also our
         pieces on{" "}
         <Link
-          href="/insights/buying-property-millennials-kenya-2026-deep-dive"
+          href="/insights/buying-property-fresh-graduate-nairobi"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           millennials in Kenya 2026

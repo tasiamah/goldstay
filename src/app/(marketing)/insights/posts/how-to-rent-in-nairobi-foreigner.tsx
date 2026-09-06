@@ -264,7 +264,7 @@ export default function Article() {
         negotiation. Read also our pieces
         on{" "}
         <Link
-          href="/insights/diplomatic-tenants-nairobi-rental-market"
+          href="/insights/diplomatic-tenant-market-gigiri-rosslyn-runda-un-embassy-rent"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           diplomatic tenants

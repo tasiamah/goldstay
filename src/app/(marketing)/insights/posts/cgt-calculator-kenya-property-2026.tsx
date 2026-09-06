@@ -259,14 +259,14 @@ export default function Article() {
         computation. Read also our pieces
         on{" "}
         <Link
-          href="/insights/sellers-guide-nairobi-property-2026"
+          href="/insights/how-to-sell-nairobi-property-30-days"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           sellers guide Nairobi 2026
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/property-taxes-kenya-explained-2026"
+          href="/insights/property-tax-changes-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           property taxes Kenya 2026

@@ -161,7 +161,7 @@ export default function Article() {
         segment-by-segment pricing analysis.
         Read also our pieces on{" "}
         <Link
-          href="/insights/apartment-oversupply-nairobi-real-or-myth"
+          href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           apartment oversupply Nairobi

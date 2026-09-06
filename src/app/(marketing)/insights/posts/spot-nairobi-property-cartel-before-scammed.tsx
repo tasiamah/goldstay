@@ -205,7 +205,7 @@ export default function Article() {
         defence diligence as standard.
         Read also our pieces on{" "}
         <Link
-          href="/insights/land-cartels-kenya-2026-defence-playbook"
+          href="/insights/land-cartels-kenya-how-they-operate"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           land cartels Kenya defence

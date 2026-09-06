@@ -224,7 +224,7 @@ export default function Article() {
         alongside the property selection.
         Read also our pieces on{" "}
         <Link
-          href="/insights/diaspora-returnees-housing-options-nairobi"
+          href="/insights/returning-to-kenya-diaspora-move-back-playbook"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           diaspora returnee housing

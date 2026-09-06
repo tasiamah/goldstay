@@ -260,7 +260,7 @@ export default function Article() {
         regime review. Read also our
         pieces on{" "}
         <Link
-          href="/insights/property-taxes-kenya-explained-2026"
+          href="/insights/property-tax-changes-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           property taxes Kenya 2026

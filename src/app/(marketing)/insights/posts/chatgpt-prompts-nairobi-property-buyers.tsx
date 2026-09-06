@@ -173,14 +173,14 @@ export default function Article() {
         counsel and inspection. Read also
         our pieces on{" "}
         <Link
-          href="/insights/diaspora-trip-checklist-buying-property-kenya"
+          href="/insights/diaspora-property-checklist-before-flying-back-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           diaspora trip checklist
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/lawyer-reading-sale-agreement-kenya"
+          href="/insights/why-have-a-lawyer-read-your-kenyan-sale-agreement"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           lawyer reading sale agreement

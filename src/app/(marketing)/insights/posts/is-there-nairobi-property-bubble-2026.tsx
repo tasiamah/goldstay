@@ -164,7 +164,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/will-nairobi-property-prices-crash-2026"
+          href="/insights/will-nairobi-house-prices-crash-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           will Nairobi property prices

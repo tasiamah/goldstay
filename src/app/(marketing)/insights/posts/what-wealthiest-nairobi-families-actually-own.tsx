@@ -243,14 +243,14 @@ export default function Article() {
         portfolio approach. Read also our
         pieces on{" "}
         <Link
-          href="/insights/wealth-preservation-property-kenya-uhnw"
+          href="/insights/secret-nairobi-suburb-wealthy-second-home"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           wealth preservation Kenya
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/personal-name-vs-company-property-kenya"
+          href="/insights/personal-name-vs-company-buying-property-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           personal name vs company

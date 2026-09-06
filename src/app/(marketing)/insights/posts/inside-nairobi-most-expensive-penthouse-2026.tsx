@@ -195,14 +195,14 @@ export default function Article() {
         relationships. Read also our pieces
         on{" "}
         <Link
-          href="/insights/most-expensive-streets-nairobi-luxury-real-estate"
+          href="/insights/what-wealthiest-nairobi-families-actually-own"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           most expensive streets Nairobi
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/wealth-preservation-property-kenya-uhnw"
+          href="/insights/what-wealthiest-nairobi-families-actually-own"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           wealth preservation property

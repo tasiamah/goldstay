@@ -219,14 +219,14 @@ export default function Article() {
         comparison. Read also our pieces
         on{" "}
         <Link
-          href="/insights/nairobi-as-african-capital-vs-lagos-cape-town-johannesburg"
+          href="/insights/nairobi-vs-lagos-vs-cape-town-vs-kigali-property-compared"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Nairobi vs other African capitals
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/kenya-vs-mauritius-vs-rwanda-property-thesis"
+          href="/insights/buying-property-kenya-vs-mauritius-vs-rwanda"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Kenya vs Mauritius vs Rwanda

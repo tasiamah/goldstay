@@ -190,14 +190,14 @@ export default function Article() {
         diligence and management end-to-end.
         Read also our pieces on{" "}
         <Link
-          href="/insights/diaspora-property-scams-trending-2026"
+          href="/insights/top-property-scams-kenya-2026-watchlist"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           diaspora property scams
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/relatives-scamming-diaspora-property-kenya-defence-playbook"
+          href="/insights/how-to-tell-if-relative-kenya-scamming-you"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           relatives scamming diaspora

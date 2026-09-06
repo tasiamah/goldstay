@@ -216,7 +216,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/gen-z-property-buying-kenya-2026"
+          href="/insights/buying-property-fresh-graduate-nairobi"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Gen Z buying property Kenya

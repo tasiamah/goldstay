@@ -203,7 +203,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/diaspora-property-scams-trending-2026"
+          href="/insights/top-property-scams-kenya-2026-watchlist"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           diaspora property scams

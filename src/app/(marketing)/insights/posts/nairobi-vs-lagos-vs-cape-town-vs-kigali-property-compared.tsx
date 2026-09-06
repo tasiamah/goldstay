@@ -306,7 +306,7 @@ export default function Article() {
           <strong>Nairobi</strong>: moderate political
           cycle exposure (covered in our{" "}
           <Link
-            href="/insights/political-risk-kenya-real-estate-investing"
+            href="/insights/kenya-emerging-market-property-investment-thesis-2026"
             className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
           >
             political risk piece
@@ -398,7 +398,7 @@ export default function Article() {
       <P>
         Read the related pieces on{" "}
         <Link
-          href="/insights/kenya-as-an-emerging-market-real-estate-thesis"
+          href="/insights/kenya-emerging-market-property-investment-thesis-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           the Kenya emerging market thesis

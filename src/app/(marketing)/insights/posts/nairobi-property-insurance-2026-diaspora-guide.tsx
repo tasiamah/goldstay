@@ -186,7 +186,7 @@ export default function Article() {
       <P>
         If your current premium is more than 30 percent above
         these ranges, you are overpaying. If it is more than
-        30 percent below, check what is excluded — either you
+        30 percent below, check what is excluded, either you
         have a great deal or you are only nominally insured.
         Either way, worth asking your broker to open the
         policy schedule with you.

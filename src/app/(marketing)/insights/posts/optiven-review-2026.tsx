@@ -184,7 +184,7 @@ export default function Article() {
         </Link>{" "}
         and{" "}
         <Link
-          href="/insights/buying-vs-building-house-kenya-honest-numbers"
+          href="/insights/buying-vs-building-nairobi-which-makes-sense"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           buying vs building Kenya

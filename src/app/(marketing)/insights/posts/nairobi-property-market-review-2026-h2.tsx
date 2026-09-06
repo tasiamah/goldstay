@@ -174,7 +174,7 @@ export default function Article() {
       <P>
         The H1 view was that developer discipline would be
         tested by the end of 2026 as inventory from the
-        2022–2024 launch boom started completing. H2 has
+        2022 to 2024 launch boom started completing. H2 has
         confirmed it. We are seeing four things at once.
       </P>
 
@@ -268,7 +268,7 @@ export default function Article() {
         We wrote about developer bankruptcies eighteen months
         ago as a leading indicator. The H1 uptick has not
         reversed. There are at least four Nairobi developers
-        whose 2024–2025 projects are visibly behind schedule,
+        whose 2024 to 2025 projects are visibly behind schedule,
         who have quietly stopped launching, and whose payment
         collection cadence with contractors has slipped. We are
         not naming them here for reasons that are obvious, but

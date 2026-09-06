@@ -241,7 +241,7 @@ export default function Article() {
         coordinate with specialised
         partners. Read also our pieces on{" "}
         <Link
-          href="/insights/multi-unit-residence-strategy-nairobi"
+          href="/insights/multi-unit-property-investment-nairobi"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           multi-unit residence strategy
