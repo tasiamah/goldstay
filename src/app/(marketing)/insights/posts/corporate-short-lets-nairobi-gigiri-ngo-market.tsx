@@ -91,7 +91,7 @@ export default function Article() {
           smooths the calendar you would otherwise be filling last minute
         </LI>
         <LI>
-          <strong>Almost no party risk.</strong> Somebody's employer knows where
+          <strong>Almost no party risk.</strong> Somebody’s employer knows where
           they are staying
         </LI>
         <LI>
@@ -120,7 +120,7 @@ export default function Article() {
       <OL>
         <LI>
           <strong>You cannot issue a proper invoice.</strong> An organisation
-          needs a compliant receipt in the organisation's name, with the right
+          needs a compliant receipt in the organisation’s name, with the right
           registration details. If you cannot produce one, their finance team
           cannot pay you, and the booking goes elsewhere. This single item
           disqualifies most hosts
@@ -140,7 +140,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>You cannot state your internet speed.</strong> They will ask,
-          and "it is fast" is not an answer
+          and “it is fast” is not an answer
         </LI>
         <LI>
           <strong>You are slow or informal in writing.</strong> The person

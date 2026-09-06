@@ -109,7 +109,7 @@ export default function Article() {
           discount and keep discounting
         </LI>
         <LI>
-          <strong>Absorption, eventually.</strong> Nairobi's population and
+          <strong>Absorption, eventually.</strong> Nairobi’s population and
           household formation are genuinely growing. The supply gets absorbed.
           The question is only how much rent you gave up while waiting
         </LI>
@@ -224,7 +224,7 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        We price against what is letting now rather than against last year's
+        We price against what is letting now rather than against last year’s
         comparables, and we tell owners in affected corridors to renew early and
         furnish rather than hold out for a rent that is not there. It is not the
         advice people want in month one and it is usually right by month six.

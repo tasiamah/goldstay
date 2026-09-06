@@ -46,7 +46,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          It is unambiguously the host's responsibility, and the guest knows it
+          It is unambiguously the host’s responsibility, and the guest knows it
         </LI>
         <LI>
           It happens in the evening, because that is when consumption peaks
@@ -75,7 +75,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          <strong>Know your unit's burn rate.</strong> Track how many units a
+          <strong>Know your unit’s burn rate.</strong> Track how many units a
           week the apartment consumes with guests in it. Two or three weeks of
           data is enough, and everything else depends on this number
         </LI>
@@ -155,7 +155,7 @@ export default function Article() {
         <LI>
           <strong>Landlord submetered buildings</strong> can be worse, because
           the cut off is controlled by someone whose priority is not your
-          guest's evening. Understand the process and who to call
+          guest’s evening. Understand the process and who to call
         </LI>
         <LI>
           <strong>Never pass electricity through to the guest.</strong> Some
@@ -164,7 +164,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Check the water pump.</strong> In many Nairobi buildings the
-          pump is on the building supply, but in some it is on the unit's meter,
+          pump is on the building supply, but in some it is on the unit’s meter,
           which means an empty meter means no water either
         </LI>
       </UL>

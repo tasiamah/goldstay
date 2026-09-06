@@ -52,7 +52,7 @@ export default function Article() {
           in writing, on the day. Not verbally, and not the week before
         </LI>
         <LI>
-          <strong>Give the guest the guard's number</strong> and tell them to
+          <strong>Give the guest the guard’s number</strong> and tell them to
           call on arrival. A guest who can phone ahead from the taxi is never
           stranded
         </LI>
@@ -172,7 +172,7 @@ export default function Article() {
       <UL>
         <LI>The building name, road, and a landmark that a driver will know</LI>
         <LI>A photograph of the gate, taken from the road</LI>
-        <LI>The guard's number and what to say</LI>
+        <LI>The guard’s number and what to say</LI>
         <LI>Which floor, which door, and how to work the lift</LI>
         <LI>The code, and what to do if it does not work, with a name and a number</LI>
         <LI>

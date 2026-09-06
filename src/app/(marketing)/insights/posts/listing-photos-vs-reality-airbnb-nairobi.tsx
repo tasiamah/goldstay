@@ -28,7 +28,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        A guest's rating is not a measure of your apartment. It is a measure of
+        A guest’s rating is not a measure of your apartment. It is a measure of
         the distance between your apartment and what they expected when they
         booked it, and you wrote the expectation yourself. This is why a plain,
         accurately photographed unit often outrates a beautiful one that was
@@ -146,7 +146,7 @@ export default function Article() {
       </UL>
 
       <Callout title="Underpromise in the description too">
-        Photographs are only half the expectation. "Ten minutes from Westlands"
+        Photographs are only half the expectation. “Ten minutes from Westlands”
         at 8am is not ten minutes and your guest will time it. Describe
         distances honestly, name the noise you cannot fix, and say what the
         apartment is not. Every unpleasant surprise you remove in advance is a

@@ -44,7 +44,7 @@ export default function Article() {
       </Lede>
 
       <Callout title="Where these numbers come from">
-        Figures below are taken from the developer's own published materials and
+        Figures below are taken from the developer’s own published materials and
         agent listings as at mid 2026. We have not inspected the building or
         audited the projections. Verify everything in writing before paying
         anything.
@@ -72,7 +72,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Amenities:</strong> rooftop infinity pool, gym, mini cinema,
-          residents' sky lounge
+          residents’ sky lounge
         </LI>
         <LI>
           <strong>Status:</strong> structure reported complete with finishing
@@ -196,7 +196,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          The developer's delivered record. Canaan's Aura format is recent, so
+          The developer’s delivered record. Canaan’s Aura format is recent, so
           ask specifically what they have completed and handed over, and go and
           look at it
         </LI>
@@ -220,7 +220,7 @@ export default function Article() {
         </LI>
         <LI>
           Cooling. Full height glazing on a west facing elevation gets hot, and
-          whether that is your problem or the building's is worth knowing before
+          whether that is your problem or the building’s is worth knowing before
           you buy
         </LI>
         <LI>
@@ -249,7 +249,7 @@ export default function Article() {
         it yourself: realistic long let rent for a one bedroom in Riverside,
         then the short let case separately with every cost in it. If it still
         works at conservative occupancy, it is a good buy. If it only works at
-        the brochure's numbers, you are buying the brochure.
+        the brochure’s numbers, you are buying the brochure.
       </P>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>

@@ -79,7 +79,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>You own the listing account.</strong> Non negotiable. If the
-          listing sits on your operator's account, they own two years of your
+          listing sits on your operator’s account, they own two years of your
           reviews and you cannot leave without starting over
         </LI>
         <LI>

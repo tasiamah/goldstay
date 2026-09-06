@@ -30,7 +30,7 @@ export default function Article() {
       <Lede>
         Everything else in a short let is negotiable. A guest will forgive a
         small kitchen, a slow lift, an awkward parking space and a shower that
-        takes a moment to warm up. They will not forgive a bad night's sleep,
+        takes a moment to warm up. They will not forgive a bad night’s sleep,
         because it is the one thing they cannot work around and the one thing
         they were fundamentally buying.
       </Lede>
@@ -59,8 +59,8 @@ export default function Article() {
       </UL>
 
       <Pullquote>
-        Guests forgive almost everything except a bad night's sleep, and the
-        review will not say "the mattress". It will say the place was
+        Guests forgive almost everything except a bad night’s sleep, and the
+        review will not say “the mattress”. It will say the place was
         uncomfortable.
       </Pullquote>
 
@@ -146,7 +146,7 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Blackout curtains,</strong> properly fitted, overlapping the
-          window frame. Nairobi's sun arrives early and directly
+          window frame. Nairobi’s sun arrives early and directly
         </LI>
         <LI>
           <strong>Noise.</strong> Generators, night clubs, the road, the lift.

@@ -40,7 +40,7 @@ export default function Article() {
       <H2 id="pressure">It is usually pressure, not temperature</H2>
 
       <P>
-        Hosts hear "the shower was terrible" and buy a bigger water heater. That
+        Hosts hear “the shower was terrible” and buy a bigger water heater. That
         is frequently the wrong fix, because the water was hot and there was
         simply not enough of it arriving.
       </P>
@@ -127,7 +127,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Solar with an electric backup element.</strong> Excellent
-          running cost in Nairobi's climate, and the backup element is not
+          running cost in Nairobi’s climate, and the backup element is not
           optional. Solar alone after three cloudy days is a cold shower and a
           bad review
         </LI>

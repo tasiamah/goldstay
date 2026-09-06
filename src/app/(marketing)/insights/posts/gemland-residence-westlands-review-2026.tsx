@@ -44,7 +44,7 @@ export default function Article() {
       </Lede>
 
       <Callout title="Where these numbers come from">
-        Everything below is drawn from the developer's and agents' own published
+        Everything below is drawn from the developer’s and agents’ own published
         marketing as at mid 2026, not from an inspection by us. Figures and
         dates in Nairobi off plan marketing move, and different agents publish
         different versions of the same project. Confirm all of it in writing
@@ -226,7 +226,7 @@ export default function Article() {
           actually being built
         </LI>
         <LI>
-          The developer's delivered track record. Not their pipeline, their
+          The developer’s delivered track record. Not their pipeline, their
           completed buildings, visited
         </LI>
         <LI>
@@ -263,7 +263,7 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        For sourcing clients we verify title, approvals and the developer's
+        For sourcing clients we verify title, approvals and the developer’s
         delivered record, and we visit the site rather than reading the
         brochure. If you have already bought here and want a view on letting
         it,{" "}

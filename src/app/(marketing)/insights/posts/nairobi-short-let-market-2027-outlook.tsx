@@ -146,7 +146,7 @@ export default function Article() {
 
       <OL>
         <LI>
-          <strong>Corporate and institutional: growing.</strong> Nairobi's role
+          <strong>Corporate and institutional: growing.</strong> Nairobi’s role
           as a regional hub is intact, and organisations increasingly prefer
           apartments to hotels for stays over a fortnight. This is the strongest
           part of the market and the least contested
@@ -186,11 +186,11 @@ export default function Article() {
           competing on price
         </LI>
         <LI>
-          Hosts relying on the platform's algorithm to compensate for a weak
+          Hosts relying on the platform’s algorithm to compensate for a weak
           product
         </LI>
         <LI>
-          Anyone who bought on a developer's yield projection without rebuilding
+          Anyone who bought on a developer’s yield projection without rebuilding
           it
         </LI>
         <LI>

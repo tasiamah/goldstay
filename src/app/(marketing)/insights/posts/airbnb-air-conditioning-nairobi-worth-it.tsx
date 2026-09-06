@@ -60,7 +60,7 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Guests from hotter climates,</strong> who genuinely feel
-          Nairobi's warm afternoons more than residents do
+          Nairobi’s warm afternoons more than residents do
         </LI>
         <LI>
           <strong>Anyone on a top floor</strong> or behind large west facing
@@ -72,7 +72,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Anyone with hay fever or dust sensitivity,</strong> which
-          Nairobi's dry season produces reliably
+          Nairobi’s dry season produces reliably
         </LI>
         <LI>
           <strong>Corporate guests working from the unit all day,</strong> who

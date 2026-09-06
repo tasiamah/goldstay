@@ -212,7 +212,7 @@ export default function Article() {
       <Callout title="Building beats suburb">
         The variance between two buildings on the same street is routinely
         larger than the variance between two suburbs. Water pressure, power
-        backup, lift reliability, service charge discipline and the committee's
+        backup, lift reliability, service charge discipline and the committee’s
         attitude to short stays are all building level facts, and they decide
         more of your outcome than the postcode does. Diligence the building,
         not just the area.

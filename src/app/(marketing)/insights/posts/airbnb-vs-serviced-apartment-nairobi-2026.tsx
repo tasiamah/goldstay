@@ -122,7 +122,7 @@ export default function Article() {
 
       <Callout title="The requirement people underestimate">
         The serviced model needs you to be able to issue a compliant invoice in
-        a company's name. Organisations cannot pay an individual's mobile money
+        a company’s name. Organisations cannot pay an individual’s mobile money
         account against a booking, so hosts who are not properly registered are
         excluded from this market entirely regardless of how good the apartment
         is. It is the most common reason owners never access it. See{" "}

@@ -28,8 +28,8 @@ export default function Article() {
   return (
     <>
       <Lede>
-        There is a category of Airbnb review that begins "the apartment was
-        lovely, but" and then describes running out of toilet paper. It is
+        There is a category of Airbnb review that begins “the apartment was
+        lovely, but” and then describes running out of toilet paper. It is
         entirely avoidable, it costs almost nothing to avoid, and it happens
         constantly because consumables are the one line hosts think of as a cost
         rather than as part of the product.
@@ -159,7 +159,7 @@ export default function Article() {
 
       <P>
         A fully stocked Nairobi apartment consumes a small fraction of one
-        night's rate per stay. Against that, a single consumables complaint
+        night’s rate per stay. Against that, a single consumables complaint
         knocks the rating that determines your placement in search for months.
         The arithmetic is not close.
       </P>
@@ -175,7 +175,7 @@ export default function Article() {
         </LI>
         <LI>
           Put restocking on the turnover checklist as specific quantities, not
-          as "check supplies"
+          as “check supplies”
         </LI>
         <LI>
           Track it. If one unit consumes far more than another, something is

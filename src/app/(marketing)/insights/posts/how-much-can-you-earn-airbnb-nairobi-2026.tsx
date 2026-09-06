@@ -131,7 +131,7 @@ export default function Article() {
       <P>
         Guests do not conserve. Air conditioning runs all night, hot water runs
         long, lights stay on in empty rooms. Budget meaningfully above a long
-        term tenant's consumption for the same unit.
+        term tenant’s consumption for the same unit.
       </P>
 
       <H3>4. Channel commission</H3>

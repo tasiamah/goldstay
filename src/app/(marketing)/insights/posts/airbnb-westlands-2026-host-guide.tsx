@@ -145,7 +145,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Invoicing and a clean paper trail.</strong> Companies need a
-          receipt in the company's name, and hosts who cannot produce one lose
+          receipt in the company’s name, and hosts who cannot produce one lose
           the booking
         </LI>
       </UL>

@@ -45,7 +45,7 @@ export default function Article() {
       </Lede>
 
       <Callout title="Where these numbers come from">
-        Drawn from the developer's and agents' published materials as at mid
+        Drawn from the developer’s and agents’ published materials as at mid
         2026. We have not inspected the building. Nairobi off plan marketing is
         inconsistent and moves, so confirm everything in writing with the
         developer before paying anything.
@@ -74,7 +74,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Amenities:</strong> heated pool, gym, yoga studio, sauna,
-          landscaped garden, rooftop leisure space, residents' cafe and
+          landscaped garden, rooftop leisure space, residents’ cafe and
           restaurant, three high speed lifts per block, smart access, borehole
           and backup generator
         </LI>
@@ -104,7 +104,7 @@ export default function Article() {
 
       <P>
         The second is the handover date. Most agent material says December 2026.
-        The developer's own published material has been reported as saying June
+        The developer’s own published material has been reported as saying June
         2026 in one place and October 2026 in another. As always, the only date
         that means anything is the one in your agreement, with a consequence
         attached to missing it.
@@ -130,7 +130,7 @@ export default function Article() {
       </P>
 
       <P>
-        What that typically does, based on how Nairobi's tower completions have
+        What that typically does, based on how Nairobi’s tower completions have
         played out in the last five years:
       </P>
 
@@ -215,7 +215,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Confirm the short let position in writing.</strong> A building
-          with a residents' restaurant and a heated pool may or may not want
+          with a residents’ restaurant and a heated pool may or may not want
           nightly guests, and finding out afterwards is expensive
         </LI>
       </UL>

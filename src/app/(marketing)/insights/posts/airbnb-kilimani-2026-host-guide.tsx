@@ -40,7 +40,7 @@ export default function Article() {
 
       <P>
         A decade of apartment construction turned Kilimani from a leafy
-        residential suburb into Nairobi's densest rental district. For a short
+        residential suburb into Nairobi’s densest rental district. For a short
         let host that has three consequences.
       </P>
 

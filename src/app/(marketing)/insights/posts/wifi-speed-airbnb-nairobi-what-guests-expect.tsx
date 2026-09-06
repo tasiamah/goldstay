@@ -105,12 +105,12 @@ export default function Article() {
           bedroom. Move it to the middle of the apartment, in the open
         </LI>
         <LI>
-          <strong>The provider's basic router in a long apartment.</strong>
+          <strong>The provider’s basic router in a long apartment.</strong>
           Kenyan apartment walls are dense. A mesh unit or a second access point
           fixes what upgrading your package will not
         </LI>
         <LI>
-          <strong>The router on the unit's prepaid meter with no backup.</strong>
+          <strong>The router on the unit’s prepaid meter with no backup.</strong>
           Power goes, internet goes, and a guest on a call loses it. Put the
           router on a small UPS. It costs very little and it is the single best
           internet purchase you can make in Nairobi
@@ -181,7 +181,7 @@ export default function Article() {
 
       <UL>
         <LI>
-          Know your provider's support number and have it in the house manual
+          Know your provider’s support number and have it in the house manual
         </LI>
         <LI>
           Keep a mobile hotspot with data as a backup, and tell the guest it is

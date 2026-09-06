@@ -115,12 +115,12 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Getting around.</strong> Which ride hailing apps work, a
-          trusted driver's number, and rough costs to the airport, the city
+          trusted driver’s number, and rough costs to the airport, the city
           centre and the nearest mall. Guests have no idea what a fair price is
           and this saves them from a bad first experience
         </LI>
         <LI>
-          <strong>The building.</strong> The guard's number, how the visitor
+          <strong>The building.</strong> The guard’s number, how the visitor
           book works, where the bins go, whether the lift needs a fob, where to
           park
         </LI>
@@ -177,7 +177,7 @@ export default function Article() {
           Update it whenever a guest asks something it should have answered.
           That question is data
         </LI>
-        <LI>Check the phone numbers still work, particularly the guard's</LI>
+        <LI>Check the phone numbers still work, particularly the guard’s</LI>
         <LI>
           Keep one master version across your units and vary only the local
           section, so a change is made once

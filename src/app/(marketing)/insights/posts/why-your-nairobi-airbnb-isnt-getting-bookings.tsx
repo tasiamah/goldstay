@@ -95,7 +95,7 @@ export default function Article() {
         </LI>
         <LI>
           Name the suburb. A guest looking for Westlands will not find
-          "luxurious city retreat"
+          “luxurious city retreat”
         </LI>
         <LI>
           Say what the unit has that Nairobi guests specifically worry about:

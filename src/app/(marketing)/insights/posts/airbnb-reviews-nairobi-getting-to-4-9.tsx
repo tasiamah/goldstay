@@ -121,7 +121,7 @@ export default function Article() {
       <UL>
         <LI>
           <strong>Fix water first.</strong> Instant water heater, better shower
-          head, a pump if pressure is the issue, and understand the building's
+          head, a pump if pressure is the issue, and understand the building’s
           storage. Nothing else on this list matters as much
         </LI>
         <LI>
@@ -173,8 +173,8 @@ export default function Article() {
         <LI>
           Respond publicly to the bad review, once, briefly, without arguing.
           Future guests read your response and are judging your temperament, not
-          relitigating the stay. "You are right, the water heater was
-          undersized. We have replaced it." is close to ideal
+          relitigating the stay. “You are right, the water heater was
+          undersized. We have replaced it.” is close to ideal
         </LI>
         <LI>
           Then drive volume: shorter minimum stays and a keener rate for a few
@@ -184,7 +184,7 @@ export default function Article() {
           Ask every satisfied guest, once, politely, after checkout
         </LI>
         <LI>
-          Never argue in a public response and never mention a guest's
+          Never argue in a public response and never mention a guest’s
           nationality, gender or anything personal. It ends conversations with
           future bookers instantly
         </LI>

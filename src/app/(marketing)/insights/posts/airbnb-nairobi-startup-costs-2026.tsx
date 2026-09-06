@@ -55,7 +55,7 @@ export default function Article() {
       <H2 id="furnishing">Furniture and appliances</H2>
 
       <P>
-        The rule is simple and frequently ignored. Spend where the guest's body
+        The rule is simple and frequently ignored. Spend where the guest’s body
         touches the property, save where it does not. A guest remembers the
         mattress, the shower and the sofa. Nobody has ever reviewed a coffee
         table.

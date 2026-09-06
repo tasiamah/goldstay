@@ -257,7 +257,7 @@ export default function Article() {
 
       <P>
         Most of this list lives on our turnover checklist rather than in
-        anybody's memory: the meter, the hot water, the wifi, the consumables,
+        anybody’s memory: the meter, the hot water, the wifi, the consumables,
         the door code, the photographs at the end. The rest is response time,
         which is the part no checklist can cover and the part owners are
         actually buying.

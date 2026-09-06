@@ -75,7 +75,7 @@ export default function Article() {
       <H2 id="cleaning">The cleaning half</H2>
 
       <P>
-        Room by room, specific rather than general. "Clean the bathroom" is not
+        Room by room, specific rather than general. “Clean the bathroom” is not
         an instruction, it is a hope.
       </P>
 
@@ -87,7 +87,7 @@ export default function Article() {
         <LI>
           <strong>Kitchen:</strong> inside the fridge, inside the microwave, the
           hob and behind it, the kettle descaled, the bin washed rather than
-          just emptied, cupboards checked for the previous guest's food
+          just emptied, cupboards checked for the previous guest’s food
         </LI>
         <LI>
           <strong>Bedroom:</strong> fresh linen, under the bed, behind the

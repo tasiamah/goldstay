@@ -115,7 +115,7 @@ export default function Article() {
         </LI>
         <LI>
           Use minimum stays in peak months. December demand will accept three or
-          four nights, and that cuts your busiest month's cost base
+          four nights, and that cuts your busiest month’s cost base
         </LI>
       </UL>
 

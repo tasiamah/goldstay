@@ -249,7 +249,7 @@ export default function Article() {
           objects has more leverage than most hosts expect
         </LI>
         <LI>
-          If you are letting a unit you do not own, you need the owner's written
+          If you are letting a unit you do not own, you need the owner’s written
           permission to sublet on a short stay basis. Doing it quietly is how
           hosts lose everything they invested in furnishing
         </LI>

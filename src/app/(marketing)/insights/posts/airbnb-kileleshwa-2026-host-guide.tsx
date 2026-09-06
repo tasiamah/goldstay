@@ -102,7 +102,7 @@ export default function Article() {
         <LI>
           <strong>Service charge discipline.</strong> Buildings with weak
           collection let their services degrade, and that degradation lands in
-          your reviews rather than the committee's
+          your reviews rather than the committee’s
         </LI>
         <LI>
           <strong>Short let policy.</strong> Attitudes vary sharply between

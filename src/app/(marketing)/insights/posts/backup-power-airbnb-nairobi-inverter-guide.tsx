@@ -100,8 +100,8 @@ export default function Article() {
           has actually bought food
         </LI>
         <LI>
-          <strong>The water pump,</strong> if it is on your unit's supply rather
-          than the building's. Worth establishing, because no power meaning no
+          <strong>The water pump,</strong> if it is on your unit’s supply rather
+          than the building’s. Worth establishing, because no power meaning no
           water turns one problem into two
         </LI>
       </UL>
@@ -138,7 +138,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Solar plus battery,</strong> which makes sense over a long
-          horizon and for a property you intend to hold. Excellent in Nairobi's
+          horizon and for a property you intend to hold. Excellent in Nairobi’s
           climate. See{" "}
           <Link
             href="/insights/solar-and-backup-power-nairobi-rental-property"
@@ -188,8 +188,8 @@ export default function Article() {
           Say what to do if it lasts more than an hour, and give them a name
         </LI>
         <LI>
-          Do not oversell it in the listing. "Backup power for lights, sockets
-          and internet" is accurate and sufficient. "Uninterrupted power" is a
+          Do not oversell it in the listing. “Backup power for lights, sockets
+          and internet” is accurate and sufficient. “Uninterrupted power” is a
           promise you will break
         </LI>
       </UL>
@@ -220,7 +220,7 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        We establish what a building's backup actually covers before taking on a
+        We establish what a building’s backup actually covers before taking on a
         short let, put the router on a UPS as standard, and recommend a modest
         inverter where the building leaves apartments dark. We describe backup
         accurately in listings rather than generously, because an

@@ -89,7 +89,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Behind and under the sofa cushions.</strong> Crumbs, hair
-          clips, coins, other people's belongings
+          clips, coins, other people’s belongings
         </LI>
         <LI>
           <strong>The bin.</strong> Empty is not the same as clean. Wash it and
@@ -150,9 +150,9 @@ export default function Article() {
           be done, including the eleven items above explicitly
         </LI>
         <LI>
-          <strong>Make it specific.</strong> "Clean bathroom" is not an
-          instruction. "Check shower drain for hair, descale taps and screen,
-          wipe behind toilet base" is
+          <strong>Make it specific.</strong> “Clean bathroom” is not an
+          instruction. “Check shower drain for hair, descale taps and screen,
+          wipe behind toilet base” is
         </LI>
         <LI>
           <strong>Require photographs.</strong> Four after every clean: bed,

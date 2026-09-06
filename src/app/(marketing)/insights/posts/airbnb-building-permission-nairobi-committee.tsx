@@ -96,7 +96,7 @@ export default function Article() {
       <UL>
         <LI>
           A unit owner in a sectional properties scheme owns their unit and
-          shares the common property, subject to the scheme's by laws
+          shares the common property, subject to the scheme’s by laws
         </LI>
         <LI>
           By laws can restrict use, and a validly adopted restriction on short
@@ -228,7 +228,7 @@ export default function Article() {
         <LI>Ask for the by laws and the last two years of committee minutes</LI>
         <LI>
           Ask directly whether any unit currently operates as a short let and
-          what the building's position is
+          what the building’s position is
         </LI>
         <LI>
           Ask the developer, in writing, if it is a new building. Sales agents
@@ -243,7 +243,7 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        We confirm the building's position before taking on a short let, and we
+        We confirm the building’s position before taking on a short let, and we
         run a guest register and a minimum stay as standard because they are
         what keep committees comfortable. Where a building says no, we tell the
         owner to let it long term rather than operating around the objection.

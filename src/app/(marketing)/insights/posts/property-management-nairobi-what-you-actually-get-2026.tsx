@@ -193,8 +193,8 @@ export default function Article() {
       <H2 id="questions">The questions that actually separate managers</H2>
 
       <P>
-        Everyone answers yes to "do you vet tenants" and "do you send
-        statements". These are harder to fake.
+        Everyone answers yes to “do you vet tenants” and “do you send
+        statements”. These are harder to fake.
       </P>
 
       <OL>

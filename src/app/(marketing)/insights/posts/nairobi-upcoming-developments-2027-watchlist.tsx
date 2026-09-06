@@ -46,7 +46,7 @@ export default function Article() {
       </Lede>
 
       <Callout title="On the information below">
-        Project details come from developers' and agents' published materials as
+        Project details come from developers’ and agents’ published materials as
         at mid 2026, not from inspections by us. Nairobi off plan marketing is
         inconsistent between sources and changes without notice. Treat this as a
         starting point for your own diligence, not as verified fact, and get
@@ -66,7 +66,7 @@ export default function Article() {
       </P>
 
       <P>
-        What to test: the developer's delivered record on this format, the
+        What to test: the developer’s delivered record on this format, the
         service charge on an amenity heavy 20 storey building, and the quoted
         yield range, which we work through in{" "}
         <Link
@@ -216,7 +216,7 @@ export default function Article() {
         <LI>
           <strong>Does the yield claim survive rebuilding?</strong> Take the
           price, apply a realistic unfurnished rent for that format in that
-          suburb, and see what is left. If the developer's number needs a
+          suburb, and see what is left. If the developer’s number needs a
           furnished short let at high occupancy, it is not a rental yield
         </LI>
         <LI>
@@ -229,7 +229,7 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        For sourcing clients we run title, approvals and the developer's
+        For sourcing clients we run title, approvals and the developer’s
         delivered record, rebuild the yield from achieved rents in the same
         corridor, and visit the site. We turn down more projects than we
         recommend, which is the point.

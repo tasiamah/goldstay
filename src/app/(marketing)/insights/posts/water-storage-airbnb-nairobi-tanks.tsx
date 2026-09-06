@@ -29,7 +29,7 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Nairobi's mains supply is rationed in much of the city, which everybody
+        Nairobi’s mains supply is rationed in much of the city, which everybody
         who lives here knows and no visiting guest does. Buildings bridge the
         gap with storage tanks and boreholes, and the quality of that
         arrangement varies enormously. It is the most important thing to
@@ -39,7 +39,7 @@ export default function Article() {
       <H2 id="questions">The questions that reveal the truth</H2>
 
       <P>
-        "Is there water?" gets a yes from every agent in Nairobi. These do not.
+        “Is there water?” gets a yes from every agent in Nairobi. These do not.
       </P>
 
       <OL>
@@ -69,7 +69,7 @@ export default function Article() {
           residue
         </LI>
         <LI>
-          <strong>Is the pump on the building supply or my unit's meter?</strong>
+          <strong>Is the pump on the building supply or my unit’s meter?</strong>
           If it is on your meter, an empty prepaid meter means no water. See{" "}
           <Link
             href="/insights/prepaid-electricity-tokens-airbnb-nairobi"
@@ -170,7 +170,7 @@ export default function Article() {
         </LI>
         <LI>
           Do explain, briefly and without alarm, in the house manual how the
-          building's supply works, so an interruption is context rather than a
+          building’s supply works, so an interruption is context rather than a
           crisis
         </LI>
         <LI>

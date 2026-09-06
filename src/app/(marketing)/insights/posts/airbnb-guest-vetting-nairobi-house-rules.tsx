@@ -50,7 +50,7 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Unauthorised occupancy.</strong> Two booked, eight arrive.
-          Wear, safety and a breach of your building's rules
+          Wear, safety and a breach of your building’s rules
         </LI>
         <LI>
           <strong>Subletting your booking.</strong> Rare and serious. Somebody
@@ -84,7 +84,7 @@ export default function Article() {
           this is the strongest single signal
         </LI>
         <LI>
-          <strong>Guest count well below the unit's capacity,</strong> paired
+          <strong>Guest count well below the unit’s capacity,</strong> paired
           with questions about how many people are allowed
         </LI>
         <LI>
@@ -110,8 +110,8 @@ export default function Article() {
       </OL>
 
       <Callout title="The one question that resolves most of it">
-        Ask warmly and directly: "Happy to have you. Can I just check who is
-        staying and what brings you to Nairobi?" Genuine guests answer in a
+        Ask warmly and directly: “Happy to have you. Can I just check who is
+        staying and what brings you to Nairobi?” Genuine guests answer in a
         sentence and think nothing of it. Party bookers become evasive, annoyed
         or stop replying. The response tells you more than any filter setting,
         and it costs you nothing with the guests you want.
@@ -143,14 +143,14 @@ export default function Article() {
           written
         </LI>
         <LI>
-          <strong>Note the building's rules explicitly.</strong> Guests respect
+          <strong>Note the building’s rules explicitly.</strong> Guests respect
           a compound with a manned gate and quiet hours when told in advance
         </LI>
       </UL>
 
       <Pullquote>
         A three night minimum over a public holiday weekend does more to protect
-        your apartment than any amount of instinct about a guest's messages.
+        your apartment than any amount of instinct about a guest’s messages.
       </Pullquote>
 
       <H2 id="rules">House rules that actually work</H2>
@@ -166,12 +166,12 @@ export default function Article() {
           them, including the ones that matter
         </LI>
         <LI>
-          <strong>Give a reason.</strong> "Quiet after 10pm, the building has
-          families and a manned gate" works. "No noise" does not
+          <strong>Give a reason.</strong> “Quiet after 10pm, the building has
+          families and a manned gate” works. “No noise” does not
         </LI>
         <LI>
-          <strong>Be specific and checkable.</strong> "Maximum four guests" beats
-          "no large groups"
+          <strong>Be specific and checkable.</strong> “Maximum four guests” beats
+          “no large groups”
         </LI>
         <LI>
           <strong>Cover the things that actually cost you money:</strong>
@@ -197,9 +197,9 @@ export default function Article() {
       </P>
 
       <P>
-        A line like "Thanks for the enquiry. We have a three night minimum for
+        A line like “Thanks for the enquiry. We have a three night minimum for
         this weekend and the building does not permit gatherings, so it may not
-        be the right fit" declines clearly, cites a rule rather than a
+        be the right fit” declines clearly, cites a rule rather than a
         judgement, and leaves no room for a complaint. Never accuse a guest of
         planning a party. Cite the rule and let the rule do the work.
       </P>

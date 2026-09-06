@@ -47,7 +47,7 @@ export default function Article() {
       <H2 id="regimes">Why short lets sit in a different box</H2>
 
       <P>
-        Kenya's simplified residential rental income regime exists for
+        Kenya’s simplified residential rental income regime exists for
         landlords letting residential property to tenants. Short stay
         accommodation, offered to the public on a nightly basis, with cleaning,
         linen, consumables and guest services attached, generally looks like a
@@ -139,7 +139,7 @@ export default function Article() {
 
       <P>
         This matters more than it sounds. Registering changes your effective
-        pricing, because you either absorb the VAT or add it to the guest's
+        pricing, because you either absorb the VAT or add it to the guest’s
         bill, and your platform pricing has to accommodate that. Hosts who
         expand from one unit to five and never revisit this can find themselves
         past the threshold without having registered.

@@ -65,7 +65,7 @@ export default function Article() {
       <H2 id="describe">Describe it precisely</H2>
 
       <P>
-        "Parking available" tells a guest nothing and they will assume the
+        “Parking available” tells a guest nothing and they will assume the
         worst. The specifics are what convert.
       </P>
 
@@ -131,7 +131,7 @@ export default function Article() {
           parts of Westlands and Kilimani and it appeals to a different guest
         </LI>
         <LI>
-          Keep a reliable driver's number in the house manual. For many guests
+          Keep a reliable driver’s number in the house manual. For many guests
           this is a better answer than parking anyway
         </LI>
       </UL>
@@ -153,7 +153,7 @@ export default function Article() {
           how directions actually work here
         </LI>
         <LI>
-          <strong>The guard's number,</strong> so an arriving guest can call
+          <strong>The guard’s number,</strong> so an arriving guest can call
           ahead from the car
         </LI>
         <LI>
