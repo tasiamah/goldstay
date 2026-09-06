@@ -13,17 +13,26 @@
 // email is a nudge towards it, and the client can always reach it
 // from their portal. Callers therefore ignore the result.
 //
+// This module also carries the inbound half: the notification to our
+// own inbox when a client accepts. See notifyTeamOfAcceptance below.
+//
 // Env vars (all optional, degrades gracefully):
 //   RESEND_API_KEY      → real send; absent means log-only
 //   RESEND_FROM_CLIENTS → from address, falling back to
 //                         RESEND_FROM_OWNERS (its pre-rename name)
+//   RESEND_FROM_OPS     → from address on the internal notification
+//   AGREEMENTS_INBOX    → where acceptances land, falling back to
+//                         CONTACT_INBOX
 //   PUBLIC_SITE_URL     → base for links
 
 import { prisma } from "@/lib/db";
 import { mintCallbackLink } from "@/lib/supabase/magic-link";
 import { logCommunication } from "@/lib/comms";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { SIGNING_CAPACITY_LABEL } from "@/lib/signing-capacity";
+import { AGREEMENT_TEMPLATE_TITLE } from "./template";
 import type { CurrentActor } from "@/lib/auth";
+import type { SigningCapacity } from "@prisma/client";
 
 export type AgreementIssuedInput = {
   agreementId: string;
@@ -274,4 +283,183 @@ function escapeHtml(s: string): string {
 
 function escapeAttr(s: string): string {
   return escapeHtml(s);
+}
+
+// ---------------------------------------------------------------------
+// "Agreement accepted" — the notification to us, not to the client.
+// ---------------------------------------------------------------------
+
+// Acceptance is the moment a property becomes lettable: it is the gate
+// on going live, and until this existed nothing pushed that fact at
+// anyone. It was discoverable only by opening the property in admin,
+// so a client could accept on a Friday night and the listing would sit
+// dark until someone happened to look.
+//
+// Deliberately not mirrored into CommunicationLog. That table is the
+// record of what we have said to a client, and this is a message to
+// ourselves — filing it there would make the client's Communications
+// tab claim we emailed them when we didn't.
+//
+// Text-only. It goes to our own inbox, so branded HTML buys nothing
+// and every property name in it is operator free text that would
+// otherwise need escaping.
+
+const DEFAULT_INBOX = "hello@goldstay.co.ke";
+
+export type AgreementAcceptedInput = {
+  agreementId: string;
+  reference: string | null;
+  propertyId: string;
+  propertyLabel: string;
+  propertyCity: string;
+  clientName: string;
+  clientEmail: string;
+  // As executed: for a company this is "Acme Ltd (accepted by Asha
+  // Kimani)", which is not the same as clientName.
+  signedByName: string;
+  signedAt: Date;
+  signingCapacity: SigningCapacity;
+  templateTitle: string;
+  templateVersion: string;
+  acceptanceReference: string | null;
+  signedByIp: string | null;
+};
+
+// Called by signAgreementAction once the row is committed. Takes an id
+// and reads every fact back off the persisted record rather than
+// accepting them as arguments, so the email reports what was actually
+// stored and the caller's diff stays to one line.
+//
+// Swallows everything. A failed notification must never surface as a
+// failed acceptance: the client has accepted, that is durable, and the
+// worst case is we find out by looking at admin like we used to.
+export async function notifyTeamOfAcceptance(input: {
+  agreementId: string;
+}): Promise<void> {
+  try {
+    const agreement = await prisma.managementAgreement.findUnique({
+      where: { id: input.agreementId },
+      select: {
+        reference: true,
+        propertyId: true,
+        signedByName: true,
+        signedAt: true,
+        signedByIp: true,
+        signingCapacity: true,
+        template: true,
+        templateVersion: true,
+        acceptanceReference: true,
+        property: {
+          select: {
+            name: true,
+            unitNumber: true,
+            city: true,
+            client: { select: { fullName: true, email: true } },
+          },
+        },
+      },
+    });
+    // signedAt null means this ran against a row that isn't accepted,
+    // which would produce a notification about nothing.
+    if (!agreement?.signedAt) return;
+
+    await sendAgreementAcceptedEmail({
+      agreementId: input.agreementId,
+      reference: agreement.reference,
+      propertyId: agreement.propertyId,
+      propertyLabel: formatPropertyDisplayName(
+        agreement.property.name,
+        agreement.property.unitNumber,
+      ),
+      propertyCity: agreement.property.city,
+      clientName: agreement.property.client.fullName,
+      clientEmail: agreement.property.client.email,
+      signedByName:
+        agreement.signedByName ?? agreement.property.client.fullName,
+      signedAt: agreement.signedAt,
+      signingCapacity: agreement.signingCapacity,
+      templateTitle: AGREEMENT_TEMPLATE_TITLE[agreement.template],
+      templateVersion: agreement.templateVersion,
+      acceptanceReference: agreement.acceptanceReference,
+      signedByIp: agreement.signedByIp,
+    });
+  } catch (err) {
+    console.error("[agreement-notify] acceptance notification failed", err);
+  }
+}
+
+export async function sendAgreementAcceptedEmail(
+  input: AgreementAcceptedInput,
+): Promise<{ ok: boolean; delivered: boolean; reason?: string }> {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.RESEND_FROM_OPS || DEFAULT_FROM;
+  const siteUrl = process.env.PUBLIC_SITE_URL || DEFAULT_SITE;
+  // Hard-coded default rather than SITE.email: that constant is the
+  // address printed on marketing pages and is documented as moving to
+  // goldstay.com once its MX is live, which would silently redirect
+  // our own operational alerts to a mailbox that may not exist.
+  const inbox =
+    process.env.AGREEMENTS_INBOX || process.env.CONTACT_INBOX || DEFAULT_INBOX;
+
+  const { subject, text } = renderAgreementAcceptedEmail({
+    ...input,
+    adminLink: `${siteUrl}/admin/properties/${input.propertyId}`,
+  });
+
+  if (!apiKey) {
+    console.log(`[agreement-notify] would notify ${inbox}\n${text}`);
+    return { ok: true, delivered: false, reason: "logged-only" };
+  }
+
+  try {
+    const { Resend } = await import("resend");
+    const resend = new Resend(apiKey);
+    await resend.emails.send({
+      from,
+      to: [inbox],
+      // Hitting reply reaches the client who just accepted, which is
+      // who you want when the next step is "welcome aboard".
+      replyTo: input.clientEmail,
+      subject,
+      text,
+    });
+    return { ok: true, delivered: true };
+  } catch (err) {
+    console.error("[agreement-notify] acceptance send failed", err);
+    return { ok: false, delivered: false, reason: "send-failed" };
+  }
+}
+
+// Pure, so the body can be asserted on without a Resend key.
+export function renderAgreementAcceptedEmail(
+  input: AgreementAcceptedInput & { adminLink: string },
+): { subject: string; text: string } {
+  const when = input.signedAt.toLocaleString("en-GB", {
+    dateStyle: "full",
+    timeStyle: "short",
+    timeZone: "Africa/Nairobi",
+  });
+
+  return {
+    subject: `Agreement accepted · ${input.propertyLabel} · ${input.clientName}`,
+    text: [
+      `${input.clientName} has accepted the management agreement for ${input.propertyLabel}, ${input.propertyCity}.`,
+      "",
+      "This property is no longer blocked from going live. Mark it as",
+      "live in admin when you're ready for it to start earning:",
+      input.adminLink,
+      "",
+      "For the record",
+      `  Contract: ${input.templateTitle} (${input.templateVersion})`,
+      `  Agreement reference: ${input.reference ?? "none"}`,
+      `  Accepted as: ${input.signedByName}`,
+      `  Capacity: ${SIGNING_CAPACITY_LABEL[input.signingCapacity]}`,
+      `  When: ${when} (EAT)`,
+      `  Acceptance receipt: ${input.acceptanceReference ?? "none"}`,
+      `  IP: ${input.signedByIp ?? "not recorded"}`,
+      `  Client: ${input.clientName} <${input.clientEmail}>`,
+      "",
+      "Reply to this email to reach the client directly.",
+    ].join("\n"),
+  };
 }

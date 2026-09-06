@@ -7,6 +7,7 @@ import { prisma } from "@/lib/db";
 import { requireClient } from "@/lib/auth";
 import { readImpersonationCookie } from "@/lib/admin/impersonation";
 import { newAcceptanceReference } from "@/lib/agreements/reference";
+import { notifyTeamOfAcceptance } from "@/lib/agreements/notify";
 import { recordAudit } from "@/lib/audit";
 
 export type SignAgreementResult =
@@ -148,6 +149,15 @@ export async function signAgreementAction(
   revalidatePath(`/client/properties/${agreement.propertyId}`);
   revalidatePath(`/client/agreements/${agreementId}`);
   revalidatePath(`/admin/properties/${agreement.propertyId}`);
+
+  // Tell ops, because acceptance is what unblocks the property from
+  // going live and nothing else pushes that fact at anyone — it was
+  // discoverable only by opening the property in admin. Awaited rather
+  // than left floating: on Next 14 there is no after(), and an
+  // unawaited promise in a server action can be frozen before it
+  // sends. It swallows its own failures, so the acceptance the client
+  // just made cannot be undone by a mail problem.
+  await notifyTeamOfAcceptance({ agreementId });
 
   // PDF render runs out-of-band so the user gets an instant ack;
   // see /client/agreements/[id]/pdf/route.ts which materialises the

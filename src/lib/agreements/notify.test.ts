@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { renderAgreementEmail } from "./notify";
+import { renderAgreementAcceptedEmail, renderAgreementEmail } from "./notify";
 
 // Property names are operator free text and land in an HTML email
 // unescaped unless we say otherwise. The plain-text half has the
@@ -86,5 +86,90 @@ describe("renderAgreementEmail", () => {
     const { text, html } = renderAgreementEmail(base);
     expect(text).toMatch(/stays off the market until/i);
     expect(html).toMatch(/stays off the market until/i);
+  });
+});
+
+// The inbound notification. This one goes to our own inbox, so the
+// requirement is different: it has to carry enough of the acceptance
+// record to act on and to file, and it has to make the next step
+// obvious, because acceptance is the gate on the property going live.
+const accepted = {
+  agreementId: "agr_1",
+  reference: "GS-2026-014",
+  propertyId: "prop_1",
+  propertyLabel: "Riverside Apartments 4B",
+  propertyCity: "Nairobi",
+  clientName: "Asha Wanjiru",
+  clientEmail: "asha@example.com",
+  signedByName: "Asha Wanjiru",
+  signedAt: new Date("2026-09-06T08:29:00Z"),
+  signingCapacity: "REGISTERED_OWNER" as const,
+  templateTitle: "Long-term property management agreement",
+  templateVersion: "long-let-ke-v1",
+  acceptanceReference: "GS-A-7F3K2Q",
+  signedByIp: "41.90.64.12",
+  adminLink: "https://goldstay.co.ke/admin/properties/prop_1",
+};
+
+describe("renderAgreementAcceptedEmail", () => {
+  it("identifies the property and client in the subject", () => {
+    // Several of these can land in a day, and the inbox is shared, so
+    // the subject has to be triageable without opening it.
+    expect(renderAgreementAcceptedEmail(accepted).subject).toBe(
+      "Agreement accepted · Riverside Apartments 4B · Asha Wanjiru",
+    );
+  });
+
+  it("points at the admin property page and names the next step", () => {
+    const { text } = renderAgreementAcceptedEmail(accepted);
+    expect(text).toContain(accepted.adminLink);
+    expect(text).toMatch(/no longer blocked from going live/i);
+  });
+
+  it("carries the full acceptance record", () => {
+    // These are the fields a dispute turns on. If the email is the
+    // only thing someone kept, it should still answer "who accepted
+    // what, when, and under which words".
+    const { text } = renderAgreementAcceptedEmail(accepted);
+    expect(text).toContain("long-let-ke-v1");
+    expect(text).toContain("Long-term property management agreement");
+    expect(text).toContain("GS-2026-014");
+    expect(text).toContain("GS-A-7F3K2Q");
+    expect(text).toContain("41.90.64.12");
+    expect(text).toContain("asha@example.com");
+    expect(text).toContain("Registered owner");
+  });
+
+  it("reports the time in Nairobi, not UTC", () => {
+    // 08:29 UTC is 11:29 in Nairobi. An ops team in EAT reading a UTC
+    // timestamp will misjudge how long a property has been sitting.
+    const { text } = renderAgreementAcceptedEmail(accepted);
+    expect(text).toContain("11:29");
+    expect(text).toContain("EAT");
+  });
+
+  it("distinguishes the executing name from the client's name", () => {
+    // A company client accepts as "Acme Ltd (accepted by Asha)", and
+    // which human clicked is the part worth knowing.
+    const { text } = renderAgreementAcceptedEmail({
+      ...accepted,
+      clientName: "Acme Holdings Ltd",
+      signedByName: "Acme Holdings Ltd (accepted by Asha Wanjiru)",
+    });
+    expect(text).toContain("Accepted as: Acme Holdings Ltd (accepted by Asha");
+  });
+
+  it("says so rather than printing null for a record we don't have", () => {
+    // Agreements predating references, and acceptances where the proxy
+    // gave us no forwarded IP.
+    const { text } = renderAgreementAcceptedEmail({
+      ...accepted,
+      reference: null,
+      acceptanceReference: null,
+      signedByIp: null,
+    });
+    expect(text).not.toContain("null");
+    expect(text).toContain("Agreement reference: none");
+    expect(text).toContain("IP: not recorded");
   });
 });
