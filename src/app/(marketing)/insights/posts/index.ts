@@ -1064,6 +1064,21 @@ import LinenAndTowelsAirbnbNairobi, {
 import MattressAndSleepQualityAirbnbNairobi, {
   meta as mattressAndSleepQualityAirbnbNairobiMeta,
 } from "./mattress-and-sleep-quality-airbnb-nairobi";
+import SelfCheckInSmartLocksAirbnbNairobi, {
+  meta as selfCheckInSmartLocksAirbnbNairobiMeta,
+} from "./self-check-in-smart-locks-airbnb-nairobi";
+import WelcomeBasketAirbnbNairobiWhatWorks, {
+  meta as welcomeBasketAirbnbNairobiWhatWorksMeta,
+} from "./welcome-basket-airbnb-nairobi-what-works";
+import ParkingAndArrivalAirbnbNairobi, {
+  meta as parkingAndArrivalAirbnbNairobiMeta,
+} from "./parking-and-arrival-airbnb-nairobi";
+import NoiseAndBlackoutCurtainsAirbnbNairobi, {
+  meta as noiseAndBlackoutCurtainsAirbnbNairobiMeta,
+} from "./noise-and-blackout-curtains-airbnb-nairobi";
+import MosquitoesAndPestsAirbnbNairobi, {
+  meta as mosquitoesAndPestsAirbnbNairobiMeta,
+} from "./mosquitoes-and-pests-airbnb-nairobi";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1876,6 +1891,26 @@ export const posts: readonly Post[] = [
   {
     meta: mattressAndSleepQualityAirbnbNairobiMeta,
     Component: MattressAndSleepQualityAirbnbNairobi,
+  },
+  {
+    meta: selfCheckInSmartLocksAirbnbNairobiMeta,
+    Component: SelfCheckInSmartLocksAirbnbNairobi,
+  },
+  {
+    meta: welcomeBasketAirbnbNairobiWhatWorksMeta,
+    Component: WelcomeBasketAirbnbNairobiWhatWorks,
+  },
+  {
+    meta: parkingAndArrivalAirbnbNairobiMeta,
+    Component: ParkingAndArrivalAirbnbNairobi,
+  },
+  {
+    meta: noiseAndBlackoutCurtainsAirbnbNairobiMeta,
+    Component: NoiseAndBlackoutCurtainsAirbnbNairobi,
+  },
+  {
+    meta: mosquitoesAndPestsAirbnbNairobiMeta,
+    Component: MosquitoesAndPestsAirbnbNairobi,
   },
 ];
 
