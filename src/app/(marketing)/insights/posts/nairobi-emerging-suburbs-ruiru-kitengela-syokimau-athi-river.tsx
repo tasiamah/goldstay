@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "nairobi-emerging-suburbs-ruiru-kitengela-syokimau-athi-river",
   title:
     "Nairobi’s emerging suburbs in 2026: Ruiru, Kitengela, Syokimau and Athi River",
+  metaTitle: "Nairobi’s emerging suburbs 2026: Ruiru to Athi River",
   description:
     "Outside the core Nairobi suburbs, four growth corridors are absorbing most of the city’s new mid-market families. Ruiru on the north, Kitengela and Athi River on the south east, and Syokimau on the airport corridor. Honest 2026 prices, rental yields, tenant base and which one fits which investor.",
+  metaDescription:
+    "Outside the core Nairobi suburbs, four growth corridors are absorbing most of the city’s new mid-market families.",
   publishedAt: "2025-05-27",
   readingMinutes: 9,
   author: authors.research,

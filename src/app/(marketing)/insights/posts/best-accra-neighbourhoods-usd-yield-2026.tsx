@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Best Accra neighbourhoods for USD yield in 2026",
   description:
     "Ranking Accra neighbourhoods on the metric that actually matters for a diaspora landlord: USD-denominated net yield after tax and management. Which pockets stack up, which do not, and why the answer is not what most agents will tell you.",
+  metaDescription:
+    "Ranking Accra neighbourhoods on the metric that actually matters for a diaspora landlord: USD-denominated net yield after tax and management.",
   publishedAt: "2026-07-09",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

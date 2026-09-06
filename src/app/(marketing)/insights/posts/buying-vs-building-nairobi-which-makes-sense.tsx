@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "buying-vs-building-nairobi-which-makes-sense",
   title:
     "Buying versus building in Nairobi: which actually makes sense for a diaspora investor",
+  metaTitle: "Buying vs building in Nairobi: which makes sense",
   description:
     "Self-build looks cheaper per square metre than buying ready, and on a clean spreadsheet it often is. The question is whether the spreadsheet survives contact with reality. Here is the honest comparison for diaspora investors weighing land plus build against simply buying a finished apartment or house in Nairobi.",
+  metaDescription:
+    "Self-build looks cheaper per square metre than buying ready, and on a clean spreadsheet it often is.",
   publishedAt: "2025-12-12",
   readingMinutes: 9,
   author: authors.editors,

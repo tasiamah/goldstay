@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Mi Vida Homes review 2026: the honest buyer guide",
   description:
     "Mi Vida Homes is one of the most active mid-market developers in Nairobi, with a focus on apartments along the Thika Road corridor and Riruta. Here is the honest 2026 buyer review of Mi Vida Homes.",
+  metaDescription:
+    "Mi Vida Homes is one of the most active mid-market developers in Nairobi, with a focus on apartments along the Thika Road corridor and Riruta.",
   publishedAt: "2026-02-17",
   readingMinutes: 5,
   author: authors.research,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "how-to-send-money-to-kenya-cheaply-2026",
   title:
     "How to send money to Kenya cheaply in 2026: Wise, M-Pesa, banks compared",
+  metaTitle: "Send money to Kenya cheaply in 2026: Wise vs banks",
   description:
     "Diaspora Kenyans send over USD 5 billion home every year. Most of it pays more in fees than it should. Here is the honest 2026 comparison of the cheapest and fastest ways to send money to Kenya, including Wise, Remitly, WorldRemit, M-Pesa Global, and the banks. With when to use each.",
+  metaDescription:
+    "Diaspora Kenyans send over USD 5 billion home every year. Most of it pays more in fees than it should.",
   publishedAt: "2024-10-31",
   readingMinutes: 7,
   author: authors.editors,

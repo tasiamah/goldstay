@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "why-most-nairobi-landlords-dont-make-money",
   title:
     "Why most Nairobi landlords don’t actually make money (the honest maths)",
+  metaTitle: "Why most Nairobi landlords don’t make money",
   description:
     "Many Nairobi landlords think they are profitable but are not, once vacancy, management, tax, maintenance, financing and opportunity cost are honestly counted. Here is the honest 2026 explanation of where landlords actually lose money and what separates the profitable ones.",
+  metaDescription:
+    "Many Nairobi landlords think they are profitable but are not, once vacancy, management, tax, maintenance and financing are honestly counted.",
   publishedAt: "2026-02-28",
   readingMinutes: 5,
   author: authors.research,

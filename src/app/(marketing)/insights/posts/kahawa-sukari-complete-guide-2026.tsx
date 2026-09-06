@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kahawa Sukari: the complete 2026 guide",
   description:
     "Kahawa Sukari sits on Thika Road in the northern Nairobi corridor, a planned residential estate that has steadily evolved into one of the most stable mid-market family suburbs in the city. Here is the honest 2026 guide on Kahawa Sukari property and how the market works.",
+  metaDescription:
+    "Kahawa Sukari on Thika Road: a planned estate that has become one of Nairobi’s most stable mid-market family suburbs. Prices, rents and who buys.",
   publishedAt: "2026-04-03",
   readingMinutes: 5,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The hidden costs no Nairobi developer tells you about",
   description:
     "Nairobi developers market the headline price. The honest cost of an apartment purchase is materially higher once stamp duty, legal, valuation, sectional title, service charge, AOA setup, internet, parking and a dozen other line items are added.",
+  metaDescription:
+    "Stamp duty, legal, valuation, sectional title, service charge, AOA setup and a dozen more line items sit above a Nairobi developer’s headline price.",
   publishedAt: "2026-02-15",
   readingMinutes: 5,
   author: authors.editors,

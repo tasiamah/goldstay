@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "buying-distressed-foreclosed-property-kenya",
   title:
     "Buying distressed and foreclosed property in Kenya: the 2026 investor playbook",
+  metaTitle: "Buying distressed and foreclosed property in Kenya",
   description:
     "Distressed property is one of the genuine value pockets of the Kenyan market. The discount is real, and so is the complexity. Here is the honest 2026 playbook on how distressed and foreclosed property actually works in Kenya, where to find it, the realistic margins and the way disciplined investors win.",
+  metaDescription:
+    "Distressed property is one of the genuine value pockets of the Kenyan market. The discount is real, and so is the complexity.",
   publishedAt: "2024-08-12",
   readingMinutes: 7,
   author: authors.editors,

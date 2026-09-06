@@ -17,6 +17,8 @@ export const meta: PostMeta = {
   title: "Nairobi developments to watch into 2027, and how to judge them",
   description:
     "The Nairobi projects worth tracking through 2027, from the Riverside duplex towers to the Kilimani high rises, plus the seven checks that tell you whether an upcoming development is worth your deposit.",
+  metaDescription:
+    "The Nairobi projects worth tracking into 2027, from Riverside duplex towers to Kilimani high rises, and seven checks before you pay a deposit.",
   publishedAt: "2026-08-07",
   readingMinutes: 9,
   author: authors.research,

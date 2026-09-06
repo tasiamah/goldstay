@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Furnished or unfurnished? What actually rents better in Nairobi",
   description:
     "Specific rent premiums for furnished apartments by neighbourhood, the four-year break-even on furnishing, the right way to spec a furnished unit on a budget, and when to leave a property unfurnished even if the headline rent is lower.",
+  metaDescription:
+    "Furnished rent premiums by Nairobi neighbourhood, the four-year break-even on furnishing, and when to leave a property unfurnished anyway.",
   publishedAt: "2025-01-06",
   readingMinutes: 7,
   author: authors.poonam,

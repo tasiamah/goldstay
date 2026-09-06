@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Airbnb arbitrage in Nairobi: the honest 2026 picture",
   description:
     "Airbnb arbitrage, where the operator leases a property long-term and re-lets it short-term at a margin, is increasingly common in Nairobi. Here is the honest 2026 guide on whether it works, the numbers, the legal questions and the realistic operator picture.",
+  metaDescription:
+    "Airbnb arbitrage, where the operator leases a property long-term and re-lets it short-term at a margin, is increasingly common in Nairobi.",
   publishedAt: "2025-12-04",
   readingMinutes: 5,
   author: authors.research,

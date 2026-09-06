@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "The first-time home buyer in Kenya: a complete 2026 guide",
   description:
     "Buying your first home in Kenya is one of the biggest decisions you will make. Here is the practical 2026 guide that walks through saving the deposit, choosing the suburb, picking the right unit, financing it, the legal process, the costs and the mistakes first time buyers make most often.",
+  metaDescription:
+    "Buying your first home in Kenya is one of the biggest decisions you will make.",
   publishedAt: "2024-10-13",
   readingMinutes: 9,
   author: authors.editors,

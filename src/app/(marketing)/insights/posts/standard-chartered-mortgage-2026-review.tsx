@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Standard Chartered Kenya mortgage 2026: the honest review",
   description:
     "Standard Chartered Kenya is one of the most established premium residential mortgage lenders in the country, with a strong international banking platform and a credible diaspora process. Here is the honest 2026 review.",
+  metaDescription:
+    "Standard Chartered Kenya reviewed as a premium residential mortgage lender in 2026: rates, terms and the diaspora application process.",
   publishedAt: "2026-03-10",
   readingMinutes: 5,
   author: authors.legal,

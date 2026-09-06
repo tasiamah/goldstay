@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "What it costs to launch a Nairobi Airbnb in 2026",
   description:
     "The full startup cost of a Nairobi short let: furnishing, linen, kitchen, photography, permits, deposits and the working capital nobody budgets for. Line by line, with the items hosts underestimate.",
+  metaDescription:
+    "The full startup cost of a Nairobi short let: furnishing, linen, kitchen, photography, permits, deposits and the working capital nobody budgets for.",
   publishedAt: "2026-07-30",
   readingMinutes: 8,
   author: authors.research,

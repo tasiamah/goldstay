@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "How to choose an Airbnb management company in Nairobi",
   description:
     "What short let management in Nairobi should cost, what it should include, and the questions that separate a real operator from someone who will list your unit and hope. Written by people who compete for this work.",
+  metaDescription:
+    "What short-let management in Nairobi should cost, what it should include, and the questions that separate a real operator from someone who will just list.",
   publishedAt: "2026-08-01",
   readingMinutes: 9,
   author: authors.editors,

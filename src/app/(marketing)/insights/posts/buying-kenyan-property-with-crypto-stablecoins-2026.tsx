@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "buying-kenyan-property-with-crypto-stablecoins-2026",
   title:
     "Buying Kenyan property with crypto and stablecoins in 2026: what actually works",
+  metaTitle: "Buying Kenyan property with crypto or stablecoins, 2026",
   description:
     "USDC, USDT and bitcoin are increasingly proposed by sellers and developers in Kenya. The legal status, the tax treatment, the practical settlement mechanics and the risks are all clearer in 2026 than they were two years ago. Here is the honest picture for a diaspora buyer considering a crypto-funded purchase.",
+  metaDescription:
+    "USDC, USDT and bitcoin are increasingly proposed by sellers and developers in Kenya.",
   publishedAt: "2025-07-13",
   readingMinutes: 8,
   author: authors.editors,

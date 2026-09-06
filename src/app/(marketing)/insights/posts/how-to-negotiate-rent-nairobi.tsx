@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How to negotiate rent in Nairobi: the practical 2026 guide",
   description:
     "Most Nairobi tenants leave money on the table by accepting the asking rent. The market is more negotiable than it looks. Here is the practical 2026 playbook on how to negotiate rent, when landlords actually move, and the levers that work.",
+  metaDescription:
+    "Most Nairobi tenants leave money on the table by accepting the asking rent. The market is more negotiable than it looks.",
   publishedAt: "2026-01-06",
   readingMinutes: 5,
   author: authors.editors,

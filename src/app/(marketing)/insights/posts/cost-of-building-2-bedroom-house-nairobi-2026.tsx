@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Cost of building a 2-bedroom house in Nairobi 2026",
   description:
     "Building a 2-bedroom house in Nairobi in 2026 typically costs between KES 2.5m and KES 6m all-in, depending on specification, location and finishing standard. Here is the honest 2026 breakdown.",
+  metaDescription:
+    "A 2-bedroom house in Nairobi costs roughly KES 2.5m to 6m all-in in 2026, depending on specification, location and finish. The full breakdown.",
   publishedAt: "2025-11-25",
   readingMinutes: 4,
   author: authors.editors,

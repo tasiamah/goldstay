@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "why-your-nairobi-rental-keeps-going-vacant",
   title:
     "Why your Nairobi rental keeps going vacant: the honest 2026 reasons",
+  metaTitle: "Why your Nairobi rental keeps going vacant",
   description:
     "If your Nairobi rental keeps sitting empty between tenants for months, the pattern is rarely random. Here is the honest 2026 diagnostic on why rentals go vacant in Nairobi, what landlords get wrong, and the changes that move occupancy back to durable above 90 percent.",
+  metaDescription:
+    "If your Nairobi rental keeps sitting empty between tenants for months, the pattern is rarely random.",
   publishedAt: "2025-12-21",
   readingMinutes: 7,
   author: authors.poonam,

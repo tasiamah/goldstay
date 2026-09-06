@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Wifi is the amenity Nairobi guests check before they book",
   description:
     "Internet has moved from a convenience to a deciding factor for Nairobi short lets, particularly for the long stay guests worth the most. What speed to provide, why you should state the number, and the setup mistakes that undo good bandwidth.",
+  metaDescription:
+    "Internet has moved from a convenience to a deciding factor for Nairobi short lets, particularly for the long stay guests worth the most.",
   publishedAt: "2026-08-26",
   readingMinutes: 6,
   author: authors.editors,

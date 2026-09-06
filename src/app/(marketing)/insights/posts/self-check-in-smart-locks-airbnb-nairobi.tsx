@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Self check in works in Nairobi, but only if you solve the gate",
   description:
     "A smart lock on your door does nothing if the guest cannot get past security at midnight. How self check in actually works in a Nairobi gated building, and when a person at the door is still the right answer.",
+  metaDescription:
+    "A smart lock on your door does nothing if the guest cannot get past security at midnight.",
   publishedAt: "2026-08-30",
   readingMinutes: 7,
   author: authors.editors,

@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "kenya-finance-act-2026-property-owners-guide",
   title:
     "Kenya Finance Act 2026: what property owners actually need to know",
+  metaTitle: "Kenya Finance Act 2026 for property owners",
   description:
     "MRI, CGT, stamp duty, VAT on commercial rents, the affordable housing levy, and the digital services tax overlaps. A plain-English guide to the 2026 Finance Act for residential landlords and diaspora investors.",
+  metaDescription:
+    "MRI, CGT, stamp duty, VAT on commercial rents, the affordable housing levy, and the digital services tax overlaps.",
   publishedAt: "2026-07-25",
   readingMinutes: 8,
   author: authors.legal,

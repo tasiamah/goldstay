@@ -21,6 +21,37 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-09-06
+
+### Added
+
+- Articles can now carry a `metaTitle` and `metaDescription` separately from
+  the headline and standfirst that appear on the page. A headline written to
+  be read on the page is usually too long to survive in a search result, and
+  the two audiences want different sentences; before this, one field had to
+  serve both and the search result lost.
+- `scripts/check-snippets.mjs` measures both fields at the pixel widths Google
+  actually cuts at — 600px for a title, 960px for a description — rather than
+  counting characters, because "Ruiru" and "Westlands" are both nine
+  characters and one is half again as wide.
+
+### Changed
+
+- Rewrote the search-result copy for every article that was being truncated:
+  245 of 350 titles and 349 of 350 descriptions were wide enough that Google
+  cut them mid-phrase, and where a description looked unhelpful it substituted
+  its own text pulled from the body. The on-page headlines and standfirsts are
+  untouched.
+- Article titles no longer get " | Goldstay" appended in search results. The
+  suffix cost around 90px of a 600px budget on every one of the 350 articles,
+  and the brand is already in the URL and the sitelink beneath it.
+
+### Fixed
+
+- The insights catalogue test now also runs the snippet check, so an article
+  added with a headline too long for a search result fails the suite instead of
+  shipping and being silently rewritten by Google.
+
 ## [1.2.0] - 2026-09-06
 
 ### Added
@@ -202,7 +233,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/tasiamah/goldstay/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tasiamah/goldstay/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/tasiamah/goldstay/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/tasiamah/goldstay/compare/v1.0.2...v1.0.3

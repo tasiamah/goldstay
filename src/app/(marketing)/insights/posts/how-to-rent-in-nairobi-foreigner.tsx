@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "How to rent in Nairobi as a foreigner: the 2026 guide",
   description:
     "Renting in Nairobi as a foreign national is straightforward in principle and quirky in practice. Documents, deposits, agent fees, lease quirks and the suburbs that fit foreign tenant profiles. Here is the honest 2026 step-by-step guide.",
+  metaDescription:
+    "Renting in Nairobi as a foreign national is straightforward in principle and quirky in practice.",
   publishedAt: "2026-01-09",
   readingMinutes: 6,
   author: authors.editors,

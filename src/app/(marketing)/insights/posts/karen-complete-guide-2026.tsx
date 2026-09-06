@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Karen: the complete 2026 guide",
   description:
     "Karen is the most recognised premium suburb in Nairobi, with large plots, mature trees, premier schools, the Karen Country Club and a generations-deep family residential market. Here is the honest 2026 guide on Karen sub-areas, what property costs and how the market actually works.",
+  metaDescription:
+    "Nairobi’s most recognised premium suburb: large plots, mature trees, premier schools and a generations-deep family market. Prices and what to check.",
   publishedAt: "2026-04-21",
   readingMinutes: 7,
   author: authors.editors,

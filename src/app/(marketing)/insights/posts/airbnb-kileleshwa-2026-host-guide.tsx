@@ -13,8 +13,11 @@ import {
 export const meta: PostMeta = {
   slug: "airbnb-kileleshwa-2026-host-guide",
   title: "Airbnb in Kileleshwa: quieter demand, better guests, harder buildings",
+  metaTitle: "Airbnb in Kileleshwa: a 2026 host guide",
   description:
     "Kileleshwa attracts longer and calmer bookings than Kilimani or Westlands, which suits a certain kind of host. The catch is that the tower stock here varies more on water, power and lifts than anywhere else in Nairobi.",
+  metaDescription:
+    "Kileleshwa attracts longer and calmer bookings than Kilimani or Westlands, which suits a certain kind of host.",
   publishedAt: "2026-08-10",
   readingMinutes: 7,
   author: authors.editors,

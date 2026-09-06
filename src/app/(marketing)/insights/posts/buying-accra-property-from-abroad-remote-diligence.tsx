@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "buying-accra-property-from-abroad-remote-diligence",
   title:
     "How to buy Accra property from London or the US: the remote diligence playbook",
+  metaTitle: "Buying Accra property from abroad: remote diligence",
   description:
     "Buying in Accra from London, New York or Toronto is now a routine process, provided the diligence stack is right. This is the exact sequence we run for diaspora clients who never set foot in Ghana before completion.",
+  metaDescription:
+    "Buying in Accra from London, New York or Toronto is now a routine process, provided the diligence stack is right.",
   publishedAt: "2026-06-25",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

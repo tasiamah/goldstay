@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "diaspora-property-checklist-before-flying-back-kenya",
   title:
     "The diaspora property checklist: what to do before you fly back to Kenya",
+  metaTitle: "Diaspora property checklist before flying back to Kenya",
   description:
     "Most diaspora property visits to Kenya last 7 to 21 days, and the right preparation makes the visit five times more productive. Here is the honest 2026 checklist of what to organise from abroad before you board the plane, with realistic timelines for each step.",
+  metaDescription:
+    "Most diaspora property visits to Kenya last 7 to 21 days, and the right preparation makes the visit five times more productive.",
   publishedAt: "2025-09-08",
   readingMinutes: 6,
   author: authors.editors,

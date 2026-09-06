@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Cement, steel and finishing prices in Kenya 2026: a builder’s view",
   description:
     "Construction material prices in Kenya have moved significantly over the last 24 months. Here is the honest 2026 view of where cement, steel, sand, ballast, tiles and finishing prices currently sit, what is driving them, and what they mean for owners building or renovating in 2026.",
+  metaDescription:
+    "Construction material prices in Kenya have moved significantly over the last 24 months.",
   publishedAt: "2026-01-13",
   readingMinutes: 6,
   author: authors.research,

@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Nobody writes a five star review about the granite worktop",
   description:
     "Reviews are won by a topped up meter, hot water that arrives, a mosquito screen and enough toilet paper. The complete list of small things that decide a Nairobi rating, and why owners spend money everywhere else.",
+  metaDescription:
+    "Reviews are won by a topped up meter, hot water that arrives, a mosquito screen and enough toilet paper.",
   publishedAt: "2026-09-06",
   readingMinutes: 7,
   author: authors.editors,

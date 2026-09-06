@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Nairobi property prices keep rising in 2026 despite oversupply",
   description:
     "Nairobi property prices have continued rising in 2026 despite headlines about apartment oversupply. The drivers are structural, not cyclical, and they explain why mid-premium and premium Nairobi property continues to outperform expectations.",
+  metaDescription:
+    "Nairobi property prices have continued rising in 2026 despite headlines about apartment oversupply.",
   publishedAt: "2026-04-07",
   readingMinutes: 5,
   author: authors.research,

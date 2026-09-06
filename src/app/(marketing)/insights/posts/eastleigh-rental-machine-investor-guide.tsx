@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "eastleigh-rental-machine-investor-guide",
   title:
     "Eastleigh: the rental machine Kenyan investors keep underestimating",
+  metaTitle: "Eastleigh: the Nairobi rental machine investors miss",
   description:
     "Eastleigh has one of the strongest rental engines in Nairobi, anchored by a commercial ecosystem that no other suburb comes close to matching. Here is the honest 2026 guide to the suburb most premium investors ignore, with property prices, rental dynamics, the real risks and the disciplined way to invest.",
+  metaDescription:
+    "Eastleigh has one of the strongest rental engines in Nairobi, anchored by a commercial ecosystem that no other suburb comes close to matching.",
   publishedAt: "2026-03-30",
   readingMinutes: 7,
   author: authors.poonam,

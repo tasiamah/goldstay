@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Co-operative Bank mortgage 2026: the honest review",
   description:
     "Co-operative Bank of Kenya is one of the largest retail lenders in the country with a strong SACCO and cooperative borrower base. Here is the honest 2026 review of Co-op Bank mortgages.",
+  metaDescription:
+    "Co-operative Bank of Kenya is one of the largest retail lenders in the country with a strong SACCO and cooperative borrower base.",
   publishedAt: "2026-03-04",
   readingMinutes: 5,
   author: authors.legal,

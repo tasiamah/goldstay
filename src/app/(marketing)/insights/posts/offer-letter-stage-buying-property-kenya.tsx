@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "offer-letter-stage-buying-property-kenya",
   title:
     "The offer letter stage in Kenya: what to include, what to avoid, what it costs you to skip",
+  metaTitle: "The offer letter stage in Kenya property deals",
   description:
     "The offer letter is the cheapest place to win or lose a Nairobi property deal. Most diaspora buyers either skip it or sign whatever the agent puts in front of them. Here is what a strong offer letter actually contains, what binds you and what does not, and why a properly written offer protects 10 to 15 percent of the price.",
+  metaDescription:
+    "The offer letter is the cheapest place to win or lose a Nairobi property deal.",
   publishedAt: "2025-10-15",
   readingMinutes: 7,
   author: authors.legal,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Pricing a Nairobi Airbnb: the strategy most hosts never use",
   description:
     "How to price a Nairobi short let properly: launch pricing, seasonal movement, minimum stays, length of stay discounts and the discounting trap that keeps a calendar full and a business unprofitable.",
+  metaDescription:
+    "Launch pricing, seasonal movement, minimum stays and the discounting trap that keeps a Nairobi short-let calendar full and the business unprofitable.",
   publishedAt: "2026-08-02",
   readingMinutes: 9,
   author: authors.research,

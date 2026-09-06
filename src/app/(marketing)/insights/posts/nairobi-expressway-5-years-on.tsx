@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "The Nairobi Expressway five years on: what it actually changed",
   description:
     "Five years after the Nairobi Expressway opened, the picture is clearer than the hype that surrounded it. Here is the honest 2026 audit of what the expressway actually changed for property values, suburb access, commuter behaviour and the longer term shape of the city.",
+  metaDescription:
+    "Five years after the Nairobi Expressway opened, the picture is clearer than the hype that surrounded it.",
   publishedAt: "2024-08-31",
   readingMinutes: 6,
   author: authors.research,

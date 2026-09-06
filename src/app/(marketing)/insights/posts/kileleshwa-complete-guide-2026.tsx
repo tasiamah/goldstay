@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kileleshwa: the complete 2026 guide",
   description:
     "Kileleshwa was the leafy mid-premium pocket of Nairobi for decades and is now in the middle of a tower-led transformation. Here is the honest 2026 guide on what is happening in Kileleshwa, what property costs and how the market is changing.",
+  metaDescription:
+    "Kileleshwa was the leafy mid-premium pocket of Nairobi for decades and is now in the middle of a tower-led transformation.",
   publishedAt: "2025-10-06",
   readingMinutes: 6,
   author: authors.editors,

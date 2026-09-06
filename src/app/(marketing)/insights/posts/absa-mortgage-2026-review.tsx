@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "ABSA Bank Kenya mortgage 2026: the honest review",
   description:
     "ABSA Bank Kenya, formerly Barclays, has rebuilt its residential mortgage book under the Absa Group with credible product and process. Here is the honest 2026 review of ABSA mortgages.",
+  metaDescription:
+    "ABSA Bank Kenya, formerly Barclays, has rebuilt its residential mortgage book under the Absa Group with credible product and process.",
   publishedAt: "2026-03-07",
   readingMinutes: 5,
   author: authors.legal,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-mri-tax-diaspora-landlords",
   title:
     "Kenya's 7.5% MRI tax for diaspora landlords: the complete 2026 guide",
+  metaTitle: "Kenya’s 7.5% MRI tax for diaspora landlords, 2026",
   description:
     "If you own residential property in Kenya from abroad, KRA is already counting on its 7.5%. A plain-English breakdown of what MRI is, who pays it, the actual filing mechanic, and the three mistakes diaspora landlords make every year.",
+  metaDescription:
+    "If you own residential property in Kenya from abroad, KRA is already counting on its 7.5%.",
   publishedAt: "2025-09-17",
   updatedAt: "2026-07-27",
   readingMinutes: 9,

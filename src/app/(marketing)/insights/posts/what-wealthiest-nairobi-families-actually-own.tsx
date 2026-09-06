@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "What Nairobi's wealthiest families actually own (and why it works)",
   description:
     "Beyond the headline residences, Nairobi's wealthiest families own carefully diversified property portfolios. Here is the honest 2026 anatomy of what they hold and why the structure works for long-term wealth.",
+  metaDescription:
+    "Beyond the headline residences, Nairobi's wealthiest families own carefully diversified property portfolios.",
   publishedAt: "2026-01-31",
   readingMinutes: 6,
   author: authors.research,

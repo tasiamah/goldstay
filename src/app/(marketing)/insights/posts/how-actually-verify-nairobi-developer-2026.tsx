@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "how-actually-verify-nairobi-developer-2026",
   title:
     "How to actually verify a Nairobi developer before paying any deposit",
+  metaTitle: "How to verify a Nairobi developer in 2026",
   description:
     "Most off-plan buyers verify the developer through a Google search and a brochure. The honest 2026 verification process is more thorough. Here is the practical 12-step playbook for actually verifying a Nairobi developer before paying any deposit.",
+  metaDescription:
+    "Most off-plan buyers verify the developer through a Google search and a brochure. The honest 2026 verification process is more thorough.",
   publishedAt: "2026-02-25",
   readingMinutes: 5,
   author: authors.legal,

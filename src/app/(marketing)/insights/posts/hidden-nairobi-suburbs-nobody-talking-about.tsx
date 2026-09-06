@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The hidden Nairobi suburbs nobody is talking about yet",
   description:
     "Beyond Karen, Lavington, Westlands and Kilimani, several Nairobi suburbs offer real value, established residential character and meaningful upside that the wider conversation has not picked up on yet. Here is the honest 2026 hidden-suburbs map.",
+  metaDescription:
+    "Beyond Karen, Lavington, Westlands and Kilimani, several Nairobi suburbs offer real value and established character the market has not priced in.",
   publishedAt: "2026-03-08",
   readingMinutes: 5,
   author: authors.editors,

@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "The gap between your photos and your apartment is your rating",
   description:
     "Flattering photographs win the booking and lose the review. Why accuracy outperforms beauty in Nairobi short letting, what a wide angle lens really costs you, and how to photograph a small apartment honestly.",
+  metaDescription:
+    "Flattering photographs win the booking and lose the review. Why accuracy beats beauty in Nairobi short letting, and what a wide angle costs you.",
   publishedAt: "2026-09-05",
   readingMinutes: 6,
   author: authors.editors,

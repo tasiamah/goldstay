@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Karen vs Lavington for families: the honest 2026 comparison",
   description:
     "Karen and Lavington are the two most considered premium family suburbs in Nairobi. The choice depends on space, schools, commute, lifestyle and total cost of ownership. Here is the honest 2026 comparison for families.",
+  metaDescription:
+    "Karen and Lavington are the two most considered premium family suburbs in Nairobi.",
   publishedAt: "2026-03-22",
   readingMinutes: 6,
   author: authors.editors,

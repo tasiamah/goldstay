@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "nairobi-suburbs-where-property-crime-rising-2026",
   title:
     "Nairobi suburbs where property crime is rising in 2026 (and what it means for buyers)",
+  metaTitle: "Nairobi suburbs where property crime is rising, 2026",
   description:
     "Property crime patterns in Nairobi shift over time. Some historically safe suburbs have seen rising opportunistic crime in 2026; others have improved. Here is the honest 2026 read on where to be vigilant, what is actually happening and what it means for buyers and tenants.",
+  metaDescription:
+    "Property crime patterns in Nairobi shift over time. Some historically safe suburbs have seen rising opportunistic crime in 2026; others have improved.",
   publishedAt: "2026-03-09",
   readingMinutes: 5,
   author: authors.editors,

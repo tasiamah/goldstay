@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-reits-acorn-asa-ilam-fahari-vs-direct-property",
   title:
     "Kenyan REITs in 2026: Acorn ASA, ILAM Fahari and direct property compared",
+  metaTitle: "Kenyan REITs vs direct property in 2026",
   description:
     "Real Estate Investment Trusts have been pitched as the easy way for diaspora investors to get Nairobi property exposure. The pitch has merit but the trade-off is real. Here is how Acorn ASA, ILAM Fahari and the other listed Kenyan REITs actually perform versus directly owning a Nairobi apartment.",
+  metaDescription:
+    "Real Estate Investment Trusts have been pitched as the easy way for diaspora investors to get Nairobi property exposure.",
   publishedAt: "2025-07-28",
   readingMinutes: 9,
   author: authors.research,

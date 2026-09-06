@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "ngong-road-corridor-suburb-by-suburb",
   title:
     "The Ngong Road corridor: Adams Arcade to Karen, suburb by suburb in 2026",
+  metaTitle: "The Ngong Road corridor, suburb by suburb",
   description:
     "Ngong Road runs from the CBD all the way to Karen and threads through some of the most varied real estate in Nairobi. Here is the honest 2026 walk along the corridor, suburb by suburb, with prices, tenant pool and the right buyer profile for each segment.",
+  metaDescription:
+    "Ngong Road runs from the CBD all the way to Karen and threads through some of the most varied real estate in Nairobi.",
   publishedAt: "2026-04-08",
   readingMinutes: 7,
   author: authors.editors,

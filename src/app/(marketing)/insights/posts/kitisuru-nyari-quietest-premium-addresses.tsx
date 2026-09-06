@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kitisuru and Nyari: Nairobi’s quietest premium addresses in 2026",
   description:
     "Kitisuru and Nyari are two of the quietest, most family oriented premium addresses in Nairobi. Here is the honest 2026 guide to who lives there, what property costs, what rents look like and why low key buyers keep ending up in this corridor.",
+  metaDescription:
+    "Kitisuru and Nyari are two of the quietest, most family oriented premium addresses in Nairobi.",
   publishedAt: "2026-03-06",
   readingMinutes: 6,
   author: authors.editors,

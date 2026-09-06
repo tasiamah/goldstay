@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "nairobi-commercial-vs-residential-which-wins",
   title:
     "Nairobi commercial vs residential property: which actually wins in 2026",
+  metaTitle: "Nairobi commercial vs residential property, 2026",
   description:
     "Commercial and residential property in Nairobi follow different cycles, deliver different yields and suit different investors. Here is the honest 2026 comparison: who wins on cash flow, capital growth, ease of operation, exit liquidity and resilience through downturns.",
+  metaDescription:
+    "Commercial and residential property in Nairobi follow different cycles, deliver different yields and suit different investors.",
   publishedAt: "2026-03-18",
   readingMinutes: 5,
   author: authors.research,

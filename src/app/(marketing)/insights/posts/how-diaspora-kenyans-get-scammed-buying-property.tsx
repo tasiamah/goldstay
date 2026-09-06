@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "how-diaspora-kenyans-get-scammed-buying-property",
   title:
     "The seven most common ways diaspora Kenyans get scammed buying property at home",
+  metaTitle: "7 ways diaspora Kenyans get scammed buying property",
   description:
     "Forged titles, the same plot sold twice, deposits to the wrong account, fake developers, family member side deals, ghost service charges and off-plan vanish acts. Real patterns we see every quarter and the specific diligence that catches each one before money moves.",
+  metaDescription:
+    "Forged titles, plots sold twice, deposits to the wrong account, fake developers and off-plan vanish acts: the seven schemes and how to spot them.",
   publishedAt: "2025-08-20",
   updatedAt: "2026-07-27",
   readingMinutes: 9,

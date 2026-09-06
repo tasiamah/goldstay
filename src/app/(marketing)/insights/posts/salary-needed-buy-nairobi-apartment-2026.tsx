@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How much salary do you need to buy a Nairobi apartment in 2026?",
   description:
     "Working out the actual salary needed to buy a Nairobi apartment requires honest mortgage maths, deposit reality and the total cost of ownership most buyers ignore. Here is the honest 2026 calculator with worked examples for Kilimani, Kileleshwa, Westlands and Lavington.",
+  metaDescription:
+    "The salary you actually need to buy a Nairobi apartment in 2026: honest mortgage maths, deposit reality and total cost of ownership.",
   publishedAt: "2026-01-23",
   readingMinutes: 6,
   author: authors.research,

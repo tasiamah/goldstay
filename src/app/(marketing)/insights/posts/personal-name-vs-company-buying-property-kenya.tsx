@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "personal-name-vs-company-buying-property-kenya",
   title:
     "Personal name or company name: how to hold Kenyan property as a diaspora investor",
+  metaTitle: "Personal name or company: buying property in Kenya",
   description:
     "Holding Kenyan property in your personal name versus a Kenyan or offshore company has real consequences for tax, succession, exit liquidity and asset protection. Here is the practical comparison for diaspora landlords, when each structure makes sense, and the costs nobody mentions until you are deep into setup.",
+  metaDescription:
+    "Holding Kenyan property personally or through a company has real consequences for tax, succession, exit liquidity and asset protection.",
   publishedAt: "2026-04-28",
   readingMinutes: 9,
   author: authors.legal,

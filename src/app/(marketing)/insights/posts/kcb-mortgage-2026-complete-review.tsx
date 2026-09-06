@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "KCB mortgage 2026: the complete review",
   description:
     "KCB Bank is the largest commercial mortgage lender in Kenya by book size, with a long history of residential and developer financing. Here is the honest 2026 review of KCB mortgages: rates, processing, eligibility, repayment terms and how to get a yes.",
+  metaDescription:
+    "KCB Bank is the largest commercial mortgage lender in Kenya by book size, with a long history of residential and developer financing.",
   publishedAt: "2025-08-09",
   readingMinutes: 6,
   author: authors.legal,

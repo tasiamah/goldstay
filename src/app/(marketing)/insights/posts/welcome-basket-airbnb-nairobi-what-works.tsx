@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "What actually belongs in a Nairobi welcome basket",
   description:
     "Most welcome baskets are decoration that photographs well and helps nobody. What a guest landing at midnight genuinely needs, what to skip, and why the first fifteen minutes decide your review.",
+  metaDescription:
+    "Most welcome baskets are decoration that photographs well and helps nobody.",
   publishedAt: "2026-08-30",
   readingMinutes: 5,
   author: authors.editors,

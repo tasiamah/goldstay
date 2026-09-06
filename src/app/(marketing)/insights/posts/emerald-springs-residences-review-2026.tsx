@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Emerald Springs Residences, Westlands: the honest buyer review",
   description:
     "Emerald Springs Residences is two 25 storey towers of one and two bedroom apartments on Westlands Road, marketed as sold out and completing in 2026. What that much new one bed supply in one building means for your rent, and the two things published sources disagree on.",
+  metaDescription:
+    "Two 25-storey towers of one and two-bed apartments on Westlands Road, marketed as sold out and completing in 2026. What buyers should check.",
   publishedAt: "2026-08-06",
   readingMinutes: 9,
   author: authors.research,

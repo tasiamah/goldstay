@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "what-to-do-developer-goes-bankrupt-kenya",
   title:
     "What to do if your Kenyan property developer goes bankrupt: the 2026 survival guide",
+  metaTitle: "If your Kenyan property developer goes bankrupt",
   description:
     "If you bought off-plan in Kenya and the developer collapses, the situation feels existential. It does not have to be. Here is the honest 2026 guide to what to do if your Kenyan developer goes into receivership, what your rights are, what the realistic recovery looks like and how to maximise the outcome.",
+  metaDescription:
+    "If you bought off-plan in Kenya and the developer collapses, the situation feels existential. It does not have to be.",
   publishedAt: "2024-08-26",
   readingMinutes: 7,
   author: authors.editors,

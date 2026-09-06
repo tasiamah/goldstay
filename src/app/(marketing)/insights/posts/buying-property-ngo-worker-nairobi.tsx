@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as an NGO worker",
   description:
     "Nairobi is one of the largest NGO and humanitarian sector hubs in the world. NGO professionals have specific advantages and constraints when buying property locally. Here is the honest 2026 buyer guide.",
+  metaDescription:
+    "Nairobi is one of the largest NGO and humanitarian sector hubs in the world.",
   publishedAt: "2026-01-21",
   readingMinutes: 5,
   author: authors.editors,

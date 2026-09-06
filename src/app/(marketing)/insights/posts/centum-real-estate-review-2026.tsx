@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Centum Real Estate review 2026: the honest investor guide",
   description:
     "Centum Real Estate is the property arm of Centum Investment Company Limited and a major large-scale developer in Kenya, with master-planned developments at Two Rivers and Pearl Marina (Uganda). Here is the honest 2026 investor and buyer guide.",
+  metaDescription:
+    "Centum’s property arm, reviewed: the Two Rivers and Pearl Marina master plans, the delivery record, and what a buyer is actually taking on.",
   publishedAt: "2026-02-11",
   readingMinutes: 5,
   author: authors.research,

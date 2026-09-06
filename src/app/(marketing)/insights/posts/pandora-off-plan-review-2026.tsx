@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Pandora off-plan review 2026: the honest buyer guide",
   description:
     "Pandora is a Nairobi off-plan launch with strong marketing and clear positioning to the diaspora and professional investor cohort. Here is the honest 2026 buyer review framework on segment positioning, pricing context, risks and how to evaluate before committing.",
+  metaDescription:
+    "Pandora is a Nairobi off-plan launch with strong marketing and clear positioning to the diaspora and professional investor cohort.",
   publishedAt: "2026-04-16",
   readingMinutes: 5,
   author: authors.research,

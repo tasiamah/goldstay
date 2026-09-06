@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "kenya-construction-cost-per-square-metre-2026",
   title:
     "Kenya construction cost per square metre 2026: the honest builder’s view",
+  metaTitle: "Kenya construction cost per square metre, 2026",
   description:
     "Construction cost per square metre in Kenya is the single most asked question by anyone planning to build. The honest answer depends on spec, location and contractor, and the wide answer that floats around is misleading. Here is the honest 2026 builder’s view.",
+  metaDescription:
+    "Construction cost per square metre in Kenya is the single most asked question by anyone planning to build.",
   publishedAt: "2025-09-04",
   readingMinutes: 7,
   author: authors.research,

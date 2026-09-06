@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "land-cartels-kenya-how-they-operate",
   title:
     "Land cartels in Kenya: how they actually operate and how to avoid them",
+  metaTitle: "Land cartels in Kenya: how they operate",
   description:
     "Land cartels in Kenya are real, organised and have cost ordinary buyers billions over the years. Here is the honest 2026 guide to how the cartels operate, the typical structures they use, the buyers they target, and the disciplined defences that work.",
+  metaDescription:
+    "Land cartels in Kenya are real, organised and have cost ordinary buyers billions over the years.",
   publishedAt: "2025-10-11",
   readingMinutes: 7,
   author: authors.legal,

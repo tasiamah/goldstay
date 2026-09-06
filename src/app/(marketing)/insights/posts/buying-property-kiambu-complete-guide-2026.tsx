@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Kiambu: the complete 2026 guide",
   description:
     "Kiambu County wraps around northern Nairobi and contains some of the most active property zones in Kenya, from Ruaka to Tilisi to Kikuyu. Here is the honest 2026 guide on where to buy in Kiambu, what property costs and how the various sub-markets actually work.",
+  metaDescription:
+    "Kiambu County wraps around northern Nairobi and contains some of the most active property zones in Kenya, from Ruaka to Tilisi to Kikuyu.",
   publishedAt: "2025-06-25",
   readingMinutes: 6,
   author: authors.editors,

@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "stalled-construction-projects-kenya-what-to-do",
   title:
     "Stalled construction projects in Kenya: what to do when your build stops in 2026",
+  metaTitle: "Stalled construction projects in Kenya: what to do",
   description:
     "When a Kenyan build stalls, the cost of inaction compounds quickly. Here is the honest 2026 playbook on what to do when your construction project stops, the legal and contractual options, the realistic recovery paths and the prevention measures that work next time.",
+  metaDescription:
+    "When a Kenyan build stalls, the cost of inaction compounds quickly.",
   publishedAt: "2025-10-01",
   readingMinutes: 7,
   author: authors.editors,

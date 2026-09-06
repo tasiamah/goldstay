@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Hot water is the number one Nairobi Airbnb complaint",
   description:
     "More Nairobi short let reviews are lost to showers than to anything else. Why the problem is usually pressure rather than temperature, what guests actually expect, and how to fix it properly.",
+  metaDescription:
+    "More Nairobi short let reviews are lost to showers than to anything else.",
   publishedAt: "2026-08-23",
   readingMinutes: 6,
   author: authors.editors,

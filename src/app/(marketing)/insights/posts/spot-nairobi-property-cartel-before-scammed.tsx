@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How to spot a Nairobi property cartel before they scam you",
   description:
     "Nairobi property cartels run sophisticated operations: forged titles, fake court orders, irregular subdivisions, kidnapped buyers. Most operate through specific identifiable patterns. Here is the honest 2026 guide on how to spot a cartel before they spot you.",
+  metaDescription:
+    "Nairobi property cartels run sophisticated operations: forged titles, fake court orders, irregular subdivisions, kidnapped buyers.",
   publishedAt: "2026-02-21",
   readingMinutes: 5,
   author: authors.legal,

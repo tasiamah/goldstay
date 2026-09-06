@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why diaspora Kenyans keep losing money on Nairobi land",
   description:
     "Diaspora Kenyans send millions home every year for land purchases that never produce returns. Plot prices marked up, locations chosen poorly, infrastructure that never arrives, opportunity cost compounding. Here is the honest 2026 explanation.",
+  metaDescription:
+    "Diaspora Kenyans send millions home every year for land purchases that never produce returns.",
   publishedAt: "2026-03-26",
   readingMinutes: 5,
   author: authors.editors,

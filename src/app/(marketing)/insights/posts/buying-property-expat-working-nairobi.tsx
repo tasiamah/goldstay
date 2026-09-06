@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a working expat",
   description:
     "Expats living and working in Nairobi often consider whether to buy or keep renting. The decision depends on length of stay, employer support, posting horizon and whether the buyer plans long-term Kenya exposure. Here is the honest 2026 guide.",
+  metaDescription:
+    "Expats living and working in Nairobi often consider whether to buy or keep renting.",
   publishedAt: "2026-01-18",
   readingMinutes: 6,
   author: authors.editors,

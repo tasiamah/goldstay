@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "pension-backed-mortgages-kenya-kmrc-explained",
   title:
     "Pension-backed mortgages in Kenya: KMRC and beyond explained for 2026",
+  metaTitle: "Pension-backed mortgages in Kenya: KMRC in 2026",
   description:
     "Kenya now offers several routes that connect retirement savings to homeownership: KMRC-backed long-term mortgages, the pension-secured mortgage product, and employer-supported home schemes. Here is the practical 2026 explainer for buyers thinking about pension-backed routes to a Nairobi home.",
+  metaDescription:
+    "Kenya has several routes connecting retirement savings to a home: KMRC-backed mortgages, pension-secured products and employer schemes.",
   publishedAt: "2024-10-21",
   readingMinutes: 7,
   author: authors.editors,

@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Living in Karen as a returnee: an honest day in the life",
   description:
     "Karen is the suburb most diaspora Kenyans say they will live in when they move home. The reality is more nuanced. Here is the honest 2026 day in the life of a returning diaspora professional in Karen, with the daily logistics, the costs that surprise people, and the genuine reasons the suburb wins so many of those decisions.",
+  metaDescription:
+    "Karen is the suburb most diaspora Kenyans say they will live in when they move home. The reality is more nuanced.",
   publishedAt: "2026-03-01",
   readingMinutes: 7,
   author: authors.poonam,

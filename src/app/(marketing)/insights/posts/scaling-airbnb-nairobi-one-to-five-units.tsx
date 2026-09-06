@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Scaling a Nairobi short let operation from one unit to five",
   description:
     "The second unit is easy and the third breaks most hosts. What changes at each stage, why standardisation matters more than location once you have several, and the point at which this stops being a side project.",
+  metaDescription:
+    "The second unit is easy and the third breaks most hosts. What changes at each stage and when this stops being a side project in Nairobi.",
   publishedAt: "2026-08-19",
   readingMinutes: 8,
   author: authors.editors,

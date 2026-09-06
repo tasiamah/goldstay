@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Landlord entered without notice: what to do in Kenya",
   description:
     "Landlord entry without notice is a common Nairobi tenant complaint. Most landlords are unaware of their legal obligation; some know and ignore. Here is the honest 2026 guide on tenant rights, the legal framework and the practical response.",
+  metaDescription:
+    "Landlord entry without notice is a common Nairobi tenant complaint. Most landlords are unaware of their legal obligation; some know and ignore.",
   publishedAt: "2025-12-25",
   readingMinutes: 4,
   author: authors.legal,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Athi River: the complete 2026 guide",
   description:
     "Athi River sits on Mombasa Road south of Nairobi, anchored by the EPZ, the Daystar University corridor and a fast-growing mass-market apartment supply. Here is the honest 2026 guide on Athi River property and how the market actually works.",
+  metaDescription:
+    "Athi River on Mombasa Road, anchored by the EPZ and the Daystar corridor: who buys here, what the apartment supply looks like and what it rents for.",
   publishedAt: "2026-03-04",
   readingMinutes: 5,
   author: authors.editors,

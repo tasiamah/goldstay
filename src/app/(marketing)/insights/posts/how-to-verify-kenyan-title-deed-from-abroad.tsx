@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "How to verify a Kenyan title deed from abroad without flying home",
   description:
     "The exact process for confirming a property title in Kenya is genuine, unencumbered, and held by the seller, all without leaving your country. Includes Ardhisasa, official searches, encumbrance checks, and the four fraud patterns we see most often.",
+  metaDescription:
+    "The exact process for confirming a property title in Kenya is genuine, unencumbered, and held by the seller, all without leaving your country.",
   publishedAt: "2025-02-16",
   readingMinutes: 9,
   author: authors.legal,

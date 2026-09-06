@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kilimani vs Hurlingham: which suits Nairobi professionals?",
   description:
     "Kilimani and Hurlingham sit next to each other in Nairobi but they serve different professional buyer profiles. Here is the honest 2026 comparison on price, walkability, healthcare adjacency and rental yield for working professionals.",
+  metaDescription:
+    "Kilimani and Hurlingham sit next to each other in Nairobi but they serve different professional buyer profiles.",
   publishedAt: "2026-03-25",
   readingMinutes: 5,
   author: authors.editors,

@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Kenyan property strategy through the 2027 election cycle",
   description:
     "Kenya holds general elections in August 2027. The previous five elections show a consistent property cycle pattern: pre-election caution, election-year softness, post-election rebound. Here is how diaspora investors should think about timing acquisitions, holds and disposals across the cycle.",
+  metaDescription:
+    "Five election cycles show the same pattern: pre-election caution, election-year softness, post-election rebound. How to time 2027 acquisitions.",
   publishedAt: "2025-06-05",
   readingMinutes: 8,
   author: authors.research,

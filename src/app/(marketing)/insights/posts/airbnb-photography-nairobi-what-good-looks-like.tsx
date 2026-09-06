@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Airbnb photography: the cheapest thing that changes everything",
   description:
     "Your photo set decides how many people ever see the rest of your work. What a good Nairobi short let shoot includes, the order the images should run in, and the mistakes that cost bookings before a guest reads a word.",
+  metaDescription:
+    "Your photo set decides how many people ever see the rest of your work.",
   publishedAt: "2026-08-13",
   readingMinutes: 7,
   author: authors.editors,

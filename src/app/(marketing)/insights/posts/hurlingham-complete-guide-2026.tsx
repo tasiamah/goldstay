@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Hurlingham: the complete 2026 guide",
   description:
     "Hurlingham sits between Kilimani and Yaya, with strong walkability, the Aga Khan Hospital nearby and a mid-premium apartment market. Here is the honest 2026 guide on Hurlingham property and how the market actually works.",
+  metaDescription:
+    "Hurlingham sits between Kilimani and Yaya, with strong walkability, the Aga Khan Hospital nearby and a mid-premium apartment market.",
   publishedAt: "2025-05-21",
   readingMinutes: 5,
   author: authors.editors,

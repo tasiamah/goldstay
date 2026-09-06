@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Nairobi property predictions for 2027: the honest forecast",
   description:
     "Property forecasts are usually marketing. The honest 2027 Nairobi forecast looks at structural drivers, segment-level dynamics and political cycle to project what is likely, what is uncertain, and what would change the picture quickly.",
+  metaDescription:
+    "Most property forecasts are marketing. This one looks at structural drivers, segment dynamics and the political cycle for Nairobi in 2027.",
   publishedAt: "2026-03-30",
   readingMinutes: 6,
   author: authors.research,

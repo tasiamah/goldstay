@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Karen prices stalled in 2026 (and what it means for buyers)",
   description:
     "Karen has been the most desired Nairobi address for decades, but in 2026 the price growth slowed materially in some segments. Here is the honest explanation: what stalled, what is still rising and what it means for buyers.",
+  metaDescription:
+    "Karen has been the most desired Nairobi address for decades, but in 2026 the price growth slowed materially in some segments.",
   publishedAt: "2026-03-20",
   readingMinutes: 5,
   author: authors.research,

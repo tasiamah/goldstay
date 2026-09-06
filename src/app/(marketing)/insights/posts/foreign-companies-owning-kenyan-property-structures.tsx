@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "foreign-companies-owning-kenyan-property-structures",
   title:
     "Foreign companies owning Kenyan property: which structures actually work in 2026",
+  metaTitle: "Foreign companies owning Kenyan property: structures",
   description:
     "Foreign investors and diaspora-owned international companies often want to hold Kenyan property through their own offshore or foreign vehicles. Here is the honest 2026 guide to which structures work, which do not, the citizenship rules that constrain freehold, and how to set things up so the title actually holds.",
+  metaDescription:
+    "Foreign investors and diaspora-owned international companies often want to hold Kenyan property through their own offshore or foreign vehicles.",
   publishedAt: "2025-11-08",
   readingMinutes: 7,
   author: authors.legal,

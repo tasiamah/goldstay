@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Best places to buy a 3-bedroom apartment in Nairobi 2026",
   description:
     "3-bedroom apartments in Nairobi serve families, senior professionals and diaspora returning home. Premium pricing, premium tenant pool, premium expectations. Here is the honest 2026 ranked list of where to actually buy a 3-bed for capital growth, family fit and resale liquidity.",
+  metaDescription:
+    "3-bedroom apartments in Nairobi serve families, senior professionals and diaspora returning home.",
   publishedAt: "2026-04-14",
   readingMinutes: 5,
   author: authors.research,

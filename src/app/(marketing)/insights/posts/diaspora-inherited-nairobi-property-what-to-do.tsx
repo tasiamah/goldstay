@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "You inherited a Nairobi property from abroad: a calm playbook",
   description:
     "Succession, title transfer, tenants, tax and family, in the order they actually hit you. Written for diaspora Kenyans who have lost a parent and now hold property they never planned to own.",
+  metaDescription:
+    "Succession, title transfer, tenants, tax and family, in the order they actually hit you.",
   publishedAt: "2026-07-25",
   readingMinutes: 10,
   author: authors.legal,

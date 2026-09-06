@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Where the Nairobi short let market goes next",
   description:
     "Supply is still growing, licensing is tightening, and the quality gap between good and average listings is widening. An honest read on the Nairobi short let market into 2027 and what it means for who makes money.",
+  metaDescription:
+    "Supply is still growing, licensing is tightening, and the quality gap between good and average listings is widening.",
   publishedAt: "2026-08-20",
   readingMinutes: 8,
   author: authors.research,

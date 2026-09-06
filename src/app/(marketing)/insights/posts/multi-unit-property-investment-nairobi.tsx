@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Multi-unit property investment in Nairobi: the 2026 strategy",
   description:
     "Multi-unit residences (small apartment blocks of 2 to 12 units) are one of the most resilient property investment categories in Nairobi. Here is the honest 2026 guide on the strategy, the numbers, the suburbs and the operational requirements.",
+  metaDescription:
+    "Multi-unit residences (small apartment blocks of 2 to 12 units) are one of the most resilient property investment categories in Nairobi.",
   publishedAt: "2025-12-13",
   readingMinutes: 6,
   author: authors.research,

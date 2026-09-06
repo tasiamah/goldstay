@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "How to get a Nairobi Airbnb from 4.6 to 4.9",
   description:
     "A 4.6 rating looks fine to a host and reads as a warning to a guest. What actually moves a Nairobi short let rating, why the gap is almost never about the furniture, and how to recover from bad reviews.",
+  metaDescription:
+    "A 4.6 rating looks fine to a host and reads as a warning to a guest.",
   publishedAt: "2026-08-14",
   readingMinutes: 8,
   author: authors.editors,

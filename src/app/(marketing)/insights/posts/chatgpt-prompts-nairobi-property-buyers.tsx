@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "chatgpt-prompts-nairobi-property-buyers",
   title:
     "ChatGPT for Nairobi property buyers: the prompts that actually work",
+  metaTitle: "ChatGPT prompts for Nairobi property buyers",
   description:
     "AI tools like ChatGPT can compress hours of property research into minutes if you prompt them properly. Here are the 2026 ChatGPT prompts that actually work for Nairobi property buyers, including diligence checklists, neighbourhood comparison and contract review.",
+  metaDescription:
+    "AI tools like ChatGPT can compress hours of property research into minutes if you prompt them properly.",
   publishedAt: "2026-04-01",
   readingMinutes: 5,
   author: authors.research,

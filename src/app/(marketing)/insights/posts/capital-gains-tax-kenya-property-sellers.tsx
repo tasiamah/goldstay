@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "capital-gains-tax-kenya-property-sellers",
   title:
     "Capital Gains Tax in Kenya: what diaspora property sellers actually pay",
+  metaTitle: "Capital Gains Tax in Kenya for property sellers",
   description:
     "What CGT in Kenya is, who pays it, the four exemptions that actually apply, the cost base mistakes that inflate your bill by 30%, and the planning moves that cleanly reduce CGT before you sell.",
+  metaDescription:
+    "What CGT in Kenya is, who pays, the four exemptions that actually apply, the cost-base mistakes that inflate a bill, and how to reduce it legally.",
   publishedAt: "2025-01-20",
   readingMinutes: 8,
   author: authors.editors,

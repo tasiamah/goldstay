@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Acorn Holdings review 2026: the honest investor guide",
   description:
     "Acorn Holdings is the largest purpose-built student accommodation (PBSA) developer and operator in Kenya, with a portfolio under the Qwetu and Qejani brands. Acorn also operates the Acorn Student Accommodation (ASA) Income REIT. Here is the honest 2026 investor guide.",
+  metaDescription:
+    "Kenya’s largest student housing developer, reviewed: the Qwetu and Qejani portfolio, the two listed REITs behind it, and what it means for investors.",
   publishedAt: "2026-02-14",
   readingMinutes: 6,
   author: authors.research,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Spring Valley: the complete 2026 guide",
   description:
     "Spring Valley sits between Westlands and Lavington and is one of the most underrated premium family suburbs in Nairobi. Here is the honest 2026 guide on Spring Valley property, who buys there and how the market actually works.",
+  metaDescription:
+    "Spring Valley sits between Westlands and Lavington and is one of the most underrated premium family suburbs in Nairobi.",
   publishedAt: "2026-04-15",
   readingMinutes: 5,
   author: authors.editors,

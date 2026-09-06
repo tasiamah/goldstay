@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-shilling-outlook-2026-property-investors",
   title:
     "Kenya shilling outlook 2026: what property investors actually need to watch",
+  metaTitle: "Kenya shilling outlook 2026 for property investors",
   description:
     "The KES has been the single most important variable for diaspora property returns over the last five years. After the 2022 to 2023 weakness and the 2024 to 2025 stabilisation, where does the shilling go next? Here is the honest 2026 outlook focused on what actually matters for Nairobi property investors.",
+  metaDescription:
+    "The KES has been the single most important variable for diaspora property returns over the last five years.",
   publishedAt: "2024-12-08",
   readingMinutes: 7,
   author: authors.research,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Chinese property investment in Nairobi is shrinking in 2026",
   description:
     "Chinese investment in Nairobi property has slowed materially through 2026, after a decade of significant residential and commercial activity. Here is the honest explanation: what changed, what is still active and what it means for the Nairobi market.",
+  metaDescription:
+    "Chinese investment in Nairobi property has slowed materially through 2026, after a decade of significant residential and commercial activity.",
   publishedAt: "2026-03-11",
   readingMinutes: 5,
   author: authors.research,

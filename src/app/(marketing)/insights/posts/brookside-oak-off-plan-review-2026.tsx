@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Brookside Oak off-plan review 2026: the honest buyer guide",
   description:
     "Brookside Oak is positioned as a premium Nairobi off-plan launch on Brookside Drive in the Westlands core, with appeal to senior corporate professionals and returning diaspora. Here is the honest 2026 buyer review framework on positioning, pricing context, risks and how to evaluate.",
+  metaDescription:
+    "A premium off-plan launch on Brookside Drive in the Westlands core, aimed at senior professionals and returning diaspora. The honest assessment.",
   publishedAt: "2026-04-13",
   readingMinutes: 5,
   author: authors.research,

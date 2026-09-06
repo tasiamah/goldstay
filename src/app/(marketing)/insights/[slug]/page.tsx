@@ -44,13 +44,28 @@ export function generateMetadata({ params }: Props): Metadata {
       ]
     : undefined;
 
+  // Search-result copy, falling back to the editorial headline and
+  // standfirst where they already fit. See PostMeta for why the two
+  // are separate.
+  const metaTitle = post.meta.metaTitle ?? post.meta.title;
+  const metaDescription = post.meta.metaDescription ?? post.meta.description;
+
   return {
-    title: post.meta.title,
-    description: post.meta.description,
+    // `absolute` suppresses the layout's "%s | Goldstay" template.
+    //
+    // Google gives a title around 600px and the suffix costs about 115
+    // of them, which was pushing 129 articles that otherwise fit over
+    // the line — more than half of every truncation in the catalogue,
+    // spent on a word the searcher can already see in the domain and
+    // that Google now renders separately from the site name in the
+    // WebSite schema. The service and city pages keep the suffix,
+    // where titles are short and the brand is worth the room.
+    title: { absolute: metaTitle },
+    description: metaDescription,
     alternates: insightAlternates(post.meta.slug, post.meta.country),
     openGraph: {
-      title: post.meta.title,
-      description: post.meta.description,
+      title: metaTitle,
+      description: metaDescription,
       type: "article",
       publishedTime: post.meta.publishedAt,
       modifiedTime: post.meta.updatedAt ?? post.meta.publishedAt,
@@ -60,8 +75,8 @@ export function generateMetadata({ params }: Props): Metadata {
     },
     twitter: {
       card: "summary_large_image",
-      title: post.meta.title,
-      description: post.meta.description,
+      title: metaTitle,
+      description: metaDescription,
       images: ogImage,
     },
   };

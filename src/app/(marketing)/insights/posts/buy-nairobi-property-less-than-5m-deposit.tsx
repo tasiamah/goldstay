@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "buy-nairobi-property-less-than-5m-deposit",
   title:
     "How to buy a Nairobi property with less than KES 5m deposit in 2026",
+  metaTitle: "Buy a Nairobi property on under KES 5m deposit",
   description:
     "You do not need KES 10m+ to buy in Nairobi. With KES 1m to KES 5m deposit and a KMRC-aligned mortgage, the right Nairobi property is realistically within reach. Here is the honest 2026 step-by-step guide.",
+  metaDescription:
+    "You do not need KES 10m to buy in Nairobi. With a KES 1m to 5m deposit and a KMRC-aligned mortgage, here is the realistic step-by-step route.",
   publishedAt: "2026-03-21",
   readingMinutes: 5,
   author: authors.editors,

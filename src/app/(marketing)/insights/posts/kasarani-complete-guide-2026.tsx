@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kasarani: the complete 2026 guide",
   description:
     "Kasarani is one of the largest residential constituencies in Nairobi, with a vast mid-market apartment supply, the Kasarani Stadium and a real working-professional rental market. Here is the honest 2026 guide on Kasarani property, who lives there and how the market works.",
+  metaDescription:
+    "One of Nairobi’s largest residential constituencies, with vast mid-market apartment supply and a real working-professional rental market.",
   publishedAt: "2026-04-06",
   readingMinutes: 5,
   author: authors.editors,

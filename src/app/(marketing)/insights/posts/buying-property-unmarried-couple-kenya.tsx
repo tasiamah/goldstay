@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property as an unmarried couple in Kenya: the honest guide",
   description:
     "Many couples buy property in Nairobi before marriage. The legal, tax and structuring decisions are different from a married couple’s purchase. Here is the honest 2026 guide on co-ownership, financing, exit and the documentation that actually protects both parties.",
+  metaDescription:
+    "Many couples buy property in Nairobi before marriage. The legal, tax and structuring decisions are different from a married couple’s purchase.",
   publishedAt: "2026-01-15",
   readingMinutes: 6,
   author: authors.legal,

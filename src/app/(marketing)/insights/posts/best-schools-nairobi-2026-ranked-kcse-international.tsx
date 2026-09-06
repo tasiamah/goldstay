@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "best-schools-nairobi-2026-ranked-kcse-international",
   title:
     "The best schools in Nairobi 2026: a parent’s guide to the rankings, fees and catchment",
+  metaTitle: "Best schools in Nairobi 2026: KCSE and international",
   description:
     "Choosing a school in Nairobi shapes the suburb you will live in for years. Here is the honest 2026 guide to the best private and international schools in the city, the realistic fees, the catchment areas, and how the school decision drives the property decision for diaspora returnees.",
+  metaDescription:
+    "Choosing a school in Nairobi shapes the suburb you will live in for years.",
   publishedAt: "2024-12-27",
   readingMinutes: 9,
   author: authors.editors,

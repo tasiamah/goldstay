@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Equity Bank mortgage 2026: the honest review",
   description:
     "Equity Bank is the largest bank in Kenya by customer base and one of the most accessible mortgage lenders, with a focus on the mass-market and mid-market borrower. Here is the honest 2026 review of Equity Bank mortgages.",
+  metaDescription:
+    "Kenya’s largest bank by customer base, reviewed as a mortgage lender in 2026: rates, loan-to-value, eligibility and where it suits a buyer.",
   publishedAt: "2026-03-01",
   readingMinutes: 5,
   author: authors.legal,

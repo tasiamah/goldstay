@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Nairobi vs Lagos vs Cape Town vs Cairo: where to invest in 2026",
   description:
     "African investors and the diaspora are increasingly deciding between Nairobi, Lagos, Cape Town and Cairo for their property allocation. Here is the honest 2026 comparison on yields, capital, currency, governance and exit liquidity.",
+  metaDescription:
+    "African investors and the diaspora are increasingly deciding between Nairobi, Lagos, Cape Town and Cairo for their property allocation.",
   publishedAt: "2026-03-05",
   readingMinutes: 6,
   author: authors.research,

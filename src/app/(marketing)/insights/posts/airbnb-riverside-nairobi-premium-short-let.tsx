@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Riverside short lets: fewer bookings, better ones",
   description:
     "The Riverside corridor commands the highest short let rates in Nairobi outside the diplomatic belt, on thinner volume. Why that trade favours some owners and ruins others, and what the premium guest actually checks.",
+  metaDescription:
+    "The Riverside corridor commands the highest short let rates in Nairobi outside the diplomatic belt, on thinner volume.",
   publishedAt: "2026-08-11",
   readingMinutes: 7,
   author: authors.editors,

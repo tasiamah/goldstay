@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "The turnover checklist is what separates a business from a hobby",
   description:
     "Consistency is the whole product in short letting, and consistency comes from a written checklist rather than from a good cleaner. What a Nairobi turnover should cover, including the checks that have nothing to do with cleaning.",
+  metaDescription:
+    "Consistency is the whole product in short letting, and consistency comes from a written checklist rather than from a good cleaner.",
   publishedAt: "2026-09-05",
   readingMinutes: 7,
   author: authors.editors,

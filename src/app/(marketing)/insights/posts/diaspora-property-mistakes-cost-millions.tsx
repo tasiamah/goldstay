@@ -15,6 +15,8 @@ export const meta: PostMeta = {
     "Diaspora Kenyan property mistakes that cost millions",
   description:
     "Diaspora Kenyans collectively lose hundreds of millions every year to avoidable property mistakes in Nairobi. Trust-based purchases gone wrong, off-plan abandonment, marked-up plots, family disputes. Here is the honest 2026 list of the mistakes that cost the most.",
+  metaDescription:
+    "Diaspora Kenyans collectively lose hundreds of millions every year to avoidable property mistakes in Nairobi.",
   publishedAt: "2026-03-02",
   readingMinutes: 5,
   author: authors.editors,

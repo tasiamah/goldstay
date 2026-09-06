@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The mortgage rates Kenya banks won’t tell you about in 2026",
   description:
     "Bank advertised mortgage rates in Kenya are the headline. The actual rate, fees, conditions and structuring options can be meaningfully different. Here is the honest 2026 explanation of what banks don’t put on the brochure and how to negotiate the real deal.",
+  metaDescription:
+    "Bank advertised mortgage rates in Kenya are the headline. The actual rate, fees, conditions and structuring options can be meaningfully different.",
   publishedAt: "2026-02-19",
   readingMinutes: 5,
   author: authors.research,

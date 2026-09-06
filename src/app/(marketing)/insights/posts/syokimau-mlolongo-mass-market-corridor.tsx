@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Syokimau and Mlolongo: the mass-market corridor explained",
   description:
     "Syokimau and Mlolongo sit on Mombasa Road in Machakos County, with the SGR station, the Expressway and a fast-growing mass-market apartment supply. Here is the honest 2026 guide on the corridor for buyers and investors.",
+  metaDescription:
+    "Syokimau and Mlolongo on Mombasa Road, with the SGR station, the Expressway and fast-growing mass-market apartment supply. What it returns.",
   publishedAt: "2025-11-24",
   readingMinutes: 5,
   author: authors.editors,

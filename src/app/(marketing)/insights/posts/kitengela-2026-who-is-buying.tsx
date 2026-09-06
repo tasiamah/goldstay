@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Kitengela in 2026: who is actually buying and why",
   description:
     "Kitengela has gone from frontier dormitory town to legitimate Nairobi commuter suburb in less than a decade. Here is the honest 2026 read on who is buying, what property costs, what rents look like, and where the suburb fits in the wider Nairobi map.",
+  metaDescription:
+    "Kitengela has gone from frontier dormitory town to legitimate Nairobi commuter suburb in less than a decade.",
   publishedAt: "2026-02-20",
   readingMinutes: 6,
   author: authors.editors,

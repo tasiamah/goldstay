@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "buying-property-kenya-vs-mauritius-vs-rwanda",
   title:
     "Buying property in Kenya vs Mauritius vs Rwanda: an East African comparison for 2026",
+  metaTitle: "Buying property: Kenya vs Mauritius vs Rwanda",
   description:
     "Diaspora Africans and international investors increasingly compare Kenya, Mauritius and Rwanda as the three serious property markets in or near East Africa. Each has very different rules on foreign ownership, residency, tax and currency. Here is the practical 2026 comparison from a diaspora investor lens.",
+  metaDescription:
+    "Kenya, Mauritius and Rwanda compared on ownership rules, entry cost, yields, taxes and exit, for diaspora and international property investors.",
   publishedAt: "2025-02-21",
   readingMinutes: 9,
   author: authors.editors,

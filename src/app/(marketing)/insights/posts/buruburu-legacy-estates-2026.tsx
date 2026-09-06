@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buruburu: legacy estates and 2026 reality",
   description:
     "Buruburu was the National Housing Corporation’s flagship middle-class estate of the 1970s and 80s, and the legacy still shapes the neighbourhood today. Here is the honest 2026 guide on Buruburu property, who lives there now and how the market actually works.",
+  metaDescription:
+    "Buruburu was the National Housing Corporation’s flagship middle-class estate of the 1970s and 80s, and the legacy still shapes the neighbourhood today.",
   publishedAt: "2026-04-09",
   readingMinutes: 5,
   author: authors.editors,

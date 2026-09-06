@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "adverse-possession-kenya-squatters-rights",
   title:
     "Adverse possession in Kenya: how squatters can claim title and how to prevent it",
+  metaTitle: "Adverse possession in Kenya: squatters’ rights",
   description:
     "Adverse possession is real Kenyan law and absentee landowners lose property to it every year. Here is the honest 2026 guide on how adverse possession works in Kenya, the 12 year clock, what squatters need to prove, and the practical steps absentee owners should take to protect themselves.",
+  metaDescription:
+    "Adverse possession is real Kenyan law and absentee landowners lose property to it every year.",
   publishedAt: "2024-08-03",
   readingMinutes: 7,
   author: authors.legal,

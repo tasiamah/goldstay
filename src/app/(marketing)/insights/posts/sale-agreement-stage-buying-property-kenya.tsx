@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "sale-agreement-stage-buying-property-kenya",
   title:
     "The sale agreement stage in Kenya: a step-by-step guide for diaspora buyers",
+  metaTitle: "The sale agreement stage: buying property in Kenya",
   description:
     "From offer letter accepted to title in your name. The exact sequence of the sale agreement stage in Kenya, the documents that must change hands, the typical timelines, the KRA tax clearance step everybody underestimates, and where diaspora buyers most commonly get stuck.",
+  metaDescription:
+    "From accepted offer letter to title in your name: the sequence, the documents, the timelines and the KRA clearance step everybody underestimates.",
   publishedAt: "2025-11-22",
   readingMinutes: 9,
   author: authors.legal,

@@ -14,8 +14,11 @@ import {
 export const meta: PostMeta = {
   slug: "house-manual-airbnb-nairobi",
   title: "The house manual is the cheapest member of staff you will ever hire",
+  metaTitle: "The Airbnb house manual: a Nairobi host’s guide",
   description:
     "A good house manual answers the questions guests would otherwise message you about at midnight, and prevents most of the small problems that end up in reviews. What to put in a Nairobi one, and what to leave out.",
+  metaDescription:
+    "A good house manual answers the questions guests would otherwise message you about at midnight, and keeps small problems out of your reviews.",
   publishedAt: "2026-09-04",
   readingMinutes: 6,
   author: authors.editors,

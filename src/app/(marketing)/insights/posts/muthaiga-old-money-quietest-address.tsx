@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Muthaiga: Nairobi's old-money quietest address",
   description:
     "Muthaiga is Nairobi’s oldest premium address, anchored by the Muthaiga Country Club, the diplomatic corps and a generations-deep residential community. Here is the honest 2026 guide on who buys in Muthaiga, what property costs and how the market actually works.",
+  metaDescription:
+    "Nairobi’s oldest premium address, anchored by the country club and the diplomatic corps. What Muthaiga costs and why it stays quiet.",
   publishedAt: "2026-02-19",
   readingMinutes: 6,
   author: authors.editors,

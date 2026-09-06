@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Service charge in Nairobi apartments: what you're really paying for",
   description:
     "What service charge actually covers, why two identical-looking buildings in Kilimani charge KES 12,000 and KES 38,000 a month, the four red flags that mean the management committee is mismanaged, and how to read a service charge ledger.",
+  metaDescription:
+    "What service charge covers, why two similar Kilimani buildings charge KES 12,000 and KES 38,000, and the four red flags in a ledger.",
   publishedAt: "2025-03-07",
   readingMinutes: 7,
   author: authors.poonam,

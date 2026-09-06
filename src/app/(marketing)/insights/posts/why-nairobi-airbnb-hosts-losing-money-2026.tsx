@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why most Nairobi Airbnb hosts are losing money in 2026",
   description:
     "Nairobi has thousands of Airbnb listings and a meaningful share of hosts are net losing money in 2026 once costs and opportunity cost are honestly counted. Here is the honest 2026 explanation: why hosts lose, what works, and how to know which side of the line your unit is on.",
+  metaDescription:
+    "Nairobi has thousands of Airbnb listings and a meaningful share of hosts are net losing money in 2026 once costs are honestly counted.",
   publishedAt: "2026-02-24",
   readingMinutes: 5,
   author: authors.research,

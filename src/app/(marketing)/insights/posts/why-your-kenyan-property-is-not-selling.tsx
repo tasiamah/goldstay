@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Why your Kenyan property is not selling: the honest 2026 reasons",
   description:
     "If your Kenyan property has been on the market for months without offers, the reason is rarely bad luck. It is usually one of a small set of recurring issues. Here is the honest 2026 diagnostic checklist of why properties do not sell in Kenya and what to do about each one.",
+  metaDescription:
+    "If your Kenyan property has been on the market for months without offers, the reason is rarely bad luck. It is usually one of a small set of recurring issues.",
   publishedAt: "2025-12-26",
   readingMinutes: 7,
   author: authors.research,

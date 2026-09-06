@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Tenant deposit disputes in Nairobi: how to recover your deposit",
   description:
     "Deposit recovery is the single most common tenant-landlord dispute in Nairobi. Most are avoidable with the right move-in process and the right move-out documentation. Here is the honest 2026 guide on how to recover your deposit.",
+  metaDescription:
+    "Deposit recovery is the single most common tenant-landlord dispute in Nairobi.",
   publishedAt: "2025-12-31",
   readingMinutes: 5,
   author: authors.legal,

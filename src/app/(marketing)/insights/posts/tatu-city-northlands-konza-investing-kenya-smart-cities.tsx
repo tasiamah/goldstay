@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "tatu-city-northlands-konza-investing-kenya-smart-cities",
   title:
     "Tatu City, Northlands and Konza: investing in Kenya’s smart cities in 2026",
+  metaTitle: "Tatu City, Northlands, Konza: investing in Kenya",
   description:
     "Tatu City, Northlands and Konza Technopolis are the three master-planned cities being marketed hardest to diaspora investors today. Each is genuinely real, each is materially unfinished, and each rewards a different kind of investor. Here is the honest 2026 picture.",
+  metaDescription:
+    "Tatu City, Northlands and Konza Technopolis are the three master-planned cities being marketed hardest to diaspora investors today.",
   publishedAt: "2025-07-18",
   readingMinutes: 9,
   author: authors.research,

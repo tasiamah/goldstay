@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Parking is a bookable amenity in Nairobi and hosts undersell it",
   description:
     "Secure parking is worth real money in Nairobi and most listings mention it in passing or not at all. How to describe it, what guests actually need, and why arrival logistics deserve as much attention as the apartment.",
+  metaDescription:
+    "Secure parking is worth real money in Nairobi and most listings mention it in passing or not at all.",
   publishedAt: "2026-08-31",
   readingMinutes: 5,
   author: authors.editors,

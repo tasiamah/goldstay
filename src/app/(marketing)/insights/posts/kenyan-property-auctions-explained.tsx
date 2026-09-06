@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenyan-property-auctions-explained",
   title:
     "Kenyan property auctions explained: how they work and whether to buy",
+  metaTitle: "Kenyan property auctions: how they work",
   description:
     "Auction property in Kenya is everywhere in the press but poorly explained in practice. Here is the honest 2026 guide to how Kenyan property auctions actually work, what kinds of properties end up at auction, the realistic discounts, the genuine risks, and how to participate safely as a buyer.",
+  metaDescription:
+    "Auction property in Kenya is everywhere in the press but poorly explained in practice.",
   publishedAt: "2024-08-16",
   readingMinutes: 7,
   author: authors.editors,

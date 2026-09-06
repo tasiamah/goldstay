@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The hidden costs of building a house in Kenya in 2026",
   description:
     "Building a house in Kenya almost always costs 20 to 40 percent more than the headline construction quote. Here is the honest 2026 list of every hidden cost most owners only discover halfway through the build, with realistic ranges and how to plan for them.",
+  metaDescription:
+    "Building a house in Kenya almost always costs 20 to 40 percent more than the headline construction quote.",
   publishedAt: "2026-02-05",
   readingMinutes: 7,
   author: authors.editors,

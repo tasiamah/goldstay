@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Insurance, damage and liability on a Nairobi short let",
   description:
     "Your landlord policy may not cover paying guests, and platform protection is narrower than most hosts assume. What actually covers what, how to document damage so a claim succeeds, and the risks worth insuring properly.",
+  metaDescription:
+    "Your landlord policy may not cover paying guests, and platform protection is narrower than most hosts assume.",
   publishedAt: "2026-08-18",
   readingMinutes: 8,
   author: authors.legal,

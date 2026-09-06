@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Lower Kabete: Nairobi’s hidden premium suburb",
   description:
     "Lower Kabete sits between Westlands, Spring Valley, Loresho and Kitisuru and is one of the least-discussed premium pockets in Nairobi. Here is the honest 2026 guide on Lower Kabete property, who buys there and what the market actually looks like.",
+  metaDescription:
+    "Lower Kabete sits between Westlands, Spring Valley, Loresho and Kitisuru and is one of the least-discussed premium pockets in Nairobi.",
   publishedAt: "2026-04-12",
   readingMinutes: 5,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Westlands: the complete 2026 guide",
   description:
     "Westlands is Nairobi’s commercial heart and one of the most active premium residential markets in the city, anchored by Sarit, Westgate, the Westlands towers and a fast-growing apartment supply. Here is the honest 2026 guide on Westlands sub-areas, what property costs and how the market actually works.",
+  metaDescription:
+    "Nairobi’s commercial heart and one of its most active premium residential markets, anchored by Sarit, Westgate and the Westlands towers.",
   publishedAt: "2026-04-18",
   readingMinutes: 7,
   author: authors.editors,

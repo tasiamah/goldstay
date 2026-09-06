@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "nairobi-vs-lagos-vs-cape-town-vs-kigali-property-compared",
   title:
     "Nairobi vs Lagos vs Cape Town vs Kigali: African capital property markets compared in 2026",
+  metaTitle: "Nairobi vs Lagos vs Cape Town vs Kigali property, 2026",
   description:
     "Investors who care about African real estate end up looking at the same shortlist of capital markets. Nairobi, Lagos, Cape Town and Kigali each have very different property economics, regulatory frameworks, currency dynamics and investor experiences. Here is the honest 2026 comparison from a diaspora investor lens.",
+  metaDescription:
+    "Investors who care about African real estate end up looking at the same shortlist of capital markets.",
   publishedAt: "2025-02-26",
   readingMinutes: 9,
   author: authors.editors,

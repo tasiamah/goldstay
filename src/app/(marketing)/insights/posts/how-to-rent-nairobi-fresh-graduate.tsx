@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How to rent in Nairobi as a fresh graduate",
   description:
     "Fresh graduates in Nairobi face specific challenges renting their first apartment. First-job income, no rental history, agent fees and the specific suburbs that match a graduate budget. Here is the honest 2026 step-by-step guide.",
+  metaDescription:
+    "Fresh graduates in Nairobi face specific challenges renting their first apartment.",
   publishedAt: "2025-12-19",
   readingMinutes: 5,
   author: authors.editors,

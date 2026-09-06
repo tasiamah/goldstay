@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "NCBA mortgage 2026: the complete review",
   description:
     "NCBA emerged from the merger of CBA and NIC and has built a distinct premium and SME residential mortgage book. Here is the honest 2026 review of NCBA mortgages including rates, processing, eligibility and how to get a yes.",
+  metaDescription:
+    "NCBA emerged from the merger of CBA and NIC and has built a distinct premium and SME residential mortgage book.",
   publishedAt: "2025-12-02",
   readingMinutes: 5,
   author: authors.legal,

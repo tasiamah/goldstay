@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The Diplomat off-plan review 2026: the honest buyer guide",
   description:
     "The Diplomat is positioned as a premium Nairobi off-plan targeting the diplomatic and senior corporate tenant pool, in the Gigiri and Runda corridor. Here is the honest 2026 buyer review framework: positioning, pricing context, risks and how to evaluate before committing.",
+  metaDescription:
+    "The Diplomat is positioned as a premium Nairobi off-plan targeting the diplomatic and senior corporate tenant pool, in the Gigiri and Runda corridor.",
   publishedAt: "2026-04-22",
   readingMinutes: 5,
   author: authors.research,

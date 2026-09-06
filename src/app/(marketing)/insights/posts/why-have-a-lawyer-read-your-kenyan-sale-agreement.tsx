@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "why-have-a-lawyer-read-your-kenyan-sale-agreement",
   title:
     "Why a property lawyer should read your Kenyan sale agreement before you sign",
+  metaTitle: "Have a lawyer read your Kenyan sale agreement",
   description:
     "Sale agreements drafted by the seller's side routinely contain three to five clauses that quietly tilt the deal against the buyer. Here is what a Kenyan property lawyer actually checks, the four most common buyer-hostile clauses we still see in Nairobi, and why the KES 25,000 to 60,000 review fee is the cheapest insurance you will ever buy.",
+  metaDescription:
+    "Sale agreements drafted by the seller's side routinely contain three to five clauses that quietly tilt the deal against the buyer.",
   publishedAt: "2025-10-20",
   readingMinutes: 8,
   author: authors.legal,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "why-property-viewings-matter-buying-remotely",
   title:
     "Why a property viewing still matters when you are buying from abroad",
+  metaTitle: "Why property viewings matter when buying remotely",
   description:
     "Video walk-throughs feel thorough. They are not. Eight things only a person physically standing in the unit can see, the 14-point inspection checklist we run on every diaspora purchase, and a real example of what we caught.",
+  metaDescription:
+    "Eight things only a person standing in the unit can see, the 14-point inspection we run on every diaspora purchase, and what we caught once.",
   publishedAt: "2025-08-06",
   readingMinutes: 8,
   author: authors.editors,

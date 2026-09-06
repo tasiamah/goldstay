@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Stanbic mortgage 2026: the complete review",
   description:
     "Stanbic Bank Kenya has a long-established residential mortgage book and a particularly strong diaspora mortgage process via the Africa-China Banking platform and parent Standard Bank Group. Here is the honest 2026 review.",
+  metaDescription:
+    "Stanbic Bank Kenya reviewed as a mortgage lender in 2026, including the diaspora process through the Standard Bank Group platform.",
   publishedAt: "2026-01-31",
   readingMinutes: 5,
   author: authors.legal,

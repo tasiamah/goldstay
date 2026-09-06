@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Water supply is the question to ask before you take a Nairobi unit",
   description:
     "Nairobi water is intermittent by design, and buildings manage it with tanks and boreholes of very different quality. The questions that reveal what you are really getting, and what to do about a weak supply.",
+  metaDescription:
+    "Nairobi water is intermittent by design, and buildings manage it with tanks and boreholes of very different quality.",
   publishedAt: "2026-08-27",
   readingMinutes: 6,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Nairobi’s Indian and Arab buyers prefer specific suburbs",
   description:
     "Nairobi’s Indian (Asian) and Arab buyer cohorts have distinct suburb preferences shaped by community, religious infrastructure, family ties and business networks. Here is the honest 2026 explanation of where each cohort buys and why.",
+  metaDescription:
+    "Nairobi’s Asian and Arab buyer cohorts have distinct suburb preferences shaped by community, religious infrastructure and business networks.",
   publishedAt: "2026-03-15",
   readingMinutes: 5,
   author: authors.editors,

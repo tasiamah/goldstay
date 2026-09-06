@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "how-to-refinance-mortgage-kenya-2026",
   title:
     "How to refinance a mortgage in Kenya in 2026: the realistic playbook",
+  metaTitle: "How to refinance a mortgage in Kenya, 2026",
   description:
     "Refinancing a Kenyan mortgage is more accessible in 2026 than it was three years ago, with rates moderating and bank competition increasing. Here is the honest 2026 playbook on when to refinance, who actually offers it, what it costs, and the savings the right refinance produces.",
+  metaDescription:
+    "Refinancing a Kenyan mortgage is more accessible in 2026 than it was three years ago, with rates moderating and bank competition increasing.",
   publishedAt: "2025-08-25",
   readingMinutes: 7,
   author: authors.editors,

@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "How to buy a plot of land in Kenya: a step by step 2026 guide",
   description:
     "Buying a plot of land in Kenya is not the same process as buying an apartment. Different documents, different consents, different risks. This is the full step by step from finding the plot to registering the title in your name, written for diaspora buyers and first time land owners.",
+  metaDescription:
+    "Buying a plot of land in Kenya is not the same process as buying an apartment. Different documents, different consents, different risks.",
   publishedAt: "2025-05-18",
   updatedAt: "2026-07-27",
   readingMinutes: 9,

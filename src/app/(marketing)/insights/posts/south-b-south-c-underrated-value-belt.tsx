@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "South B and South C: Nairobi’s underrated value belt in 2026",
   description:
     "South B and South C sit between the airport, the CBD and Westlands and have somehow stayed cheaper than most of the suburbs around them. Here is the honest 2026 read on the South B and South C property market, who lives there, what rent looks like and why disciplined investors keep buying in.",
+  metaDescription:
+    "South B and South C sit between the airport, the CBD and Westlands and have somehow stayed cheaper than most of the suburbs around them.",
   publishedAt: "2026-02-15",
   readingMinutes: 6,
   author: authors.editors,

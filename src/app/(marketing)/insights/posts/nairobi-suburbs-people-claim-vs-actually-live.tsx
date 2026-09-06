@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "nairobi-suburbs-people-claim-vs-actually-live",
   title:
     "The Nairobi suburbs people claim to live in vs where they actually live",
+  metaTitle: "The Nairobi suburbs people claim to live in",
   description:
     "Status anchors how Nairobians describe where they live. Lavington often means Lavington fringe. Westlands often means a 7km walk to Westlands core. Karen often means Karen edge. Here is the honest 2026 map of claimed vs actual residence and what it tells us about pricing.",
+  metaDescription:
+    "Status anchors how Nairobians describe where they live. Lavington often means Lavington fringe. Westlands often means a 7km walk to Westlands core.",
   publishedAt: "2026-02-03",
   readingMinutes: 5,
   author: authors.editors,

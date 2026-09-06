@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "affordable-housing-programme-2026-delivered",
   title:
     "Affordable Housing Programme 2026: what has actually been delivered",
+  metaTitle: "Affordable Housing Programme 2026: what was built",
   description:
     "The Affordable Housing Programme (AHP) was the most ambitious property policy initiative of the Kenyan government in recent years. Here is the honest 2026 stocktake on what has actually been delivered, what is in pipeline, and what it means for first-time Nairobi buyers.",
+  metaDescription:
+    "The Affordable Housing Programme (AHP) was the most ambitious property policy initiative of the Kenyan government in recent years.",
   publishedAt: "2026-03-14",
   readingMinutes: 5,
   author: authors.legal,

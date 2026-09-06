@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Nairobi stamp duty calculator: worked examples for 2026",
   description:
     "Stamp duty in Nairobi is 4 percent of the higher of purchase price or government valuation, payable by the buyer. Here are the honest 2026 worked examples across price points, including KMRC-eligible affordable housing exemptions.",
+  metaDescription:
+    "Stamp duty in Nairobi is 4 percent of the higher of purchase price or government valuation, payable by the buyer.",
   publishedAt: "2025-11-28",
   readingMinutes: 4,
   author: authors.legal,

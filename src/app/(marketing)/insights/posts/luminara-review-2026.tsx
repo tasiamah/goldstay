@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Luminara off-plan review 2026: the honest buyer guide",
   description:
     "Luminara is one of the most marketed Nairobi off-plan launches in the 2026 cycle, targeting mid-premium buyers in the Westlands and Lavington corridor. Here is the honest 2026 buyer review framework, including pricing context, segment positioning, risks and how to evaluate before committing.",
+  metaDescription:
+    "Luminara is one of the most marketed Nairobi off-plan launches in the 2026 cycle, targeting mid-premium buyers in the Westlands and Lavington corridor.",
   publishedAt: "2026-04-25",
   readingMinutes: 5,
   author: authors.research,

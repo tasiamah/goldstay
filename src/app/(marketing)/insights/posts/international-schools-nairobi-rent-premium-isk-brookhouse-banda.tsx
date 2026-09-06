@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "international-schools-nairobi-rent-premium-isk-brookhouse-banda",
   title:
     "International school catchments and Nairobi rent: ISK, Brookhouse, Banda, Hillcrest, Peponi",
+  metaTitle: "Nairobi international school catchments and rent",
   description:
     "International schools shape Nairobi’s premium rental market more than any other single demand driver. Here is how the catchments around ISK, Brookhouse, Banda, Hillcrest, Peponi, GEMS Cambridge, Crawford and Nova Pioneer actually move rent, what families look for and which compounds rent before they even hit the market.",
+  metaDescription:
+    "International schools shape Nairobi’s premium rental market more than any other single demand driver.",
   publishedAt: "2025-07-03",
   readingMinutes: 8,
   author: authors.poonam,

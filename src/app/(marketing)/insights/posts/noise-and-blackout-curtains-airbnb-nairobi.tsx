@@ -13,8 +13,11 @@ import {
 export const meta: PostMeta = {
   slug: "noise-and-blackout-curtains-airbnb-nairobi",
   title: "Light and noise are the two Nairobi complaints hosts never see coming",
+  metaTitle: "Noise and blackout curtains for a Nairobi Airbnb",
   description:
     "You slept through the generator and the 6am sun because you do not live there. Guests do not. What to fix, what to disclose honestly, and why blackout curtains are the cheapest rating improvement available.",
+  metaDescription:
+    "You slept through the generator and the 6am sun because you do not live there. Guests do not.",
   publishedAt: "2026-09-01",
   readingMinutes: 6,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Tigoni and Limuru: Nairobi’s country edge in 2026",
   description:
     "Tigoni and Limuru sit on the cool, leafy edge of Nairobi 30 minutes from Westlands and have quietly become one of the most premium country home markets in Kenya. Here is the honest 2026 guide on who lives there, what property costs and why disciplined buyers keep showing up.",
+  metaDescription:
+    "Tigoni and Limuru, 30 minutes from Westlands, have quietly become one of Kenya’s most premium country home markets. Prices and practicalities.",
   publishedAt: "2025-07-04",
   readingMinutes: 6,
   author: authors.editors,

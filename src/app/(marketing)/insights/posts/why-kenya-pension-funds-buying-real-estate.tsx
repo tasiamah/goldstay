@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Kenya’s pension funds are buying real estate aggressively",
   description:
     "Kenya’s pension funds (NSSF, large corporate schemes, public sector) have meaningfully increased real estate allocation through 2024 to 2026. Here is the honest 2026 explanation: why they are buying, what they are buying, and what it means for the wider Nairobi market.",
+  metaDescription:
+    "Kenya’s pension funds (NSSF, large corporate schemes, public sector) have meaningfully increased real estate allocation through 2024 to 2026.",
   publishedAt: "2026-03-27",
   readingMinutes: 5,
   author: authors.research,

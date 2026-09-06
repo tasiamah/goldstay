@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "buy-first-nairobi-property-12-months",
   title:
     "How to buy your first Nairobi property in 12 months: the realistic plan",
+  metaTitle: "Buy your first Nairobi property in 12 months",
   description:
     "Most first-time Nairobi buyers think they need 3 to 5 years to save and prepare. The disciplined buyer can be on the ladder in 12 months. Here is the honest 2026 month-by-month plan from decision to keys.",
+  metaDescription:
+    "Most first-time Nairobi buyers think they need 3 to 5 years to save and prepare. The disciplined buyer can be on the ladder in 12 months.",
   publishedAt: "2026-02-22",
   readingMinutes: 5,
   author: authors.editors,

@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Buying property in Accra as a diaspora Ghanaian: the 2026 guide",
   description:
     "Everything diaspora Ghanaians actually need to know to buy a property in Accra in 2026. The leasehold reality, neighbourhood guide, the legal pitfalls, the cost stack, and how to do it without flying home.",
+  metaDescription:
+    "Everything diaspora Ghanaians actually need to know to buy a property in Accra in 2026.",
   publishedAt: "2024-11-05",
   readingMinutes: 11,
   author: authors.legal,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Why your Nairobi Airbnb is not getting bookings",
   description:
     "A diagnostic for an empty short let calendar in Nairobi. Work through it in order, because the causes are ranked by how often they are the real problem and most hosts start at the wrong end.",
+  metaDescription:
+    "A diagnostic for an empty Nairobi short-let calendar, ranked by how often each cause is the real problem. Most hosts start at the wrong end.",
   publishedAt: "2026-08-03",
   readingMinutes: 8,
   author: authors.editors,

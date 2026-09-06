@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Nairobi property market review: the honest H2 2026 update",
   description:
     "Rents, yields, transaction volumes, off-plan delivery, and the two things nobody in the market wants to say out loud. Our half-year read on Nairobi property, six months on from the H1 review.",
+  metaDescription:
+    "Rents, yields, transaction volumes, off-plan delivery, and the two things nobody in the market wants to say out loud.",
   publishedAt: "2026-07-25",
   readingMinutes: 9,
   author: authors.research,

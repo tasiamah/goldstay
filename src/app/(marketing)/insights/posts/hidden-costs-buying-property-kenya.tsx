@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "The hidden costs of buying property in Kenya nobody talks about",
   description:
     "Buying property in Kenya is rarely just the purchase price. The hidden costs add 8 to 12 percent on top, and most first-time buyers do not budget for them. Here is the honest 2026 list of every cost beyond the asking price, with realistic ranges, who collects them and how to avoid the surprises.",
+  metaDescription:
+    "Buying property in Kenya is rarely just the purchase price. The hidden costs add 8 to 12 percent on top, and most first-time buyers do not budget for them.",
   publishedAt: "2026-02-10",
   readingMinutes: 7,
   author: authors.legal,

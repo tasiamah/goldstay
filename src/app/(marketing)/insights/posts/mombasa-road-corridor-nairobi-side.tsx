@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The Mombasa Road corridor: Nairobi’s southern residential belt",
   description:
     "Mombasa Road runs from the Nairobi CBD past JKIA into the southern metro. The suburbs along the way each have distinct character and tenant profiles, anchored by the airport, the Industrial Area and the SGR. Here is the honest 2026 guide on the Nairobi side of the corridor.",
+  metaDescription:
+    "Mombasa Road runs from the Nairobi CBD past JKIA into the southern metro.",
   publishedAt: "2026-03-13",
   readingMinutes: 5,
   author: authors.editors,

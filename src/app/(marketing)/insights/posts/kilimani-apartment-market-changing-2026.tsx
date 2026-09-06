@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kilimani-apartment-market-changing-2026",
   title:
     "Kilimani is changing: what happened to Nairobi’s busiest apartment market",
+  metaTitle: "Kilimani’s apartment market: what’s changing in 2026",
   description:
     "Kilimani was the apartment story of the 2010s in Nairobi. By 2026 the picture is more complicated. Oversupply, traffic, GenZ preferences and the expressway have all reshaped the suburb. Here is the honest read on what changed, who is still buying there, and what it means for owners and investors.",
+  metaDescription:
+    "Kilimani was the apartment story of the 2010s in Nairobi. By 2026 the picture is more complicated.",
   publishedAt: "2024-09-14",
   readingMinutes: 7,
   author: authors.research,

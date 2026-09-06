@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a Nigerian: the 2026 guide",
   description:
     "Nigerians are among the most active African investor cohorts in the Nairobi property market. Tech, energy, fintech, NGO and corporate Nigerians live and invest in Kenya. Here is the honest 2026 buyer guide for Nigerian buyers in Nairobi.",
+  metaDescription:
+    "Nigerians are among the most active African investor cohorts in the Nairobi property market.",
   publishedAt: "2026-01-12",
   readingMinutes: 5,
   author: authors.editors,

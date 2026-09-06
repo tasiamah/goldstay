@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Best Nairobi suburbs for young professionals in 2026 ranked",
   description:
     "Young professionals (mid-twenties to mid-thirties) anchor Nairobi's most active rental cohort. Here is the honest 2026 ranked list of the best Nairobi suburbs for young professionals across lifestyle, commute, security, value and community.",
+  metaDescription:
+    "Young professionals (mid-twenties to mid-thirties) anchor Nairobi's most active rental cohort.",
   publishedAt: "2026-01-25",
   readingMinutes: 6,
   author: authors.editors,

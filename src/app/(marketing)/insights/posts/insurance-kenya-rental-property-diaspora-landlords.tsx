@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "insurance-kenya-rental-property-diaspora-landlords",
   title:
     "Insurance for Kenyan rental property: what diaspora landlords actually need in 2026",
+  metaTitle: "Insurance for Kenyan rental property: diaspora landlords",
   description:
     "Most Kenyan apartment owners are underinsured and most landlords find out at exactly the wrong moment. Buildings cover, contents cover, public liability, loss of rent, fire and burglary, climate cover. Here is the practical 2026 guide to property insurance for diaspora landlords, the providers worth shortlisting and the policy traps to avoid.",
+  metaDescription:
+    "Most Kenyan apartment owners are underinsured and most landlords find out at exactly the wrong moment.",
   publishedAt: "2025-03-17",
   readingMinutes: 7,
   author: authors.poonam,

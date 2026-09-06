@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Ruiru and Tatu City: the institutional north",
   description:
     "Ruiru sits on the Thika Superhighway with Tatu City, Northlands and several master-planned communities reshaping the residential map of Nairobi’s north. Here is the honest 2026 guide on Ruiru, Tatu City and the institutional north corridor.",
+  metaDescription:
+    "Ruiru sits on the Thika Superhighway with Tatu City, Northlands and several master-planned communities reshaping the residential map of Nairobi’s north.",
   publishedAt: "2026-04-02",
   readingMinutes: 6,
   author: authors.editors,

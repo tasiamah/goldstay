@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Tenant rights in Kenya: the complete 2026 guide",
   description:
     "Tenant rights in Kenya are framed by the Distress for Rent Act, the Rent Restriction Act, the Landlord and Tenant Act and constitutional protections. Here is the honest 2026 plain-English guide on what tenants can and cannot do, and what landlords can and cannot do.",
+  metaDescription:
+    "Tenant rights in Kenya are framed by the Distress for Rent Act, the Rent Restriction Act, the Landlord and Tenant Act and constitutional protections.",
   publishedAt: "2026-01-03",
   readingMinutes: 6,
   author: authors.legal,

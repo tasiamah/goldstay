@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "mpesa-paybill-rent-collection-nairobi-landlords",
   title:
     "M-Pesa Paybill and bank rent collection for Nairobi landlords: the practical 2026 guide",
+  metaTitle: "M-Pesa Paybill rent collection for Nairobi landlords",
   description:
     "Cash and bank deposits are slowly losing ground to M-Pesa Paybill for rent collection in Nairobi. Here is how Paybill actually works for landlords, the cost, the reconciliation realities, the tax exposure and the bank account setup that makes the whole thing work cleanly for diaspora owners.",
+  metaDescription:
+    "Cash and bank deposits are slowly losing ground to M-Pesa Paybill for rent collection in Nairobi.",
   publishedAt: "2025-03-26",
   readingMinutes: 7,
   author: authors.poonam,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "ardhisasa-using-kenya-digital-land-platform-from-abroad",
   title:
     "Ardhisasa explained: using Kenya’s digital land platform from abroad",
+  metaTitle: "Ardhisasa: Kenya’s digital land platform from abroad",
   description:
     "Ardhisasa is gradually replacing the Ardhi House paper registry. For diaspora landlords and buyers it changes how title searches, transfers and land rates payments are handled. Here is what works on Ardhisasa today, what still needs the physical registry, and how to set up your account from outside Kenya.",
+  metaDescription:
+    "What works on Ardhisasa today, what still needs the physical registry, and how to set up an account from outside Kenya as a diaspora owner.",
   publishedAt: "2025-08-16",
   readingMinutes: 7,
   author: authors.legal,

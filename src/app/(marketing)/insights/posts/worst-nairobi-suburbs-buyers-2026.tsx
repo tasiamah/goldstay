@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The worst Nairobi suburbs to buy in 2026: the honest list",
   description:
     "Not every Nairobi suburb is a good purchase right now. Here is the honest 2026 list of pockets and segments where the buyer typically gets the worst end of the deal, and why each one is on the list.",
+  metaDescription:
+    "The Nairobi pockets and segments where a buyer typically gets the worst end of the deal in 2026, and the reason each one is on the list.",
   publishedAt: "2026-03-23",
   readingMinutes: 5,
   author: authors.editors,

@@ -14,8 +14,11 @@ import {
 export const meta: PostMeta = {
   slug: "nairobi-handover-wave-2026-what-it-means-for-rents",
   title: "The 2026 handover wave: what all this new supply does to your rent",
+  metaTitle: "Nairobi’s 2026 handover wave: what it means for rents",
   description:
     "A cluster of large Nairobi towers is completing across 2026 and 2027, concentrated in Westlands and the Riverside corridor. What that does to rents, voids and short let rates, and what existing landlords should do about it now.",
+  metaDescription:
+    "A cluster of large Nairobi towers is completing across 2026 and 2027, concentrated in Westlands and the Riverside corridor.",
   publishedAt: "2026-08-06",
   readingMinutes: 8,
   author: authors.research,

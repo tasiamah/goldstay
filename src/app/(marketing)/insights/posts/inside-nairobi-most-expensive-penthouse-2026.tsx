@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "inside-nairobi-most-expensive-penthouse-2026",
   title:
     "Inside Nairobi's most expensive penthouses 2026: what KES 800m buys",
+  metaTitle: "Inside Nairobi’s most expensive penthouses, 2026",
   description:
     "The top Nairobi penthouses sit at price points few people imagine. KES 400m to KES 800m for the rarest units. Here is the honest 2026 picture: who buys them, what they include, where they are concentrated and whether the prices make sense.",
+  metaDescription:
+    "The top Nairobi penthouses sit at price points few people imagine. KES 400m to KES 800m for the rarest units.",
   publishedAt: "2026-02-18",
   readingMinutes: 5,
   author: authors.research,

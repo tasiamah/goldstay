@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "buying-property-fresh-graduate-nairobi",
   title:
     "Buying property as a fresh graduate in Nairobi: the honest 2026 guide",
+  metaTitle: "Buying property as a fresh graduate in Nairobi",
   description:
     "Buying property in your first decade of working life is harder than the marketing suggests, but it is possible. Here is the honest 2026 guide for fresh graduates in Nairobi on saving, mortgage qualification, neighbourhood selection and avoiding the early career property mistakes.",
+  metaDescription:
+    "Buying property in your first decade of working life is harder than the marketing suggests, but it is possible.",
   publishedAt: "2025-12-20",
   readingMinutes: 6,
   author: authors.editors,

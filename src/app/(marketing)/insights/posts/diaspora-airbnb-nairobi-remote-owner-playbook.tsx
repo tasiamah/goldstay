@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Running a Nairobi Airbnb from abroad: the remote owner playbook",
   description:
     "Short lets are the hardest thing to run remotely and plenty of diaspora owners do it well. The controls that make it work, the failure modes specific to distance, and the honest case for not doing it at all.",
+  metaDescription:
+    "Short lets are the hardest thing to run remotely and plenty of diaspora owners do it well.",
   publishedAt: "2026-08-16",
   readingMinutes: 9,
   author: authors.editors,

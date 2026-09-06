@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Is there a Nairobi property bubble in 2026? The honest answer",
   description:
     "Headlines warn of a Nairobi property bubble every year. The honest 2026 answer is more nuanced. Here is the segment-by-segment view on where prices look stretched, where they look durable and what investors should actually do.",
+  metaDescription:
+    "Headlines warn of a Nairobi property bubble every year. The honest 2026 answer is more nuanced.",
   publishedAt: "2026-04-04",
   readingMinutes: 5,
   author: authors.research,

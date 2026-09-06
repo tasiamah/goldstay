@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "buying-property-mombasa-old-town-2026-diaspora",
   title:
     "Buying property in Mombasa Old Town: the honest 2026 diaspora guide",
+  metaTitle: "Mombasa Old Town property: a 2026 diaspora guide",
   description:
     "Old Town Mombasa is unlike anywhere else on the East African coast. Buying here rewards patience and punishes the assumptions that work in Nairobi. This is the diaspora buyer's honest 2026 guide.",
+  metaDescription:
+    "Old Town Mombasa is unlike anywhere else on the East African coast. Buying here rewards patience and punishes the assumptions that work in Nairobi.",
   publishedAt: "2026-05-12",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

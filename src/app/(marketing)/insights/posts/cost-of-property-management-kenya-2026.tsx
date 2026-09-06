@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "cost-of-property-management-kenya-2026",
   title:
     "How much does property management actually cost in Kenya in 2026?",
+  metaTitle: "Property management costs in Kenya, 2026",
   description:
     "Real numbers on what Kenyan property managers charge in 2026, what's quoted vs what's actually deducted, and the eight hidden line items that determine whether a 10% fee is cheap or expensive.",
+  metaDescription:
+    "What Kenyan property managers charge in 2026, what is quoted against what is actually deducted, and the hidden line items that decide the real cost.",
   publishedAt: "2025-06-09",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

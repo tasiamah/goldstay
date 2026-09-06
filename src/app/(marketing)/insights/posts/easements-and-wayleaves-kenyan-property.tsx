@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "easements-and-wayleaves-kenyan-property",
   title:
     "Easements and wayleaves on Kenyan property: what they are and what they mean for value",
+  metaTitle: "Easements and wayleaves on Kenyan property",
   description:
     "Easements and wayleaves are the most ignored line items in a Kenyan title search. They affect what you can build, where you can build, and what your land is actually worth. Here is the honest 2026 guide on how easements and wayleaves work in Kenya, the common types and how to deal with them.",
+  metaDescription:
+    "Easements and wayleaves are the most ignored line items in a Kenyan title search.",
   publishedAt: "2024-07-19",
   readingMinutes: 6,
   author: authors.legal,

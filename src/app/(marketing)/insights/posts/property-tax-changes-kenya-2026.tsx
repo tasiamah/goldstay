@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "property-tax-changes-kenya-2026",
   title:
     "Property tax changes Kenya 2026: what buyers and landlords must know",
+  metaTitle: "Property tax changes in Kenya, 2026",
   description:
     "Property-related taxation in Kenya has evolved meaningfully through the Finance Act and KRA enforcement focus. Here is the honest 2026 summary on what changed, what is enforced harder, and what every buyer and landlord must know.",
+  metaDescription:
+    "Property-related taxation in Kenya has evolved meaningfully through the Finance Act and KRA enforcement focus.",
   publishedAt: "2026-01-28",
   readingMinutes: 5,
   author: authors.legal,

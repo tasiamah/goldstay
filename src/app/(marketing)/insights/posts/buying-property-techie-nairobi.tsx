@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a tech professional",
   description:
     "Tech salaries in Nairobi have grown sharply. The honest 2026 guide on where Nairobi techies actually buy, what they earn, what they can afford and the financial discipline that separates good outcomes from regrets.",
+  metaDescription:
+    "Where Nairobi techies actually buy, what they earn, what they can afford, and the financial discipline that separates good outcomes from regrets.",
   publishedAt: "2026-02-02",
   readingMinutes: 6,
   author: authors.editors,

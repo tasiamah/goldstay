@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "How to spot a fake Kenyan title deed in 2026",
   description:
     "Fake title deeds in Kenya are sophisticated enough that most buyers cannot tell the difference. The forgery never survives a proper Lands Registry search, but the buyer who never runs that search remains exposed. Here is the honest 2026 guide on what real and fake titles look like and how to verify in five minutes.",
+  metaDescription:
+    "Fake title deeds in Kenya are sophisticated enough that most buyers cannot tell the difference.",
   publishedAt: "2025-10-05",
   readingMinutes: 6,
   author: authors.legal,

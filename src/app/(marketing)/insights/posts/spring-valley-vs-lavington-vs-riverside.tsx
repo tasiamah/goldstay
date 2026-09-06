@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "spring-valley-vs-lavington-vs-riverside",
   title:
     "Spring Valley vs Lavington vs Riverside: which one suits you in 2026?",
+  metaTitle: "Spring Valley vs Lavington vs Riverside, 2026",
   description:
     "Spring Valley, Lavington and Riverside are the three premium suburbs that returning diaspora professionals usually choose between. Each one has a distinct personality, price level, tenant pool and trade-off. Here is the honest 2026 comparison.",
+  metaDescription:
+    "Spring Valley, Lavington and Riverside are the three premium suburbs that returning diaspora professionals usually choose between.",
   publishedAt: "2026-03-20",
   readingMinutes: 7,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Optiven Group review 2026: the honest land-buyer guide",
   description:
     "Optiven Group is the largest serviced-plot land seller in Kenya and one of the most recognised consumer brands in the property sector. Here is the honest 2026 buyer review of Optiven for serviced plots and value-added land.",
+  metaDescription:
+    "Optiven Group is the largest serviced-plot land seller in Kenya and one of the most recognised consumer brands in the property sector.",
   publishedAt: "2026-02-05",
   readingMinutes: 5,
   author: authors.research,

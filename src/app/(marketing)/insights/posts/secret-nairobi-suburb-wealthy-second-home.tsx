@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Inside the secret Nairobi suburb the wealthy use as a second home",
   description:
     "While the wider market obsesses over Karen and Lavington, a smaller cohort of Nairobi UHNW families has been quietly building a second-home pattern in a specific corridor. Here is the honest 2026 read on the secret Nairobi second-home market and why it works.",
+  metaDescription:
+    "While the market watches Karen and Lavington, a cohort of Nairobi’s wealthiest families has been quietly building second homes elsewhere.",
   publishedAt: "2026-03-03",
   readingMinutes: 5,
   author: authors.research,

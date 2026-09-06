@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "solar-and-backup-power-nairobi-rental-property",
   title:
     "Solar and backup power for Nairobi rental property: what actually pays back",
+  metaTitle: "Solar and backup power for Nairobi rental property",
   description:
     "Power outages in Nairobi are short but routine. Solar PV, inverters and battery backup are increasingly standard in mid-market rentals. Here is what actually pays back, what does not, and what tenants have started expecting from a serious Nairobi rental in 2026.",
+  metaDescription:
+    "Power outages in Nairobi are short but routine. Solar PV, inverters and battery backup are increasingly standard in mid-market rentals.",
   publishedAt: "2025-06-19",
   readingMinutes: 7,
   author: authors.poonam,

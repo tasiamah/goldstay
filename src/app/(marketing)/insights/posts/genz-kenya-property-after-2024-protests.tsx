@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "GenZ and Kenyan property: housing after the 2024 to 2025 protests",
   description:
     "The 2024 to 2025 GenZ protests changed Kenyan politics and changed the property conversation. Younger Kenyans are openly sceptical of the housing dream their parents took for granted. Here is the honest 2026 read on what the GenZ moment means for Nairobi property markets, ownership patterns and the next decade of demand.",
+  metaDescription:
+    "The 2024 to 2025 GenZ protests changed Kenyan politics and changed the property conversation.",
   publishedAt: "2024-11-24",
   readingMinutes: 7,
   author: authors.editors,

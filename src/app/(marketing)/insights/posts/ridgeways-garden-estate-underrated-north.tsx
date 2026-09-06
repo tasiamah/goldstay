@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Ridgeways and Garden Estate: Nairobi’s underrated north",
   description:
     "Ridgeways and Garden Estate sit on Kiambu Road north of the city, with mature trees, mid-premium family homes and a residential character that does not chase trends. Here is the honest 2026 guide on Nairobi’s underrated north.",
+  metaDescription:
+    "Ridgeways and Garden Estate on Kiambu Road: mature trees, mid-premium family homes and a residential character that does not chase trends.",
   publishedAt: "2025-10-30",
   readingMinutes: 5,
   author: authors.editors,

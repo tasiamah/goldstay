@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "how-to-tell-if-relative-kenya-scamming-you",
   title:
     "How to tell if your relative back in Kenya is scamming you on a property project",
+  metaTitle: "Is your relative in Kenya scamming you on property?",
   description:
     "Most diaspora Kenyans who lose money on Kenyan property do not lose it to strangers. They lose it to relatives or family friends managing the project on the ground. Here are the patterns, the red flags, the ways to verify quietly, and what to do when the suspicion is correct.",
+  metaDescription:
+    "Most diaspora Kenyans who lose money on Kenyan property do not lose it to strangers.",
   publishedAt: "2025-01-29",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

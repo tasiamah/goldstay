@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "The kettle is the most important object in your Airbnb",
   description:
     "The most used item in a Nairobi short let costs almost nothing and is usually the cheapest one in the flat. Which small kitchen items guests actually reach for, and which expensive ones nobody touches.",
+  metaDescription:
+    "The most used item in a Nairobi short let costs almost nothing and is usually the cheapest one in the flat.",
   publishedAt: "2026-08-24",
   readingMinutes: 6,
   author: authors.editors,

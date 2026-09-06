@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "sending-money-to-ghana-property-closing-2026",
   title:
     "Sending money to Ghana to close a property deal: FX, wire routes, and what the lawyer really needs",
+  metaTitle: "Sending money to Ghana for a property closing, 2026",
   description:
     "The mechanics of moving USD, GBP or EUR into Ghana for a property closing are simpler than they used to be, but expensive if you take the wrong route. This is the honest 2026 breakdown of the wire options, the Bank of Ghana rules, and what documentation the receiving advocate genuinely needs.",
+  metaDescription:
+    "The mechanics of moving USD, GBP or EUR into Ghana for a property closing are simpler than they used to be, but expensive if you take the wrong route.",
   publishedAt: "2026-07-16",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

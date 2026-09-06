@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "why-eastlands-most-underrated-investment-market",
   title:
     "Why Eastlands is Nairobi’s most underrated investment market in 2026",
+  metaTitle: "Why Eastlands is Nairobi’s most underrated investment market",
   description:
     "Eastlands carries deep cultural roots, scale, density and durable rental demand. The wider investor market overlooks it. Here is the honest 2026 explanation of why Eastlands is the most underrated Nairobi investment market and where in Eastlands actually works.",
+  metaDescription:
+    "Eastlands carries deep cultural roots, scale, density and durable rental demand. The wider investor market overlooks it.",
   publishedAt: "2026-03-06",
   readingMinutes: 5,
   author: authors.editors,

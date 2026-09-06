@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "how-to-sell-nairobi-property-30-days",
   title:
     "How to sell your Nairobi property in 30 days: the realistic 2026 playbook",
+  metaTitle: "How to sell your Nairobi property in 30 days",
   description:
     "Selling a Nairobi property in 30 days is possible but only with disciplined preparation. Here is the honest 2026 playbook on what it actually takes, the realistic price you give up for the speed, and the moments where the 30 day target succeeds or fails.",
+  metaDescription:
+    "Selling a Nairobi property in 30 days is possible but only with disciplined preparation.",
   publishedAt: "2025-12-16",
   readingMinutes: 7,
   author: authors.research,

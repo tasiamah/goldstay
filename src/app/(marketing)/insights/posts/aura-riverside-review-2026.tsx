@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Aura Riverside: an honest look at the numbers behind the duplexes",
   description:
     "Aura Riverside by Canaan Developers is a 20 storey Riverside tower of one and two bedroom duplexes from around USD 95,000, marketed on yields of 9 to 13 percent. We test that yield claim against what Riverside rents actually are.",
+  metaDescription:
+    "A 20-storey Riverside tower of one and two-bed duplexes from about USD 95,000, marketed on 9 to 13% yields. Here is how those numbers hold up.",
   publishedAt: "2026-08-05",
   readingMinutes: 9,
   author: authors.research,

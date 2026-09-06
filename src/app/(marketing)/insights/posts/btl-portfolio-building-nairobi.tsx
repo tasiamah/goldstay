@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Building a buy-to-let portfolio in Nairobi: the 2026 playbook",
   description:
     "Building a buy-to-let portfolio in Nairobi is realistic for disciplined investors over 7 to 15 years. Here is the honest 2026 playbook on suburb selection, gearing, scaling, structuring and the operational discipline that separates the working portfolios from the painful ones.",
+  metaDescription:
+    "Building a buy-to-let portfolio in Nairobi is realistic for disciplined investors over 7 to 15 years.",
   publishedAt: "2025-12-01",
   readingMinutes: 6,
   author: authors.research,

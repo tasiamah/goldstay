@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "caveats-and-cautions-on-kenyan-title-removal",
   title:
     "Caveats and cautions on a Kenyan title: what they are and how to deal with them",
+  metaTitle: "Caveats and cautions on a Kenyan title, and removal",
   description:
     "Caveats and cautions are the most common reason Kenyan property transactions get stuck. Here is the honest 2026 guide to what they actually are, the differences between them, why they get registered, who can register them, and how to remove them so a transaction can complete.",
+  metaDescription:
+    "Caveats and cautions are the most common reason Kenyan property transactions get stuck.",
   publishedAt: "2024-07-28",
   readingMinutes: 7,
   author: authors.legal,

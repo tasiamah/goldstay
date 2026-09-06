@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Donholm: the complete 2026 guide",
   description:
     "Donholm sits on Outer Ring Road in eastern Nairobi, a planned mid-market estate with deep multigenerational roots, established schools and a substantial residential and rental market. Here is the honest 2026 guide on Donholm property and how the market actually works.",
+  metaDescription:
+    "Donholm on Outer Ring Road: a planned mid-market estate with deep roots, established schools and a substantial rental market. Prices and yields.",
   publishedAt: "2026-03-31",
   readingMinutes: 5,
   author: authors.editors,

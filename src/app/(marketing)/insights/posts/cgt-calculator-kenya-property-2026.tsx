@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Capital Gains Tax calculator Kenya 2026: worked examples",
   description:
     "Capital Gains Tax (CGT) on property in Kenya is 15 percent of the gain on disposal. Calculation depends on adjusted cost base, allowable improvements and sale costs. Here are the honest 2026 worked examples for sellers in Nairobi.",
+  metaDescription:
+    "Capital Gains Tax (CGT) on property in Kenya is 15 percent of the gain on disposal.",
   publishedAt: "2025-11-16",
   readingMinutes: 4,
   author: authors.legal,

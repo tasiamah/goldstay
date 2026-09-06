@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Nairobi Airbnb occupancy: what to expect month by month",
   description:
     "Nairobi short let demand is seasonal and most hosts model it wrong. Where the strong and weak months sit, why January surprises people, and how to plan a calendar around a market that is not flat.",
+  metaDescription:
+    "Nairobi short let demand is seasonal and most hosts model it wrong.",
   publishedAt: "2026-07-31",
   readingMinutes: 8,
   author: authors.research,

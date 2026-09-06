@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "title-fraud-kenya-7-schemes-spot",
   title:
     "Title fraud in Kenya: the 7 most common schemes and how to spot them in 2026",
+  metaTitle: "Title fraud in Kenya: 7 schemes to spot in 2026",
   description:
     "Title fraud in Kenya costs unsuspecting buyers and owners billions every year. The schemes are predictable once you know them. Here is the honest 2026 guide to the seven most common title fraud schemes in Kenya, how each one works, and the specific signal that exposes each one.",
+  metaDescription:
+    "Title fraud in Kenya costs unsuspecting buyers and owners billions every year. The schemes are predictable once you know them.",
   publishedAt: "2025-10-30",
   readingMinutes: 7,
   author: authors.legal,

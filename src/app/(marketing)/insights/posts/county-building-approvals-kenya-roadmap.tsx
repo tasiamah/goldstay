@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "County building approvals in Kenya: the practical 2026 roadmap",
   description:
     "Building approvals in Kenya are run by the counties and they are one of the most procedural parts of the build. Here is the honest 2026 roadmap on county building approvals, who you need, how long each step takes, what each one costs, and how to keep the build on schedule.",
+  metaDescription:
+    "Building approvals in Kenya are run by the counties and they are one of the most procedural parts of the build.",
   publishedAt: "2025-12-07",
   readingMinutes: 7,
   author: authors.legal,

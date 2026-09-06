@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The Nairobi developer brands buyers actually trust in 2026",
   description:
     "Most Nairobi developers market loudly. A smaller cohort delivers consistently and earns durable buyer trust. Here is the honest 2026 list of developer brands that the wider Nairobi buyer market actually trusts, and what makes the trusted ones different.",
+  metaDescription:
+    "Most Nairobi developers market loudly. A smaller cohort delivers consistently and earns durable buyer trust.",
   publishedAt: "2026-03-24",
   readingMinutes: 5,
   author: authors.research,

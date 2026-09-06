@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-emerging-market-property-investment-thesis-2026",
   title:
     "Kenya as an emerging market: the property investment thesis in 2026",
+  metaTitle: "Kenya property: the 2026 emerging market investment thesis",
   description:
     "Why Kenyan residential property still pencils for diaspora investors in 2026, with the demographic, urbanisation, FX and yield numbers behind the thesis. Honest about the risks, specific about where the opportunity sits, and where it does not.",
+  metaDescription:
+    "Why Kenyan residential property still pencils for diaspora investors in 2026, with the demographic, urbanisation, FX and yield numbers behind the thesis.",
   publishedAt: "2026-04-04",
   readingMinutes: 10,
   author: authors.research,

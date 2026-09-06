@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Where Gen Z is renting in Nairobi 2026: the honest map",
   description:
     "Nairobi Gen Z renters in 2026 are a meaningfully different cohort from the millennials who came before them. Different priorities, different suburbs, different building features. Here is the honest map for landlords, investors and Gen Z renters themselves.",
+  metaDescription:
+    "Nairobi Gen Z renters in 2026 are a meaningfully different cohort from the millennials who came before them.",
   publishedAt: "2026-03-17",
   readingMinutes: 5,
   author: authors.editors,

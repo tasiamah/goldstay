@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a teacher",
   description:
     "Teachers in Nairobi face specific affordability challenges and have specific advantages. Mwalimu SACCO, KMRC, AHP and disciplined long-tenor planning. Here is the honest 2026 buyer guide for teachers in Nairobi.",
+  metaDescription:
+    "Teachers in Nairobi face specific affordability challenges and have specific advantages.",
   publishedAt: "2026-01-30",
   readingMinutes: 5,
   author: authors.editors,

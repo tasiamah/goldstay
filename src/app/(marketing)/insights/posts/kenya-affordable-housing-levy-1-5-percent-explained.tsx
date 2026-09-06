@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-affordable-housing-levy-1-5-percent-explained",
   title:
     "Kenya’s 1.5% Affordable Housing Levy explained for diaspora landlords",
+  metaTitle: "Kenya’s 1.5% Affordable Housing Levy explained",
   description:
     "Who pays the 1.5% Affordable Housing Levy, who is exempt, what it actually funds, and what diaspora landlords specifically need to know about how it interacts with rental income, payroll obligations and the Affordable Housing Programme allocation rules.",
+  metaDescription:
+    "Who pays the 1.5% Affordable Housing Levy, who is exempt, what it funds, and how it interacts with rental income for diaspora landlords.",
   publishedAt: "2025-08-29",
   readingMinutes: 7,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Highridge: the complete 2026 guide",
   description:
     "Highridge sits between Parklands, Westlands and Muthaiga, anchored by the MP Shah Hospital cluster and a substantial mid-premium apartment market. Here is the honest 2026 guide on Highridge property and how the market actually works.",
+  metaDescription:
+    "Highridge sits between Parklands, Westlands and Muthaiga, anchored by the MP Shah Hospital cluster and a substantial mid-premium apartment market.",
   publishedAt: "2026-04-09",
   readingMinutes: 5,
   author: authors.editors,

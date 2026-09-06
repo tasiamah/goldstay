@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "KCB vs NCBA mortgage 2026: the honest comparison",
   description:
     "KCB and NCBA are two of the largest residential mortgage lenders in Kenya, and the choice between them depends on borrower profile and product fit. Here is the honest 2026 comparison on rates, eligibility, diaspora process and total cost.",
+  metaDescription:
+    "KCB and NCBA are two of the largest residential mortgage lenders in Kenya, and the choice between them depends on borrower profile and product fit.",
   publishedAt: "2026-03-21",
   readingMinutes: 5,
   author: authors.legal,

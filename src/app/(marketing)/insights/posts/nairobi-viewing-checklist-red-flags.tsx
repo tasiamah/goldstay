@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "nairobi-viewing-checklist-red-flags",
   title:
     "The Nairobi viewing checklist: 30 red flags to look for before you buy",
+  metaTitle: "The Nairobi viewing checklist: 30 red flags",
   description:
     "Most Kenyan property regret could have been avoided with 60 minutes of disciplined viewing. Here is the honest 2026 viewing checklist of 30 red flags to look for in a Nairobi property before you put down a deposit, organised by what to check and where.",
+  metaDescription:
+    "Most Kenyan property regret could have been avoided with 60 minutes of disciplined viewing.",
   publishedAt: "2025-09-22",
   readingMinutes: 7,
   author: authors.editors,

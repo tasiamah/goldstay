@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Should I fire my Nairobi property manager? A calm checklist",
   description:
     "Ten questions to test whether the manager you have is worth keeping, and the quiet way to switch without breaking your tenants, your cashflow, or your reputation with your building.",
+  metaDescription:
+    "Ten questions to test whether your Nairobi manager is worth keeping, and how to switch without breaking your tenants or your cashflow.",
   publishedAt: "2026-07-25",
   readingMinutes: 8,
   author: authors.editors,

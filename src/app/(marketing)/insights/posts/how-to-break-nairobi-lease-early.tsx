@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How to break a Nairobi lease early without losing the deposit",
   description:
     "Job changes, relocations, family changes, expired postings. Most Nairobi tenants need to break a lease at some point. The clean exit is not automatic. Here is the honest 2026 playbook on how to break a lease early and keep the deposit.",
+  metaDescription:
+    "Job changes, relocations, family changes, expired postings. Most Nairobi tenants need to break a lease at some point. The clean exit is not automatic.",
   publishedAt: "2025-12-28",
   readingMinutes: 5,
   author: authors.legal,

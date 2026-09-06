@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "How to negotiate rent in Nairobi 2026: what actually works",
   description:
     "The 2026 Nairobi rental market has more give in it than most tenants realise. This is the honest tenant playbook for negotiating a lower rent or better terms without antagonising a landlord.",
+  metaDescription:
+    "The 2026 Nairobi rental market has more give in it than most tenants realise.",
   publishedAt: "2026-07-08",
   updatedAt: "2026-07-27",
   readingMinutes: 7,

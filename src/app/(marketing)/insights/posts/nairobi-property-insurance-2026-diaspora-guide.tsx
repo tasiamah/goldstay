@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "nairobi-property-insurance-2026-diaspora-guide",
   title:
     "Nairobi property insurance for diaspora landlords: an honest 2026 guide",
+  metaTitle: "Nairobi property insurance for diaspora landlords, 2026",
   description:
     "What to insure, what not to bother with, what a fair premium looks like, and the four claim scenarios that actually matter for a diaspora landlord. Written after fifteen years of processing claims for owners abroad.",
+  metaDescription:
+    "What to insure, what not to bother with, what a fair premium looks like, and the four claim scenarios that actually matter for a diaspora landlord.",
   publishedAt: "2026-07-25",
   readingMinutes: 8,
   author: authors.poonam,

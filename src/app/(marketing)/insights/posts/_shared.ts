@@ -18,8 +18,30 @@ export type Country = "kenya" | "ghana";
 
 export type PostMeta = {
   slug: string;
+  // The editorial headline. Rendered as the article's H1, as the
+  // Article schema headline, and on every listing card.
   title: string;
+  // The standfirst. Rendered under the H1 and as the blurb on listing
+  // cards, so it is written to be read on the page rather than to fit
+  // a search result.
   description: string;
+  // Search-result overrides, used only in the <title> and meta
+  // description. Both are optional and fall back to the editorial copy
+  // above.
+  //
+  // They exist because the two jobs genuinely conflict. Google gives a
+  // title about 600px and a description about 960px, and a headline
+  // written to earn a click on the page ("Property valuation in Kenya:
+  // how it actually works, and why your number differs from the
+  // bank's") is a good H1 and a title that gets cut off mid-clause.
+  // Shortening the H1 to fit a search result would take the editorial
+  // quality off the page to serve a surface the reader never sees.
+  //
+  // Set these only where the editorial copy overflows. Widths are
+  // asserted by scripts/check-snippets.mjs, which runs in the test
+  // suite, so an article that overflows without an override fails.
+  metaTitle?: string;
+  metaDescription?: string;
   publishedAt: string;
   updatedAt?: string;
   readingMinutes: number;

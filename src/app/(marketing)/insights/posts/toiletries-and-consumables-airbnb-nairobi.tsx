@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Running out of toilet paper on day two is a self inflicted review",
   description:
     "Consumables are the cheapest thing in a short let and the most reliably underprovided. What to leave, how much, why hotel miniatures are the wrong answer, and what it actually costs per stay.",
+  metaDescription:
+    "Consumables are the cheapest thing in a short let and the most reliably underprovided.",
   publishedAt: "2026-09-03",
   readingMinutes: 5,
   author: authors.editors,

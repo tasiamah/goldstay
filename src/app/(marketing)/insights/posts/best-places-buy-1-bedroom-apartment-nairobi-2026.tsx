@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Best places to buy a 1-bedroom apartment in Nairobi 2026",
   description:
     "1-bedroom apartments in Nairobi serve a specific buyer profile: first-time buyers, young professionals and yield-focused investors. Here is the honest 2026 ranked list of where to actually buy a 1-bed for capital growth, rental yield and resale liquidity.",
+  metaDescription:
+    "1-bedroom apartments in Nairobi serve a specific buyer profile: first-time buyers, young professionals and yield-focused investors.",
   publishedAt: "2026-04-20",
   readingMinutes: 5,
   author: authors.research,

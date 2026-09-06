@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Best places to buy a 2-bedroom apartment in Nairobi 2026",
   description:
     "2-bedroom apartments are the deepest segment of the Nairobi market. They suit couples, small families, professional sharers and the broadest investor base. Here is the honest 2026 ranked list of where to actually buy a 2-bed across capital growth, rental yield and resale liquidity.",
+  metaDescription:
+    "2-bedroom apartments are the deepest segment of the Nairobi market.",
   publishedAt: "2026-04-17",
   readingMinutes: 5,
   author: authors.research,

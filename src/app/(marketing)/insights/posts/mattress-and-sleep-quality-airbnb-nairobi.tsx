@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "The mattress is the most expensive thing to get wrong",
   description:
     "A guest can forgive a lot and cannot forgive a bad night's sleep. Why the bed deserves the largest share of your furnishing budget, what to buy in Nairobi, and the cheap fixes that improve a bad one.",
+  metaDescription:
+    "A guest forgives a lot but not a bad night’s sleep. Why the bed deserves the largest share of your furnishing budget and what to buy in Nairobi.",
   publishedAt: "2026-08-29",
   readingMinutes: 6,
   author: authors.editors,

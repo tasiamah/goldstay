@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "why-amenities-matter-nairobi-rental-property",
   title:
     "Why amenities matter for Nairobi rental property: gym, pool, backup power, fibre",
+  metaTitle: "Why amenities matter for Nairobi rental property",
   description:
     "Two identical apartments at the same price in the same neighbourhood can let in 14 days versus 90 days entirely on the basis of amenities. Here is what the Nairobi tenant of 2026 actually expects, what they ignore, and how to value an amenity package when comparing buildings.",
+  metaDescription:
+    "Two identical apartments at the same price in the same neighbourhood can let in 14 days versus 90 days entirely on the basis of amenities.",
   publishedAt: "2026-02-01",
   readingMinutes: 7,
   author: authors.poonam,

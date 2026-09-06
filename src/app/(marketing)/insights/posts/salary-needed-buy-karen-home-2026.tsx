@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How much salary do you need to buy a Karen home in 2026?",
   description:
     "Buying a Karen home is one of the most aspirational property goals in Kenya, and the salary maths is more demanding than most buyers realise. Here is the honest 2026 calculator for buying in Karen, with worked examples at three price points.",
+  metaDescription:
+    "Buying a Karen home is one of the most aspirational property goals in Kenya, and the salary maths is more demanding than most buyers realise.",
   publishedAt: "2025-12-12",
   readingMinutes: 6,
   author: authors.research,

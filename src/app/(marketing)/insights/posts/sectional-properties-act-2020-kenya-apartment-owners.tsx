@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "sectional-properties-act-2020-kenya-apartment-owners",
   title:
     "The Sectional Properties Act 2020 explained: what every apartment owner in Kenya needs to know",
+  metaTitle: "The Sectional Properties Act 2020: Kenyan apartments",
   description:
     "Almost every apartment in Nairobi is now governed by the Sectional Properties Act 2020. This is the practical 2026 guide to what it changed, how sectional titles work, what a corporation is, what your unit factor means, what management companies can and cannot do, and the questions every apartment buyer should ask.",
+  metaDescription:
+    "Almost every apartment in Nairobi is now governed by the Sectional Properties Act 2020.",
   publishedAt: "2025-04-19",
   readingMinutes: 9,
   author: authors.legal,

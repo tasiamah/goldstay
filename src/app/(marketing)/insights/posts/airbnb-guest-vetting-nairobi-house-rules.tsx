@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Guest vetting and house rules for a Nairobi short let",
   description:
     "How to screen short let guests in Nairobi without insulting the good ones, the specific signals that precede a party booking, and house rules that are actually enforceable rather than decorative.",
+  metaDescription:
+    "How to screen short-let guests in Nairobi without insulting the good ones, the signals that precede a party booking, and rules you can actually enforce.",
   publishedAt: "2026-08-13",
   readingMinutes: 8,
   author: authors.editors,

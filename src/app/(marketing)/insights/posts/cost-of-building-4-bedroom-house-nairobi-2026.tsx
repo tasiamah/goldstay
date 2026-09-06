@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Cost of building a 4-bedroom house in Nairobi 2026",
   description:
     "Building a 4-bedroom house in Nairobi in 2026 typically costs between KES 8m and KES 25m all-in, depending on specification and finishing standard. Here is the honest 2026 breakdown for owner-builders and family clients.",
+  metaDescription:
+    "Building a 4-bedroom house in Nairobi in 2026 typically costs between KES 8m and KES 25m all-in, depending on specification and finishing standard.",
   publishedAt: "2025-11-22",
   readingMinutes: 4,
   author: authors.editors,

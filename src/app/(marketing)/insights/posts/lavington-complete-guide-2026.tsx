@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Lavington complete guide 2026: who lives there and what it costs",
   description:
     "Lavington is the suburb diaspora returnees default to and the suburb the rest of premium Nairobi privately compares everything else against. Here is the honest 2026 complete guide to Lavington: who lives there, what property costs, what rent looks like, schools, security, traffic and the long-term outlook.",
+  metaDescription:
+    "Lavington is the suburb diaspora returnees default to and the suburb the rest of premium Nairobi privately compares everything else against.",
   publishedAt: "2026-03-25",
   readingMinutes: 8,
   author: authors.editors,

@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "best-property-developers-kenya-2026-ranked",
   title:
     "The best property developers in Kenya 2026: ranked by track record",
+  metaTitle: "The best property developers in Kenya, 2026",
   description:
     "Picking a property developer in Kenya is the single most consequential decision in any off-plan purchase. Here is the honest 2026 ranking of Kenyan developers by track record, the criteria that actually matter, and the question every buyer should ask before paying any deposit.",
+  metaDescription:
+    "Picking a property developer in Kenya is the single most consequential decision in any off-plan purchase.",
   publishedAt: "2025-10-24",
   readingMinutes: 7,
   author: authors.editors,

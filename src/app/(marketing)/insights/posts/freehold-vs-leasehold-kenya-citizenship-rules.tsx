@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "freehold-vs-leasehold-kenya-citizenship-rules",
   title:
     "Freehold, leasehold and the Kenyan citizenship rule every diaspora buyer needs to understand",
+  metaTitle: "Freehold vs leasehold in Kenya: citizenship rules",
   description:
     "Under Article 65 of the Constitution, only Kenyan citizens can hold freehold land in Kenya. Non-citizens are capped at 99-year leasehold. Here is what that means for diaspora buyers, why dual citizenship changes the answer, and how the rule applies to apartments, companies and inherited land.",
+  metaDescription:
+    "Under Article 65 of the Constitution, only Kenyan citizens can hold freehold land in Kenya. Non-citizens are capped at 99-year leasehold.",
   publishedAt: "2026-02-25",
   readingMinutes: 8,
   author: authors.editors,

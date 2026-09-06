@@ -17,6 +17,8 @@ export const meta: PostMeta = {
   title: "Property management in Nairobi: what you actually get for the fee",
   description:
     "A plain account of what Nairobi property management companies do, what they charge in 2026, what is usually excluded, and the questions that separate a real manager from a rent collector with a WhatsApp number.",
+  metaDescription:
+    "What Nairobi property managers actually do, what they charge in 2026, what is excluded, and the questions that separate a manager from a rent collector.",
   publishedAt: "2026-07-27",
   readingMinutes: 10,
   author: authors.editors,

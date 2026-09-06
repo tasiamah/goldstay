@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Embakasi: Nairobi’s biggest residential market explained",
   description:
     "Embakasi is by some measures the largest residential constituency in Nairobi, with a vast mass-market apartment supply, the airport adjacency and a property economy under-discussed in premium media. Here is the honest 2026 guide to Embakasi for buyers and investors.",
+  metaDescription:
+    "Embakasi is among Nairobi’s largest residential markets, with vast mass-market apartment supply and airport adjacency. The economics explained.",
   publishedAt: "2025-08-25",
   readingMinutes: 6,
   author: authors.editors,

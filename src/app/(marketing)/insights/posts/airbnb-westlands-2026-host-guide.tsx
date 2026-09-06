@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Airbnb in Westlands: the deepest demand in Nairobi",
   description:
     "Westlands has the steadiest short let demand in the city and the strongest competition. Why the calendar holds up here when other suburbs go quiet, and what it takes to hold rate rather than chase occupancy.",
+  metaDescription:
+    "Westlands has the steadiest short let demand in the city and the strongest competition.",
   publishedAt: "2026-08-09",
   readingMinutes: 8,
   author: authors.editors,

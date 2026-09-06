@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "The prepaid electricity mistake that ruins Nairobi Airbnb reviews",
   description:
     "A meter running out at 9pm is one of the most damaging things that can happen to a Nairobi short let, and it is entirely preventable. How to manage prepaid tokens so a guest never sees the problem.",
+  metaDescription:
+    "A meter running out at 9pm is one of the most damaging things that can happen to a Nairobi short let, and it is entirely preventable.",
   publishedAt: "2026-08-22",
   readingMinutes: 6,
   author: authors.editors,

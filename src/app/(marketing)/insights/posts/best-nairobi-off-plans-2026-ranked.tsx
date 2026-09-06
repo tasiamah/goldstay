@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Best Nairobi off-plans in 2026 ranked: the honest map",
   description:
     "Luminara, The Diplomat, Gemini, Pandora, Brookside Oak, Riviera at Brookside, Le Mac and several other off-plans are competing for the same diaspora and professional investor cohort. Here is the honest 2026 ranked map of Nairobi off-plans by segment, location and risk profile.",
+  metaDescription:
+    "Luminara, The Diplomat, Gemini, Pandora and Brookside Oak chase the same diaspora investor. Ranked on price, developer record and delivery risk.",
   publishedAt: "2026-04-10",
   readingMinutes: 6,
   author: authors.research,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Property for retirement in Kenya: the full 2026 plan",
   description:
     "Planning property for retirement in Kenya means selecting the right neighbourhood, single-storey design, healthcare adjacency, ownership structure and the right mix of income and lifestyle assets. Here is the full 2026 plan for retirement property in Kenya.",
+  metaDescription:
+    "Retiring in Kenya on property income: neighbourhood, single-storey design, healthcare adjacency, ownership structure and the right asset mix.",
   publishedAt: "2025-06-15",
   readingMinutes: 7,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Lavington is overtaking Karen as Nairobi’s #1 family suburb",
   description:
     "Karen has been Nairobi’s most desired family address for decades, but in 2026 Lavington is closing the gap and overtaking on several measures. Here is the honest 2026 explanation: what changed, what Karen still wins on, and what it means for buyers.",
+  metaDescription:
+    "Karen has been Nairobi’s most desired family address for decades, but in 2026 Lavington is closing the gap and overtaking on several measures.",
   publishedAt: "2026-04-02",
   readingMinutes: 5,
   author: authors.research,

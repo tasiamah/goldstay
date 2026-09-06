@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Lang'ata: the complete 2026 guide",
   description:
     "Lang’ata sits south of Nairobi, anchored by Nairobi National Park, the AIC Schools cluster and a substantial mid-premium and family residential market. Here is the honest 2026 guide on Lang’ata property and how the market actually works.",
+  metaDescription:
+    "Lang’ata sits south of Nairobi, anchored by Nairobi National Park, the AIC Schools cluster and a substantial mid-premium and family residential market.",
   publishedAt: "2025-10-11",
   readingMinutes: 6,
   author: authors.editors,

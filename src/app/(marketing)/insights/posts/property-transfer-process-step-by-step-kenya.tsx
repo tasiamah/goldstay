@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "The Kenyan property transfer process step by step in 2026",
   description:
     "Transferring a Kenyan property from seller to buyer takes a defined sequence of legal, administrative and tax steps that most buyers do not see end to end. Here is the honest 2026 step-by-step walkthrough of every stage, what each one involves and how long it takes.",
+  metaDescription:
+    "Transferring a Kenyan property takes a defined sequence of legal, administrative and tax steps. Here is the whole thing, end to end.",
   publishedAt: "2026-01-04",
   readingMinutes: 8,
   author: authors.legal,

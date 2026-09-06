@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Parklands and Highridge: the 2026 Nairobi deep dive",
   description:
     "Parklands and Highridge are some of the most established, most undervalued and most misunderstood neighbourhoods in Nairobi. Here is the honest 2026 read on who lives there, what property costs, what rents look like, and where the suburb sits in the wider Nairobi map.",
+  metaDescription:
+    "Parklands and Highridge are some of the most established, most undervalued and most misunderstood neighbourhoods in Nairobi.",
   publishedAt: "2026-04-23",
   readingMinutes: 7,
   author: authors.editors,

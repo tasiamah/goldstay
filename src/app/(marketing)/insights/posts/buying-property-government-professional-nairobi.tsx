@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a government professional",
   description:
     "Civil servants, parastatal employees and public sector professionals have specific advantages for property finance in Nairobi, including SACCO access, government-backed mortgage products and AHP eligibility. Here is the honest 2026 buyer guide.",
+  metaDescription:
+    "SACCO access, government-backed mortgages and AHP eligibility give public sector professionals in Nairobi advantages other buyers do not have.",
   publishedAt: "2026-01-24",
   readingMinutes: 5,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "7 things every Nairobi tenant should ask before signing a lease",
   description:
     "Most Nairobi tenants sign leases without asking the questions that matter. The compound, the services, the rent, the rules and the exit terms can vary dramatically. Here are the 7 questions every Nairobi tenant should ask before signing.",
+  metaDescription:
+    "Most Nairobi tenants sign leases without asking the questions that matter.",
   publishedAt: "2026-04-08",
   readingMinutes: 5,
   author: authors.editors,

@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why Nairobi single mothers are buying property in record numbers",
   description:
     "Single mothers are one of the fastest growing buyer cohorts in Nairobi 2026. Stable income, clear motivation, disciplined approach. Here is the honest 2026 explanation of why this cohort is buying, where they are buying, and what works for them.",
+  metaDescription:
+    "Single mothers are one of the fastest growing buyer cohorts in Nairobi 2026. Stable income, clear motivation, disciplined approach.",
   publishedAt: "2026-04-11",
   readingMinutes: 5,
   author: authors.editors,

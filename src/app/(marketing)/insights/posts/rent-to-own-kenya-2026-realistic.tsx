@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Rent to own in Kenya 2026: the realistic picture",
   description:
     "Rent to own in Kenya is more available than most buyers realise but also more complicated than the marketing suggests. Here is the honest 2026 picture of who offers it, the actual mechanics, the hidden costs, the legal risks, and whether rent to own is the right route for you.",
+  metaDescription:
+    "Rent to own in Kenya is more available than most buyers realise but also more complicated than the marketing suggests.",
   publishedAt: "2025-11-18",
   readingMinutes: 6,
   author: authors.editors,

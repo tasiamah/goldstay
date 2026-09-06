@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The Thika Road corridor: Nairobi’s northern residential belt",
   description:
     "Thika Road runs from the Nairobi CBD into the northern metro and the suburbs along the way each have their own character, price level and tenant profile. Here is the honest 2026 guide on the Nairobi side of the Thika Road corridor for buyers and investors.",
+  metaDescription:
+    "Thika Road runs from the Nairobi CBD into the northern metro and the suburbs along the way each have their own character, price level and tenant profile.",
   publishedAt: "2026-03-16",
   readingMinutes: 5,
   author: authors.editors,

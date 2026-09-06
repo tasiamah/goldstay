@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "capital-gains-tax-kenya-property-sale-diaspora-2026",
   title:
     "Capital gains tax on Kenyan property sales: the diaspora seller guide",
+  metaTitle: "Diaspora capital gains tax on a Kenyan property sale, 2026",
   description:
     "Kenya's 15 per cent capital gains tax on property sales is the single biggest tax line most diaspora sellers face. This is the honest 2026 guide to how the gain is calculated, what is deductible, and what non-residency does and does not change.",
+  metaDescription:
+    "Kenya's 15 per cent capital gains tax on property sales is the single biggest tax line most diaspora sellers face.",
   publishedAt: "2026-06-16",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

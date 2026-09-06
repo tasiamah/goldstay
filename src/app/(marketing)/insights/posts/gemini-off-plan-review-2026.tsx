@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Gemini off-plan review 2026: the honest buyer guide",
   description:
     "Gemini is a Nairobi off-plan launch in the Kileleshwa and Westlands corridor with a tower-led format and a clear pitch to investor and professional buyers. Here is the honest 2026 buyer review framework: positioning, pricing context, risks and how to evaluate.",
+  metaDescription:
+    "Gemini is a Nairobi off-plan launch in the Kileleshwa and Westlands corridor with a tower-led format and a clear pitch to investor and professional buyers.",
   publishedAt: "2026-04-19",
   readingMinutes: 5,
   author: authors.research,

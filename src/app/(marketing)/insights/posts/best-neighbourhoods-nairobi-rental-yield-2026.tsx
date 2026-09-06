@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "The best neighbourhoods in Nairobi for rental yield in 2026",
   description:
     "Real gross and net yield numbers across Nairobi's main residential neighbourhoods, who the actual tenants are in each area, and the three places we tell diaspora buyers to avoid right now.",
+  metaDescription:
+    "Gross and net yields across Nairobi’s main residential neighbourhoods, who the tenants actually are in each, and the three areas we tell buyers to avoid.",
   publishedAt: "2025-04-05",
   readingMinutes: 11,
   author: authors.poonam,

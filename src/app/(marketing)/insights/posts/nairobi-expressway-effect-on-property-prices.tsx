@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "nairobi-expressway-effect-on-property-prices",
   title:
     "How the Nairobi Expressway has actually moved property prices, four years on",
+  metaTitle: "The Nairobi Expressway effect on property prices",
   description:
     "Four years after the Nairobi Expressway opened, the price impact on Westlands, Mlolongo, Syokimau and the JKIA corridor is finally readable. Here is the honest, neighbourhood-by-neighbourhood picture, the locations that gained the most, and where the expressway delivered nothing but louder traffic.",
+  metaDescription:
+    "Four years after the Nairobi Expressway opened, the price impact on Westlands, Mlolongo, Syokimau and the JKIA corridor is finally readable.",
   publishedAt: "2025-09-13",
   readingMinutes: 8,
   author: authors.research,

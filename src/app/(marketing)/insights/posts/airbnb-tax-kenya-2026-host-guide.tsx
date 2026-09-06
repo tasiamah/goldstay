@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Tax on Airbnb income in Kenya: what short let hosts get wrong",
   description:
     "Short stay income is generally not taxed like residential rent in Kenya, and hosts who assume the 7.5 percent rental regime applies are frequently filing the wrong thing. The regimes that actually bite, and the thresholds to watch.",
+  metaDescription:
+    "Short-stay income is not taxed like residential rent in Kenya. Hosts who assume the 7.5% rental regime applies are usually filing the wrong return.",
   publishedAt: "2026-08-17",
   readingMinutes: 8,
   author: authors.legal,

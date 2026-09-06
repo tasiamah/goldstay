@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "property-valuation-kenya-how-it-works-bank-vs-market",
   title:
     "Property valuation in Kenya: how it actually works, and why your number differs from the bank’s",
+  metaTitle: "Property valuation in Kenya: bank vs market",
   description:
     "Why a Kenyan bank’s mortgage valuation lands 10 to 20 percent below the price you agreed to pay, what the three valuation methods are, when each is used, what an Open Market Value report should include, and how to use a valuation properly when buying or selling.",
+  metaDescription:
+    "Why a Kenyan bank’s valuation lands 10 to 20% below your agreed price, the three valuation methods, and how to use a valuation properly.",
   publishedAt: "2025-12-31",
   readingMinutes: 7,
   author: authors.research,

@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Gemland Residence, Westlands: an honest 2026 buyer review",
   description:
     "Gemland Residence on Ring Road near Riverside Drive offers one and two bedroom apartments from around KES 6.8m. Here is what the marketing says, where the published information disagrees with itself, and how the unit mix reads as a rental proposition.",
+  metaDescription:
+    "Gemland Residence on Ring Road near Riverside Drive offers one and two bedroom apartments from around KES 6.8m.",
   publishedAt: "2026-08-04",
   readingMinutes: 8,
   author: authors.research,

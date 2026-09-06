@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Nairobi serviced apartments and short-lets: the 2026 investor guide",
   description:
     "Nairobi serviced apartments and short-let Airbnbs sit between long-term rental and hotels, and produce meaningfully higher yields when run professionally. Here is the honest 2026 investor guide on Nairobi serviced apartments, short-let economics, regulation and how diaspora investors realistically enter the segment.",
+  metaDescription:
+    "Nairobi serviced apartments and short-let Airbnbs sit between long-term rental and hotels, and produce meaningfully higher yields when run professionally.",
   publishedAt: "2025-03-03",
   readingMinutes: 7,
   author: authors.editors,

@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "nairobi-neighbourhoods-rents-dropping-2026",
   title:
     "The Nairobi neighbourhoods where rents are actually dropping in 2026",
+  metaTitle: "Nairobi neighbourhoods where rents are dropping, 2026",
   description:
     "Nairobi rent headlines say prices keep rising, but in specific suburbs and specific compounds rents are softening in 2026. Here is the honest map of where rents are dropping, why, and what it means for tenants and landlords.",
+  metaDescription:
+    "Nairobi rent headlines say prices keep rising, but in specific suburbs and specific compounds rents are softening in 2026.",
   publishedAt: "2026-04-26",
   readingMinutes: 5,
   author: authors.research,

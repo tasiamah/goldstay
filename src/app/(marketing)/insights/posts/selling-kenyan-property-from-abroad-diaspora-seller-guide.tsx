@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "selling-kenyan-property-from-abroad-diaspora-seller-guide",
   title:
     "Selling Kenyan property from abroad: the complete diaspora seller’s guide",
+  metaTitle: "Selling Kenyan property from abroad: diaspora sellers",
   description:
     "Selling a Kenyan property from London, New York, Dubai or anywhere else takes more than picking a broker. Pricing, legal preparation, capital gains tax, power of attorney, completion logistics and getting the proceeds out of Kenya cleanly. Here is the full 2026 playbook for diaspora sellers.",
+  metaDescription:
+    "Selling a Kenyan property from London, New York, Dubai or anywhere else takes more than picking a broker.",
   publishedAt: "2025-05-04",
   updatedAt: "2026-07-27",
   readingMinutes: 9,

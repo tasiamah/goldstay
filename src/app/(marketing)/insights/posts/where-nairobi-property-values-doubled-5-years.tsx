@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Where Nairobi property values doubled in the last 5 years",
   description:
     "Some Nairobi pockets have meaningfully outperformed the wider market over 5 years, with values doubling or close to doubling on quality stock. Here is the honest 2026 map of the corridors and compounds where this happened, and what it tells us about the next 5 years.",
+  metaDescription:
+    "Some Nairobi pockets have meaningfully outperformed the wider market over 5 years, with values doubling or close to doubling on quality stock.",
   publishedAt: "2026-02-12",
   readingMinutes: 5,
   author: authors.research,

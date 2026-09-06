@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Why some Nairobi developers go bust (and how to spot the signs)",
   description:
     "Several high-profile Nairobi developers have collapsed mid-project in the last decade, leaving deposits stranded and units undelivered. The signs are usually visible early. Here is the honest 2026 guide on why developers go bust and how to spot the signs before you buy.",
+  metaDescription:
+    "Several high-profile Nairobi developers have collapsed mid-project in the last decade, leaving deposits stranded and units undelivered.",
   publishedAt: "2026-02-06",
   readingMinutes: 5,
   author: authors.research,

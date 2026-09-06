@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "richest-neighbourhoods-nairobi-actual-home-prices",
   title:
     "The richest neighbourhoods in Nairobi 2026: actual home prices, ranked",
+  metaTitle: "The richest neighbourhoods in Nairobi: home prices",
   description:
     "Where do the wealthiest Nairobi households actually live, and what do their homes really cost? Forget the rumours. Here is the 2026 ranking of Nairobi’s richest suburbs by realistic home prices, who lives there, and how the wealth signal has shifted over the last decade.",
+  metaDescription:
+    "Where do the wealthiest Nairobi households actually live, and what do their homes really cost? Forget the rumours.",
   publishedAt: "2025-01-15",
   readingMinutes: 8,
   author: authors.research,

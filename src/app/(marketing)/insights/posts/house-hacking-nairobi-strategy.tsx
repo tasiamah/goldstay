@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "House hacking Nairobi: the local investor strategy",
   description:
     "House hacking, the strategy of living in part of a property and renting out the rest, works in Nairobi if adapted to the local market. Maisonettes, multi-unit residences, the SQ rental and townhouses with rentable wings. Here is the honest 2026 guide for Nairobi investors.",
+  metaDescription:
+    "House hacking, the strategy of living in part of a property and renting out the rest, works in Nairobi if adapted to the local market.",
   publishedAt: "2025-12-16",
   readingMinutes: 5,
   author: authors.research,

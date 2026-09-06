@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "How much does it cost to furnish a Nairobi apartment in 2026?",
   description:
     "Furnishing a Nairobi apartment in 2026 costs anywhere from KES 200,000 to KES 5m+ depending on segment and quality. Here is the honest 2026 budget breakdown across mid-market, mid-premium and premium tiers, plus a realistic line-by-line cost guide.",
+  metaDescription:
+    "Furnishing a Nairobi apartment in 2026 costs anywhere from KES 200,000 to KES 5m+ depending on segment and quality.",
   publishedAt: "2026-04-05",
   readingMinutes: 5,
   author: authors.editors,

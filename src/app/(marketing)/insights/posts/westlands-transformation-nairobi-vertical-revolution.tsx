@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "westlands-transformation-nairobi-vertical-revolution",
   title:
     "The Westlands transformation: Nairobi’s vertical revolution explained",
+  metaTitle: "The Westlands transformation: Nairobi goes vertical",
   description:
     "Westlands has gone from a low-rise suburb of bungalows to Nairobi’s most vertical district in 15 years. The transformation has reshaped pricing, tenant pool, lifestyle and the property thesis. Here is the honest 2026 read on what changed, who is buying, who is renting, and where Westlands goes next.",
+  metaDescription:
+    "Westlands has gone from a low-rise suburb of bungalows to Nairobi’s most vertical district in 15 years.",
   publishedAt: "2024-09-04",
   readingMinutes: 7,
   author: authors.editors,

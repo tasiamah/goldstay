@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "How clean is clean enough for a Nairobi Airbnb?",
   description:
     "Tidy is not clean, and guests check specific places. The eleven spots that decide your cleanliness score, why a checklist beats a good cleaner, and how to hold a standard you are not there to see.",
+  metaDescription:
+    "The eleven spots that decide your cleanliness score, why a checklist beats a good cleaner, and how to hold a standard you are not there to see.",
   publishedAt: "2026-08-25",
   readingMinutes: 7,
   author: authors.editors,

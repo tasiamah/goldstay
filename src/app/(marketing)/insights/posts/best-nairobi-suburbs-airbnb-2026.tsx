@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "The best Nairobi suburbs for Airbnb in 2026, ranked honestly",
   description:
     "Which Nairobi suburbs actually support a short let in 2026, which ones only look like they do, and which are a mistake regardless of how good your unit is. Ranked by demand depth rather than by nightly rate.",
+  metaDescription:
+    "Which Nairobi suburbs actually support a short let in 2026, which ones only look like they do, and which are a mistake regardless of how good your unit is.",
   publishedAt: "2026-07-31",
   readingMinutes: 9,
   author: authors.research,

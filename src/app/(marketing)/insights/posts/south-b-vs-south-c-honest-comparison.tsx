@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "South B vs South C: the honest 2026 comparison",
   description:
     "South B and South C are two of the most active mid-market residential pockets in Nairobi, and the differences between them matter more than the names suggest. Here is the honest 2026 comparison on price, lifestyle, schools and rental dynamics.",
+  metaDescription:
+    "South B and South C are two of Nairobi’s most active mid-market pockets, and the differences matter more than the names suggest.",
   publishedAt: "2025-06-07",
   readingMinutes: 5,
   author: authors.editors,

@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "How long does it actually take to buy property in Kenya in 2026?",
   description:
     "From the first viewing to holding a registered title in your name, how long does a Kenyan property purchase actually take? Here is the honest 2026 timeline broken down by stage, with the realistic ranges, the things that speed it up, and the things that slow it down.",
+  metaDescription:
+    "From the first viewing to holding a registered title in your name, how long does a Kenyan property purchase actually take?",
   publishedAt: "2024-10-04",
   readingMinutes: 7,
   author: authors.editors,

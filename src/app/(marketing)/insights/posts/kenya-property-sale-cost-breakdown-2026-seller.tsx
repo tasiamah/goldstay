@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "kenya-property-sale-cost-breakdown-2026-seller",
   title:
     "How much will you actually walk away with? Kenya property sale cost breakdown 2026",
+  metaTitle: "Kenya property sale cost breakdown 2026 for sellers",
   description:
     "Sellers routinely misread how much of the headline sale price they will actually receive. This is the 2026 line-by-line breakdown of every cost on a Kenya property sale, worked through a realistic example.",
+  metaDescription:
+    "Sellers routinely misread how much of the headline sale price they will actually receive.",
   publishedAt: "2026-06-11",
   updatedAt: "2026-07-27",
   readingMinutes: 7,

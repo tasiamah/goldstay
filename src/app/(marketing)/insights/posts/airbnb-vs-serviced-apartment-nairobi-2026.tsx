@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Airbnb or serviced apartment: which model for a Nairobi unit?",
   description:
     "Short lets and serviced apartments look similar and are different businesses with different guests, cost structures and risks. Which one your Nairobi unit actually suits, and why the middle ground loses.",
+  metaDescription:
+    "Short lets and serviced apartments look similar and are different businesses with different guests, cost structures and risks.",
   publishedAt: "2026-08-15",
   readingMinutes: 8,
   author: authors.research,

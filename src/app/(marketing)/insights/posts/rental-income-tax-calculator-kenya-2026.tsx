@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Rental income tax calculator Kenya 2026: worked examples",
   description:
     "Rental income in Kenya is taxed under either Monthly Rental Income (MRI) at 7.5 percent or normal income tax at progressive rates with deductions. Here are the honest 2026 worked examples to help you choose and file.",
+  metaDescription:
+    "Rental income in Kenya is taxed under either Monthly Rental Income (MRI) at 7.5 percent or normal income tax at progressive rates with deductions.",
   publishedAt: "2025-11-19",
   readingMinutes: 4,
   author: authors.legal,

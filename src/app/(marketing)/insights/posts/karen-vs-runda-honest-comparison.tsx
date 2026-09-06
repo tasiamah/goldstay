@@ -18,6 +18,8 @@ export const meta: PostMeta = {
     "Karen vs Runda: an honest comparison after 30 years",
   description:
     "Karen and Runda have been Nairobi’s two flagship premium suburbs for 30 years. Despite the cliche of comparing them, the two markets have evolved into very different propositions. Here is the honest 2026 comparison covering price, character, who actually lives there, school catchment, security, traffic, resale and long-term outlook.",
+  metaDescription:
+    "Karen and Runda have been Nairobi’s two flagship premium suburbs for 30 years.",
   publishedAt: "2024-09-10",
   readingMinutes: 7,
   author: authors.editors,

@@ -29,4 +29,26 @@ describe("insights catalogue", () => {
     }
     expect(output).toContain("No problems found.");
   });
+
+  // Same reasoning, for the search-result copy. Before the overrides
+  // existed, 245 of 350 titles and 349 of 350 descriptions were wide
+  // enough for Google to cut them, and nothing in the repo measured it.
+  //
+  // --strict makes the script exit non-zero on an overflow, so a new
+  // article whose editorial headline is too long for a search result
+  // fails here rather than shipping and getting silently rewritten.
+  // Descriptions that are merely short are reported without failing.
+  it("has no search-result title or description that Google will truncate", () => {
+    let output: string;
+    try {
+      output = execFileSync("node", ["scripts/check-snippets.mjs", "--strict"], {
+        encoding: "utf8",
+        cwd: process.cwd(),
+      });
+    } catch (err) {
+      const e = err as { stdout?: string; stderr?: string };
+      throw new Error(e.stdout ?? e.stderr ?? "check-snippets.mjs failed");
+    }
+    expect(output).toContain("No problems found.");
+  });
 });

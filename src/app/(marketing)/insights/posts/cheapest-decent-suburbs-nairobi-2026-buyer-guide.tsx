@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "cheapest-decent-suburbs-nairobi-2026-buyer-guide",
   title:
     "The cheapest decent suburbs in Nairobi in 2026: where your money still goes far",
+  metaTitle: "The cheapest decent suburbs in Nairobi, 2026",
   description:
     "Not every Nairobi buyer is shopping in Karen and Runda. Here is the honest 2026 ranking of suburbs where you can still buy a decent home for the price of a Toyota in Westlands. Where to look, what is on offer, the trade offs, and which areas to avoid even at low prices.",
+  metaDescription:
+    "Where you can still buy a decent Nairobi home for the price of a Toyota in Westlands: the suburbs, the trade-offs and which to avoid anyway.",
   publishedAt: "2025-01-10",
   readingMinutes: 8,
   author: authors.editors,

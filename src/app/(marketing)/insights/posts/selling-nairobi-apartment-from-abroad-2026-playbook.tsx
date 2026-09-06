@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "selling-nairobi-apartment-from-abroad-2026-playbook",
   title:
     "Selling your Nairobi apartment from abroad: the 2026 seller playbook",
+  metaTitle: "Selling a Nairobi apartment from abroad, 2026",
   description:
     "Selling a Nairobi apartment while living overseas is genuinely doable in 2026, but the sequence matters. This is the honest playbook: pricing, presentation, professional stack, and the decisions that determine whether the sale takes three months or fifteen.",
+  metaDescription:
+    "Selling a Nairobi apartment while living overseas is genuinely doable in 2026, but the sequence matters.",
   publishedAt: "2026-06-04",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "why-senior-corporate-nairobians-buying-multi-unit",
   title:
     "Why senior corporate Nairobians are quietly buying multi-unit residences",
+  metaTitle: "Why senior corporate Nairobians buy multi-unit homes",
   description:
     "A growing share of senior corporate Nairobians are quietly buying mid-market multi-unit residences in 2026 instead of premium standalone homes. Better cash flow, better diversification, better long-term outcome. Here is the honest 2026 explanation.",
+  metaDescription:
+    "A growing share of senior corporate Nairobians are quietly buying mid-market multi-unit residences in 2026 instead of premium standalone homes.",
   publishedAt: "2026-02-09",
   readingMinutes: 5,
   author: authors.research,

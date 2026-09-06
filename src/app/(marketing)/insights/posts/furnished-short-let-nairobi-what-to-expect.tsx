@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Furnished short-let in Nairobi: what to expect in 2026",
   description:
     "Furnished short-lets in Nairobi sit between Airbnb and serviced apartments and are increasingly common for relocating expats, returning diaspora and corporate guests. Here is the honest 2026 guide on what furnished short-lets cost and how to evaluate them.",
+  metaDescription:
+    "Furnished short-lets sit between Airbnb and serviced apartments in Nairobi. What relocating expats, returning diaspora and corporate guests get.",
   publishedAt: "2025-12-22",
   readingMinutes: 4,
   author: authors.editors,

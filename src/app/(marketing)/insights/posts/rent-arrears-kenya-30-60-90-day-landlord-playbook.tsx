@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "Rent arrears in Kenya: 30/60/90-day landlord playbook",
   description:
     "How you handle the first thirty days of rent arrears in Kenya largely determines whether you recover the money at all. This is the exact 30/60/90 day playbook we run for diaspora landlords in 2026.",
+  metaDescription:
+    "How you handle the first thirty days of rent arrears in Kenya largely determines whether you recover the money at all.",
   publishedAt: "2026-06-30",
   updatedAt: "2026-07-27",
   readingMinutes: 7,

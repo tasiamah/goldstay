@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Becoming an Airbnb host in Kenya: the first 90 days",
   description:
     "A week by week plan for new Airbnb hosts in Kenya, from permits and furnishing to the first five reviews. What to do in what order, and the early decisions that are expensive to reverse.",
+  metaDescription:
+    "A week by week plan for new Airbnb hosts in Kenya, from permits and furnishing to the first five reviews.",
   publishedAt: "2026-07-28",
   readingMinutes: 9,
   author: authors.editors,

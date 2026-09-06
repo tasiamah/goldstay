@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Architects and quantity surveyors in Kenya: cost and value in 2026",
   description:
     "Architects and quantity surveyors are the two most consequential professional appointments on a Kenyan build, and the two appointments owners most often cut corners on. Here is the honest 2026 guide to what they do, what they cost, and what good ones save you.",
+  metaDescription:
+    "Architects and quantity surveyors are the two most consequential appointments on a Kenyan build, and the two owners most often cut corners on.",
   publishedAt: "2025-11-27",
   readingMinutes: 6,
   author: authors.editors,

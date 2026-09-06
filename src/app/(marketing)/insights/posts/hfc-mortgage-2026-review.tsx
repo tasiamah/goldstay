@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "HFC mortgage 2026: the honest review",
   description:
     "HFC (Housing Finance Company) is Kenya’s longest-established dedicated mortgage lender, now a wholly owned subsidiary of HF Group. Here is the honest 2026 review of HFC mortgages: rates, products, processing and where they win.",
+  metaDescription:
+    "HFC (Housing Finance Company) is Kenya’s longest-established dedicated mortgage lender, now a wholly owned subsidiary of HF Group.",
   publishedAt: "2025-09-26",
   readingMinutes: 5,
   author: authors.legal,

@@ -17,6 +17,8 @@ export const meta: PostMeta = {
   title: "Airbnb Nairobi: the complete host guide for 2026",
   description:
     "Everything a Nairobi Airbnb host needs in 2026: which suburbs actually work, what the numbers look like after costs, the licensing position, the operational standard guests now expect, and the mistakes that quietly kill a listing.",
+  metaDescription:
+    "Which Nairobi suburbs work for Airbnb in 2026, what the numbers look like after costs, where licensing stands, and the mistakes that kill a listing.",
   publishedAt: "2026-07-26",
   readingMinutes: 11,
   author: authors.editors,

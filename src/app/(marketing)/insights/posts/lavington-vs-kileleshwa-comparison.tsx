@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Lavington vs Kileleshwa: the honest 2026 comparison",
   description:
     "Lavington and Kileleshwa are two of the most active premium and mid-premium Nairobi suburbs and the choice between them depends on density, residential character, family fit and investment thesis. Here is the honest 2026 comparison.",
+  metaDescription:
+    "Two of Nairobi’s most active premium suburbs compared on density, residential character, family fit and investment case. Which one suits you.",
   publishedAt: "2026-03-28",
   readingMinutes: 5,
   author: authors.editors,

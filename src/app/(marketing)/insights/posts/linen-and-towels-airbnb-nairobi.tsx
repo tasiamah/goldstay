@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Buy white linen, buy three sets, replace it more often than you think",
   description:
     "Linen and towels are the soft goods guests judge you on and the line hosts most often under buy. Why white is correct, why three sets per bed is the minimum, and when to throw things away.",
+  metaDescription:
+    "Linen and towels are the soft goods guests judge you on and the line hosts most often under buy.",
   publishedAt: "2026-08-28",
   readingMinutes: 6,
   author: authors.editors,

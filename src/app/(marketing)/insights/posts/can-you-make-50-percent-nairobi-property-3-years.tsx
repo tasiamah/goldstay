@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Can you really make 50 percent on Nairobi property in 3 years?",
   description:
     "The 50 percent in 3 years pitch is everywhere on social media. Here is the honest 2026 maths on what is actually realistic across mid-market apartments, off-plan, plots and value-add multi-unit residences in Nairobi.",
+  metaDescription:
+    "The 50% in three years pitch is everywhere. The honest maths across Nairobi mid-market apartments, off-plan, plots and value-add multi-unit.",
   publishedAt: "2026-02-27",
   readingMinutes: 5,
   author: authors.research,

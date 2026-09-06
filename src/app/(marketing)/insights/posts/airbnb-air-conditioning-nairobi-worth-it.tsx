@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Is air conditioning worth it in a Nairobi Airbnb?",
   description:
     "Nairobi does not really need air conditioning, which is exactly why having it wins bookings. What it does to your search visibility, what it costs to run when guests control it, and the cheaper alternatives that work.",
+  metaDescription:
+    "Nairobi does not really need air conditioning, which is exactly why having it wins bookings.",
   publishedAt: "2026-08-21",
   readingMinutes: 6,
   author: authors.editors,

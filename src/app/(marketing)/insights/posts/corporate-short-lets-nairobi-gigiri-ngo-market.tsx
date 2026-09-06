@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "The corporate short let market nobody is competing for",
   description:
     "Nairobi's NGO, UN and corporate relocation guests book for weeks rather than nights, pay reliably and barely feature in most hosts' plans. What this market wants, why amateur listings never win it, and how to position for it.",
+  metaDescription:
+    "Nairobi's NGO, UN and corporate relocation guests book for weeks rather than nights, pay reliably and barely feature in most hosts' plans.",
   publishedAt: "2026-08-12",
   readingMinutes: 8,
   author: authors.editors,

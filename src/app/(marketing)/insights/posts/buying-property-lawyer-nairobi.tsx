@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property in Nairobi as a lawyer",
   description:
     "Lawyers buying property in Nairobi have advantages most other professional cohorts do not, including drafting access and conveyancing literacy, and disadvantages including variable cash flow at the junior end. Here is the honest 2026 buyer guide for lawyers.",
+  metaDescription:
+    "Drafting access and conveyancing literacy are real advantages. Variable cash flow at the junior end is the offset. Buying in Nairobi as a lawyer.",
   publishedAt: "2026-01-27",
   readingMinutes: 5,
   author: authors.editors,

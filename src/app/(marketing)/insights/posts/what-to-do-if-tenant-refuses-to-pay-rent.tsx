@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "what-to-do-if-tenant-refuses-to-pay-rent",
   title:
     "What to do if your tenant refuses to pay rent in Kenya: the 2026 landlord guide",
+  metaTitle: "If your tenant refuses to pay rent in Kenya, 2026",
   description:
     "Tenant non-payment is the single biggest source of stress for Kenyan landlords. Done right, the process is contained and the loss is limited. Done wrong, it drags for months and the loss compounds. Here is the honest 2026 step-by-step playbook on what to do when a tenant stops paying.",
+  metaDescription:
+    "Tenant non-payment is the single biggest source of stress for Kenyan landlords. Done right, the process is contained and the loss is limited.",
   publishedAt: "2024-08-22",
   readingMinutes: 7,
   author: authors.poonam,

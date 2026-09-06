@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Superior Homes Kenya review 2026: the honest buyer guide",
   description:
     "Superior Homes is one of the longest-established gated community developers in Nairobi, anchored by Greenpark Estate at Athi River. Here is the honest 2026 buyer review of Superior Homes.",
+  metaDescription:
+    "Superior Homes is one of the longest-established gated community developers in Nairobi, anchored by Greenpark Estate at Athi River.",
   publishedAt: "2026-02-08",
   readingMinutes: 5,
   author: authors.research,

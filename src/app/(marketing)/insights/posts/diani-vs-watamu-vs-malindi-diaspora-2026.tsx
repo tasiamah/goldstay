@@ -15,8 +15,11 @@ export const meta: PostMeta = {
   slug: "diani-vs-watamu-vs-malindi-diaspora-2026",
   title:
     "Diani vs Watamu vs Malindi: which coastal Kenya market for diaspora buyers?",
+  metaTitle: "Diani vs Watamu vs Malindi: diaspora buyers, 2026",
   description:
     "Three coastal Kenya markets. Three very different buyer profiles, tenant bases and yield structures. This is the honest 2026 comparison for diaspora buyers deciding where to place coastal capital.",
+  metaDescription:
+    "Three coastal Kenya markets. Three very different buyer profiles, tenant bases and yield structures.",
   publishedAt: "2026-05-19",
   updatedAt: "2026-07-27",
   readingMinutes: 9,

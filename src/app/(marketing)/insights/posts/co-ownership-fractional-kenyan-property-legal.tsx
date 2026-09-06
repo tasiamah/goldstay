@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Co-ownership and fractional Kenyan property: what is legal in 2026",
   description:
     "Co-ownership and fractional ownership of Kenyan property are growing categories, popular with diaspora groups, friend syndicates and sibling investments. Here is the honest 2026 guide on what is legal, the structures that work, the regulatory landscape and the agreements that prevent disputes.",
+  metaDescription:
+    "Diaspora groups, friend syndicates and sibling investments buy Kenyan property together. The legal structures that work and the ones that end badly.",
   publishedAt: "2025-11-12",
   readingMinutes: 6,
   author: authors.legal,

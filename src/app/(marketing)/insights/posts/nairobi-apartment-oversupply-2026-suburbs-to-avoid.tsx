@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "nairobi-apartment-oversupply-2026-suburbs-to-avoid",
   title:
     "Nairobi apartment oversupply in 2026: where rents have stopped rising",
+  metaTitle: "Nairobi apartment oversupply 2026: suburbs to avoid",
   description:
     "Not every Nairobi suburb is a good investment in 2026. Several have absorbed years of new supply faster than tenant demand has grown, and rents have plateaued or fallen. Honest neighbourhood-by-neighbourhood data on where supply has outrun demand and what that means for buyers.",
+  metaDescription:
+    "Several Nairobi suburbs have absorbed years of new supply faster than demand grew, and rents have plateaued. Where supply has outrun demand.",
   publishedAt: "2025-08-01",
   readingMinutes: 8,
   author: authors.research,

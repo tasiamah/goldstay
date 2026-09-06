@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The total cost of owning a Nairobi apartment in 2026",
   description:
     "Most Nairobi apartment buyers focus on the mortgage payment and ignore everything else. The total cost of ownership runs 30 to 50 percent above the mortgage on a typical compound. Here is the honest 2026 breakdown of what owning an apartment in Nairobi actually costs each year.",
+  metaDescription:
+    "Most Nairobi apartment buyers focus on the mortgage payment and ignore everything else.",
   publishedAt: "2025-11-06",
   readingMinutes: 6,
   author: authors.research,

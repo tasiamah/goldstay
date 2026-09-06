@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "nairobi-property-market-review-2026-h1",
   title:
     "Nairobi property market review H1 2026: prices, rents, demand, sentiment",
+  metaTitle: "Nairobi property market review, H1 2026",
   description:
     "The first half of 2026 has produced a property market in Nairobi that is mixed but more readable than 2024 was. Here is the honest H1 2026 review of prices, rents, demand drivers, sentiment and what we expect through the rest of the year.",
+  metaDescription:
+    "The first half of 2026 has produced a property market in Nairobi that is mixed but more readable than 2024 was.",
   publishedAt: "2025-09-22",
   readingMinutes: 6,
   author: authors.research,

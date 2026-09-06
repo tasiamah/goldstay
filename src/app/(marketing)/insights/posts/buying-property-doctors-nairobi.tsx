@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property as a doctor in Nairobi: the honest 2026 guide",
   description:
     "Doctors and senior medical professionals in Nairobi face a particular set of property buying considerations: hospital adjacency, on-call commute, mortgage on consultancy income, and the long career arc. Here is the honest 2026 guide for doctors buying property in Nairobi.",
+  metaDescription:
+    "Hospital adjacency, the on-call commute, mortgages on consultancy income and the long career arc: buying property in Nairobi as a doctor.",
   publishedAt: "2025-07-21",
   readingMinutes: 6,
   author: authors.editors,

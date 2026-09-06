@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Top Nairobi property scams trending in 2026",
   description:
     "Property scams evolve faster than the legal framework. Here are the Nairobi property scams trending in 2026: fake titles, double sales, milestone-driven off-plan fraud, fake agents, fraudulent diaspora roadshows and the new digital twists.",
+  metaDescription:
+    "The Nairobi property scams trending in 2026: fake titles, double sales, milestone off-plan fraud, fake agents and the new digital twists.",
   publishedAt: "2026-03-29",
   readingMinutes: 5,
   author: authors.legal,

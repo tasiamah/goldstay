@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Buying property as a single mum in Kenya: the honest 2026 guide",
   description:
     "Buying property as a single mum in Kenya is increasingly common, and the practicalities, mortgage realities, neighbourhood selection and family-protection planning are different from the standard buyer journey. Here is the honest 2026 guide written for single mum buyers.",
+  metaDescription:
+    "Mortgage realities, neighbourhood selection and family-protection planning for single mothers buying property in Kenya, and how the journey differs.",
   publishedAt: "2026-02-11",
   readingMinutes: 6,
   author: authors.editors,

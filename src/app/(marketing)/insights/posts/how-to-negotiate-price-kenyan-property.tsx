@@ -17,6 +17,8 @@ export const meta: PostMeta = {
     "How to negotiate the price on a Kenyan property in 2026",
   description:
     "Negotiating property in Kenya is more structured than most buyers realise. Here is the honest 2026 playbook on how to negotiate the price down on a Kenyan property, including the realistic discount ranges, what evidence actually moves sellers, and the moments in the transaction where the most leverage exists.",
+  metaDescription:
+    "Negotiating property in Kenya is more structured than most buyers realise.",
   publishedAt: "2026-01-26",
   readingMinutes: 7,
   author: authors.editors,

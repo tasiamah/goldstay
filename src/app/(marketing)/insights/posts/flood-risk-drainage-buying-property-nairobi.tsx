@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "flood-risk-drainage-buying-property-nairobi",
   title:
     "Floods, drainage and climate risk: what to check before buying property in Nairobi",
+  metaTitle: "Flood and drainage risk buying property in Nairobi",
   description:
     "After the 2024 long-rains floods, climate risk in Nairobi property is no longer abstract. Some compounds flooded, others did not, and the difference came down to specific things any buyer can check before committing. Riparian land, drainage capacity, slope, building elevation and management response.",
+  metaDescription:
+    "After the 2024 long-rains floods, climate risk in Nairobi property is no longer abstract.",
   publishedAt: "2025-07-22",
   readingMinutes: 8,
   author: authors.editors,

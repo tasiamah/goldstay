@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "cost-of-living-nairobi-2026-diaspora-returnees",
   title:
     "Cost of living in Nairobi in 2026: the honest budget for diaspora returnees",
+  metaTitle: "Cost of living in Nairobi 2026 for diaspora returnees",
   description:
     "Diaspora Kenyans planning to return often arrive with a budget calibrated against London, New York or Dubai and discover Nairobi is not as cheap as their parents’ generation said. Housing, schools, transport, food, healthcare, staff and lifestyle. Here is the honest 2026 budget for a returning Kenyan family.",
+  metaDescription:
+    "Returning diaspora arrive with a budget calibrated against London or Dubai. What Nairobi actually costs in 2026, line by line.",
   publishedAt: "2025-02-11",
   readingMinutes: 9,
   author: authors.editors,

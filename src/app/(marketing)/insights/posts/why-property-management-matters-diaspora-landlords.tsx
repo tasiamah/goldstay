@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "why-property-management-matters-diaspora-landlords",
   title:
     "Why property management matters when you live 6,000 miles from your apartment",
+  metaTitle: "Why property management matters for diaspora landlords",
   description:
     "We have taken over enough self-managed diaspora properties to spot the same five failure modes every time. A frank look at what real management does, when self-management is genuinely fine, and the five questions to ask any manager before you sign.",
+  metaDescription:
+    "We have taken over enough self-managed diaspora properties to spot the same five failure modes every time.",
   publishedAt: "2025-07-08",
   readingMinutes: 10,
   author: authors.poonam,

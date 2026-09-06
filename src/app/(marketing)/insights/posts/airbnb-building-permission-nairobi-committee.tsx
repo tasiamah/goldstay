@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Getting your Nairobi building to allow short lets",
   description:
     "Compound committees can stop a short let, and increasingly do. What the sectional properties framework actually allows, why committees object, and how to get a yes in writing before you furnish anything.",
+  metaDescription:
+    "Compound committees can stop a short let, and increasingly do. What the sectional properties framework allows and how to get a yes in writing.",
   publishedAt: "2026-08-19",
   readingMinutes: 8,
   author: authors.legal,

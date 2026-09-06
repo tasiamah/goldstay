@@ -14,8 +14,11 @@ export const meta: PostMeta = {
   slug: "how-much-rent-can-you-afford-nairobi-2026",
   title:
     "How much rent can you actually afford in Nairobi 2026: the honest formula",
+  metaTitle: "How much rent can you afford in Nairobi, 2026",
   description:
     "Most Nairobi tenants overspend on rent and underspend on everything else. The honest 2026 affordability formula sits below the global 30 percent rule for most Nairobi salaries because cost of living and informal costs are higher than people realise.",
+  metaDescription:
+    "Most Nairobi tenants overspend on rent and underspend on everything else.",
   publishedAt: "2026-04-23",
   readingMinutes: 5,
   author: authors.editors,

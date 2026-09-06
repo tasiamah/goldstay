@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Gigiri and Rosslyn: living in Nairobi’s diplomatic district in 2026",
   description:
     "Gigiri and Rosslyn are home to the UN, more than 100 embassies and the senior international professional community in Nairobi. Here is the honest 2026 guide to living and investing in the diplomatic district, with property prices, rental dynamics, school catchment and the unique tenant pool that anchors the area.",
+  metaDescription:
+    "Gigiri and Rosslyn are home to the UN, more than 100 embassies and the senior international professional community in Nairobi.",
   publishedAt: "2026-03-16",
   readingMinutes: 7,
   author: authors.editors,

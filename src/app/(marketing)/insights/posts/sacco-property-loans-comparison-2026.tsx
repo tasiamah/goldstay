@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Top Kenyan SACCOs for property loans 2026 compared",
   description:
     "Mwalimu SACCO, Stima SACCO, Imarisha SACCO, Hazina SACCO and Kenya Police SACCO are among the largest property finance providers in Kenya. Here is the honest 2026 comparison of SACCO property loans for buyers.",
+  metaDescription:
+    "Mwalimu, Stima, Imarisha, Hazina and Kenya Police SACCOs compared as property lenders: rates, limits, eligibility and the catch in each.",
   publishedAt: "2026-02-20",
   readingMinutes: 5,
   author: authors.legal,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-citizenship-by-investment-residence-permits-2026",
   title:
     "Kenya citizenship by investment in 2026: the honest answer (and what actually works)",
+  metaTitle: "Kenya citizenship by investment and residence permits",
   description:
     "Kenya does not run a citizenship-by-investment programme. Buying property in Kenya does not give you a Kenyan passport. The serious pathways are the Class G investor permit, the Class K retiree permit, permanent residence after seven years, and naturalisation after a further seven. Plus the dual-citizenship route for diaspora Kenyans. Here is the full 2026 picture.",
+  metaDescription:
+    "Kenya does not run a citizenship-by-investment programme. Buying property in Kenya does not give you a Kenyan passport.",
   publishedAt: "2026-03-11",
   readingMinutes: 9,
   author: authors.editors,

@@ -17,6 +17,8 @@ export const meta: PostMeta = {
   title: "Airbnb or long term let? What actually pays more in Nairobi",
   description:
     "A specific, numbers-driven answer to the question every Nairobi landlord asks. When Airbnb wins, when long term wins, and the four properties that should never go on Airbnb regardless of yield.",
+  metaDescription:
+    "A specific, numbers-driven answer to the question every Nairobi landlord asks.",
   publishedAt: "2025-05-23",
   readingMinutes: 9,
   author: authors.poonam,

@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "estate-planning-diaspora-kenyans-wills-succession",
   title:
     "Estate planning for diaspora Kenyans: wills, succession and avoiding the family land mess",
+  metaTitle: "Estate planning for diaspora Kenyans: wills and succession",
   description:
     "Without a Kenyan-recognised will, Kenyan property goes through intestate succession under the Law of Succession Act, often messily and across borders. Here is how a diaspora Kenyan should structure a will, when a Kenyan trust makes sense, the role of dual citizenship and how to avoid the family land disputes that haunt every generation.",
+  metaDescription:
+    "Without a Kenyan-recognised will, Kenyan property goes through intestate succession under the Law of Succession Act, often messily and across borders.",
   publishedAt: "2025-06-24",
   readingMinutes: 9,
   author: authors.legal,

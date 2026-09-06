@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "best-gated-communities-nairobi-2026",
   title:
     "The best gated communities in Nairobi in 2026: an honest 2026 guide",
+  metaTitle: "The best gated communities in Nairobi, 2026",
   description:
     "Nairobi’s premium living happens inside compounds. This is an honest 2026 walk through of the best gated communities in the city, organised by suburb and tenant tier, with what makes each one rent and resell well, who actually lives there, and the trade offs buyers should know before committing.",
+  metaDescription:
+    "The best gated communities in Nairobi in 2026 by suburb and tenant tier: what makes each rent and resell well, and the trade-offs to know.",
   publishedAt: "2025-05-14",
   readingMinutes: 9,
   author: authors.editors,

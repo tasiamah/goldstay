@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "gra-8-percent-rental-withholding-tax-2026-guide",
   title:
     "GRA 8% rental withholding tax: the honest 2026 diaspora landlord guide",
+  metaTitle: "GRA 8% rental withholding tax: 2026 guide",
   description:
     "Ghana's 8 per cent final withholding tax on residential rental income is not complicated, but the diaspora landlord version is. Who withholds, when, on what base, and what happens if you get it wrong.",
+  metaDescription:
+    "Ghana's 8 per cent final withholding tax on residential rental income is not complicated, but the diaspora landlord version is.",
   publishedAt: "2026-06-17",
   updatedAt: "2026-07-27",
   readingMinutes: 8,

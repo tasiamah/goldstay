@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "The Nairobi short-let suburbs producing the highest yield in 2026",
   description:
     "Most Nairobi Airbnb hosts are losing money in 2026, but specific suburbs and specific compounds continue to produce exceptional short-let yield. Here is the honest 2026 ranked list of where short-let actually works, and why these pockets win.",
+  metaDescription:
+    "Most Nairobi Airbnb hosts are losing money in 2026, but specific suburbs and specific compounds continue to produce exceptional short-let yield.",
   publishedAt: "2026-03-12",
   readingMinutes: 5,
   author: authors.research,

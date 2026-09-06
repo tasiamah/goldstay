@@ -16,8 +16,11 @@ export const meta: PostMeta = {
   slug: "kenya-stamp-duty-2026-buyer-guide",
   title:
     "Kenya stamp duty in 2026: the complete buyer’s guide with examples",
+  metaTitle: "Kenya stamp duty 2026: a buyer’s guide",
   description:
     "Stamp duty rates, who pays, when it is due, the exemptions that actually apply in 2026, the difference between urban and rural rates, how it interacts with valuation and how diaspora buyers should budget for it. Worked examples for typical Nairobi purchases.",
+  metaDescription:
+    "Stamp duty rates, who pays, when it falls due, the exemptions that apply in 2026, urban against rural rates, and how to budget for it.",
   publishedAt: "2025-09-26",
   readingMinutes: 7,
   author: authors.legal,

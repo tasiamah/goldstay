@@ -16,6 +16,8 @@ export const meta: PostMeta = {
     "Co-living in Nairobi: the emerging investor segment",
   description:
     "Co-living, the model of multiple unrelated tenants sharing a residence with private rooms and common amenity, is a small but growing investor segment in Nairobi. Here is the honest 2026 guide on the model, the numbers and the risks.",
+  metaDescription:
+    "Co-living puts unrelated tenants in private rooms around shared amenity. A small but growing Nairobi segment, and the numbers behind it.",
   publishedAt: "2025-12-07",
   readingMinutes: 5,
   author: authors.research,

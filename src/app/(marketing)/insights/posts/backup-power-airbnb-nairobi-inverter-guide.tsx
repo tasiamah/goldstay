@@ -16,6 +16,8 @@ export const meta: PostMeta = {
   title: "Backup power for a Nairobi short let: what actually needs to stay on",
   description:
     "Most Nairobi buildings have partial backup, which is worse for a guest than none because they expected it to work. Which circuits matter, what a modest inverter covers, and how to test what you actually have.",
+  metaDescription:
+    "Most Nairobi buildings have partial backup, which is worse for a guest than none because they expected it to work.",
   publishedAt: "2026-08-26",
   readingMinutes: 7,
   author: authors.editors,

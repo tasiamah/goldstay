@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "One mosquito can cost you a five star review",
   description:
     "Nairobi's altitude makes it a mild pest environment, which is exactly why hosts ignore it and guests do not. Screens, ants, the rainy season, and how to handle a pest report without losing the review.",
+  metaDescription:
+    "Nairobi's altitude makes it a mild pest environment, which is exactly why hosts ignore it and guests do not.",
   publishedAt: "2026-09-02",
   readingMinutes: 5,
   author: authors.editors,

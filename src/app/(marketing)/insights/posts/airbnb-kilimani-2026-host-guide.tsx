@@ -15,6 +15,8 @@ export const meta: PostMeta = {
   title: "Airbnb in Kilimani: the most competitive market in Nairobi",
   description:
     "Kilimani has more short let supply than any other Nairobi suburb, which makes it both the easiest place to start and the hardest place to make money. What wins here in 2026 and what gets buried.",
+  metaDescription:
+    "Kilimani has more short let supply than any other Nairobi suburb, which makes it both the easiest place to start and the hardest place to make money.",
   publishedAt: "2026-08-08",
   readingMinutes: 8,
   author: authors.editors,

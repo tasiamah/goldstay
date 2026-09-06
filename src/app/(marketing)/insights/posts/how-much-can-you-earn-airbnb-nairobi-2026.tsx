@@ -17,6 +17,8 @@ export const meta: PostMeta = {
   title: "How much can you actually earn from an Airbnb in Nairobi?",
   description:
     "The arithmetic behind Nairobi short let income in 2026: occupancy, achieved rate, and the six costs that separate gross revenue from what reaches your account. Worked through on a real one bed.",
+  metaDescription:
+    "The arithmetic behind Nairobi short-let income in 2026: occupancy, achieved rate, and the six costs between gross revenue and your account.",
   publishedAt: "2026-07-29",
   readingMinutes: 9,
   author: authors.research,
