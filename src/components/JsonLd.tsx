@@ -1,4 +1,12 @@
-import { site, cities, offices } from "@/lib/site";
+import {
+  site,
+  cities,
+  offices,
+  logoObject,
+  orgId,
+  websiteId,
+  whatsapp,
+} from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Keep JSON-LD narrow and accurate. We declare who we are, what we do, where,
@@ -38,9 +46,15 @@ export function JsonLd() {
   const organization = {
     "@context": "https://schema.org",
     "@type": "RealEstateAgent",
+    "@id": orgId(),
     name: site.name,
     description: site.description,
     url: baseUrl,
+    // Knowledge-panel basics that were missing. The number is the line
+    // we actually answer, in E.164 as Google expects it.
+    logo: logoObject(),
+    image: `${baseUrl}/opengraph-image`,
+    telephone: `+${whatsapp.nairobi}`,
     email:
       domainCity === "nairobi"
         ? site.emails.nairobi
@@ -65,7 +79,7 @@ export function JsonLd() {
           description:
             "End-to-end management of residential rental properties for long-term tenants, with monthly USD remittance to overseas accounts.",
           areaServed: offerAreas,
-          provider: { "@type": "Organization", name: site.name },
+          provider: { "@id": orgId() },
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
@@ -80,7 +94,7 @@ export function JsonLd() {
           description:
             "Full short-stay operations including listing, pricing, guest communication, cleaning and maintenance, with monthly USD remittance.",
           areaServed: offerAreas,
-          provider: { "@type": "Organization", name: site.name },
+          provider: { "@id": orgId() },
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
@@ -94,7 +108,7 @@ export function JsonLd() {
           name: "Property Sourcing",
           description: `Buy-side property sourcing for diaspora buyers in ${offerAreas.join(" and ")}. Search, negotiation, title verification, inspection and handover. Free for the buyer.`,
           areaServed: offerAreas,
-          provider: { "@type": "Organization", name: site.name },
+          provider: { "@id": orgId() },
         },
       },
       {
@@ -105,7 +119,7 @@ export function JsonLd() {
           description:
             "Targeted sourcing, referencing and vetting of tenants with lease execution, for landlords managing their own property.",
           areaServed: offerAreas,
-          provider: { "@type": "Organization", name: site.name },
+          provider: { "@id": orgId() },
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
@@ -122,7 +136,11 @@ export function JsonLd() {
     "@id": `${baseUrl}/nairobi#localbusiness`,
     name: `${site.name} Nairobi`,
     url: `${baseUrl}/nairobi`,
-    parentOrganization: { "@type": "Organization", name: site.name },
+    parentOrganization: { "@id": orgId() },
+    logo: logoObject(),
+    image: `${baseUrl}/opengraph-image`,
+    telephone: `+${whatsapp.nairobi}`,
+    email: site.emails.nairobi,
     address: nairobiOffice
       ? {
           "@type": "PostalAddress",
@@ -150,7 +168,9 @@ export function JsonLd() {
     "@id": `${baseUrl}/accra#localbusiness`,
     name: `${site.name} Accra`,
     url: `${baseUrl}/accra`,
-    parentOrganization: { "@type": "Organization", name: site.name },
+    parentOrganization: { "@id": orgId() },
+    logo: logoObject(),
+    image: `${baseUrl}/opengraph-image`,
     address: {
       "@type": "PostalAddress",
       addressLocality: "Accra",
@@ -165,10 +185,22 @@ export function JsonLd() {
   const website = {
     "@context": "https://schema.org",
     "@type": "WebSite",
+    "@id": websiteId(),
     name: site.name,
     url: baseUrl,
     inLanguage: "en",
-    publisher: { "@type": "Organization", name: site.name },
+    publisher: { "@id": orgId() },
+    // The insights search at /insights?q= is real and crawlable, so
+    // declare it. Without a potentialAction the sitelinks searchbox
+    // cannot appear even when Google is willing to show one.
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: `${baseUrl}/insights?q={search_term_string}`,
+      },
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const jsonld = [
@@ -265,11 +297,9 @@ export function ServiceJsonLd({
     description,
     url,
     serviceType,
-    provider: {
-      "@type": "Organization",
-      name: site.name,
-      url: `https://${site.domain}`,
-    },
+    // Points at the organization declared once in the global graph
+    // rather than describing a fresh company on every service page.
+    provider: { "@id": orgId() },
     areaServed: areaServed.map((a) => ({ "@type": "City", name: a })),
   };
   if (priceDescription) {

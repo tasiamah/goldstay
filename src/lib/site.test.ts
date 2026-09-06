@@ -6,6 +6,9 @@ import {
   insightAlternates,
   isLiveDomain,
   liveDomainOr,
+  logoObject,
+  orgId,
+  websiteId,
   neighbourhoodSlug,
   shortLetNeighbourhoods,
   site,
@@ -61,6 +64,40 @@ describe("liveDomains", () => {
   // is worth knowing that is the trade being made.
   it("collapses to a single domain while only one is live", () => {
     expect(soleLiveDomain()).toBe("goldstay.co.ke");
+  });
+});
+
+describe("the structured-data identity", () => {
+  // These exist so the graph is one entity with many pages rather than
+  // a fresh anonymous Organization on every URL, which is what emitting
+  // an inline `Organization { name: "Goldstay" }` per page amounted to.
+  it("identifies the company and the site on the domain we own", () => {
+    expect(orgId()).toBe("https://goldstay.co.ke/#organization");
+    expect(websiteId()).toBe("https://goldstay.co.ke/#website");
+    expect(isLiveDomain(hostOf(orgId()))).toBe(true);
+  });
+
+  it("keeps the ids stable rather than tracking the serving host", () => {
+    // An @id is an identifier, not a link. If it changed per domain the
+    // same company would read as two, and the references pointing at it
+    // from Service, Article and WebSite would dangle.
+    expect(orgId()).toContain(site.domain);
+    expect(orgId()).not.toContain(site.domains.main);
+  });
+
+  it("publishes a logo with absolute url and stated dimensions", () => {
+    // Google documents a publisher logo as required for article rich
+    // results and it was absent, so none of the 350 posts qualified.
+    const logo = logoObject();
+    expect(logo["@type"]).toBe("ImageObject");
+    expect(logo.url).toBe(
+      "https://goldstay.co.ke/images/brand/email-logo.png",
+    );
+    expect(logo.width).toBe(256);
+    expect(logo.height).toBe(256);
+    // Comfortably over Google's 112x112 floor, and square.
+    expect(logo.width).toBeGreaterThanOrEqual(112);
+    expect(logo.width).toBe(logo.height);
   });
 });
 

@@ -194,6 +194,41 @@ export function soleLiveDomain(): string | null {
   return site.liveDomains.length === 1 ? (site.liveDomains[0] ?? null) : null;
 }
 
+// Stable identifiers for the structured-data graph.
+//
+// Every schema node that named Goldstay used to repeat an inline
+// `Organization { name: "Goldstay" }` — the homepage, each Service page,
+// all 350 articles. To Google that is a fresh, unlinked entity on every
+// URL rather than one company with a lot of pages. These give the
+// company and the site one @id each so the rest of the graph can point
+// at them and the signals consolidate.
+//
+// Built from site.domain, not from the serving host: an @id is an
+// identifier rather than a link, so it has to be the same string on
+// every domain or it defeats the point.
+export function orgId() {
+  return `https://${site.domain}/#organization`;
+}
+
+export function websiteId() {
+  return `https://${site.domain}/#website`;
+}
+
+// The brand mark, as an ImageObject.
+//
+// Google documents a publisher logo as required for article rich
+// results, and the Article schema on all 350 posts was omitting it, so
+// none of them was eligible. Dimensions are declared because they are
+// known and Google prefers them stated over inferred.
+export function logoObject() {
+  return {
+    "@type": "ImageObject",
+    url: `https://${site.domain}/images/brand/email-logo.png`,
+    width: 256,
+    height: 256,
+  };
+}
+
 // The one canonical URL for a city landing page.
 //
 // The country domain serves this page at its *root* — next.config.mjs

@@ -4,7 +4,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTABanner } from "./CTABanner";
 import { BreadcrumbJsonLd } from "./JsonLd";
-import { site } from "@/lib/site";
+import { logoObject, orgId, site } from "@/lib/site";
 import type { Post, PostMeta } from "@/app/(marketing)/insights/posts";
 import { categoriesForPost } from "@/app/(marketing)/insights/categories";
 
@@ -48,24 +48,28 @@ export function ArticleLayout({
       ? [`https://${site.domain}${meta.heroImage}`]
       : undefined,
     keywords: meta.tags.join(", "),
+    articleSection: articleCategories[0]?.name,
     author: {
       "@type": "Person",
       name: meta.author.name,
       jobTitle: meta.author.role,
       description: meta.author.bio,
-      worksFor: {
-        "@type": "Organization",
-        name: site.name,
-        url: `https://${site.domain}`,
-      },
+      worksFor: { "@id": orgId() },
       ...(meta.author.image && {
         image: `https://${site.domain}${meta.author.image}`,
       }),
     },
+    // Named inline rather than by @id alone, because Google reads the
+    // publisher logo off this node and wants it present on the article
+    // itself. Without the logo none of the 350 posts was eligible for
+    // an article rich result; the @id still ties it to the one company
+    // entity declared in the global graph.
     publisher: {
+      "@id": orgId(),
       "@type": "Organization",
       name: site.name,
       url: `https://${site.domain}`,
+      logo: logoObject(),
     },
   };
 

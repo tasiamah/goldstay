@@ -63,7 +63,17 @@ export function Hero({
           CSS background. fill + cover keeps the same visual as before. */}
       <Image
         src={heroImage}
-        alt=""
+        // Describes what is actually in each photo. This was alt="" —
+        // an empty alt on the LCP image of the homepage and both city
+        // pages, which tells a screen reader and a crawler alike that
+        // the largest thing on the page carries no meaning.
+        alt={
+          city === "accra"
+            ? "Accra rooftops in the foreground with the city's mid-rise towers on the horizon"
+            : city === "nairobi"
+              ? "High-rise towers on the Nairobi skyline at golden hour, above the city's treeline"
+              : "A made bed and bedside lamp in a furnished apartment"
+        }
         fill
         priority
         sizes="100vw"

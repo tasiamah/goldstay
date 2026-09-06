@@ -29,6 +29,21 @@ export function generateMetadata({ params }: Props): Metadata {
   const post = getPostBySlug(params.slug);
   if (!post) return {};
 
+  // Every post sets a heroImage and renders it on the page, but none of
+  // them reached the share card: with no openGraph.images, all 350
+  // articles unfurled as the same generic site image on WhatsApp,
+  // LinkedIn and X. The hero is already the right picture for the
+  // story, so use it, and give Twitter the large-image card that goes
+  // with it.
+  const ogImage = post.meta.heroImage
+    ? [
+        {
+          url: post.meta.heroImage,
+          alt: post.meta.heroAlt ?? post.meta.title,
+        },
+      ]
+    : undefined;
+
   return {
     title: post.meta.title,
     description: post.meta.description,
@@ -41,6 +56,13 @@ export function generateMetadata({ params }: Props): Metadata {
       modifiedTime: post.meta.updatedAt ?? post.meta.publishedAt,
       authors: [post.meta.author.name],
       tags: [...post.meta.tags],
+      images: ogImage,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.meta.title,
+      description: post.meta.description,
+      images: ogImage,
     },
   };
 }

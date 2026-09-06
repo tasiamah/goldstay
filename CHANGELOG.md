@@ -21,6 +21,44 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-06
+
+### Added
+
+- Articles now unfurl with their own picture. All 350 posts set a hero image
+  and rendered it on the page, but none of them passed it to `openGraph`, so
+  every link shared on WhatsApp, LinkedIn or X showed the same generic site
+  card. Each post now shares its own hero, with the hero's alt text as the
+  image description.
+- The company is now one entity in structured data instead of an anonymous
+  new one on every page. Previously each page re-declared
+  `Organization { name: "Goldstay" }` inline, which reads to Google as an
+  unrelated publisher per URL; the organization and the site now have stable
+  identifiers that the service pages, the articles and the city listings all
+  reference.
+- Knowledge-panel basics that were missing from the organization and the
+  Nairobi listing: the brand logo, a branded image, and the phone number we
+  actually answer.
+- Article schema now carries a publisher logo. Google documents this as
+  required for article rich results, so without it none of the 350 posts was
+  eligible for one. Posts also declare their category.
+- The insights search is declared as a site search action, which is what makes
+  a search box in the Google result possible at all.
+- The 17 neighbourhood pages emit FAQ markup. They rendered the FAQ accordion
+  already, so the answers were on the page but invisible to anything reading
+  the markup. The accordion and the markup now read from one list, so they
+  cannot drift apart.
+
+### Fixed
+
+- Category pages put the brand in the title twice —
+  "Buying insights for diaspora landlords | Goldstay | Goldstay" — because the
+  page spelled out a suffix the site-wide template already appends. That also
+  pushed the title past the length Google will display.
+- The largest image on the homepage and both city pages had empty alt text,
+  which tells a screen reader and a crawler that the main image carries no
+  meaning. All three now describe what is actually in the photo.
+
 ## [1.0.3] - 2026-09-06
 
 ### Fixed
@@ -134,7 +172,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.3...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/tasiamah/goldstay/compare/v1.0.3...v1.1.0
 [1.0.3]: https://github.com/tasiamah/goldstay/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/tasiamah/goldstay/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/tasiamah/goldstay/compare/v1.0.0...v1.0.1

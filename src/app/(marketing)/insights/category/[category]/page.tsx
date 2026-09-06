@@ -41,10 +41,14 @@ export function generateMetadata({
   const qs = page > 1 ? `?page=${page}` : "";
   const canonical = `/insights/category/${category.slug}${qs}`;
 
+  // No " | Goldstay" here. The marketing layout's title.template appends
+  // it, so spelling it out again rendered
+  // "Buying insights for diaspora landlords | Goldstay | Goldstay" and
+  // pushed the whole title past what Google will display.
   const title =
     page > 1
-      ? `${category.name} insights (page ${page}) | Goldstay`
-      : `${category.name} insights for diaspora landlords | Goldstay`;
+      ? `${category.name} insights (page ${page})`
+      : `${category.name} insights for diaspora landlords`;
 
   return {
     title,
@@ -56,7 +60,9 @@ export function generateMetadata({
       ),
     },
     openGraph: {
-      title,
+      // Spelled out because title.template does not apply to openGraph,
+      // so this is the one place the brand still has to be explicit.
+      title: `${title} | ${site.name}`,
       description: category.description,
       type: "website",
     },

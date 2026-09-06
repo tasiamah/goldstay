@@ -12,10 +12,11 @@ import { SectionHeader } from "./SectionHeader";
 import { CTABanner } from "./CTABanner";
 import { FAQSection } from "./FAQSection";
 import { CalculatorTeaser } from "./CalculatorTeaser";
-import { BreadcrumbJsonLd } from "./JsonLd";
+import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 import {
   cities,
   citySourcing,
+  localizedFaq,
   neighbourhoodSlug,
   site,
   waLink,
@@ -73,6 +74,10 @@ export function NeighbourhoodPage({
   // "Where else we operate" footer block. Internal cross-linking is
   // the cheapest ranking lever we have once these pages exist.
   const others = c.neighbourhoods.filter((n) => n.name !== neighbourhood.name);
+
+  // City-scoped answers, so a Nairobi page never shows GHS copy. Same
+  // list feeds the accordion and the FAQPage schema at the bottom.
+  const faqItems = localizedFaq(city);
 
   // Tenant midpoint rent figure for the hero subheadline. Avoids the
   // copy reading like a min/max table; gives one number a human can
@@ -267,7 +272,13 @@ export function NeighbourhoodPage({
         </section>
       )}
 
-      <FAQSection />
+      {/* The accordion and the schema read from one list, passed
+          explicitly. These 17 pages rendered the FAQ but emitted no
+          FAQPage markup, so the answers were on the page and invisible
+          to anything parsing it. Passing the list rather than letting
+          FAQSection resolve its own also means the two cannot drift. */}
+      <FaqJsonLd items={faqItems} />
+      <FAQSection items={faqItems} />
       <CTABanner />
     </>
   );
