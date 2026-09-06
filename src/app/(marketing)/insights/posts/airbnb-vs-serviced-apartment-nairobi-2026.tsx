@@ -215,6 +215,17 @@ export default function Article() {
       </P>
 
       <P>
+        Handing the operation over is the other option: here is{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how our Nairobi short-stay management works
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/hospitality-investment-kenya-holiday-lets-serviced-apartments"

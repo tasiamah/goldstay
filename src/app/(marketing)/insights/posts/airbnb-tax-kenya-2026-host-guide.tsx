@@ -269,6 +269,17 @@ export default function Article() {
       </P>
 
       <P>
+        This is standard on every unit under{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our Airbnb management
+        </Link>
+        , rather than something an owner has to ask for.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/nairobi-short-stay-licensing-2026-what-changed"

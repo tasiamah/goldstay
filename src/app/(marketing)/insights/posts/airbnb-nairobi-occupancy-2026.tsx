@@ -189,6 +189,17 @@ export default function Article() {
       </P>
 
       <P>
+        If you would rather not run any of this yourself, it is what our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management service in Nairobi
+        </Link>{" "}
+        exists to do.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/best-nairobi-suburbs-airbnb-2026"

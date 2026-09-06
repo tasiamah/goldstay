@@ -283,6 +283,17 @@ export default function Article() {
       </P>
 
       <P>
+        It is one of the standing items in our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          short-stay management service in Nairobi
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/airbnb-nairobi-complete-host-guide-2026"

@@ -214,6 +214,17 @@ export default function Article() {
       </P>
 
       <P>
+        See what else is covered under{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Goldstay’s Airbnb management in Nairobi
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/why-your-nairobi-airbnb-isnt-getting-bookings"

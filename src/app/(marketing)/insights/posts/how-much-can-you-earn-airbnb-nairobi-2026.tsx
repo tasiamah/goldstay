@@ -267,6 +267,17 @@ export default function Article() {
       </P>
 
       <P>
+        All of it is included in{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          full Airbnb management in Nairobi
+        </Link>
+        , if you would rather hand the property over.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/airbnb-nairobi-complete-host-guide-2026"

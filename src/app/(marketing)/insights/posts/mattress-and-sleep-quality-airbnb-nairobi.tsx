@@ -188,6 +188,17 @@ export default function Article() {
       </P>
 
       <P>
+        If you want the whole operation handled end to end, that is{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management in Nairobi
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/linen-and-towels-airbnb-nairobi"

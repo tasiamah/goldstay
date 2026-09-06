@@ -232,6 +232,17 @@ export default function Article() {
       </P>
 
       <P>
+        Owners who would rather not think about it at all use our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb and short-stay management
+        </Link>{" "}
+        instead.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/airbnb-host-kenya-first-90-days"
