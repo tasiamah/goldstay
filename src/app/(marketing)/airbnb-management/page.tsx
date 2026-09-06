@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Check, Camera, LineChart, MessageCircle, Sparkles, Wrench, Receipt } from "lucide-react";
+import {
+  Check,
+  Camera,
+  LineChart,
+  MessageCircle,
+  Sparkles,
+  Wrench,
+  Receipt,
+} from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
@@ -19,8 +27,20 @@ export function generateMetadata(): Metadata {
         ? "Accra"
         : "Nairobi and Accra";
 
+  // City goes in the title, not just the description. The query we are
+  // competing for is "airbnb management nairobi" and the title is the
+  // most heavily weighted element on the page; leaving the city out of
+  // it while every competitor names it is the whole reason this page
+  // sat on page two. The template appends " | Goldstay".
+  const cityTitle =
+    city === "nairobi"
+      ? "Airbnb Management in Nairobi, Kenya"
+      : city === "accra"
+        ? "Airbnb Management in Accra, Ghana"
+        : "Airbnb Management in Nairobi & Accra";
+
   return {
-    title: "Airbnb & Short-Stay Management",
+    title: cityTitle,
     description: `Full Airbnb and short-stay management in ${cityPhrase}. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.`,
     alternates: {
       canonical: "/airbnb-management",
@@ -97,7 +117,10 @@ export default function Page() {
       <BreadcrumbJsonLd
         items={[
           { name: "Home", url: baseUrl },
-          { name: "Airbnb & Short-Stay Management", url: `${baseUrl}/airbnb-management` },
+          {
+            name: "Airbnb & Short-Stay Management",
+            url: `${baseUrl}/airbnb-management`,
+          },
         ]}
       />
       <ServiceJsonLd
@@ -127,15 +150,18 @@ export default function Page() {
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">Airbnb · Short-stay</div>
+              {/* City named in the H1 as well as the title. Reads
+                  naturally and puts the geo term in the second-heaviest
+                  on-page element for a query that always carries it. */}
               <h1 className="mt-6 font-serif text-display-lg text-cream balance">
-                Turn your apartment into a{" "}
+                Turn your {cityName ? `${cityName} ` : ""}apartment into a{" "}
                 <em className="italic">five-star</em> short-stay, without
                 lifting a finger.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-                We handle photography, pricing, guests, cleaning and maintenance. You get a
-                monthly statement and a USD wire. Our fee is 20% of revenue. No listing fees,
-                no setup fees, no surprises.
+                We handle photography, pricing, guests, cleaning and
+                maintenance. You get a monthly statement and a USD wire. Our fee
+                is 20% of revenue. No listing fees, no setup fees, no surprises.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a
@@ -149,10 +175,7 @@ export default function Page() {
                 >
                   Get a yield estimate
                 </a>
-                <Link
-                  href="/list-your-property"
-                  className="btn-ghost-light"
-                >
+                <Link href="/list-your-property" className="btn-ghost-light">
                   Or use the form →
                 </Link>
               </div>
@@ -188,12 +211,13 @@ export default function Page() {
             <div>
               <div className="eyebrow">Yield vs long-term</div>
               <h2 className="mt-4 font-serif text-display-md balance">
-                Short-stay typically yields 40 to 70% more than long-term in the neighbourhoods we operate in.
+                Short-stay typically yields 40 to 70% more than long-term in the
+                neighbourhoods we operate in.
               </h2>
               <p className="mt-5 text-charcoal/75">
-                But only if the operation is tight. Bad photos, flat pricing, slow guest
-                replies and patchy cleaning destroy the economics instantly. We run it like a
-                boutique hotel, not a side hustle.
+                But only if the operation is tight. Bad photos, flat pricing,
+                slow guest replies and patchy cleaning destroy the economics
+                instantly. We run it like a boutique hotel, not a side hustle.
               </p>
               <ul className="mt-8 space-y-3 text-sm">
                 {[
@@ -215,7 +239,9 @@ export default function Page() {
 
           <Reveal delay={0.1}>
             <div className="rounded-3xl border border-charcoal/10 bg-charcoal p-6 text-cream sm:p-8 md:p-10">
-              <div className="eyebrow text-gold-400">Illustrative economics</div>
+              <div className="eyebrow text-gold-400">
+                Illustrative economics
+              </div>
               <h3 className="mt-4 font-serif text-2xl sm:text-3xl">
                 {exampleUnit}
               </h3>
@@ -243,8 +269,9 @@ export default function Page() {
                 </li>
               </ul>
               <p className="mt-6 text-xs text-cream/50">
-                Illustrative only. Actual yield depends on location, size, furnishing and
-                season. We&apos;ll give you a specific estimate after assessment.
+                Illustrative only. Actual yield depends on location, size,
+                furnishing and season. We&apos;ll give you a specific estimate
+                after assessment.
               </p>
             </div>
           </Reveal>
