@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { permanentRedirect } from "next/navigation";
-import { isLiveDomain, site } from "@/lib/site";
+import { isLiveDomain, site, soleLiveDomain } from "@/lib/site";
 
 // Cross-domain city gating. Mirrors the pattern already used by
 // /insights/[slug]: a Nairobi page hit on goldstay.com.gh 308-redirects
@@ -25,6 +25,13 @@ import { isLiveDomain, site } from "@/lib/site";
 // components can't easily reconstruct the full request URL from
 // headers alone in every runtime.
 export function enforceCityHost(city: "nairobi" | "accra", path: string): void {
+  // With one live domain there is no second country host to send anyone
+  // to, so this has nothing to enforce. Returning before touching
+  // `headers()` is what keeps the city and neighbourhood pages
+  // statically generated and cacheable — a request-time read here would
+  // undo that for every one of them. See soleLiveDomain.
+  if (soleLiveDomain()) return;
+
   const host = (headers().get("host") ?? "").toLowerCase();
 
   // Dev + preview escape hatch. We deliberately do not gate localhost

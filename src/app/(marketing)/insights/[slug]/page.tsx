@@ -8,13 +8,17 @@ import {
   countryForHost,
   insightAlternates,
   site,
+  soleLiveDomain,
 } from "@/lib/site";
 
 // Pre-render every post at build time so each canonical URL is
-// available immediately. The page itself reads the request host to
-// gate cross-domain access, so Next renders it on demand per host
-// (Kenya posts on .com / .co.ke, Ghana posts on .com.gh). Anything
-// outside its country redirects 308 to the canonical host.
+// available immediately.
+//
+// While one domain is live these serve straight from the prerender.
+// Once a second country domain goes live the page reads the request
+// host to gate cross-domain access, and Next renders it per host
+// (Kenya posts on .com / .co.ke, Ghana posts on .com.gh) with anything
+// outside its country redirecting 308 to the canonical host.
 export function generateStaticParams() {
   return posts.map((p) => ({ slug: p.meta.slug }));
 }
@@ -56,7 +60,18 @@ export default function Page({ params }: Props) {
   // Serving it is the better failure: the article is reachable on the
   // one domain we run instead of bouncing to a domain that does not
   // resolve. It stays out of the Kenya sitemap either way.
-  const host = (headers().get("host") ?? site.domain).toLowerCase();
+  //
+  // Skipped entirely while one domain is live, and for the same reason
+  // the check itself is skipped above: there is nowhere else to send
+  // anyone. Reading `headers()` for an answer that cannot vary would
+  // make all 350 articles render per request instead of being served
+  // from the edge. See soleLiveDomain.
+  const sole = soleLiveDomain();
+  const host = (
+    sole ??
+    headers().get("host") ??
+    site.domain
+  ).toLowerCase();
   const hostCountry = countryForHost(host);
   if (hostCountry !== post.meta.country) {
     const target = canonicalHostForCountry(post.meta.country);

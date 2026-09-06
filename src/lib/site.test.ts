@@ -2,12 +2,14 @@ import { describe, expect, it } from "vitest";
 import {
   alternateLanguagesFor,
   canonicalHostForCountry,
+  cityCanonical,
   insightAlternates,
   isLiveDomain,
   liveDomainOr,
   neighbourhoodSlug,
   shortLetNeighbourhoods,
   site,
+  soleLiveDomain,
 } from "./site";
 
 // Guards the domain layer, which had a bug worth a permanent test.
@@ -49,6 +51,55 @@ describe("liveDomains", () => {
     expect(liveDomainOr("goldstay.com")).toBe("goldstay.co.ke");
     expect(liveDomainOr("goldstay.com.gh")).toBe("goldstay.co.ke");
     expect(liveDomainOr("goldstay.co.ke")).toBe("goldstay.co.ke");
+  });
+
+  // This is what lets getServerCity, enforceCityHost and the article
+  // cross-domain gate resolve without reading the request host, which
+  // is in turn what keeps the marketing tree statically generated. If a
+  // second domain goes live they all go back on the request, and the
+  // pages go back to rendering per request — correct, but slower, so it
+  // is worth knowing that is the trade being made.
+  it("collapses to a single domain while only one is live", () => {
+    expect(soleLiveDomain()).toBe("goldstay.co.ke");
+  });
+});
+
+describe("cityCanonical", () => {
+  // The bug this locks out: goldstay.co.ke/ and goldstay.co.ke/nairobi
+  // are the same page (next.config.mjs rewrites the root), and the root
+  // was publishing rel=canonical pointing at /nairobi. The homepage —
+  // the URL that carries the brand query and nearly every inbound link
+  // — was telling Google to credit a subpage instead, while the sitemap
+  // submitted both.
+  it("points a live country domain's city page at its root", () => {
+    expect(cityCanonical("nairobi")).toBe("https://goldstay.co.ke");
+  });
+
+  it("has no trailing slash, so it matches the sitemap exactly", () => {
+    // A canonical of ".../" against a sitemap entry of "..." is two
+    // URLs as far as Google is concerned.
+    const inSitemap = `https://${site.domains.nairobi}`;
+    expect(cityCanonical("nairobi")).toBe(inSitemap);
+  });
+
+  it("falls back to the /{city} URL while a country domain is dark", () => {
+    // .com.gh does not resolve, so /accra on .co.ke is the only address
+    // this page has and therefore the only honest canonical.
+    expect(cityCanonical("accra")).toBe("https://goldstay.co.ke/accra");
+  });
+
+  it("never names a domain we do not serve", () => {
+    for (const city of ["nairobi", "accra"] as const) {
+      expect(isLiveDomain(hostOf(cityCanonical(city)))).toBe(true);
+    }
+  });
+
+  it("agrees with the hreflang alternate for the same page", () => {
+    // Canonical and en-KE hreflang both have to name the root, or the
+    // two tags contradict each other and Google discards the cluster.
+    expect(alternateLanguagesFor("/nairobi")["en-KE"]).toBe(
+      cityCanonical("nairobi"),
+    );
   });
 });
 

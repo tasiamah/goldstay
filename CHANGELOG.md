@@ -21,6 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.0.3] - 2026-09-06
+
+### Fixed
+
+- The homepage told Google not to index the homepage. On `goldstay.co.ke` the
+  root serves the Nairobi city page through an edge rewrite, but it carried
+  that page's metadata, so `https://goldstay.co.ke/` published a canonical
+  pointing at `/nairobi` — while the sitemap submitted both URLs, the root at
+  priority 1. The root is now self-canonical, `/nairobi` 301s to it on the
+  Kenya domain, and only one of the two is in the sitemap. Same treatment for
+  `/accra` on the Ghana domain when it goes live.
+- 53 links in the insights catalogue pointed at 34 article slugs that were
+  never written, so a reader following them from a published article got a
+  404 and a crawler got a dead end. Each is repointed at the closest article
+  that exists, or at the relevant category hub where nothing close existed.
+- No marketing page could be cached. Reading the request host to pick a
+  market opted the entire marketing tree out of static generation, so all 394
+  URLs returned `no-store` and every crawl and every visitor paid a full
+  origin render. With one domain live the host cannot change the answer, so it
+  is now resolved at build time: 417 routes prerender, including the homepage,
+  every service and neighbourhood page and all 350 articles. The per-request
+  path returns automatically if a second domain goes live.
+- `scripts/check-insights.mjs` had been failing for months with nothing
+  running it. It now runs as part of `npx vitest run`, so a broken article
+  link fails the suite and names the file.
+
 ## [1.0.2] - 2026-09-06
 
 ### Fixed
@@ -108,7 +134,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.3...HEAD
+[1.0.3]: https://github.com/tasiamah/goldstay/compare/v1.0.2...v1.0.3
 [1.0.2]: https://github.com/tasiamah/goldstay/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/tasiamah/goldstay/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/tasiamah/goldstay/releases/tag/v1.0.0

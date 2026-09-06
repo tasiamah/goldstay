@@ -171,6 +171,52 @@ export function liveDomainOr(domain: string) {
   return isLiveDomain(domain) ? domain : fallbackDomain();
 }
 
+// The only domain in production, when there is only one.
+//
+// Every per-request branch on the marketing surface exists to tell the
+// country domains apart: which city to render, which market's copy to
+// use, whether to redirect a city page to its own TLD. When exactly one
+// domain is live, all of it has one answer, and reading the Host header
+// to find it costs more than the answer is worth — `headers()` opts the
+// whole marketing tree out of static generation, so no page can be
+// cached at the CDN and every crawl pays a full server render.
+//
+// Returning a domain here lets those callers resolve at build time.
+// Returning null puts them back on the request, which is what has to
+// happen the moment a second domain goes live and the answer genuinely
+// varies. See site.liveDomains: adding a domain there is what flips it.
+//
+// Trade-off, deliberate: while this returns a domain, preview and
+// localhost render that domain's market rather than the neutral
+// dual-market surface. Production is the case worth optimising for, and
+// previews now match it.
+export function soleLiveDomain(): string | null {
+  return site.liveDomains.length === 1 ? (site.liveDomains[0] ?? null) : null;
+}
+
+// The one canonical URL for a city landing page.
+//
+// The country domain serves this page at its *root* — next.config.mjs
+// rewrites "/" to /nairobi on .co.ke and to /accra on .com.gh — so the
+// root and /{city} are the same page under two addresses. The root is
+// the version to keep: it is what people type, link and share, and it
+// carries the brand query. /{city} therefore canonicalises into it and
+// 301s there (same file), and the sitemap lists only the root.
+//
+// Absolute and host-independent on purpose. A relative "/" would resolve
+// against whichever host served the request, so the neutral .com copy of
+// /nairobi would declare itself canonical instead of pointing home.
+//
+// While a country domain is dark the page only exists on the fallback
+// host, so the canonical is the /{city} URL there — the address that
+// actually resolves.
+export function cityCanonical(city: "nairobi" | "accra") {
+  const domain = city === "nairobi" ? site.domains.nairobi : site.domains.accra;
+  return isLiveDomain(domain)
+    ? `https://${domain}`
+    : `https://${fallbackDomain()}/${city}`;
+}
+
 // hreflang helper. Drops any alternate whose domain is not live, so we
 // never advertise a translation that 404s, and collapses duplicates
 // (while .com.gh is dark, en-GH and en-KE would both resolve to .co.ke,
