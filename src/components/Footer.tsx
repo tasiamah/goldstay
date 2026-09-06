@@ -39,7 +39,9 @@ export function Footer() {
         <div className="grid gap-16 md:grid-cols-12">
           <div className="md:col-span-5">
             <Logo />
-            <p className="mt-6 max-w-sm text-sm text-charcoal/70">{brandLine}</p>
+            <p className="mt-6 max-w-sm text-sm text-charcoal/70">
+              {brandLine}
+            </p>
             <div className="mt-8 flex items-center gap-3">
               <a
                 aria-label="Instagram"
@@ -82,6 +84,16 @@ export function Footer() {
               <li>
                 <Link href="/airbnb-management" className="link-underline">
                   Airbnb &amp; short-stay management
+                </Link>
+              </li>
+              <li>
+                <Link href="/long-term-management" className="link-underline">
+                  Long-term management
+                </Link>
+              </li>
+              <li>
+                <Link href="/tenant-finding" className="link-underline">
+                  Tenant finding
                 </Link>
               </li>
               <li>
@@ -191,7 +203,10 @@ export function Footer() {
                 <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
                   {neighbourhoodLinks("nairobi").map((n) => (
                     <li key={n.href}>
-                      <Link href={n.href} className="link-underline text-charcoal/70 hover:text-charcoal">
+                      <Link
+                        href={n.href}
+                        className="link-underline text-charcoal/70 hover:text-charcoal"
+                      >
                         {n.label}
                       </Link>
                     </li>
@@ -205,7 +220,10 @@ export function Footer() {
                 <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
                   {neighbourhoodLinks("accra").map((n) => (
                     <li key={n.href}>
-                      <Link href={n.href} className="link-underline text-charcoal/70 hover:text-charcoal">
+                      <Link
+                        href={n.href}
+                        className="link-underline text-charcoal/70 hover:text-charcoal"
+                      >
                         {n.label}
                       </Link>
                     </li>
@@ -217,7 +235,9 @@ export function Footer() {
         </div>
 
         <div className="mt-20 flex flex-col items-start justify-between gap-4 border-t border-charcoal/10 pt-8 text-xs text-charcoal/50 md:flex-row md:items-center">
-          <div>© {new Date().getFullYear()} Goldstay. {site.parent}.</div>
+          <div>
+            © {new Date().getFullYear()} Goldstay. {site.parent}.
+          </div>
           <div className="flex gap-6">
             <Link href="/privacy" className="link-underline">
               Privacy

@@ -5,6 +5,8 @@ import {
   insightAlternates,
   isLiveDomain,
   liveDomainOr,
+  neighbourhoodSlug,
+  shortLetNeighbourhoods,
   site,
 } from "./site";
 
@@ -167,6 +169,89 @@ describe("canonicalHostForCountry", () => {
 
   it("sends Kenya to the Kenya domain", () => {
     expect(canonicalHostForCountry("kenya")).toBe("goldstay.co.ke");
+  });
+});
+
+describe("short-let neighbourhood data", () => {
+  const all = shortLetNeighbourhoods("nairobi");
+
+  it("publishes a page only where we have short-stay data", () => {
+    expect(all.length).toBeGreaterThan(0);
+    for (const n of all) {
+      expect(n.shortLet).toBeDefined();
+    }
+  });
+
+  it("leaves out the neighbourhoods where short-letting does not work", () => {
+    // Karen and Runda are standalone-house suburbs a long way from any
+    // business district. Generating a service page for them would mean
+    // publishing a template with nothing true to say, which is the
+    // doorway-page pattern Google demotes.
+    const names = all.map((n) => n.name);
+    expect(names).not.toContain("Karen");
+    expect(names).not.toContain("Runda");
+  });
+
+  it("covers the neighbourhoods the article catalogue leans on", () => {
+    const names = all.map((n) => n.name);
+    for (const expected of ["Westlands", "Kilimani", "Gigiri", "Riverside"]) {
+      expect(names).toContain(expected);
+    }
+  });
+
+  it("gives every page something of its own to say", () => {
+    // The guard against these turning into one page printed nine times.
+    // note and caveat are the fields that carry the local specifics, so
+    // they have to be real prose rather than a stub.
+    for (const n of all) {
+      expect(n.shortLet.note.length, `${n.name} note`).toBeGreaterThan(120);
+      expect(n.shortLet.caveat.length, `${n.name} caveat`).toBeGreaterThan(80);
+      expect(n.shortLet.guests.length, `${n.name} guests`).toBeGreaterThan(20);
+    }
+  });
+
+  it("says something different on each page", () => {
+    for (const field of ["note", "caveat", "guests"] as const) {
+      const values = all.map((n) => n.shortLet[field]);
+      expect(new Set(values).size, `duplicated ${field}`).toBe(values.length);
+    }
+  });
+
+  it("quotes coherent rate and occupancy bands", () => {
+    for (const n of all) {
+      const { nightlyUsd, occupancyPct } = n.shortLet;
+      expect(nightlyUsd.min, `${n.name} nightly`).toBeLessThan(nightlyUsd.max);
+      expect(occupancyPct.min, `${n.name} occupancy`).toBeLessThan(
+        occupancyPct.max,
+      );
+      // Sanity bounds. A nightly rate outside this range or an occupancy
+      // above 80% is a typo or wishful thinking, and both would be
+      // published as a promise to a landlord.
+      expect(nightlyUsd.min).toBeGreaterThan(40);
+      expect(nightlyUsd.max).toBeLessThan(400);
+      expect(occupancyPct.max).toBeLessThanOrEqual(80);
+    }
+  });
+
+  it("keeps short-let gross above the long lease it is compared against", () => {
+    // The pages put these side by side. If the arithmetic ever inverts,
+    // the comparison section silently argues against itself.
+    for (const n of all) {
+      const grossLow = Math.round(
+        (n.shortLet.nightlyUsd.min * 30 * n.shortLet.occupancyPct.min) / 100,
+      );
+      expect(grossLow, `${n.name} short-let gross`).toBeGreaterThan(
+        n.twoBrUsd.min * 0.8,
+      );
+    }
+  });
+
+  it("generates a unique slug per page", () => {
+    const slugs = all.map((n) => neighbourhoodSlug(n.name));
+    expect(new Set(slugs).size).toBe(slugs.length);
+    for (const s of slugs) {
+      expect(s).toMatch(/^[a-z0-9-]+$/);
+    }
   });
 });
 

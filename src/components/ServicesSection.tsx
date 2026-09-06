@@ -63,9 +63,7 @@ export function ServicesSection({
                 </ul>
                 <div className="mt-auto flex flex-wrap items-center justify-between gap-4 pt-10">
                   <a
-                    href={waLink(
-                      `Hi Goldstay, I'm interested in ${s.title}`,
-                    )}
+                    href={waLink(`Hi Goldstay, I'm interested in ${s.title}`)}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn-primary"
@@ -93,8 +91,24 @@ export function ServicesSection({
           ))}
         </div>
 
+        {/* Tenant finding is the fourth service and sits outside the
+            three-card grid. It still needs a way in from the homepage,
+            otherwise the page has no inbound internal link at all. */}
+        <Reveal delay={0.08}>
+          <p className="mt-12 text-center text-sm text-charcoal/60">
+            Managing the property yourself and only need a tenant? We also do{" "}
+            <Link
+              href="/tenant-finding"
+              className="link-underline text-charcoal"
+            >
+              tenant finding on its own
+            </Link>
+            .
+          </p>
+        </Reveal>
+
         <Reveal delay={0.1}>
-          <p className="mt-10 text-center text-sm text-charcoal/60">
+          <p className="mt-3 text-center text-sm text-charcoal/60">
             Not sure which of these fits your situation?{" "}
             <a
               className="link-underline text-charcoal"

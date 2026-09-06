@@ -19,6 +19,8 @@ const DARK_HERO_EXACT = new Set([
   "/accra",
   "/accra/buy",
   "/airbnb-management",
+  "/long-term-management",
+  "/tenant-finding",
   "/property-sourcing",
   "/list-your-property",
   "/find-a-home",

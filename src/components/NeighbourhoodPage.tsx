@@ -1,6 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowUpRight, MapPin, Users, Banknote, ShieldCheck } from "lucide-react";
+import {
+  ArrowUpRight,
+  MapPin,
+  Users,
+  Banknote,
+  ShieldCheck,
+} from "lucide-react";
 import { Reveal } from "./Reveal";
 import { SectionHeader } from "./SectionHeader";
 import { CTABanner } from "./CTABanner";
@@ -137,8 +143,8 @@ export function NeighbourhoodPage({
                 <em className="italic">{neighbourhood.name}</em>, {cityName}.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-                A well-finished 2-bedroom in {neighbourhood.name} typically
-                lets to {neighbourhood.tenant.toLowerCase()} for about USD{" "}
+                A well-finished 2-bedroom in {neighbourhood.name} typically lets
+                to {neighbourhood.tenant.toLowerCase()} for about USD{" "}
                 {midRent.toLocaleString()} a month, wired to your foreign
                 account on the 5th. We handle the tenant, the rent, the
                 paperwork and the {country} taxes; you do nothing.
@@ -159,6 +165,22 @@ export function NeighbourhoodPage({
                   Estimate your yield →
                 </Link>
               </div>
+              {/* Sibling short-let page, where one exists. This is a
+                  long-let page, so a reader weighing nightly against a
+                  lease needs somewhere to go, and it connects the two
+                  page sets rather than leaving them isolated. */}
+              {neighbourhood.shortLet ? (
+                <p className="mt-8 text-sm text-cream/70">
+                  Considering nightly bookings instead? See{" "}
+                  <Link
+                    href={`/${city}/${slug}/airbnb-management`}
+                    className="underline decoration-gold-500 underline-offset-4 hover:text-gold-300"
+                  >
+                    Airbnb management in {neighbourhood.name}
+                  </Link>
+                  , with the rates and occupancy we actually see there.
+                </p>
+              ) : null}
             </div>
           </Reveal>
         </div>
@@ -177,13 +199,13 @@ export function NeighbourhoodPage({
                 <Banknote className="h-6 w-6 text-gold-600" />
                 <h3 className="mt-6 font-serif text-2xl">Long-term rent</h3>
                 <p className="mt-2 font-mono text-lg text-charcoal">
-                  USD {neighbourhood.twoBrUsd.min.toLocaleString()} to{" "}
-                  USD {neighbourhood.twoBrUsd.max.toLocaleString()} / month
+                  USD {neighbourhood.twoBrUsd.min.toLocaleString()} to USD{" "}
+                  {neighbourhood.twoBrUsd.max.toLocaleString()} / month
                 </p>
                 <p className="mt-3 text-sm text-charcoal/70">
                   Recently let, well-finished 2-bed apartments in{" "}
-                  {neighbourhood.name}. We collect in {c.currency}, remit
-                  in USD on the 5th.
+                  {neighbourhood.name}. We collect in {c.currency}, remit in USD
+                  on the 5th.
                 </p>
               </div>
             </Reveal>
@@ -203,9 +225,9 @@ export function NeighbourhoodPage({
                 <ShieldCheck className="h-6 w-6 text-gold-600" />
                 <h3 className="mt-6 font-serif text-2xl">Compliance</h3>
                 <p className="mt-3 text-sm text-charcoal/70">
-                  {sourcing.taxAuthority} returns, service charge, land
-                  rates and any neighbourhood levies are paid from your
-                  collected rent and itemised on every monthly statement.
+                  {sourcing.taxAuthority} returns, service charge, land rates
+                  and any neighbourhood levies are paid from your collected rent
+                  and itemised on every monthly statement.
                 </p>
               </div>
             </Reveal>

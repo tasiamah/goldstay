@@ -101,6 +101,39 @@ export function findNeighbourhood(
   );
 }
 
+// A neighbourhood we are willing to publish a short-let service page
+// for, which is to say one carrying real short-stay data.
+export type ShortLetNeighbourhood = Neighbourhood & {
+  shortLet: NonNullable<Neighbourhood["shortLet"]>;
+};
+
+export function hasShortLet(n: Neighbourhood): n is ShortLetNeighbourhood {
+  return n.shortLet !== undefined;
+}
+
+// Drives generateStaticParams for the service-plus-location route.
+// Neighbourhoods without short-stay data get no page at all rather than
+// a templated one, so the route only ever serves URLs with something of
+// their own to say.
+export function shortLetNeighbourhoods(
+  city: "nairobi" | "accra",
+): ShortLetNeighbourhood[] {
+  // Widened to Neighbourhood[] first on purpose. `cities` is `as const`,
+  // so the element type is a union of literal shapes and Array.filter's
+  // type-predicate overload cannot narrow to ShortLetNeighbourhood
+  // against it.
+  const all: readonly Neighbourhood[] = cities[city].neighbourhoods;
+  return all.filter(hasShortLet);
+}
+
+export function findShortLetNeighbourhood(
+  city: "nairobi" | "accra",
+  slug: string,
+): ShortLetNeighbourhood | undefined {
+  const n = findNeighbourhood(city, slug);
+  return n && hasShortLet(n) ? n : undefined;
+}
+
 // hreflang helper. Returns the alternates.languages map for a given
 // path so each page declares the correct cross-domain equivalents.
 //
@@ -331,6 +364,7 @@ export const services = [
     title: "Long-Term Management",
     fee: "10%",
     feeLabel: "of collected rent",
+    detailHref: "/long-term-management",
     blurb:
       "End-to-end management for landlords who want stable, long-term tenants in Nairobi or Accra.",
     features: [
@@ -364,6 +398,7 @@ export const services = [
     title: "Tenant Finding Only",
     fee: "1 month",
     feeLabel: "one-time fee",
+    detailHref: "/tenant-finding",
     blurb:
       "For self-managing landlords who simply need a vetted, high-quality tenant in place.",
     features: [
@@ -384,6 +419,37 @@ export type Neighbourhood = {
   name: string;
   twoBrUsd: { min: number; max: number };
   tenant: string;
+  // Short-stay profile, and deliberately optional.
+  //
+  // Only filled in where we would actually take on a short let in that
+  // neighbourhood. Karen and Runda are the obvious omissions: both are
+  // standalone-house suburbs a long way from any business district,
+  // where nightly demand is thin and the long-let economics are simply
+  // better. Leaving them blank means no /airbnb-management page is
+  // generated for them.
+  //
+  // That restraint is the point. Spinning up a service page for every
+  // neighbourhood on one shared template is the textbook doorway-page
+  // pattern, and Google demotes exactly that. A page only earns its URL
+  // if it can say something true that the others cannot, which is why
+  // `note` and `caveat` are required rather than nice to have.
+  shortLet?: {
+    // Indicative nightly rate for a well-finished 2-bed, in USD.
+    nightlyUsd: { min: number; max: number };
+    // Realistic annual occupancy band, as a percentage.
+    occupancyPct: { min: number; max: number };
+    // Who actually books here, which differs sharply by area: medical
+    // visitors in Parklands, UN assignments in Gigiri, weekend leisure
+    // in Kilimani.
+    guests: string;
+    // What is genuinely specific about short-letting in this
+    // neighbourhood. One or two sentences, no filler.
+    note: string;
+    // What caps the rate or the demand. Every area has something, and
+    // naming it is both honest with the landlord and the thing that
+    // stops these pages reading as the same page nine times.
+    caveat: string;
+  };
 };
 
 export const cities = {
@@ -398,31 +464,126 @@ export const cities = {
         name: "Westlands",
         twoBrUsd: { min: 1400, max: 2000 },
         tenant: "Corporate, UN, NGO",
+        shortLet: {
+          nightlyUsd: { min: 100, max: 150 },
+          occupancyPct: { min: 65, max: 75 },
+          guests:
+            "Regional business travel, conference delegates, corporate assignments",
+          note: "The strongest short-stay market in Nairobi, because it is the only one where guests can walk to offices, Sarit Centre and Village Market without touching a car. Midweek demand is corporate and holds through the low season, which is what makes occupancy here steadier than anywhere else in the city.",
+          caveat:
+            "It is also where most of the new supply has landed. A unit with generic furniture and phone photography discounts hard against a hundred near-identical neighbours, so the rate band above assumes the listing is genuinely well presented.",
+        },
       },
       {
         name: "Kilimani",
         twoBrUsd: { min: 1300, max: 1800 },
         tenant: "Young professionals, expats",
+        shortLet: {
+          nightlyUsd: { min: 90, max: 130 },
+          occupancyPct: { min: 62, max: 74 },
+          guests:
+            "Remote workers, weekend leisure, young professionals, medium-stay relocations",
+          note: "The highest-volume short-let market in the country and the most competitive. Demand is real and year-round, skewing to leisure and remote work rather than corporate, which means weekends fill first and midweek needs pricing work.",
+          caveat:
+            "Two things bite here. Supply is saturated, so pricing has to be actively managed rather than set and left. And a growing number of Kilimani buildings now restrict or ban short lets outright, so the building matters more than the apartment.",
+        },
       },
       {
         name: "Kileleshwa",
         twoBrUsd: { min: 1400, max: 1900 },
         tenant: "Families, diplomats",
+        shortLet: {
+          nightlyUsd: { min: 80, max: 120 },
+          occupancyPct: { min: 55, max: 68 },
+          guests:
+            "Relocating families, longer stays, visiting relatives, NGO staff on assignment",
+          note: "Quiet, green and residential, which makes it a stay-of-a-month neighbourhood rather than a stay-of-two-nights one. Booking lengths here are the longest of any Nairobi suburb we manage, and that changes the economics: fewer turnovers, lower cleaning costs, lower churn.",
+          caveat:
+            "Not walkable. Guests without a car feel it immediately, so the listing has to be honest about that and parking is close to essential rather than a bonus.",
+        },
+      },
+      {
+        name: "Riverside",
+        twoBrUsd: { min: 1500, max: 2100 },
+        tenant: "Diplomats, NGO staff, corporate executives",
+        shortLet: {
+          nightlyUsd: { min: 110, max: 160 },
+          occupancyPct: { min: 60, max: 70 },
+          guests:
+            "Diplomatic and NGO visitors, premium business travel, consultants",
+          note: "A short, quiet corridor that happens to sit between the CBD and Westlands, with embassies and NGO offices along it. Guests pay a premium for a secure, low-noise address they can still reach the city from in ten minutes, and rates hold better through the low season than the volume suburbs.",
+          caveat:
+            "Inventory is tiny and a good number of the buildings do not permit short lets at all. Worth confirming the building's position before buying here specifically to short let.",
+        },
+      },
+      {
+        name: "Gigiri",
+        twoBrUsd: { min: 1700, max: 2400 },
+        tenant: "UN staff, diplomats, international NGOs",
+        shortLet: {
+          nightlyUsd: { min: 120, max: 180 },
+          occupancyPct: { min: 58, max: 72 },
+          guests:
+            "UN and embassy assignments, visiting delegations, consultants on contract",
+          note: "Demand here is almost entirely generated by the UN complex and the diplomatic missions around it, which makes it unlike anywhere else in Nairobi: bookings arrive as three-week to three-month assignments with organisational budgets behind them, and they are booked well in advance.",
+          caveat:
+            "Effectively a long-stay market only. Nightly leisure demand is close to nonexistent, so a unit priced and marketed for weekend breaks will sit empty. Inventory also skews to houses rather than apartments.",
+        },
       },
       {
         name: "Lavington",
         twoBrUsd: { min: 1500, max: 2200 },
         tenant: "Diplomats, corporate executives",
+        shortLet: {
+          nightlyUsd: { min: 100, max: 140 },
+          occupancyPct: { min: 55, max: 68 },
+          guests:
+            "Relocating families, NGO and embassy staff, school-term visitors",
+          note: "A family neighbourhood, and the short-let demand reflects it: larger units, longer stays and a booking calendar that moves with international school terms rather than with tourist seasons.",
+          caveat:
+            "Most of the stock is townhouses and larger apartments, which cost more to furnish and clean per booking. The monthly rate is good; the nightly rate rarely justifies a short-stay setup on a small unit.",
+        },
       },
       {
         name: "Parklands",
         twoBrUsd: { min: 1000, max: 1500 },
         tenant: "Mixed corporate, mid-tier expat",
+        shortLet: {
+          nightlyUsd: { min: 70, max: 100 },
+          occupancyPct: { min: 62, max: 74 },
+          guests:
+            "Medical visitors, regional business travel, visiting families",
+          note: "The one Nairobi neighbourhood with a genuine medical-stay market, because Aga Khan University Hospital sits in it. Patients and accompanying family book for weeks at a time, they book at short notice, and they care about being able to walk to the hospital far more than about styling.",
+          caveat:
+            "The rate ceiling is the lowest of the areas we manage, so this works on occupancy and low turnover cost rather than on nightly rate. It rewards a practical, spotless unit over a beautiful one.",
+        },
       },
       {
         name: "Brookside",
         twoBrUsd: { min: 1700, max: 2500 },
         tenant: "Premium families, embassies",
+        shortLet: {
+          nightlyUsd: { min: 110, max: 150 },
+          occupancyPct: { min: 55, max: 68 },
+          guests: "Embassy staff, premium families, corporate relocations",
+          note: "A small, quiet and genuinely premium pocket next to Westlands, so guests get a residential address within reach of the business district. Stays are long and guests are undemanding, which keeps operating costs down.",
+          caveat:
+            "Long-let economics here are strong enough that short-letting only wins on a well-presented unit at the top of the nightly band. On anything average, the stable long lease is the better business.",
+        },
+      },
+      {
+        name: "Rosslyn",
+        twoBrUsd: { min: 1600, max: 2300 },
+        tenant: "UN, diplomats, international school families",
+        shortLet: {
+          nightlyUsd: { min: 110, max: 150 },
+          occupancyPct: { min: 55, max: 68 },
+          guests:
+            "International school families, UN staff, diplomatic assignments",
+          note: "Rosslyn works on proximity to the international schools and to Gigiri, so its calendar is driven by academic terms and posting cycles. Enquiries cluster in the weeks before a term starts and the stays that follow are measured in months.",
+          caveat:
+            "Car-dependent and quiet, with no walkable amenity to speak of. Short nightly bookings are rare, and a listing built around them will underperform badly.",
+        },
       },
       {
         name: "Karen",
@@ -433,11 +594,6 @@ export const cities = {
         name: "Runda",
         twoBrUsd: { min: 1800, max: 2500 },
         tenant: "Corporate executives, embassies",
-      },
-      {
-        name: "Rosslyn",
-        twoBrUsd: { min: 1600, max: 2300 },
-        tenant: "UN, diplomats, international school families",
       },
     ] satisfies Neighbourhood[],
     domain: "goldstay.co.ke",

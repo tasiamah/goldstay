@@ -6,6 +6,7 @@ import {
   neighbourhoodSlug,
   countryForHost,
   fallbackDomain,
+  shortLetNeighbourhoods,
 } from "@/lib/site";
 import { DIASPORA_ORIGINS } from "@/lib/diaspora-origins";
 import { postsForCountry } from "./(marketing)/insights/posts";
@@ -53,6 +54,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const neutral = [
     "",
     "/airbnb-management",
+    "/long-term-management",
+    "/tenant-finding",
     "/property-sourcing",
     "/diaspora-payouts",
     "/yield-calculator",
@@ -74,6 +77,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/nairobi/buy",
     ...cities.nairobi.neighbourhoods.map(
       (n) => `/nairobi/${neighbourhoodSlug(n.name)}`,
+    ),
+    // Service-plus-location pages. Only the neighbourhoods carrying
+    // real short-stay data have one, so this is deliberately shorter
+    // than the neighbourhood list above.
+    ...shortLetNeighbourhoods("nairobi").map(
+      (n) => `/nairobi/${neighbourhoodSlug(n.name)}/airbnb-management`,
     ),
     ...fromNairobi,
   ];

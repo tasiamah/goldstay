@@ -14,9 +14,57 @@ import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { FAQSection } from "@/components/FAQSection";
-import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
-import { waLink, alternateLanguagesFor, site } from "@/lib/site";
+import {
+  BreadcrumbJsonLd,
+  FaqJsonLd,
+  ServiceJsonLd,
+} from "@/components/JsonLd";
+import {
+  waLink,
+  alternateLanguagesFor,
+  site,
+  shortLetNeighbourhoods,
+  neighbourhoodSlug,
+} from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+
+// Short-stay specific FAQ. The page previously rendered the generic
+// site-wide accordion and emitted no FAQPage schema at all, so it both
+// answered the wrong questions and passed up the rich result.
+const airbnbFaqs = [
+  {
+    q: "What do you charge for Airbnb management?",
+    a: "20% of revenue collected. There is no onboarding fee, listing fee or exit fee. The only setup cost is professional photography where we judge it necessary, at USD 100 for a studio or one-bed and USD 150 for two bedrooms or more.",
+  },
+  {
+    q: "How much more does short-letting earn than a long lease?",
+    a: "In the Nairobi neighbourhoods we operate in, short-letting typically grosses 40 to 70% more than a long lease, and it costs considerably more to run once furnishing, cleaning, consumables, utilities and higher wear are counted. The neighbourhood pages set out the nightly rates and realistic occupancy area by area so you can compare gross against gross.",
+  },
+  {
+    q: "What occupancy is realistic in Nairobi?",
+    a: "We plan on 55% to 75% across a full year depending on the neighbourhood, not the headline numbers quoted elsewhere. Westlands and Parklands run highest because their demand is corporate and medical and holds midweek; the quieter suburbs run lower but with much longer stays.",
+  },
+  {
+    q: "Will my building allow short lets?",
+    a: "Not always, and it is the first thing to establish rather than the last. A growing number of Nairobi buildings restrict or ban short lets in their house rules, and some cap how many units may operate one. We confirm the building's position before listing, and if it does not permit short-letting we will tell you and put the unit on a long lease instead.",
+  },
+  {
+    q: "Who handles guests, cleaning and problems at 2am?",
+    a: "We do. Guest screening, every message, arrival and security registration, turnover cleaning to a written checklist, linen, consumables, the prepaid electricity meter and any maintenance that arises. You are not on the guest thread and you are not called at night.",
+  },
+  {
+    q: "How and when do I get paid?",
+    a: "Monthly, in USD, to your foreign account, with a statement itemising revenue by booking and every deduction against it. Our fee, platform fees and operating costs are shown separately rather than netted off invisibly.",
+  },
+  {
+    q: "What about damage?",
+    a: "Guests are screened before arrival, security deposits and the platform guarantee programmes apply, and we document the unit's condition between stays. Where damage does occur we pursue it through the platform and keep you informed in writing.",
+  },
+  {
+    q: "Am I locked in?",
+    a: "No. Thirty days' written notice ends the agreement with no exit fee, and the listing and its review history remain associated with your property.",
+  },
+];
 
 export function generateMetadata(): Metadata {
   const city = getServerCity();
@@ -278,7 +326,58 @@ export default function Page() {
         </div>
       </section>
 
-      <FAQSection />
+      {/* Neighbourhood breakdown. Sends the reader to the page that
+          matches how they searched, and gives the service-plus-location
+          pages the inbound links from the parent service page that make
+          the cluster work in the first place. Nairobi only, since the
+          short-stay data set is Nairobi for now. */}
+      {city !== "accra" && (
+        <section className="section bg-white/50">
+          <div className="container-gs">
+            <SectionHeader
+              eyebrow="By neighbourhood"
+              title="What a short let actually takes, area by area."
+              lede="Nightly rates, realistic occupancy and the local catch, for the Nairobi neighbourhoods where short-letting genuinely works."
+            />
+            <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {shortLetNeighbourhoods("nairobi").map((n, i) => (
+                <Reveal key={n.name} delay={i * 0.04}>
+                  <Link
+                    href={`/nairobi/${neighbourhoodSlug(n.name)}/airbnb-management`}
+                    className="group flex items-center justify-between rounded-2xl border border-charcoal/10 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40"
+                  >
+                    <span>
+                      <span className="font-serif text-xl">{n.name}</span>
+                      <span className="mt-1 block font-mono text-xs text-charcoal/50">
+                        USD {n.shortLet.nightlyUsd.min} to{" "}
+                        {n.shortLet.nightlyUsd.max} / night ·{" "}
+                        {n.shortLet.occupancyPct.min}–
+                        {n.shortLet.occupancyPct.max}%
+                      </span>
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+            <p className="mt-10 text-center text-sm text-charcoal/60">
+              Karen and Runda are missing on purpose. Both are standalone-house
+              suburbs where nightly demand is thin and{" "}
+              <Link
+                href="/long-term-management"
+                className="link-underline text-charcoal"
+              >
+                a long lease
+              </Link>{" "}
+              is the better business.
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* FAQ schema. The accordion rendered here already but emitted no
+          FAQPage markup, unlike the homepage and city pages. */}
+      <FaqJsonLd items={airbnbFaqs} />
+      <FAQSection items={airbnbFaqs} />
       <CTABanner
         headline="Ready to turn it into a short-stay?"
         subheadline="Get a specific yield estimate for your apartment within 48 hours."
