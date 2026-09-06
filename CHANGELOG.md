@@ -21,6 +21,25 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.0.2] - 2026-09-06
+
+### Fixed
+
+- Agreement references were derived from the number of agreements issued this
+  year rather than the highest reference already used. Deleting a single
+  agreement pointed the sequence back at a number the unique index was still
+  holding, which would have made every subsequent issue fail — and keep
+  failing, since nothing retries past a duplicate reference. The next
+  reference is now one past the highest in use, so a gap is just a gap.
+
+### Removed
+
+- Two test client records — three properties, one sent-but-unsigned
+  agreement, both portal logins and one uploaded document — hard-deleted from
+  production, with a JSON snapshot taken first and the deletion recorded in
+  the audit log. One of them was a duplicate of a real property, which had put
+  two live agreements on the same unit.
+
 ## [1.0.1] - 2026-09-06
 
 ### Fixed
@@ -89,6 +108,7 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.2...HEAD
+[1.0.2]: https://github.com/tasiamah/goldstay/compare/v1.0.1...v1.0.2
 [1.0.1]: https://github.com/tasiamah/goldstay/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/tasiamah/goldstay/releases/tag/v1.0.0

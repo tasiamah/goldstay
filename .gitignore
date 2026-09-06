@@ -27,6 +27,10 @@ yarn-error.log*
 .env*.local
 .env
 
+# JSON snapshots taken before a destructive maintenance script runs.
+# Real client data — never committed.
+/.local-backups/
+
 # vercel
 .vercel
 

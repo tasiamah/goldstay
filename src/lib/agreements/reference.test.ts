@@ -16,30 +16,61 @@ describe("formatAgreementReference", () => {
 });
 
 describe("nextAgreementReference", () => {
-  it("counts only the current UTC year and returns the next number", async () => {
+  const dbWith = (references: (string | null)[]) => {
     let captured: unknown;
     const db = {
       managementAgreement: {
-        count: async (args: unknown) => {
+        findMany: async (args: unknown) => {
           captured = args;
-          return 3;
+          return references.map((reference) => ({ reference }));
         },
       },
     } as never;
+    return { db, seen: () => captured };
+  };
 
-    const ref = await nextAgreementReference(db, new Date("2026-09-02T09:00:00Z"));
-    expect(ref).toBe("GS-2026-004");
-    // The window has to be the calendar year in UTC, otherwise an
-    // agreement issued on 1 January in Nairobi (UTC+3) lands in the
-    // wrong year's sequence.
-    expect(captured).toEqual({
-      where: {
-        createdAt: {
-          gte: new Date("2026-01-01T00:00:00Z"),
-          lt: new Date("2027-01-01T00:00:00Z"),
-        },
-      },
+  const at = new Date("2026-09-02T09:00:00Z");
+
+  it("scopes to the current UTC year and returns the next number", async () => {
+    const { db, seen } = dbWith(["GS-2026-001", "GS-2026-002", "GS-2026-003"]);
+
+    expect(await nextAgreementReference(db, at)).toBe("GS-2026-004");
+    // Scoped by the year in the reference itself, so an agreement
+    // issued on 1 January in Nairobi (UTC+3) can't be counted against
+    // the wrong year's sequence.
+    expect(seen()).toEqual({
+      where: { reference: { startsWith: "GS-2026-" } },
+      select: { reference: true },
     });
+  });
+
+  it("steps past the highest reference, not the number of rows", async () => {
+    // A hard-deleted agreement leaves a gap. Counting rows would hand
+    // back GS-2026-003, which the unique index is still holding, and
+    // every issue from then on would fail.
+    const { db } = dbWith(["GS-2026-001", "GS-2026-003"]);
+
+    expect(await nextAgreementReference(db, at)).toBe("GS-2026-004");
+  });
+
+  it("compares sequences numerically once past 999", async () => {
+    // Sorted as text GS-2026-999 outranks GS-2026-1000, which would
+    // reissue a reference already in use.
+    const { db } = dbWith(["GS-2026-999", "GS-2026-1000"]);
+
+    expect(await nextAgreementReference(db, at)).toBe("GS-2026-1001");
+  });
+
+  it("starts at 001 in a year with nothing issued yet", async () => {
+    const { db } = dbWith([]);
+
+    expect(await nextAgreementReference(db, at)).toBe("GS-2026-001");
+  });
+
+  it("ignores references that aren't a plain sequence", async () => {
+    const { db } = dbWith(["GS-2026-002", "GS-2026-draft", null]);
+
+    expect(await nextAgreementReference(db, at)).toBe("GS-2026-003");
   });
 });
 
