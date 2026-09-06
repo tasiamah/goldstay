@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { permanentRedirect } from "next/navigation";
-import { site } from "@/lib/site";
+import { isLiveDomain, site } from "@/lib/site";
 
 // Cross-domain city gating. Mirrors the pattern already used by
 // /insights/[slug]: a Nairobi page hit on goldstay.com.gh 308-redirects
@@ -24,10 +24,7 @@ import { site } from "@/lib/site";
 // route (e.g. "/accra/buy" or "/accra/east-legon") and Next's server
 // components can't easily reconstruct the full request URL from
 // headers alone in every runtime.
-export function enforceCityHost(
-  city: "nairobi" | "accra",
-  path: string,
-): void {
+export function enforceCityHost(city: "nairobi" | "accra", path: string): void {
   const host = (headers().get("host") ?? "").toLowerCase();
 
   // Dev + preview escape hatch. We deliberately do not gate localhost
@@ -53,6 +50,18 @@ export function enforceCityHost(
     city === "nairobi" ? site.domains.nairobi : site.domains.accra;
 
   if (host === correctHost || host === `www.${correctHost}`) {
+    return;
+  }
+
+  // Never redirect to a domain that does not resolve. goldstay.com.gh
+  // is not registered yet, so this previously sent every /accra* request
+  // on .co.ke to a 308 that dead-ended for users and crawlers alike,
+  // making the whole Accra surface unreachable in production.
+  //
+  // Serving the page on the requesting host is the lesser evil: the
+  // content is reachable, and the Kenya sitemap still omits /accra* so
+  // we are not actively pushing Ghana pages into the Kenya index.
+  if (!isLiveDomain(correctHost)) {
     return;
   }
 

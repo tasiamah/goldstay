@@ -45,16 +45,24 @@ export default function Page({ params }: Props) {
   const post = getPostBySlug(params.slug);
   if (!post) notFound();
 
-  // Cross-domain enforcement. If a Kenya article is hit on goldstay.com.gh
-  // (or a Ghana article on goldstay.com / goldstay.co.ke), 308 the
-  // visitor to the canonical host. This keeps each piece of content
-  // ranking under a single domain and stops Google from seeing the
-  // same article on two TLDs.
-  const host = headers().get("host") ?? site.domain;
+  // Cross-domain enforcement. A Kenya article hit on goldstay.com.gh
+  // 308s to the Kenya host and vice versa, so each piece of content
+  // ranks under a single domain rather than appearing on two TLDs.
+  //
+  // Skipped when the target resolves to the host we are already on.
+  // canonicalHostForCountry falls back to a live domain, so while
+  // .com.gh is dark a Ghana article requested on .co.ke resolves its
+  // target to .co.ke — redirecting there would be an infinite loop.
+  // Serving it is the better failure: the article is reachable on the
+  // one domain we run instead of bouncing to a domain that does not
+  // resolve. It stays out of the Kenya sitemap either way.
+  const host = (headers().get("host") ?? site.domain).toLowerCase();
   const hostCountry = countryForHost(host);
   if (hostCountry !== post.meta.country) {
     const target = canonicalHostForCountry(post.meta.country);
-    permanentRedirect(`https://${target}/insights/${post.meta.slug}`);
+    if (target !== host && `www.${target}` !== host) {
+      permanentRedirect(`https://${target}/insights/${post.meta.slug}`);
+    }
   }
 
   const Body = post.Component;

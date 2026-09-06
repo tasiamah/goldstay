@@ -1,6 +1,14 @@
 export const site = {
   name: "Goldstay",
-  domain: "goldstay.com",
+  // The host every absolute URL we emit is built from: canonicals,
+  // hreflang, JSON-LD @id values, breadcrumbs, referral links.
+  //
+  // This is .co.ke rather than .com because .co.ke is the only domain
+  // we actually own and serve. goldstay.com is a parked for-sale lander
+  // at buydomains.com and goldstay.com.gh does not resolve at all, so
+  // naming either here published a canonical pointing at a domain that
+  // is not ours. See `liveDomains` below.
+  domain: "goldstay.co.ke",
   tagline: "Your Property. Professionally Managed.",
   description:
     "Premium property management in Nairobi and Accra for diaspora landlords. We handle everything. You receive monthly USD transfers.",
@@ -23,6 +31,20 @@ export const site = {
     nairobi: "goldstay.co.ke",
     accra: "goldstay.com.gh",
   },
+  // Which of the domains above are registered and serving traffic.
+  //
+  // The three-domain layout above is the plan, not the present: only
+  // .co.ke is live. Everything that emits a cross-domain URL filters
+  // through this list, because a canonical, an hreflang alternate or a
+  // 308 aimed at a domain that does not resolve is worse than not
+  // emitting it at all. Google reads a canonical as "the real version
+  // of this page lives there", so pointing 338 Kenya articles at an
+  // unowned .com told it to rank none of them here.
+  //
+  // Add a domain to this list the day its DNS and TLS are live, not the
+  // day it is bought. Nothing else needs to change: hreflang, canonicals
+  // and the city redirects all widen automatically.
+  liveDomains: ["goldstay.co.ke"] as readonly string[],
   emails: {
     // Same rationale as `email` above: .co.ke is the only live mailbox
     // right now, so every city-agnostic surface routes to it. The
@@ -74,7 +96,9 @@ export function findNeighbourhood(
   city: "nairobi" | "accra",
   slug: string,
 ): Neighbourhood | undefined {
-  return cities[city].neighbourhoods.find((n) => neighbourhoodSlug(n.name) === slug);
+  return cities[city].neighbourhoods.find(
+    (n) => neighbourhoodSlug(n.name) === slug,
+  );
 }
 
 // hreflang helper. Returns the alternates.languages map for a given
@@ -95,59 +119,116 @@ export function findNeighbourhood(
 // Without an explicit map per page Google picks one domain as canonical
 // and treats the other two as duplicates, the opposite of what we want
 // for local-pack visibility in Nairobi and Accra.
+export function isLiveDomain(domain: string) {
+  return site.liveDomains.includes(domain);
+}
+
+// The domain to fall back to whenever the one we'd naturally name is not
+// live yet. Prefers the Kenya host, which is both the only live domain
+// today and the one we want ranking in Nairobi.
+export function fallbackDomain() {
+  return isLiveDomain(site.domains.nairobi)
+    ? site.domains.nairobi
+    : (site.liveDomains[0] ?? site.domains.nairobi);
+}
+
+// Resolves an intended domain to one that actually serves. Used by every
+// caller that would otherwise emit a URL on an unregistered domain.
+export function liveDomainOr(domain: string) {
+  return isLiveDomain(domain) ? domain : fallbackDomain();
+}
+
+// hreflang helper. Drops any alternate whose domain is not live, so we
+// never advertise a translation that 404s, and collapses duplicates
+// (while .com.gh is dark, en-GH and en-KE would both resolve to .co.ke,
+// and declaring the same URL under two language tags is a contradiction
+// Google resolves by ignoring the whole cluster).
+// `fallbackPath` is where this page lives on the fallback domain, which
+// is not always the same path: the .co.ke root rewrites to /nairobi, so
+// /nairobi's Kenya URL is "/" and not "/nairobi".
+function alternatesFrom(
+  entries: Array<[tag: string, domain: string, path: string]>,
+  fallbackPath: string,
+) {
+  const out: Record<string, string> = {};
+  const seen = new Set<string>();
+  for (const [tag, domain, path] of entries) {
+    if (!isLiveDomain(domain)) continue;
+    const url = `https://${domain}${path}`;
+    if (seen.has(url)) continue;
+    seen.add(url);
+    out[tag] = url;
+  }
+  // x-default has to point somewhere real even when every domain this
+  // path was meant to span is still dark.
+  if (!out["x-default"]) {
+    out["x-default"] =
+      Object.values(out)[0] ?? `https://${fallbackDomain()}${fallbackPath}`;
+  }
+  return out;
+}
+
 export function alternateLanguagesFor(path: string) {
-  const main = `https://${site.domains.main}`;
-  const ke = `https://${site.domains.nairobi}`;
-  const gh = `https://${site.domains.accra}`;
+  const { main, nairobi: ke, accra: gh } = site.domains;
 
   if (path === "/" || path === "") {
-    return {
-      "en-KE": ke,
-      "en-GH": gh,
-      "x-default": main,
-    };
+    return alternatesFrom(
+      [
+        ["en-KE", ke, ""],
+        ["en-GH", gh, ""],
+        ["x-default", main, ""],
+      ],
+      "",
+    );
   }
 
   if (path === "/nairobi") {
-    return {
-      "en-KE": ke,
-      "x-default": `${main}/nairobi`,
-    };
+    return alternatesFrom(
+      [
+        ["en-KE", ke, ""],
+        ["x-default", main, "/nairobi"],
+      ],
+      "",
+    );
   }
 
   if (path === "/accra") {
-    return {
-      "en-GH": gh,
-      "x-default": `${main}/accra`,
-    };
+    return alternatesFrom(
+      [
+        ["en-GH", gh, ""],
+        ["x-default", main, "/accra"],
+      ],
+      "/accra",
+    );
   }
 
-  if (path.startsWith("/nairobi/")) {
-    return {
-      "en-KE": `${ke}${path}`,
-      "x-default": `${main}${path}`,
-    };
+  if (path.startsWith("/nairobi/") || path.startsWith("/accra/")) {
+    const cityDomain = path.startsWith("/nairobi/") ? ke : gh;
+    const tag = path.startsWith("/nairobi/") ? "en-KE" : "en-GH";
+    return alternatesFrom(
+      [
+        [tag, cityDomain, path],
+        ["x-default", main, path],
+      ],
+      path,
+    );
   }
 
-  if (path.startsWith("/accra/")) {
-    return {
-      "en-GH": `${gh}${path}`,
-      "x-default": `${main}${path}`,
-    };
-  }
-
-  return {
-    "en-KE": `${ke}${path}`,
-    "en-GH": `${gh}${path}`,
-    "x-default": `${main}${path}`,
-  };
+  return alternatesFrom(
+    [
+      ["en-KE", ke, path],
+      ["en-GH", gh, path],
+      ["x-default", main, path],
+    ],
+    path,
+  );
 }
 
-// Country routing for the /insights hub. The catalogue is split so
-// each domain only ranks for its own market: goldstay.com and
-// goldstay.co.ke serve Kenya articles, goldstay.com.gh serves Ghana
-// articles. Hosts that don't match the requested article 308-redirect
-// to the canonical host (see /insights/[slug]/page.tsx).
+// Country routing for the /insights hub. The catalogue is split so each
+// domain only ranks for its own market: goldstay.co.ke serves Kenya
+// articles, goldstay.com.gh serves Ghana articles. Hosts that don't
+// match the requested article 308-redirect to the canonical host, but
+// only when that host is live (see /insights/[slug]/page.tsx).
 export function countryForHost(host: string): "kenya" | "ghana" {
   const lower = host.toLowerCase();
   if (lower.endsWith(site.domains.accra)) return "ghana";
@@ -155,37 +236,39 @@ export function countryForHost(host: string): "kenya" | "ghana" {
 }
 
 export function canonicalHostForCountry(country: "kenya" | "ghana") {
-  return country === "ghana" ? site.domains.accra : site.domains.main;
+  return liveDomainOr(
+    country === "ghana" ? site.domains.accra : site.domains.nairobi,
+  );
 }
 
-// hreflang + canonical for an /insights/<slug> URL. Kenya posts are
-// canonical on .com with .co.ke as the en-KE alternate; Ghana posts
-// are canonical on .com.gh and don't appear on the Kenya hosts at
-// all. Returning absolute URLs for the canonical lets us point Google
-// at the correct host even when the request is served from a
-// different domain (handy if a 308 redirect ever fails to fire).
+// hreflang + canonical for an /insights/<slug> URL. Each market's posts
+// are canonical on that market's domain, falling back to a domain that
+// is actually live.
+//
+// Kenya posts used to be canonical on goldstay.com with .co.ke as the
+// en-KE alternate. We do not own goldstay.com, so every Kenya article
+// served on .co.ke was telling Google its real home was a parked
+// for-sale lander. That is an instruction not to rank the .co.ke copy,
+// and it withheld the entire catalogue's authority from the only domain
+// we actually run.
+//
+// Absolute rather than relative canonicals on purpose: it lets us name
+// the correct host even when the request arrives on a different domain,
+// which matters if a 308 ever fails to fire.
 export function insightAlternates(slug: string, country: "kenya" | "ghana") {
-  const main = `https://${site.domains.main}`;
-  const ke = `https://${site.domains.nairobi}`;
-  const gh = `https://${site.domains.accra}`;
   const path = `/insights/${slug}`;
+  const { nairobi: ke, accra: gh } = site.domains;
 
   if (country === "ghana") {
     return {
-      canonical: `${gh}${path}`,
-      languages: {
-        "en-GH": `${gh}${path}`,
-        "x-default": `${gh}${path}`,
-      },
+      canonical: `https://${liveDomainOr(gh)}${path}`,
+      languages: alternatesFrom([["en-GH", gh, path]], path),
     };
   }
 
   return {
-    canonical: `${main}${path}`,
-    languages: {
-      "en-KE": `${ke}${path}`,
-      "x-default": `${main}${path}`,
-    },
+    canonical: `https://${liveDomainOr(ke)}${path}`,
+    languages: alternatesFrom([["en-KE", ke, path]], path),
   };
 }
 
@@ -362,7 +445,8 @@ export const cities = {
   accra: {
     country: "Ghana",
     currency: "GHS",
-    tenantProfile: "NGOs, embassies, oil & gas executives and expat professionals",
+    tenantProfile:
+      "NGOs, embassies, oil & gas executives and expat professionals",
     heroRentClaim:
       "Typical 2BR in East Legon or Airport Residential nets USD 1,300 to 1,900 a month, wired to your account on the 5th.",
     neighbourhoods: [
@@ -409,7 +493,8 @@ export const citySourcing = {
     shortStayRent: "USD 2,200 to 2,800 / month",
     netYield: "7 to 8.5% per year",
     projectsTracked: 30,
-    projectsLabel: "New-build projects currently on our Nairobi inspection list across Kilimani, Westlands, Riverside, Lavington, Kileleshwa and Karen.",
+    projectsLabel:
+      "New-build projects currently on our Nairobi inspection list across Kilimani, Westlands, Riverside, Lavington, Kileleshwa and Karen.",
     titleAuthority: "the Ministry of Lands",
     taxAuthority: "KRA",
     titlePillarBody:
@@ -420,14 +505,16 @@ export const citySourcing = {
       "In Nairobi the most common buyer trap is a clean-looking title that hides a charge against the property, a survey discrepancy or a service charge in arrears. We catch all three before you wire a cent.",
   },
   accra: {
-    heroNeighbourhoods: "East Legon, Airport Residential, Cantonments or Labone",
+    heroNeighbourhoods:
+      "East Legon, Airport Residential, Cantonments or Labone",
     yieldAreaName: "East Legon or Airport Residential",
     priceRange: "USD 160,000 to 210,000",
     longTermRent: "USD 1,300 to 1,900 / month",
     shortStayRent: "USD 2,000 to 2,600 / month",
     netYield: "6.5 to 8% per year",
     projectsTracked: 20,
-    projectsLabel: "New-build projects currently on our Accra inspection list across East Legon, Airport Residential, Cantonments, Labone and Ridge.",
+    projectsLabel:
+      "New-build projects currently on our Accra inspection list across East Legon, Airport Residential, Cantonments, Labone and Ridge.",
     titleAuthority: "the Lands Commission",
     taxAuthority: "GRA",
     titlePillarBody:

@@ -1,17 +1,19 @@
 import type { MetadataRoute } from "next";
 import { headers } from "next/headers";
-import { site } from "@/lib/site";
+import { fallbackDomain, site } from "@/lib/site";
 
 // Host-aware robots. Each country domain points crawlers at its own
-// sitemap so Search Console picks up all three properties cleanly.
-// Pointing every domain at goldstay.com's sitemap (the previous
-// behaviour) starves .co.ke and .com.gh of indexing signal and lets
-// Google guess which host owns which URL.
+// sitemap so Search Console picks up each property cleanly. Pointing
+// every domain at one shared sitemap starves the others of indexing
+// signal and lets Google guess which host owns which URL.
+//
+// Unknown hosts fall back to a domain that is actually live rather than
+// to goldstay.com, which we do not own.
 export default function robots(): MetadataRoute.Robots {
-  const host = (headers().get("host") ?? site.domains.main).toLowerCase();
+  const host = (headers().get("host") ?? fallbackDomain()).toLowerCase();
   const isNairobi = host.endsWith(site.domains.nairobi);
   const isAccra = host.endsWith(site.domains.accra);
-  const base = `https://${isNairobi ? site.domains.nairobi : isAccra ? site.domains.accra : site.domains.main}`;
+  const base = `https://${isNairobi ? site.domains.nairobi : isAccra ? site.domains.accra : fallbackDomain()}`;
 
   return {
     rules: [
