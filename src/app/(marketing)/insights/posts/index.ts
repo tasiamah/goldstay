@@ -989,6 +989,21 @@ import NairobiHandoverWave2026WhatItMeansForRents, {
 import NairobiUpcomingDevelopments2027Watchlist, {
   meta as nairobiUpcomingDevelopments2027WatchlistMeta,
 } from "./nairobi-upcoming-developments-2027-watchlist";
+import AirbnbKilimani2026HostGuide, {
+  meta as airbnbKilimani2026HostGuideMeta,
+} from "./airbnb-kilimani-2026-host-guide";
+import AirbnbWestlands2026HostGuide, {
+  meta as airbnbWestlands2026HostGuideMeta,
+} from "./airbnb-westlands-2026-host-guide";
+import AirbnbKileleshwa2026HostGuide, {
+  meta as airbnbKileleshwa2026HostGuideMeta,
+} from "./airbnb-kileleshwa-2026-host-guide";
+import AirbnbRiversideNairobiPremiumShortLet, {
+  meta as airbnbRiversideNairobiPremiumShortLetMeta,
+} from "./airbnb-riverside-nairobi-premium-short-let";
+import CorporateShortLetsNairobiGigiriNgoMarket, {
+  meta as corporateShortLetsNairobiGigiriNgoMarketMeta,
+} from "./corporate-short-lets-nairobi-gigiri-ngo-market";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1701,6 +1716,26 @@ export const posts: readonly Post[] = [
   {
     meta: nairobiUpcomingDevelopments2027WatchlistMeta,
     Component: NairobiUpcomingDevelopments2027Watchlist,
+  },
+  {
+    meta: airbnbKilimani2026HostGuideMeta,
+    Component: AirbnbKilimani2026HostGuide,
+  },
+  {
+    meta: airbnbWestlands2026HostGuideMeta,
+    Component: AirbnbWestlands2026HostGuide,
+  },
+  {
+    meta: airbnbKileleshwa2026HostGuideMeta,
+    Component: AirbnbKileleshwa2026HostGuide,
+  },
+  {
+    meta: airbnbRiversideNairobiPremiumShortLetMeta,
+    Component: AirbnbRiversideNairobiPremiumShortLet,
+  },
+  {
+    meta: corporateShortLetsNairobiGigiriNgoMarketMeta,
+    Component: CorporateShortLetsNairobiGigiriNgoMarket,
   },
 ];
 
