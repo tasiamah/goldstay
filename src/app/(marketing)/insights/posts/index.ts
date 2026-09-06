@@ -1019,6 +1019,21 @@ import AirbnbVsServicedApartmentNairobi2026, {
 import DiasporaAirbnbNairobiRemoteOwnerPlaybook, {
   meta as diasporaAirbnbNairobiRemoteOwnerPlaybookMeta,
 } from "./diaspora-airbnb-nairobi-remote-owner-playbook";
+import AirbnbTaxKenya2026HostGuide, {
+  meta as airbnbTaxKenya2026HostGuideMeta,
+} from "./airbnb-tax-kenya-2026-host-guide";
+import AirbnbNairobiInsuranceDamageLiability, {
+  meta as airbnbNairobiInsuranceDamageLiabilityMeta,
+} from "./airbnb-nairobi-insurance-damage-liability";
+import AirbnbBuildingPermissionNairobiCommittee, {
+  meta as airbnbBuildingPermissionNairobiCommitteeMeta,
+} from "./airbnb-building-permission-nairobi-committee";
+import ScalingAirbnbNairobiOneToFiveUnits, {
+  meta as scalingAirbnbNairobiOneToFiveUnitsMeta,
+} from "./scaling-airbnb-nairobi-one-to-five-units";
+import NairobiShortLetMarket2027Outlook, {
+  meta as nairobiShortLetMarket2027OutlookMeta,
+} from "./nairobi-short-let-market-2027-outlook";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1771,6 +1786,26 @@ export const posts: readonly Post[] = [
   {
     meta: diasporaAirbnbNairobiRemoteOwnerPlaybookMeta,
     Component: DiasporaAirbnbNairobiRemoteOwnerPlaybook,
+  },
+  {
+    meta: airbnbTaxKenya2026HostGuideMeta,
+    Component: AirbnbTaxKenya2026HostGuide,
+  },
+  {
+    meta: airbnbNairobiInsuranceDamageLiabilityMeta,
+    Component: AirbnbNairobiInsuranceDamageLiability,
+  },
+  {
+    meta: airbnbBuildingPermissionNairobiCommitteeMeta,
+    Component: AirbnbBuildingPermissionNairobiCommittee,
+  },
+  {
+    meta: scalingAirbnbNairobiOneToFiveUnitsMeta,
+    Component: ScalingAirbnbNairobiOneToFiveUnits,
+  },
+  {
+    meta: nairobiShortLetMarket2027OutlookMeta,
+    Component: NairobiShortLetMarket2027Outlook,
   },
 ];
 
