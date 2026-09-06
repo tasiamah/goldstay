@@ -959,6 +959,21 @@ import HowMuchCanYouEarnAirbnbNairobi2026, {
 import AirbnbNairobiStartupCosts2026, {
   meta as airbnbNairobiStartupCosts2026Meta,
 } from "./airbnb-nairobi-startup-costs-2026";
+import BestNairobiSuburbsAirbnb2026, {
+  meta as bestNairobiSuburbsAirbnb2026Meta,
+} from "./best-nairobi-suburbs-airbnb-2026";
+import AirbnbNairobiOccupancy2026, {
+  meta as airbnbNairobiOccupancy2026Meta,
+} from "./airbnb-nairobi-occupancy-2026";
+import ChoosingAirbnbManagementCompanyNairobi, {
+  meta as choosingAirbnbManagementCompanyNairobiMeta,
+} from "./choosing-airbnb-management-company-nairobi";
+import AirbnbNairobiPricingStrategy2026, {
+  meta as airbnbNairobiPricingStrategy2026Meta,
+} from "./airbnb-nairobi-pricing-strategy-2026";
+import WhyYourNairobiAirbnbIsntGettingBookings, {
+  meta as whyYourNairobiAirbnbIsntGettingBookingsMeta,
+} from "./why-your-nairobi-airbnb-isnt-getting-bookings";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1631,6 +1646,26 @@ export const posts: readonly Post[] = [
   {
     meta: airbnbNairobiStartupCosts2026Meta,
     Component: AirbnbNairobiStartupCosts2026,
+  },
+  {
+    meta: bestNairobiSuburbsAirbnb2026Meta,
+    Component: BestNairobiSuburbsAirbnb2026,
+  },
+  {
+    meta: airbnbNairobiOccupancy2026Meta,
+    Component: AirbnbNairobiOccupancy2026,
+  },
+  {
+    meta: choosingAirbnbManagementCompanyNairobiMeta,
+    Component: ChoosingAirbnbManagementCompanyNairobi,
+  },
+  {
+    meta: airbnbNairobiPricingStrategy2026Meta,
+    Component: AirbnbNairobiPricingStrategy2026,
+  },
+  {
+    meta: whyYourNairobiAirbnbIsntGettingBookingsMeta,
+    Component: WhyYourNairobiAirbnbIsntGettingBookings,
   },
 ];
 
