@@ -1034,6 +1034,21 @@ import ScalingAirbnbNairobiOneToFiveUnits, {
 import NairobiShortLetMarket2027Outlook, {
   meta as nairobiShortLetMarket2027OutlookMeta,
 } from "./nairobi-short-let-market-2027-outlook";
+import AirbnbAirConditioningNairobiWorthIt, {
+  meta as airbnbAirConditioningNairobiWorthItMeta,
+} from "./airbnb-air-conditioning-nairobi-worth-it";
+import PrepaidElectricityTokensAirbnbNairobi, {
+  meta as prepaidElectricityTokensAirbnbNairobiMeta,
+} from "./prepaid-electricity-tokens-airbnb-nairobi";
+import HotWaterAirbnbNairobiGuestExpectations, {
+  meta as hotWaterAirbnbNairobiGuestExpectationsMeta,
+} from "./hot-water-airbnb-nairobi-guest-expectations";
+import KettleAndKitchenBasicsAirbnbNairobi, {
+  meta as kettleAndKitchenBasicsAirbnbNairobiMeta,
+} from "./kettle-and-kitchen-basics-airbnb-nairobi";
+import HowCleanIsCleanEnoughAirbnbNairobi, {
+  meta as howCleanIsCleanEnoughAirbnbNairobiMeta,
+} from "./how-clean-is-clean-enough-airbnb-nairobi";
 
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
@@ -1806,6 +1821,26 @@ export const posts: readonly Post[] = [
   {
     meta: nairobiShortLetMarket2027OutlookMeta,
     Component: NairobiShortLetMarket2027Outlook,
+  },
+  {
+    meta: airbnbAirConditioningNairobiWorthItMeta,
+    Component: AirbnbAirConditioningNairobiWorthIt,
+  },
+  {
+    meta: prepaidElectricityTokensAirbnbNairobiMeta,
+    Component: PrepaidElectricityTokensAirbnbNairobi,
+  },
+  {
+    meta: hotWaterAirbnbNairobiGuestExpectationsMeta,
+    Component: HotWaterAirbnbNairobiGuestExpectations,
+  },
+  {
+    meta: kettleAndKitchenBasicsAirbnbNairobiMeta,
+    Component: KettleAndKitchenBasicsAirbnbNairobi,
+  },
+  {
+    meta: howCleanIsCleanEnoughAirbnbNairobiMeta,
+    Component: HowCleanIsCleanEnoughAirbnbNairobi,
   },
 ];
 
