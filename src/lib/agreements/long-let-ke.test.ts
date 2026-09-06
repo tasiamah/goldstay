@@ -49,8 +49,13 @@ describe("buildLongLetKeSections", () => {
     // Tenant-finding is one month's rent, one-off.
     expect(text).toContain("one month’s gross rent under the Tenancy placed");
 
-    // No setup fees, no hidden deductions.
-    expect(text).toContain("No setup, onboarding, marketing, photography");
+    // No onboarding, marketing or listing fee. Photography is the one
+    // exception and is priced in the contract rather than sprung
+    // later, which is what keeps "no hidden deductions" true even
+    // though "no setup fees" no longer is.
+    expect(text).toContain("No onboarding, marketing or listing fee");
+    expect(text).toContain("The only setup charge is for professional");
+    expect(text).toContain("no deduction is made from rent");
 
     // Payout on the 5th, rent collected in KES.
     expect(text).toContain("By the 5th day of each month");
@@ -87,6 +92,24 @@ describe("buildLongLetKeSections", () => {
     // has no termMonths at all, so this asserts the shape holds.
     expect(text).not.toMatch(/\b1 (full calendar )?months?\b/);
     expect(text).not.toContain("Initial Commitment Period");
+  });
+
+  it("prices photography and says when it falls due", () => {
+    // A charge a client only discovers when it appears on a statement
+    // is the one thing "no hidden deductions" rules out, so both the
+    // figure and the timing have to be on the face of the contract.
+    const text = flatten();
+    expect(text).toContain(
+      "USD 100 for a studio or one-bedroom Property and USD 150 for a Property with two or more bedrooms",
+    );
+    expect(text).toContain("where the Manager determines it is required");
+    expect(text).toContain(
+      "paid in advance or, if not paid in advance, deducted from the first payout",
+    );
+    // And it has to be visible in the money clauses, not only in the
+    // schedule, or the deduction has no basis.
+    expect(text).toContain("any photography charge under clause 5.2");
+    expect(text).toContain("any Tenant-Finding Fee, any photography charge");
   });
 
   it("hands the property back clean on exit", () => {

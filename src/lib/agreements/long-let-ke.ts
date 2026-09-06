@@ -12,16 +12,25 @@
 // sources:
 //
 //   1. Goldstay_Long_Term_Management_2025, the published long-term
-//      service and pricing sheet. Every commercial promise below is
-//      taken from it: the 10% fee charged only on rent actually
-//      collected, the one-month tenant-finding fee, no setup fees,
-//      the 5th-of-month payout, final landlord approval before a
-//      lease is signed, the USD 50 receipt and USD 250 pre-approval
+//      service and pricing sheet. Almost every commercial promise
+//      below is taken from it: the 10% fee charged only on rent
+//      actually collected, the one-month tenant-finding fee, the
+//      5th-of-month payout, final landlord approval before a lease
+//      is signed, the USD 50 receipt and USD 250 pre-approval
 //      thresholds, the 48-hour response commitment, the six-month
 //      tenant replacement guarantee, and the 30-day exit with no
 //      exit fee and no lock-in. That sheet closes with "Service
 //      details are subject to the signed Management Agreement" —
 //      this is that agreement, so the two must not disagree.
+//
+//      ONE KNOWN DISAGREEMENT, added deliberately in v2: clause 5.2
+//      charges for photography where we judge it necessary, and the
+//      sheet's headline says "No setup fees. No hidden deductions."
+//      The second half still holds — the charge is priced in the
+//      contract and itemised on the Statement, so nothing about it
+//      is hidden — but the first half does not, and a landlord
+//      holding that sheet can fairly say so. The sheet needs that
+//      line changed.
 //
 //   2. The structural and protective clauses of the short-let
 //      agreement (authority, insurance, liability, data, notices,
@@ -54,8 +63,17 @@ import type { AgreementScheduleRow, AgreementSection } from "./text";
 import type { SigningCapacity } from "@prisma/client";
 import { SIGNING_CAPACITY_LONG_LET_SCHEDULE_LABEL } from "@/lib/signing-capacity";
 import { MANAGER, MANAGER_SIGNING_NAME } from "./manager";
+import {
+  PHOTOGRAPHY_RATE_TEXT,
+  PHOTOGRAPHY_TIMING_TEXT,
+  PHOTOGRAPHY_TRIGGER_TEXT,
+} from "./photography";
 
-export const LONG_LET_KE_VERSION = "long-let-ke-v1";
+// v2 introduced the photography setup charge: clause 5.2, the
+// Schedule 1 setup-costs row, and its appearance in the definition of
+// Net Client Proceeds and in the Statement breakdown. v1 said no
+// setup fee of any kind was charged. See ./photography.ts.
+export const LONG_LET_KE_VERSION = "long-let-ke-v2";
 
 // The tenant-finding fee is one month's rent per the service sheet.
 // Expressed as a multiple rather than an amount on purpose: the rent
@@ -176,7 +194,9 @@ function scheduleOne(ctx: LongLetContext): AgreementScheduleRow[] {
     {
       label: "Setup costs",
       value: [
-        "None. No setup fee is charged and no deduction is made from rent other than those itemised on the monthly Statement.",
+        `Photography, ${PHOTOGRAPHY_TRIGGER_TEXT}: ${PHOTOGRAPHY_RATE_TEXT}`,
+        `Either ${PHOTOGRAPHY_TIMING_TEXT}`,
+        "No other setup, onboarding, marketing or listing fee is charged, and no deduction is made from rent other than those itemised on the monthly Statement.",
       ],
     },
     {
@@ -269,7 +289,7 @@ export function buildLongLetKeSections(
         `1.4 “Management Fee” means ${ctx.commissionPct} of Collected Rent, plus any tax required by law to be charged on the fee. It is charged only on rent actually received.`,
         `1.5 “Tenant-Finding Fee” means a one-off fee equal to ${tenantFindingFeeText()}, plus any tax required by law to be charged on the fee.`,
         "1.6 “Property Expenses” means reasonable third-party costs of keeping the Property let, occupied and maintained, including routine and emergency maintenance, repairs, replacements, vendor call-outs, consumables, utilities where the Client is liable for them, licences, and approved professional services.",
-        "1.7 “Net Client Proceeds” means Collected Rent less the Management Fee, any Tenant-Finding Fee then due, Property Expenses, amounts the Manager is required by law to withhold or remit, and other authorised deductions.",
+        "1.7 “Net Client Proceeds” means Collected Rent less the Management Fee, any Tenant-Finding Fee then due, any photography charge under clause 5.2, Property Expenses, amounts the Manager is required by law to withhold or remit, and other authorised deductions.",
         "1.8 “Statement” means the monthly account of Collected Rent, Property Expenses, fees, statutory charges and Net Client Proceeds made available to the Client on the GoldStay platform.",
       ],
     },
@@ -306,9 +326,9 @@ export function buildLongLetKeSections(
       heading: "5. Fees, taxes, statements and Client payouts",
       body: [
         "5.1 The Management Fee is charged on Collected Rent only. Rent that falls due but is not paid carries no Management Fee, and the Manager does not charge the Client for the period the Property stands empty.",
-        "5.2 No setup, onboarding, marketing, photography or listing fee is charged. Other than the Management Fee, any Tenant-Finding Fee, Property Expenses and statutory amounts, each itemised on the Statement, no deduction is made from rent.",
+        `5.2 No onboarding, marketing or listing fee is charged. The only setup charge is for professional photography, ${PHOTOGRAPHY_TRIGGER_TEXT}: ${PHOTOGRAPHY_RATE_TEXT}. It may be ${PHOTOGRAPHY_TIMING_TEXT}. Other than the Management Fee, any Tenant-Finding Fee, that photography charge, Property Expenses and statutory amounts, each itemised on the Statement, no deduction is made from rent.`,
         "5.3 By the 5th day of each month, the Manager will make the preceding month’s Statement available and settle the Net Client Proceeds then available. Later-clearing rent will be included in the next cycle.",
-        "5.4 The Statement shows gross rent collected, Property Expenses, the Management Fee, any Tenant-Finding Fee, and KRA or other recurring statutory charges separately, followed by the Net Client Proceeds payable to the Client.",
+        "5.4 The Statement shows gross rent collected, Property Expenses, the Management Fee, any Tenant-Finding Fee, any photography charge, and KRA or other recurring statutory charges separately, followed by the Net Client Proceeds payable to the Client.",
         "5.5 The Client can view collections, arrears, expenses, fees, payouts and monthly Statements on the GoldStay platform. Live figures may be adjusted when transactions clear.",
         "5.6 Rent is collected in KES. Payouts will be made in the currency stated in Schedule 1, less applicable conversion or transfer costs. Bank-detail changes must pass GoldStay’s verification process.",
         "5.7 Where Property Expenses properly incurred exceed the funds held for the Property, the Manager may carry the shortfall forward against future collections or require the Client to fund it within three business days of request. The Manager is not obliged to incur an expense it has no funds for, except as permitted by clause 6.2.",

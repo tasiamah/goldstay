@@ -83,7 +83,9 @@ describe("buildShortLetKeSections", () => {
       termMonths: 6,
       noticePeriodDays: 45,
     });
-    expect(text).toContain("“Management Fee” means 18% of Gross Booking Revenue");
+    expect(text).toContain(
+      "“Management Fee” means 18% of Gross Booking Revenue",
+    );
     expect(text).toContain("6 full calendar months from the Launch Date");
     expect(text).toContain("A 45-day notice may be given");
     expect(text).not.toContain("three full calendar months");
@@ -163,6 +165,22 @@ describe("buildShortLetKeSections", () => {
     // filled in, and would quote a fee we cannot compute.
     const text = flatten(base);
     expect(text).not.toMatch(/Forecast Monthly Management Fee/i);
+  });
+
+  it("prices photography inside Startup Costs", () => {
+    // v2 said only "reasonable photography and launch costs", which
+    // left the amount to a conversation. It also matters here that
+    // Startup Costs feed the clause 10.3 early-exit amount, so a
+    // figure the client has seen is a figure we can actually recover.
+    const text = flatten(base);
+    expect(text).toContain(
+      "USD 100 for a studio or one-bedroom Property and USD 150 for a Property with two or more bedrooms",
+    );
+    expect(text).toContain("where the Manager determines it is required");
+    // v2 deducted them from the first payout with no alternative.
+    expect(text).toContain(
+      "paid in advance or, if not paid in advance, deducted from the first payout",
+    );
   });
 
   it("sets the early-exit amount at unrecovered startup costs alone", () => {

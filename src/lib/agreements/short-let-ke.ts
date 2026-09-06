@@ -29,6 +29,11 @@ import type { AgreementScheduleRow, AgreementSection } from "./text";
 import type { SigningCapacity } from "@prisma/client";
 import { SIGNING_CAPACITY_SCHEDULE_LABEL } from "@/lib/signing-capacity";
 import { MANAGER, MANAGER_SIGNING_NAME } from "./manager";
+import {
+  PHOTOGRAPHY_RATE_TEXT,
+  PHOTOGRAPHY_TIMING_TEXT,
+  PHOTOGRAPHY_TRIGGER_TEXT,
+} from "./photography";
 
 // Bumped whenever the clause text below changes. Stored on every
 // agreement row at issue and printed on the acceptance record, which
@@ -42,7 +47,12 @@ import { MANAGER, MANAGER_SIGNING_NAME } from "./manager";
 // "to be confirmed" with limb (b) yielding nothing — the change
 // removes wording that had no operative effect rather than altering
 // a term anyone relied on.
-export const SHORT_LET_KE_VERSION = "short-let-ke-v2";
+//
+// v3 states the photography rate inside Startup Costs, which v2 left
+// as "reasonable photography and launch costs" with no figure, and
+// records that Startup Costs may be settled in advance instead of
+// only out of the first payout. See ./photography.ts.
+export const SHORT_LET_KE_VERSION = "short-let-ke-v3";
 
 export type ShortLetContext = {
   // Header block and Schedule 1 "Client" row.
@@ -149,7 +159,8 @@ function scheduleOne(ctx: ShortLetContext): AgreementScheduleRow[] {
     {
       label: "Startup Costs",
       value: [
-        "Reasonable photography and launch costs, itemised and deducted from the first payout",
+        `Reasonable photography and launch costs, itemised and either ${PHOTOGRAPHY_TIMING_TEXT}`,
+        `Photography, ${PHOTOGRAPHY_TRIGGER_TEXT}: ${PHOTOGRAPHY_RATE_TEXT}`,
         `Estimated budget (if known): ${orTbc(ctx.startupCostsBudgetFormatted)}`,
       ],
     },
@@ -235,7 +246,7 @@ export function buildShortLetKeSections(
         `1.3 “Management Fee” means ${ctx.commissionPct} of Gross Booking Revenue, plus any tax required by law to be charged on the fee.`,
         "1.4 “Launch Date” means the date on which the Property is first published and made available for booking through an approved Booking Channel, as recorded by the Manager.",
         "1.5 “Net Client Proceeds” means Gross Booking Revenue plus other non-refundable amounts collected for the Property, including separately itemised cleaning or laundry charges, less the Management Fee, channel and processing charges, refunds, chargebacks, taxes, Startup Costs, Property Expenses, reserves, and other authorised deductions.",
-        "1.6 “Startup Costs” means reasonable launch costs such as photography, an initial deep clean, linen or consumable setup, access setup, listing assets, and minor styling. They are separate from the Management Fee.",
+        `1.6 “Startup Costs” means reasonable launch costs such as photography, an initial deep clean, linen or consumable setup, access setup, listing assets, and minor styling. They are separate from the Management Fee. Photography is charged, ${PHOTOGRAPHY_TRIGGER_TEXT}, at ${PHOTOGRAPHY_RATE_TEXT}.`,
         "1.7 “Property Expenses” means reasonable third-party operating costs, including cleaning, laundry, consumables, maintenance, repairs, replacements, call-outs, utilities, licences, and approved professional services.",
       ],
     },
@@ -272,7 +283,7 @@ export function buildShortLetKeSections(
         "5.1 The Manager earns the Management Fee on every booking confirmed during this Agreement, regardless of when the stay occurs, the revenue is received, or this Agreement ends. The fee becomes payable as the relevant revenue is received. Refunds, reversals, and chargebacks will be reflected in the next statement.",
         "5.2 Separately itemised guest-paid cleaning or laundry charges will be applied against the actual related costs. Any surplus is credited to the Client and any shortfall is charged to the Client as a Property Expense.",
         "5.3 By the 5th day of each month, the Manager will provide the preceding month’s statement and settle the Net Client Proceeds then available. Later-clearing revenue will be included in the next cycle.",
-        "5.4 If Startup Costs are required, the Manager will notify the Client of the items and estimate before committing them, subject to clause 6.2. They will be itemised and deducted from the first payout. Any shortfall may be carried forward or must be paid within five business days after request.",
+        `5.4 If Startup Costs are required, the Manager will notify the Client of the items and estimate before committing them, subject to clause 6.2. They will be itemised, and may be ${PHOTOGRAPHY_TIMING_TEXT}. Any shortfall may be carried forward or must be paid within five business days after request.`,
         "5.5 Startup Costs remain payable if the Client delays launch, withdraws the Property, or ends this Agreement before they are recovered. They are separate from the Management Fee.",
         "5.6 The Client can view bookings, performance, collections, expenses, fees, payouts, and monthly statements on the GoldStay platform. Live figures may be adjusted when transactions clear.",
         "5.7 Payouts will be made in the selected currency, less applicable conversion or transfer costs. The Manager may maintain the agreed reserve, carry forward a negative balance, and require a top-up within three business days. Bank-detail changes must pass GoldStay’s verification process.",
