@@ -52,11 +52,18 @@ export default async function AdminLayout({
           {/* Which build you are looking at. Links to the health page,
               where the sha and environment are spelled out — an
               operator reporting a bug can read the version off any
-              screen without being asked to go and find it. */}
+              screen without being asked to go and find it.
+              
+              Shown at every width, including phones. Hiding it below
+              sm defeated the point: ops triage from the road on
+              iPhones, which is exactly where someone is least able to
+              go hunting for a build number. Padding tightens on small
+              screens so it costs the header as little width as
+              possible next to the menu button. */}
           <Link
             href="/admin/health"
             title={`Goldstay platform ${formatBuildLabel()}`}
-            className="hidden items-center rounded-md border border-stone-200 bg-white px-2.5 py-1.5 text-xs tabular-nums text-stone-500 hover:bg-stone-50 hover:text-stone-700 sm:inline-flex"
+            className="inline-flex items-center rounded-md border border-stone-200 bg-white px-2 py-1 text-xs tabular-nums text-stone-500 hover:bg-stone-50 hover:text-stone-700 sm:px-2.5 sm:py-1.5"
           >
             v{APP_VERSION}
           </Link>

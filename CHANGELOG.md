@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-09-06
+
+### Fixed
+
+- The version number in the admin header was hidden below the `sm`
+  breakpoint, so it did not show on phones — which is where ops triage from,
+  and where someone is least able to go hunting for a build number. It now
+  shows at every width, with tighter padding on small screens.
+
 ## [1.0.0] - 2026-09-06
 
 First versioned release. The platform was already in production serving real
@@ -80,5 +89,6 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/tasiamah/goldstay/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/tasiamah/goldstay/releases/tag/v1.0.0
