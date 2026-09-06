@@ -1,5 +1,11 @@
 import { withSentryConfig } from "@sentry/nextjs";
 
+// The hosts each country domain answers on. Shared by the redirects and
+// the rewrites below so the two can never disagree about which host is
+// which market.
+const KENYA_HOSTS = ["goldstay.co.ke", "www.goldstay.co.ke"];
+const GHANA_HOSTS = ["goldstay.com.gh", "www.goldstay.com.gh"];
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -29,7 +35,27 @@ const nextConfig = {
   // links to /owner/statements/{year}/{month}, and those land in
   // inboxes that people scroll back through years later.
   async redirects() {
+    // Host-scoped city-root redirects. On a country domain the root and
+    // /{city} render the same page (see the rewrites below), so /{city}
+    // is a second address for the homepage. It now canonicalises to the
+    // root, and this sends the duplicate there outright rather than
+    // leaving two URLs serving 200.
+    //
+    // Safe against the rewrite underneath: Next runs redirects before
+    // beforeFiles rewrites, and an internal rewrite does not re-enter
+    // the redirect phase. So /nairobi 301s to /, then / rewrites to
+    // /nairobi internally and renders. No loop.
+    const cityRootRedirect = (hosts, source) =>
+      hosts.map((value) => ({
+        source,
+        has: [{ type: "host", value }],
+        destination: "/",
+        permanent: true,
+      }));
+
     return [
+      ...cityRootRedirect(KENYA_HOSTS, "/nairobi"),
+      ...cityRootRedirect(GHANA_HOSTS, "/accra"),
       {
         source: "/owner",
         destination: "/client",
@@ -61,9 +87,6 @@ const nextConfig = {
   // then middleware never runs again. Config-level rewrites do not hit
   // that footgun.
   async rewrites() {
-    const kenyaHosts = ["goldstay.co.ke", "www.goldstay.co.ke"];
-    const ghanaHosts = ["goldstay.com.gh", "www.goldstay.com.gh"];
-
     const hostRewrite = (hosts, destination) =>
       hosts.map((value) => ({
         source: "/",
@@ -73,8 +96,8 @@ const nextConfig = {
 
     return {
       beforeFiles: [
-        ...hostRewrite(kenyaHosts, "/nairobi"),
-        ...hostRewrite(ghanaHosts, "/accra"),
+        ...hostRewrite(KENYA_HOSTS, "/nairobi"),
+        ...hostRewrite(GHANA_HOSTS, "/accra"),
       ],
     };
   },

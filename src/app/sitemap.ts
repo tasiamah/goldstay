@@ -73,7 +73,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const nairobiRoutes = [
-    "/nairobi",
+    // On .co.ke the root *is* this page (next.config.mjs rewrites "/"
+    // to /nairobi), so "" in `neutral` above already covers it and
+    // /nairobi 301s there. Listing both would submit two URLs for one
+    // page, one of which canonicalises away — the contradiction that
+    // makes Google pick for you. The neutral .com serves a dual-market
+    // homepage, so there /nairobi is a page in its own right.
+    ...(isNairobi ? [] : ["/nairobi"]),
     "/nairobi/buy",
     ...cities.nairobi.neighbourhoods.map(
       (n) => `/nairobi/${neighbourhoodSlug(n.name)}`,
@@ -88,7 +94,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const accraRoutes = [
-    "/accra",
+    // Same as /nairobi above, for the Ghana domain's root.
+    ...(isAccra ? [] : ["/accra"]),
     "/accra/buy",
     ...cities.accra.neighbourhoods.map(
       (n) => `/accra/${neighbourhoodSlug(n.name)}`,

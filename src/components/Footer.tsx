@@ -26,6 +26,14 @@ export function Footer() {
       label: n.name,
     }));
 
+  // On its own country domain the city landing page lives at the root,
+  // so link there directly. /{city} still resolves — it 301s to the root
+  // — but this is the footer, on every page, and pointing the most
+  // repeated internal link on the site through a redirect wastes the
+  // signal it exists to send.
+  const cityHref = (cityKey: "nairobi" | "accra") =>
+    city === cityKey ? "/" : `/${cityKey}`;
+
   const brandLine =
     city === "nairobi"
       ? "Premium property management in Nairobi. Built for diaspora landlords. Remittances in US dollars."
@@ -69,14 +77,14 @@ export function Footer() {
             <ul className="space-y-3 text-sm">
               {showNairobi ? (
                 <li>
-                  <Link href="/nairobi" className="link-underline">
+                  <Link href={cityHref("nairobi")} className="link-underline">
                     Property management Nairobi
                   </Link>
                 </li>
               ) : null}
               {showAccra ? (
                 <li>
-                  <Link href="/accra" className="link-underline">
+                  <Link href={cityHref("accra")} className="link-underline">
                     Property management Accra
                   </Link>
                 </li>
