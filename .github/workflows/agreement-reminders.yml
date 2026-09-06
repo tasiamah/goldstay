@@ -1,18 +1,25 @@
-# Manual trigger for the unsigned-agreement reminder ladder.
+# Hourly driver for the unsigned-agreement reminder ladder.
 #
-# The schedule itself lives in vercel.json and runs hourly, so unlike
-# the statements workflow this one carries no cron of its own: a second
-# hourly trigger would double every JobRun row for no benefit, and the
-# thing a once-monthly job needs a safety net for — missing the only
-# window — cannot happen when the window comes round every hour.
+# Runs here rather than in vercel.json because Vercel's own cron on this
+# project's plan only accepts daily-or-longer schedules — which is why
+# every sub-daily job in this repo (sync-ical, vacancy-pitch,
+# acquisition-scan) is a workflow and only the monthly statement push is
+# a Vercel cron. Adding an hourly entry to vercel.json fails the
+# deployment outright.
 #
-# What this gives ops is a "run it now" button, which is worth having
-# for two cases: verifying the job after a deploy, and pushing a chase
-# out immediately without waiting for the top of the hour.
+# Hourly rather than daily because the cadence is anchored on each
+# agreement's own sentAt and gated by the client's local quiet hours: a
+# daily job would drift the "24 hour" reminder by up to a day and would
+# fire every send at whatever single time the job happened to run.
 #
-# Start with dry_run=true. It reports exactly which agreements are due
-# and at which rung of the ladder, without sending anything, claiming a
-# step or raising a task.
+# GitHub's scheduler can run late under load. That is fine here: a
+# reminder is due for hours, not for a minute, and the next run picks up
+# anything a late or missed run left behind.
+#
+# The manual trigger defaults to dry_run=true, which reports exactly
+# which agreements are due and at which rung, without sending anything,
+# claiming a step or raising a task. The scheduled run passes no input,
+# so it sends for real.
 #
 # Safe to run repeatedly: each rung is claimed through a unique index on
 # (agreementId, step), so a replay cannot re-email a client.
@@ -20,6 +27,8 @@
 name: Agreement reminders
 
 on:
+  schedule:
+    - cron: "0 * * * *"
   workflow_dispatch:
     inputs:
       dry_run:

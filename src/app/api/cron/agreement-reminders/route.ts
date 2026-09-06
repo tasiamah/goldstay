@@ -1,11 +1,15 @@
 // GET /api/cron/agreement-reminders — chases unsigned management
 // agreements.
 //
-// Registered in vercel.json to run hourly. Hourly rather than daily
-// because the cadence is anchored on each agreement's own sentAt and
-// gated by the client's local quiet hours: a daily job would drift the
-// "24 hour" reminder by up to a day and would fire every send at
-// whatever single time the job happened to run.
+// Driven hourly by .github/workflows/agreement-reminders.yml rather
+// than by vercel.json, because Vercel cron on this project's plan only
+// accepts daily-or-longer schedules — the same reason sync-ical,
+// vacancy-pitch and acquisition-scan are workflows too.
+//
+// Hourly rather than daily because the cadence is anchored on each
+// agreement's own sentAt and gated by the client's local quiet hours: a
+// daily job would drift the "24 hour" reminder by up to a day and would
+// fire every send at whatever single time the job happened to run.
 //
 // Idempotent. Each rung of the ladder is claimed through a unique index
 // on (agreementId, step) before it is sent, so a Vercel retry, an
