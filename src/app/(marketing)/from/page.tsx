@@ -8,9 +8,13 @@ import { alternateLanguagesFor, baseUrlFor } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Property Management for the African Diaspora",
+    // "Property Management for the African Diaspora" described the
+    // audience in our words rather than theirs. Nobody searches
+    // "African diaspora property management"; they search for managing
+    // a property from wherever they are living.
+    title: "Manage Your Kenya Property From Abroad",
     description:
-      "Pick where you live. We handle Nairobi and Accra property management for landlords across the UK, USA, UAE, Australia, Canada, Ireland and more.",
+      "Property management in Nairobi for landlords living abroad. Rent collected, tax withheld and remitted, and your net paid to your overseas account in USD on the 5th. UK, USA, UAE, Canada, Australia, Ireland and more.",
     alternates: {
       canonical: "/from",
       languages: alternateLanguagesFor("/from"),
@@ -36,9 +40,18 @@ export default function Page() {
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">For the diaspora</div>
+              {/* Was "Tell us where you live. We'll tailor the
+                  conversation." A fine instruction and a wasted H1: the
+                  strongest on-page signal on the hub of a 21 page
+                  cluster said nothing about what the cluster is for.
+                  The diaspora phrases landlords actually search
+                  ("manage my property in Kenya from abroad", "rent out
+                  my house while abroad") were unclaimed anywhere on the
+                  site. The instruction moves to the standfirst below,
+                  where it still reads as one. */}
               <h1 className="mt-6 font-serif text-display-lg balance">
-                Tell us where you live. <em className="italic">We&apos;ll</em>{" "}
-                tailor the conversation.
+                Manage my property in Kenya{" "}
+                <em className="italic">from abroad</em>.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 Tax, FX, time zone and banking work differently for every

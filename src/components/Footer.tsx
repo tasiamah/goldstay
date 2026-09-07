@@ -118,6 +118,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/change-property-manager"
+                  className="link-underline"
+                >
+                  Change property manager
+                </Link>
+              </li>
+              <li>
                 <Link href="/diaspora-payouts" className="link-underline">
                   Diaspora USD payouts
                 </Link>

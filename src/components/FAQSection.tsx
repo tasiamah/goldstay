@@ -50,9 +50,18 @@ export function FAQSection({
               open={initialOpen === i}
             >
               <summary className="flex w-full cursor-pointer list-none items-center justify-between gap-6 py-6 text-left [&::-webkit-details-marker]:hidden">
-                <span className="font-serif text-lg sm:text-xl md:text-2xl">
+                {/* An h3 rather than a span. The question is the most
+                    query-shaped text on most of these pages, and it was
+                    the one piece of it carrying no heading weight: the
+                    FAQPage schema declared it while the document
+                    structure did not. Applies to every FAQ on the site
+                    at once, which is 67 commercial pages. A heading
+                    inside summary is valid and keeps the disclosure
+                    behaviour intact; the classes are unchanged, so
+                    nothing moves visually. */}
+                <h3 className="font-serif text-lg sm:text-xl md:text-2xl">
                   {item.q}
-                </span>
+                </h3>
                 <span className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/70">
                   <Plus className="gs-faq-plus h-4 w-4" />
                   <Minus className="gs-faq-minus h-4 w-4" />

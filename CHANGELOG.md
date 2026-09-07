@@ -21,6 +21,66 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-09-07
+
+### Added
+- A page at `/change-property-manager` for the highest-intent cluster on the
+  site and the one nobody was serving. "agent not paying rent", "change
+  property manager", "agent not remitting rent", "bad property manager" and
+  five more had no page and no article anywhere. A landlord searching those
+  already owns a property, already pays a manager, and has already decided the
+  arrangement is failing: they are not researching, they are replacing someone
+  today. The competition leaves it alone because no management company wants to
+  publish instructions for firing a management company.
+- The page is written as the guide a landlord actually needs, including the
+  part that is inconvenient for us: the closing section states our own exit
+  terms, which are thirty days, no exit fee, no claw-back and a full handover
+  pack. A page about firing your manager is worth nothing coming from a manager
+  who is quiet about their own exit. It is deliberately not a legal guide,
+  because notice, deposits and agency obligations turn on the agreement that
+  was signed, so it points the reader at their own contract and says plainly
+  that missing money is a question for a lawyer and not for us.
+- A first site-wide FAQ entry, "How do I choose a property management company
+  in Nairobi?", answering it with the four questions that actually narrow the
+  field. The agency-seeking phrasing had no home: "property management company
+  nairobi", "property management companies in nairobi" and "property management
+  services nairobi" were claimed by no page, while the singular abstract noun
+  was claimed twice. The plural, and the word "company", are what somebody
+  shopping for a firm types.
+
+### Changed
+- FAQ questions now render as `h3` rather than `span`. The question is the most
+  query-shaped text on most of these pages and it was the one part carrying no
+  heading weight: the `FAQPage` schema declared it while the document structure
+  did not. One component change, so it applies to every FAQ on all 67
+  commercial pages at once, and it moved 15 phrases from "mentioned" to
+  "targeted" on its own. Nothing moves visually.
+- The Airbnb page is now titled "Airbnb & Short-Let Management Nairobi", which
+  claims a second head term for the same page rather than splitting the two
+  across competing thin pages. It also answers two questions the site had no
+  words for at all: whether we work as an Airbnb co-host, and whether we manage
+  serviced apartments, holiday homes and furnished lets. "co-host", "cohost"
+  and "co-hosting" were absent from every page and every article, and co-host
+  is Airbnb's own term, so it is what a host calls the thing they are looking
+  for.
+- The `/from` hub is titled "Manage Your Kenya Property From Abroad" with a
+  matching H1, replacing "Tell us where you live. We'll tailor the
+  conversation." That was a fine instruction and a wasted H1, on the hub of a
+  21 page cluster, describing the audience in our words rather than theirs.
+  Nobody searches "African diaspora property management". The instruction moved
+  to the standfirst, where it still reads as one.
+- `scripts/keyword-coverage.mjs` now groups phrases by search intent, counts
+  `h2`/`h3` as targeting, and matches on token subsequence rather than
+  substring. Substring matching lied in both directions: it scored "change
+  property manager" as a miss against the title "Change Your Property Manager
+  in Nairobi" because of the intervening "Your", and "agent not paying rent" as
+  a miss against the FAQ question "My agent is not paying me rent". Token
+  matching stays scoped to titles and headings, because applied to a
+  3,000-word body it reported "property agent fraud" as covered by 13
+  articles.
+- Measured honestly against that tool, unclaimed commercial phrases went from
+  64 of 84 to 43 of 84, and the switching cluster from 100% unclaimed to 22%.
+
 ## [1.7.0] - 2026-09-07
 
 ### Added
@@ -392,7 +452,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.7.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.8.0...HEAD
+[1.8.0]: https://github.com/tasiamah/goldstay/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/tasiamah/goldstay/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/tasiamah/goldstay/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/tasiamah/goldstay/compare/v1.4.1...v1.5.0

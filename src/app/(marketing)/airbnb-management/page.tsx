@@ -34,6 +34,22 @@ import { getServerCity } from "@/lib/getServerCity";
 // site-wide accordion and emitted no FAQPage schema at all, so it both
 // answered the wrong questions and passed up the rich result.
 const airbnbFaqs = [
+  // The first two answer questions the site had no words for at all.
+  // A keyword audit of the built HTML found "co-host", "co-hosting" and
+  // "cohost" absent from every page and every article, along with
+  // "serviced apartment management", "holiday home management" and
+  // "furnished apartment management". Co-host is Airbnb's own term, so
+  // it is what a host calls the thing they are looking for, and the
+  // others are what the same service is called by owners who do not
+  // think of their property as an Airbnb.
+  {
+    q: "Do you work as an Airbnb co-host?",
+    a: "Yes. Co-hosting is what this service is, in Airbnb's own vocabulary: your listing stays on your account and we run it, handling the calendar, pricing, guest messaging, check-ins, cleaning turnovers and maintenance. We can either be added as a co-host on your existing listing or build the listing from scratch if there is not one yet. The fee is the same 20% of revenue either way.",
+  },
+  {
+    q: "Do you manage serviced apartments, holiday homes and furnished lets too?",
+    a: "They are the same operation under different names, and yes. Whether it is marketed as a serviced apartment, a holiday home, a furnished short let or an Airbnb, the work is a furnished unit let by the night or the week, and it is run the same way. What changes is the channel mix: some units earn better on direct and corporate bookings than on Airbnb, and we list wherever the demand for that address actually is.",
+  },
   {
     q: "What do you charge for Airbnb management?",
     a: "20% of revenue collected. There is no onboarding fee, listing fee or exit fee. The only setup cost is professional photography where we judge it necessary, at USD 100 for a studio or one-bed and USD 150 for two bedrooms or more.",
@@ -88,10 +104,10 @@ export function generateMetadata(): Metadata {
   // that only fits about seven.
   const cityTitle =
     city === "nairobi"
-      ? "Airbnb Management Nairobi"
+      ? "Airbnb & Short-Let Management Nairobi"
       : city === "accra"
-        ? "Airbnb Management Accra"
-        : "Airbnb Management in Nairobi & Accra";
+        ? "Airbnb & Short-Let Management Accra"
+        : "Airbnb & Short-Let Management in Nairobi & Accra";
 
   return {
     title: cityTitle,

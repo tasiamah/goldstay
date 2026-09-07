@@ -897,6 +897,17 @@ export const cityFaq = {
 } as const;
 
 export const faq = [
+  // First because it is the question a landlord is actually asking when
+  // they arrive, and because the agency-seeking phrasing had no home on
+  // the site: a keyword audit found "property management company
+  // nairobi", "property management companies in nairobi" and
+  // "property management services nairobi" claimed by no page, while
+  // the singular abstract noun was claimed twice over. The plural and
+  // the word "company" are what somebody shopping for a firm types.
+  {
+    q: "How do I choose a property management company in Nairobi?",
+    a: "Ask four questions and the field narrows fast. What is the fee, and what gets added to it later? Will you send an itemised monthly statement with receipts, or a figure on WhatsApp? Do you take commission from contractors or listing platforms, because that decides whether a repair quote is in your interest or theirs? And what does leaving cost, since a company confident in the service does not need an exit fee to keep you. Any property management company in Nairobi should answer all four in writing before you sign. Ours are answered on our pricing page.",
+  },
   {
     q: "What is your management fee?",
     a: "For long-term management we charge 10% of rent collected. For Airbnb and short-stay we charge 20% of revenue. Tenant finding only is a one-time fee equivalent to one month's rent. No hidden charges, no surprise deductions.",

@@ -73,6 +73,7 @@ export function sitemapPaths(input: {
     "/tenant-finding",
     "/property-sourcing",
     "/pricing",
+    "/change-property-manager",
     "/diaspora-payouts",
     "/yield-calculator",
     "/refer",
