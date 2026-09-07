@@ -1,21 +1,31 @@
 # GitHub Actions CI for Goldstay.
 #
-# Default state: dormant. Vercel runs the same `next build` on every
-# push, so this workflow is duplicate work and the deploy fails fast
-# enough on its own. We keep the file in the repo (rather than
-# deleting it) so re-enabling is a one-toggle change in the GitHub
-# UI rather than a code change + review cycle.
+# This workflow is the correctness gate. It is not optional and it is
+# not gated on a repo variable, because as of v1.11.2 it is the only
+# thing checking types and lint at all.
 #
-# To re-enable on every push and PR:
-#   GitHub → Settings → Secrets and variables → Actions → Variables
-#   → New repository variable → name: CI_ENABLED, value: true
+# Why it changed. Vercel's `next build` used to run lint and typecheck
+# as part of every deploy, which made this workflow duplicate work and
+# it was left dormant on purpose. But that verification was costing 38
+# seconds of a 158 second deploy while blocking the deploy, to re-check
+# what whoever pushed had already run locally. So the build now skips
+# both (see the eslint and typescript blocks in next.config.mjs) and
+# they run here instead, in parallel with the deploy rather than in
+# front of it.
 #
-# To re-enable for a single ad-hoc run without flipping the variable:
-#   GitHub → Actions → CI → Run workflow
+# The trade that makes. Verification no longer blocks the deploy, so a
+# push with a type error will deploy and then go red here about a
+# minute later. That is an acceptable trade for this codebase because
+# Next compiles with SWC, which strips types without checking them: a
+# type error does not produce different output, it just means nobody
+# checked. What would produce broken output is a failure to compile or
+# to prerender, and Vercel still catches both of those and still fails
+# the deploy when they happen.
 #
-# A workflow that's gated by `if:` and skipped reports as "Skipped"
-# (neutral grey) on the commit / PR — it doesn't show as failure
-# and doesn't block branch protection rules that don't list it.
+# What Vercel still owns: compile, and prerendering all 478 pages.
+# What this owns: lint, types, and the test suite, including the
+# insights link checker and the search-snippet width checker, which
+# `pnpm test` runs via catalogue.test.ts.
 
 name: CI
 
@@ -32,12 +42,9 @@ concurrency:
 
 jobs:
   verify:
-    name: Lint · Build
+    name: Lint · Types · Tests
     runs-on: ubuntu-latest
-    # Single source of truth for "is CI on?". Manual workflow_dispatch
-    # always runs so the team can sanity-check the build on demand
-    # without having to flip the repo variable first.
-    if: ${{ vars.CI_ENABLED == 'true' || github.event_name == 'workflow_dispatch' }}
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -55,11 +62,26 @@ jobs:
           node-version: 20
           cache: pnpm
 
+      # postinstall runs `prisma generate`, which the typecheck needs
+      # because most of src/ imports the generated client. Generate
+      # only parses the schema and never opens a connection, but the
+      # datasource block still names these two variables, so they are
+      # set to throwaway values rather than left unset. Nothing here
+      # touches a real database and nothing should ever be able to.
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          DIRECT_URL: postgresql://ci:ci@localhost:5432/ci
 
       - name: Lint
         run: pnpm run lint
 
-      - name: Build
-        run: pnpm run build
+      - name: Types
+        run: pnpm run typecheck
+
+      # Includes the catalogue guards: every internal /insights link
+      # resolves, every article is registered, no em dashes, and no
+      # search-result title or description that Google would truncate.
+      - name: Tests
+        run: pnpm run test

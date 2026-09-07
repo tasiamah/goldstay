@@ -1,6 +1,6 @@
 {
   "name": "goldstay",
-  "version": "1.11.1",
+  "version": "1.11.2",
   "private": true,
   "packageManager": "pnpm@10.33.1",
   "scripts": {
@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "verify": "pnpm run lint && pnpm run typecheck && pnpm run build",
+    "verify": "pnpm run lint && pnpm run typecheck && pnpm run test && pnpm run build",
+    "verify:ci": "pnpm run lint && pnpm run typecheck && pnpm run test",
     "airtable:setup": "node scripts/setup-airtable.mjs",
     "db:generate": "prisma generate",
     "db:migrate": "dotenv -e .env.local -- prisma migrate dev",

@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.11.2] - 2026-09-07
+
+### Changed
+- Lint and typecheck moved out of the deploy and into CI. `next build` ran
+  both on every deploy, which cost 38 seconds of a 158 second build to
+  re-check what the person pushing had already run locally, and it held the
+  deploy up while doing it. They now run in `.github/workflows/ci.yml` in
+  parallel with the deploy instead of in front of it. A cold local build went
+  from 69 seconds to 38.
+
+  The trade is that verification no longer blocks the deploy, so a push with
+  a type error will deploy and then go red in CI about a minute later. That is
+  acceptable here specifically because Next compiles with SWC, which strips
+  types without checking them, so a type error never changed the output. It
+  only meant nobody had checked. The failures that do produce broken output
+  are a failure to compile or to prerender, and the build still does both and
+  still fails the deploy when either breaks.
+
+  To undo it: delete the `eslint` and `typescript` blocks in
+  `next.config.mjs`.
+
+- The CI workflow is no longer dormant. It was gated behind a `CI_ENABLED`
+  repo variable that was never set, on the reasoning that Vercel ran the same
+  checks anyway. That reasoning stops holding the moment the build skips them,
+  so the gate is gone and the workflow runs on every push and pull request. It
+  runs lint, typecheck and the full suite, which includes the insights link
+  checker and the snippet width checker via `catalogue.test.ts`. It no longer
+  runs a build, because Vercel does that.
+
 ## [1.11.1] - 2026-09-07
 
 ### Fixed
@@ -572,7 +601,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.2...HEAD
+[1.11.2]: https://github.com/tasiamah/goldstay/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/tasiamah/goldstay/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/tasiamah/goldstay/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/tasiamah/goldstay/compare/v1.9.1...v1.10.0

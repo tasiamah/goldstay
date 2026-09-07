@@ -9,6 +9,30 @@ const GHANA_HOSTS = ["goldstay.com.gh", "www.goldstay.com.gh"];
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  // Lint and typecheck are owned by .github/workflows/ci.yml, not by
+  // the deploy.
+  //
+  // `next build` runs both by default, which was costing 38 seconds of
+  // a 158 second deploy to re-check what the person pushing had
+  // already run locally, while holding the deploy up to do it. They
+  // now run in CI in parallel with the deploy instead of in front of
+  // it, so the same checks happen and the deploy stops waiting on
+  // them.
+  //
+  // This is safe in the specific sense that matters here: Next
+  // compiles with SWC, which strips types without checking them, so a
+  // type error never produced different output. It only meant nobody
+  // had checked. The failures that do produce broken output are a
+  // failure to compile or to prerender, and the build still does both
+  // and still fails the deploy when either breaks.
+  //
+  // The cost is real and worth naming: a push with a type or lint
+  // error will now deploy, and go red in CI about a minute later,
+  // rather than failing the deploy outright. If that trade stops being
+  // worth it, delete these two blocks and the deploy goes back to
+  // blocking on them.
+  eslint: { ignoreDuringBuilds: true },
+  typescript: { ignoreBuildErrors: true },
   // @react-pdf/renderer pulls in fontkit, yoga-layout, and a stack of
   // CommonJS internals that webpack can mangle when it tries to bundle
   // them into a serverless function. Marking them external keeps them
