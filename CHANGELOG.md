@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-09-07
+
+### Added
+- A pricing page at `/pricing`, targeting the fee queries the site had no page
+  for. The fees were already public but spread across four service pages and a
+  handful of FAQ answers, so nothing answered "what does property management
+  cost in Kenya" as its subject. Fee queries are the highest-intent search in
+  this market, because somebody asking the price has already decided they want
+  the service and is choosing a supplier, and they are also the easiest for us
+  to win: most Nairobi managers do not publish a number, so a page that answers
+  directly beats one that asks you to enquire, both in ranking and in the
+  comparison the reader is making.
+- Every figure on it reads from the `services` array in `site.ts` or restates a
+  commitment already made in `GuaranteesSection`, so a number cannot drift from
+  the same number on a service page. Nothing was invented for it. It also
+  states what the fee is *not*: no setup or onboarding fee, no contractor or
+  platform commission, no maintenance markup, no exit fee or claw-back.
+- The FAQ is written close to verbatim query phrasing, so the `FAQPage` schema
+  can be what an AI summary or featured snippet quotes rather than something it
+  has to infer from prose.
+- `/pricing` is linked from the header nav on all 415 pages and from the footer
+  services column, anchored on "Property management fees" rather than
+  "Pricing".
+- `scripts/keyword-coverage.mjs`, which sorts candidate commercial phrases into
+  targeted-in-title, targeted-in-H1, mentioned-only and absent by reading the
+  built HTML. This is where the gap list came from rather than from intuition:
+  it found that only 7 of 47 candidate phrases were claimed in any title, and
+  that 33 had no commercial page at all. Now 8 and 30.
+
 ## [1.6.0] - 2026-09-07
 
 ### Added
@@ -363,7 +392,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.7.0...HEAD
+[1.7.0]: https://github.com/tasiamah/goldstay/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/tasiamah/goldstay/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/tasiamah/goldstay/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/tasiamah/goldstay/compare/v1.4.0...v1.4.1

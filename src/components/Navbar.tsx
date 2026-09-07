@@ -55,6 +55,11 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
     const base = `/${city}`;
     return [
       { href: `${base}#services`, label: "Services" },
+      // Fees sits in the nav on purpose. A manager willing to put the
+      // number one click from every page is making a claim the ones who
+      // quote on enquiry cannot, and it gives /pricing an inbound link
+      // from all 415 pages.
+      { href: "/pricing", label: "Fees" },
       { href: `${base}/buy`, label: "Buy" },
       { href: "/find-a-home", label: "Rent" },
       { href: "/yield-calculator", label: "Yield" },
@@ -64,6 +69,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
 
   return [
     { href: "/#services", label: "Services" },
+    { href: "/pricing", label: "Fees" },
     { href: "/nairobi", label: "Nairobi" },
     { href: "/accra", label: "Accra" },
     { href: "/property-sourcing", label: "Buy" },
