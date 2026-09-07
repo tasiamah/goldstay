@@ -279,6 +279,16 @@ export default function Article() {
         </Link>{" "}
         for the wider 2026 picture.
       </P>
+      <P>
+        Rather than take our word for the numbers, run them:{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>
+        .
+      </P>
     </>
   );
 }

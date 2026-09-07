@@ -329,6 +329,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Have somebody check it in person for you:{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our Nairobi property sourcing
+        </Link>{" "}
+        is free to the buyer.
+      </P>
     </>
   );
 }

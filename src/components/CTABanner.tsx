@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { waLink } from "@/lib/site";
+import { phone, waLink } from "@/lib/site";
 import { Reveal } from "./Reveal";
 
 export function CTABanner({
@@ -41,6 +41,19 @@ export function CTABanner({
                 Or use the form →
               </Link>
             </div>
+            {/* Some landlords will not start a conversation on WhatsApp
+                with a company they have just found, and an older
+                diaspora owner deciding who to trust with a house often
+                wants to hear a voice. Costs nothing to offer. */}
+            <p className="mt-6 text-sm text-cream/60">
+              Prefer to call?{" "}
+              <a
+                href={phone.nairobi.href}
+                className="text-cream underline decoration-cream/30 underline-offset-4 transition-colors hover:decoration-cream"
+              >
+                {phone.nairobi.display}
+              </a>
+            </p>
           </div>
         </Reveal>
       </div>

@@ -4,7 +4,7 @@ import { enforceCityHost } from "@/lib/enforceCityHost";
 import { alternateLanguagesFor, cityCanonical } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Property Management in Accra",
+  title: "Property Management Accra",
   description:
     "Premium property management for Accra landlords abroad. We vet tenants, collect rent in GHS and remit in USD to your foreign account every month.",
   alternates: {

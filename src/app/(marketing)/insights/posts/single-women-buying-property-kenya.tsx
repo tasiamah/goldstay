@@ -414,6 +414,16 @@ export default function Article() {
         for related considerations on compound choice
         and unit specification.
       </P>
+      <P>
+        We do this work for sourcing clients before a shilling changes hands. See{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our property sourcing
+        </Link>
+        .
+      </P>
     </>
   );
 }

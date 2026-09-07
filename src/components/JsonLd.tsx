@@ -3,6 +3,7 @@ import {
   cities,
   offices,
   logoObject,
+  openingHours,
   orgId,
   websiteId,
   whatsapp,
@@ -67,6 +68,11 @@ export function JsonLd() {
     },
     areaServed,
     sameAs: [site.socials.instagram, site.socials.linkedin],
+    // RealEstateAgent is a LocalBusiness subtype, so these carry here
+    // too, and this is the node every other schema on the site points
+    // its @id at — the one most likely to be read as the entity.
+    openingHours: [...openingHours],
+    priceRange: "10-20% of rent collected",
     knowsLanguage: ["en"],
     currenciesAccepted: currencies,
     paymentAccepted: "Bank transfer, mobile money",
@@ -156,6 +162,28 @@ export function JsonLd() {
           addressLocality: "Nairobi",
           addressCountry: cities.nairobi.country,
         },
+    // The three fields Google asks a local business for and we were not
+    // answering. Without geo it has to infer the pin from the address
+    // string; without hours it cannot show open/closed; and priceRange
+    // is one of the few places a service business can differentiate in
+    // the result itself. All three are also inputs to the local pack,
+    // which is what sits above the organic results for "property
+    // management nairobi".
+    ...(nairobiOffice?.geo
+      ? {
+          geo: {
+            "@type": "GeoCoordinates",
+            latitude: nairobiOffice.geo.latitude,
+            longitude: nairobiOffice.geo.longitude,
+          },
+        }
+      : {}),
+    openingHours: [...openingHours],
+    // Free text, and better spent on the actual fee than on a "$$"
+    // band nobody can act on. We publish these rates on every service
+    // page already, so stating them here says nothing new — it just
+    // says it somewhere Google can read.
+    priceRange: "10-20% of rent collected",
     areaServed: cities.nairobi.neighbourhoods.map((n) => ({
       "@type": "Place",
       name: n.name,

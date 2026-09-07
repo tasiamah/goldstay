@@ -181,6 +181,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        What a managed home here actually earns is set out under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our long-term management
+        </Link>
+        .
+      </P>
     </>
   );
 }

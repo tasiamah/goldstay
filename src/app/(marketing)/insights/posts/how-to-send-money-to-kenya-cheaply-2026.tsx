@@ -434,6 +434,16 @@ export default function Article() {
         </Link>{" "}
         for the related FX context.
       </P>
+      <P>
+        We wire the balance out monthly, and the rails and spreads are compared in{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          diaspora payouts
+        </Link>
+        .
+      </P>
     </>
   );
 }

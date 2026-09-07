@@ -209,6 +209,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        We manage across this part of the city. See{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

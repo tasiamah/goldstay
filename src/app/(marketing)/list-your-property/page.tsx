@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
 import { Reveal } from "@/components/Reveal";
-import { waLink, alternateLanguagesFor } from "@/lib/site";
+import { phone, waLink, alternateLanguagesFor } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Per-domain metadata so goldstay.co.ke reads as a Kenya-only brand in search
@@ -63,6 +63,10 @@ export default function Page() {
                   className="link-underline text-gold-400"
                 >
                   WhatsApp us instead
+                </a>{" "}
+                or call{" "}
+                <a href={phone.nairobi.href} className="link-underline text-gold-400">
+                  {phone.nairobi.display}
                 </a>
                 .
               </p>

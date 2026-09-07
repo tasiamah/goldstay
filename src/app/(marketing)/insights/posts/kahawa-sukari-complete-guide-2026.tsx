@@ -183,6 +183,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        We publish the rent bands we achieve area by area on{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the long-term management page
+        </Link>
+        .
+      </P>
     </>
   );
 }

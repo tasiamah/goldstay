@@ -21,6 +21,43 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-06
+
+### Added
+
+- A phone number you can actually dial. The Nairobi line is now a `tel:`
+  link in the footer, on the closing call-to-action of every page, and on
+  `/list-your-property`, alongside the office hours. Until now the entire
+  public contact surface was WhatsApp, which asks a landlord to open a chat
+  with a company they have just found; every property manager we compete with
+  in Nairobi leads with a number. It is the same line already published in the
+  structured data, derived from one constant so the page and the schema cannot
+  drift apart.
+- `geo`, `openingHours` and `priceRange` on the business listing. These are
+  three of the fields Google asks a local business for and we were answering
+  none of them, which matters because the map pack sits above the organic
+  results for searches like "property management nairobi" and is fed by this
+  data rather than by page content.
+
+### Changed
+
+- Landing page titles now lead with the phrase people actually type.
+  "Airbnb Management in Nairobi, Kenya" became "Airbnb Management Nairobi":
+  the preposition and the country were spending the most heavily weighted
+  words in the title on nothing, since Nairobi already implies Kenya.
+- `/long-term-management` now targets "rental management" rather than
+  "property management". The city page already owns the latter, so the two
+  were competing for the same search and Google had to pick between them;
+  this also covers a phrase that previously had no page at all.
+- 187 articles gained a link to the service they are about, roughly tripling
+  the number of internal links reaching a page that can take an enquiry — from
+  126 to 314, against 982 links pointing from articles to other articles. A
+  cluster that links mostly to itself keeps its own authority circulating and
+  passes very little to the pages that need to rank, and a reader finishing an
+  article about vacancy had nowhere to go except another article about vacancy.
+  Routing is by topic, and the 38 articles that fit no service cleanly were
+  left alone.
+
 ## [1.3.0] - 2026-09-06
 
 ### Added
@@ -233,7 +270,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.4.0...HEAD
+[1.4.0]: https://github.com/tasiamah/goldstay/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/tasiamah/goldstay/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tasiamah/goldstay/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/tasiamah/goldstay/compare/v1.0.3...v1.1.0

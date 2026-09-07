@@ -431,6 +431,16 @@ export default function Article() {
         </Link>{" "}
         for the deeper diligence playbook.
       </P>
+      <P>
+        Buyers who would rather have it done on the ground for them use{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Goldstay’s property sourcing
+        </Link>
+        .
+      </P>
     </>
   );
 }

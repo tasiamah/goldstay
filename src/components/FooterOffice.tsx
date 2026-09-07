@@ -1,7 +1,7 @@
 "use client";
 
-import { MapPin } from "lucide-react";
-import { offices } from "@/lib/site";
+import { MapPin, Phone } from "lucide-react";
+import { offices, openingHours, phone } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
 
 // Renders the physical office block for the current city. Falls back to the
@@ -22,6 +22,10 @@ export function FooterOffice() {
   const mapsQuery = encodeURIComponent(
     `${office.building}, ${office.street}, ${office.locality}, ${office.city}`,
   );
+
+  // Only Nairobi has a published line. Accra would otherwise inherit a
+  // Kenyan number under a Ghanaian heading.
+  const line = key === "nairobi" ? phone.nairobi : null;
 
   return (
     <div>
@@ -44,6 +48,20 @@ export function FooterOffice() {
           </div>
         ) : null}
       </address>
+      {line ? (
+        <div className="mt-4">
+          <a
+            href={line.href}
+            className="inline-flex items-center gap-1.5 text-sm text-charcoal transition-colors hover:text-gold-700"
+          >
+            <Phone className="h-3.5 w-3.5" />
+            {line.display}
+          </a>
+          <div className="mt-1 text-xs text-charcoal/55">
+            {openingHours.join(", ").replace("Mo-Fr", "Mon–Fri")}
+          </div>
+        </div>
+      ) : null}
       <a
         href={`https://www.google.com/maps/search/?api=1&query=${mapsQuery}`}
         target="_blank"

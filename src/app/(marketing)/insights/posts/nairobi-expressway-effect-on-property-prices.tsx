@@ -240,6 +240,16 @@ export default function Article() {
         for where the expressway corridor sits inside the
         broader 2026 picture.
       </P>
+      <P>
+        Every assumption behind a figure like this is shown in{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our yield calculator
+        </Link>
+        .
+      </P>
     </>
   );
 }

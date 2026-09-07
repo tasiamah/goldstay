@@ -464,6 +464,16 @@ export default function Article() {
         </Link>{" "}
         for the wider context.
       </P>
+      <P>
+        The arithmetic is easier to see with your own figures in{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the yield calculator
+        </Link>
+        .
+      </P>
     </>
   );
 }

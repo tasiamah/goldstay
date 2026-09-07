@@ -245,6 +245,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        We take this stage on its own for landlords who keep the rest:{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -210,6 +210,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        It is worth modelling before you commit. The{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>{" "}
+        will do it with your numbers.
+      </P>
     </>
   );
 }

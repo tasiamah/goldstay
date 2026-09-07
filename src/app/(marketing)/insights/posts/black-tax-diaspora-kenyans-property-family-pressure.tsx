@@ -393,6 +393,16 @@ export default function Article() {
         for the related family money topics that come up
         alongside this one.
       </P>
+      <P>
+        This is standard on every property under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our long-term management
+        </Link>
+        , rather than something a landlord has to ask for.
+      </P>
     </>
   );
 }

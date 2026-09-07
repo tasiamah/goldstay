@@ -482,6 +482,16 @@ export default function Article() {
         for the housing side decisions that drive much of
         the monthly budget above.
       </P>
+      <P>
+        You can run your own numbers on this in{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our yield calculator
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -343,6 +343,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you would rather the unit were simply operated for you, that is{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          short-stay management in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

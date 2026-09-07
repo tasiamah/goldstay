@@ -214,6 +214,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you want the figure for your own property, the{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Nairobi yield calculator
+        </Link>{" "}
+        shows every assumption.
+      </P>
     </>
   );
 }

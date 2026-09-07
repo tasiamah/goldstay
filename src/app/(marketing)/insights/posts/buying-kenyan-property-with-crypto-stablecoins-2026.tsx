@@ -369,6 +369,16 @@ export default function Article() {
         </Link>{" "}
         for the wider USD-funding picture.
       </P>
+      <P>
+        How the money actually reaches you is set out in{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our guide to diaspora payouts
+        </Link>
+        .
+      </P>
     </>
   );
 }

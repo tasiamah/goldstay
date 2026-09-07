@@ -228,6 +228,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you want the tenancy run end to end, that is{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term rental management
+        </Link>
+        .
+      </P>
     </>
   );
 }

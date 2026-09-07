@@ -80,11 +80,15 @@ export function generateMetadata(): Metadata {
   // most heavily weighted element on the page; leaving the city out of
   // it while every competitor names it is the whole reason this page
   // sat on page two. The template appends " | Goldstay".
+  // Exact match on the phrase people type, with no preposition and no
+  // trailing country. "Nairobi" already implies Kenya, and the four
+  // words it cost were being spent ahead of " | Goldstay" in a budget
+  // that only fits about seven.
   const cityTitle =
     city === "nairobi"
-      ? "Airbnb Management in Nairobi, Kenya"
+      ? "Airbnb Management Nairobi"
       : city === "accra"
-        ? "Airbnb Management in Accra, Ghana"
+        ? "Airbnb Management Accra"
         : "Airbnb Management in Nairobi & Accra";
 
   return {

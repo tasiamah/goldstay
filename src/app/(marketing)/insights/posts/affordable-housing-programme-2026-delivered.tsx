@@ -210,6 +210,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        This is one of the checks we run under{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

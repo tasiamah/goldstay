@@ -239,6 +239,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        We run this side of it for owners under{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Goldstay’s Airbnb management
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -459,6 +459,16 @@ export default function Article() {
         for the property side decisions you will face once
         you are home.
       </P>
+      <P>
+        We built a{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>{" "}
+        so you can check this against your own rent rather than ours.
+      </P>
     </>
   );
 }

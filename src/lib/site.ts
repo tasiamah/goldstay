@@ -66,6 +66,11 @@ export type Office = {
   district?: string;
   postalCode: string;
   postalBox?: string;
+  // Coordinates of the building, for LocalBusiness.geo. Optional so a
+  // market can be listed before it has been surveyed, and omitted
+  // rather than approximated when it has not — a pin in the wrong place
+  // sends people to the wrong door.
+  geo?: { latitude: number; longitude: number };
 };
 
 // Physical offices on display in the footer and JSON-LD. Only include a
@@ -82,6 +87,14 @@ export const offices: Partial<Record<"nairobi" | "accra", Office>> = {
     district: "Westlands",
     postalCode: "00606",
     postalBox: "P.O. Box 1730, Sarit Centre",
+    // Pinetree Plaza, from three independent listings that agree to
+    // within about 8 metres. Note those listings all place the building
+    // on Kaburu Drive off Ngong Road rather than Kindaruma Road; if the
+    // street above is the registered postal address and Kaburu Drive is
+    // the physical one, the Google Business Profile should carry
+    // whichever Google's own map data uses, because a mismatch between
+    // the profile and this page is read as two different businesses.
+    geo: { latitude: -1.2985, longitude: 36.793 },
   },
 };
 
@@ -448,6 +461,45 @@ export const whatsapp = {
     process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_NAIROBI || NAIROBI_WHATSAPP_NUMBER,
   accra: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER_ACCRA || "233500000000",
 };
+
+// The same Nairobi line as the WhatsApp number above, published as a
+// number you can actually dial.
+//
+// It was already in the JSON-LD `telephone` field, so this does not
+// expose anything new — it makes it callable and visible. Until now the
+// entire public contact surface was WhatsApp, which reads as a business
+// that might not exist to anyone who wants to hear a voice before
+// handing over a house. Every property manager we compete with in
+// Nairobi leads with a phone number.
+//
+// Derived from `whatsapp` rather than duplicated so the env-var
+// override applies to both and the two can never disagree — a phone
+// number that differs between the page and the schema is worse for
+// local search than having none.
+export const phone = {
+  nairobi: {
+    // "+254702471993" — what tel: needs.
+    href: `tel:+${whatsapp.nairobi}`,
+    // "+254 702 471 993" — what a human reads.
+    display: `+${whatsapp.nairobi}`.replace(
+      /^(\+\d{3})(\d{3})(\d{3})(\d{3})$/,
+      "$1 $2 $3 $4",
+    ),
+  },
+};
+
+// Office hours, as openingHours in schema.org's day-time notation.
+//
+// These are the hours the platform already behaves according to:
+// SEND_WINDOW in reminder-schedule.ts holds client email to 08:00–18:00
+// local, and the callback promise on every lead form is "within two
+// hours during business hours". Declaring anything wider here would
+// contradict code that is already live.
+//
+// Saturday is deliberately absent rather than guessed. If the Nairobi
+// office does take calls on a Saturday, add it — a business that shows
+// as closed when it is open loses the enquiry to whoever shows as open.
+export const openingHours = ["Mo-Fr 08:00-18:00"] as const;
 
 export function waLink(message: string, city?: "nairobi" | "accra") {
   const number =

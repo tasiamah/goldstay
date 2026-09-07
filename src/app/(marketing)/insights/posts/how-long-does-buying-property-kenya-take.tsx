@@ -316,6 +316,16 @@ export default function Article() {
         for the procedural detail behind the timeline
         above.
       </P>
+      <P>
+        We shortlist and verify on your brief. See{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buying property with Goldstay
+        </Link>
+        .
+      </P>
     </>
   );
 }

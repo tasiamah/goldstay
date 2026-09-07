@@ -365,6 +365,16 @@ export default function Article() {
         </Link>{" "}
         for the related macro context.
       </P>
+      <P>
+        If you want to see which route costs least, we break it down in{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          receiving Kenyan rent in USD
+        </Link>
+        .
+      </P>
     </>
   );
 }

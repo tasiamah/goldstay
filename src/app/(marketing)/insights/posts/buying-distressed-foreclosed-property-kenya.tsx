@@ -318,6 +318,16 @@ export default function Article() {
         </Link>{" "}
         for related execution detail.
       </P>
+      <P>
+        Put your own rent through{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the yield calculator
+        </Link>{" "}
+        to see where this lands.
+      </P>
     </>
   );
 }

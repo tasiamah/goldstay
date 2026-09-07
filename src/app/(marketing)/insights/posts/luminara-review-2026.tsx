@@ -224,6 +224,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        We run this diligence for buyers as part of{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our property sourcing service
+        </Link>
+        , which is free to the buyer.
+      </P>
     </>
   );
 }

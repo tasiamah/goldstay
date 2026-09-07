@@ -4,7 +4,11 @@ import { enforceCityHost } from "@/lib/enforceCityHost";
 import { alternateLanguagesFor, cityCanonical } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Property Management in Nairobi",
+  // This route is the homepage on goldstay.co.ke, so this title is what
+  // the head term resolves to. Exact match, brand last: the first words
+  // are the most heavily weighted part of a title and were being spent
+  // on a preposition.
+  title: "Property Management Nairobi",
   description:
     "Premium property management for Nairobi landlords abroad. We vet tenants, collect rent in KES and remit in USD to your foreign account every month.",
   alternates: {

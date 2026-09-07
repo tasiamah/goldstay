@@ -419,6 +419,16 @@ export default function Article() {
         </Link>{" "}
         for the wider funding context.
       </P>
+      <P>
+        We do the legwork on this for buying clients under{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>
+        .
+      </P>
     </>
   );
 }

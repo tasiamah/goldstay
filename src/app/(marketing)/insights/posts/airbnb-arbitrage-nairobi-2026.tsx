@@ -226,6 +226,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Owners who would rather not run any of this themselves hand it to our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management service in Nairobi
+        </Link>
+        .
+      </P>
     </>
   );
 }

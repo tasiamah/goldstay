@@ -46,14 +46,18 @@ export function generateMetadata(): Metadata {
         ? "Accra"
         : "Nairobi and Accra";
 
-  // City in the title, same reasoning as /airbnb-management: the query
-  // carries the place name.
+  // "Rental management" rather than "property management" on purpose.
+  // The city page already owns "property management {city}", so both
+  // pages competing for it meant Google picking between them on every
+  // search. This targets "rental management nairobi", which is a real
+  // query that had no page at all, and describes the long-let service
+  // more precisely than the head term does.
   const title =
     city === "nairobi"
-      ? "Long-Term Property Management in Nairobi, Kenya"
+      ? "Long-Term Rental Management Nairobi"
       : city === "accra"
-        ? "Long-Term Property Management in Accra, Ghana"
-        : "Long-Term Property Management in Nairobi & Accra";
+        ? "Long-Term Rental Management Accra"
+        : "Long-Term Rental Management in Nairobi & Accra";
 
   return {
     title,

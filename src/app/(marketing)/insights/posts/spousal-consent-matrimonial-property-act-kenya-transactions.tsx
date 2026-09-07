@@ -334,6 +334,16 @@ export default function Article() {
         for the related consent requirements that often
         appear together on the same transaction.
       </P>
+      <P>
+        We do the legwork on this for buying clients under{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>
+        .
+      </P>
     </>
   );
 }

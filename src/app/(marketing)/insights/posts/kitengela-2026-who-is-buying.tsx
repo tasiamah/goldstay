@@ -226,6 +226,16 @@ export default function Article() {
         </Link>{" "}
         for the wider eastern corridor context.
       </P>
+      <P>
+        If you want somebody in Nairobi doing this on your behalf, that is{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what we source for
+        </Link>
+        .
+      </P>
     </>
   );
 }

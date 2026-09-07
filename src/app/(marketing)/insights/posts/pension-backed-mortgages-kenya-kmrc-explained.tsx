@@ -374,6 +374,16 @@ export default function Article() {
         </Link>{" "}
         for the broader funding context.
       </P>
+      <P>
+        We shortlist and verify on your brief. See{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buying property with Goldstay
+        </Link>
+        .
+      </P>
     </>
   );
 }

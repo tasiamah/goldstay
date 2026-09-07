@@ -297,6 +297,16 @@ export default function Article() {
         for the wider context on how off-plan
         projects get into trouble.
       </P>
+      <P>
+        If you would rather not do this from abroad, that is what{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our buying service
+        </Link>{" "}
+        exists for.
+      </P>
     </>
   );
 }

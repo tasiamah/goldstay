@@ -196,6 +196,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        It is standard on every purchase we source: see{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how property sourcing works
+        </Link>
+        .
+      </P>
     </>
   );
 }

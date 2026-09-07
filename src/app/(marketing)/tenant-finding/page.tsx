@@ -41,10 +41,10 @@ export function generateMetadata(): Metadata {
 
   const title =
     city === "nairobi"
-      ? "Tenant Finding in Nairobi, Kenya"
+      ? "Tenant Finding & Vetting Nairobi"
       : city === "accra"
-        ? "Tenant Finding in Accra, Ghana"
-        : "Tenant Finding in Nairobi & Accra";
+        ? "Tenant Finding & Vetting Accra"
+        : "Tenant Finding & Vetting in Nairobi & Accra";
 
   return {
     title,

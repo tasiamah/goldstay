@@ -206,6 +206,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If the unit is sitting empty and you want it let properly, that is{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>
+        .
+      </P>
     </>
   );
 }

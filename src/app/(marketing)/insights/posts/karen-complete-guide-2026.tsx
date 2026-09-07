@@ -274,6 +274,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you already own here, this is what{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          letting it through Goldstay
+        </Link>{" "}
+        would involve.
+      </P>
     </>
   );
 }

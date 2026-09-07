@@ -240,6 +240,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        This is exactly the stage where{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          an on-the-ground sourcing agent
+        </Link>{" "}
+        earns their keep.
+      </P>
     </>
   );
 }

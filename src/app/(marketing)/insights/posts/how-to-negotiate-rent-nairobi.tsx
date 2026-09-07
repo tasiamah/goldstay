@@ -244,6 +244,16 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Landlords who manage their own property still come to us for{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding and referencing
+        </Link>
+        .
+      </P>
     </>
   );
 }
