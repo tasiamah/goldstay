@@ -35,6 +35,13 @@ export default function robots(): MetadataRoute.Robots {
           "/client/",
           "/admin",
           "/admin/",
+          // Read-only agreement copies shared with a client's advocate.
+          // The token in the URL is the only credential, so a crawler
+          // that found one and published it would put a client's
+          // commercial terms in front of anybody who searched. The
+          // route is also noindex via its layout; this stops a
+          // well-behaved crawler fetching it in the first place.
+          "/agreements/",
         ],
       },
     ],

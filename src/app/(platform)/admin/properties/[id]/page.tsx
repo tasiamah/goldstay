@@ -20,6 +20,7 @@ import {
 } from "@/components/OccupancyCalendar";
 import { IcalFeedManager } from "./ical/IcalFeedManager";
 import { ReissueAgreementButton } from "./agreement/ReissueButton";
+import { SharePanel, type ShareRow } from "./agreement/SharePanel";
 import {
   AGREEMENT_STATUS_CLASSES,
   AGREEMENT_STATUS_LABEL,
@@ -104,6 +105,28 @@ export default async function PropertyDetailPage({
       // Older rows stay around for audit history.
       agreements: {
         orderBy: { createdAt: "desc" },
+        include: {
+          // Read-only copies given to third parties, newest first.
+          // Deliberately not selecting `token`: it is a bearer
+          // credential and the admin card has no need to render it,
+          // so it should not travel to the client component at all.
+          shares: {
+            orderBy: { createdAt: "desc" },
+            select: {
+              id: true,
+              recipientEmail: true,
+              recipientName: true,
+              recipientRelationship: true,
+              expiresAt: true,
+              revokedAt: true,
+              createdByEmail: true,
+              firstViewedAt: true,
+              lastViewedAt: true,
+              viewCount: true,
+              createdAt: true,
+            },
+          },
+        },
       },
     },
   });
@@ -406,6 +429,7 @@ export default async function PropertyDetailPage({
                 signedByName: a.signedByName,
                 acceptanceReference: a.acceptanceReference,
                 documentId: a.documentId,
+                shares: a.shares,
               }))}
               propertySigningCapacity={property.signingCapacity}
             />
@@ -552,6 +576,7 @@ type AgreementRow = {
   signedByName: string | null;
   acceptanceReference: string | null;
   documentId: string | null;
+  shares: ShareRow[];
 };
 
 function AgreementCard({
@@ -683,6 +708,11 @@ function AgreementCard({
               <span className="font-mono">{current.acceptanceReference}</span>
             </p>
           ) : null}
+
+          {/* Available on unsigned agreements too, which is the point:
+              clients ask for this so their advocate can read the
+              contract before they accept it. */}
+          <SharePanel agreementId={current.id} shares={current.shares} />
         </div>
       )}
 

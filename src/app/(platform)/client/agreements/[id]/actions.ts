@@ -8,6 +8,7 @@ import { requireClient } from "@/lib/auth";
 import { readImpersonationCookie } from "@/lib/admin/impersonation";
 import { newAcceptanceReference } from "@/lib/agreements/reference";
 import { notifyTeamOfAcceptance } from "@/lib/agreements/notify";
+import { revokeAgreementShare } from "@/lib/agreements/share";
 import { recordAudit } from "@/lib/audit";
 
 export type SignAgreementResult =
@@ -163,4 +164,65 @@ export async function signAgreementAction(
   // see /client/agreements/[id]/pdf/route.ts which materialises the
   // signed PDF into the documents bucket on first request.
   return { ok: true, acceptanceReference };
+}
+
+// Withdraw a read-only share the client's agreement was given to a
+// third party, from the client's own portal.
+//
+// This exists so the promise made on the shared page and in the share
+// email — that the client can withdraw access at any time — is
+// something they can actually do, rather than something they have to
+// email us to arrange. It is their contract, so access to it is
+// theirs to close.
+//
+// Scoped through property.clientId, the same way every other read on
+// this route is: a client can only revoke a share of their own
+// agreement, and a share id belonging to someone else is reported as
+// not found rather than refused.
+export async function revokeShareAction(
+  shareId: string,
+): Promise<{ ok: true; recipientEmail: string } | { ok: false; error: string }> {
+  const { client } = await requireClient();
+
+  const share = await prisma.agreementShare.findFirst({
+    where: {
+      id: shareId,
+      agreement: { property: { clientId: client.id } },
+    },
+    select: {
+      id: true,
+      recipientEmail: true,
+      revokedAt: true,
+      agreementId: true,
+      agreement: { select: { propertyId: true } },
+    },
+  });
+  if (!share) return { ok: false, error: "That share was not found." };
+  if (share.revokedAt) {
+    return { ok: false, error: "That access has already been withdrawn." };
+  }
+
+  const revoked = await revokeAgreementShare(shareId);
+  if (!revoked) {
+    return { ok: false, error: "That access has already been withdrawn." };
+  }
+
+  await recordAudit({
+    actor: { adminId: null, email: client.email },
+    entity: "AGREEMENT",
+    entityId: share.agreementId,
+    action: "agreement.share_revoked",
+    summary: `Client withdrew read-only access from ${share.recipientEmail}`,
+    metadata: {
+      propertyId: share.agreement.propertyId,
+      clientId: client.id,
+      recipientEmail: share.recipientEmail,
+      shareId,
+      revokedBy: "client",
+    },
+  });
+
+  revalidatePath(`/client/agreements/${share.agreementId}`);
+  revalidatePath(`/admin/properties/${share.agreement.propertyId}`);
+  return { ok: true, recipientEmail: share.recipientEmail };
 }

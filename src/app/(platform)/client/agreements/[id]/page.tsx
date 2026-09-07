@@ -31,6 +31,7 @@ import {
 } from "@/lib/agreements/format";
 import { signAgreementAction } from "./actions";
 import { SignAgreementForm } from "./SignAgreementForm";
+import { SharedWith } from "./SharedWith";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
 export const dynamic = "force-dynamic";
@@ -45,6 +46,23 @@ export default async function ClientAgreementPage({
   const agreement = await prisma.managementAgreement.findFirst({
     where: { id: params.id, property: { clientId: client.id } },
     include: {
+      // Live read-only shares, for the "Shared with" panel. Only the
+      // open ones: a client wants to know who can read their contract
+      // now, not the history of everyone who once could. `token` is
+      // deliberately not selected — it is a bearer credential and
+      // nothing on this page needs it.
+      shares: {
+        where: { revokedAt: null, expiresAt: { gt: new Date() } },
+        orderBy: { createdAt: "desc" },
+        select: {
+          id: true,
+          recipientEmail: true,
+          recipientName: true,
+          recipientRelationship: true,
+          expiresAt: true,
+          viewCount: true,
+        },
+      },
       property: {
         select: {
           id: true,
@@ -236,6 +254,11 @@ export default async function ClientAgreementPage({
           reference={agreement.reference}
         />
       )}
+
+      {/* Renders nothing unless this agreement is actually shared, so
+          a client who never asked for that is not shown a panel
+          implying somebody might have been given their contract. */}
+      <SharedWith shares={agreement.shares} />
     </div>
   );
 }

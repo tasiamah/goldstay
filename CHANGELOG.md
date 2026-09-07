@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-09-07
+
+### Added
+- Agreements can be shared read-only with someone who is not the client,
+  which is what a landlord is asking for when they want their advocate to
+  read the contract before they accept it. Issue a share from the agreement
+  card on the property page in admin: it emails a link that renders the same
+  contract, from the same stored template, with no accept button and no route
+  into the rest of the account. Links last 30 days, record when they were
+  opened, and can be withdrawn at any time — by us from the same card, or by
+  the client themselves from a "Shared with" panel on their own agreement
+  page. The client is copied on the share email, so a share they did not ask
+  for cannot happen quietly.
+
+  This is deliberately not a second email address on the account, which is
+  how the request usually arrives. It cannot be, because the "your agreement
+  is ready" email carries a Supabase magic link minted for the client's
+  address, so anyone who receives that email and clicks it gets a full signed-
+  in session as the client: every statement, payout method and document, plus
+  the accept button. Acceptance is session-based on purpose — the record is
+  built from the session rather than a typed name precisely so it evidences
+  who accepted — so a third party accepting through the client's session
+  would produce a contract record asserting the client had accepted it
+  personally. A share is a separate and much weaker credential: one document,
+  read-only, expiring, revocable.
+
+  Available on unsigned agreements, since reviewing a contract before signing
+  it is the only case anyone actually asks for.
+
 ## [1.11.2] - 2026-09-07
 
 ### Changed
@@ -601,7 +630,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.12.0...HEAD
+[1.12.0]: https://github.com/tasiamah/goldstay/compare/v1.11.2...v1.12.0
 [1.11.2]: https://github.com/tasiamah/goldstay/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/tasiamah/goldstay/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/tasiamah/goldstay/compare/v1.10.0...v1.11.0

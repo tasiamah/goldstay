@@ -624,12 +624,77 @@ model ManagementAgreement {
   document   Document? @relation(fields: [documentId], references: [id], onDelete: SetNull)
 
   reminders AgreementReminder[]
+  shares    AgreementShare[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([propertyId])
   @@index([status])
+}
+
+// A read-only copy of one agreement, shared with somebody who is not
+// the client. Almost always the client's advocate.
+//
+// Why this exists as its own table rather than a second email on the
+// Client row. The "your agreement is ready" email carries a Supabase
+// magic link minted for the client's address (see lib/agreements/
+// notify.ts and lib/supabase/magic-link.ts), and clicking it produces
+// a full authenticated session as that client. So copying a second
+// address on that email would not give the lawyer a read-only look at
+// the contract, it would give them the client's entire portal —
+// statements, payout methods, documents, every property — plus the
+// accept button. And acceptance is deliberately session-based: the
+// record is built from the session rather than a typed name precisely
+// so it evidences who accepted. A third party accepting under the
+// client's session would produce a record asserting the client did it
+// personally, which is the one thing that record exists to prove.
+//
+// A share is therefore a separate, weaker credential entirely. It
+// reaches one agreement, read-only, and there is no code path from it
+// to acceptance or to any other part of the account.
+//
+// The token is a bearer secret: whoever holds the URL can read that
+// agreement, the same trust model as Referrer.dashboardToken. It is
+// mitigated by being scoped to a single document, expiring, and being
+// revocable at any time. Never log it.
+model AgreementShare {
+  id          String              @id @default(cuid())
+  agreementId String
+  agreement   ManagementAgreement @relation(fields: [agreementId], references: [id], onDelete: Cascade)
+
+  // 32 bytes, base64url, generated the same way as a dashboard token.
+  token String @unique
+
+  // Who it was shared with. The email is what we send to and is the
+  // thing the client will recognise in the "shared with" list; the
+  // name and relationship are free text for the client's own benefit
+  // ("Dorothy Angulu", "advocate"), and appear on the shared page so
+  // the recipient can see the share was meant for them.
+  recipientEmail        String
+  recipientName         String?
+  recipientRelationship String?
+
+  // Both nullable-by-absence rather than by flag: a share is usable
+  // when it has not expired and has not been revoked. See
+  // lib/agreements/share.ts, which is the single place that decides.
+  expiresAt DateTime
+  revokedAt DateTime?
+
+  // Audit. Who created it, and what has been done with it since.
+  // viewCount is incremented on every load rather than only the
+  // first, because "opened once in March" and "opened forty times
+  // last week" are different facts and the client may care which.
+  createdByEmail String?
+  firstViewedAt  DateTime?
+  lastViewedAt   DateTime?
+  viewCount      Int       @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([agreementId])
+  @@index([recipientEmail])
 }
 
 // One row per rung of the reminder ladder that has been attempted for
