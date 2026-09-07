@@ -21,6 +21,21 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.9.1] - 2026-09-07
+
+### Fixed
+- Article structured data no longer claims our editorial desks are people.
+  Every one of the 350 posts emitted `author: {"@type": "Person"}` regardless
+  of byline, so 324 of them asserted that "Goldstay Editors", "Goldstay
+  Research" and "Goldstay Legal Desk" were human beings with job titles who
+  worked for the company. Desk bylines now resolve to the organisation entity
+  already declared in the global graph, and only a real named author emits a
+  Person. Publishing under a desk is normal; a masthead of Person entities
+  that resolve to nobody is what a content farm looks like, which is the
+  opposite of the signal a firm trying to be read as an operator needs.
+  Bylines render exactly as before — the error was only ever in the JSON-LD,
+  which is why nothing caught it.
+
 ## [1.9.0] - 2026-09-07
 
 ### Added
@@ -478,7 +493,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.9.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.9.1...HEAD
+[1.9.1]: https://github.com/tasiamah/goldstay/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/tasiamah/goldstay/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/tasiamah/goldstay/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/tasiamah/goldstay/compare/v1.6.0...v1.7.0

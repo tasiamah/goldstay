@@ -49,16 +49,28 @@ export function ArticleLayout({
       : undefined,
     keywords: meta.tags.join(", "),
     articleSection: articleCategories[0]?.name,
-    author: {
-      "@type": "Person",
-      name: meta.author.name,
-      jobTitle: meta.author.role,
-      description: meta.author.bio,
-      worksFor: { "@id": orgId() },
-      ...(meta.author.image && {
-        image: `https://${site.domain}${meta.author.image}`,
-      }),
-    },
+    // A desk byline is the organisation writing, so it resolves to the
+    // one company entity in the global graph rather than inventing a
+    // person. A named byline stays a Person and keeps worksFor, which
+    // is what actually ties an individual's expertise to the firm.
+    // See the note on Author.kind in posts/_shared.ts.
+    author:
+      meta.author.kind === "desk"
+        ? {
+            "@id": orgId(),
+            "@type": "Organization",
+            name: site.name,
+          }
+        : {
+            "@type": "Person",
+            name: meta.author.name,
+            jobTitle: meta.author.role,
+            description: meta.author.bio,
+            worksFor: { "@id": orgId() },
+            ...(meta.author.image && {
+              image: `https://${site.domain}${meta.author.image}`,
+            }),
+          },
     // Named inline rather than by @id alone, because Google reads the
     // publisher logo off this node and wants it present on the article
     // itself. Without the logo none of the 350 posts was eligible for

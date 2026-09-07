@@ -12,6 +12,18 @@ export type Author = {
   bio: string;
   url?: string;
   image?: string;
+  // Whether this byline is a person or one of our editorial desks.
+  //
+  // It exists for the Article schema rather than for the page. Every
+  // post used to emit `author: { "@type": "Person" }` regardless of
+  // byline, which asserted that "Goldstay Editors" and "Goldstay Legal
+  // Desk" were human beings with job titles. That is false for 324 of
+  // the 350 posts, and false in the specific way that reads worst: a
+  // masthead of Person entities that resolve to nobody is the shape of
+  // a content farm, not of a firm that publishes what it learns. A
+  // desk byline is honest and normal, but it is an Organization
+  // writing, so it has to say so.
+  kind: "person" | "desk";
 };
 
 export type Country = "kenya" | "ghana";
@@ -78,23 +90,27 @@ export const authors: Record<string, Author> = {
     role: "Editorial Team",
     bio: "The Goldstay Editors team writes and reviews the Insights catalogue. Pieces are reported from our Nairobi and Accra offices, drawing on the property advisory, sourcing and management work the firm runs day to day for diaspora and resident clients.",
     image: "/images/team/editors.png",
+    kind: "desk",
   },
   research: {
     name: "Goldstay Research",
     role: "Market Research Desk",
     bio: "Goldstay Research covers macro property data, neighbourhood pricing, rental yields and policy across the Kenyan and Ghanaian markets. The desk publishes the firm's view on market trends, oversupply, currency and the longer term direction of property values.",
     image: "/images/team/research.png",
+    kind: "desk",
   },
   legal: {
     name: "Goldstay Legal Desk",
     role: "Legal & Compliance",
     bio: "The Goldstay Legal Desk covers Kenyan and Ghanaian property law, title diligence, sale agreements, stamp duty, succession and the regulatory environment that property owners and investors encounter. Pieces are written in collaboration with our advocate partners.",
     image: "/images/team/legal.png",
+    kind: "desk",
   },
   poonam: {
     name: "Poonam Arora",
     role: "General Manager, Nairobi",
     bio: "Poonam runs Goldstay's day-to-day operations on the ground in Nairobi. She has handed over more than a hundred remote-managed homes to diaspora landlords and personally fronts every KRA, county and SRA filing on their behalf.",
     image: "/images/team/poonam.png",
+    kind: "person",
   },
 };
