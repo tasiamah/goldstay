@@ -68,7 +68,7 @@ export function JsonLd() {
       name: "TADCO",
     },
     areaServed,
-    sameAs: [site.socials.instagram, site.socials.linkedin],
+    sameAs: [...site.sameAs],
     // RealEstateAgent is a LocalBusiness subtype, so these carry here
     // too, and this is the node every other schema on the site points
     // its @id at — the one most likely to be read as the entity.

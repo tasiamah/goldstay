@@ -21,6 +21,24 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.13.1] - 2026-09-07
+
+### Fixed
+- Stopped telling Google that the Goldstay organisation is also a LinkedIn
+  person. The `sameAs` array on the `RealEstateAgent` node, which is how
+  search engines resolve scattered mentions of a business into one entity,
+  included a LinkedIn `/in/` URL. That is a personal profile rather than a
+  Company Page, so every page on the site was asserting an identity between
+  the company and an individual, which undermines the entity the rest of the
+  schema exists to sharpen. Same class of error as the article bylines before
+  v1.9.1, where 324 posts declared the editorial desks were human beings.
+
+  The footer link is unchanged, because a link a human clicks and a
+  machine-readable claim about who we are do not have to meet the same bar.
+  The two lists are now separate in `src/lib/site.ts` for that reason, with a
+  test covering the distinction so the natural mistake, adding a handle and
+  wiring it straight into `sameAs`, fails rather than ships.
+
 ## [1.13.0] - 2026-09-07
 
 ### Added
@@ -667,7 +685,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.13.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.13.1...HEAD
+[1.13.1]: https://github.com/tasiamah/goldstay/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/tasiamah/goldstay/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/tasiamah/goldstay/compare/v1.11.2...v1.12.0
 [1.11.2]: https://github.com/tasiamah/goldstay/compare/v1.11.1...v1.11.2

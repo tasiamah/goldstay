@@ -409,3 +409,45 @@ describe("the domain map", () => {
     }
   });
 });
+
+// Guards the entity claims, which are easy to get subtly wrong.
+//
+// `site.sameAs` feeds the RealEstateAgent node's sameAs array, which
+// is how Google resolves scattered mentions of us into a single
+// entity. It used to include a LinkedIn /in/ URL, which is a personal
+// profile: the schema was asserting that the Goldstay organisation is
+// also a LinkedIn person. That is the same mistake the article
+// bylines made before v1.9.1, when 324 posts declared the editorial
+// desks were human beings, and it undermines the exact entity the
+// rest of the schema exists to sharpen.
+//
+// The distinction these tests exist to preserve is that
+// `site.socials` is a list of links a human might click, while
+// `site.sameAs` is a machine-readable claim about who we are. The
+// second is a subset and has to meet a higher bar, so the natural
+// mistake, adding a handle to socials and wiring it straight into
+// sameAs, is the one worth failing on.
+describe("site.sameAs", () => {
+  it("claims at least one profile", () => {
+    expect(site.sameAs.length).toBeGreaterThan(0);
+  });
+
+  it("only contains absolute https URLs", () => {
+    for (const url of site.sameAs) {
+      expect(url, url).toMatch(/^https:\/\//);
+      expect(() => new URL(url), url).not.toThrow();
+    }
+  });
+
+  // The specific regression. A /company/ URL is the Organization and
+  // is welcome here; /in/ is a Person and is not.
+  it("does not claim a personal LinkedIn profile as the organisation", () => {
+    for (const url of site.sameAs) {
+      expect(url, url).not.toMatch(/linkedin\.com\/in\//);
+    }
+  });
+
+  it("has no duplicates", () => {
+    expect(new Set(site.sameAs).size).toBe(site.sameAs.length);
+  });
+});

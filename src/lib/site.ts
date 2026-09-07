@@ -21,11 +21,32 @@ export const site = {
   parent: "A TADCO Company",
   socials: {
     instagram: "https://instagram.com/goldstay.ke",
-    // This is the Goldstay Kenya personal/brand profile (not a LinkedIn
-    // Company Page yet). Flip to the /company/... URL once the Company
-    // Page is created and claimed so JSON-LD sameAs signals stay clean.
+    // A personal LinkedIn profile, not a Company Page. Fine to link to
+    // from the footer, which is why it is still here; see sameAs below
+    // for why it is not an identity claim.
     linkedin: "https://www.linkedin.com/in/goldstay-kenya",
   },
+  // The subset of the profiles above that we are willing to assert, in
+  // structured data, *are* the Goldstay organisation.
+  //
+  // Not the same list, and the difference matters. `sameAs` on the
+  // RealEstateAgent node is how Google resolves scattered mentions
+  // into one entity, so everything in it should be a profile that
+  // genuinely represents the company. The LinkedIn URL is an /in/
+  // profile, which is a Person, and claiming a Person is also the
+  // Organization muddies the exact entity the rest of the schema
+  // exists to sharpen. It is the same mistake the article bylines made
+  // before v1.9.1, when 324 posts asserted the editorial desks were
+  // human beings.
+  //
+  // A footer link is a human following a link. `sameAs` is a
+  // machine-readable claim about identity. Only the second one has to
+  // be true in that stricter sense.
+  //
+  // Add the LinkedIn back the day there is a /company/ page to point
+  // at, and add the Google Business Profile here too once it is
+  // verified, since that is the highest-value corroboration available.
+  sameAs: ["https://instagram.com/goldstay.ke"],
   domains: {
     main: "goldstay.com",
     nairobi: "goldstay.co.ke",
