@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-09-07
+
+### Added
+- A client can now copy other people on their monthly statement. Co-ownership
+  turns out to be common — two sisters running one unit, a couple where only
+  one of them signed, an owner whose accountant does the reconciling — and
+  until now only whoever held the account ever saw the numbers, so the
+  statement was being forwarded by hand every month or not at all.
+
+  Up to five addresses per client, added either by the client under Account in
+  their portal or by an operator on the client's admin page. Each one gets the
+  monthly statement and its PDF, as a CC rather than a BCC so everybody can
+  see who is on it. Both screens show whether the copies are actually
+  arriving, which is the only question anyone asks once it is set up.
+
+  The people added get an email explaining who added them, what they will
+  receive, that they have no Goldstay account, and how to stop it without
+  asking the client first. That last link is a one-click opt-out the client
+  cannot overrule, since consent to receive somebody's financial documents
+  belongs to the person receiving them.
+
+  Deliberately not built as "a second email address on the account", which is
+  the obvious shape and is unsafe. Three of the four emails a client receives
+  carry a sign-in link that signs the clicker in *as the client*, with the
+  accept button on a management agreement, and a second address on the
+  account row would have been indistinguishable from the first at every send
+  site — so the first email to copy it would have handed a co-owner the whole
+  portal and the ability to execute a contract in their sibling's name.
+  Observers are a separate table receiving exactly one thing: the statement,
+  which is the only client email with no credential in it.
+
+  A test enforces that structurally rather than by convention. No module that
+  mints a sign-in link may import the code that resolves observer addresses,
+  so wiring an observer into a credential-bearing email fails the suite
+  instead of shipping.
+
+### Changed
+- The statement email now names anyone copied on it, in a line after the
+  sign-off, so a landlord can see who is reading their income without going
+  to look and a co-owner knows why it arrived. Statements for clients who
+  copy nobody are unchanged.
+
 ## [1.13.1] - 2026-09-07
 
 ### Fixed
@@ -685,7 +727,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.13.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.14.0...HEAD
+[1.14.0]: https://github.com/tasiamah/goldstay/compare/v1.13.1...v1.14.0
 [1.13.1]: https://github.com/tasiamah/goldstay/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/tasiamah/goldstay/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/tasiamah/goldstay/compare/v1.11.2...v1.12.0

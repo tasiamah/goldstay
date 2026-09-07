@@ -23,6 +23,7 @@ import { ImpersonateButton } from "@/components/admin/ImpersonateButton";
 import { ArchiveButton } from "@/components/admin/ArchiveButton";
 import { PayoutMethodsCard } from "./payouts/PayoutMethodsCard";
 import { ClientDocumentsCard } from "./documents/ClientDocumentsCard";
+import { ObserversCard } from "./ObserversCard";
 
 export const dynamic = "force-dynamic";
 
@@ -231,6 +232,10 @@ export default async function ClientDetailPage({
           preferredCurrency={client.preferredCurrency}
         />
         <ClientDocumentsCard clientId={client.id} />
+      </section>
+
+      <section className="grid gap-8 lg:grid-cols-2">
+        <ObserversCard clientId={client.id} clientName={client.fullName} />
       </section>
 
       <section className="grid gap-8 lg:grid-cols-2">

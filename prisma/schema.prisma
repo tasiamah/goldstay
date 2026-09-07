@@ -230,6 +230,7 @@ model Client {
   documents      Document[]
   statementSends StatementSend[]
   notifications  ClientNotification[]
+  observers      ClientObserver[]
 
   @@index([country])
   @@index([archivedAt])
@@ -1362,6 +1363,99 @@ model ClientNotification {
   @@index([clientId, resolvedAt])
   // Physical table name predates the owner -> client rename.
   @@map("OwnerNotification")
+}
+
+// An additional address copied on a client's monthly statement, for
+// somebody who is not the account holder.
+//
+// The need is co-ownership, which turns out to be common: two sisters
+// running one unit between them, a couple where only one signed, an
+// owner whose accountant does the reconciling. Only one of them holds
+// the Goldstay account, so only one of them ever saw the numbers.
+//
+// WHY THIS IS A SEPARATE TABLE, AND NOT A SECOND COLUMN ON Client
+//
+// "Add a second email to the account" is the obvious shape and it is
+// unsafe. Three of the four emails we send a client — welcome,
+// agreement issued, agreement reminder — carry a Supabase magic link,
+// and clicking one signs the clicker in *as the client*, with the
+// accept button on the agreement. A second address on Client would
+// have been indistinguishable from the first at every send site, so
+// the first one that copied it would have handed a sister the whole
+// portal and the ability to execute a contract in her sibling's name.
+//
+// So the account holder's address stays the single `Client.email`,
+// and the addresses in this table are, by the existence of the table,
+// not that. The name is `Observer` rather than `Contact` on purpose:
+// a contact list invites somebody to file the account holder in it,
+// and the invariant this table exists to hold is that nothing in it
+// is ever the account holder.
+//
+// THE INVARIANT
+//
+// No row here may ever receive an email carrying a credential. It is
+// held three ways, because a comment is not a guarantee:
+//
+//   1. Only the statement send reads this table. The statement is the
+//      one client email with no minted link in it — a PDF attachment
+//      and a portal URL that bounces a stranger to /login.
+//   2. src/lib/clients/observers.test.ts asserts statically that no
+//      module importing mintCallbackLink or mintSetPasswordLink also
+//      imports the recipient helper that reads this table, so wiring
+//      an observer into a credential email fails the suite rather
+//      than shipping.
+//   3. addObserver refuses the client's own address, which would
+//      otherwise double-send and blur the two roles back together.
+//
+// See also AgreementShare, which solves the adjacent problem — one
+// specific contract, read-only — for a third party like an advocate.
+// The two compose: a share is one document now, an observer is the
+// monthly numbers from here on.
+model ClientObserver {
+  id           String    @id @default(cuid())
+  clientId     String
+  client       Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  email        String
+  // Both optional. An operator adding a co-owner mid-call has the
+  // address and often not the spelling of the name, and a half-filled
+  // row that works beats a required field that stalls the call.
+  name         String?
+  // Free text, shown back to the client so a list of three addresses
+  // is legible a year later: "sister and co-owner", "accountant".
+  relationship String?
+  // Who put them here. The client's own address when they added the
+  // observer themselves from /client/account, an operator's when it
+  // was done in admin.
+  addedByEmail String?
+  // The observer's own way off the list. They have no Goldstay
+  // account and never asked to be added, so "reply and ask" is not
+  // an adequate opt-out; this token is the credential for the
+  // unsubscribe page and is the *only* thing it can do. Minted once
+  // at creation and carried in the notice email.
+  unsubscribeToken String @unique
+  // Set when the observer opts out via the link in their notice
+  // email. Distinct from removedAt: this is the recipient's own
+  // decision and the client must not be able to undo it by
+  // re-adding, so addObserver reactivates a removed row but leaves
+  // an unsubscribed one alone.
+  unsubscribedAt DateTime?
+  // Set when the client or an operator takes them off the list.
+  // Soft, so the history of who could see the numbers when survives
+  // a removal — the same reason AgreementShare keeps revoked rows.
+  removedAt      DateTime?
+  // Ops visibility: whether the copies are actually going out. A
+  // co-owner who says "I never get these" is answered by looking
+  // here rather than by reading Resend logs.
+  lastSentAt     DateTime?
+  sendCount      Int       @default(0)
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  // One row per address per client. Re-adding a previously removed
+  // observer reactivates that row rather than creating a second,
+  // which keeps the audit trail in one place.
+  @@unique([clientId, email])
+  @@index([clientId, removedAt])
 }
 
 enum ClientNotificationKind {

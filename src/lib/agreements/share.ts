@@ -17,6 +17,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { generateDashboardToken } from "@/lib/referrals/codes";
+import { isPlausibleEmail, normaliseEmail } from "@/lib/email-address";
 
 // How long a new share lasts. Long enough for an advocate to read a
 // contract and come back with questions, short enough that a link
@@ -62,22 +63,11 @@ export function isPlausibleShareToken(input: unknown): input is string {
   return /^[A-Za-z0-9_-]+$/.test(input);
 }
 
-// Normalising here rather than at each call site because the same
-// address arriving as "Dangulu1@Gmail.com " and "dangulu1@gmail.com"
-// should be one recipient in the shared-with list, not two.
-export function normaliseRecipientEmail(input: string): string {
-  return input.trim().toLowerCase();
-}
-
-// Deliberately permissive. This is an operator typing a colleague's
-// address into an admin form, not a public signup, so the job is to
-// catch a fat-fingered entry rather than to adjudicate RFC 5322.
-export function isPlausibleEmail(input: string): boolean {
-  const value = input.trim();
-  if (value.length < 6 || value.length > 254) return false;
-  if (/\s/.test(value)) return false;
-  return /^[^@]+@[^@.]+\.[^@]+$/.test(value);
-}
+// Address handling moved to lib/email-address.ts when client
+// observers became a second caller. Re-exported under the original
+// name so this module's own callers and tests are unaffected.
+export { isPlausibleEmail };
+export const normaliseRecipientEmail = normaliseEmail;
 
 // ---------------------------------------------------------------------
 // Persistence

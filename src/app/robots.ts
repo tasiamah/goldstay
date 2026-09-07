@@ -42,6 +42,12 @@ export default function robots(): MetadataRoute.Robots {
           // route is also noindex via its layout; this stops a
           // well-behaved crawler fetching it in the first place.
           "/agreements/",
+          // An observer's unsubscribe link. Same reasoning: the token
+          // is the only credential, and the page names the client
+          // whose statements the visitor was copied on, so an indexed
+          // copy would put "X owns a rental managed by Goldstay" into
+          // public search results. Noindex via the layout as well.
+          "/statements/",
         ],
       },
     ],

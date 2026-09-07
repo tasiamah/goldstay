@@ -24,6 +24,7 @@ import { ClientPayoutMethodActions } from "./ClientPayoutMethodActions";
 import { ClientAddPayoutMethodForm } from "./ClientAddPayoutMethodForm";
 import { ClientKycCard } from "./ClientKycCard";
 import { YourDetailsForm } from "./YourDetailsForm";
+import { ClientObserversCard } from "./ClientObserversCard";
 
 export const dynamic = "force-dynamic";
 
@@ -204,6 +205,28 @@ export default async function ClientAccountPage({
         an existing method, only the last 4 digits. To change a number,
         archive the old method and add a new one.
       </p>
+
+      {/* Outside the SetupSection list on purpose. Those are the steps
+          that gate a payout; this one is optional and should never
+          read as something outstanding. */}
+      <section
+        id="copies"
+        className="scroll-mt-6 rounded-lg border border-stone-200 bg-white p-6"
+      >
+        <h3 className="text-base font-medium text-stone-900">
+          Who else sees your statements
+        </h3>
+        <p className="mt-1 text-sm text-stone-500">
+          If you own or run the property with someone else, we can copy them
+          on the monthly statement so you are not forwarding it every month.
+          They get the statement and its PDF — they cannot sign in, see the
+          rest of your account, or agree to anything on your behalf. Remove
+          them here whenever you like.
+        </p>
+        <div className="mt-5">
+          <ClientObserversCard clientId={client.id} />
+        </div>
+      </section>
     </div>
   );
 }

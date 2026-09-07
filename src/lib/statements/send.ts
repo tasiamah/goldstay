@@ -15,12 +15,25 @@
 //
 // Failures are recorded (status=FAILED, error captured) but never
 // thrown to the caller — one bad client shouldn't kill the run.
+//
+// This is also the only client email that copies anybody other than
+// the account holder. Co-ownership is common — two sisters running
+// one unit, a couple where only one signed — and until observers
+// existed only the one who held the account ever saw the numbers.
+// The statement can carry them precisely because it has no minted
+// sign-in link in it: a PDF attachment and a portal URL that bounces
+// a stranger to /login. The three emails that do carry a link must
+// never resolve recipients through lib/clients/recipients.ts, and
+// src/lib/clients/observers.test.ts fails the build if one starts to.
 
 import { renderToBuffer } from "@react-pdf/renderer";
 import type { Client } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { logCommunication, updateCommunicationStatus } from "@/lib/comms";
+import { recordObserverSend } from "@/lib/clients/observers";
+import { resolveStatementRecipients } from "@/lib/clients/recipients";
 import { StatementDocument } from "./StatementDocument";
+import { renderEmailBody, renderEmailHtml } from "./email";
 import { buildStatement } from "./aggregate";
 import { buildShortTermSummary } from "./short-term";
 import {
@@ -162,6 +175,15 @@ export async function sendStatementForClient(
     },
   });
 
+  // Resolved before the PDF render so a slow observer lookup is not
+  // holding a rendered buffer in memory, and so the body and the
+  // headers are built from one answer rather than two lookups that
+  // could disagree about who is on this send.
+  const recipients = await resolveStatementRecipients({
+    id: client.id,
+    email: client.email,
+  });
+
   try {
     const pdfBuffer = await renderToBuffer(
       StatementDocument({
@@ -197,6 +219,7 @@ export async function sendStatementForClient(
         siteUrl,
         isEmpty,
         summary,
+        observers: recipients.observers,
       }),
       status: "QUEUED",
       // Sent by the system, not a person — actor is null so no
@@ -210,7 +233,9 @@ export async function sendStatementForClient(
       // bouncing on a missing secret. Production CI must set the
       // key; the system-health page will surface this state too.
       console.log(
-        `[statements] would send to ${client.email} for ${formatPeriod(period)}\n${summary}`,
+        `[statements] would send to ${recipients.to.join(", ")}${
+          recipients.cc.length ? ` (cc ${recipients.cc.join(", ")})` : ""
+        } for ${formatPeriod(period)}\n${summary}`,
       );
       await updateCommunicationStatus(log.id, "SENT");
       const updated = await prisma.statementSend.update({
@@ -229,10 +254,33 @@ export async function sendStatementForClient(
     const resend = new Resend(apiKey);
     const result = await resend.emails.send({
       from,
-      to: [client.email],
+      to: recipients.to,
+      // CC rather than BCC deliberately. The case this serves is
+      // co-ownership, where the transparency is the feature: both
+      // sisters can see the statement went to both of them, and the
+      // account holder can see who is reading their income without
+      // going to look. A hidden copy of somebody's financial
+      // statement would be the wrong default even though it leaks
+      // less. Omitted entirely when empty rather than sent as [],
+      // which some providers treat as a malformed header.
+      ...(recipients.cc.length > 0 ? { cc: recipients.cc } : {}),
       subject,
-      text: renderEmailBody({ client, period, siteUrl, isEmpty, summary }),
-      html: renderEmailHtml({ client, period, siteUrl, isEmpty, summary }),
+      text: renderEmailBody({
+        client,
+        period,
+        siteUrl,
+        isEmpty,
+        summary,
+        observers: recipients.observers,
+      }),
+      html: renderEmailHtml({
+        client,
+        period,
+        siteUrl,
+        isEmpty,
+        summary,
+        observers: recipients.observers,
+      }),
       attachments: [
         {
           filename,
@@ -243,6 +291,11 @@ export async function sendStatementForClient(
 
     const providerId = result?.data?.id ?? null;
     await updateCommunicationStatus(log.id, "SENT", providerId);
+    // After the send, and swallowing its own errors, so a co-owner
+    // who says "I never get these" can be answered from the admin
+    // screen without a counter update ever being able to make a
+    // delivered statement look failed.
+    await recordObserverSend(recipients.observers.map((o) => o.id));
     const updated = await prisma.statementSend.update({
       where: { id: send.id },
       data: {
@@ -294,74 +347,4 @@ function formatNumber(n: number): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
-}
-
-function renderEmailBody(opts: {
-  client: Pick<Client, "fullName" | "companyName">;
-  period: Period;
-  siteUrl: string;
-  isEmpty: boolean;
-  summary: string;
-}): string {
-  const greeting = `Hi ${opts.client.fullName.split(/\s+/)[0] || "there"},`;
-  const lead = opts.isEmpty
-    ? `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. There was no rent or booking activity to report this month — the cover page confirms a clean ledger.`
-    : `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. ${opts.summary}.`;
-  return [
-    greeting,
-    "",
-    lead,
-    "",
-    `You can also browse the same statement, line-by-line, in your portal:`,
-    `${opts.siteUrl}/client/statements/${opts.period.year}/${opts.period.month}`,
-    "",
-    "Net payouts are remitted by the 10th of every month per your management agreement. If anything in this statement looks off, reply to this email and we'll investigate same-day.",
-    "",
-    "— The Goldstay team",
-  ].join("\n");
-}
-
-function renderEmailHtml(opts: {
-  client: Pick<Client, "fullName" | "companyName">;
-  period: Period;
-  siteUrl: string;
-  isEmpty: boolean;
-  summary: string;
-}): string {
-  const firstName = opts.client.fullName.split(/\s+/)[0] || "there";
-  const lead = opts.isEmpty
-    ? `Your Goldstay statement for <strong>${formatPeriod(opts.period)}</strong> is attached. There was no rent or booking activity to report this month — the cover page confirms a clean ledger.`
-    : `Your Goldstay statement for <strong>${formatPeriod(opts.period)}</strong> is attached. ${escapeHtml(opts.summary)}.`;
-  const url = `${opts.siteUrl}/client/statements/${opts.period.year}/${opts.period.month}`;
-  return `<!doctype html>
-<html lang="en">
-  <body style="margin:0;background:#fafaf9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1c1917">
-    <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:#fafaf9;padding:40px 16px">
-      <tr><td align="center">
-        <table role="presentation" width="560" cellspacing="0" cellpadding="0" style="max-width:560px;background:#ffffff;border:1px solid #e7e5e4;border-radius:12px;padding:40px">
-          <tr><td>
-            <p style="font-size:18px;font-family:Georgia,serif;color:#1c1917;margin:0 0 4px 0">Goldstay<span style="color:#b91c1c">.</span></p>
-            <h1 style="font-size:22px;font-family:Georgia,serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Hi ${escapeHtml(firstName)},</h1>
-            <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${lead}</p>
-            <p style="margin:32px 0;text-align:center"><a href="${escapeAttr(url)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block">Open statement in portal →</a></p>
-            <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Net payouts are remitted by the 10th of every month per your management agreement. If anything in this statement looks off, reply and we'll investigate same-day.</p>
-          </td></tr>
-        </table>
-      </td></tr>
-    </table>
-  </body>
-</html>`;
-}
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function escapeAttr(s: string): string {
-  return escapeHtml(s);
 }
