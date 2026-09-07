@@ -19,6 +19,7 @@ export function WhatsAppFloat() {
         "Hi Goldstay, I'd like to discuss managing my property",
         city ?? undefined,
       )}
+      data-wa-source="float"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Goldstay on WhatsApp"

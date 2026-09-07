@@ -120,6 +120,7 @@ export function Hero({
                     : "Hi Goldstay, I'd like to discuss managing my property",
                 city,
               )}
+              data-wa-source="hero"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-ghost-light"

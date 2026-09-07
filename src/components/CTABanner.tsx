@@ -31,6 +31,7 @@ export function CTABanner({
             <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
               <a
                 href={waLink(message, city)}
+                data-wa-source="cta-banner"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn-primary"

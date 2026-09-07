@@ -176,6 +176,7 @@ export function Footer() {
               <li>
                 <a
                   href={waLink("Hi Goldstay", city ?? undefined)}
+                  data-wa-source="footer"
                   className="link-underline"
                   target="_blank"
                   rel="noopener noreferrer"

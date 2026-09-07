@@ -7,6 +7,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@/components/Analytics";
+import { WhatsAppTracking } from "@/components/WhatsAppTracking";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
 import { site, alternateLanguagesFor } from "@/lib/site";
@@ -144,6 +145,11 @@ export default function MarketingLayout({
       <body>
         <JsonLd />
         <Analytics />
+        {/* Attributes every wa.me click to the page and CTA that
+            produced it. Silent until NEXT_PUBLIC_GA_MEASUREMENT_ID is
+            set, but the page ref it writes into the prefilled message
+            works regardless of whether any analytics is loaded. */}
+        <WhatsAppTracking />
         <Navbar />
         <main>{children}</main>
         <Footer />

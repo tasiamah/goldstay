@@ -40,6 +40,7 @@ export function MobileStickyCTA() {
             "Hi Goldstay, I'd like to chat about managing my property",
             city ?? undefined,
           )}
+          data-wa-source="mobile-sticky"
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#25D366] px-3 py-3 text-sm font-medium text-white transition-colors duration-300 active:bg-[#1ebe5b]"

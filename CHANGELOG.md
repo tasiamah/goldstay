@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.6.0] - 2026-09-07
+
+### Added
+- WhatsApp enquiries are now attributed to the page and the button that
+  produced them. Every CTA on the site is a `wa.me` deep link, so the
+  conversation happened off-platform and nothing about its origin survived the
+  jump: a landlord messaged "Hi Goldstay, I'd like to discuss managing my
+  property" and there was no way to tell whether that came from the homepage, an
+  article, or the Kilimani page. Which is why we could not say what any of the
+  SEO work had produced.
+- The prefilled message now ends with a line naming the page, for example
+  `(Sent from goldstay.co.ke/airbnb-management)`. This is the half that matters:
+  a click on `wa.me` only opens WhatsApp's compose screen, so click counts
+  overstate real enquiries and no analytics can tell you who pressed send. The
+  message text is the only signal that crosses into the thread ops actually
+  read. Written as a readable sentence rather than a tracking code on purpose —
+  a landlord shown "Ref: KIL-HERO-2A" at the top of their own message is being
+  shown plumbing and may delete it.
+- A `generate_lead` GA event per click, carrying which surface was used, the
+  page path, and the destination. `generate_lead` is one of GA4's recommended
+  event names, so it can be marked a key event and reported as a conversion
+  rather than sitting among the generic `click` events that enhanced measurement
+  already collects for outbound links.
+- One delegated capture-phase listener covers all 27 files that call `waLink`,
+  so a CTA added later is tracked because it is a `wa.me` link, not because
+  somebody remembered to annotate it. The six global CTAs that sit outside any
+  `<section>` — hero, navbar, footer, floating button, mobile sticky bar and the
+  CTA banner — carry an explicit `data-wa-source`; everything else falls back to
+  the enclosing section id.
+
+### Notes
+- **This reports nothing until `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set in
+  Vercel.** `Analytics.tsx` has been wired and mounted in both layouts for some
+  time, but the variable is unset, so the live site has never loaded gtag and no
+  page view or click has ever been recorded. The page ref in the WhatsApp
+  message works regardless of whether any analytics is loaded.
+- The ref is applied at click time rather than in `waLink`, because deriving the
+  current path server-side would need `headers()`, and reading `headers()` in
+  the marketing tree opts all 417 static routes out of CDN caching — the exact
+  regression `soleLiveDomain` exists to avoid. Verified: the money pages are
+  still prerendered and the ref is absent from the built HTML.
+
 ## [1.5.0] - 2026-09-07
 
 ### Added
@@ -321,7 +363,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.5.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.6.0...HEAD
+[1.6.0]: https://github.com/tasiamah/goldstay/compare/v1.5.0...v1.6.0
 [1.5.0]: https://github.com/tasiamah/goldstay/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/tasiamah/goldstay/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/tasiamah/goldstay/compare/v1.3.0...v1.4.0

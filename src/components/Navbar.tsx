@@ -166,6 +166,7 @@ export function Navbar() {
                 "Hi Goldstay, I'd like to discuss managing my property",
                 city ?? undefined,
               )}
+              data-wa-source="navbar"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
@@ -246,6 +247,7 @@ export function Navbar() {
                 "Hi Goldstay, I'd like to discuss managing my property",
                 city ?? undefined,
               )}
+              data-wa-source="navbar"
               target="_blank"
               rel="noopener noreferrer"
               className="btn-primary"
