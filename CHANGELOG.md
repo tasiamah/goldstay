@@ -21,7 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.9.1] - 2026-09-07
+## [1.10.0] - 2026-09-07
+
+### Added
+- `scripts/harvest-queries.mjs`, which pulls real search queries from Google's
+  autocomplete endpoint geo-targeted to Kenya. Every keyword list on this
+  project until now has been somebody's judgement about what landlords
+  probably type. Autocomplete is not volume data, but Google only suggests
+  strings enough people actually searched, so it is the closest thing to
+  ground truth available without a paid tool. It also separates out the two
+  kinds of query that look like our market and are not our buyer: job and
+  course searches, which turn out to be roughly a third of the space around
+  "property manager", and software or system searches from landlords who want
+  to self-manage.
+- Three fee questions on `/pricing` phrased the way Kenyan autocomplete
+  actually completes them rather than the way we would naturally write them,
+  including "do you have to pay property management fees if nothing happens",
+  which is somebody suspecting they are being charged for nothing.
+
+### Changed
+- `/airbnb-management` is now titled "Airbnb Management Company Nairobi,
+  Kenya". Typing "airbnb management" in Kenya completes first to "airbnb
+  management companies in kenya", so on this service the country term
+  outranks the city term and "company" is a real modifier — none of which we
+  were carrying.
+- "Short-let" came out of that title. It went in on the assumption it was a
+  synonym worth claiming, and autocomplete returns it for nothing at all in
+  Kenya: the everyday Kenyan term is "furnished", the trade term is
+  "serviced", and "short let" is British. It was spending title weight, which
+  only fits about seven words, on a phrase nobody types.
 
 ### Fixed
 - Article structured data no longer claims our editorial desks are people.
@@ -493,7 +521,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.9.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.10.0...HEAD
+[1.10.0]: https://github.com/tasiamah/goldstay/compare/v1.9.1...v1.10.0
 [1.9.1]: https://github.com/tasiamah/goldstay/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/tasiamah/goldstay/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/tasiamah/goldstay/compare/v1.7.0...v1.8.0

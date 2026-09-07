@@ -94,21 +94,29 @@ export function generateMetadata(): Metadata {
         ? "Accra"
         : "Nairobi and Accra";
 
-  // City goes in the title, not just the description. The query we are
-  // competing for is "airbnb management nairobi" and the title is the
-  // most heavily weighted element on the page; leaving the city out of
-  // it while every competitor names it is the whole reason this page
-  // sat on page two. The template appends " | Goldstay".
-  // Exact match on the phrase people type, with no preposition and no
-  // trailing country. "Nairobi" already implies Kenya, and the four
-  // words it cost were being spent ahead of " | Goldstay" in a budget
-  // that only fits about seven.
+  // Built from harvested Google autocomplete for Kenya rather than
+  // from a guess. Run `node scripts/harvest-queries.mjs` to reproduce.
+  //
+  // Typing "airbnb management" in Kenya completes first to "airbnb
+  // management companies in kenya", then "airbnb management", then
+  // "airbnb management services", then "airbnb management company".
+  // So the country term outranks the city term on this service, and
+  // "company" is a real modifier. This title carries all three of
+  // "airbnb management company", "airbnb management nairobi" and
+  // "airbnb management kenya" at 503px against a ~600px budget.
+  //
+  // "Short-let" came out. It was added on the assumption that it was a
+  // synonym worth claiming, and autocomplete returns it for nothing at
+  // all in Kenya: the everyday term is "furnished", the trade term is
+  // "serviced", and "short let" is British. It was costing title
+  // weight for a phrase nobody types. Same story for "co-host", which
+  // is why that stayed in the FAQ and never went in a title.
   const cityTitle =
     city === "nairobi"
-      ? "Airbnb & Short-Let Management Nairobi"
+      ? "Airbnb Management Company Nairobi, Kenya"
       : city === "accra"
-        ? "Airbnb & Short-Let Management Accra"
-        : "Airbnb & Short-Let Management in Nairobi & Accra";
+        ? "Airbnb Management Company Accra, Ghana"
+        : "Airbnb Management Company in Nairobi & Accra";
 
   return {
     title: cityTitle,

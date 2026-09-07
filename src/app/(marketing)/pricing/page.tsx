@@ -128,6 +128,26 @@ export default function Page() {
       q: "What are your Airbnb management fees?",
       a: "20% of revenue, which covers listing creation and photography, dynamic pricing, guest screening and communication, turnover cleaning coordination, maintenance and a monthly revenue statement with a USD payout. There is no setup fee for building the listing and no commission taken from the cleaners or the platform.",
     },
+    // The next three are phrased the way Google autocomplete in Kenya
+    // actually completes them, not the way we would naturally write
+    // them. "What is a reasonable property management fee", "what is
+    // included in property management fee" and "do you have to pay
+    // property management fees" are all real completions; the last one
+    // in particular is somebody suspecting they are being charged for
+    // nothing, which deserves a straight answer rather than a pitch.
+    // Reproduce with `node scripts/harvest-queries.mjs`.
+    {
+      q: "What is a reasonable property management fee?",
+      a: "In Kenya, 8% to 15% of collected rent is the normal range for full long-term management and 15% to 25% of revenue for short-stay. Below about 8% the manager is almost certainly running a rent-collection service rather than managing anything, and above about 15% you should expect something specific in return and ask what it is. But the percentage on its own tells you very little. A 10% fee with a setup charge, a markup on every repair and a fee to leave costs more over a year than a 12% fee with none of those, so the only number worth comparing is the total you will actually pay.",
+    },
+    {
+      q: "What is included in the property management fee?",
+      a: "Our fee covers all of our labour: finding and vetting the tenant, the lease, rent collection and chasing arrears, inspections, coordinating and supervising repairs, the statutory tax filing and withholding, and the monthly statement and payout. What it does not cover is third-party money — repairs, utilities, service charge, insurance and taxes are yours, billed at exactly what we were charged with nothing added. Expenses over USD 50 come with a photo receipt and anything over USD 250 needs your written approval before we spend it.",
+    },
+    {
+      q: "Do you have to pay property management fees if nothing happens?",
+      a: "With us, no. Both management fees are a percentage of money actually collected, so a month with no rent and no bookings carries no fee. That is worth checking wherever you are comparing, because a fee charged on rent due rather than rent collected, or a flat monthly retainer, both keep charging you through a vacancy or a defaulting tenant. Ours does not, which means an empty month costs us what it costs you.",
+    },
     {
       q: "Is there a setup or onboarding fee?",
       a: "No. Onboarding a property costs nothing, whichever service you take. The first payment we receive is our percentage of the first rent or booking revenue we collect for you.",
