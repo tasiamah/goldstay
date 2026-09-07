@@ -14,6 +14,11 @@ export const meta: PostMeta = {
   slug: "airbnb-arbitrage-nairobi-2026",
   title:
     "Airbnb arbitrage in Nairobi: the honest 2026 picture",
+  // "airbnb arbitrage kenya" and "airbnb arbitrage nairobi" are both
+  // live queries, and the country form is the broader of the two, so
+  // the override leads with Kenya and lets the body own Nairobi. The
+  // editorial headline stays as the H1.
+  metaTitle: "Airbnb Arbitrage in Kenya: The Honest Numbers",
   description:
     "Airbnb arbitrage, where the operator leases a property long-term and re-lets it short-term at a margin, is increasingly common in Nairobi. Here is the honest 2026 guide on whether it works, the numbers, the legal questions and the realistic operator picture.",
   metaDescription:
@@ -233,6 +238,44 @@ export default function Article() {
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           Airbnb management service in Nairobi
+        </Link>
+        .
+      </P>
+
+      <P>
+        We also manage units for operators
+        running this model rather than owning,
+        which is now most of our short-let book.
+        See{" "}
+        <Link
+          href="/airbnb-arbitrage-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          management for operators
+        </Link>
+        , and before you commit to a lease, the
+        three questions that decide whether any of
+        this is open to you:{" "}
+        <Link
+          href="/insights/is-airbnb-arbitrage-legal-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          whether it is legal in Kenya
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/landlord-permission-to-sublet-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          whether you need the owner&rsquo;s
+          permission
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/ask-landlord-permission-short-let-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to ask for it
         </Link>
         .
       </P>

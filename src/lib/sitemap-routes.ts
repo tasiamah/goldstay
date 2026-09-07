@@ -69,6 +69,7 @@ export function sitemapPaths(input: {
   const neutral = [
     "",
     "/airbnb-management",
+    "/airbnb-arbitrage-management",
     "/long-term-management",
     "/tenant-finding",
     "/property-sourcing",

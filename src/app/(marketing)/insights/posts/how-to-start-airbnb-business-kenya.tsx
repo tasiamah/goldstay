@@ -16,6 +16,13 @@ export const meta: PostMeta = {
   slug: "how-to-start-airbnb-business-kenya",
   title:
     "How to start an Airbnb business in Kenya: the realistic 2026 guide",
+  // Autocomplete in Kenya completes "airbnb business" into "in kenya",
+  // "cost", "plan", "requirements" and "profitable", so the head term
+  // is the plain phrase rather than anything cleverer. The previous
+  // title had no override and inherited the editorial headline, which
+  // spent its width on "the realistic 2026 guide" instead of on the
+  // words people type.
+  metaTitle: "How to Start an Airbnb Business in Kenya",
   description:
     "Airbnb in Kenya looks like easy passive income on Instagram. The real picture is more interesting and more demanding. Here is the honest 2026 guide to starting an Airbnb business in Nairobi or on the coast, with the realistic numbers, the licensing, the operations and the way most Airbnb hosts actually fail.",
   metaDescription:

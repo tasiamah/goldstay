@@ -1120,6 +1120,39 @@ import CommercialLeaseKenyaResidentialLandlords, {
   meta as commercialLeaseKenyaResidentialLandlordsMeta,
 } from "./commercial-lease-kenya-residential-landlords";
 
+// Operator cluster: consent, legality and the paperwork for people who
+// lease a unit and re-let it on short stays.
+//
+// Four of the five short-let properties on the platform are held by
+// authorised leaseholders rather than owners, which makes operators
+// the largest single segment of the short-stay book and one the site
+// addressed nowhere. A Kenya-targeted autocomplete harvest found the
+// demand is not where the British term suggests: almost nobody
+// searches "rent-to-rent", and what they do search, in volume, is the
+// consent problem. Whether they need the landlord's permission,
+// whether the landlord can refuse, how to ask, and whether the whole
+// model is even legal.
+//
+// Every piece here takes the same line, which is the line the
+// management agreement takes: the model is legitimate and the owner's
+// written consent is not optional. That is also what makes the
+// cluster safe to publish while half the long-term book is landlords.
+import LandlordPermissionToSubletKenya, {
+  meta as landlordPermissionToSubletKenyaMeta,
+} from "./landlord-permission-to-sublet-kenya";
+import IsAirbnbArbitrageLegalKenya, {
+  meta as isAirbnbArbitrageLegalKenyaMeta,
+} from "./is-airbnb-arbitrage-legal-kenya";
+import AskLandlordPermissionShortLetNairobi, {
+  meta as askLandlordPermissionShortLetNairobiMeta,
+} from "./ask-landlord-permission-short-let-nairobi";
+import CanLandlordRefuseSubletKenya, {
+  meta as canLandlordRefuseSubletKenyaMeta,
+} from "./can-landlord-refuse-sublet-kenya";
+import SubleaseAgreementKenyaOperators, {
+  meta as subleaseAgreementKenyaOperatorsMeta,
+} from "./sublease-agreement-kenya-operators";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1995,6 +2028,26 @@ export const posts: readonly Post[] = [
   {
     meta: commercialLeaseKenyaResidentialLandlordsMeta,
     Component: CommercialLeaseKenyaResidentialLandlords,
+  },
+  {
+    meta: landlordPermissionToSubletKenyaMeta,
+    Component: LandlordPermissionToSubletKenya,
+  },
+  {
+    meta: isAirbnbArbitrageLegalKenyaMeta,
+    Component: IsAirbnbArbitrageLegalKenya,
+  },
+  {
+    meta: askLandlordPermissionShortLetNairobiMeta,
+    Component: AskLandlordPermissionShortLetNairobi,
+  },
+  {
+    meta: canLandlordRefuseSubletKenyaMeta,
+    Component: CanLandlordRefuseSubletKenya,
+  },
+  {
+    meta: subleaseAgreementKenyaOperatorsMeta,
+    Component: SubleaseAgreementKenyaOperators,
   },
 ];
 

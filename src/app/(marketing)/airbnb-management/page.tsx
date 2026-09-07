@@ -83,6 +83,15 @@ const airbnbFaqs = [
     q: "Am I locked in?",
     a: "No. Thirty days' written notice ends the agreement with no exit fee, and the listing and its review history remain associated with your property.",
   },
+  // Operators, who are the majority of the short-let book but were a
+  // reader this page addressed nowhere: everything above says "your
+  // property" and "your title". The answer routes them rather than
+  // trying to serve both audiences in one page, and states the
+  // consent condition here rather than leaving it to be discovered.
+  {
+    q: "I do not own the property, I lease it. Can you still manage it?",
+    a: "Yes, and it is now most of our short-let book. The model is variously called rent-to-rent, rental arbitrage or Airbnb arbitrage, and it is entirely legitimate provided the owner has given written permission to sublet and to appoint us. We ask to see that permission and will not take a unit on without it, because we would be the visible party in any dispute and half of what we do is act for landlords. We can also help you obtain it, since we already manage long-term property for owners in the same buildings. See our page on management for operators for the detail.",
+  },
 ];
 
 export function generateMetadata(): Metadata {

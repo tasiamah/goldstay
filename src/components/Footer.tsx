@@ -95,6 +95,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/airbnb-arbitrage-management"
+                  className="link-underline"
+                >
+                  Short-let management for operators
+                </Link>
+              </li>
+              <li>
                 <Link href="/long-term-management" className="link-underline">
                   Long-term management
                 </Link>

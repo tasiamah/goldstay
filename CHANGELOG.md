@@ -21,6 +21,43 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-09-07
+
+### Added
+- A service page and five articles for short-let operators, meaning people who
+  lease a unit and re-let it on nightly stays rather than owning it. Four of
+  the five short-let properties on the platform are held by authorised
+  leaseholders, so operators are the largest single segment of the short-stay
+  book and the site addressed them nowhere: `/airbnb-management` says "your
+  property" and "your title" throughout, which is the wrong second person for
+  somebody whose entire question is what they are allowed to do with a unit
+  they rent.
+
+  `/airbnb-arbitrage-management` is the commercial page, and the articles cover
+  the questions a Kenya-targeted autocomplete harvest found people actually
+  asking: whether you need the landlord's permission to sublet, whether Airbnb
+  arbitrage is legal in Kenya, how to ask a landlord for permission (with a
+  letter to adapt), whether a landlord can refuse, and what an operator's
+  head lease and consent have to contain.
+
+  The harvest also corrected the vocabulary we would otherwise have written
+  to. "Rent-to-rent" is a British term that barely registers in Kenya; the
+  local framing is "airbnb business in kenya" and "without owning property",
+  and the largest cluster by volume is the consent problem rather than
+  anything about nightly rates or returns.
+
+  Every piece takes the line the management agreement already takes: the model
+  is legitimate, and the owner's written consent is not optional. That is
+  stated as a condition of us managing a unit rather than as a disclaimer,
+  which is what makes the cluster publishable while half the long-term book is
+  landlords.
+
+### Changed
+- Retargeted the search titles on the two existing articles that were already
+  aimed at this reader. Neither had a `metaTitle`, so both inherited an
+  editorial headline that spent its width on "the realistic 2026 guide" and
+  "the honest 2026 picture" instead of on the words people type.
+
 ## [1.12.0] - 2026-09-07
 
 ### Added
@@ -630,7 +667,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.12.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.13.0...HEAD
+[1.13.0]: https://github.com/tasiamah/goldstay/compare/v1.12.0...v1.13.0
 [1.12.0]: https://github.com/tasiamah/goldstay/compare/v1.11.2...v1.12.0
 [1.11.2]: https://github.com/tasiamah/goldstay/compare/v1.11.1...v1.11.2
 [1.11.1]: https://github.com/tasiamah/goldstay/compare/v1.11.0...v1.11.1
