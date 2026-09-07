@@ -103,27 +103,49 @@ const nextConfig = {
   },
 };
 
-// Wrap the Next config with Sentry's webpack plugin. When SENTRY_AUTH_TOKEN
-// is set in the environment, this uploads source maps on every build so
-// stack traces in Sentry point to real TS lines. When it is missing (local
-// dev, PR preview without the secret), the plugin detects that and skips
-// upload with a log warning: the app still builds and ships just fine.
+// Sentry's webpack plugin is only worth its build cost when Sentry is
+// actually receiving something.
 //
+// The plugin generates source maps for every client chunk and rewrites
+// the bundle to inject release metadata, and it does all of that
+// whether or not the upload can happen. On this project it could not:
+// there is no SENTRY_DSN and no NEXT_PUBLIC_SENTRY_DSN in the Vercel
+// environment, so `Sentry.init()` in all three runtime configs is
+// gated off and never runs, and there is no SENTRY_AUTH_TOKEN either,
+// so the maps were built and then discarded. Measured on a cold local
+// build that was 16 seconds of a 69 second build, which scaled out to
+// roughly 45 of the 205 seconds every deploy was taking, in exchange
+// for nothing at all.
+//
+// So the wrapper is now conditional on there being a reason for it.
+// Set a DSN and the SDK starts reporting; add SENTRY_AUTH_TOKEN, ORG
+// and PROJECT and the source maps upload again, both without touching
+// this file. Nothing about the Sentry setup has been removed, and the
+// runtime configs are untouched: this only stops paying for the build
+// step while the destination is switched off.
+const sentryConfigured = Boolean(
+  process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN,
+);
+
 // widenClientFileUpload: true tells the plugin to also upload client
 // chunks under _next/static/chunks/* so breadcrumbs in deferred bundles
-// (WhatsAppFloat, CookieConsent, etc.) symbolicate correctly.
+// (WhatsAppFloat, CookieConsent, etc.) symbolicate correctly. It is
+// also the expensive half of the plugin, so it is tied to there being
+// a token to upload with rather than left on unconditionally.
 //
 // tunnelRoute: a /monitoring route that proxies Sentry ingest through our
 // domain so ad blockers don't swallow client errors. Opt-in per-project;
 // we leave it on because the cost is negligible and the signal loss from
 // blockers is real.
-export default withSentryConfig(nextConfig, {
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
-  authToken: process.env.SENTRY_AUTH_TOKEN,
-  silent: !process.env.CI,
-  widenClientFileUpload: true,
-  tunnelRoute: "/monitoring",
-  disableLogger: true,
-  automaticVercelMonitors: true,
-});
+export default sentryConfigured
+  ? withSentryConfig(nextConfig, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      silent: !process.env.CI,
+      widenClientFileUpload: Boolean(process.env.SENTRY_AUTH_TOKEN),
+      tunnelRoute: "/monitoring",
+      disableLogger: true,
+      automaticVercelMonitors: true,
+    })
+  : nextConfig;

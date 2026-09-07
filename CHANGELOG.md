@@ -21,7 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.11.0] - 2026-09-07
+## [1.11.1] - 2026-09-07
+
+### Fixed
+- Deploys were spending time on Sentry source maps that were thrown away.
+  The webpack plugin generates a map for every client chunk and rewrites the
+  bundle with release metadata on every build, and it does that whether or not
+  the upload can happen. Here it could not: Vercel has no `SENTRY_DSN` and no
+  `NEXT_PUBLIC_SENTRY_DSN`, so `Sentry.init()` in all three runtime configs is
+  gated off and never runs, and with no `SENTRY_AUTH_TOKEN` the maps were
+  built and discarded. On a cold local build that measured 16 seconds of 69.
+
+  The wrapper is now conditional on a DSN being present, so setting one turns
+  the SDK back on and adding a token turns source map upload back on, neither
+  of which needs this file touched. `widenClientFileUpload`, the expensive
+  half, is now tied to there actually being a token to upload with.
+
+  Nothing was removed from the Sentry setup and the runtime configs are
+  unchanged, so `global-error.tsx` still calls `captureException` and still
+  no-ops exactly as it did before. Two side effects worth knowing: the edge
+  middleware bundle drops from 146 kB to 80 kB because Sentry is no longer
+  instrumenting it, and the `/monitoring` tunnel route is not emitted while
+  Sentry is off. Nothing in the app referenced that route.
+
+### Changed
+- Nothing user-facing. This is a build-time change only.
 
 ### Added
 - Six articles on tenancy and lease agreements, written for the landlord
@@ -548,7 +572,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.1...HEAD
+[1.11.1]: https://github.com/tasiamah/goldstay/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/tasiamah/goldstay/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/tasiamah/goldstay/compare/v1.9.1...v1.10.0
 [1.9.1]: https://github.com/tasiamah/goldstay/compare/v1.9.0...v1.9.1
