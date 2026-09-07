@@ -15,6 +15,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
+import { KeyFacts } from "@/components/KeyFacts";
 import { CalculatorTeaser } from "@/components/CalculatorTeaser";
 import {
   BreadcrumbJsonLd,
@@ -224,6 +225,33 @@ export default function Page() {
           </Reveal>
         </div>
       </section>
+
+      {/* Answer-first summary. See the note in KeyFacts: this exists to
+          be quotable standing alone, not to introduce the page. */}
+      <KeyFacts
+        question={`What does long-term property management in ${cityPhrase} cost, and what is included?`}
+        answer={`Long-term rental management, also called buy-to-let or residential letting management, is a service where a company runs a tenanted property on the landlord's behalf: tenant sourcing and vetting, the lease, rent collection and arrears chasing, repairs and vendor coordination, statutory compliance and monthly reporting. Goldstay charges 10% of the rent actually collected for this in ${cityPhrase}, with no setup fee, no renewal fee and no commission taken from contractors, and remits the net to your overseas account in USD on the 5th of each month with withholding tax already deducted and paid to ${taxAuthority}.`}
+        facts={[
+          { label: "Management fee", value: "10% of rent collected" },
+          {
+            label: "Tenant finding",
+            value: "One month's rent, only if we place the tenant",
+          },
+          { label: "Setup or renewal fees", value: "None" },
+          { label: "Contractor commissions", value: "None taken, ever" },
+          { label: "Payout", value: "The 5th of each month, in USD" },
+          {
+            label: "Tax handling",
+            value: `Rental income tax withheld and remitted to ${taxAuthority}`,
+          },
+          {
+            label: "If a placed tenant defaults",
+            value: "Replaced free within the first six months",
+          },
+          { label: "Exit terms", value: "30 days' notice, no exit fee" },
+        ]}
+        footnote="We are paid on rent collected rather than rent due, so an empty month or an unpaid one costs us what it costs you."
+      />
 
       <section className="section">
         <div className="container-gs">

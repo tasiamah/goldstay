@@ -15,6 +15,7 @@ import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
+import { KeyFacts } from "@/components/KeyFacts";
 import {
   BreadcrumbJsonLd,
   FaqJsonLd,
@@ -156,6 +157,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
+  const cityPhrase = cityName ?? "Nairobi and Accra";
 
   const baseUrl =
     city === "nairobi"
@@ -254,6 +256,41 @@ export default function Page() {
           </Reveal>
         </div>
       </section>
+
+      {/* Answer-first summary, immediately below the hero. The page
+          previously made a reader assemble the fee, the payout terms
+          and the exit terms from three separate sections, and gave the
+          answer engines no single quotable paragraph defining the
+          service at all. Both problems are the same problem. */}
+      <KeyFacts
+        question={`What is Airbnb management in ${cityName ?? "Kenya"}, and what does it cost?`}
+        answer={`Airbnb management, also called short-let management or co-hosting, is a service where a company runs your furnished property as a short-stay rental on your behalf: listing and photography, nightly pricing, guest screening and messaging, check-in, turnover cleaning, consumables and maintenance. Goldstay charges 20% of the revenue collected for this in ${cityPhrase}, with no onboarding fee, no listing fee and no exit fee, and pays the net to your overseas account in USD each month against an itemised statement.`}
+        facts={[
+          { label: "Management fee", value: "20% of revenue collected" },
+          { label: "Onboarding fee", value: "None" },
+          {
+            label: "Setup cost",
+            value: "Photography only, USD 100 to 150, where needed",
+          },
+          {
+            label: "Contractor commissions",
+            value: "None taken, ever",
+          },
+          { label: "Payout", value: "Monthly, in USD, to a foreign account" },
+          { label: "Exit terms", value: "30 days' notice, no exit fee" },
+          {
+            label: "Realistic occupancy",
+            value: "55% to 75% over a full year, by neighbourhood",
+          },
+          {
+            label: "Best suited to",
+            value: cityName
+              ? `Furnished apartments in ${cityName}`
+              : "Furnished apartments in Nairobi and Accra",
+          },
+        ]}
+        footnote="Every figure here is the figure you would be quoted on a call, and each one is written into the management agreement rather than described on a website."
+      />
 
       <section className="section">
         <div className="container-gs">

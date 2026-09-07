@@ -21,7 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.8.0] - 2026-09-07
+## [1.9.0] - 2026-09-07
+
+### Added
+- An answer-first summary block at the top of `/airbnb-management` and
+  `/long-term-management`, stating in one self-contained paragraph what the
+  service is, what it costs and what it includes, followed by the eight facts
+  a landlord compares on: fee, onboarding cost, commissions, payout, tax
+  handling, exit terms. Both pages previously made a reader assemble those
+  from three separate sections, and offered a search engine or an AI summary
+  no single quotable passage defining the service at all. A competitor
+  ranking above us on the query these pages are named after has exactly this
+  block, which is what prompted looking for ours.
+- The block is deliberately written to survive being pasted somewhere else
+  with no surrounding context, because that is what an AI answer engine does
+  with it. No pronouns pointing at earlier copy and no "as described above".
+
+### Changed
+- The `/pricing` page no longer claims that most Nairobi managers will not
+  publish a fee. Checking it against the market found that untrue: at least
+  one competitor publishes its short-stay percentage on the page and argues
+  for doing so in nearly the words we had used. An inaccurate claim about
+  transparency, on our own pricing page, was the one place we could least
+  afford one. The section now compares on what is actually different and
+  actually checkable — onboarding fee, contractor commissions, exit fee, and
+  whether there are written consequences behind the percentage — and the
+  competition FAQ names the real Nairobi fee bands rather than implying we
+  are alone in disclosing ours.
 
 ### Added
 - A page at `/change-property-manager` for the highest-intent cluster on the
@@ -452,7 +478,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.8.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.9.0...HEAD
+[1.9.0]: https://github.com/tasiamah/goldstay/compare/v1.8.0...v1.9.0
 [1.8.0]: https://github.com/tasiamah/goldstay/compare/v1.7.0...v1.8.0
 [1.7.0]: https://github.com/tasiamah/goldstay/compare/v1.6.0...v1.7.0
 [1.6.0]: https://github.com/tasiamah/goldstay/compare/v1.5.0...v1.6.0

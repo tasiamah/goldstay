@@ -138,7 +138,7 @@ export default function Page() {
     },
     {
       q: "How does that compare to other Nairobi property managers?",
-      a: "On headline percentage we are unremarkable and we would rather say so. Where the numbers usually diverge is underneath: contractor commissions, a markup on maintenance, a setup fee, a letting fee charged again at each renewal, or an exit fee on the way out. We charge none of those, and every figure on this page is published rather than quoted on enquiry.",
+      a: "On headline percentage we are unremarkable and we would rather say so. Nairobi long-term management generally runs 8% to 15% and short-stay 15% to 25%, and some managers publish those numbers while others will not quote until you call. Where the totals actually diverge is underneath the headline: a one-off setup or onboarding charge, a markup or commission on maintenance, a letting fee charged again at each renewal, or a fee payable on exit. We charge none of the four, and there are six written guarantees behind the percentage rather than only a service description. Those are the questions worth asking whoever you are comparing us with.",
     },
     {
       q: "Do you charge if the property sits empty?",
@@ -358,25 +358,51 @@ export default function Page() {
 
       <section className="section">
         <div className="container-gs max-w-4xl">
+          {/* This section used to say "most managers will not give you a
+              number until you enquire". That was written from an
+              assumption and it does not survive checking: at least one
+              Nairobi competitor publishes its short-stay fee on the page
+              and argues for doing so in almost the same words we did.
+              Claiming otherwise on our own pricing page would be the one
+              kind of inaccuracy this page cannot afford. So the section
+              now compares on the things that are actually checkable and
+              actually different. */}
           <SectionHeader
             eyebrow="Why this page exists"
-            title="Most managers will not give you a number until you enquire."
+            title="Compare the whole number, not the headline one."
           />
           <Reveal>
             <p className="mt-10 text-lg leading-relaxed text-charcoal/85 pretty">
-              If you have been comparing property managers in {cityPhrase} you
-              will have noticed how few of them publish a fee. The reason is
-              usually that the fee is not the whole price, and the rest of it is
-              easier to introduce once you are already in a conversation.
+              Some managers in {cityPhrase} publish a fee and some will not give
+              you one until you are in a conversation. Where a percentage is
+              published, it is still only part of the price, and the parts that
+              are missing are usually the same three: a one-off setup or
+              onboarding charge, a markup or commission on maintenance, and
+              something payable on the way out.
             </p>
           </Reveal>
           <Reveal delay={0.05}>
             <p className="mt-6 text-lg leading-relaxed text-charcoal/85 pretty">
-              We would rather lose the enquiry from someone who finds 10% too
-              expensive than win it and spend the first month explaining
-              deductions. Everything above is what you would be quoted if you
-              called, so there is no advantage to us in making you call first.
-              If you want the detail on a particular service, the{" "}
+              So when you compare us against anyone else, compare those. Ask
+              what onboarding costs, ask whether they take anything from
+              contractors or listing platforms, and ask what leaving costs. Our
+              answers are nothing, nothing and nothing, and they are in the
+              management agreement rather than in this paragraph. Then ask what
+              happens when they get it wrong, because a fee with no
+              consequences attached to it is just a price. Ours has{" "}
+              <Link
+                href="/#guarantees"
+                className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+              >
+                six written guarantees
+              </Link>{" "}
+              behind it, including a fee we waive when we miss our own response
+              window.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 text-lg leading-relaxed text-charcoal/85 pretty">
+              For the detail on what each percentage buys, the{" "}
               <Link
                 href="/long-term-management"
                 className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
@@ -390,7 +416,7 @@ export default function Page() {
               >
                 Airbnb management
               </Link>{" "}
-              pages set out exactly what the percentage buys.
+              pages set it out service by service.
             </p>
           </Reveal>
         </div>
