@@ -21,6 +21,28 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.4.1] - 2026-09-07
+
+### Fixed
+- The sitemap left out 28 URLs the site was asking Google to index. Every
+  Accra route — the 11 Ghana articles, `/accra`, `/accra/buy`, the five Accra
+  neighbourhoods and the ten `/from/{origin}/accra` pages — returns 200 on
+  goldstay.co.ke, is self-canonical there and carries `index, follow`, but
+  appeared in no sitemap at all. The sitemap scoped itself by hostname, which
+  was right for the three-domain plan and wrong for the present: goldstay.com.gh
+  does not resolve, so there is no Ghana sitemap for those URLs to be in. A host
+  now advertises a market when it is that market's domain *or* when that
+  market's domain is dark and this host is standing in for it, which is the rule
+  the canonicals have used all along. Nothing needs changing when the Ghana
+  domain goes live; adding it to `liveDomains` moves those routes to their own
+  sitemap.
+
+### Changed
+- The sitemap's route-selection moved to `src/lib/sitemap-routes.ts` so it can
+  be tested. The bug survived because the sitemap route imports the whole
+  350-article catalogue and therefore cannot be loaded by a JSX-free test
+  runner, so nothing had ever asserted anything about it.
+
 ## [1.4.0] - 2026-09-06
 
 ### Added
@@ -270,7 +292,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.4.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/tasiamah/goldstay/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/tasiamah/goldstay/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/tasiamah/goldstay/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/tasiamah/goldstay/compare/v1.1.0...v1.2.0
