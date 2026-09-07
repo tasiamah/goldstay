@@ -21,7 +21,34 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.10.0] - 2026-09-07
+## [1.11.0] - 2026-09-07
+
+### Added
+- Six articles on tenancy and lease agreements, written for the landlord
+  rather than the occupant: what a tenancy agreement must contain, lease
+  versus licence, the residential lease clause by clause, when a lease has to
+  be registered, ending a tenancy lawfully, and the commercial tenancy trap
+  that catches a landlord who lets a ground floor unit to a shop.
+
+  These come out of the first Search Console data the site has produced. Of
+  the 28 queries it surfaced for, not one was about property management:
+  the impressions were on mortgages, land buying, auctions, and neighbourhood
+  questions like "is buruburu in embakasi". Both of the two clicks were on
+  landlord and tenant statute queries, which is the only vein in the export
+  that touches the person who actually pays us.
+
+  Cross-referencing that against Google autocomplete for Kenya found tenancy
+  and lease agreements to be the deepest query cluster on the landlord side
+  with no page on this site aimed at it, completing into sample, template,
+  pdf, form and "kenya law" against every phrasing. It is also unusually well
+  qualified, because nobody drafting a lease is a tenant.
+
+  Each of the six carries a contextual link into `/long-term-management`
+  rather than only to other articles, which is the part the existing 350 get
+  wrong: they hold the internal link equity and the service pages do not.
+
+### Changed
+- Nothing. The six articles are additions and no existing page changed.
 
 ### Added
 - `scripts/harvest-queries.mjs`, which pulls real search queries from Google's
@@ -521,7 +548,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.10.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.11.0...HEAD
+[1.11.0]: https://github.com/tasiamah/goldstay/compare/v1.10.0...v1.11.0
 [1.10.0]: https://github.com/tasiamah/goldstay/compare/v1.9.1...v1.10.0
 [1.9.1]: https://github.com/tasiamah/goldstay/compare/v1.9.0...v1.9.1
 [1.9.0]: https://github.com/tasiamah/goldstay/compare/v1.8.0...v1.9.0

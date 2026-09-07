@@ -1095,6 +1095,31 @@ import SmallThingsThatWinAirbnbReviewsNairobi, {
   meta as smallThingsThatWinAirbnbReviewsNairobiMeta,
 } from "./small-things-that-win-airbnb-reviews-nairobi";
 
+// Tenancy and lease agreement cluster. The deepest uncovered query set
+// in the Kenyan landlord space: autocomplete completes "tenancy
+// agreement kenya" and "lease agreement kenya" into sample, template,
+// pdf, doc, form and "kenya law", and nothing on the site addressed
+// any of it. Nobody drafting a lease is a tenant, which is what makes
+// the whole cluster worth having.
+import TenancyAgreementKenyaLandlordGuide, {
+  meta as tenancyAgreementKenyaLandlordGuideMeta,
+} from "./tenancy-agreement-kenya-landlord-guide";
+import LeaseVsLicenceKenyaLandlords, {
+  meta as leaseVsLicenceKenyaLandlordsMeta,
+} from "./lease-vs-licence-kenya-landlords";
+import ResidentialLeaseAgreementKenyaClauseByClause, {
+  meta as residentialLeaseAgreementKenyaClauseByClauseMeta,
+} from "./residential-lease-agreement-kenya-clause-by-clause";
+import RegisteringALeaseInKenya, {
+  meta as registeringALeaseInKenyaMeta,
+} from "./registering-a-lease-in-kenya";
+import TerminatingATenancyAgreementKenya, {
+  meta as terminatingATenancyAgreementKenyaMeta,
+} from "./terminating-a-tenancy-agreement-kenya";
+import CommercialLeaseKenyaResidentialLandlords, {
+  meta as commercialLeaseKenyaResidentialLandlordsMeta,
+} from "./commercial-lease-kenya-residential-landlords";
+
 export type { Author, Country, PostMeta } from "./_shared";
 export { authors } from "./_shared";
 
@@ -1946,6 +1971,30 @@ export const posts: readonly Post[] = [
   {
     meta: smallThingsThatWinAirbnbReviewsNairobiMeta,
     Component: SmallThingsThatWinAirbnbReviewsNairobi,
+  },
+  {
+    meta: tenancyAgreementKenyaLandlordGuideMeta,
+    Component: TenancyAgreementKenyaLandlordGuide,
+  },
+  {
+    meta: leaseVsLicenceKenyaLandlordsMeta,
+    Component: LeaseVsLicenceKenyaLandlords,
+  },
+  {
+    meta: residentialLeaseAgreementKenyaClauseByClauseMeta,
+    Component: ResidentialLeaseAgreementKenyaClauseByClause,
+  },
+  {
+    meta: registeringALeaseInKenyaMeta,
+    Component: RegisteringALeaseInKenya,
+  },
+  {
+    meta: terminatingATenancyAgreementKenyaMeta,
+    Component: TerminatingATenancyAgreementKenya,
+  },
+  {
+    meta: commercialLeaseKenyaResidentialLandlordsMeta,
+    Component: CommercialLeaseKenyaResidentialLandlords,
   },
 ];
 
