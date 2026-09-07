@@ -9,6 +9,7 @@ import {
   whatsapp,
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+import { testimonials } from "@/lib/testimonials";
 
 // Keep JSON-LD narrow and accurate. We declare who we are, what we do, where,
 // and how to reach us. Nothing here claims revenue, headcount or client lists.
@@ -340,4 +341,43 @@ export function ServiceJsonLd({
     };
   }
   return <JsonLdScript data={data} />;
+}
+
+// Review nodes for the testimonials the page is actually showing.
+//
+// Read the same lib/testimonials.ts the visible section reads, so the
+// markup cannot come to claim a review the page does not display —
+// which is the form of this mistake Google treats as a violation
+// rather than an oversight. Empty array, no node.
+//
+// This will not put stars in search results, and it is not meant to.
+// Google stopped showing review rich results for LocalBusiness and
+// Organization, and every subtype including RealEstateAgent, when the
+// reviewed entity controls the reviews — which is exactly our case,
+// for both `review` and `aggregateRating`. Stars for a local business
+// come from its Google Business Profile.
+//
+// What it is for: naming the reviews as reviews, attached by @id to the
+// same organization the rest of the graph describes, so an AI answer
+// summarising "is Goldstay any good" has something structured to read
+// instead of inferring from prose. No aggregateRating — it earns
+// nothing here and adds a number to defend.
+export function ReviewJsonLd() {
+  if (testimonials.length === 0) return null;
+
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@id": orgId(),
+        review: testimonials.map((t) => ({
+          "@type": "Review",
+          reviewBody: t.quote,
+          datePublished: t.date,
+          author: { "@type": "Person", name: t.name },
+          itemReviewed: { "@id": orgId() },
+        })),
+      }}
+    />
+  );
 }

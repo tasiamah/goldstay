@@ -1,5 +1,5 @@
 import { Hero } from "@/components/Hero";
-import { FaqJsonLd } from "@/components/JsonLd";
+import { FaqJsonLd, ReviewJsonLd } from "@/components/JsonLd";
 import { faq } from "@/lib/site";
 import { TrustStrip } from "@/components/TrustStrip";
 import { ProblemSection } from "@/components/ProblemSection";
@@ -8,6 +8,7 @@ import { CompareSection } from "@/components/CompareSection";
 import { CalculatorTeaser } from "@/components/CalculatorTeaser";
 import { WhySection } from "@/components/WhySection";
 import { GuaranteesSection } from "@/components/GuaranteesSection";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { StatementPreview } from "@/components/StatementPreview";
 import { DashboardPreview } from "@/components/DashboardPreview";
 import { PortfolioGallery } from "@/components/PortfolioGallery";
@@ -22,6 +23,7 @@ export default function Home() {
   return (
     <>
       <FaqJsonLd items={faq} />
+      <ReviewJsonLd />
       <Hero />
       <TrustStrip />
       <ProblemSection />
@@ -30,6 +32,7 @@ export default function Home() {
       <CalculatorTeaser />
       <WhySection />
       <GuaranteesSection />
+      <TestimonialsSection />
       <StatementPreview />
       <DashboardPreview />
       <PortfolioGallery />

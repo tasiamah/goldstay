@@ -13,11 +13,13 @@ import {
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import {
   BreadcrumbJsonLd,
   FaqJsonLd,
   ServiceJsonLd,
+  ReviewJsonLd,
 } from "@/components/JsonLd";
 import {
   waLink,
@@ -175,6 +177,7 @@ export default function Page() {
           },
         ]}
       />
+      <ReviewJsonLd />
       <ServiceJsonLd
         name="Airbnb & Short-Stay Management"
         description={`Full short-stay operations in ${areaServed.join(" and ")}: photography, dynamic pricing, guest communication, turnover cleaning and maintenance, with monthly USD remittance to the landlord's foreign account.`}
@@ -382,6 +385,7 @@ export default function Page() {
           FAQPage markup, unlike the homepage and city pages. */}
       <FaqJsonLd items={airbnbFaqs} />
       <FAQSection items={airbnbFaqs} />
+      <TestimonialsSection />
       <CTABanner
         headline="Ready to turn it into a short-stay?"
         subheadline="Get a specific yield estimate for your apartment within 48 hours."

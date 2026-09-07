@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-09-07
+
+### Added
+- A testimonials section on the homepage, the Nairobi and Accra city pages, and
+  the Airbnb management, long-term management and tenant finding pages. Nothing
+  on the site currently has a landlord vouching for it, which is the one thing
+  every competitor leads with, so this is the gap that costs the most enquiries.
+- `src/lib/testimonials.ts` holds the quotes. **It ships empty on purpose and
+  should not be seeded with examples** — every component reading it renders
+  nothing while it is empty, so the pages simply do not have the section until
+  there is something true to put in it. Add real quotes with the landlord's
+  permission; set `nameIsPartial` when they would rather not be fully named, so
+  the section says so rather than looking evasive.
+- `Review` structured data, generated from that same file so the markup cannot
+  come to claim a review the page does not display. Note that this will **not**
+  produce star ratings in search: Google stopped showing review rich results for
+  `LocalBusiness` and `Organization` and their subtypes, including
+  `RealEstateAgent`, when the reviewed business controls the reviews — which
+  covers both `review` and `aggregateRating`. Stars for a local business come
+  from its Google Business Profile. The markup is here so an AI answer
+  summarising whether Goldstay is any good has something structured to read.
+  Deliberately no `aggregateRating`: it earns nothing and adds a number to
+  defend.
+- Tests rejecting an incomplete testimonial, a future or malformed date, a
+  pre-wrapped quote, a duplicate, and placeholder copy such as "John Doe" or
+  "lorem". A fabricated quote attributed to a named person is a different
+  category of mistake from a typo, and the usual way one ships is that somebody
+  adds a realistic-looking example to see the section render.
+
 ## [1.4.1] - 2026-09-07
 
 ### Fixed
@@ -292,7 +321,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.4.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/tasiamah/goldstay/compare/v1.4.1...v1.5.0
 [1.4.1]: https://github.com/tasiamah/goldstay/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/tasiamah/goldstay/compare/v1.3.0...v1.4.0
 [1.3.0]: https://github.com/tasiamah/goldstay/compare/v1.2.0...v1.3.0

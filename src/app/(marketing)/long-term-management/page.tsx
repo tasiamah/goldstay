@@ -13,12 +13,14 @@ import {
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import { CalculatorTeaser } from "@/components/CalculatorTeaser";
 import {
   BreadcrumbJsonLd,
   FaqJsonLd,
   ServiceJsonLd,
+  ReviewJsonLd,
 } from "@/components/JsonLd";
 import {
   waLink,
@@ -163,6 +165,7 @@ export default function Page() {
           },
         ]}
       />
+      <ReviewJsonLd />
       <ServiceJsonLd
         name="Long-Term Property Management"
         description={`End-to-end long-term residential management in ${areaServed.join(" and ")}: tenant sourcing and vetting, lease drafting, rent collection, maintenance coordination and monthly USD remittance to the landlord's foreign account.`}
@@ -402,6 +405,7 @@ export default function Page() {
         eyebrow="Long-term management FAQ"
         title="The questions landlords abroad actually ask."
       />
+      <TestimonialsSection />
       <CTABanner city={city ?? undefined} />
     </>
   );

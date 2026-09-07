@@ -7,6 +7,7 @@ import { CompareSection } from "./CompareSection";
 import { CalculatorTeaser } from "./CalculatorTeaser";
 import { WhySection } from "./WhySection";
 import { GuaranteesSection } from "./GuaranteesSection";
+import { TestimonialsSection } from "./TestimonialsSection";
 import { StatementPreview } from "./StatementPreview";
 import { DashboardPreview } from "./DashboardPreview";
 import { NeighbourhoodEconomics } from "./NeighbourhoodEconomics";
@@ -17,7 +18,7 @@ import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
 import { cities, cityFaq, localizedFaq, waLink, site, neighbourhoodSlug } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
-import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
+import { BreadcrumbJsonLd, FaqJsonLd, ReviewJsonLd } from "./JsonLd";
 
 export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   const c = cities[city];
@@ -60,6 +61,7 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
         ]}
       />
       <FaqJsonLd items={faqForSchema} />
+      <ReviewJsonLd />
       <Hero
         eyebrow={`${c.country} · ${cityName}`}
         headline={headline}
@@ -125,6 +127,7 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       <CalculatorTeaser city={city} />
       <WhySection city={city} />
       <GuaranteesSection />
+      <TestimonialsSection />
       <StatementPreview city={city} />
       <DashboardPreview city={city} />
 

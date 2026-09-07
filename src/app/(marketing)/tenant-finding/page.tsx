@@ -12,11 +12,13 @@ import {
 import { Reveal } from "@/components/Reveal";
 import { SectionHeader } from "@/components/SectionHeader";
 import { CTABanner } from "@/components/CTABanner";
+import { TestimonialsSection } from "@/components/TestimonialsSection";
 import { FAQSection } from "@/components/FAQSection";
 import {
   BreadcrumbJsonLd,
   FaqJsonLd,
   ServiceJsonLd,
+  ReviewJsonLd,
 } from "@/components/JsonLd";
 import { waLink, alternateLanguagesFor, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
@@ -134,6 +136,7 @@ export default function Page() {
           { name: "Tenant Finding", url: `${baseUrl}/tenant-finding` },
         ]}
       />
+      <ReviewJsonLd />
       <ServiceJsonLd
         name="Tenant Finding"
         description={`Tenant sourcing and vetting in ${areaServed.join(" and ")} for self-managing landlords: marketing, accompanied viewings, background, employment and income checks, lease drafting and photographed handover.`}
@@ -293,6 +296,7 @@ export default function Page() {
         eyebrow="Tenant finding FAQ"
         title="What landlords ask before instructing us."
       />
+      <TestimonialsSection />
       <CTABanner
         headline="Need a tenant you will not regret?"
         subheadline="Tell us the unit, the area and the rent you have in mind. We will tell you what it will realistically let for."
