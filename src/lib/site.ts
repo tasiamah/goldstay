@@ -906,6 +906,35 @@ export const cities = {
           caveat:
             "Effectively a long-stay market only. Nightly leisure demand is close to nonexistent, so a unit priced and marketed for weekend breaks will sit empty. Inventory also skews to houses rather than apartments.",
         },
+        benchmarkUnit: "2-bed apartments and compound cottages",
+        profile: {
+          character:
+            "The neighbourhood exists because of the complex at its centre. The United Nations' Nairobi headquarters sits off UN Avenue, the United States embassy is beside it, Limuru Road carries the traffic of both, and Village Market does the job a high street would do elsewhere. Around them sit walled residential compounds, diplomatic residences and housing clusters built for the institutions rather than for the open market. Gigiri is closer to a company town than to an ordinary Nairobi suburb, and it prices and behaves like one.",
+          demand:
+            "One employer base, and an unusually formal one. The agencies at the Nairobi complex, the missions along UN Avenue and the organisations that orbit them account for very nearly all of it, and the person you negotiate with is frequently a housing officer applying a written relocation policy rather than a family choosing where to live. Postings run two to three years with an accommodation allowance attached, which is why Gigiri rents sit at the top of the Nairobi range and why arrears here are rare. The corollary is that the list of possible tenants for your property is short and institutional.",
+          stock:
+            "Houses on generous walled plots alongside purpose-built compounds and gated apartment clusters, much of the latter put up specifically with these tenancies in view. Specification follows institutional requirements rather than taste: guarded gates, perimeter walls and lighting, standby generators, boreholes and controlled vehicle access are ordinary rather than premium features, and the buildings designed for this market are obvious once you know what to look for. Two-bed apartments exist, but the weight of the Gigiri stock is larger family housing.",
+          friction:
+            "The compliance gate is what separates Gigiri from every other premium area, and it is what most landlords discover only after buying. Many UN and embassy staff may occupy only housing that satisfies their organisation's residential security standards — perimeter and lighting specifications, guarding arrangements, controlled access, in some cases a hardened room — and those standards are assessed property by property rather than area by area. A house that fails the assessment is shut out of virtually the whole demand base the neighbourhood exists to serve, however good it is in every other respect. Find out what a compound is already cleared for before committing, and treat the cost of reaching those standards as part of the purchase rather than an upgrade you will get round to. Past that, Limuru Road at peak hours is the daily reality for anyone working south of here, and because demand sits in so few institutions a single restructuring is felt across the area at once.",
+          faq: [
+            {
+              q: "What security standards does a Gigiri rental have to meet?",
+              a: "There is no single published list, because each organisation applies its own and assesses individual properties against it. In practice it covers the perimeter, external lighting, access control and guarding, and sometimes a secure room. The practical route is to ask which compounds in the area are already approved and buy inside one, rather than buying first and hoping to qualify afterwards.",
+            },
+            {
+              q: "Can I let a Gigiri house to an ordinary corporate tenant instead?",
+              a: "You can, but you will be letting a house priced for institutional tenants to a market that has cheaper and better-located options in Westlands and Lavington. Expect to accept a materially lower rent and a longer void. Buying in Gigiri only really makes sense if the property can serve the tenants the area is built around.",
+            },
+            {
+              q: "Why are Gigiri rents the highest in Nairobi?",
+              a: "Because the tenants are organisations with housing budgets rather than individuals with salaries, and because the supply that meets their security requirements is genuinely limited. Those two facts together support the top of the market. It is worth remembering the cost side moves with it: the guarding, generator and compound upkeep that justify the rent are also what you are paying for.",
+            },
+            {
+              q: "Does my property need to be inside a gated compound?",
+              a: "It is much the easier path. A standalone house can meet the standards, but doing so means providing the perimeter, lighting, access control and guarding yourself, at your cost, and having it assessed. A unit within an already-approved compound inherits most of that, which is why those compounds command what they do.",
+            },
+          ],
+        },
       },
       {
         name: "Lavington",
@@ -919,6 +948,34 @@ export const cities = {
           note: "A family neighbourhood, and the short-let demand reflects it: larger units, longer stays and a booking calendar that moves with international school terms rather than with tourist seasons.",
           caveat:
             "Most of the stock is townhouses and larger apartments, which cost more to furnish and clean per booking. The monthly rate is good; the nightly rate rarely justifies a short-stay setup on a small unit.",
+        },
+        profile: {
+          character:
+            "The stretch between Kileleshwa and the city's western edge, organised around James Gichuru Road, Gitanga Road and the lanes off Hatheru and Muthangari. It was large-plot family housing and has become a mix, as gated townhouse courts and apartment developments filled in the gardens of the properties that sold. Lavington Mall and Lavington Green supply the retail. The result is somewhere denser than Karen and leafier than Kilimani, which is precisely the compromise its tenants are looking for.",
+          demand:
+            "Broader than any other premium area in Nairobi, and that is the point worth grasping. Lavington draws expatriate families who want a garden without committing to the Karen commute, diplomats and corporate executives, and — unlike Gigiri, Runda or Brookside — a deep layer of established Kenyan professional families renting at the same level. Several international schools are within a sensible run. Because no single employer or institution dominates, a downturn at one organisation does not empty the neighbourhood, which makes Lavington the most diversified tenant base at this rent.",
+          stock:
+            "The signature Lavington product is the gated townhouse court: three or four bedrooms over two or three floors, a small private garden, shared perimeter security and usually a shared borehole, with anywhere from four to twenty units behind one gate. Around it sit larger apartments in newer blocks and the surviving standalone houses on original plots. For most buyers the townhouse in a well-run court is the sweet spot, offering house living at an apartment's running cost.",
+          friction:
+            "Location inside Lavington matters more than location inside any comparable area, and this is where buyers get caught. The name covers a wide span: the eastern end towards Kileleshwa is a different proposition from the western fringe, where Lavington meets far lower-income neighbourhoods, and the rent achievable across that span differs by several hundred dollars for houses that look alike in photographs. Walk the surrounding streets, not just the compound. The second issue is specific to the townhouse courts that make up so much of the good stock: with only a handful of owners funding shared security, water and grounds, governance is fragile, and one or two owners in arrears is enough to stop the borehole being serviced or the guards being paid. Read the court's accounts and meet the other owners before buying into one. Third, James Gichuru and Gitanga Roads carry heavy traffic and near-permanent roadworks, and the school run compounds it at exactly the hours tenants travel.",
+          faq: [
+            {
+              q: "Is a townhouse the right thing to buy in Lavington?",
+              a: "For most landlords, yes. It reaches the family tenants the area is strongest for, gives them the garden and space that brought them to Lavington, and costs a fraction of a standalone house to run because security, water and grounds are shared. The condition is that the court is well managed, which is worth more than any feature of the unit itself.",
+            },
+            {
+              q: "Does it really matter where in Lavington the property is?",
+              a: "More than almost anywhere else in the city. Lavington spans a genuinely wide range, and two houses of similar size and finish at opposite ends of it will not achieve the same rent or let in the same time. Never price a purchase off comparables from a different part of Lavington without walking both.",
+            },
+            {
+              q: "Lavington or Kileleshwa?",
+              a: "Kileleshwa is the apartment market and Lavington is the house and townhouse market, so the answer follows the tenant you want. A family needing a garden and a school run chooses Lavington and stays longer. A couple or a small household wanting a modern three-bed apartment is better served in Kileleshwa, where that stock is deeper and the price per unit lower.",
+            },
+            {
+              q: "Why would a tenant choose Lavington over Karen?",
+              a: "Time. Lavington offers a reduced version of what Karen offers — space, greenery, a garden — while remaining close enough to Westlands, Upper Hill and the city centre to be commuted from daily. Families who need a working parent at a desk every morning frequently start out looking in Karen and end up signing in Lavington.",
+            },
+          ],
         },
       },
       {

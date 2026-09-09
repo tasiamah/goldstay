@@ -103,7 +103,7 @@ const nextConfig = {
     // and fails the build's test run if a profile is added or removed
     // without updating here.
     const consolidated = {
-      nairobi: ["gigiri", "lavington", "parklands", "rosslyn"],
+      nairobi: ["parklands", "rosslyn"],
       accra: [
         "east-legon",
         "adjiringanor",

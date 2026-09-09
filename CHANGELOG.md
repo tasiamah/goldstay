@@ -21,7 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.19.0] - 2026-09-09
+## [1.20.0] - 2026-09-09
+
+Completes the area coverage started in 1.19.0. Gigiri is where the UN
+and the missions house their staff and carries the highest rents in
+Nairobi; Lavington has the broadest tenant base of any premium area.
+Both were redirecting to `/nairobi/areas`.
+
+### Added
+- Area pages for Gigiri and Lavington. Gigiri's covers the residential
+  security standards that UN and embassy tenants have to house within,
+  which are assessed property by property and quietly decide whether a
+  house can reach that demand at all — the thing landlords there tend
+  to learn after buying. Lavington's covers how wide a span the name
+  actually describes, and the governance risk in the gated townhouse
+  courts that make up most of its good stock, where a couple of owners
+  in arrears stops the borehole being serviced.
+- Nine Nairobi areas now have pages, carrying 6,254 words of profile
+  prose written to be specific to each. Worst-pair overlap is 0.22%,
+  and only Parklands and Rosslyn still consolidate.
+
+### Changed
+- Gigiri quotes its rent band as apartments and compound cottages
+  rather than plain 2-bed apartments, since its stock leans to larger
+  family housing. Lavington keeps the apartment framing, which is
+  accurate there.
 
 1.16.0 consolidated eight Nairobi area pages into `/nairobi/areas`
 because they were 88% boilerplate, which was the right call for the
@@ -963,7 +987,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.19.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.20.0...HEAD
+[1.20.0]: https://github.com/tasiamah/goldstay/compare/v1.19.0...v1.20.0
 [1.19.0]: https://github.com/tasiamah/goldstay/compare/v1.18.0...v1.19.0
 [1.18.0]: https://github.com/tasiamah/goldstay/compare/v1.17.0...v1.18.0
 [1.17.0]: https://github.com/tasiamah/goldstay/compare/v1.16.1...v1.17.0
