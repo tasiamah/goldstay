@@ -6,6 +6,10 @@ import {
   isAirtableConfigured,
 } from "@/lib/airtable";
 import { enrichLead } from "@/lib/lead-enrichment";
+import {
+  describeAttribution,
+  parseAttributionPayload,
+} from "@/lib/lead-attribution";
 import { createLead, parseLeadSource } from "@/lib/leads";
 import { rateLimitOr429 } from "@/lib/rateLimit";
 import { readReferralCookie } from "@/lib/referrals/attribution";
@@ -46,6 +50,9 @@ function inferCountry(city: unknown): "KE" | "GH" | undefined {
 
 function formatEmail(lead: Lead) {
   return Object.entries(lead)
+    // `attribution` is a nested object and would render here as a wall
+    // of JSON. It gets its own readable line in the briefing instead.
+    .filter(([k]) => k !== "attribution")
     .map(([k, v]) => `${k}: ${typeof v === "string" ? v : JSON.stringify(v)}`)
     .join("\n");
 }
@@ -99,6 +106,12 @@ export async function POST(req: Request) {
     phone: str(data.phone) ?? null,
   });
 
+  // Where the visitor came from, plus whatever they told us about how
+  // they found us. Everything here is attacker-controlled — the
+  // endpoint is public — so it goes through the validating parser
+  // rather than being trusted off the payload.
+  const attribution = parseAttributionPayload(data.attribution);
+
   const submittedAt = new Date().toISOString();
   // Email body keeps the existing simple key:value layout but prepends
   // a 3-line operator briefing so the on-call sees Tier + SLA at a
@@ -109,6 +122,7 @@ export async function POST(req: Request) {
     enrichment.rationale.length
       ? `Rationale: ${enrichment.rationale.join(" ")}`
       : null,
+    describeAttribution(attribution),
   ]
     .filter(Boolean)
     .join("\n");
@@ -203,6 +217,7 @@ export async function POST(req: Request) {
         serviceInterest: str(data.service),
         availability: str(data.availability),
         notes: str(data.notes),
+        attribution,
         actor: null,
       });
     } catch (e) {

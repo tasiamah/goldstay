@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@/components/Analytics";
 import { WhatsAppTracking } from "@/components/WhatsAppTracking";
+import { LeadAttribution } from "@/components/LeadAttribution";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
 import { site, alternateLanguagesFor } from "@/lib/site";
@@ -150,6 +151,10 @@ export default function MarketingLayout({
             set, but the page ref it writes into the prefilled message
             works regardless of whether any analytics is loaded. */}
         <WhatsAppTracking />
+        {/* Records the first page and referrer of the visit so the lead
+            form can post them. Needs no env var and no analytics: it
+            writes to sessionStorage and the form reads it back. */}
+        <LeadAttribution />
         <Navbar />
         <main>{children}</main>
         <Footer />

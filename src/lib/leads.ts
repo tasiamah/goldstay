@@ -16,6 +16,20 @@ import { prisma } from "@/lib/db";
 import { recordAudit, type AuditActor } from "@/lib/audit";
 import { createHash } from "node:crypto";
 
+export type LeadAttribution = {
+  foundVia?: string | null;
+  searchTerm?: string | null;
+  channel?: string | null;
+  landingPath?: string | null;
+  referrer?: string | null;
+  utmSource?: string | null;
+  utmMedium?: string | null;
+  utmCampaign?: string | null;
+  utmTerm?: string | null;
+  utmContent?: string | null;
+  landedAt?: Date | null;
+};
+
 export type CreateLeadInput = {
   source: LeadSource;
   fullName: string;
@@ -31,6 +45,13 @@ export type CreateLeadInput = {
   serviceInterest?: string | null;
   availability?: string | null;
   notes?: string | null;
+  // Where the lead came from. All optional: a manual log from
+  // /admin/leads/new has no browser behind it, and an outbound scrape
+  // has no visitor at all, so absent is a normal state rather than a
+  // missing value. See src/lib/lead-attribution.ts for what each one
+  // can actually tell you — in particular, `referrer` never carries
+  // the search term, which is why `searchTerm` is asked for directly.
+  attribution?: LeadAttribution | null;
   // Optional actor; the public form has no admin actor (the lead
   // creates itself). Manual logs from /admin/leads/new include one.
   actor?: AuditActor | null;
@@ -79,6 +100,17 @@ export async function createLead(input: CreateLeadInput): Promise<Lead> {
         availability: input.availability?.trim() || null,
         notes: input.notes?.trim() || null,
         submissionHash,
+        foundVia: input.attribution?.foundVia?.trim() || null,
+        searchTerm: input.attribution?.searchTerm?.trim() || null,
+        channel: input.attribution?.channel?.trim() || null,
+        landingPath: input.attribution?.landingPath?.trim() || null,
+        referrer: input.attribution?.referrer?.trim() || null,
+        utmSource: input.attribution?.utmSource?.trim() || null,
+        utmMedium: input.attribution?.utmMedium?.trim() || null,
+        utmCampaign: input.attribution?.utmCampaign?.trim() || null,
+        utmTerm: input.attribution?.utmTerm?.trim() || null,
+        utmContent: input.attribution?.utmContent?.trim() || null,
+        landedAt: input.attribution?.landedAt ?? null,
       },
     });
     if (input.actor) {

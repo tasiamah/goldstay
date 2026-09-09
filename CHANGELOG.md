@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.17.0] - 2026-09-09
+
+Prompted by a question that could not be answered: two clients had said
+they found Goldstay at the top of Google when looking for property
+management, and there was no way to learn what either of them had
+searched for. Search Console had been created that week and does not
+backfill queries from before verification, Analytics had never been
+switched on, the form recorded nothing about origin, and the `Lead`
+table held one row. The customers themselves were the last surviving
+copy of the answer and had to be asked by hand.
+
+### Added
+- The enquiry form now asks "How did you find us?", and adds a second
+  question — "What did you search for?" — when the answer is Google.
+  This is the only way an organic search term can ever be recorded:
+  Google has stripped the query from its referrer since 2011, so no
+  amount of tracking recovers it and asking is the whole mechanism.
+  Both are optional and neither blocks submitting.
+- Every enquiry now records the page the visit started on, the
+  referring site and any `utm_*` tags, captured on first touch. First
+  touch rather than last matters here: a landlord who arrives on an
+  article, reads three more pages and then opens the form is credited
+  to the article, where last-touch attribution would credit
+  `/list-your-property` and our own site, which is the useless answer
+  we already had.
+- The new-lead email to ops leads with a plain-language line — what
+  they said, what they searched for, where they landed — so the person
+  ringing back within the two-hour window sees it without opening the
+  admin portal. `/admin/leads/[id]` shows the full breakdown, with the
+  typed search phrase highlighted because it is the most valuable
+  field on the record.
+
+### Note
+- Leads from before this release have none of these fields, and the
+  block is hidden rather than shown as empty. Manual logs and outbound
+  scrapes have no browser behind them, so absent stays a normal state.
+- WhatsApp and phone enquiries still bypass the platform entirely and
+  remain unattributed. The prefilled WhatsApp message has carried its
+  origin page since 1.15.x, but nothing writes those conversations to
+  a `Lead` row, so the one-to-two enquiries a week arriving that way
+  are still invisible here.
+
 ## [1.16.1] - 2026-09-09
 
 ### Changed
@@ -857,7 +899,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.16.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.17.0...HEAD
+[1.17.0]: https://github.com/tasiamah/goldstay/compare/v1.16.1...v1.17.0
 [1.16.1]: https://github.com/tasiamah/goldstay/compare/v1.16.0...v1.16.1
 [1.16.0]: https://github.com/tasiamah/goldstay/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/tasiamah/goldstay/compare/v1.14.0...v1.15.0

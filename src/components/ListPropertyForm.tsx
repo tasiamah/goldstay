@@ -5,6 +5,11 @@ import { useForm } from "react-hook-form";
 import { Check, Loader2 } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { useCurrentCity } from "@/lib/useCurrentCity";
+import {
+  asksForSearchTerm,
+  FOUND_VIA_OPTIONS,
+} from "@/lib/lead-attribution";
+import { readFirstTouch } from "@/components/LeadAttribution";
 
 type FormValues = {
   name: string;
@@ -25,6 +30,10 @@ type FormValues = {
   availability: string;
   notes?: string;
   consent: boolean;
+  // Both optional and neither blocks submit. foundVia is a select,
+  // searchTerm only appears when the answer is Google.
+  foundVia?: string;
+  searchTerm?: string;
 };
 
 // Diaspora destinations that make up the vast majority of Goldstay's landlord
@@ -117,6 +126,7 @@ export function ListPropertyForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
+    watch,
   } = useForm<FormValues>({
     defaultValues: {
       city: defaultCity,
@@ -139,14 +149,40 @@ export function ListPropertyForm() {
   // unchanged: undefined fields just don't appear on the Resend email
   // or the Airtable row, both of which already tolerate that.
   const [moreOpen, setMoreOpen] = useState(false);
+  // Drives the follow-up question, so it appears the moment "Google
+  // search" is picked rather than after a blur.
+  const foundVia = watch("foundVia");
 
   const onSubmit = async (data: FormValues) => {
     setError(null);
     try {
+      // How they arrived, captured on the first page of the visit by
+      // <LeadAttribution />. Read here rather than held in form state
+      // because the landing page is usually not this page — the whole
+      // value is in knowing which article or service page started it.
+      //
+      // Spread first so a malformed stored value can never overwrite
+      // the landlord's own answers, and so a null block just means the
+      // enquiry posts exactly as it did before.
+      const firstTouch = readFirstTouch();
       const res = await fetch("/api/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          attribution: {
+            ...(firstTouch ?? {}),
+            foundVia: data.foundVia || null,
+            // Discarded unless the answer was Google. Somebody can pick
+            // "Google search", type a phrase, then change the answer to
+            // "recommended by someone" — the input unmounts but
+            // react-hook-form keeps the value, and posting it would
+            // attribute a search term to a word-of-mouth lead.
+            searchTerm: asksForSearchTerm(data.foundVia)
+              ? data.searchTerm || null
+              : null,
+          },
+        }),
       });
       if (!res.ok) throw new Error(await res.text());
       setSent(true);
@@ -248,6 +284,56 @@ export function ListPropertyForm() {
             ))}
           </select>
         </div>
+
+        {/* Left in the always-visible block rather than under "Tell us
+            more", and it is the only optional field that gets that
+            treatment. The reason is that it is the sole way we can ever
+            learn an organic search term: Google strips the query from
+            its referrer, so no tracking recovers it and the landlord
+            typing it is the entire mechanism. Buried in a disclosure
+            almost nobody opens, it would answer nothing.
+
+            Cost is one tap on a select, and it blocks nothing. */}
+        <div className="md:col-span-2">
+          <label className="eyebrow" htmlFor="found-via">
+            How did you find us?{" "}
+            <span className="font-normal normal-case text-charcoal/55">
+              optional
+            </span>
+          </label>
+          <select
+            id="found-via"
+            className={field}
+            defaultValue=""
+            {...register("foundVia")}
+          >
+            <option value="">Prefer not to say</option>
+            {FOUND_VIA_OPTIONS.map((o) => (
+              <option key={o}>{o}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Only for the search answer. Asking somebody who ticked
+            "recommended by someone" what they typed into Google is how
+            a form starts to feel like an interrogation. */}
+        {asksForSearchTerm(foundVia) ? (
+          <div className="md:col-span-2">
+            <label className="eyebrow" htmlFor="search-term">
+              What did you search for?
+            </label>
+            <input
+              id="search-term"
+              className={field}
+              placeholder="e.g. property management nairobi"
+              {...register("searchTerm")}
+            />
+            <p className="mt-1 text-xs text-charcoal/55">
+              Genuinely useful to us — it tells us how landlords like you
+              are looking, so we can be easier to find.
+            </p>
+          </div>
+        ) : null}
       </div>
 
       <div className="border-t border-charcoal/10 pt-5">

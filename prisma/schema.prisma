@@ -1236,6 +1236,36 @@ model Lead {
   // de-dupe when the form is double-submitted on flaky mobile
   // connections — same hash within 60s is treated as one lead.
   submissionHash    String?    @unique
+  // ---- Where the lead came from ----
+  //
+  // `source` above is the channel ops files the lead under. These are
+  // what the visitor's own browser reported, captured on first touch
+  // so an arrival on an article followed by three internal clicks is
+  // still credited to the article. See src/lib/lead-attribution.ts.
+  //
+  // foundVia and searchTerm are answers the landlord typed. They are
+  // the only route to an organic search keyword: Google has stripped
+  // the query from its referrer since 2011, so no amount of tracking
+  // recovers it and asking is the whole mechanism.
+  foundVia          String?
+  searchTerm        String?
+  // Coarse bucket — organic_search, paid_search, social, referral,
+  // direct, internal. A String and not an enum because the useful
+  // grouping here is still being learned; committing it to a Postgres
+  // type means a migration every time we split one bucket in two, and
+  // the values are validated in TypeScript on the way in either way.
+  channel           String?
+  landingPath       String?
+  referrer          String?
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  utmTerm           String?
+  utmContent        String?
+  // Start of the session that produced the lead, which is not the
+  // same as createdAt: somebody can land on a Tuesday and submit on
+  // a Friday, and the gap is worth being able to see.
+  landedAt          DateTime?
   // Lifecycle.
   contactedAt       DateTime?
   qualifiedAt       DateTime?
@@ -1255,6 +1285,9 @@ model Lead {
   @@index([country, status])
   @@index([ownerAdminId, status])
   @@index([archivedAt])
+  // "Which channel is producing leads" is the question this whole
+  // group of columns exists to answer, so it gets the index.
+  @@index([channel, createdAt])
 }
 
 // Where Goldstay should send the client's net payout each month.

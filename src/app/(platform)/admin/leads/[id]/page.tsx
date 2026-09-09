@@ -11,6 +11,7 @@ import {
   LEAD_STATUS_CLASSES,
   LEAD_STATUS_LABEL,
 } from "@/lib/leads";
+import { CHANNEL_LABEL, isChannel } from "@/lib/lead-attribution";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
@@ -125,6 +126,59 @@ export default async function LeadDetailPage({
               <p className="mt-2 whitespace-pre-line text-sm text-stone-700">
                 {lead.notes}
               </p>
+            </div>
+          ) : null}
+
+          {/* How they got here. Leads created before September 2026 have
+              none of this, and neither do manual logs and outbound
+              scrapes, so the whole block is conditional rather than
+              rendering a column of dashes. */}
+          {lead.channel ||
+          lead.foundVia ||
+          lead.landingPath ||
+          lead.utmSource ? (
+            <div className="mt-5 border-t border-stone-100 pt-4">
+              <p className="text-xs uppercase tracking-wider text-stone-500">
+                How they found us
+              </p>
+              {/* The typed search phrase gets its own highlighted row.
+                  It is the only field here that can carry an organic
+                  keyword — Google strips the query from its referrer —
+                  which makes it the most valuable thing on the page and
+                  worth more than a line in a definition list. */}
+              {lead.searchTerm ? (
+                <p className="mt-2 rounded-md border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                  <span className="font-medium">Searched for: </span>
+                  &ldquo;{lead.searchTerm}&rdquo;
+                </p>
+              ) : null}
+              <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
+                <Term label="Said they found us" value={lead.foundVia} />
+                <Term
+                  label="Channel"
+                  value={
+                    lead.channel && isChannel(lead.channel)
+                      ? CHANNEL_LABEL[lead.channel]
+                      : lead.channel
+                  }
+                />
+                <Term label="Landed on" value={lead.landingPath} />
+                <Term label="Referrer" value={lead.referrer} />
+                <Term label="utm_source" value={lead.utmSource} />
+                <Term label="utm_medium" value={lead.utmMedium} />
+                <Term label="utm_campaign" value={lead.utmCampaign} />
+                <Term label="utm_term" value={lead.utmTerm} />
+                <Term
+                  label="Visit started"
+                  value={
+                    lead.landedAt
+                      ? lead.landedAt.toLocaleString("en-GB", {
+                          timeZone: "Africa/Nairobi",
+                        })
+                      : null
+                  }
+                />
+              </dl>
             </div>
           ) : null}
 
