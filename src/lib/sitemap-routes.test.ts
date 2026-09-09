@@ -33,35 +33,68 @@ describe("marketsServedBy", () => {
     expect(isLiveDomain(site.domains.accra)).toBe(false);
   });
 
-  it("has the Kenya domain stand in for the market whose domain is dark", () => {
-    expect(marketsServedBy("goldstay.co.ke")).toEqual(["kenya", "ghana"]);
+  // These three previously asserted that the Kenya domain stands in
+  // for whichever market's own domain is dark, which is why .co.ke
+  // served the Accra routes and the Ghana articles.
+  //
+  // That is still the right behaviour for a *launched* market waiting
+  // on DNS. It was the wrong behaviour for Accra, which is built and
+  // not launched, and it put nineteen Accra URLs into the Kenyan
+  // sitemap — telling Google a Nairobi firm is also a Ghanaian one and
+  // offering a service in a city we cannot deliver it in.
+  //
+  // The stand-in logic is unchanged underneath; an unlaunched market
+  // is now filtered out after it. Adding "ghana" to
+  // site.launchedMarkets restores every expectation below to its
+  // original form, which is the point.
+  it("does not have the Kenya domain stand in for an unlaunched market", () => {
+    expect(marketsServedBy("goldstay.co.ke")).toEqual(["kenya"]);
   });
 
-  it("scopes to Ghana alone when served from the Ghana domain", () => {
-    expect(marketsServedBy("goldstay.com.gh")).toEqual(["ghana"]);
+  it("serves nothing from an unlaunched market's own domain", () => {
+    // Only the sitemap consumes this, so an empty result means that
+    // host advertises the market-neutral routes and no city at all.
+    // Correct for a domain that is both dark and unlaunched.
+    expect(marketsServedBy("goldstay.com.gh")).toEqual([]);
   });
 
   it("is case insensitive about the host", () => {
-    expect(marketsServedBy("GoldStay.CO.KE")).toEqual(["kenya", "ghana"]);
+    expect(marketsServedBy("GoldStay.CO.KE")).toEqual(["kenya"]);
+  });
+
+  it("serves nothing from the neutral .com host", () => {
+    // Not a stand-in case, which is worth recording because it looks
+    // like one. Kenya's own domain is live, so the stand-in rule does
+    // not fire for it and only .co.ke serves Kenya. Ghana would have
+    // been picked up here — .com.gh being dark is exactly the trigger
+    // — but Ghana is unlaunched, so the answer is nothing at all.
+    //
+    // Harmless in practice: goldstay.com is a parked lander that is
+    // not ours, which is why it is absent from site.liveDomains.
+    expect(marketsServedBy("goldstay.com")).toEqual([]);
   });
 });
 
 describe("sitemapPaths on the Kenya domain", () => {
-  it("advertises the Accra routes, because it is the host serving them", () => {
+  // Inverted deliberately. This host used to advertise the Accra
+  // routes on the grounds that it was the only host serving them, and
+  // that is exactly the reasoning that leaked an unlaunched market
+  // into the Kenyan sitemap. See site.launchedMarkets.
+  it("advertises no Accra route while Ghana is unlaunched", () => {
     const paths = pathsFor("goldstay.co.ke");
-    // /accra/areas rather than a named suburb: the Accra
-    // neighbourhood pages were consolidated into it, since all five
-    // measured ~69% identical to each other with no properties
-    // behind them. See the `profile` comment in lib/site.ts.
     for (const p of ["/accra", "/accra/buy", "/accra/areas", "/from/uk/accra"]) {
-      expect(paths).toContain(p);
+      expect(paths).not.toContain(p);
     }
   });
 
-  it("advertises the Ghana articles and their categories", () => {
+  it("advertises no Ghana article while Ghana is unlaunched", () => {
     const paths = pathsFor("goldstay.co.ke");
-    expect(paths).toContain("/insights/ghana-stool-land-diaspora-buyer-trap");
-    expect(paths).toContain("/insights/buying-property-accra-diaspora-2026-guide");
+    expect(paths).not.toContain("/insights/ghana-stool-land-diaspora-buyer-trap");
+    expect(paths).not.toContain(
+      "/insights/buying-property-accra-diaspora-2026-guide",
+    );
+    // Categories are shared across markets, so this one stays: it
+    // still has Kenyan articles in it.
     expect(paths).toContain("/insights/category/buying");
   });
 
@@ -95,18 +128,28 @@ describe("sitemapPaths on the Kenya domain", () => {
 });
 
 describe("sitemapPaths on the Ghana domain", () => {
-  it("drops the Kenya routes and collapses /accra into the root", () => {
+  // This domain is both dark and unlaunched, so it serves the
+  // market-neutral routes and no city. The Kenya-scoping assertions
+  // below are the ones still worth keeping: they prove the host logic
+  // underneath the launch filter is intact, so restoring Ghana is a
+  // one-line change and not a rewrite.
+  it("drops the Kenya routes", () => {
     const paths = pathsFor("goldstay.com.gh");
     expect(paths).toContain("");
-    expect(paths).toContain("/accra/areas");
-    expect(paths).not.toContain("/accra");
     expect(paths).not.toContain("/nairobi/kilimani");
     expect(paths).not.toContain("/from/uk/nairobi");
   });
 
-  it("lists only the Ghana articles", () => {
+  it("lists no city routes at all while Ghana is unlaunched", () => {
     const paths = pathsFor("goldstay.com.gh");
-    expect(paths).toContain("/insights/ghana-stool-land-diaspora-buyer-trap");
+    for (const p of ["/accra", "/accra/areas", "/accra/buy"]) {
+      expect(paths).not.toContain(p);
+    }
+  });
+
+  it("lists no articles from either market", () => {
+    const paths = pathsFor("goldstay.com.gh");
+    expect(paths).not.toContain("/insights/ghana-stool-land-diaspora-buyer-trap");
     expect(paths).not.toContain("/insights/karen-complete-guide-2026");
   });
 });

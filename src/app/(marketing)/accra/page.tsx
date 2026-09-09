@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { CityPage } from "@/components/CityPage";
 import { enforceCityHost } from "@/lib/enforceCityHost";
-import { alternateLanguagesFor, cityCanonical } from "@/lib/site";
+import {
+  alternateLanguagesFor,
+  cityCanonical,
+  robotsForCity,
+} from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Property Management Accra",
@@ -13,6 +17,8 @@ export const metadata: Metadata = {
     canonical: cityCanonical("accra"),
     languages: alternateLanguagesFor("/accra"),
   },
+  // Built, not launched. See site.launchedMarkets.
+  robots: robotsForCity("accra"),
 };
 
 export default function AccraPage() {

@@ -8,6 +8,7 @@ import {
   findNeighbourhood,
   neighbourhoodSlug,
   profiledNeighbourhoods,
+  robotsForCity,
 } from "@/lib/site";
 
 // Programmatic neighbourhood pages for Accra. Pre-rendered at build
@@ -44,6 +45,8 @@ export function generateMetadata({ params }: Props): Metadata {
       canonical: path,
       languages: alternateLanguagesFor(path),
     },
+    // Built, not launched. See site.launchedMarkets.
+    robots: robotsForCity("accra"),
     openGraph: {
       title,
       description,

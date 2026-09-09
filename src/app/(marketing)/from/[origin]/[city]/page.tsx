@@ -14,6 +14,7 @@ import {
   alternateLanguagesFor,
   baseUrlFor,
   cityTrail,
+  robotsForCity,
   site,
   waLink,
 } from "@/lib/site";
@@ -67,6 +68,10 @@ export function generateMetadata({ params }: Props): Metadata {
       canonical: path,
       languages: alternateLanguagesFor(path),
     },
+    // Ten of these are Accra origins, which is ten pages promising a
+    // service in a city we have not opened. Built, not launched — see
+    // site.launchedMarkets.
+    robots: robotsForCity(r.city),
     openGraph: { title, description, type: "website" },
   };
 }

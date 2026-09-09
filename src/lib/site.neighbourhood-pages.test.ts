@@ -98,9 +98,12 @@ describe("the sitemap advertises only pages that serve a 200", () => {
     categorySlugs: { kenya: [], ghana: [] },
   });
 
-  it("lists the areas comparison page for both cities", () => {
+  it("lists the areas comparison page for every launched city", () => {
     expect(paths).toContain("/nairobi/areas");
-    expect(paths).toContain("/accra/areas");
+    // /accra/areas was here until Accra was pulled from the index as
+    // an unlaunched market. The page still builds and still renders;
+    // it is simply no longer advertised. See site.launchedMarkets.
+    expect(paths).not.toContain("/accra/areas");
   });
 
   it("lists every area that has a page", () => {

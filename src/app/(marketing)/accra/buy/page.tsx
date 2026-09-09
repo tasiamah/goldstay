@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { CityBuyPage } from "@/components/CityBuyPage";
 import { enforceCityHost } from "@/lib/enforceCityHost";
-import { alternateLanguagesFor } from "@/lib/site";
+import { alternateLanguagesFor, robotsForCity } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Buy Property in Accra",
@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     canonical: "/accra/buy",
     languages: alternateLanguagesFor("/accra/buy"),
   },
+  // Built, not launched. See site.launchedMarkets.
+  robots: robotsForCity("accra"),
 };
 
 export default function Page() {

@@ -7,6 +7,7 @@ import {
   canonicalHostForCountry,
   countryForHost,
   insightAlternates,
+  isLaunchedMarket,
   site,
   soleLiveDomain,
 } from "@/lib/site";
@@ -65,7 +66,13 @@ export function generateMetadata({ params }: Props): Metadata {
     // See PostMeta.noindex. `follow` stays on deliberately: the page
     // is out of the index but its links still pass to the service
     // pages, which is the direction we want equity flowing anyway.
-    ...(post.meta.noindex
+    //
+    // Articles for an unlaunched market are treated the same way. A
+    // Ghana buyer guide is good work, but until Accra opens it asks
+    // Google to read a Nairobi firm as a Ghanaian one, and it cannot
+    // convert anybody. Flipping site.launchedMarkets puts all twelve
+    // back into the index at once.
+    ...(post.meta.noindex || !isLaunchedMarket(post.meta.country)
       ? { robots: { index: false, follow: true } }
       : {}),
     alternates: insightAlternates(post.meta.slug, post.meta.country),

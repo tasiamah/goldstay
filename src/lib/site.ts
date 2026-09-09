@@ -10,8 +10,16 @@ export const site = {
   // is not ours. See `liveDomains` below.
   domain: "goldstay.co.ke",
   tagline: "Your Property. Professionally Managed.",
+  // Scoped to Nairobi while Accra is unlaunched.
+  //
+  // This string is the Organization schema description — the single
+  // field a search engine is most likely to quote back when asked what
+  // this company is. Naming two cities in it split the geographic
+  // focus of the entity in exchange for a city we do not trade in,
+  // which is a bad trade in both directions. Add Accra back the day it
+  // opens; see site.launchedMarkets.
   description:
-    "Premium property management in Nairobi and Accra for diaspora landlords. We handle everything. You receive monthly USD transfers.",
+    "Premium property management in Nairobi for diaspora landlords. We find and vet tenants, collect the rent, handle maintenance and cleaning, and remit to you in USD every month.",
   // Display email shown on the neutral .com surface and any page that
   // renders without a city context. We intentionally use the .co.ke
   // address as the default until goldstay.com is purchased and its MX
@@ -81,6 +89,27 @@ export const site = {
   // day it is bought. Nothing else needs to change: hreflang, canonicals
   // and the city redirects all widen automatically.
   liveDomains: ["goldstay.co.ke"] as readonly string[],
+  // Which markets the business actually trades in today.
+  //
+  // Distinct from `liveDomains` above, and the distinction is the whole
+  // point. `liveDomains` answers "is this hostname serving?", which is
+  // a DNS question. This answers "have we launched here?", which is a
+  // business one. Conflating them is what put nineteen Accra URLs into
+  // the Kenyan sitemap: `marketsServedBy` reasoned that because
+  // goldstay.com.gh is not live, goldstay.co.ke must cover Ghana. That
+  // is right for a launched market whose domain is not ready yet, and
+  // wrong for a market we have not opened.
+  //
+  // Accra is built and not launched. Leaving it indexed asked Google
+  // to believe a Nairobi firm is also a Ghanaian one, split the
+  // geographic focus of the entity, and offered a service in a city
+  // where we cannot deliver it. The pages, data and copy all stay —
+  // launching is adding "ghana" back to this array, and nothing else.
+  launchedMarkets: ["kenya"] as readonly ("kenya" | "ghana")[],
+  // Cities belonging to a market that has not launched. Used to keep
+  // their pages out of the index while leaving them buildable, so the
+  // work is not lost and launch is not a rebuild.
+  unlaunchedCities: ["accra"] as readonly string[],
   emails: {
     // Same rationale as `email` above: .co.ke is the only live mailbox
     // right now, so every city-agnostic surface routes to it. The
@@ -228,6 +257,33 @@ export function findShortLetNeighbourhood(
 // for local-pack visibility in Nairobi and Accra.
 export function isLiveDomain(domain: string) {
   return site.liveDomains.includes(domain);
+}
+
+// Whether we actually trade in a market yet. See site.launchedMarkets
+// for why this is a separate question from whether its domain resolves.
+export function isLaunchedMarket(market: "kenya" | "ghana") {
+  return site.launchedMarkets.includes(market);
+}
+
+// Whether a city's pages should be kept out of the index. True while
+// the market it belongs to is unlaunched: the pages still build and
+// still render, they are simply not offered to Google as somewhere we
+// operate.
+export function isUnlaunchedCity(city: string) {
+  return site.unlaunchedCities.includes(city.toLowerCase());
+}
+
+// The `robots` value for a city page. Returns undefined — which Next
+// omits entirely — for cities we trade in, so launched pages carry no
+// directive and behave exactly as before.
+//
+// `follow` stays true. These pages link to the service pages and the
+// insights catalogue, and there is no reason to stop that flowing
+// while the pages are merely out of the index rather than unwanted.
+export function robotsForCity(city: string) {
+  return isUnlaunchedCity(city)
+    ? { index: false, follow: true }
+    : undefined;
 }
 
 // The domain to fall back to whenever the one we'd naturally name is not

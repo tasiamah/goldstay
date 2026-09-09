@@ -21,6 +21,52 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.23.0] - 2026-09-09
+
+Accra is built and has not launched, and the site was advertising it
+anyway. Nineteen Accra URLs sat in the Kenyan sitemap and the
+Organization schema described the firm as operating in "Nairobi and
+Accra" — splitting the geographic focus of the entity in exchange for
+a city where an enquiry could not be served.
+
+The cause was a reasonable rule applied to the wrong situation.
+`marketsServedBy` treated a dark domain as a reason for the other
+domain to cover that market, which is right for a launched market
+waiting on DNS and wrong for a market that has not opened. Whether a
+hostname resolves and whether we trade somewhere are different
+questions.
+
+### Added
+- `site.launchedMarkets`, the single source of truth for where the
+  business actually trades, deliberately separate from
+  `site.liveDomains`. With `isLaunchedMarket`, `isUnlaunchedCity` and
+  `robotsForCity` reading from it, launching Accra is adding one
+  string to one array.
+- `src/lib/launched-markets.test.ts`, which fails if an unlaunched
+  market reaches any sitemap or becomes indexable, and equally if the
+  filter over-reaches and starts suppressing Nairobi.
+
+### Changed
+- The Kenyan sitemap drops all nineteen Accra URLs: `/accra`,
+  `/accra/buy`, `/accra/areas`, ten `/from/<origin>/accra` pages and
+  six Accra articles.
+- Those routes and all twelve Ghana-attributed articles now serve
+  `noindex, follow`. Nothing is deleted and nothing stops rendering —
+  `follow` is kept so their links still reach the service pages.
+- The Organization schema description names Nairobi only, and now
+  states the operational work rather than a second city: finding and
+  vetting tenants, collecting rent, maintenance and cleaning, monthly
+  USD remittance.
+
+### Notes
+- Existing sitemap tests asserted the old behaviour and were inverted
+  rather than deleted, each with a note on why, so the reasoning
+  survives and re-launching Ghana restores the original expectations.
+- `goldstay.com` now serves no market from the sitemap's point of
+  view. Kenya is served only from its own live domain, and Ghana is
+  unlaunched. Harmless, since that domain is a parked lander we do not
+  own.
+
 ## [1.22.1] - 2026-09-09
 
 ### Added
@@ -1125,7 +1171,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.22.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.23.0...HEAD
+[1.23.0]: https://github.com/tasiamah/goldstay/compare/v1.22.1...v1.23.0
 [1.22.1]: https://github.com/tasiamah/goldstay/compare/v1.22.0...v1.22.1
 [1.22.0]: https://github.com/tasiamah/goldstay/compare/v1.21.1...v1.22.0
 [1.21.1]: https://github.com/tasiamah/goldstay/compare/v1.21.0...v1.21.1

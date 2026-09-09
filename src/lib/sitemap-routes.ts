@@ -37,7 +37,14 @@ export function marketsServedBy(host: string): Market[] {
   return [
     servesKenya ? ("kenya" as const) : null,
     servesGhana ? ("ghana" as const) : null,
-  ].filter((m): m is Market => m !== null);
+  ]
+    .filter((m): m is Market => m !== null)
+    // An unlaunched market is not served from anywhere, whatever the
+    // domain situation. The fallback above exists so a launched market
+    // whose own domain is not ready still gets crawled from the domain
+    // that is — it was never meant to advertise a city we have not
+    // opened. See site.launchedMarkets.
+    .filter((m) => site.launchedMarkets.includes(m));
 }
 
 // Paths, host-relative and without the origin, in the order they should

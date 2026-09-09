@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { AreasPage } from "@/components/AreasPage";
 import { enforceCityHost } from "@/lib/enforceCityHost";
-import { alternateLanguagesFor, cities } from "@/lib/site";
+import { alternateLanguagesFor, cities, robotsForCity } from "@/lib/site";
 
 // Accra's equivalent of /nairobi/areas.
 //
@@ -25,6 +25,8 @@ export function generateMetadata(): Metadata {
       canonical: "/accra/areas",
       languages: alternateLanguagesFor("/accra/areas"),
     },
+    // Built, not launched. See site.launchedMarkets.
+    robots: robotsForCity("accra"),
     openGraph: { title, description, type: "website" },
   };
 }
