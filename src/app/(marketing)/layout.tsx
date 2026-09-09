@@ -11,7 +11,7 @@ import { WhatsAppTracking } from "@/components/WhatsAppTracking";
 import { LeadAttribution } from "@/components/LeadAttribution";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
-import { site, alternateLanguagesFor } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 const instrumentSerif = Instrument_Serif({
@@ -36,7 +36,7 @@ export function generateMetadata(): Metadata {
     ? "Premium Property Management in Nairobi"
     : isAccra
       ? "Premium Property Management in Accra"
-      : "Premium Property Management in Nairobi & Accra";
+      : `Premium Property Management in ${launchedCityPhrase()}`;
 
   const description = isNairobi
     ? "Premium property management in Nairobi for diaspora landlords. We handle everything. You receive monthly USD transfers."

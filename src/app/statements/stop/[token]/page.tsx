@@ -21,6 +21,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { findObserverByToken } from "@/lib/clients/observers";
 import { StopForm } from "./StopForm";
+import { launchedCityPhrase } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -131,7 +132,7 @@ function Shell({
         <div className="mt-5">{children}</div>
       </div>
       <p className="mt-6 text-xs text-charcoal/45">
-        Goldstay &middot; Property management in Nairobi &amp; Accra
+        Goldstay &middot; Property management in {launchedCityPhrase()}
       </p>
     </main>
   );

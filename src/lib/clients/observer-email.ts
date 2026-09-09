@@ -23,6 +23,7 @@
 // src/lib/clients/observers.test.ts.
 
 import { unsubscribeUrl } from "./observers";
+import { launchedCityPhrase } from "@/lib/site";
 
 const DEFAULT_FROM = "Goldstay Statements <statements@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
@@ -163,7 +164,7 @@ function renderHtml(
             <p style="color:#44403c;line-height:1.55;margin:24px 0 0 0">If you would rather not receive these, you can stop them yourself &mdash; you do not need to ask ${client}.</p>
             <p style="margin:24px 0;text-align:center"><a href="${escapeHtml(input.stopUrl)}" style="color:#1c1917;text-decoration:underline;font-size:14px">Stop sending me these statements</a></p>
             <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Questions about why you were added are best put to ${client} &mdash; just hit reply and it reaches them, not us.</p>
-            <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Property management in Nairobi &amp; Accra</p>
+            <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Property management in ${launchedCityPhrase()}</p>
           </td></tr>
         </table>
       </td></tr>

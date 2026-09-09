@@ -20,7 +20,7 @@ import {
   ServiceJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import { waLink, alternateLanguagesFor, site } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Tenant finding service page.
@@ -39,14 +39,14 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   const title =
     city === "nairobi"
       ? "Tenant Finding & Vetting Nairobi"
       : city === "accra"
         ? "Tenant Finding & Vetting Accra"
-        : "Tenant Finding & Vetting in Nairobi & Accra";
+        : `Tenant Finding & Vetting in ${launchedCityPhrase()}`;
 
   return {
     title,
@@ -91,7 +91,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi & Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"

@@ -2,14 +2,21 @@ import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { ArrowDown } from "lucide-react";
-import { waLink } from "@/lib/site";
+import { launchedCityPhrase, waLink } from "@/lib/site";
 
 export function Hero({
-  eyebrow = "Nairobi · Accra",
+  // Reads from the launch flag: "Nairobi" today, "Nairobi ·
+  // Accra" when Ghana opens. See launchedCityPhrase.
+  eyebrow = launchedCityPhrase(" · "),
+  // The default H1, and the single most weighted phrase on any page
+  // that does not override it — including the root, which is the page
+  // we most want ranking for "property management nairobi". It read
+  // "in Nairobi & Accra", spending half of it on a city we have not
+  // opened.
   headline = (
     <>
-      <em className="italic">Premium</em> property management in Nairobi
-      &amp; Accra.
+      <em className="italic">Premium</em> property management in{" "}
+      {launchedCityPhrase()}.
     </>
   ),
   subheadline = "We handle everything. You receive monthly USD transfers. Zero headaches.",

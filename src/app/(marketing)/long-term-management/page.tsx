@@ -23,14 +23,7 @@ import {
   ServiceJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import {
-  waLink,
-  alternateLanguagesFor,
-  site,
-  cities,
-  neighbourhoodSlug,
-  profiledNeighbourhoods,
-} from "@/lib/site";
+import { alternateLanguagesFor, cities, launchedCityPhrase, neighbourhoodSlug, profiledNeighbourhoods, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Long-term management service page.
@@ -48,7 +41,7 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   // "Rental management" rather than "property management" on purpose.
   // The city page already owns "property management {city}", so both
@@ -61,7 +54,7 @@ export function generateMetadata(): Metadata {
       ? "Long-Term Rental Management Nairobi"
       : city === "accra"
         ? "Long-Term Rental Management Accra"
-        : "Long-Term Rental Management in Nairobi & Accra";
+        : `Long-Term Rental Management in ${launchedCityPhrase()}`;
 
   return {
     title,
@@ -111,7 +104,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi & Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"

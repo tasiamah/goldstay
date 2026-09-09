@@ -5,7 +5,7 @@ import { ArrowRight, MapPin, Languages, Building2 } from "lucide-react";
 import { SectionHeader } from "@/components/SectionHeader";
 import { Reveal } from "@/components/Reveal";
 import { CTABanner } from "@/components/CTABanner";
-import { waLink, site, alternateLanguagesFor } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // The About page is an SEO-visible page, so we generate city-scoped
@@ -23,7 +23,7 @@ export function generateMetadata(): Metadata {
     ? "Meet the team managing diaspora-owned property in Nairobi. One team, one standard, USD remittances on the 5th."
     : isAccra
       ? "Meet the team managing diaspora-owned property in Accra. One team, one standard, USD remittances on the 5th."
-      : "Meet the team behind Goldstay. Premium property management in Nairobi and Accra, built for diaspora landlords.";
+      : `Meet the team behind Goldstay. Premium property management in ${launchedCityPhrase()}, built for diaspora landlords.`;
 
   return {
     title,

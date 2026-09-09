@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import { permanentRedirect } from "next/navigation";
-import { isLiveDomain, site, soleLiveDomain } from "@/lib/site";
+import { isLiveDomain, launchedCityPhrase, site, soleLiveDomain } from "@/lib/site";
 
 // Cross-domain city gating. Mirrors the pattern already used by
 // /insights/[slug]: a Nairobi page hit on goldstay.com.gh 308-redirects
@@ -47,7 +47,7 @@ export function enforceCityHost(city: "nairobi" | "accra", path: string): void {
   }
 
   // Neutral global surface serves both cities. This is what makes the
-  // goldstay.com homepage able to pitch "Nairobi and Accra" without
+  // goldstay.com homepage able to pitch launchedCityPhrase() without
   // triggering a redirect loop when either city link is clicked.
   if (host === site.domains.main || host === `www.${site.domains.main}`) {
     return;

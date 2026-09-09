@@ -69,7 +69,7 @@ export default function Article() {
       <H3 id="water-pressure">1. Water pressure and supply reliability</H3>
 
       <P>
-        Most Nairobi and Accra apartments are on a tank-and-pump system
+        Most Nairobi apartments are on a tank-and-pump system
         with mains top-up. Pressure varies enormously between buildings
         and even between floors of the same building. The only way to
         know is to turn every tap on simultaneously, run the shower at

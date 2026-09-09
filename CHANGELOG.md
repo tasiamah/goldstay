@@ -21,6 +21,50 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.24.0] - 2026-09-09
+
+The second half of scoping the site to Nairobi. 1.23.0 took Accra out
+of the sitemap and the index; this takes it out of the copy.
+
+184 of 425 pages said "Nairobi and Accra" somewhere. Individually each
+was a footnote. Together they were the site telling Google, 184 times,
+that this is a two-city firm — while trying to rank in one city.
+
+The worst of them was the homepage `<h1>`, which read "Premium
+property management in Nairobi & Accra." An H1 is the most weighted
+phrase on a page and this was the page we most want ranking for
+"property management nairobi", spending half of it on a market that
+has not opened.
+
+### Added
+- `launchedCityPhrase()` and `launchedCities()`, deriving the phrase
+  from `site.launchedMarkets` rather than repeating a literal. Used by
+  the article author bio, hero eyebrow, footer, OG description and
+  image, yield calculator and the service-page fallbacks, so the copy
+  follows the flag instead of needing to be found again.
+
+### Changed
+- The default H1 and hero eyebrow name Nairobi only.
+- The Insights author bio no longer claims two offices, on 88 pages.
+- The "Based On The Ground" claim said we are physically present in
+  Accra, which was not true. It now names the cities we operate in and
+  says what that presence consists of.
+- The FAQ answer on tenant arrears — which appears in FAQ schema on
+  every page — no longer cites legal partners in Accra.
+- Two articles and two diaspora-origin pages had Accra in their prose;
+  scoped to Nairobi.
+- Transactional email footers (welcome, agreement notify, reminder and
+  share) name Nairobi only.
+
+### Fixed
+- The homepage H1 was line-broken across two lines in JSX, so it
+  survived a single-line search of the other thirty occurrences. The
+  test is whitespace-tolerant for exactly this reason.
+- `share-email.ts` briefly had `${launchedCityPhrase()}` inside a
+  plain quoted string, which would have printed the literal
+  interpolation in the plain-text half of a client email. Caught
+  before shipping; the build is now checked for leaked interpolations.
+
 ## [1.23.0] - 2026-09-09
 
 Accra is built and has not launched, and the site was advertising it
@@ -1171,7 +1215,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.23.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.0...HEAD
+[1.24.0]: https://github.com/tasiamah/goldstay/compare/v1.23.0...v1.24.0
 [1.23.0]: https://github.com/tasiamah/goldstay/compare/v1.22.1...v1.23.0
 [1.22.1]: https://github.com/tasiamah/goldstay/compare/v1.22.0...v1.22.1
 [1.22.0]: https://github.com/tasiamah/goldstay/compare/v1.21.1...v1.22.0

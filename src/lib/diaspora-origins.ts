@@ -132,7 +132,7 @@ export const DIASPORA_ORIGINS: DiasporaOrigin[] = [
     remitCurrency: "AUD",
     eatOffsetHours: 7,
     whyDiasporaOwn:
-      "Melbourne, Sydney and Perth host a quietly-growing Kenyan and Ghanaian diaspora that sees Nairobi and Accra property as both an emotional anchor and a portfolio diversifier denominated in something other than the AUD they live in. The 7-hour time zone is awkward for self-management; that's exactly where we add the most value.",
+      "Melbourne, Sydney and Perth host a quietly-growing Kenyan diaspora that sees Nairobi property as both an emotional anchor and a portfolio diversifier denominated in something other than the AUD they live in. The 7-hour time zone is awkward for self-management; that's exactly where we add the most value.",
     topQuestion: {
       q: "Will I be able to claim the Kenya MRI tax against my Australian assessment?",
       a: "Yes, via the Australia-Kenya double tax arrangement, the MRI counts as a foreign income tax offset on your individual return. We ship the year-end pack in a format your Australian accountant can lift straight in.",
@@ -180,7 +180,7 @@ export const DIASPORA_ORIGINS: DiasporaOrigin[] = [
     remitCurrency: "EUR",
     eatOffsetHours: -2,
     whyDiasporaOwn:
-      "Berlin, Munich and Frankfurt-based Kenyan and Ghanaian engineers, doctors and academics own Nairobi and Accra property as a hedge against German real estate fragility and a hard-currency yield asset. EUR salaries plus USD rent is a proven pairing.",
+      "Berlin, Munich and Frankfurt-based Kenyan engineers, doctors and academics own Nairobi property as a hedge against German real estate fragility and a hard-currency yield asset. EUR salaries plus USD rent is a proven pairing.",
     topQuestion: {
       q: "How does this income interact with my German tax return?",
       a: "Foreign rental income is reportable on Anlage V and the Kenya/Ghana withholding is creditable under the respective DTA. We ship a German-accountant-friendly summary at year-end with both KES/GHS originals and EUR-converted line items.",

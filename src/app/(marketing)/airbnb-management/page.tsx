@@ -22,13 +22,7 @@ import {
   ServiceJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import {
-  waLink,
-  alternateLanguagesFor,
-  site,
-  shortLetNeighbourhoods,
-  neighbourhoodSlug,
-} from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, neighbourhoodSlug, shortLetNeighbourhoods, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Short-stay specific FAQ. The page previously rendered the generic
@@ -101,7 +95,7 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   // Built from harvested Google autocomplete for Kenya rather than
   // from a guess. Run `node scripts/harvest-queries.mjs` to reproduce.
@@ -125,7 +119,7 @@ export function generateMetadata(): Metadata {
       ? "Airbnb Management Company Nairobi, Kenya"
       : city === "accra"
         ? "Airbnb Management Company Accra, Ghana"
-        : "Airbnb Management Company in Nairobi & Accra";
+        : `Airbnb Management Company in ${launchedCityPhrase()}`;
 
   return {
     title: cityTitle,
@@ -190,7 +184,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi and Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"
@@ -206,10 +200,10 @@ export default function Page() {
         : ["Nairobi", "Accra"];
 
   // Swap the two cross-market phrases that leak into the Accra/Kenya narrative
-  // when viewed on a localized domain. Neutral .com still says "Nairobi & Accra".
+  // when viewed on a localized domain. Neutral .com still says launchedCityPhrase().
   const reviewLine = cityName
     ? `Average review score 4.88 across our ${cityName} portfolio`
-    : "Average review score 4.88 across Nairobi & Accra";
+    : `Average review score 4.88 across ${launchedCityPhrase()}`;
   const exampleUnit =
     city === "accra"
       ? "2-bed apartment, East Legon"
@@ -244,7 +238,7 @@ export default function Page() {
             crawlers and skipped Next's image optimisation pipeline. */}
         <Image
           src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=2400&q=80"
-          alt={`Sunlit short-stay apartment interior, representative of Goldstay's Airbnb management portfolio in ${cityName ?? "Nairobi and Accra"}`}
+          alt={`Sunlit short-stay apartment interior, representative of Goldstay's Airbnb management portfolio in ${cityName ?? launchedCityPhrase()}`}
           fill
           priority
           sizes="100vw"
@@ -334,7 +328,7 @@ export default function Page() {
             label: "Best suited to",
             value: cityName
               ? `Furnished apartments in ${cityName}`
-              : "Furnished apartments in Nairobi and Accra",
+              : `Furnished apartments in ${launchedCityPhrase()}`,
           },
         ]}
         footnote="Every figure here is the figure you would be quoted on a call, and each one is written into the management agreement rather than described on a website."

@@ -213,8 +213,8 @@ export default function Article() {
 
       <P>
         The Goldstay vendor bench has roughly 40
-        regularly-used contractors across our coverage
-        areas in Nairobi and Accra. We have direct
+        regularly-used contractors across our Nairobi
+        coverage areas. We have direct
         accounts with each, fixed callout fees, and
         same-day turnaround commitments on critical
         repairs (water, electrical, security). For most

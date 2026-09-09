@@ -16,6 +16,8 @@ import { describe, expect, it } from "vitest";
 import {
   isLaunchedMarket,
   isUnlaunchedCity,
+  launchedCities,
+  launchedCityPhrase,
   robotsForCity,
   site,
 } from "./site";
@@ -113,6 +115,50 @@ describe("the routes and copy honour the flag", () => {
   it("noindexes articles belonging to an unlaunched market", () => {
     const route = read("src/app/(marketing)/insights/[slug]/page.tsx");
     expect(route).toContain("isLaunchedMarket(post.meta.country)");
+  });
+
+  it("names only launched cities in the shared city phrase", () => {
+    // The phrase is used by the author bio on every article page, the
+    // hero eyebrow, the footer, the OG description and the yield
+    // calculator, so this one assertion covers about 180 pages.
+    expect(launchedCityPhrase()).toBe("Nairobi");
+    expect(launchedCityPhrase(" · ")).toBe("Nairobi");
+    for (const city of site.unlaunchedCities) {
+      expect(launchedCityPhrase().toLowerCase()).not.toContain(city);
+      expect(launchedCities()).not.toContain(city);
+    }
+  });
+
+  it("keeps no dual-city literal in the copy the phrase replaced", () => {
+    // Guards the specific strings that were reverted by hand, so a
+    // future edit cannot quietly reintroduce one.
+    for (const p of [
+      "src/components/Hero.tsx",
+      "src/components/Footer.tsx",
+      "src/components/TrustStrip.tsx",
+      "src/components/FounderLetter.tsx",
+      "src/components/CalculatorTeaser.tsx",
+      "src/components/YieldCalculator.tsx",
+      "src/app/opengraph-image.tsx",
+      "src/app/(marketing)/insights/posts/_shared.ts",
+    ]) {
+      const src = read(p);
+      // Comments are allowed to discuss the phrase; code is not.
+      const code = src
+        .split("\n")
+        .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
+        .join("\n");
+      expect(
+        code,
+        `${p} hardcodes a dual-city phrase. Use launchedCityPhrase() ` +
+          `so it follows site.launchedMarkets.`,
+        // Whitespace-tolerant on purpose. The homepage H1 read
+        // "property management in Nairobi\n&amp; Accra." and survived
+        // a single-line search of all thirty other occurrences,
+        // because JSX had wrapped it across two lines. It was the most
+        // weighted phrase on the page we most want to rank.
+      ).not.toMatch(/Nairobi\s*(and|&|&amp;|·)\s*Accra/);
+    }
   });
 
   it("does not name an unlaunched city in the entity description", () => {

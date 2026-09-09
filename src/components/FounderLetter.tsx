@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { waLink } from "@/lib/site";
+import { launchedCityPhrase, waLink } from "@/lib/site";
 
 export function FounderLetter() {
   return (
@@ -51,7 +51,7 @@ export function FounderLetter() {
                   The Goldstay Founding Team
                 </div>
                 <div className="mt-1 font-mono text-[0.65rem] uppercase tracking-widest-xl text-charcoal/55">
-                  Nairobi · Accra
+                  {launchedCityPhrase(" · ")}
                 </div>
               </div>
               <div className="flex flex-wrap gap-3">

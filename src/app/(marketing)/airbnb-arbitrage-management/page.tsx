@@ -22,7 +22,7 @@ import {
   ServiceJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import { waLink, alternateLanguagesFor, site } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Short-let management for operators who lease rather than own.
@@ -61,14 +61,14 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   const title =
     city === "nairobi"
       ? "Airbnb Arbitrage Management Nairobi"
       : city === "accra"
         ? "Airbnb Arbitrage Management Accra"
-        : "Airbnb Arbitrage Management in Nairobi & Accra";
+        : `Airbnb Arbitrage Management in ${launchedCityPhrase()}`;
 
   return {
     title,
@@ -118,7 +118,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi & Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"

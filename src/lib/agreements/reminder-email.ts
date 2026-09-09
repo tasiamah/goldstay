@@ -13,6 +13,7 @@
 // start of a drip campaign.
 
 import { formatHours, REMINDER_LADDER } from "./reminder-schedule";
+import { launchedCityPhrase } from "@/lib/site";
 
 export type ReminderCopy = {
   subject: string;
@@ -138,7 +139,7 @@ function renderHtml(input: ReminderEmailInput, copy: ReminderCopy): string {
                 <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${escapeHtml(copy.body)}</p>
                 <p style="margin:32px 0;text-align:center"><a href="${escapeHtml(input.link)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">${escapeHtml(copy.cta)} &rarr;</a></p>
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:0;text-align:center">${escapeHtml(copy.footnote)}</p>
-                <p style="color:#a8a29e;font-size:12px;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Goldstay &middot; Premium property management in Nairobi &amp; Accra</p>
+                <p style="color:#a8a29e;font-size:12px;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Goldstay &middot; Premium property management in ${launchedCityPhrase()}</p>
               </td>
             </tr>
           </table>

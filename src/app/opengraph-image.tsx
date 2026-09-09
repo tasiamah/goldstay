@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getServerCity } from "@/lib/getServerCity";
+import { launchedCityPhrase } from "@/lib/site";
 
 export const alt = "Goldstay — premium property management for diaspora landlords";
 export const size = { width: 1200, height: 630 };
@@ -23,14 +24,14 @@ export default function OpengraphImage() {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi  ·  Accra";
+        : launchedCityPhrase("  ·  ");
 
   const pitch =
     city === "nairobi"
       ? "Premium property management for diaspora landlords in Nairobi. Rent collected in KES, remitted in USD on the 5th."
       : city === "accra"
         ? "Premium property management for diaspora landlords in Accra. Rent collected in GHS, remitted in USD on the 5th."
-        : "Premium property management for diaspora landlords in Nairobi and Accra. Rent collected locally, remitted in USD on the 5th.";
+        : `Premium property management for diaspora landlords in ${launchedCityPhrase()}. Rent collected locally, remitted in USD on the 5th.`;
 
   const domain =
     city === "nairobi"

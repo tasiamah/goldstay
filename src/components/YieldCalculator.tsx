@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { waLink } from "@/lib/site";
+import { launchedCityPhrase, waLink } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
 
 type City = "nairobi" | "accra";
@@ -119,7 +119,7 @@ export function YieldCalculator() {
             ? "Nairobi"
             : lockedCity === "accra"
               ? "Accra"
-              : "Nairobi and Accra"}
+              : launchedCityPhrase()}
           . Numbers are illustrative. We&apos;ll send you a specific estimate within 48 hours.
         </p>
 

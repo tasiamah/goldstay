@@ -1,3 +1,5 @@
+import { launchedCityPhrase } from "@/lib/site";
+
 // Shared author records and PostMeta type, factored out of the
 // posts/index.ts barrel so individual post files can import authors
 // without forming a circular dependency with the registry. The
@@ -108,7 +110,9 @@ export const authors: Record<string, Author> = {
   editors: {
     name: "Goldstay Editors",
     role: "Editorial Team",
-    bio: "The Goldstay Editors team writes and reviews the Insights catalogue. Pieces are reported from our Nairobi and Accra offices, drawing on the property advisory, sourcing and management work the firm runs day to day for diaspora and resident clients.",
+    // Named two offices, on 88 article pages, for a city we have not
+    // opened. Reads from the launch flag now — see launchedCityPhrase.
+    bio: `The Goldstay Editors team writes and reviews the Insights catalogue. Pieces are reported from our ${launchedCityPhrase()} office, drawing on the property management, tenant placement and sourcing work the firm runs day to day for diaspora and resident landlords.`,
     image: "/images/team/editors.png",
     kind: "desk",
   },

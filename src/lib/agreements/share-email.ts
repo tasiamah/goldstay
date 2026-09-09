@@ -20,6 +20,7 @@
 
 import { logCommunication } from "@/lib/comms";
 import type { CurrentActor } from "@/lib/auth";
+import { launchedCityPhrase } from "@/lib/site";
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
@@ -165,7 +166,7 @@ function renderText(input: AgreementShareEmailInput): string {
     "Best,",
     "The Goldstay team",
     "",
-    "Goldstay, property management in Nairobi and Accra",
+    `Goldstay, property management in ${launchedCityPhrase()}`,
   ].join("\n");
 }
 
@@ -203,7 +204,7 @@ function renderHtml(input: AgreementShareEmailInput): string {
                 }</p>
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:20px 0 0 0">The link is read-only, reaches this one agreement and nothing else, and stays open until ${escapeHtml(validUntil(input.expiresAt))}. ${client} can withdraw it at any time.</p>
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">${client} is copied on this email, so replying reaches them directly. To put a question to us instead, write to <a href="mailto:hello@goldstay.co.ke" style="color:#1c1917">hello@goldstay.co.ke</a> and we will answer within one business day.</p>
-                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Property management in Nairobi &amp; Accra</p>
+                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Property management in ${launchedCityPhrase()}</p>
               </td>
             </tr>
           </table>

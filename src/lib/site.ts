@@ -254,7 +254,7 @@ export function findShortLetNeighbourhood(
 //
 // Without an explicit map per page Google picks one domain as canonical
 // and treats the other two as duplicates, the opposite of what we want
-// for local-pack visibility in Nairobi and Accra.
+// for local-pack visibility in Nairobi.
 export function isLiveDomain(domain: string) {
   return site.liveDomains.includes(domain);
 }
@@ -284,6 +284,38 @@ export function robotsForCity(city: string) {
   return isUnlaunchedCity(city)
     ? { index: false, follow: true }
     : undefined;
+}
+
+// The cities we trade in, in the order we name them.
+export function launchedCities(): ("nairobi" | "accra")[] {
+  return (["nairobi", "accra"] as const).filter((c) => !isUnlaunchedCity(c));
+}
+
+// Those cities as a phrase, for the copy that has to name all of them.
+//
+// Worth a helper rather than the literal, because the literal was in
+// thirty places: an author bio on 88 article pages, hero eyebrows,
+// the footer, the OG description, the yield calculator. Every one of
+// them said launchedCityPhrase() and each was a small vote for a
+// two-city firm, on a site trying to rank in one city.
+//
+// Reading from the launch flag means the day Ghana opens the copy
+// changes with it, and nobody has to find these thirty places again.
+//
+//   launchedCityPhrase()      -> "Nairobi"
+//   launchedCityPhrase(" · ") -> "Nairobi"
+//
+// and with both markets launched, launchedCityPhrase() / "Nairobi ·
+// Accra" respectively.
+export function launchedCityPhrase(separator = " and ") {
+  const names = launchedCities().map(
+    (c) => c.charAt(0).toUpperCase() + c.slice(1),
+  );
+  if (names.length <= 1) return names[0] ?? "";
+  if (separator.trim() === "and") {
+    return `${names.slice(0, -1).join(", ")} and ${names.at(-1)}`;
+  }
+  return names.join(separator);
 }
 
 // The domain to fall back to whenever the one we'd naturally name is not
@@ -1349,7 +1381,10 @@ export const faq = [
   },
   {
     q: "What happens if a tenant doesn't pay?",
-    a: "We chase on day one, not day thirty. Our lease agreements are enforceable and we have legal partners in both Nairobi and Accra who can serve notice and begin eviction proceedings within the statutory window. You'll know within 48 hours of the first missed payment.",
+    // Named Accra until that market was pulled from the index. This
+    // answer is in the FAQ schema on every page, so it was one of the
+    // few places still asserting a second city to a crawler.
+    a: "We chase on day one, not day thirty. Our lease agreements are enforceable and we have legal partners in Nairobi who can serve notice and begin eviction proceedings within the statutory window. You'll know within 48 hours of the first missed payment.",
   },
   {
     q: "What happens to my property if Goldstay closes?",
@@ -1444,7 +1479,9 @@ export const painPoints = [
 export const differentiators = [
   {
     title: "Based On The Ground",
-    body: "We are physically present in both Nairobi and Accra. Not remote agents who've never seen your property.",
+    // Claimed presence in a city we have not opened. Scoped to the
+    // cities we actually operate in — see launchedCityPhrase.
+    body: `We are physically present in ${launchedCityPhrase()}, with an office, staff and vendors on the ground. Not remote agents who have never seen your property.`,
   },
   {
     title: "USD Remittances",

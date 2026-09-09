@@ -66,7 +66,7 @@ const BASE_COUNTRIES = [
 
 // Bedrooms is collected separately so these options describe the asset class
 // rather than the room count. Maisonette grouped with townhouse because they
-// are functionally the same for management purposes in Nairobi and Accra.
+// are functionally the same for management purposes in Nairobi.
 const PROPERTY_TYPES = [
   "Studio",
   "Apartment",

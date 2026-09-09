@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Calculator } from "lucide-react";
 import { Reveal } from "./Reveal";
+import { launchedCityPhrase } from "@/lib/site";
 
 export function CalculatorTeaser({
   city,
@@ -11,7 +12,7 @@ export function CalculatorTeaser({
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
   const portfolioPhrase = cityName
     ? `in ${cityName}`
-    : "in Nairobi and Accra";
+    : `in ${launchedCityPhrase()}`;
   const sampleCity = cityName ?? "Nairobi";
   return (
     <section className="relative overflow-hidden bg-charcoal py-20 text-cream md:py-24">

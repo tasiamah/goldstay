@@ -55,7 +55,7 @@ export function scoreTenantApplication(
 ): TenantScoreBreakdown {
   const rationale: string[] = [];
 
-  // Income ratio: 40 points. Landlords in Nairobi and Accra typically require
+  // Income ratio: 40 points. Landlords in Nairobi typically require
   // 2.5x to 3x rent in verified income. We reward 3x+, accept 2x as baseline,
   // and penalise below 1.5x heavily because those applications almost always
   // end in arrears within the first six months.

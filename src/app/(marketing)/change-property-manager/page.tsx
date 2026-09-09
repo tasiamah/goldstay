@@ -19,7 +19,7 @@ import {
   ServiceJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import { waLink, alternateLanguagesFor, site } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Changing property manager.
@@ -58,7 +58,7 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   const title =
     city === "accra"
@@ -132,7 +132,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi & Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"

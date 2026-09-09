@@ -1,12 +1,7 @@
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
-import {
-  neighbourhoodSlug,
-  profiledNeighbourhoods,
-  site,
-  waLink,
-} from "@/lib/site";
+import { launchedCityPhrase, neighbourhoodSlug, profiledNeighbourhoods, site, waLink } from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
 import { FooterOffice } from "./FooterOffice";
 import { getServerCity } from "@/lib/getServerCity";
@@ -55,7 +50,7 @@ export function Footer() {
       ? "Premium property management in Nairobi. Built for diaspora landlords. Remittances in US dollars."
       : city === "accra"
         ? "Premium property management in Accra. Built for diaspora landlords. Remittances in US dollars."
-        : "Premium property management in Nairobi and Accra. Built for diaspora landlords. Remittances in US dollars.";
+        : `Premium property management in ${launchedCityPhrase()}. Built for diaspora landlords. Remittances in US dollars.`;
 
   return (
     <footer className="border-t border-charcoal/10 bg-cream-100">

@@ -5,7 +5,7 @@ import { ArrowUpRight } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { BreadcrumbJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import { getServerCity } from "@/lib/getServerCity";
-import { alternateLanguagesFor, site } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site } from "@/lib/site";
 
 export function generateMetadata(): Metadata {
   const city = getServerCity();
@@ -14,7 +14,7 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   return {
     title: "Buy Property with Goldstay",
@@ -70,7 +70,7 @@ export default function Page() {
   const headline = city ? "Where in the city?" : "Where do you want to buy?";
   const lede = city
     ? "Property sourcing is a city-level service. Tap through for the neighbourhoods, the title process and the legal paperwork specific to your market."
-    : "Property sourcing is a city-level service. The neighbourhoods, the title process and the legal paperwork are different in Nairobi and Accra, so the page you want is different too. Pick your city.";
+    : `Property sourcing is a city-level service. The neighbourhoods, the title process and the legal paperwork are different in ${launchedCityPhrase()}, so the page you want is different too. Pick your city.`;
 
   return (
     <>

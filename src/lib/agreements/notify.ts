@@ -33,6 +33,7 @@ import { SIGNING_CAPACITY_LABEL } from "@/lib/signing-capacity";
 import { AGREEMENT_TEMPLATE_TITLE } from "./template";
 import type { CurrentActor } from "@/lib/auth";
 import type { SigningCapacity } from "@prisma/client";
+import { launchedCityPhrase } from "@/lib/site";
 
 export type AgreementIssuedInput = {
   agreementId: string;
@@ -257,7 +258,7 @@ function renderHtml({
                 <p style="margin:32px 0;text-align:center"><a href="${escapeAttr(link)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Review &amp; accept my agreement &rarr;</a></p>
                 <p style="color:#78716c;font-size:13px;margin:0;text-align:center">The property stays off the market until the agreement is accepted.</p>
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Questions about any clause? Reply to this email and you&rsquo;ll reach a real person at Goldstay. We answer within one business day.</p>
-                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Premium property management in Nairobi &amp; Accra</p>
+                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay &middot; Premium property management in ${launchedCityPhrase()}</p>
               </td>
             </tr>
           </table>

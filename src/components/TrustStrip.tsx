@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Reveal } from "./Reveal";
+import { launchedCityPhrase } from "@/lib/site";
 
 type Stat = {
   value: number;
@@ -19,7 +20,7 @@ const stats: Stat[] = [
   { value: 48, suffix: "h", label: "Response SLA", note: "Anything urgent, same day" },
   { value: 5, suffix: "th", label: "Paid on the", note: "Of every month, without fail" },
   { display: "USD", value: 0, label: "Wired directly", note: "EUR · GBP · AED on request" },
-  { value: 50, suffix: "+", label: "Buildings inspected", note: "Nairobi · Accra inventory tracked monthly" },
+  { value: 50, suffix: "+", label: "Buildings inspected", note: `${launchedCityPhrase(" · ")} inventory tracked monthly` },
 ];
 
 function useCountUp(target: number, trigger: boolean, duration = 1400) {

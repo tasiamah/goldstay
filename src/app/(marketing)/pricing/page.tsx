@@ -12,7 +12,7 @@ import {
   FaqJsonLd,
   ReviewJsonLd,
 } from "@/components/JsonLd";
-import { waLink, alternateLanguagesFor, site, services } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, services, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Pricing.
@@ -49,7 +49,7 @@ export function generateMetadata(): Metadata {
       ? "Nairobi"
       : city === "accra"
         ? "Accra"
-        : "Nairobi and Accra";
+        : launchedCityPhrase();
 
   // Exact-match on the phrase people actually type. "Fees" beats
   // "pricing" as the head term for this query and leaves room for the
@@ -59,7 +59,7 @@ export function generateMetadata(): Metadata {
       ? "Property Management Fees Nairobi"
       : city === "accra"
         ? "Property Management Fees Accra"
-        : "Property Management Fees in Nairobi & Accra";
+        : `Property Management Fees in ${launchedCityPhrase()}`;
 
   return {
     title,
@@ -107,7 +107,7 @@ export default function Page() {
   const city = getServerCity();
   const cityName =
     city === "nairobi" ? "Nairobi" : city === "accra" ? "Accra" : null;
-  const cityPhrase = cityName ?? "Nairobi & Accra";
+  const cityPhrase = cityName ?? launchedCityPhrase();
 
   const baseUrl =
     city === "nairobi"

@@ -27,6 +27,7 @@ import { mintCallbackLink } from "@/lib/supabase/magic-link";
 import { logCommunication } from "@/lib/comms";
 import { recordAudit } from "@/lib/audit";
 import type { CurrentActor } from "@/lib/auth";
+import { launchedCityPhrase } from "@/lib/site";
 
 type WelcomeInput = {
   email: string;
@@ -317,7 +318,7 @@ function renderHtml({
                 </ul>
                 ${cta}
                 <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Questions? Reply to this email and you'll reach a real person at Goldstay. We answer within one business day.</p>
-                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay · Premium property management in Nairobi &amp; Accra</p>
+                <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay · Premium property management in ${launchedCityPhrase()}</p>
               </td>
             </tr>
           </table>

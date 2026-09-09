@@ -37,6 +37,7 @@ import {
   shareUsability,
 } from "@/lib/agreements/share";
 import { formatPropertyDisplayName } from "@/lib/format-property";
+import { launchedCityPhrase } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -241,7 +242,7 @@ export default async function SharedAgreementPage({
           . We answer within one business day.
         </p>
         <p className="mt-4 text-xs text-charcoal/45">
-          Goldstay · Property management in Nairobi and Accra
+          Goldstay · Property management in {launchedCityPhrase()}
         </p>
       </footer>
     </div>
