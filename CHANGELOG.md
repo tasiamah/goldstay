@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.24.1] - 2026-09-09
+
+### Fixed
+- The sitemap gave every one of its 377 URLs a `lastmod` of the moment
+  it was requested, so all of them claimed to have changed today — and
+  would claim it again after the next deploy. Google uses `lastmod`
+  only where the value is consistently accurate and ignores it
+  otherwise, which meant we were throwing away the signal that decides
+  what gets recrawled first, on a site whose 327 articles are the
+  thing we most want crawled.
+
+  Articles now carry their real `updatedAt ?? publishedAt` date,
+  spanning August 2024 to September 2026. The 58 non-article routes
+  omit `lastmod` entirely, which the spec allows and which is better
+  than inventing one.
+
 ## [1.24.0] - 2026-09-09
 
 The second half of scoping the site to Nairobi. 1.23.0 took Accra out
@@ -1215,7 +1231,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.1...HEAD
+[1.24.1]: https://github.com/tasiamah/goldstay/compare/v1.24.0...v1.24.1
 [1.24.0]: https://github.com/tasiamah/goldstay/compare/v1.23.0...v1.24.0
 [1.23.0]: https://github.com/tasiamah/goldstay/compare/v1.22.1...v1.23.0
 [1.22.1]: https://github.com/tasiamah/goldstay/compare/v1.22.0...v1.22.1

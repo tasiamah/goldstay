@@ -53,11 +53,39 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ),
   });
 
-  const now = new Date();
-  return paths.map((r) => ({
-    url: `${base}${r}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: r === "" ? 1 : 0.8,
-  }));
+  // Real modification dates, per article.
+  //
+  // Every URL used to carry `lastModified: now`, so all 377 claimed to
+  // have changed at the moment the sitemap was requested — and changed
+  // again on the next deploy, and the one after. Google's guidance is
+  // that it uses lastmod only where the value is "consistently and
+  // verifiably accurate", and ignores it otherwise. A sitemap that
+  // says everything changed today, every day, is the textbook case for
+  // being ignored: it gives no way to tell a genuinely revised article
+  // from one untouched since April, which is exactly the signal that
+  // decides what gets recrawled first.
+  //
+  // Articles have honest dates already, so use them. Everything else
+  // omits lastmod, which the spec allows and which is better than a
+  // number we would be making up.
+  const articleDates = new Map<string, string>();
+  for (const m of markets) {
+    for (const p of postsForCountry(m)) {
+      const when = p.meta.updatedAt ?? p.meta.publishedAt;
+      if (when) articleDates.set(`/insights/${p.meta.slug}`, when);
+    }
+  }
+
+  return paths.map((r) => {
+    const when = articleDates.get(r);
+    const parsed = when ? new Date(when) : undefined;
+    return {
+      url: `${base}${r}`,
+      ...(parsed && !Number.isNaN(parsed.getTime())
+        ? { lastModified: parsed }
+        : {}),
+      changeFrequency: "monthly" as const,
+      priority: r === "" ? 1 : 0.8,
+    };
+  });
 }

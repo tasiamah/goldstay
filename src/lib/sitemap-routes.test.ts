@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { marketsServedBy, sitemapPaths, type Market } from "./sitemap-routes";
 import { isLiveDomain, site } from "./site";
@@ -151,5 +153,36 @@ describe("sitemapPaths on the Ghana domain", () => {
     const paths = pathsFor("goldstay.com.gh");
     expect(paths).not.toContain("/insights/ghana-stool-land-diaspora-buyer-trap");
     expect(paths).not.toContain("/insights/karen-complete-guide-2026");
+  });
+});
+
+// The sitemap's lastmod values, guarded at the source.
+//
+// sitemap.ts cannot be imported here: it calls headers() and reaches
+// the whole 350-article catalogue, which is why this file tests the
+// pure route logic instead. The one thing worth asserting about the
+// wiring is the mistake it used to make.
+describe("the sitemap does not fake its lastmod dates", () => {
+  // Comments are free to quote the old mistake; code is not.
+  const src = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8")
+    .split("\n")
+    .filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l))
+    .join("\n");
+
+  it("does not stamp every URL with the current time", () => {
+    // All 377 URLs carried `lastModified: now`, so the sitemap claimed
+    // everything changed the moment it was fetched, and changed again
+    // on the next deploy. Google uses lastmod only where it is
+    // "consistently and verifiably accurate" and ignores it otherwise,
+    // so this threw away the signal that decides what gets recrawled
+    // first — on a site whose articles are the thing we want crawled.
+    expect(
+      src,
+      "sitemap.ts assigns a single current timestamp to every entry.",
+    ).not.toMatch(/lastModified:\s*now\b/);
+  });
+
+  it("takes article dates from the article", () => {
+    expect(src).toMatch(/updatedAt\s*\?\?\s*.*publishedAt/);
   });
 });
