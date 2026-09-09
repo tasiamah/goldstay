@@ -264,6 +264,11 @@ export function JsonLd() {
         }
       : {}),
     openingHours: [...openingHours],
+    // Ties this node to the Google Maps place for the same address,
+    // which is the join Google otherwise has to guess from a string.
+    // See the note on googleMapsUrl in site.ts for why this is
+    // `hasMap` and not `sameAs`.
+    hasMap: site.googleMapsUrl,
     // Free text, and better spent on the actual fee than on a "$$"
     // band nobody can act on. We publish these rates on every service
     // page already, so stating them here says nothing new — it just

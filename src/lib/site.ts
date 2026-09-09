@@ -47,6 +47,21 @@ export const site = {
   // at, and add the Google Business Profile here too once it is
   // verified, since that is the highest-value corroboration available.
   sameAs: ["https://instagram.com/goldstay.ke"],
+  // The Google Maps place for the Nairobi office.
+  //
+  // Recorded here rather than added to `sameAs` above, deliberately.
+  // A place existing on Maps is not the same thing as a Business
+  // Profile claimed and verified by us — Google generates unclaimed
+  // listings from other signals, and an unclaimed listing cannot be
+  // categorised, cannot properly collect reviews and does not compete
+  // in the local pack. Until we can confirm the profile is verified
+  // and ours, `hasMap` is the honest claim: here is a map of this
+  // address. `sameAs` asserts identity, and is a stronger statement
+  // than we can currently support. Promote it the day verification
+  // is confirmed.
+  googleMapsPlaceId: "ChIJfSiLsYEELIMRHhnw9yeAthg",
+  googleMapsUrl:
+    "https://www.google.com/maps/place/?q=place_id:ChIJfSiLsYEELIMRHhnw9yeAthg",
   domains: {
     main: "goldstay.com",
     nairobi: "goldstay.co.ke",

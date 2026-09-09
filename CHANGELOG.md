@@ -21,6 +21,25 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.22.1] - 2026-09-09
+
+### Added
+- The Nairobi office schema now carries `hasMap`, pointing at the
+  Google Maps place for the same address. Google previously had to
+  join our address string to that place by inference; now it is
+  stated.
+
+### Notes
+- The place ID is recorded in `site.ts` but deliberately kept out of
+  `sameAs`. A place existing on Maps is not the same as a Business
+  Profile claimed and verified by us: Google generates unclaimed
+  listings on its own, and an unclaimed listing cannot be
+  categorised, cannot properly gather reviews and does not compete in
+  the local pack. `hasMap` says "here is a map of this address", which
+  is true either way. `sameAs` asserts identity and has to wait for
+  confirmation that the profile is verified and ours — at which point
+  it is a one-line change.
+
 ## [1.22.0] - 2026-09-09
 
 Re-ran the query harvest against Google's Kenyan autocomplete across
@@ -1106,7 +1125,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.22.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.22.1...HEAD
+[1.22.1]: https://github.com/tasiamah/goldstay/compare/v1.22.0...v1.22.1
 [1.22.0]: https://github.com/tasiamah/goldstay/compare/v1.21.1...v1.22.0
 [1.21.1]: https://github.com/tasiamah/goldstay/compare/v1.21.0...v1.21.1
 [1.21.0]: https://github.com/tasiamah/goldstay/compare/v1.20.1...v1.21.0
