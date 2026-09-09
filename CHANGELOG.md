@@ -21,6 +21,26 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.32.1] - 2026-09-09
+
+### Added
+- The Airbnb trademark disclosure their brand guidelines ask for:
+  "Goldstay is an independent third party and is not endorsed by or
+  associated with Airbnb, Inc. or its affiliates." It sits in the footer
+  on every page, and again directly under the yield calculator and the
+  two landlord lead form CTAs, which are the surfaces the guidelines
+  name explicitly.
+
+  The site markets "Airbnb management" hard, because that is the phrase
+  owners here search for and dropping it would cost real traffic. The
+  same guidelines treat the mark used as a service name as prohibited
+  branded use, so the phrase and the notice are a pair: the disclosure
+  is what makes the usage descriptive rather than a claim of
+  endorsement. The exposure worth caring about is not a lawsuit, it is
+  a trademark complaint to Google taking down the paid search campaign
+  — which is the channel the phrase is most valuable in, and which
+  starts running this month.
+
 ## [1.32.0] - 2026-09-09
 
 ### Added
@@ -1616,7 +1636,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.32.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.32.1...HEAD
+[1.32.1]: https://github.com/tasiamah/goldstay/compare/v1.32.0...v1.32.1
 [1.32.0]: https://github.com/tasiamah/goldstay/compare/v1.31.0...v1.32.0
 [1.31.0]: https://github.com/tasiamah/goldstay/compare/v1.30.0...v1.31.0
 [1.30.0]: https://github.com/tasiamah/goldstay/compare/v1.29.0...v1.30.0

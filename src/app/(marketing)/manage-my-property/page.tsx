@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Check, MessageCircle, ShieldCheck } from "lucide-react";
+import { AirbnbDisclosure } from "@/components/AirbnbDisclosure";
 import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "@/components/JsonLd";
 import { phone, site } from "@/lib/site";
 
@@ -283,6 +284,10 @@ export default function ManageMyPropertyPage() {
             </Link>
             .
           </p>
+          {/* The most important placement of the three. This is the
+              page a Google Ads reviewer lands on, and the campaign
+              bids on Airbnb-branded queries. */}
+          <AirbnbDisclosure className="mx-auto mt-4 max-w-md text-cream-50/50" />
         </div>
       </section>
     </>

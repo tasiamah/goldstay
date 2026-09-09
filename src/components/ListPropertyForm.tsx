@@ -10,6 +10,7 @@ import {
   FOUND_VIA_OPTIONS,
 } from "@/lib/lead-attribution";
 import { readFirstTouch } from "@/components/LeadAttribution";
+import { AirbnbDisclosure } from "@/components/AirbnbDisclosure";
 import { trackFormLead } from "@/lib/lead-tracking";
 
 type FormValues = {
@@ -506,6 +507,9 @@ export function ListPropertyForm() {
           We call back within 2 hours during business hours.
         </p>
       </div>
+      {/* Airbnb's guidelines ask for the disclosure under any CTA that
+          captures user data, which this is. */}
+      <AirbnbDisclosure className="mt-4 max-w-md text-charcoal/50" />
     </form>
   );
 }

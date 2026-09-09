@@ -4,6 +4,7 @@ import { useMemo, useState, type FormEvent } from "react";
 import { calculateYield, formatUsd } from "@/lib/yield/calc";
 import type { CalcInput, CalcResult, Strategy } from "@/lib/yield/calc";
 import { NAIROBI_NEIGHBOURHOODS } from "@/lib/nairobi-neighbourhoods";
+import { AirbnbDisclosure } from "@/components/AirbnbDisclosure";
 
 // Indicative neighbourhood mid-points keyed by city for the rent
 // pre-fill. Sourced from the same bands surfaced on the city pages
@@ -247,6 +248,10 @@ export function YieldCalculatorClient() {
               Your report is downloading. We&apos;ll be in touch shortly.
             </p>
           )}
+          {/* Airbnb's guidelines name an earnings calculator as a place
+              the disclosure has to sit under the CTA specifically. This
+              is that calculator. */}
+          <AirbnbDisclosure className="mt-4 max-w-md text-charcoal/50" />
         </div>
       </form>
 

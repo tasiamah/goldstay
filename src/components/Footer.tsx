@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
+import { AirbnbDisclosureLine } from "./AirbnbDisclosure";
 import { launchedCityPhrase, neighbourhoodSlug, profiledNeighbourhoods, site, waLink } from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
 import { FooterOffice } from "./FooterOffice";
@@ -309,8 +310,16 @@ export function Footer() {
         </div>
 
         <div className="mt-20 flex flex-col items-start justify-between gap-4 border-t border-charcoal/10 pt-8 text-xs text-charcoal/50 md:flex-row md:items-center">
-          <div>
-            © {new Date().getFullYear()} Goldstay. {site.parent}.
+          <div className="space-y-2">
+            <div>
+              © {new Date().getFullYear()} Goldstay. {site.parent}.
+            </div>
+            {/* Airbnb's brand guidelines ask for this wherever a
+                short-let management company uses the mark. See
+                AirbnbDisclosure.tsx for why it is not optional. */}
+            <div className="max-w-md">
+              <AirbnbDisclosureLine />
+            </div>
           </div>
           <div className="flex gap-6">
             <Link href="/privacy" className="link-underline">

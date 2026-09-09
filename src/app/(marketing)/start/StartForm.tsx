@@ -10,6 +10,7 @@ import {
 } from "@/lib/lead-options";
 import { NAIROBI_NEIGHBOURHOODS } from "@/lib/nairobi-neighbourhoods";
 import { waLink } from "@/lib/site";
+import { AirbnbDisclosure } from "@/components/AirbnbDisclosure";
 import {
   asksForSearchTerm,
   FOUND_VIA_OPTIONS,
@@ -346,6 +347,9 @@ export function StartForm({
               on WhatsApp.
             </p>
           ) : null}
+          {/* Airbnb's guidelines ask for the disclosure under any CTA
+              that captures user data, which this is. */}
+          <AirbnbDisclosure className="mt-4 text-charcoal/50" />
         </div>
       </div>
     </form>
