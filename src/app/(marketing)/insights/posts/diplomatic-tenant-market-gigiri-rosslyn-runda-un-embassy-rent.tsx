@@ -399,6 +399,14 @@ export default function Article() {
         >
           tenant finding in Nairobi
         </Link>
+        . Where the placement is for weeks rather than years, the furnished
+        monthly route is covered in{" "}
+        <Link
+          href="/insights/serviced-apartment-management-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          serviced apartment management in Nairobi
+        </Link>
         .
       </P>
     </>

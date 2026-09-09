@@ -256,6 +256,25 @@ export default function Article() {
         the actual neighbourhood, and the actual unit specifics.
         No charge for the analysis.
       </P>
+
+      <P>
+        If the short-let side is what you are weighing, what running one
+        actually involves is in{" "}
+        <Link
+          href="/insights/short-term-rental-management-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          short-term rental management in Nairobi
+        </Link>
+        , and the monthly corporate alternative is in{" "}
+        <Link
+          href="/insights/serviced-apartment-management-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          serviced apartment management
+        </Link>
+        .
+      </P>
     </>
   );
 }

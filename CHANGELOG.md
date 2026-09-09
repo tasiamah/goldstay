@@ -21,6 +21,39 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.31.0] - 2026-09-09
+
+### Added
+
+- Three articles covering the short-let vocabulary the catalogue had no
+  claim on. Across 373 articles, not one meta title contained "short term
+  rental", "short stay", "vacation rental", "holiday let" or "serviced
+  apartment"; eleven said "Airbnb". The entire short-let side of the
+  business was described by one platform's brand name, so an owner
+  searching any of the generic terms found nothing.
+  - **Short-term rental management in Nairobi.** The platform-agnostic
+    pillar, arguing that Airbnb is one channel of five and that
+    Airbnb-only distribution leaves the corporate and Booking.com demand
+    unserved.
+  - **Vacation rental, holiday let, short stay or Airbnb.** The words map
+    to countries rather than to services, which matters because a large
+    part of the audience owns in Nairobi and searches from Houston or
+    Manchester. Also marks the three places the terms genuinely diverge.
+  - **Serviced apartment management in Nairobi.** The furnished monthly
+    corporate segment, why the net often beats nightly once turnover cost
+    is counted, and why the invoicing requirement keeps it with operators.
+
+### Changed
+
+- The Airbnb management fee article now carries the short-term rental,
+  vacation rental and holiday letting fee vocabulary as well, rather than
+  a second near-duplicate article competing with it for the same
+  question. A demand harvest found the fee cluster is the strongest in
+  this vocabulary ("how much do short term rental management companies
+  charge", "average short term rental management fee").
+- Inbound links from three of the better-linked existing articles into
+  the new cluster, so it does not start from zero.
+
 ## [1.30.0] - 2026-09-09
 
 ### Added
@@ -1527,7 +1560,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.30.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.31.0...HEAD
+[1.31.0]: https://github.com/tasiamah/goldstay/compare/v1.30.0...v1.31.0
 [1.30.0]: https://github.com/tasiamah/goldstay/compare/v1.29.0...v1.30.0
 [1.29.0]: https://github.com/tasiamah/goldstay/compare/v1.28.0...v1.29.0
 [1.28.0]: https://github.com/tasiamah/goldstay/compare/v1.27.1...v1.28.0

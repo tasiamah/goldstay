@@ -285,7 +285,14 @@ export default function Article() {
         >
           what an Airbnb co-host does
         </Link>
-        .
+        . If you are searching from the US or UK and getting nowhere,{" "}
+        <Link
+          href="/insights/vacation-rental-holiday-let-short-stay-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          vacation rental, holiday let, short stay or Airbnb
+        </Link>{" "}
+        explains which word to use for a Nairobi property.
       </P>
     </>
   );

@@ -16,8 +16,9 @@ export const meta: PostMeta = {
   title: "How much do Airbnb managers charge in Kenya?",
   description:
     "The headline percentage is the least important part of the quote. What the fee is charged on, what it excludes, and how Airbnb own service fee fits alongside it, worked through with the arithmetic set out.",
+  metaTitle: "Short-Term Rental Management Fees in Kenya",
   metaDescription:
-    "Airbnb management in Kenya runs 15 to 25 percent of revenue. What the fee is charged on, what it excludes, and the arithmetic that decides.",
+    "Airbnb and short-term rental management in Kenya runs 15 to 25 percent of revenue. What the fee is charged on, what it excludes, and the arithmetic.",
   publishedAt: "2026-09-09",
   readingMinutes: 9,
   author: authors.editors,
@@ -56,6 +57,29 @@ export default function Article() {
         handling maintenance between stays and accounting for the money. It is
         charged as a percentage of what the unit earns rather than as a flat
         monthly amount, because the work scales with the number of stays.
+      </P>
+
+      <P>
+        The same fee goes by several names depending on who is asking. Short-term
+        rental management fee, vacation rental management fee, holiday letting
+        agent fee and short-stay management fee all describe this charge, and
+        the bands below apply to all of them, because in Nairobi they are the
+        same service sold to owners in different countries. Which word applies
+        to your situation is unpicked in{" "}
+        <Link
+          href="/insights/vacation-rental-holiday-let-short-stay-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          vacation rental, holiday let, short stay or Airbnb
+        </Link>
+        , and what the fee buys is in{" "}
+        <Link
+          href="/insights/short-term-rental-management-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          short-term rental management in Nairobi
+        </Link>
+        .
       </P>
 
       <P>

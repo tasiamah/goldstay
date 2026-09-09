@@ -696,6 +696,15 @@ import HowToFindAPropertyManagerNairobi, {
 import TopPropertyManagementCompaniesKenya, {
   meta as topPropertyManagementCompaniesKenyaMeta,
 } from "./top-property-management-companies-kenya";
+import ShortTermRentalManagementNairobi, {
+  meta as shortTermRentalManagementNairobiMeta,
+} from "./short-term-rental-management-nairobi";
+import VacationRentalHolidayLetShortStayNairobi, {
+  meta as vacationRentalHolidayLetShortStayNairobiMeta,
+} from "./vacation-rental-holiday-let-short-stay-nairobi";
+import ServicedApartmentManagementNairobi, {
+  meta as servicedApartmentManagementNairobiMeta,
+} from "./serviced-apartment-management-nairobi";
 import BtlPortfolioNairobi, {
   meta as btlPortfolioNairobiMeta,
 } from "./btl-portfolio-building-nairobi";
@@ -1547,6 +1556,18 @@ export const posts: readonly Post[] = [
   {
     meta: topPropertyManagementCompaniesKenyaMeta,
     Component: TopPropertyManagementCompaniesKenya,
+  },
+  {
+    meta: shortTermRentalManagementNairobiMeta,
+    Component: ShortTermRentalManagementNairobi,
+  },
+  {
+    meta: vacationRentalHolidayLetShortStayNairobiMeta,
+    Component: VacationRentalHolidayLetShortStayNairobi,
+  },
+  {
+    meta: servicedApartmentManagementNairobiMeta,
+    Component: ServicedApartmentManagementNairobi,
   },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
 
