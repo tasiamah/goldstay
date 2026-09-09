@@ -21,6 +21,40 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.19.0] - 2026-09-09
+
+1.16.0 consolidated eight Nairobi area pages into `/nairobi/areas`
+because they were 88% boilerplate, which was the right call for the
+areas that had nothing specific to say and the wrong outcome for the
+ones that did. Karen and Runda are where diaspora landlords buy, and
+they had no page at all. Kileleshwa and Brookside had short-let pages
+but no parent.
+
+### Added
+- Area pages for Kileleshwa, Brookside, Karen and Runda, each written
+  to the same rule as Westlands, Kilimani and Riverside: it gets a URL
+  only if there is something true about letting there that no other
+  area page could claim. Kileleshwa covers the densification of a
+  bungalow suburb and the water and drainage that came with it;
+  Brookside the relocation-agent channel that actually places its
+  tenants, and the boundary that lets Westlands stock be marketed
+  under its name; Karen the school-admissions calendar that its
+  letting season really is, and the standing cost of running a
+  compound; Runda the Association levy and approvals, and the
+  concentration risk of an estate that lets almost entirely to one
+  employer base. Seven areas now have pages, with worst-pair text
+  overlap of 0.07% against the 73% the consolidated pages carried.
+
+### Changed
+- Karen and Runda quote their rent band as cottages and guest wings,
+  and as apartments on the estate fringes, rather than as "2-bed
+  apartments" — those two suburbs have almost no apartment stock, so
+  the old wording contradicted the profile further down the page.
+- `/nairobi/kileleshwa`, `/brookside`, `/karen` and `/runda` serve a
+  page again instead of redirecting to `/nairobi/areas`. Gigiri,
+  Lavington, Parklands and Rosslyn still redirect; they keep their
+  `/airbnb-management` pages, which were never the problem.
+
 ## [1.18.0] - 2026-09-09
 
 1.17.0 added the "how did you find us" question to
@@ -929,7 +963,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.18.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.19.0...HEAD
+[1.19.0]: https://github.com/tasiamah/goldstay/compare/v1.18.0...v1.19.0
 [1.18.0]: https://github.com/tasiamah/goldstay/compare/v1.17.0...v1.18.0
 [1.17.0]: https://github.com/tasiamah/goldstay/compare/v1.16.1...v1.17.0
 [1.16.1]: https://github.com/tasiamah/goldstay/compare/v1.16.0...v1.16.1

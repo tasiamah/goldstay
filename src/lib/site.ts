@@ -636,6 +636,13 @@ export const services = [
 export type Neighbourhood = {
   name: string;
   twoBrUsd: { min: number; max: number };
+  // What the range above is actually measuring, where "2-bed apartment"
+  // would be wrong. Karen and Runda are standalone-house suburbs with
+  // almost no apartment stock, so a page quoting apartment comparables
+  // next to a profile explaining that apartments are absent contradicts
+  // itself in the space of one screen. Defaults to apartments, because
+  // for the other nine areas that is what the figure is.
+  benchmarkUnit?: string;
   tenant: string;
   // Short-stay profile, and deliberately optional.
   //
@@ -815,6 +822,34 @@ export const cities = {
           caveat:
             "Not walkable. Guests without a car feel it immediately, so the listing has to be honest about that and parking is close to essential rather than a bonus.",
         },
+        profile: {
+          character:
+            "Twenty years ago this was bungalows on half-acre plots under a canopy of old trees along Gitanga and Othaya Roads. The zoning changed, the plots were bought and subdivided, and Kileleshwa is now one of the densest apartment suburbs in Nairobi while still being sold to buyers on the greenery that the building programme has spent a decade removing. Laikipia, Mandera and Kandara Roads carry more dwellings between them today than the whole neighbourhood held in 2005. A landlord picturing the Kileleshwa they last visited is picturing somewhere else.",
+          demand:
+            "Families and mid-senior diplomatic and NGO staff who want Kilimani's proximity without Kilimani's noise. Kileleshwa sits between the Kilimani office cluster and Lavington, so Upper Hill, the central business district and Westlands are all a short run in different directions, which is the practical reason a tenant picks it over somewhere cheaper further out. The mix skews older and more settled than Kilimani's — couples with young children, staff on a second or third posting — and tenancies run appreciably longer as a result.",
+          stock:
+            "Almost entirely apartments put up since about 2012 on former bungalow plots, and unusually for Nairobi the unit mix leans to three-beds rather than ones and twos, because developers built for the family demand the area already had. Rooms tend to be larger than a Kilimani equivalent at the same rent. Most blocks carry a borehole and many carry a generator, while service charges sit below Westlands because the buildings are lower and far fewer of them run lifts.",
+          friction:
+            "The infrastructure was laid for bungalows and is now serving apartment blocks, and that is the honest problem with Kileleshwa. Roads and storm drainage designed for a low-density suburb take a beating through the long rains, and water and sewer capacity are the constraints developers do not put in the brochure — which is why a borehole here is closer to essential than to a nice extra. Redevelopment is still live rather than finished, so construction next door is a present risk: a tenant who signed for a quiet street can find a site hoarding outside within months, and that is a real cause of early notice. There is also no walkable retail worth the name, leaving a tenant without a car dependent on Kilimani or Lavington for everything.",
+          faq: [
+            {
+              q: "Has Kileleshwa been overbuilt?",
+              a: "It has been built out, which is not quite the same thing. The density arrived fast and the supply of three-bed apartments is genuinely deep, so an averagely finished unit competes hard. What protects Kileleshwa is that the family demand it was built for is still there and is stickier than the young-professional demand a mile away — those tenants move less often, so once a unit is let it tends to stay let.",
+            },
+            {
+              q: "Why are so many Kileleshwa apartments three-bedroom?",
+              a: "Because developers followed the tenants who were already here rather than building the smallest sellable unit. That is useful to know as a buyer: the one- and two-bed segment is comparatively thin in Kileleshwa, so a well-finished smaller unit faces less direct competition than the headline supply figures for the area would suggest.",
+            },
+            {
+              q: "Do I really need a borehole in Kileleshwa?",
+              a: "In practice, yes, and you should treat a block without one as carrying a standing risk rather than a saving. Mains supply was sized for a fraction of the current population, and the buildings that ride out a dry spell without tankering water are the ones with their own source. Tenants at this rent level notice within a week when water is intermittent.",
+            },
+            {
+              q: "Will construction next door cost me a tenant?",
+              a: "It can, and in Kileleshwa specifically it is worth checking before you buy rather than hoping. Look at the plots on either side and opposite: a remaining bungalow on a large plot is a development site waiting to happen. Noise and dust during a build are the most common reason a good Kileleshwa tenant gives notice early.",
+            },
+          ],
+        },
       },
       {
         name: "Riverside",
@@ -912,6 +947,34 @@ export const cities = {
           caveat:
             "Long-let economics here are strong enough that short-letting only wins on a well-presented unit at the top of the nightly band. On anything average, the stable long lease is the better business.",
         },
+        profile: {
+          character:
+            "A short spine of lanes hanging off Brookside Drive, tucked behind Westlands and above the river. Embassy residences, walled family houses and a handful of high-specification apartment buildings, and little else — no retail, no offices, no through route. The whole neighbourhood can be driven in a couple of minutes. Brookside's entire commercial proposition is that it is not Westlands while sitting three minutes from it, and what a tenant pays the premium for is insulation from the density immediately next door.",
+          demand:
+            "Embassy and high commission staff, senior corporate relocations and premium families, nearly all allowance-backed and, crucially, nearly all placed by relocation agents rather than by finding a listing themselves. That changes how Brookside actually lets. The agents work from a short roster of buildings and compounds they already trust, so a unit outside that roster can sit empty while apparently comparable stock one lane over turns over inside a fortnight. Being known to the relocation channel matters more here than the quality of the advertisement.",
+          stock:
+            "A split with no real parallel elsewhere in Nairobi: older diplomatic-style houses on generous walled plots alongside a small number of recent, tightly specified apartment blocks, and almost nothing in between. Finish expectations are set by the embassy tenancies rather than by the local average, which means fitted kitchens, proper built-in wardrobes and dependable hot water are assumed rather than sold. Service charges on the apartment stock are high and, because the owner bodies are small and engaged, generally well administered.",
+          friction:
+            "The address itself is where money is lost in Brookside. It borders Westlands closely enough that agents routinely market Westlands-side buildings under the Brookside name, which inflates the comparables a seller will show you — the rent actually achieved on a genuine Brookside address versus a borrowed one can differ by a couple of hundred dollars a month for two units that photograph identically. Establish which side of the boundary a building truly sits on before pricing off a neighbour. Past that, the tenant pool is small and concentrated in a handful of institutions, so demand here is correlated rather than diversified and a diplomatic drawdown empties several houses at once. Access is through Westlands traffic whichever way you are travelling, which tempers the apparent convenience.",
+          faq: [
+            {
+              q: "Why does Brookside let for more than Westlands, three minutes away?",
+              a: "Because the tenants are buying the absence of what Westlands has. No towers, no mall traffic, no construction, no through route — for an embassy family relocating with children that is worth a premium, and there are only so many addresses in Nairobi that offer it this close to the business district.",
+            },
+            {
+              q: "How do I get in front of the relocation agents who place Brookside tenants?",
+              a: "Deliberately, because they will not find you. The agents maintain working relationships with managers and landlords they have placed tenants with before, and they shortlist from that. This is a substantial part of what we do on a Brookside instruction: the unit has to be in front of the four or five people who actually decide where an arriving family is shown.",
+            },
+            {
+              q: "House or apartment — which is the better buy in Brookside?",
+              a: "They serve different tenants. The houses draw the embassy and family end and command the top of the rent band, but carry garden, compound and staffing costs and let more slowly. The apartments let faster to senior corporate tenants and are far simpler to run. If it is your first Nairobi property, the apartment is the more forgiving purchase.",
+            },
+            {
+              q: "How do I check a building is actually in Brookside?",
+              a: "Ask for the physical address and the land reference rather than accepting the marketing name, then look at which road it is genuinely accessed from. If the entrance is off a Westlands road and the block is simply near the boundary, price it as Westlands, because that is what it will let as.",
+            },
+          ],
+        },
       },
       {
         name: "Rosslyn",
@@ -931,11 +994,69 @@ export const cities = {
         name: "Karen",
         twoBrUsd: { min: 1500, max: 2000 },
         tenant: "Expat families, diplomats, school faculty",
+        benchmarkUnit: "2-bed cottages and guest wings",
+        profile: {
+          character:
+            "Old coffee-estate land at the southern edge of the city, subdivided into plots measured in acres rather than square metres. Karen Road, Bogani Road, Ndege Road and Marula Lane are lanes between hedges more than streets, the housing is detached, and the apartment blocks that define the rest of Nairobi are essentially absent. Karen Shopping Centre and the Hub carry the retail; everything else is a drive. This is the one part of the city where owning a rental means owning a small property rather than a flat in someone else's building.",
+          demand:
+            "Overwhelmingly expat and diaspora families with school-age children, and the schools are the actual mechanism. Brookhouse, Hillcrest and Banda sit in or beside Karen, and a family holding a place at one of them will look here first and compromise on nearly everything else to be within the run. Add diplomats who want land, teaching faculty on institutional housing budgets, and a persistent trade in tenants who keep horses or several dogs and simply cannot rent anywhere else in Nairobi. The consequence is that Karen demand is a school calendar wearing the costume of a property market.",
+          stock:
+            "Detached houses, guest cottages and converted outbuildings on large compounds — typically four or five bedrooms in the main house with staff quarters attached, a garden, and frequently a pool. Mains water and sewerage are unreliable or simply absent across much of Karen, so boreholes and septic tanks are the norm rather than the exception, and a generator or a solar array is common. The handful of apartments that exist let to an entirely different tenant and should be underwritten as a different asset.",
+          friction:
+            "A Karen tenancy is an operating business, not a passive holding, and this is where owners are most often caught out. The garden, the pool, the borehole pump, the septic tank and usually a guard all need paying for and supervising whether the house is occupied or empty, and a landlord who budgeted like an apartment owner will find the monthly running cost a genuine shock. The school calendar is the commercial risk: letting concentrates into the weeks before the September and January intakes, so a house still standing empty in October will very often stay empty until the next one, which makes a Karen void a matter of months rather than weeks. Distance is the third constraint — the run to Westlands or Upper Hill is long enough that Karen never competes for a tenant who must be at a desk daily, and that narrows the pool to precisely the families above.",
+          faq: [
+            {
+              q: "Why is letting in Karen so seasonal?",
+              a: "Because the tenants are following school admissions, not job moves. Families arrive to start a term, which concentrates almost all serious viewing into the run-up to September and, to a lesser degree, January. Miss that window with a vacant house and the realistic options are a short-let bridge or accepting a lower rent from whoever is looking out of season.",
+            },
+            {
+              q: "Do I have to provide a gardener and a guard?",
+              a: "On a compound of this size, effectively yes, and tenants at this rent expect the arrangement to be in place rather than something they organise. The important part is that these are standing costs on an empty house too — the garden does not stop growing between tenancies, which is the single biggest difference between running a Karen house and running a Kilimani flat.",
+            },
+            {
+              q: "Is a cottage a better investment than the main house?",
+              a: "Often, and it is underrated. A well-converted two-bed cottage lets to a much wider pool — single diplomats, teaching staff, couples without children — so it is far less hostage to the school calendar, and it costs a fraction of the main house to furnish, clean and turn over. The rent per square metre is usually better too.",
+            },
+            {
+              q: "Do I need a borehole in Karen?",
+              a: "Assume so, and check what exists before you buy. Large parts of Karen have no dependable mains supply, and a compound with a garden and a pool consumes far more than a flat does. A property relying on tankered water is carrying a cost and a reliability problem that will surface in the first dry season.",
+            },
+          ],
+        },
       },
       {
         name: "Runda",
         twoBrUsd: { min: 1800, max: 2500 },
         tenant: "Corporate executives, embassies",
+        benchmarkUnit: "2-bed apartments on the estate fringes",
+        profile: {
+          character:
+            "A planned low-density estate north of the city, and the planning is exactly what separates it from Karen. Runda is large detached family houses on roughly half-acre plots, laid out along private internal roads, built to a standard the Runda Association enforces, and consequently far more uniform than the organic sprawl further south. There is no commercial development inside the estate at all — no shops, no offices, no through traffic — which is precisely what its tenants are paying to have. Gigiri and the UN complex are minutes up the road.",
+          demand:
+            "The UN and the diplomatic missions, more directly than anywhere else in Nairobi including Gigiri itself. Runda is where staff posted to the Nairobi complex live when they want a house and a garden rather than an apartment, and the tenancies arrive shaped like postings: two or three years, allowance-backed, negotiated by an organisation's housing office rather than by the person moving in. Embassy families and a smaller cohort of corporate executives make up the balance. Rents sit at the top of the Nairobi band for family houses as a direct result.",
+          stock:
+            "Detached houses almost exclusively — typically four to five bedrooms with staff quarters, a walled compound and a mature garden, built or rebuilt to the Association's specification. A handful of newer apartment developments have appeared on the fringes and let to a younger, different tenant entirely. Boreholes are standard. Because the Association polices external appearance and construction quality, the spread in condition between one Runda house and the next is narrower than anywhere comparable, which cuts both ways for an owner hoping to win a tenant on finish alone.",
+          friction:
+            "The Runda Association is the thing nobody explains before you buy. Membership carries an annual levy funding the private roads, the perimeter and the security patrols, and it carries approval requirements on building, extending or altering anything externally visible — so an owner planning to add a wing or convert the outbuildings needs to establish what is permitted beforehand rather than afterwards. The commercial risk is concentration: when a UN agency trims its Nairobi footprint or a mission restructures, several Runda houses reach the market in the same quarter and compete directly with one another, because they all draw on one employer base. And the estate is car-dependent by design with no retail inside it, which is a feature for the tenant living there and a hard limit on who will ever consider it.",
+          faq: [
+            {
+              q: "What does the Runda Association levy actually cost me?",
+              a: "It varies by section and is reset periodically, so treat the current figure as something to verify rather than assume. What matters more than the amount is that it is a standing obligation on the owner, payable whether the house is let or empty, and that it buys the private roads and perimeter security the address is valued for. Ask for the accounts, not just the rate.",
+            },
+            {
+              q: "Is Runda demand really almost all UN and diplomatic?",
+              a: "Yes, and it is the central thing to understand before buying. It is why the rents are high and the tenancies long, and equally why the demand is correlated — a single agency's decision can put several comparable houses on the market at once. Diversification is not available within Runda, so the protection is a well-presented house and a realistic view of void risk.",
+            },
+            {
+              q: "Can I extend or subdivide a Runda house?",
+              a: "Not freely. The Association's rules govern external alterations and build standards, and subdivision in particular runs against the low-density character the estate exists to preserve. If your investment case depends on adding units or splitting a plot, get written confirmation of what is allowed before committing, because assuming it will be fine is an expensive way to find out.",
+            },
+            {
+              q: "Are the newer Runda apartments worth buying?",
+              a: "They are a different business from the houses and should be assessed as one. They let faster, cost far less to run, and reach a younger professional tenant who would not rent a five-bedroom compound. What they do not get is the diplomatic family premium that makes Runda's house rents what they are, so do not underwrite an apartment using house comparables.",
+            },
+          ],
+        },
       },
     ] satisfies Neighbourhood[],
     domain: "goldstay.co.ke",

@@ -3,8 +3,10 @@ import {
   alternateLanguagesFor,
   baseUrlFor,
   canonicalHostForCountry,
+  cities,
   cityCanonical,
   cityTrail,
+  type Neighbourhood,
   insightAlternates,
   isLiveDomain,
   liveDomainOr,
@@ -408,6 +410,29 @@ describe("the domain map", () => {
       expect(domain).toBe(domain.toLowerCase());
     }
   });
+});
+
+describe("the rent benchmark matches the housing that exists", () => {
+  // The neighbourhood page quotes its rent band as "well-finished
+  // 2-bed apartments in <area>", which is true for the apartment
+  // suburbs and false for the standalone-house ones. Karen and Runda
+  // now have profiles that say in as many words that apartment stock
+  // there is absent, so leaving the default label in place would have
+  // the page contradict itself inside one screen — the kind of detail
+  // that costs credibility with exactly the landlord we want reading.
+  for (const name of ["Karen", "Runda"]) {
+    it(`${name} does not quote apartment comparables`, () => {
+      const n: Neighbourhood | undefined = cities.nairobi.neighbourhoods.find(
+        (x) => x.name === name,
+      );
+      expect(n, `${name} is missing from the neighbourhood list`).toBeDefined();
+      expect(
+        n!.benchmarkUnit,
+        `${name} is a standalone-house suburb, so its rent band cannot be ` +
+          `labelled as plain 2-bed apartments.`,
+      ).toBeTruthy();
+    });
+  }
 });
 
 // Guards the entity claims, which are easy to get subtly wrong.

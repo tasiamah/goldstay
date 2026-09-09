@@ -99,6 +99,11 @@ export function NeighbourhoodPage({
     (neighbourhood.twoBrUsd.min + neighbourhood.twoBrUsd.max) / 2,
   );
 
+  // What the rent band is measuring. Apartments almost everywhere, but
+  // not in the standalone-house suburbs, where quoting apartment
+  // comparables would contradict the profile further down the page.
+  const benchmarkUnit = neighbourhood.benchmarkUnit ?? "2-bed apartments";
+
   // Place schema scoped to this neighbourhood. We deliberately do not
   // emit a fresh LocalBusiness per neighbourhood (we operate one
   // business per city, not per neighbourhood) — Place + the city-level
@@ -208,7 +213,7 @@ export function NeighbourhoodPage({
           <SectionHeader
             eyebrow={`${neighbourhood.name} at a glance`}
             title={`What a Goldstay-managed home in ${neighbourhood.name} actually earns.`}
-            lede={`Indicative figures from recently let, well-finished 2-bed apartments in ${neighbourhood.name}. Directional, not guarantees.`}
+            lede={`Indicative figures from recently let, well-finished ${benchmarkUnit} in ${neighbourhood.name}. Directional, not guarantees.`}
           />
           <div className="mt-14 grid gap-5 md:grid-cols-3">
             <Reveal>
@@ -220,7 +225,7 @@ export function NeighbourhoodPage({
                   {neighbourhood.twoBrUsd.max.toLocaleString()} / month
                 </p>
                 <p className="mt-3 text-sm text-charcoal/70">
-                  Recently let, well-finished 2-bed apartments in{" "}
+                  Recently let, well-finished {benchmarkUnit} in{" "}
                   {neighbourhood.name}. We collect in {c.currency}, remit in USD
                   on the 5th.
                 </p>
