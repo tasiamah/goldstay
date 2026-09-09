@@ -349,6 +349,19 @@ export default function Article() {
         management thinking starts, the cheaper everything that
         follows is.
       </P>
+
+      <P>
+        This piece argues the case for management, so it is worth
+        pointing at the argument against it as well:{" "}
+        <Link
+          href="/insights/do-i-need-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          do you actually need a property manager
+        </Link>{" "}
+        sets out the cases where a Nairobi landlord is better off
+        self-managing, and the arithmetic that decides it.
+      </P>
     </>
   );
 }

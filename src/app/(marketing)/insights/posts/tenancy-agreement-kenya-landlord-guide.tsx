@@ -442,6 +442,16 @@ export default function Article() {
           the eviction playbook for when it fails
           anyway
         </Link>
+        . If an agent will be collecting the rent
+        under this tenancy, the separate contract
+        appointing them is covered in{" "}
+        <Link
+          href="/insights/property-management-agreement-kenya-clause-by-clause"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the property management agreement, clause
+          by clause
+        </Link>
         .
       </P>
     </>

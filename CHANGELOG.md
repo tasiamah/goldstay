@@ -21,6 +21,55 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.29.0] - 2026-09-09
+
+### Added
+
+- Four articles for landlords at the point of hiring a manager, rather
+  than researching the market. A Kenya-targeted autocomplete harvest of
+  627 bottom-of-funnel queries drove the selection, and one finding
+  shaped all four: raw suggestion volume is contaminated by American and
+  British results, so `do i need a property manager` returns 93 variants
+  that include California licensing and Queensland Form 5. Candidates
+  were therefore ranked on Kenyan specificity and intent rather than
+  yield.
+
+  - **The property management agreement in Kenya, clause by clause.**
+    Targets `property management agreement between landlord and agent in
+    kenya`, one of only 27 explicitly Kenyan queries in the harvest and
+    the highest-intent moment there is, because the reader is holding a
+    contract they are about to sign. The catalogue had articles on the
+    tenancy agreement and the operator sublease but nothing on the
+    landlord-to-agent contract. Also covers the template queries
+    (`airbnb management agreement template` and variants).
+  - **How to terminate a property management agreement in Kenya.** A
+    landlord terminating is by definition shopping for a successor. The
+    cluster is template-hungry (`notice to terminate`, `letter to
+    terminate`, `how do i switch property managers`), so the piece
+    carries an adaptable notice letter and the handover list: deposit,
+    unremitted rent, MRI receipts, tenant contact details, keys against
+    inventory. `should-i-fire-my-nairobi-property-manager-2026` covered
+    the decision and now links forward to the execution.
+  - **The questions to ask a property manager before you sign.** Forty
+    four variants, and distinct from the ten questions in the
+    fire-my-manager piece, which are about the manager you already have.
+    Publishes our own answers on fee basis, payout date, response time,
+    tax and default, so a landlord can compare us against a shortlist on
+    written answers rather than a sales call.
+  - **Do you actually need a property manager in Nairobi?** Sets out the
+    cases where a resident landlord with one long-let unit should not
+    hire us, and recommends tenant-finding-only for most of them, which
+    earns a fraction of what management does.
+    `why-property-management-matters-diaspora-landlords` argues the
+    other side and now links here.
+
+### Changed
+
+- Wired inbound links from six existing articles so none of the four
+  ships as an orphan. Each now has between three and five inbound links,
+  which is what decides whether Google crawls them in weeks rather than
+  months.
+
 ## [1.28.0] - 2026-09-09
 
 ### Added
@@ -1448,6 +1497,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.29.0]: https://github.com/tasiamah/goldstay/compare/v1.28.0...v1.29.0
 [1.28.0]: https://github.com/tasiamah/goldstay/compare/v1.27.1...v1.28.0
 [1.27.1]: https://github.com/tasiamah/goldstay/compare/v1.27.0...v1.27.1
 [1.27.0]: https://github.com/tasiamah/goldstay/compare/v1.26.1...v1.27.0

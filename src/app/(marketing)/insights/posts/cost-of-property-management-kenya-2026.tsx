@@ -320,6 +320,20 @@ export default function Article() {
         >
           what handing a Nairobi unit over involves
         </Link>
+        . Before you sign anything, it is worth reading{" "}
+        <Link
+          href="/insights/questions-to-ask-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the questions to ask a property manager
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/do-i-need-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          whether you need one at all
+        </Link>
         .
       </P>
     </>

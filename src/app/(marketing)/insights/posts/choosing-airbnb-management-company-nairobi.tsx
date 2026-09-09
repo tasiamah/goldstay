@@ -284,6 +284,13 @@ export default function Article() {
         >
           what an Airbnb co-host does
         </Link>
+        . The questions worth putting to any of them are in{" "}
+        <Link
+          href="/insights/questions-to-ask-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          questions to ask a property manager before you sign
+        </Link>
         .
       </P>
     </>

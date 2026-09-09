@@ -333,6 +333,13 @@ export default function Article() {
         >
           why your Nairobi rental keeps going vacant
         </Link>
+        . On the paperwork side, see{" "}
+        <Link
+          href="/insights/property-management-agreement-kenya-clause-by-clause"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the management agreement clause by clause
+        </Link>
         .
       </P>
     </>

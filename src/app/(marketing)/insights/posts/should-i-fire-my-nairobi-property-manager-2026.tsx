@@ -213,7 +213,16 @@ export default function Article() {
         The reason owners hesitate to switch is not usually
         loyalty, it is fear of the transition. In practice, a
         clean switch is easier than owners expect, provided
-        you do these five things in this order.
+        you do these five things in this order. The notice
+        letter itself, and the full list of what to demand
+        back at handover, are set out in{" "}
+        <Link
+          href="/insights/terminate-property-management-agreement-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to terminate a property management agreement
+        </Link>
+        .
       </P>
 
       <OL>
