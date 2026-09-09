@@ -21,6 +21,39 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.27.1] - 2026-09-09
+
+### Fixed
+
+- Any URL that matched no route served Next's own unstyled "404: This
+  page could not be found." rather than a Goldstay page, so a visitor
+  arriving on a stale link or a typo saw something that reads as the
+  whole site being down. They now get a branded page that names the
+  four places they were most likely heading, and the response keeps its
+  404 status.
+
+  The cause is worth recording, because the obvious fix does not work.
+  There is no `src/app/layout.tsx`: `(marketing)` and `(platform)` each
+  carry their own root layout, which is what keeps the public navbar off
+  the logged-in surfaces. Next renders a root-level not-found outside
+  the layout tree, so a top-level `app/not-found.tsx` has no layout to
+  render in, and the two existing `not-found.tsx` files only fire for
+  `notFound()` raised inside their own group — which an unmatched URL
+  never reaches. A catch-all at `(marketing)/[...notFound]` pulls those
+  URLs into the group so its not-found boundary handles them. Static and
+  more specific dynamic segments still resolve first, asserted by
+  `not-found.test.ts` and verified against a production build.
+
+  Two limits come with that boundary and are documented in the file:
+  `Navbar` and `Footer` render empty there and cannot be made to work,
+  so the destination cards are the only navigation; and the font
+  variables have to be set on a wrapper because the error shell's
+  `<html>` carries no className.
+
+- The 404 raised by a page that does exist — an unknown `/insights`
+  slug or `/nairobi` neighbourhood — was hitting the same unstyled
+  shell, and now renders the branded page too.
+
 ## [1.27.0] - 2026-09-09
 
 ### Changed
@@ -1377,6 +1410,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.27.1]: https://github.com/tasiamah/goldstay/compare/v1.27.0...v1.27.1
 [1.27.0]: https://github.com/tasiamah/goldstay/compare/v1.26.1...v1.27.0
 [1.26.1]: https://github.com/tasiamah/goldstay/compare/v1.26.0...v1.26.1
 [1.26.0]: https://github.com/tasiamah/goldstay/compare/v1.25.0...v1.26.0
