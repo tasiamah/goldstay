@@ -210,8 +210,9 @@ export function NeighbourhoodShortLetPage({
                 A well-presented 2-bed in {name} takes USD{" "}
                 {shortLet.nightlyUsd.min} to {shortLet.nightlyUsd.max} a night
                 at {shortLet.occupancyPct.min}% to {shortLet.occupancyPct.max}%
-                occupancy. We run the listing, the pricing, the guests and the
-                turnovers, and remit in USD on the 5th. You do nothing.
+                occupancy. Full short-term rental management: we run the
+                listing, the pricing, the guests and the turnovers, and remit
+                in USD on the 5th. You do nothing.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a

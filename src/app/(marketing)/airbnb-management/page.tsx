@@ -264,10 +264,25 @@ export default function Page() {
                 <em className="italic">five-star</em> short-stay, without
                 lifting a finger.
               </h1>
+              {/* The service named the way people search for it.
+                  "Short-term rental management" appeared nowhere on the
+                  site before this — not on this page, not on any other
+                  service page — despite being the commonest unbranded
+                  name for what we sell. Somebody who does not think in
+                  terms of Airbnb-the-brand searches for this phrase, and
+                  we were invisible to them.
+
+                  The fee came out of the hero because this page already
+                  states it eight times, including a dedicated pricing
+                  panel below, the FAQ and the meta description, where
+                  leading with the number is deliberate — see the comment
+                  on `description`. Losing it here costs no transparency
+                  and buys the line back for coverage. */}
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-                We handle photography, pricing, guests, cleaning and
-                maintenance. You get a monthly statement and a USD wire. Our fee
-                is 20% of revenue. No listing fees, no setup fees, no surprises.
+                Full short-term rental management in {cityPhrase}:
+                photography, nightly pricing, guest screening, changeover
+                cleaning and maintenance between stays. You get a monthly
+                statement and a USD wire to your account abroad.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a
@@ -297,7 +312,7 @@ export default function Page() {
           service at all. Both problems are the same problem. */}
       <KeyFacts
         question={`What is Airbnb management in ${cityName ?? "Kenya"}, and what does it cost?`}
-        answer={`Airbnb management, also called short-let management or co-hosting, is a service where a company runs your furnished property as a short-stay rental on your behalf: listing and photography, nightly pricing, guest screening and messaging, check-in, turnover cleaning, consumables and maintenance. Goldstay charges 20% of the revenue collected for this in ${cityPhrase}, with no onboarding fee, no listing fee and no exit fee, and pays the net to your overseas account in USD each month against an itemised statement.`}
+        answer={`Airbnb management, also called short-term rental management, short-let management or co-hosting, is a service where a company runs your furnished property as a short-stay rental on your behalf: listing and photography, nightly pricing, guest screening and messaging, check-in, turnover cleaning, consumables and maintenance. Goldstay charges 20% of the revenue collected for this in ${cityPhrase}, with no onboarding fee, no listing fee and no exit fee, and pays the net to your overseas account in USD each month against an itemised statement.`}
         facts={[
           { label: "Management fee", value: "20% of revenue collected" },
           { label: "Onboarding fee", value: "None" },

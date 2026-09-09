@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.21.1] - 2026-09-09
+
+### Changed
+- The Airbnb management hero no longer quotes the fee, and names the
+  service the way people search for it instead. "Short-term rental
+  management" appeared nowhere on the site — not on one service page —
+  despite being the commonest unbranded name for what we sell, so
+  anyone searching for it rather than for Airbnb by name could not
+  find us. It now appears in the hero, in the answer-first summary
+  that defines the service alongside its other names, and in the
+  neighbourhood short-let heroes.
+- Dropping the fee from that hero costs no transparency: the page
+  still states 20% of revenue ten times, including the pricing panel,
+  the FAQ and the meta description, where leading with the number is
+  a deliberate choice against competitors who hide theirs.
+
 ## [1.21.0] - 2026-09-09
 
 Asked to describe this business, a search engine read the site and
@@ -1043,7 +1059,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.21.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.21.1...HEAD
+[1.21.1]: https://github.com/tasiamah/goldstay/compare/v1.21.0...v1.21.1
 [1.21.0]: https://github.com/tasiamah/goldstay/compare/v1.20.1...v1.21.0
 [1.20.1]: https://github.com/tasiamah/goldstay/compare/v1.20.0...v1.20.1
 [1.20.0]: https://github.com/tasiamah/goldstay/compare/v1.19.0...v1.20.0
