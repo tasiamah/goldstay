@@ -29,6 +29,10 @@ export default function robots(): MetadataRoute.Robots {
           "/start",
           "/start/",
           "/api/",
+          // Tracked redirect hops. They record a click and 302 out to
+          // wa.me, so there is no page here for a crawler to index,
+          // and a crawler following one would log a click nobody made.
+          "/go/",
           "/auth/",
           "/login",
           "/client",

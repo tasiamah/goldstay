@@ -44,6 +44,10 @@ export const FIRST_TOUCH_KEY = "gs_first_touch";
 export type FirstTouch = {
   // Path only, no host: every one of these is our own site.
   landingPath: string;
+  // Google Ads click id, when the visit came from an ad. Carried here
+  // as well as in the gs_ads cookie so a form submitted in the same
+  // session posts it explicitly, the same way the utm fields are.
+  gclid: string | null;
   // Origin and path of the referrer, query dropped. The query on an
   // inbound referrer is somebody else's tracking, occasionally carries
   // personal data, and has never once been useful here.
@@ -139,11 +143,22 @@ function hostMatches(host: string, needles: readonly string[]): boolean {
 export function classifyReferrer(
   referrer: string | null,
   ownHost: string,
-  utm?: { source?: string | null; medium?: string | null },
+  utm?: {
+    source?: string | null;
+    medium?: string | null;
+    // Any of gclid, wbraid or gbraid. Checked first because it is the
+    // only paid signal that is always present: Google Ads auto-tagging
+    // appends a click id and does not touch utm_medium, so a campaign
+    // running with default settings produced a google.com referrer
+    // indistinguishable from organic and every ad click was being
+    // filed as organic_search. See src/lib/ads/attribution.ts.
+    gclid?: string | null;
+  },
 ): Channel {
-  // A paid click is a search referrer plus a medium we set ourselves,
-  // so the medium has to be checked before the host. Google Ads sends
-  // `gclid` and a google.com referrer exactly like an organic click.
+  if (utm?.gclid?.trim()) return "paid_search";
+
+  // Otherwise a paid click is a search referrer plus a medium we set
+  // ourselves, so the medium has to be checked before the host.
   const medium = utm?.medium?.toLowerCase().trim();
   if (medium === "cpc" || medium === "ppc" || medium === "paid") {
     return "paid_search";
@@ -202,6 +217,7 @@ export function parseUtm(search: string): {
   utmCampaign: string | null;
   utmTerm: string | null;
   utmContent: string | null;
+  gclid: string | null;
 } {
   let params: URLSearchParams;
   try {
@@ -217,6 +233,14 @@ export function parseUtm(search: string): {
     // can see the query, because we put it in the URL ourselves.
     utmTerm: utm(params, "utm_term"),
     utmContent: utm(params, "utm_content"),
+    // wbraid and gbraid stand in for gclid on iOS and in-app traffic
+    // with restricted tracking. Any of the three means the same thing
+    // here, which is "this was a paid click", so the first one present
+    // wins rather than adding two more columns everywhere.
+    gclid:
+      utm(params, "gclid") ??
+      utm(params, "wbraid") ??
+      utm(params, "gbraid"),
   };
 }
 
@@ -235,6 +259,7 @@ export function captureFirstTouch(
   const channel = classifyReferrer(clean, location.host, {
     source: parsed.utmSource,
     medium: parsed.utmMedium,
+    gclid: parsed.gclid,
   });
 
   return {
@@ -269,6 +294,7 @@ export function parseFirstTouch(raw: string | null): FirstTouch | null {
       utmCampaign: str("utmCampaign"),
       utmTerm: str("utmTerm"),
       utmContent: str("utmContent"),
+      gclid: str("gclid"),
       landedAt: str("landedAt") ?? new Date(0).toISOString(),
     };
   } catch {
@@ -327,16 +353,24 @@ export function normaliseSearchTerm(value: unknown): string | null {
 // first happened offline and the second says nothing, and neither maps
 // onto a bucket without inventing a fact.
 //
-// One caveat worth writing down. "Google search" maps to organic
-// because Goldstay runs no paid search; a landlord cannot reliably
-// tell an ad from an organic result, so the day ads start running this
-// mapping begins quietly overstating organic and should move to null.
+// "Google search" now returns null, which is the change this function
+// asked for in advance: it used to map to organic_search on the stated
+// grounds that Goldstay ran no paid search, with a note that the day
+// ads started running the mapping would begin quietly overstating
+// organic. Ads started running in September 2026.
+//
+// A landlord cannot reliably tell an ad from an organic result, so
+// their answer no longer distinguishes the two and guessing would
+// understate exactly the channel now being paid for. The stated answer
+// is still kept verbatim in the `foundVia` column, so nothing is lost;
+// the `channel` column is simply left to measured evidence, which for
+// paid clicks is the gclid.
 export function channelFromFoundVia(
   foundVia: FoundVia | null,
 ): Channel | null {
   switch (foundVia) {
     case "Google search":
-      return "organic_search";
+      return null;
     case "Recommended by someone":
       return "referral";
     case "Instagram or Facebook":
@@ -367,6 +401,7 @@ export type ParsedAttribution = {
   utmCampaign: string | null;
   utmTerm: string | null;
   utmContent: string | null;
+  gclid: string | null;
   landedAt: Date | null;
 };
 
@@ -442,6 +477,13 @@ export function parseAttributionPayload(input: unknown): ParsedAttribution {
     utmCampaign: cappedString(o.utmCampaign, UTM_MAX),
     utmTerm: cappedString(o.utmTerm, UTM_MAX),
     utmContent: cappedString(o.utmContent, UTM_MAX),
+    // Shape-checked, not just length-capped, because this value is
+    // uploaded to Google Ads as the key of a conversion. A junk string
+    // there does not fail loudly, it silently fails to match a click.
+    gclid: (() => {
+      const g = cappedString(o.gclid, 200);
+      return g && /^[A-Za-z0-9._-]+$/.test(g) ? g : null;
+    })(),
     landedAt,
   };
 }

@@ -24,6 +24,12 @@
 
 import { NextResponse, type NextRequest } from "next/server";
 import {
+  ADS_COOKIE,
+  ADS_COOKIE_MAX_AGE_SECONDS,
+  encodeAdsCookie,
+  parseAdsParams,
+} from "@/lib/ads/attribution";
+import {
   REFERRAL_COOKIE,
   REFERRAL_COOKIE_MAX_AGE_SECONDS,
 } from "@/lib/referrals/attribution";
@@ -47,6 +53,35 @@ export async function middleware(request: NextRequest) {
   const baseResponse = platform
     ? (await updateSession(request)).response
     : NextResponse.next();
+
+  // Capture a paid click before anything else, because it has to
+  // survive the visitor's later journey the same way ?ref= does: the
+  // ad lands them on a page, they read two articles, and only then
+  // press the WhatsApp button. /go/whatsapp and /api/lead both read
+  // this cookie server-side, so the attribution does not depend on the
+  // page's JavaScript having run.
+  //
+  // Set only when there is actually something campaign-related on the
+  // URL. A Set-Cookie on every marketing request would take all
+  // several hundred static routes out of the edge cache, which is the
+  // same reason the ?ref= pass below returns early.
+  const ads = parseAdsParams(
+    request.nextUrl.search,
+    request.nextUrl.pathname,
+  );
+  if (ads) {
+    // Last touch wins here, unlike the referral cookie. Two ad clicks
+    // means Google charged twice and the second one is the click the
+    // conversion should be reported against; keeping the first would
+    // credit a click whose conversion window may already have closed.
+    baseResponse.cookies.set(ADS_COOKIE, encodeAdsCookie(ads), {
+      maxAge: ADS_COOKIE_MAX_AGE_SECONDS,
+      path: "/",
+      sameSite: "lax",
+      httpOnly: false,
+      secure: process.env.NODE_ENV === "production",
+    });
+  }
 
   const ref = request.nextUrl.searchParams.get("ref");
   if (!ref) return baseResponse;

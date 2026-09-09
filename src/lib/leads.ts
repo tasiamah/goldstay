@@ -27,6 +27,7 @@ export type LeadAttribution = {
   utmCampaign?: string | null;
   utmTerm?: string | null;
   utmContent?: string | null;
+  gclid?: string | null;
   landedAt?: Date | null;
 };
 
@@ -110,6 +111,7 @@ export async function createLead(input: CreateLeadInput): Promise<Lead> {
         utmCampaign: input.attribution?.utmCampaign?.trim() || null,
         utmTerm: input.attribution?.utmTerm?.trim() || null,
         utmContent: input.attribution?.utmContent?.trim() || null,
+        gclid: input.attribution?.gclid?.trim() || null,
         landedAt: input.attribution?.landedAt ?? null,
       },
     });

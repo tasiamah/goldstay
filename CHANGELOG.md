@@ -21,6 +21,62 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.32.0] - 2026-09-09
+
+### Added
+
+- `/go/whatsapp`, a tracked hop that records a WhatsApp CTA click
+  server-side and then redirects to `wa.me`. It exists because the
+  funnel leaves our property at that point: once the browser is on
+  `wa.me` nothing we control can see anything, so this is the last
+  request where a click can be attributed. A GA event already fired on
+  these links, but ad blockers, iOS Safari and in-app browsers drop
+  client-side analytics at a rate nobody can measure, and an
+  underreported campaign is indistinguishable from one that is not
+  working. The two counts read together now bound that gap.
+- `/manage-my-property`, a landing page for the WhatsApp campaign, with
+  one call to action and the fee and service commitments published on
+  it. Noindexed, because it overlaps the homepage's organic target of
+  "property management nairobi" and two of our own pages competing for
+  one query helps neither. It stays crawlable in `robots.txt`, since a
+  landing page Googlebot cannot fetch gets the ad disapproved.
+- Google Ads click ids are now captured. Middleware writes `gclid`,
+  `wbraid` or `gbraid` plus any `utm_*` into a 90 day cookie on
+  arrival, and both the WhatsApp hop and `/api/lead` read it
+  server-side, so attribution survives a visitor reading three articles
+  before making contact and does not depend on the page's JavaScript.
+  90 days because that is the longest window Google Ads will accept an
+  offline conversion upload for.
+
+### Fixed
+
+- **Every Google Ads click would have been recorded as organic search.**
+  Auto-tagging appends `gclid` and does not set `utm_medium`, which is
+  what `classifyReferrer` used to decide "paid" from, so a campaign
+  running with default settings was indistinguishable from organic
+  traffic. A click id is now the first thing checked.
+- Leads store the `gclid`. Without it there was no way to tell Google
+  Ads which clicks became real clients, so a campaign could only ever
+  optimise for cheap button presses rather than for business.
+- `?i=toString` on the WhatsApp hop would have resolved against
+  `Object.prototype` and put `function toString() { [native code] }`
+  into the visitor's prefilled message. Found by its own test.
+
+### Changed
+
+- A landlord answering "Google search" on the lead form no longer maps
+  to the organic channel. That mapping carried a note saying it would
+  begin overstating organic the day ads started running, and ads start
+  now. Nobody can tell an ad from an organic result, so the stated
+  answer is kept verbatim in `foundVia` and the `channel` column is
+  left to measured evidence.
+
+### Migration
+
+Additive: one table, one nullable column on `Lead`, two indexes.
+Apply `20260909180000_whatsapp_click_tracking` with
+`npm run db:deploy:local` **before** deploying this version.
+
 ## [1.31.0] - 2026-09-09
 
 ### Added
@@ -1560,7 +1616,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.31.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.32.0...HEAD
+[1.32.0]: https://github.com/tasiamah/goldstay/compare/v1.31.0...v1.32.0
 [1.31.0]: https://github.com/tasiamah/goldstay/compare/v1.30.0...v1.31.0
 [1.30.0]: https://github.com/tasiamah/goldstay/compare/v1.29.0...v1.30.0
 [1.29.0]: https://github.com/tasiamah/goldstay/compare/v1.28.0...v1.29.0

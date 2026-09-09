@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import {
   appendSourceRef,
+  isWhatsAppCta,
   isWhatsAppHref,
   surfaceLabel,
 } from "@/lib/whatsapp-tracking";
@@ -51,7 +52,11 @@ export function WhatsAppTracking() {
       if (!anchor) return;
 
       const href = anchor.getAttribute("href");
-      if (!isWhatsAppHref(href) || !href) return;
+      // Both the direct wa.me links and the tracked /go/whatsapp hop.
+      // The hop is where paid traffic goes, and the GA event below is
+      // what Google Ads imports as the campaign's conversion, so
+      // missing it would stop the campaign reporting conversions.
+      if (!isWhatsAppCta(href) || !href) return;
 
       const surface = surfaceLabel({
         explicit: anchor.getAttribute("data-wa-source"),
@@ -65,14 +70,20 @@ export function WhatsAppTracking() {
       // If this throws for any reason the click must still work, so the
       // rewrite and the analytics are each isolated: a lead reaching
       // WhatsApp beats a lead we could attribute.
-      try {
-        const withRef = appendSourceRef(href, {
-          host: window.location.host,
-          pathname: window.location.pathname,
-        });
-        if (withRef !== href) anchor.setAttribute("href", withRef);
-      } catch {
-        // Leave the original href in place.
+      //
+      // Only direct wa.me links get rewritten. The hop builds its own
+      // message and footnote server-side, where it also knows the
+      // campaign, so rewriting it here would duplicate the footnote.
+      if (isWhatsAppHref(href)) {
+        try {
+          const withRef = appendSourceRef(href, {
+            host: window.location.host,
+            pathname: window.location.pathname,
+          });
+          if (withRef !== href) anchor.setAttribute("href", withRef);
+        } catch {
+          // Leave the original href in place.
+        }
       }
 
       try {
@@ -85,6 +96,11 @@ export function WhatsAppTracking() {
           surface,
           page_path: window.location.pathname,
           link_url: href,
+          // Whether this click also left a server-side row, so the two
+          // counts can be reconciled. The gap between them is the share
+          // of clicks that ad blockers and in-app browsers eat, which is
+          // the number you need before trusting either on its own.
+          server_logged: isWhatsAppHref(href) ? "no" : "yes",
         });
         window.fbq?.("track", "Lead", { content_name: surface });
       } catch {

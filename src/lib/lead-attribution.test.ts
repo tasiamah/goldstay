@@ -283,9 +283,21 @@ describe("describeAttribution", () => {
 
 describe("channelFromFoundVia", () => {
   it("buckets the answers that map cleanly", () => {
-    expect(channelFromFoundVia("Google search")).toBe("organic_search");
     expect(channelFromFoundVia("Recommended by someone")).toBe("referral");
     expect(channelFromFoundVia("Instagram or Facebook")).toBe("social");
+  });
+
+  it("no longer claims organic for a stated Google search", () => {
+    // This used to return organic_search, on the stated grounds that
+    // Goldstay ran no paid search. Ads started running in September
+    // 2026, and a landlord cannot tell an ad from an organic result,
+    // so the answer no longer distinguishes them. Guessing organic
+    // would understate exactly the channel now being paid for.
+    //
+    // Nothing is lost: the answer is still stored verbatim in
+    // `foundVia`. It is `channel` that is left to measured evidence,
+    // which for a paid click is the gclid.
+    expect(channelFromFoundVia("Google search")).toBeNull();
   });
 
   it("returns null rather than inventing a channel for the offline answers", () => {

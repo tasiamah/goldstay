@@ -36,6 +36,40 @@ export function isWhatsAppHref(href: string | null | undefined): boolean {
   return href.startsWith("https://wa.me/") || href.startsWith("http://wa.me/");
 }
 
+// The tracked hop at /go/whatsapp, which records the click server-side
+// and then redirects to wa.me. See src/app/go/whatsapp/route.ts.
+//
+// It needs recognising here for one reason: it is still a WhatsApp CTA
+// as far as analytics is concerned, and the GA `generate_lead` event is
+// what Google Ads imports as the campaign's conversion. A CTA that
+// routed through the hop and was not matched by this listener would
+// stop reporting conversions to the campaign paying for the click.
+//
+// It does not get the href rewrite. The prefilled message and the
+// "(Sent from ...)" footnote are built server-side in the route, where
+// the campaign is also known, so rewriting here would either duplicate
+// the footnote or fight with it.
+export function isWhatsAppHop(href: string | null | undefined): boolean {
+  if (!href) return false;
+  // Relative in practice, but an absolute same-origin href is a
+  // perfectly ordinary thing for a CMS or a copied link to produce.
+  const path = href.startsWith("/")
+    ? href
+    : (() => {
+        try {
+          return new URL(href).pathname;
+        } catch {
+          return "";
+        }
+      })();
+  return path === "/go/whatsapp" || path.startsWith("/go/whatsapp?");
+}
+
+// Either kind of WhatsApp CTA, for the analytics half of the listener.
+export function isWhatsAppCta(href: string | null | undefined): boolean {
+  return isWhatsAppHref(href) || isWhatsAppHop(href);
+}
+
 // Adds "(Sent from goldstay.co.ke/airbnb-management)" to the prefilled
 // message, so the page is visible in the thread ops actually reads.
 //
