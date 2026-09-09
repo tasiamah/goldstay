@@ -276,6 +276,13 @@ export default function Article() {
         >
           how much Airbnb managers charge in Kenya
         </Link>
+        . For which platforms a manager should actually be listing you on, see{" "}
+        <Link
+          href="/insights/airbnb-management-nairobi-platforms-and-channels"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management and the channel question
+        </Link>
         , and for the difference between a co-host and an operator who
         takes over your listing, see{" "}
         <Link

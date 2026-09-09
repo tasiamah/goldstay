@@ -350,6 +350,13 @@ export default function Article() {
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           where to find a co-host in Nairobi
+        </Link>
+        {", "}
+        <Link
+          href="/insights/airbnb-management-nairobi-platforms-and-channels"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what Airbnb, Booking.com and Expedia each cost a host
         </Link>{" "}
         and{" "}
         <Link

@@ -708,6 +708,9 @@ import ServicedApartmentManagementNairobi, {
 import AirbnbVsBookingComNairobi, {
   meta as airbnbVsBookingComNairobiMeta,
 } from "./airbnb-vs-booking-com-nairobi";
+import AirbnbManagementNairobiPlatformsAndChannels, {
+  meta as airbnbManagementNairobiPlatformsAndChannelsMeta,
+} from "./airbnb-management-nairobi-platforms-and-channels";
 import BtlPortfolioNairobi, {
   meta as btlPortfolioNairobiMeta,
 } from "./btl-portfolio-building-nairobi";
@@ -1575,6 +1578,10 @@ export const posts: readonly Post[] = [
   {
     meta: airbnbVsBookingComNairobiMeta,
     Component: AirbnbVsBookingComNairobi,
+  },
+  {
+    meta: airbnbManagementNairobiPlatformsAndChannelsMeta,
+    Component: AirbnbManagementNairobiPlatformsAndChannels,
   },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
 

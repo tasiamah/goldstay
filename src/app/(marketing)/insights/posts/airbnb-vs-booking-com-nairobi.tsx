@@ -287,6 +287,13 @@ export default function Article() {
         </Link>
         {", "}
         <Link
+          href="/insights/airbnb-management-nairobi-platforms-and-channels"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          which platforms your unit should be on, including Expedia
+        </Link>
+        {", "}
+        <Link
           href="/insights/airbnb-nairobi-occupancy-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >

@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.34.0] - 2026-09-09
+
+### Added
+- "Airbnb management in Nairobi: which platforms your unit should be on."
+  Owners search for Airbnb management, co-hosting, short-let management and
+  serviced apartment management as if they were different services, so the
+  article opens by collapsing the vocabulary and then answers the question
+  that actually moves their income: which channels the unit is listed on.
+  Sets out what each platform takes in 2026 — Airbnb's 15.5% host-only fee,
+  Booking.com's 10-25%, and Expedia and Vrbo's 5% plus 3% — and shows why
+  comparing those headline rates is misleading, because Vrbo still charges
+  the guest 6-15% on top while Airbnb no longer does, so the channel with
+  the lower host fee can lose you the booking. Also records that the widely
+  quoted 8% Expedia rate is a US and Canada figure and that Kenya appears in
+  no published band, which is the number a Nairobi owner is most likely to
+  be quoted wrongly.
+- Booking.com is now a selectable booking source in the admin, and can have
+  an iCal feed attached.
+
+### Changed
+- `src/lib/booking-sources.ts` said Booking.com was unsupported "until we
+  have the ops bandwidth", which had been untrue since those listings
+  started being managed by hand outside the platform. Staff could not record
+  a Booking.com stay at all, and nothing guarded against double-booking a
+  unit that was live on both channels. Vrbo stays hidden, because we
+  genuinely do not list there.
+
 ## [1.33.0] - 2026-09-09
 
 ### Added
@@ -1663,7 +1690,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.33.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.34.0...HEAD
+[1.34.0]: https://github.com/tasiamah/goldstay/compare/v1.33.0...v1.34.0
 [1.33.0]: https://github.com/tasiamah/goldstay/compare/v1.32.1...v1.33.0
 [1.32.1]: https://github.com/tasiamah/goldstay/compare/v1.32.0...v1.32.1
 [1.32.0]: https://github.com/tasiamah/goldstay/compare/v1.31.0...v1.32.0
