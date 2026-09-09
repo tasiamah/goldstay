@@ -135,6 +135,31 @@ export function findNeighbourhood(
   );
 }
 
+// Areas that have earned a standalone page, i.e. those with enough
+// area-specific substance to say something their siblings cannot.
+// Drives generateStaticParams, the sitemap and the sibling links, so
+// there is one answer to "does this area have a page" rather than
+// three places to keep in step.
+export function profiledNeighbourhoods(
+  city: "nairobi" | "accra",
+): Neighbourhood[] {
+  // Annotated before filtering: the cities map is a const literal, so
+  // its neighbourhood arrays infer as a union in which `profile` and
+  // `shortLet` exist only on the members that set them.
+  const all: Neighbourhood[] = cities[city].neighbourhoods;
+  return all.filter((n) => n.profile);
+}
+
+// The rest. They keep their rent band and tenant mix on
+// /<city>/areas, which is everything we can honestly say about them,
+// instead of a URL that pads two facts into a thousand words.
+export function unprofiledNeighbourhoods(
+  city: "nairobi" | "accra",
+): Neighbourhood[] {
+  const all: Neighbourhood[] = cities[city].neighbourhoods;
+  return all.filter((n) => !n.profile);
+}
+
 // A neighbourhood we are willing to publish a short-let service page
 // for, which is to say one carrying real short-stay data.
 export type ShortLetNeighbourhood = Neighbourhood & {
@@ -643,6 +668,46 @@ export type Neighbourhood = {
     // stops these pages reading as the same page nine times.
     caveat: string;
   };
+  // Long-let profile, and the same bargain as `shortLet` above: an
+  // area earns a standalone /<city>/<area> page only if there is
+  // something true to say about letting there that no sibling page
+  // could claim.
+  //
+  // The restraint above was applied to the /airbnb-management pages
+  // and never to their parents, and it showed. Measured across eight
+  // of them, 88% of every parent page was text shared with its
+  // siblings — around 120 unique words in 1,000 — because `name`,
+  // `tenant` and a rent range were the only things that varied inside
+  // a fixed template. That is the doorway pattern the comment above
+  // warns about, and Google had duly collapsed the cluster.
+  //
+  // So this is required for publication, not decoration. Areas
+  // without a profile are listed on /<city>/areas with their rent
+  // band and tenant mix, which is all we can honestly say about them,
+  // rather than being given a URL that pads those two facts out to a
+  // thousand words.
+  profile?: {
+    // What the place physically is: the roads that define it, what
+    // sits on them, how it has changed. The orientation a landlord
+    // who last visited five years ago does not have.
+    character: string;
+    // Who rents here and why — the specific employers, institutions
+    // and schools that generate the demand, not "professionals".
+    demand: string;
+    // The building stock. Age, typical unit mix, what a service
+    // charge buys locally, what "well-finished" means on this street
+    // as opposed to two miles away.
+    stock: string;
+    // What actually goes wrong for a landlord here. The section that
+    // earns the page, and the one that cannot be templated: water,
+    // access, oversupply, whatever it genuinely is.
+    friction: string;
+    // Questions specific to this area. These replace the city-level
+    // FAQ, which was 373 words repeated byte-for-byte on all eleven
+    // neighbourhood pages — the single largest block of duplication —
+    // and which emitted the same FAQPage schema eleven times over.
+    faq: { q: string; a: string }[];
+  };
 };
 
 export const cities = {
@@ -666,6 +731,34 @@ export const cities = {
           caveat:
             "It is also where most of the new supply has landed. A unit with generic furniture and phone photography discounts hard against a hundred near-identical neighbours, so the rate band above assumes the listing is genuinely well presented.",
         },
+        profile: {
+          character:
+            "Nairobi's second business district, and the one that behaves like a city centre. The commercial spine runs along Waiyaki Way and Ring Road Westlands, with Sarit Centre and Westgate anchoring the retail and a row of office towers that have gone up since the mid-2010s. Behind them, Rhapta Road, Peponi Road and the streets off them were low-rise family housing within living memory and are now largely apartment blocks. A landlord who bought a maisonette here in 2010 owns something in a materially different neighbourhood today.",
+          demand:
+            "Tenants who work within a fifteen-minute walk. Several multinationals run their East Africa operations from the towers along Ring Road and Waiyaki Way, and their staff make up the bulk of the corporate lets. Beyond them: UN and NGO staff who want to be nearer town than Gigiri, embassy support staff, and regional managers on one- to three-year postings with a housing allowance. That last group matters more than its size, because an allowance-backed tenant negotiates less on rent and stays for the length of the posting.",
+          stock:
+            "Overwhelmingly apartments, mostly one to three bed, most of it built in the last decade. The better blocks carry a borehole, a backup generator, a lift, parking and often a gym or pool, and the service charge reflects all of it — expect it to be noticeably higher here than in an older, lower-density suburb, because lifts and generators are what you are paying for. Finish standards are set by the newest completions on the street rather than by the age of your own block, which is the uncomfortable part of owning a 2015 unit next to a 2024 one.",
+          friction:
+            "Supply is the problem worth planning for. More apartments have been delivered in Westlands than in any comparable part of Nairobi, and the practical effect is that a unit which is merely adequate sits empty while a well-presented one on the same street lets in a fortnight. Void periods here are a presentation problem more than a pricing one. Traffic on Waiyaki Way shapes tenant behaviour to a degree outsiders underestimate — a unit on the wrong side of the road for a tenant's commute is a harder let than the map suggests. Two further things to check before buying: how many parking bays actually come with the unit, since older blocks were built for a car per household and tenants now often have two, and whether the block's management company is competent, because a badly run service charge is the single fastest way for a good building to lose its rent premium.",
+          faq: [
+            {
+              q: "Is Westlands oversupplied for long-term lets?",
+              a: "For undifferentiated units, yes. There is a lot of stock and a tenant viewing four similar two-beds in an afternoon will choose on finish, natural light and parking rather than on a fifty-dollar rent difference. Well-presented units in well-run blocks still let quickly. The risk is not that Westlands rents have collapsed — they have not — it is that the gap between the top and bottom of the same rent band has widened, and an averagely finished unit now sits at the bottom of it.",
+            },
+            {
+              q: "Should I furnish a Westlands apartment?",
+              a: "For the corporate and allowance-backed tenants that make up most of the demand here, furnished lets at a premium and turns over faster, which suits an owner who wants the option of switching to short stays later. For a longer, quieter tenancy, unfurnished attracts tenants who bring their own things and therefore stay longer. Both work in Westlands specifically because both tenant types are present in volume, which is not true of every Nairobi suburb.",
+            },
+            {
+              q: "How much should I expect to pay in service charge?",
+              a: "More than you would in Kileleshwa or Lavington, because you are funding lifts, a generator, a borehole and usually security staffing across a larger building. The number matters less than what it covers and whether the managing agent collects reliably: a low service charge in a block with arrears means deferred maintenance that lands on owners as a special levy later. We read the service charge accounts before recommending a purchase, not the headline figure.",
+            },
+            {
+              q: "Does the Nairobi Expressway help or hurt Westlands rents?",
+              a: "It helps, indirectly. Faster access to the airport and to Upper Hill widened the pool of tenants for whom Westlands is a sensible base, which supports demand at the upper end. It has not changed the local congestion on Waiyaki Way and Ring Road at peak times, so a tenant's day-to-day commute feels much as it did.",
+            },
+          ],
+        },
       },
       {
         name: "Kilimani",
@@ -679,6 +772,34 @@ export const cities = {
           note: "The highest-volume short-let market in the country and the most competitive. Demand is real and year-round, skewing to leisure and remote work rather than corporate, which means weekends fill first and midweek needs pricing work.",
           caveat:
             "Two things bite here. Supply is saturated, so pricing has to be actively managed rather than set and left. And a growing number of Kilimani buildings now restrict or ban short lets outright, so the building matters more than the apartment.",
+        },
+        profile: {
+          character:
+            "The most comprehensively rebuilt neighbourhood in Nairobi. Kilimani was bungalows on half-acre plots within the last twenty years; rezoning turned it into the densest apartment district in the city. Argwings Kodhek Road and Lenana Road carry most of the traffic, Yaya Centre and Adlife Plaza carry most of the retail, and the streets between them — Kirichwa, Denis Pritt, Ring Road Kilimani — are now largely mid-rise blocks. It sits closer to the central business district and Upper Hill than any other premium residential area, which is the whole basis of its rental demand.",
+          demand:
+            "Younger and more mobile than the Westlands or Riverside tenant. Single professionals and couples rather than families, a substantial remote-working population, NGO and development-sector staff, and medical professionals working at the hospitals in and around Upper Hill. Kilimani is also where most new arrivals to Nairobi start, because it is the easiest place to find a one-bedroom at short notice. That cuts both ways: the pool of tenants is deep, and it is also the least sticky tenant base in the city, so plan on shorter average tenancies than you would get in Kileleshwa or Lavington.",
+          stock:
+            "More apartments, of a wider range of quality, than anywhere else in Nairobi. Heavy on studios and one-beds, which is why the two-bed band above is narrower than the volume of construction would suggest. Quality varies enormously street to street and even block to block, because a lot of it was built quickly during the rezoning boom. The specific things worth checking are water storage capacity, the state of the borehole if there is one, and whether the parking allocation is real or notional.",
+          friction:
+            "Water is the practical issue a diaspora landlord tends not to anticipate. Mains supply across Kilimani is unreliable enough that serious blocks run a borehole and substantial storage, and the ones that do not end up buying bowser water, which either lands on the service charge or lands on your tenant's patience. Ask about water before you ask about the finish. The second issue is oversupply, which is more acute here than in Westlands: there is simply more competing stock, and a tenant has real choice, so rent is set by the market and not by what you paid. The third is construction — rezoning means the plot next door can become a building site with little warning, and a tenant living beside one negotiates hard or leaves. Finally, if you have any thought of short-letting later, check the building's rules first, because a growing number of Kilimani blocks now prohibit it outright.",
+          faq: [
+            {
+              q: "Why are Kilimani rents lower than Kileleshwa's for a similar apartment?",
+              a: "Density and choice. Kilimani has far more competing units, so a tenant comparing two similar two-beds has more alternatives and less reason to stretch. Kileleshwa is quieter, greener and lower-rise, which families and diplomatic tenants pay a premium for. If you own in Kilimani the answer is not to price against Kileleshwa but to compete on the things tenants there actually choose on: water reliability, light, parking and how the unit shows.",
+            },
+            {
+              q: "Is a one-bedroom or a two-bedroom the better let in Kilimani?",
+              a: "One-beds let faster because the tenant pool is dominated by singles and couples, but they turn over more often, and each turnover costs you a void and a clean. Two-beds take longer to let and hold the tenant longer, and they keep the option of a couple sharing. Given the tenant base here we would generally rather own the two-bed and accept a slower initial let, unless the unit is genuinely well located for a short walk to Upper Hill.",
+            },
+            {
+              q: "How badly does the water situation affect a tenancy?",
+              a: "Enough to be the first thing we check. A block with a working borehole and proper storage is a normal tenancy. A block dependent on mains and bowser deliveries produces recurring complaints, and recurring complaints produce notice. It is the most common reason we advise against an otherwise attractive Kilimani unit.",
+            },
+            {
+              q: "Should I be worried about all the new construction?",
+              a: "About the building next door, yes, in the short term — noise and dust cost you rent or cost you the tenant. About the neighbourhood, less so. Kilimani's proximity to the business districts is structural and is not going away, and the density that makes it competitive is the same density that keeps it liquid when you want to sell or re-let.",
+            },
+          ],
         },
       },
       {
@@ -707,6 +828,34 @@ export const cities = {
           note: "A short, quiet corridor that happens to sit between the CBD and Westlands, with embassies and NGO offices along it. Guests pay a premium for a secure, low-noise address they can still reach the city from in ten minutes, and rates hold better through the low season than the volume suburbs.",
           caveat:
             "Inventory is tiny and a good number of the buildings do not permit short lets at all. Worth confirming the building's position before buying here specifically to short let.",
+        },
+        profile: {
+          character:
+            "A single leafy spine — Riverside Drive, running off Chiromo Road — and the streets hanging off it, following the line of the Nairobi River. It is the most contained of the premium areas: not a district like Westlands or a grid like Kilimani, but essentially one road with embassies, diplomatic residences, a handful of offices and a small number of apartment buildings along it. Being walkable to neither a mall nor an office tower is part of the appeal for the tenants who choose it, and the reason it stays quiet while Westlands, ten minutes away, does not.",
+          demand:
+            "Narrow, wealthy and fairly stable. Several embassies and international organisations sit on or immediately off Riverside Drive, and their staff and the consultants who work with them form most of the tenant base, alongside senior corporate tenants who want a short commute to both the central business district and Westlands without living in either. These are allowance-backed tenancies as a rule, which is why the rent band here sits above Westlands for a comparable apartment. Expect a smaller number of prospective tenants per vacancy and a higher proportion of them who can actually pay.",
+          stock:
+            "Very little of it, which is the defining commercial fact about Riverside. A mix of older diplomatic-style compounds on generous plots and a small number of newer, high-specification apartment buildings. Finish expectations are the highest of any area we cover: a tenant paying at this level and choosing Riverside specifically for its quiet is not going to accept a builder-standard kitchen. Service charges are correspondingly high and generally well administered, because the buildings are few and the owner base is engaged.",
+          friction:
+            "The single access road is the practical constraint. Riverside Drive funnels into Chiromo Road, and at peak times that junction is the whole neighbourhood's route in and out, which is worth understanding before assuming a ten-minute commute. The thin tenant pool is the commercial constraint: when a unit falls vacant there are fewer people looking, so a void here can run longer than in Kilimani even though the rent is higher — the arithmetic still favours Riverside, but only if you can absorb a slower let rather than needing the unit occupied next month. Security provisioning along the road was substantially upgraded following the attack at 14 Riverside Drive in 2019, and the area is now among the more heavily secured in the city; tenants at this level ask about it directly, so it is worth knowing what your building actually provides. Finally, there is almost no retail within walking distance, so a tenant without a car will find the address impractical no matter how good the apartment is.",
+          faq: [
+            {
+              q: "Why does Riverside command more rent than Westlands?",
+              a: "Scarcity and tenant mix. There are only so many apartments on Riverside Drive, and the tenants who want them are largely allowance-backed diplomatic and senior corporate staff who are buying quiet and security rather than proximity to shops. Westlands has more of everything, including more competing units, which caps what any individual unit can ask.",
+            },
+            {
+              q: "How long should I expect a Riverside unit to take to let?",
+              a: "Longer than Kilimani and often longer than Westlands, because the pool of tenants is small. That is the trade for the higher rent and the longer tenancies that tend to follow. If you need occupancy quickly — a mortgage to service from month one, for instance — Riverside is the wrong area to buy into, and we would say so before you did.",
+            },
+            {
+              q: "Do Riverside buildings allow short letting?",
+              a: "Many do not. The buildings are few, the owner bodies are engaged and several have taken an explicit position against nightly lets. If short stays are part of your plan, confirm the building's rules in writing before committing, because the rate potential here is genuinely good and the permission is genuinely uncertain.",
+            },
+            {
+              q: "Is the traffic on and off Riverside Drive a real problem for tenants?",
+              a: "It is a real consideration rather than a real problem. One road in and out means the Chiromo junction backs up at peak times, and tenants notice it. It has not stopped Riverside letting at the top of the market, because the people renting here are generally leaving at hours that avoid the worst of it.",
+            },
+          ],
         },
       },
       {

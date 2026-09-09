@@ -2,6 +2,7 @@ import {
   cities,
   isLiveDomain,
   neighbourhoodSlug,
+  profiledNeighbourhoods,
   shortLetNeighbourhoods,
   site,
 } from "./site";
@@ -99,7 +100,13 @@ export function sitemapPaths(input: {
     // right.
     ...(isNairobi ? [] : ["/nairobi"]),
     "/nairobi/buy",
-    ...cities.nairobi.neighbourhoods.map(
+    // Areas comparison page, and the redirect target for the
+    // neighbourhoods that no longer have a page of their own.
+    "/nairobi/areas",
+    // Only the areas with a profile. Submitting the rest would be
+    // submitting URLs that 301 away — see the `profile` comment in
+    // lib/site.ts for why they were consolidated.
+    ...profiledNeighbourhoods("nairobi").map(
       (n) => `/nairobi/${neighbourhoodSlug(n.name)}`,
     ),
     // Service-plus-location pages. Only the neighbourhoods carrying
@@ -115,7 +122,8 @@ export function sitemapPaths(input: {
     // Same as /nairobi above, for the Ghana domain's root.
     ...(isAccra ? [] : ["/accra"]),
     "/accra/buy",
-    ...cities.accra.neighbourhoods.map(
+    "/accra/areas",
+    ...profiledNeighbourhoods("accra").map(
       (n) => `/accra/${neighbourhoodSlug(n.name)}`,
     ),
     ...DIASPORA_ORIGINS.map((o) => `/from/${o.code}/accra`),

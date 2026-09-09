@@ -49,7 +49,11 @@ describe("marketsServedBy", () => {
 describe("sitemapPaths on the Kenya domain", () => {
   it("advertises the Accra routes, because it is the host serving them", () => {
     const paths = pathsFor("goldstay.co.ke");
-    for (const p of ["/accra", "/accra/buy", "/accra/east-legon", "/from/uk/accra"]) {
+    // /accra/areas rather than a named suburb: the Accra
+    // neighbourhood pages were consolidated into it, since all five
+    // measured ~69% identical to each other with no properties
+    // behind them. See the `profile` comment in lib/site.ts.
+    for (const p of ["/accra", "/accra/buy", "/accra/areas", "/from/uk/accra"]) {
       expect(paths).toContain(p);
     }
   });
@@ -94,7 +98,7 @@ describe("sitemapPaths on the Ghana domain", () => {
   it("drops the Kenya routes and collapses /accra into the root", () => {
     const paths = pathsFor("goldstay.com.gh");
     expect(paths).toContain("");
-    expect(paths).toContain("/accra/east-legon");
+    expect(paths).toContain("/accra/areas");
     expect(paths).not.toContain("/accra");
     expect(paths).not.toContain("/nairobi/kilimani");
     expect(paths).not.toContain("/from/uk/nairobi");

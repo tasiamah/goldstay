@@ -7,14 +7,20 @@ import {
   cities,
   findNeighbourhood,
   neighbourhoodSlug,
+  profiledNeighbourhoods,
 } from "@/lib/site";
 
 // Programmatic neighbourhood pages for Accra. Pre-rendered at build
 // time from the cities map so each entry in cities.accra.neighbourhoods
 // gets its own URL like /accra/east-legon, /accra/airport-residential.
 // Any path that doesn't match a known neighbourhood 404s.
+// Only areas with a profile. An area without one has nothing to say
+// that its siblings do not, and publishing it anyway produced pages
+// measuring 88% identical to each other — see the `profile` comment in
+// lib/site.ts. The rest are listed on /accra/areas and redirected
+// there in next.config.ts.
 export function generateStaticParams() {
-  return cities.accra.neighbourhoods.map((n) => ({
+  return profiledNeighbourhoods("accra").map((n) => ({
     neighbourhood: neighbourhoodSlug(n.name),
   }));
 }

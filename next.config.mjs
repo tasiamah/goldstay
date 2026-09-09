@@ -77,9 +77,64 @@ const nextConfig = {
         permanent: true,
       }));
 
+    // Consolidated neighbourhood pages.
+    //
+    // These areas had a page each, generated from one template with a
+    // rent band and a tenant label swapped in. Measured across eight
+    // of them, 88% of every page was text shared with its siblings —
+    // roughly 120 unique words in 1,000 — which is the doorway pattern
+    // Google collapses, and it duly had. They now redirect to the
+    // areas comparison page, which contains the rent band and tenant
+    // mix that were the only real content on them.
+    //
+    // Redirected to /<city>/areas rather than to the city root on
+    // purpose: a thin page pointed at a homepage reads as a soft 404,
+    // whereas pointed at the table holding its actual content it is
+    // the same information in a better place.
+    //
+    // Kept deliberately exact rather than a wildcard, because
+    // /nairobi/<area>/airbnb-management pages survive their parents.
+    // Those measured 40% unique and only 1% overlap with the parent,
+    // so they were never the problem and are still live.
+    //
+    // This list must match the areas without a `profile` in
+    // src/lib/site.ts. next.config cannot import TypeScript, so
+    // src/lib/site.neighbourhood-pages.test.ts asserts the two agree
+    // and fails the build's test run if a profile is added or removed
+    // without updating here.
+    const consolidated = {
+      nairobi: [
+        "kileleshwa",
+        "gigiri",
+        "lavington",
+        "parklands",
+        "brookside",
+        "rosslyn",
+        "karen",
+        "runda",
+      ],
+      accra: [
+        "east-legon",
+        "adjiringanor",
+        "airport-residential",
+        "cantonments",
+        "labone",
+      ],
+    };
+
+    const consolidatedRedirects = Object.entries(consolidated).flatMap(
+      ([city, slugs]) =>
+        slugs.map((slug) => ({
+          source: `/${city}/${slug}`,
+          destination: `/${city}/areas`,
+          permanent: true,
+        })),
+    );
+
     return [
       ...cityRootRedirect(KENYA_HOSTS, "/nairobi"),
       ...cityRootRedirect(GHANA_HOSTS, "/accra"),
+      ...consolidatedRedirects,
       {
         source: "/owner",
         destination: "/client",

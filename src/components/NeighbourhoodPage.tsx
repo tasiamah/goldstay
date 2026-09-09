@@ -19,6 +19,7 @@ import {
   citySourcing,
   localizedFaq,
   neighbourhoodSlug,
+  profiledNeighbourhoods,
   site,
   waLink,
   type Neighbourhood,
@@ -70,14 +71,26 @@ export function NeighbourhoodPage({
       ? "/images/locations/nairobi.jpg"
       : "/images/locations/accra.jpg";
 
-  // Other neighbourhoods in the same city (excluding self) for the
-  // "Where else we operate" footer block. Internal cross-linking is
-  // the cheapest ranking lever we have once these pages exist.
-  const others = c.neighbourhoods.filter((n) => n.name !== neighbourhood.name);
+  // Sibling areas that actually have a page, for the "where else we
+  // operate" block. Internal cross-linking is the cheapest ranking
+  // lever we have, but only to URLs that serve a 200 — this used to
+  // link every neighbourhood in the city, most of which now redirect
+  // to the areas page, and a link to a redirect wastes both the click
+  // and the crawl.
+  const others = profiledNeighbourhoods(city).filter(
+    (n) => n.name !== neighbourhood.name,
+  );
 
-  // City-scoped answers, so a Nairobi page never shows GHS copy. Same
-  // list feeds the accordion and the FAQPage schema at the bottom.
-  const faqItems = localizedFaq(city);
+  // Area-specific answers where we have them, falling back to the
+  // city list otherwise.
+  //
+  // The fallback used to be unconditional, which meant the same 373
+  // words and the same FAQPage schema appeared on all eleven Nairobi
+  // neighbourhood pages — the largest single contributor to those
+  // pages measuring 88% identical to each other. An area with a
+  // profile now answers its own questions, so the block that was pure
+  // duplication becomes the part of the page least like its siblings.
+  const faqItems = neighbourhood.profile?.faq ?? localizedFaq(city);
 
   // Tenant midpoint rent figure for the hero subheadline. Avoids the
   // copy reading like a min/max table; gives one number a human can
@@ -239,6 +252,41 @@ export function NeighbourhoodPage({
         </div>
       </section>
 
+      {/* The substance, where an area has any. Four sections that are
+          specific to this place by construction: what it is, who
+          rents there, what the buildings are like and what goes
+          wrong. An area without them does not get this page at all —
+          see the `profile` comment in lib/site.ts. */}
+      {neighbourhood.profile ? (
+        <section className="section bg-white/50">
+          <div className="container-gs max-w-3xl">
+            <SectionHeader
+              eyebrow={`Letting in ${neighbourhood.name}`}
+              title={`What owning here is actually like.`}
+              lede={`Written for a landlord deciding whether to buy, hold or re-let in ${neighbourhood.name} — including the parts that argue against it.`}
+            />
+            <div className="mt-14 space-y-12">
+              <Prose
+                heading={`${neighbourhood.name} itself`}
+                body={neighbourhood.profile.character}
+              />
+              <Prose
+                heading="Who rents here, and why"
+                body={neighbourhood.profile.demand}
+              />
+              <Prose
+                heading="The buildings"
+                body={neighbourhood.profile.stock}
+              />
+              <Prose
+                heading="What goes wrong"
+                body={neighbourhood.profile.friction}
+              />
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <CalculatorTeaser />
 
       {others.length > 0 && (
@@ -246,8 +294,8 @@ export function NeighbourhoodPage({
           <div className="container-gs">
             <SectionHeader
               eyebrow="Where else in the city"
-              title={`Other ${cityName} neighbourhoods we manage.`}
-              lede={`We focus on the ${cityName} neighbourhoods with the strongest diaspora tenant demand. ${neighbourhood.name} is one of ${c.neighbourhoods.length}.`}
+              title={`Other ${cityName} areas we write about in this much detail.`}
+              lede={`We manage in ${c.neighbourhoods.length} ${cityName} areas. These are the ones we know well enough to be this specific about — for the rent band and tenant mix in all of them, see the comparison below.`}
             />
             <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {others.map((n, i) => {
@@ -267,6 +315,18 @@ export function NeighbourhoodPage({
                 );
               })}
             </div>
+            <Reveal>
+              <p className="mt-8 text-sm text-charcoal/70">
+                <Link
+                  href={`/${city}/areas`}
+                  className="underline decoration-gold-500 underline-offset-4"
+                >
+                  All {c.neighbourhoods.length} {cityName} areas compared
+                </Link>{" "}
+                — two-bed rent bands, who rents in each, and where nightly
+                letting earns more than a lease.
+              </p>
+            </Reveal>
           </div>
         </section>
       )}
@@ -280,5 +340,16 @@ export function NeighbourhoodPage({
       <FAQSection items={faqItems} />
       <CTABanner />
     </>
+  );
+}
+
+function Prose({ heading, body }: { heading: string; body: string }) {
+  return (
+    <Reveal>
+      <div>
+        <h3 className="font-serif text-2xl text-charcoal">{heading}</h3>
+        <p className="mt-4 text-charcoal/75 pretty">{body}</p>
+      </div>
+    </Reveal>
   );
 }

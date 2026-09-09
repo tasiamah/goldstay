@@ -21,6 +21,69 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.16.0] - 2026-09-09
+
+Bumped MINOR rather than MAJOR despite retiring thirteen routes. The rule in
+AGENTS.md lists "a removed route" under MAJOR, but the clause governing it is
+"breaks a contract something outside this repo depends on", and every retired
+URL now returns a permanent redirect to the page holding its content. No link
+breaks. Recording the reasoning so a future reader can disagree with it rather
+than assume it was an oversight.
+
+### Fixed
+- The Nairobi and Accra neighbourhood pages were near-duplicates of each
+  other and had almost certainly been collapsed by Google, which is why they
+  never ranked for the area terms they were built for. Measured across eight
+  of them, 88% of every page was text shared with its siblings — about 120
+  unique words in 1,000 — because the only things that varied inside a fixed
+  template were the area name, a rent band and a tenant label. The word
+  counts told the story on their own: 1001, 1001, 999, 1005, 1005, 1001,
+  1003, 986.
+
+  The largest single contributor was the FAQ. It was city-level, so the same
+  373 words and the same `FAQPage` schema appeared on all eleven Nairobi
+  pages. Areas now answer their own questions, which turns the block that was
+  pure duplication into the part of the page least like its siblings.
+
+  Westlands, Kilimani and Riverside — the three areas we actually manage in —
+  now carry real substance: what the place is, who rents there and why, what
+  the building stock is like, and what goes wrong for a landlord there,
+  including the parts that argue against buying. Measured on the built pages,
+  unique content went from 11.8% to 76.8%, and the worst pair of siblings
+  from 84.9% similar to 13.2%.
+
+### Added
+- `/nairobi/areas` and `/accra/areas`, comparing every area we manage in:
+  two-bed rent bands, who rents in each, and where nightly letting earns more
+  than a lease. The per-area rent and tenant data was always the good part of
+  the old pages; collected in one table it becomes something none of them was
+  individually, and it targets the question the old pages could not win
+  because they were competing with each other — someone deciding which part
+  of the city to buy in wants the areas side by side.
+- A test that holds the publication rule together: an area gets a URL only if
+  it has enough area-specific substance to say something its siblings cannot.
+  It checks the redirect list in `next.config.mjs` against the data, refuses
+  a stub profile, and fails if two profiles are more than 20% similar to each
+  other — because writing one by editing another would recreate exactly the
+  problem this release fixes.
+
+### Changed
+- Eight Nairobi areas and all five Accra ones no longer have a page of their
+  own and redirect to their city's comparison page. Redirected there rather
+  than to the city homepage on purpose: a thin page pointed at a homepage
+  reads as a soft 404, whereas pointed at the table containing its actual
+  content it is the same information in a better place. Accra had no
+  properties behind any of its five, so a deep page would have been
+  invention; they can return individually when there is something true to say.
+- The nine `/nairobi/<area>/airbnb-management` pages are untouched. They
+  measured 40% unique and only 1% overlap with their own parents, so they
+  were never the problem, and they survive their parents being retired.
+- The sitemap and the sibling links between area pages now list only URLs
+  that serve a 200. Both previously enumerated every area in the city, so
+  without this the thirteen consolidated URLs would have stayed in the
+  sitemap indefinitely — telling Google a page exists in one breath and that
+  it does not in the next.
+
 ## [1.15.0] - 2026-09-09
 
 ### Added
@@ -781,6 +844,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.14.0...HEAD
+[1.16.0]: https://github.com/tasiamah/goldstay/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/tasiamah/goldstay/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/tasiamah/goldstay/compare/v1.13.1...v1.14.0
 [1.13.1]: https://github.com/tasiamah/goldstay/compare/v1.13.0...v1.13.1
