@@ -3,6 +3,11 @@ import Script from "next/script";
 export function Analytics() {
   const ga = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
   const meta = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  // Google Ads shares the gtag.js loaded for GA4 but needs its own
+  // config call, otherwise a conversion sent to AW-… is dropped
+  // without any error. Only rendered when the GA tag is, since it is
+  // that script this depends on.
+  const ads = process.env.NEXT_PUBLIC_GOOGLE_ADS_ID;
 
   return (
     <>
@@ -18,6 +23,7 @@ export function Analytics() {
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${ga}', { anonymize_ip: true });
+              ${ads ? `gtag('config', '${ads}');` : ""}
             `}
           </Script>
         </>

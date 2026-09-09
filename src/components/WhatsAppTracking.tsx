@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { trackAdsLead } from "@/lib/ads/conversion";
 import {
   appendSourceRef,
   isWhatsAppCta,
@@ -103,6 +104,12 @@ export function WhatsAppTracking() {
           server_logged: isWhatsAppHref(href) ? "no" : "yes",
         });
         window.fbq?.("track", "Lead", { content_name: surface });
+        // Reported here as well as from the forms, on the same
+        // condition as generate_lead. Overstates real enquiries by the
+        // same margin this event does, for the reason in the comment
+        // above: the send happens on WhatsApp where no browser of ours
+        // can watch it.
+        trackAdsLead();
       } catch {
         // Analytics is never worth an interrupted click.
       }

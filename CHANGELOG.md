@@ -21,6 +21,30 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.38.0] - 2026-09-09
+
+### Added
+- Enquiries are now reported to Google Ads as conversions, so paid
+  spend can be judged on leads rather than on clicks.
+
+  Google's own setup offers a snippet to paste into a conversion
+  page, fired on page load. Nothing on this site fits that: the
+  WhatsApp CTA leaves for wa.me and never comes back, so there is no
+  page to load, and the forms post with fetch and re-render in place
+  rather than navigating. The conversion is instead reported from the
+  same two places that already emit GA4's `generate_lead`, on the
+  same success condition, so the Ads figure and the GA4 figure count
+  one thing and a gap between them means a tagging fault rather than
+  a disagreement about what a lead is.
+
+  Both halves are set by environment variable. An account id or
+  conversion label with one character wrong produces a conversion
+  that silently never fires, so the value is parsed and validated:
+  a GA4 measurement id in the wrong variable is rejected rather than
+  sent, and the common paste of the whole `AW-…/label` string into
+  either field is accepted. Missing configuration is a no-op, which
+  is what preview, local development and the partner embed need.
+
 ## [1.37.0] - 2026-09-09
 
 ### Added
@@ -1792,7 +1816,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.37.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.38.0...HEAD
+[1.38.0]: https://github.com/tasiamah/goldstay/compare/v1.37.0...v1.38.0
 [1.37.0]: https://github.com/tasiamah/goldstay/compare/v1.36.0...v1.37.0
 [1.36.0]: https://github.com/tasiamah/goldstay/compare/v1.35.0...v1.36.0
 [1.35.0]: https://github.com/tasiamah/goldstay/compare/v1.34.0...v1.35.0

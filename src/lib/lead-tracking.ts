@@ -18,6 +18,8 @@
 // The pure payload builder is separated from the call so it can be
 // tested without a DOM or a gtag stub, matching whatsapp-tracking.ts.
 
+import { trackAdsLead } from "@/lib/ads/conversion";
+
 // The forms that post an enquiry. A union rather than a free string so
 // a typo cannot quietly create a second bucket in GA that looks like a
 // real one; the reports group by this value.
@@ -86,6 +88,10 @@ export function trackFormLead(form: LeadFormName): void {
     });
     window.gtag?.("event", "generate_lead", payload);
     window.fbq?.("track", "Lead", { content_name: `form:${form}` });
+    // Same success condition, so the Ads conversion count and the GA4
+    // key event count are measuring one thing and any gap between
+    // them is a tagging problem rather than a definition problem.
+    trackAdsLead();
   } catch {
     // Never worth failing a submitted enquiry over.
   }
