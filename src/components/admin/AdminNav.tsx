@@ -50,6 +50,11 @@ const ITEMS: readonly NavItem[] = [
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/transactions", label: "Transactions" },
   { href: "/admin/tasks", label: "Tasks" },
+  // No role gate: every role holds referral.read, because "who
+  // introduced this landlord" and "has this agent been paid" are
+  // questions support and accounting both field. Acting on it is
+  // gated by referral.write and referral.payout at the action.
+  { href: "/admin/referrals", label: "Referrals" },
   { href: "/admin/health", label: "Health" },
   {
     href: "/admin/archive",

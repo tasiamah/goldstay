@@ -189,6 +189,17 @@ export function Footer() {
                   Property management by country
                 </Link>
               </li>
+              {/* Same problem the /from hub had. The referral
+                  programme has had a working signup form, a working
+                  attribution cookie and a referrer dashboard for
+                  months, linked from nowhere on the site — so it was
+                  reachable only by someone who already knew the URL,
+                  and nobody ever signed up. */}
+              <li>
+                <Link href="/refer" className="link-underline">
+                  Agent referral programme
+                </Link>
+              </li>
               <li>
                 <Link href="/about" className="link-underline">
                   About Goldstay

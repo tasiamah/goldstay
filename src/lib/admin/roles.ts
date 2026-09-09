@@ -43,7 +43,14 @@ export type AdminAction =
   | "health.read"
   | "import.write"
   | "archive.write"
-  | "finance.read";
+  | "finance.read"
+  | "referral.read"
+  | "referral.write"
+  // Marking a referral payout as paid. Split from referral.write
+  // because it is the only action in this area that moves money out
+  // of Goldstay, and the person chasing an agent for introductions
+  // is rarely the person who should be able to declare them paid.
+  | "referral.payout";
 
 const SUPER_ADMIN_ALLOWED: ReadonlySet<AdminAction> = new Set(
   // Empty set means "everything"; SUPER_ADMIN bypasses the lookup.
@@ -77,6 +84,8 @@ const OPS_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "health.read",
   "import.write",
   "archive.write",
+  "referral.read",
+  "referral.write",
 ]);
 
 const ACCOUNTING_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
@@ -94,6 +103,8 @@ const ACCOUNTING_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "note.read",
   "note.write",
   "health.read",
+  "referral.read",
+  "referral.payout",
 ]);
 
 const SUPPORT_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
@@ -110,6 +121,7 @@ const SUPPORT_ALLOWED: ReadonlySet<AdminAction> = new Set<AdminAction>([
   "task.write",
   "note.read",
   "note.write",
+  "referral.read",
 ]);
 
 // COUNTRY_MANAGER is OPS-shaped, scoped to one country. The country

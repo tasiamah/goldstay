@@ -231,6 +231,7 @@ model Client {
   statementSends StatementSend[]
   notifications  ClientNotification[]
   observers      ClientObserver[]
+  referrals      Referral[]
 
   @@index([country])
   @@index([archivedAt])
@@ -804,6 +805,13 @@ enum AuditEntity {
   // defaulted events live here so a per-method timeline can be
   // shown on the client payout card.
   PAYOUT_METHOD
+  // Referral programme. Everything is keyed to the referrer rather
+  // than split across referrer, referral and payout entities,
+  // because the question anybody actually asks is "what has happened
+  // with this agent" — their referrals moving and their commissions
+  // being paid belong on one timeline. The referral or payout id
+  // goes in metadata.
+  REFERRER
 }
 
 enum CommunicationChannel {
@@ -1070,6 +1078,27 @@ model Referral {
   // referral was attached. Null if attribution happened before the
   // Airtable mirror could write (rare, but defensible).
   airtableLeadId   String?
+  // The client this referral became, once one exists. Null while the
+  // landlord is still a prospect, which is most of a referral's life.
+  //
+  // Attribution creates a Referral from a form submission, so all we
+  // have at that point is a name and an email the landlord typed.
+  // Months later somebody has to decide whether the client now called
+  // "W. E. Angulu" is the "Wesley Angulu" an agent introduced, and
+  // that judgement should be recorded once rather than repeated from
+  // memory every time the question comes up — not least because the
+  // answer determines who gets paid for a year.
+  //
+  // It also lets the payout snapshot be prefilled from the signed
+  // agreement instead of retyped. Ops previously had to read the rent
+  // and the commission off the property page and enter them by hand,
+  // which is a poor way to originate twelve months of payments.
+  //
+  // SetNull rather than Cascade: if a client is deleted the referral
+  // still happened, and an agent who is owed money should not have
+  // that record disappear with them.
+  clientId         String?
+  client           Client?        @relation(fields: [clientId], references: [id], onDelete: SetNull)
   landlordName     String
   landlordEmail    String?
   landlordPhone    String?
@@ -1093,6 +1122,7 @@ model Referral {
   @@index([referrerId, status])
   @@index([airtableLeadId])
   @@index([status])
+  @@index([clientId])
 }
 
 // One row per scheduled or paid commission. Generated atomically

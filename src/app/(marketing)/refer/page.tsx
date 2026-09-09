@@ -10,14 +10,27 @@ import { defaultsForType } from "@/lib/referrals/payouts";
 // out felt over-engineered for the volume we expect; if conversion
 // data later shows the agent-tier needs its own URL we'll split.
 
+// "Earn with Goldstay: Referral Programme" was the previous title.
+// It describes the page accurately and matches nothing anybody types:
+// an agent looking for this searches for the commission, the place
+// and their own trade, not for our brand. The title below leads with
+// those, and the template appends "| Goldstay" so the brand is still
+// there without being the first thing.
 export function generateMetadata(): Metadata {
   return {
-    title: "Earn with Goldstay: Referral Programme",
+    title: "Property Referral Commission Kenya: Earn for 12 Months",
     description:
-      "Refer landlords to Goldstay and earn a share of the management fee for the next 12 months. For agents, brokers and existing landlords.",
+      "Estate agents and brokers in Kenya: introduce a landlord to Goldstay and earn 25% of our monthly management fee for 12 months. No cost to join.",
     alternates: {
       canonical: "/refer",
       languages: alternateLanguagesFor("/refer"),
+    },
+    openGraph: {
+      title: "Property Referral Commission Kenya: Earn for 12 Months",
+      description:
+        "Introduce a landlord to Goldstay and earn a share of the management fee every month for a year.",
+      url: "/refer",
+      type: "website",
     },
   };
 }

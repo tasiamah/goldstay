@@ -21,6 +21,59 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-09-09
+
+### Added
+- An operator side to the referral programme, at `/admin/referrals`. The
+  programme has had a public page, a working signup form, an attribution
+  cookie and a per-referrer dashboard for months, but nothing at Goldstay
+  could see any of it — an agent could sign up, introduce a landlord and
+  watch their dashboard while nobody here knew they existed. Zero people had
+  signed up. The list shows every referrer with what they have introduced and
+  what they are owed, and each referrer's page drives their referrals through
+  the pipeline.
+- A payouts-due queue at `/admin/referrals/due`, listing every commission
+  past its date across all referrers, oldest first. Paying people is a
+  monthly sit-down, and hunting through individual profiles for which of a
+  year's scheduled rows have come due is how an agent ends up unpaid and
+  telling other agents about it.
+- Marking a referral signed now generates its commission schedule from a form
+  that shows what the schedule will be before writing it, and records an
+  M-PESA or transfer reference against each payment. "Paid" without a
+  reference is an unevidenced assertion, which is no use when an agent says
+  the money never arrived.
+- A link to the referral programme in the site footer. It was reachable only
+  by someone who already knew the URL, which is the same problem the `/from`
+  cluster had.
+
+### Changed
+- The referral programme's page title now leads with what an agent would
+  actually search for rather than with our brand. "Earn with Goldstay:
+  Referral Programme" describes the page accurately and matches nothing
+  anybody types.
+- Referral permissions are split three ways: reading, managing referrers, and
+  declaring a commission paid. Operations can move a referral along but not
+  record it as settled, and accounting can settle a schedule it did not
+  create. A single careless login can no longer both invent a commission and
+  pay it.
+- A referral can now be linked to the client it became. Whether the client
+  signing today is the landlord an agent introduced three months ago was
+  previously a judgement someone made from memory each time it came up, and
+  that judgement decides who receives a year of commission.
+
+### Fixed
+- Terminating a referrer now actually cancels their unpaid commissions, in
+  the same transaction as the status change, which is what the schema has
+  always said termination means. A referrer could previously be terminated
+  while payouts stayed scheduled against them.
+- The sign-off form will no longer let a shilling rent be entered as a dollar
+  one. Commission is denominated in USD while leases are recorded in KES and
+  nothing in the codebase converts between them, so a KES figure copied
+  across would have paid an agent around a hundred and thirty times what they
+  earned, every month for a year, with their dashboard showing the inflated
+  total as fact. A non-USD lease is now shown as context to convert from,
+  never prefilled, and rents above $100,000 a month are refused outright.
+
 ## [1.14.0] - 2026-09-07
 
 ### Added
@@ -728,6 +781,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.14.0...HEAD
+[1.15.0]: https://github.com/tasiamah/goldstay/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/tasiamah/goldstay/compare/v1.13.1...v1.14.0
 [1.13.1]: https://github.com/tasiamah/goldstay/compare/v1.13.0...v1.13.1
 [1.13.0]: https://github.com/tasiamah/goldstay/compare/v1.12.0...v1.13.0
