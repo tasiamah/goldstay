@@ -15,11 +15,15 @@ export const meta: PostMeta = {
   slug: "is-airbnb-arbitrage-legal-kenya",
   title:
     "Is Airbnb arbitrage legal in Kenya?",
-  metaTitle: "Is Airbnb Arbitrage Legal in Kenya? What the Law Says",
+  // "airbnb arbitrage kenya" returned zero autocomplete suggestions;
+  // "can i airbnb a rented apartment" returned 164. Same question,
+  // and this article already answers it. The arbitrage wording stays
+  // in the H1 and throughout the body, so the phrase is not lost.
+  metaTitle: "Can I Airbnb a Rented Apartment? Kenya Law",
   description:
     "Leasing a property and re-letting it on short stays is legal in Kenya. What makes a particular operation unlawful is doing it without the owner's consent, without a county permit, or without declaring the income.",
   metaDescription:
-    "Is Airbnb arbitrage legal in Kenya? The model is lawful. The four things operators skip are what make a specific operation illegal.",
+    "Can you Airbnb a rented apartment in Kenya? Legally yes, and four requirements decide whether your particular operation is lawful.",
   publishedAt: "2026-09-07",
   readingMinutes: 8,
   author: authors.legal,
@@ -69,6 +73,45 @@ export default function Article() {
         What is not lawful is doing it without the
         right to. There are four requirements, and
         they are cumulative.
+      </P>
+
+      <H2 id="can-i-airbnb-a-rented-apartment">
+        Can I Airbnb a rented apartment?
+      </H2>
+
+      <P>
+        Only if your lease permits it, and most
+        Kenyan residential leases do not. This is
+        the version of the question we are asked
+        most often, usually by somebody who has
+        already signed a twelve month lease and is
+        hoping the answer is yes. Nothing in
+        Kenyan law stops you putting a rented
+        apartment on Airbnb. Your own lease
+        very likely does, and that is a contract
+        you are bound by regardless of what the
+        statute allows.
+      </P>
+
+      <P>
+        Doing it anyway is not a criminal matter.
+        It is a breach of covenant, which gives
+        the landlord grounds to forfeit the lease
+        and evict you, and it is the single most
+        common way a Nairobi operation ends. You
+        lose the unit, the furniture is somewhere
+        you no longer have access to, and any
+        forward bookings become your problem to
+        refund. Whether you need consent and how
+        to get it is covered in{" "}
+        <Link
+          href="/insights/landlord-permission-to-sublet-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          do you need your landlord&rsquo;s
+          permission to sublet
+        </Link>
+        .
       </P>
 
       <H2 id="consent">One: the owner&rsquo;s consent, where the lease requires it</H2>
@@ -337,7 +380,17 @@ export default function Article() {
           what an operator&rsquo;s sublease must
           say
         </Link>
-        .
+        . If you have not committed to this model
+        yet,{" "}
+        <Link
+          href="/insights/airbnb-without-owning-property-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          running an Airbnb business without
+          owning property
+        </Link>{" "}
+        compares it with the three routes that
+        carry less risk.
       </P>
     </>
   );

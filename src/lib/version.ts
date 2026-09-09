@@ -11,7 +11,7 @@
 // component, the entire dependency list ships to the browser. A string
 // cannot do that.
 
-export const APP_VERSION = "1.26.1";
+export const APP_VERSION = "1.27.0";
 
 // Semantic versioning, tagged on GitHub as v<APP_VERSION>:
 //   MAJOR — breaking change to a contract someone outside this repo

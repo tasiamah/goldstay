@@ -371,6 +371,17 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you do not own a unit and are not
+        planning to buy one,{" "}
+        <Link
+          href="/insights/airbnb-without-owning-property-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          running an Airbnb business without owning property
+        </Link>{" "}
+        covers the four routes that are open to you.
+      </P>
     </>
   );
 }

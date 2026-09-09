@@ -21,6 +21,53 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.27.0] - 2026-09-09
+
+### Changed
+
+- Retargeted the arbitrage and subletting cluster onto the phrasings
+  people actually type. An autocomplete harvest for Kenya returned zero
+  suggestions for `airbnb arbitrage kenya`, `rental arbitrage kenya`,
+  `can i sublet my apartment kenya`, `is subletting illegal in kenya`
+  and `landlord permission airbnb kenya`, and four for `rent to rent
+  kenya`. Google only suggests strings enough people have searched, so
+  the cluster was ranking for terms with negligible demand. Meanwhile
+  `rental arbitrage` returned 293 suggestions, `rent to rent agreement`
+  285 and `airbnb without owning property` 257 — and "without owning
+  property" appeared in none of the 364 articles while "airbnb
+  arbitrage" appeared in seven. Slugs are unchanged, so nothing that
+  ranks today loses its URL, and every editorial H1 keeps its existing
+  wording; only the search-result overrides and an added answer-first
+  section move. Each article was given one primary query so they do not
+  compete:
+  - `airbnb-arbitrage-nairobi-2026` now leads on "rental arbitrage",
+    with a section explaining that rental arbitrage, rent to rent and
+    Airbnb arbitrage are one model under three names, and that the UK
+    and US templates assume a market this is not.
+  - `is-airbnb-arbitrage-legal-kenya` now leads on "can I Airbnb a
+    rented apartment", which is the same question it already answered.
+  - `landlord-permission-to-sublet-kenya` now leads on "can I Airbnb a
+    house I rent", with a section on why the building always notices.
+  - `ask-landlord-permission-short-let-nairobi` now leads on "how to
+    convince a landlord to allow Airbnb".
+  - `sublease-agreement-kenya-operators` now leads on "rent to rent
+    agreement", which is the document it was already about.
+
+### Added
+
+- `airbnb-without-owning-property-kenya` — the four routes into
+  short-let income without buying a unit, ranked by capital required,
+  and honest that co-hosting rather than arbitrage is the realistic
+  start. Targets the 81-variant cluster the site had no page for,
+  including the one Kenya-qualified query in the whole harvest.
+- `how-to-find-rental-arbitrage-properties-nairobi` — sourcing, which
+  the cluster covered nowhere. Why an owner-listed unit beats ten
+  agent-listed ones, vacancy as a negotiating position, and the
+  building-level filters that rule a unit out before a viewing.
+- Both converge on `/airbnb-arbitrage-management` and `/refer` rather
+  than `/list-your-property`, because this is operator intent rather
+  than landlord intent and the funnel is different.
+
 ## [1.26.1] - 2026-09-09
 
 ### Fixed
@@ -1330,6 +1377,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.27.0]: https://github.com/tasiamah/goldstay/compare/v1.26.1...v1.27.0
 [1.26.1]: https://github.com/tasiamah/goldstay/compare/v1.26.0...v1.26.1
 [1.26.0]: https://github.com/tasiamah/goldstay/compare/v1.25.0...v1.26.0
 [1.25.0]: https://github.com/tasiamah/goldstay/compare/v1.24.2...v1.25.0

@@ -15,11 +15,14 @@ export const meta: PostMeta = {
   slug: "landlord-permission-to-sublet-kenya",
   title:
     "Do you need your landlord's permission to sublet in Kenya?",
-  metaTitle: "Landlord Permission to Sublet in Kenya: The Rules",
+  // Retargeted to the phrasing people use. "can i airbnb a house i
+  // rent" and its variants carry the demand; "landlord permission
+  // airbnb kenya" returned zero autocomplete suggestions.
+  metaTitle: "Can I Airbnb a House I Rent? Kenya Rules",
   description:
     "Whether you need consent to sublet depends on what your lease says, and most Kenyan residential leases either prohibit it or require written permission. Silence is not consent, and short-letting makes the question sharper.",
   metaDescription:
-    "Do you need your landlord's permission to sublet in Kenya? What your lease has to say, why silence is not consent, and how to ask.",
+    "Can you Airbnb a house you rent in Kenya? It turns on your lease, not the law. Why silence is not consent, and how to ask properly.",
   publishedAt: "2026-09-07",
   readingMinutes: 8,
   author: authors.legal,
@@ -52,6 +55,52 @@ export default function Article() {
         prohibit subletting outright or allow it
         only with the landlord&rsquo;s prior
         written consent.
+      </P>
+
+      <H2 id="can-i-airbnb-a-house-i-rent">
+        Can I Airbnb a house I rent without
+        telling the landlord?
+      </H2>
+
+      <P>
+        You can physically do it. It is a bad
+        idea, and the reason is not the one most
+        operators expect. The risk is not that
+        Airbnb checks, because it does not verify
+        that a host owns or is permitted to let
+        the property. The risk is that the
+        building notices, which it always does.
+      </P>
+
+      <P>
+        Guests with suitcases arriving at odd
+        hours are visible to every watchman,
+        neighbour and caretaker on the compound.
+        In Nairobi apartment blocks the report
+        reaches the landlord or the management
+        committee within weeks rather than months.
+        By then you have furnished the unit,
+        taken forward bookings and put your
+        deposit at risk, and you are negotiating
+        from the weakest position available: asking
+        permission for something you have already
+        been caught doing.
+      </P>
+
+      <P>
+        Asking first costs you the possibility of
+        a refusal. Not asking costs you the unit,
+        the furniture and the bookings. There is a
+        way to ask that materially improves the
+        odds, set out in{" "}
+        <Link
+          href="/insights/ask-landlord-permission-short-let-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to ask a Nairobi landlord for
+          permission to short-let
+        </Link>
+        .
       </P>
 
       <H2 id="start-with-the-lease">Start with the lease, not with the law</H2>

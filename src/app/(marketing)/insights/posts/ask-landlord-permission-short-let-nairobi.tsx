@@ -15,11 +15,14 @@ export const meta: PostMeta = {
   slug: "ask-landlord-permission-short-let-nairobi",
   title:
     "How to ask a Nairobi landlord for permission to short-let",
-  metaTitle: "How to Ask a Landlord for Permission to Short-Let",
+  // "how to convince landlord to allow airbnb" is the phrasing that
+  // actually gets typed, and it is a closer description of this
+  // article than the permission wording was.
+  metaTitle: "How to Convince a Landlord to Allow Airbnb",
   description:
     "Most operators ask badly, and get refused for reasons that had nothing to do with the money. What an owner is actually weighing, how to answer it, and a letter you can adapt and send.",
   metaDescription:
-    "How to ask a Nairobi landlord for permission to short-let: what owners actually worry about, and a consent letter you can adapt.",
+    "How to convince a landlord to allow Airbnb: the four things owners actually worry about, and a consent letter you can adapt and send.",
   publishedAt: "2026-09-07",
   readingMinutes: 9,
   author: authors.editors,
@@ -53,6 +56,35 @@ export default function Article() {
         additional. Framed that way it is an
         obviously bad trade, and it is how most
         proposals land.
+      </P>
+
+      <H2 id="how-to-convince-a-landlord">
+        How to convince a landlord to allow Airbnb
+      </H2>
+
+      <P>
+        The short version, before the detail. You
+        convince an owner by making their position
+        better than it is now, not by explaining
+        how good yours will be. That means offering
+        rent above the long-let market rate,
+        offering it on a longer term than a
+        tenant would sign, putting the deposit
+        higher, taking the maintenance and
+        cleaning burden off them entirely, and
+        naming yourself as the single accountable
+        person for anything that happens in the
+        unit.
+      </P>
+
+      <P>
+        Every one of those costs you margin, which
+        is the point. An operator whose pitch
+        costs them nothing is asking the owner to
+        take all of the new risk for none of the
+        new return, and owners are quite good at
+        spotting that. The rest of this piece is
+        what they are weighing when they decide.
       </P>
 
       <H2 id="what-they-are-weighing">What an owner is actually weighing</H2>

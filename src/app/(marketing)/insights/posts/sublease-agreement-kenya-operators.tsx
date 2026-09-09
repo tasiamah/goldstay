@@ -15,11 +15,17 @@ export const meta: PostMeta = {
   slug: "sublease-agreement-kenya-operators",
   title:
     "Sublease agreements in Kenya: what an operator's paperwork must say",
-  metaTitle: "Sublease Agreement Kenya: What It Must Contain",
+  // Retargeted from "sublease agreement kenya" to "rent to rent
+  // agreement", which the autocomplete harvest returned 285
+  // suggestions for against 17 for the sublease phrasing. Same
+  // document, and this article was already about it. The editorial H1
+  // keeps the sublease wording because that is what the body argues
+  // you mostly do not need.
+  metaTitle: "Rent to Rent Agreement in Kenya: What It Must Say",
   description:
     "An operator who leases to re-let needs three documents, not one, and the head lease is the one that decides whether the business works. What each has to contain, and the clauses that ruin operations.",
   metaDescription:
-    "Sublease agreements in Kenya: the three documents an operator needs, and the head lease clauses that decide whether the model works.",
+    "What a rent to rent agreement must contain in Kenya: the three documents an operator needs, and the clauses that decide whether it works.",
   publishedAt: "2026-09-07",
   readingMinutes: 9,
   author: authors.legal,
@@ -42,6 +48,39 @@ export default function Article() {
         three pieces of paper you need, and the
         one you probably do not need at all.
       </Lede>
+
+      <H2 id="what-is-a-rent-to-rent-agreement">
+        What is a rent to rent agreement?
+      </H2>
+
+      <P>
+        It is not a single named contract, which
+        is why searching for one produces
+        templates that do not fit. A rent to rent
+        agreement, sometimes called a rental
+        arbitrage contract, is a normal lease
+        between the owner and the operator, with
+        the added permission to re-let. The
+        operator becomes the tenant and pays a
+        fixed rent. The right to put paying guests
+        in the unit comes from a consent clause
+        inside that lease, or from a separate
+        consent letter, rather than from a
+        different species of document.
+      </P>
+
+      <P>
+        Almost every downloadable template gets
+        this wrong. UK rent to rent packs are
+        built around assured shorthold tenancies
+        and guaranteed rent structures that have
+        no equivalent in Kenyan law, and American
+        arbitrage contracts assume a landlord
+        regime that does not exist here either. A
+        Kenyan operator needs a Kenyan lease with
+        the right permissions in it, not a
+        translated form.
+      </P>
 
       <H2 id="three-documents">The three documents, in order of importance</H2>
 
@@ -385,7 +424,16 @@ export default function Article() {
         >
           a residential lease clause by clause
         </Link>
-        .
+        . Before the paperwork stage,{" "}
+        <Link
+          href="/insights/how-to-find-rental-arbitrage-properties-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to find units that work for
+          arbitrage in Nairobi
+        </Link>{" "}
+        covers finding an owner who will sign one
+        at all.
       </P>
     </>
   );

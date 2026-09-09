@@ -669,6 +669,12 @@ import CoLivingNairobi, {
 import AirbnbArbitrageNairobi, {
   meta as airbnbArbitrageNairobiMeta,
 } from "./airbnb-arbitrage-nairobi-2026";
+import AirbnbWithoutOwningPropertyKenya, {
+  meta as airbnbWithoutOwningPropertyKenyaMeta,
+} from "./airbnb-without-owning-property-kenya";
+import HowToFindRentalArbitragePropertiesNairobi, {
+  meta as howToFindRentalArbitragePropertiesNairobiMeta,
+} from "./how-to-find-rental-arbitrage-properties-nairobi";
 import BtlPortfolioNairobi, {
   meta as btlPortfolioNairobiMeta,
 } from "./btl-portfolio-building-nairobi";
@@ -1485,6 +1491,14 @@ export const posts: readonly Post[] = [
   { meta: studentHousingInvestmentMeta, Component: StudentHousingInvestment },
   { meta: coLivingNairobiMeta, Component: CoLivingNairobi },
   { meta: airbnbArbitrageNairobiMeta, Component: AirbnbArbitrageNairobi },
+  {
+    meta: airbnbWithoutOwningPropertyKenyaMeta,
+    Component: AirbnbWithoutOwningPropertyKenya,
+  },
+  {
+    meta: howToFindRentalArbitragePropertiesNairobiMeta,
+    Component: HowToFindRentalArbitragePropertiesNairobi,
+  },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
 
   {

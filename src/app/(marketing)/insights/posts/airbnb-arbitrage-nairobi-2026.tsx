@@ -14,11 +14,13 @@ export const meta: PostMeta = {
   slug: "airbnb-arbitrage-nairobi-2026",
   title:
     "Airbnb arbitrage in Nairobi: the honest 2026 picture",
-  // "airbnb arbitrage kenya" and "airbnb arbitrage nairobi" are both
-  // live queries, and the country form is the broader of the two, so
-  // the override leads with Kenya and lets the body own Nairobi. The
-  // editorial headline stays as the H1.
-  metaTitle: "Airbnb Arbitrage in Kenya: The Honest Numbers",
+  // The note above was wrong, and a later autocomplete harvest
+  // showed it: "airbnb arbitrage kenya" returns zero suggestions,
+  // meaning it is not searched enough for Google to suggest it to
+  // anyone. "rental arbitrage" returns 293. Same model, and this is
+  // the pillar for it, so the title carries the term that has the
+  // demand. The H1 keeps the arbitrage wording.
+  metaTitle: "Rental Arbitrage in Kenya: Does It Actually Work?",
   description:
     "Airbnb arbitrage, where the operator leases a property long-term and re-lets it short-term at a margin, is increasingly common in Nairobi. Here is the honest 2026 guide on whether it works, the numbers, the legal questions and the realistic operator picture.",
   metaDescription:
@@ -53,6 +55,50 @@ export default function Article() {
         beginner operators expect. Here is
         the honest 2026 picture.
       </Lede>
+
+      <H2 id="three-names">
+        Rental arbitrage, rent to rent, Airbnb
+        arbitrage: one model, three names
+      </H2>
+
+      <P>
+        The three terms describe the same
+        arrangement and it is worth saying so
+        plainly, because operators researching it
+        find three separate bodies of advice and
+        assume they are looking at three different
+        strategies. They are not. In all three you
+        lease a unit on an ordinary long lease,
+        pay a fixed rent, furnish it, and re-let
+        it on nightly stays, keeping whatever the
+        difference turns out to be.
+      </P>
+
+      <P>
+        Which word you meet depends on where the
+        advice came from. &ldquo;Rent to rent&rdquo;
+        is British and carries a body of UK
+        specific structure that does not transfer
+        to Kenya. &ldquo;Rental arbitrage&rdquo;
+        is American and dominates the YouTube and
+        Reddit material. &ldquo;Airbnb
+        arbitrage&rdquo; is the platform-flavoured
+        version of the same thing.
+      </P>
+
+      <P>
+        The reason this matters beyond vocabulary:
+        almost all of the templates, spreadsheets
+        and course material you will find assumes
+        a legal and rental market that is not
+        this one. UK guaranteed rent structures
+        and American landlord regimes have no
+        Kenyan equivalent, and the numbers in
+        those models assume rents, occupancy and
+        financing costs that do not hold in
+        Nairobi. Read them for the mechanics and
+        rebuild the arithmetic locally.
+      </P>
 
       <H2 id="model">The model</H2>
 
@@ -278,6 +324,28 @@ export default function Article() {
           how to ask for it
         </Link>
         .
+      </P>
+
+      <P>
+        On the practical side,{" "}
+        <Link
+          href="/insights/how-to-find-rental-arbitrage-properties-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to find units that work for
+          arbitrage in Nairobi
+        </Link>{" "}
+        covers sourcing, and{" "}
+        <Link
+          href="/insights/airbnb-without-owning-property-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          running an Airbnb business without
+          owning property
+        </Link>{" "}
+        sets this model against the three other
+        routes, two of which need far less
+        capital.
       </P>
     </>
   );
