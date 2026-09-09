@@ -21,6 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.36.0] - 2026-09-09
+
+### Fixed
+- The "Keep reading" row was leaving most of the catalogue unlinked.
+  It scored every other article by shared tags and took the top two,
+  which reads sensibly and distributes links badly: 116 of 379 articles
+  ended up with no inbound link anywhere on the site, while one Karen
+  neighbourhood guide collected 32. Because that row is the only thing
+  linking to most articles, those 116 had nothing telling Google to
+  crawl or rank them, however good they were. Raising the limit does
+  not fix it and makes the concentration worse: at six per article, 41
+  still had none and Karen's climbed to 60.
+
+  Related articles are now assigned from a graph computed for the whole
+  catalogue, where coverage is a constraint rather than an outcome. Every
+  indexable article is guaranteed a floor of inbound links, no article
+  may exceed a ceiling, and relevance decides which article fills a slot
+  and the order the row renders in. Across the catalogue that moves the
+  worst case from zero inbound links to three, the median from one to
+  five, the maximum from 32 down to 12, and total internal links from
+  758 to 2,274. Noindexed articles are deliberately excluded as targets,
+  since pointing internal links at a page we have asked Google not to
+  index spends crawl budget on a page that cannot rank; they still show
+  a row of their own.
+
 ## [1.35.0] - 2026-09-09
 
 ### Added
@@ -1713,7 +1738,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.35.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.36.0...HEAD
+[1.36.0]: https://github.com/tasiamah/goldstay/compare/v1.35.0...v1.36.0
 [1.35.0]: https://github.com/tasiamah/goldstay/compare/v1.34.0...v1.35.0
 [1.34.0]: https://github.com/tasiamah/goldstay/compare/v1.33.0...v1.34.0
 [1.33.0]: https://github.com/tasiamah/goldstay/compare/v1.32.1...v1.33.0

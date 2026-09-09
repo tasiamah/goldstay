@@ -1,5 +1,11 @@
 import type { ComponentType } from "react";
 
+import {
+  buildRelatedGraph,
+  inboundCounts,
+  RELATED_DEFAULTS,
+} from "@/lib/insights/related";
+
 import KenyaMriTax, {
   meta as kenyaMriTaxMeta,
 } from "./kenya-mri-tax-diaspora-landlords";
@@ -2189,26 +2195,45 @@ export function postsForCountry(country: Country): Post[] {
   return posts.filter((p) => p.meta.country === country);
 }
 
-// Pick related posts by tag overlap with the current article. Falls
-// back to recency when no tag overlap is available. We constrain the
-// pool to the same country so a Nairobi reader never lands on an
-// Accra-only follow-up, and vice versa.
-export function relatedPosts(slug: string, limit = 2): Post[] {
-  const current = getPostBySlug(slug);
-  if (!current) return posts.slice(0, limit);
+// The related row, read from a graph computed once for the whole
+// catalogue rather than scored per article.
+//
+// This used to score every other article by tag overlap and take the
+// top two, which distributed links badly enough to matter: 116
+// articles ended up with no inbound link anywhere on the site while a
+// single Karen guide collected 32. Since the related row is the only
+// thing linking to most of the catalogue, those articles had nothing
+// telling Google to crawl or rank them.
+//
+// buildRelatedGraph treats coverage as a constraint instead, so every
+// indexable article is guaranteed inbound links and none can hoard
+// them. See src/lib/insights/related.ts for why that cannot be fixed
+// by simply raising the limit.
+//
+// Computed at module load. It is pure and deterministic, the whole
+// catalogue is already in memory, and the pages are statically
+// rendered, so this runs once per build rather than once per request.
+const relatedGraph = buildRelatedGraph(
+  posts.map((p) => ({
+    slug: p.meta.slug,
+    country: p.meta.country,
+    publishedAt: p.meta.publishedAt,
+    tags: p.meta.tags,
+    noindex: p.meta.noindex,
+  })),
+);
 
-  const currentTags = new Set(current.meta.tags);
-  const sameCountry = posts.filter(
-    (p) => p.meta.country === current.meta.country,
-  );
+export function relatedPosts(slug: string, limit?: number): Post[] {
+  const slugs = relatedGraph.get(slug);
+  if (!slugs) return posts.slice(0, limit ?? RELATED_DEFAULTS.perPost);
+  const picked = limit === undefined ? slugs : slugs.slice(0, limit);
+  return picked
+    .map((s) => getPostBySlug(s))
+    .filter((p): p is Post => p !== undefined);
+}
 
-  return sameCountry
-    .filter((p) => p.meta.slug !== slug)
-    .map((p) => {
-      const overlap = p.meta.tags.filter((t) => currentTags.has(t)).length;
-      return { post: p, overlap, ts: new Date(p.meta.publishedAt).getTime() };
-    })
-    .sort((a, b) => (b.overlap - a.overlap) || (b.ts - a.ts))
-    .slice(0, limit)
-    .map((entry) => entry.post);
+// Exported so a checker or an admin screen can see the distribution
+// without rebuilding the graph.
+export function relatedInboundCounts(): Map<string, number> {
+  return inboundCounts(relatedGraph);
 }
