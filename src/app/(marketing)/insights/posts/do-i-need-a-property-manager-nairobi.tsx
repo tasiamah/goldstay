@@ -279,7 +279,14 @@ export default function Article() {
         >
           why it matters more for diaspora landlords
         </Link>
-        .
+        . If the answer turned out to be yes,{" "}
+        <Link
+          href="/insights/how-to-find-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to find a property manager in Nairobi
+        </Link>{" "}
+        covers where to look.
       </P>
     </>
   );

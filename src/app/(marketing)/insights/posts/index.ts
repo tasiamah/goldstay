@@ -687,6 +687,15 @@ import QuestionsToAskAPropertyManagerNairobi, {
 import DoINeedAPropertyManagerNairobi, {
   meta as doINeedAPropertyManagerNairobiMeta,
 } from "./do-i-need-a-property-manager-nairobi";
+import WhereToFindAirbnbCoHostNairobi, {
+  meta as whereToFindAirbnbCoHostNairobiMeta,
+} from "./where-to-find-airbnb-co-host-nairobi";
+import HowToFindAPropertyManagerNairobi, {
+  meta as howToFindAPropertyManagerNairobiMeta,
+} from "./how-to-find-a-property-manager-nairobi";
+import TopPropertyManagementCompaniesKenya, {
+  meta as topPropertyManagementCompaniesKenyaMeta,
+} from "./top-property-management-companies-kenya";
 import BtlPortfolioNairobi, {
   meta as btlPortfolioNairobiMeta,
 } from "./btl-portfolio-building-nairobi";
@@ -1526,6 +1535,18 @@ export const posts: readonly Post[] = [
   {
     meta: doINeedAPropertyManagerNairobiMeta,
     Component: DoINeedAPropertyManagerNairobi,
+  },
+  {
+    meta: whereToFindAirbnbCoHostNairobiMeta,
+    Component: WhereToFindAirbnbCoHostNairobi,
+  },
+  {
+    meta: howToFindAPropertyManagerNairobiMeta,
+    Component: HowToFindAPropertyManagerNairobi,
+  },
+  {
+    meta: topPropertyManagementCompaniesKenyaMeta,
+    Component: TopPropertyManagementCompaniesKenya,
   },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
 

@@ -359,6 +359,13 @@ export default function Article() {
         >
           should I fire my Nairobi property manager
         </Link>
+        . For where to actually look, see{" "}
+        <Link
+          href="/insights/where-to-find-airbnb-co-host-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          where to find an Airbnb co-host in Nairobi
+        </Link>
         .
       </P>
     </>

@@ -319,6 +319,20 @@ export default function Article() {
         >
           what management costs in Kenya
         </Link>
+        . If you have not assembled a shortlist yet, start with{" "}
+        <Link
+          href="/insights/how-to-find-a-property-manager-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to find a property manager in Nairobi
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/top-property-management-companies-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to read the top ten lists
+        </Link>
         .
       </P>
     </>

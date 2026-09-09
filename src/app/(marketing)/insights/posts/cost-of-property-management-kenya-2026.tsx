@@ -334,6 +334,13 @@ export default function Article() {
         >
           whether you need one at all
         </Link>
+        . For how the firms themselves compare, see{" "}
+        <Link
+          href="/insights/top-property-management-companies-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          top property management companies in Kenya
+        </Link>
         .
       </P>
     </>

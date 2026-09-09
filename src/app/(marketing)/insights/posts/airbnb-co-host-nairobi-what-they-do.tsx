@@ -195,13 +195,23 @@ export default function Article() {
       </H2>
 
       <P>
-        Airbnb runs its own co-host directory in a number of markets, which is
-        the thing people are looking for when they search for &quot;find a
-        co-host&quot;. Coverage varies a great deal by city, and depth in
-        Nairobi is thin enough that most owners here end up looking outside it.
-        The realistic sources are word of mouth in your own building, the
-        management companies that advertise short let work, and asking whoever
-        cleans for you already who else they clean for.
+        Airbnb runs its own co-host directory, the Co-Host Network, and it is
+        the thing most people are looking for when they search for &quot;find a
+        co-host&quot;. It does not operate in Kenya. At the time of writing it
+        covers thirteen countries, none of them African, so a Nairobi owner who
+        enters their address gets nothing back. Worth knowing before you spend
+        an evening looking for a feature that is not there. The realistic
+        sources here are word of mouth in your own building, the management
+        companies that advertise short let work, and asking whoever cleans for
+        you already who else they clean for. Those routes, and how to vet what
+        they turn up, are set out in{" "}
+        <Link
+          href="/insights/where-to-find-airbnb-co-host-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          where to find an Airbnb co-host in Nairobi
+        </Link>
+        .
       </P>
 
       <P>

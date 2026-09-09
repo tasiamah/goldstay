@@ -21,6 +21,37 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.30.0] - 2026-09-09
+
+### Added
+
+- Three articles for owners who have decided to hire and are looking for
+  somewhere to look, which is a different search from comparing firms. A
+  Kenya-targeted harvest of 1,085 "find / where / near me" queries picked
+  the targets: the largest Kenyan cluster is the "top 10 / list of property
+  management companies in Kenya" family, and the co-host finding cluster
+  runs to roughly 90 variants.
+  - **Where to find an Airbnb co-host in Nairobi.** Leads on the fact
+    below: Airbnb's own directory does not cover Kenya, so the five routes
+    that do work here, and a three-question filter to apply to whoever they
+    turn up.
+  - **How to find a property manager in Nairobi.** The six sources that
+    carry evidence, the four that waste time, and a one-page brief to send
+    to three firms so their replies are actually comparable.
+  - **Top property management companies in Kenya.** Serves the ranking
+    query without publishing a self-serving ranking: four checks to apply
+    to any list you find, the criteria on which Kenyan agents genuinely
+    differ, and an honest note that we are the wrong firm for blocks and
+    commercial space.
+
+### Fixed
+
+- The Airbnb co-host article said Airbnb's Co-Host Network was merely
+  "thin" in Nairobi. It is not available in Kenya at all: the network
+  covers thirteen countries and none is African, so an owner entering a
+  Nairobi address gets nothing back. A reader acting on the old wording
+  would have gone looking for a feature that is not there.
+
 ## [1.29.0] - 2026-09-09
 
 ### Added
@@ -1496,7 +1527,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.30.0...HEAD
+[1.30.0]: https://github.com/tasiamah/goldstay/compare/v1.29.0...v1.30.0
 [1.29.0]: https://github.com/tasiamah/goldstay/compare/v1.28.0...v1.29.0
 [1.28.0]: https://github.com/tasiamah/goldstay/compare/v1.27.1...v1.28.0
 [1.27.1]: https://github.com/tasiamah/goldstay/compare/v1.27.0...v1.27.1
