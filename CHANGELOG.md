@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.35.0] - 2026-09-09
+
+### Added
+- "Enrogue Kileleshwa: what to do before your handover." Enrogue is eighteen
+  floors of one and two beds on Kileleshwa's main road from HassConsult,
+  completing in the last quarter of 2026, so a few hundred owners take keys
+  within weeks of each other and all try to let at once. Written for them
+  rather than for buyers: book the snagging inspection for handover day,
+  get the defects liability period and the service charge per square metre
+  in writing, and do not sign a tenant before the keys are physically in
+  hand. An independent construction record logged the original programme as
+  ending Q1 2026 against the developer's current Q4 2026, so the date is a
+  range rather than a promise, and owners lose real money agreeing lease
+  starts against a forecast.
+
+  The section that does not exist anywhere else covers the decision these
+  owners actually face: HassConsult is both the developer and one of the
+  largest estate agencies in Kenya, so the letting offer arrives at the
+  handover desk while you are holding keys and no tenant. Sets out what to
+  establish before agreeing, including whether the mandate is exclusive and
+  how many units in the same building the agent already holds, since those
+  listings compete with yours for one tenant.
+
 ## [1.34.0] - 2026-09-09
 
 ### Added
@@ -1690,7 +1713,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.34.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.35.0...HEAD
+[1.35.0]: https://github.com/tasiamah/goldstay/compare/v1.34.0...v1.35.0
 [1.34.0]: https://github.com/tasiamah/goldstay/compare/v1.33.0...v1.34.0
 [1.33.0]: https://github.com/tasiamah/goldstay/compare/v1.32.1...v1.33.0
 [1.32.1]: https://github.com/tasiamah/goldstay/compare/v1.32.0...v1.32.1

@@ -254,6 +254,13 @@ export default function Article() {
         </Link>
         ,{" "}
         <Link
+          href="/insights/enrogue-kileleshwa-handover-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          taking handover at Enrogue in Kileleshwa
+        </Link>
+        ,{" "}
+        <Link
           href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
