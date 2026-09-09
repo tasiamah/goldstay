@@ -283,7 +283,7 @@ export default function Page() {
                 href="/airbnb-management"
                 className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
               >
-                Airbnb and short-stay management
+                Airbnb management and short-stay
               </Link>
               .
             </p>

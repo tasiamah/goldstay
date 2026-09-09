@@ -217,14 +217,14 @@ export default function Page() {
         items={[
           { name: "Home", url: baseUrl },
           {
-            name: "Airbnb & Short-Stay Management",
+            name: "Airbnb Management & Short-Stay",
             url: `${baseUrl}/airbnb-management`,
           },
         ]}
       />
       <ReviewJsonLd />
       <ServiceJsonLd
-        name="Airbnb & Short-Stay Management"
+        name="Airbnb Management & Short-Stay"
         description={`Full short-stay operations in ${areaServed.join(" and ")}: photography, dynamic pricing, guest communication, turnover cleaning and maintenance, with monthly USD remittance to the landlord's foreign account.`}
         url={`${baseUrl}/airbnb-management`}
         serviceType="Short-stay property management"
@@ -281,7 +281,7 @@ export default function Page() {
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a
                   href={waLink(
-                    "Hi Goldstay, I'd like to discuss Airbnb / short-stay management for my property",
+                    "Hi Goldstay, I'd like to discuss Airbnb management for my property",
                     city ?? undefined,
                   )}
                   target="_blank"

@@ -699,7 +699,7 @@ export const services = [
   },
   {
     slug: "short-stay",
-    title: "Airbnb / Short-Stay Management",
+    title: "Airbnb Management & Short-Stay",
     fee: "20%",
     feeLabel: "of revenue",
     detailHref: "/airbnb-management",

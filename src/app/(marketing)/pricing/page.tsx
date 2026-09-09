@@ -122,7 +122,7 @@ export default function Page() {
   const faqs = [
     {
       q: `How much do property managers charge in ${cityName ?? "Kenya"}?`,
-      a: "Goldstay charges 10% of collected rent for full long-term management and 20% of revenue for Airbnb and short-stay management. Tenant finding on its own is a one-time fee of one month's rent, and property sourcing for buyers is free. The market in Nairobi generally runs between 8% and 15% for long-term and 15% and 25% for short-stay, so we sit inside the normal band. The difference is what the percentage covers and what is added on top of it afterwards.",
+      a: "Goldstay charges 10% of collected rent for full long-term management and 20% of revenue for Airbnb management and short-stay. Tenant finding on its own is a one-time fee of one month's rent, and property sourcing for buyers is free. The market in Nairobi generally runs between 8% and 15% for long-term and 15% and 25% for short-stay, so we sit inside the normal band. The difference is what the percentage covers and what is added on top of it afterwards.",
     },
     {
       q: "What are your Airbnb management fees?",

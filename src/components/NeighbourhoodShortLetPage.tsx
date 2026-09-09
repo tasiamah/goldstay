@@ -172,7 +172,7 @@ export function NeighbourhoodShortLetPage({
         ]}
       />
       <ServiceJsonLd
-        name={`Airbnb & Short-Stay Management in ${name}, Nairobi`}
+        name={`Airbnb Management & Short-Stay in ${name}, Nairobi`}
         description={`Full short-stay management for ${name} apartments: photography, daily pricing, guest communication, turnover cleaning and maintenance, with monthly USD remittance to the landlord's foreign account.`}
         url={selfUrl}
         serviceType="Short-stay property management"

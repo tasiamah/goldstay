@@ -21,6 +21,21 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.24.2] - 2026-09-09
+
+### Changed
+- The short-stay service was named "Airbnb & short-stay management"
+  everywhere, which does not contain the phrase "Airbnb management" —
+  the words are split by "& short-stay". Reordered to "Airbnb
+  management & short-stay" so the phrase people actually search for
+  survives intact.
+
+  Fifteen places, and the ones that matter are not the headings: eight
+  were the anchor text on article links to `/airbnb-management`, one
+  was an `<H2>`, and one was the sitewide footer link. Anchor text is
+  how internal links tell Google what the target page is about, so
+  those eight were describing the page with a phrase nobody searches.
+
 ## [1.24.1] - 2026-09-09
 
 ### Fixed
@@ -1231,7 +1246,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.2...HEAD
+[1.24.2]: https://github.com/tasiamah/goldstay/compare/v1.24.1...v1.24.2
 [1.24.1]: https://github.com/tasiamah/goldstay/compare/v1.24.0...v1.24.1
 [1.24.0]: https://github.com/tasiamah/goldstay/compare/v1.23.0...v1.24.0
 [1.23.0]: https://github.com/tasiamah/goldstay/compare/v1.22.1...v1.23.0

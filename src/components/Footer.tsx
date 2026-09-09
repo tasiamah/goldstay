@@ -102,7 +102,7 @@ export function Footer() {
               ) : null}
               <li>
                 <Link href="/airbnb-management" className="link-underline">
-                  Airbnb &amp; short-stay management
+                  Airbnb management &amp; short-stay
                 </Link>
               </li>
               <li>

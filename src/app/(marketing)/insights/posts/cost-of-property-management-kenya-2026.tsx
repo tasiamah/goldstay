@@ -150,7 +150,7 @@ export default function Article() {
         single penalty assessment from KRA.
       </Pullquote>
 
-      <H2 id="airbnb">Airbnb and short-stay management</H2>
+      <H2 id="airbnb">Airbnb management and short-stay</H2>
 
       <P>
         Short-stay management costs more because it is a fundamentally
