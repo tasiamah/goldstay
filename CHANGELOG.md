@@ -21,6 +21,44 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.28.0] - 2026-09-09
+
+### Added
+
+- The four enquiry forms now report a conversion when they submit
+  successfully. Previously the only event anywhere in the app was the
+  WhatsApp CTA click, so switching Google Analytics on would have made
+  a wa.me click the sole measurable conversion — and that number is an
+  upper bound on enquiries, because clicking only opens WhatsApp's
+  compose screen and the send happens where no browser can see it. A
+  submitted form is a completed action on our own origin and the
+  higher-intent lead of the two, so the weaker signal was about to
+  become the only signal.
+
+  Both paths emit GA4's `generate_lead`, separated by a `method` of
+  `form` or `whatsapp`. One event name means one key event to configure
+  in GA and one conversion count that can be broken down by source,
+  rather than two numbers that have to be added up by hand. Each event
+  also carries whether the lead was landlord or tenant side, so letting
+  supply is not mixed into the commercial number.
+
+  The event fires only after the POST returns ok, so failed and retried
+  submissions cannot push the conversion count above the row count in
+  the database.
+
+- `/admin/health` now shows whether a Google Analytics measurement ID is
+  configured. Worth having because `<Analytics>` renders nothing when
+  the variable is unset, which from the front end is indistinguishable
+  from a working install: no script, no error, no events.
+
+### Notes
+
+- The landlord intake form under `/embed` is deliberately not tracked.
+  It renders in a partner's iframe under a layout that does not mount
+  `<Analytics>`, so gtag is never defined there and a call would be dead
+  code that reads as working coverage. Measuring partner embeds needs
+  its own property and its own consent story.
+
 ## [1.27.1] - 2026-09-09
 
 ### Fixed
@@ -1410,6 +1448,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.28.0]: https://github.com/tasiamah/goldstay/compare/v1.27.1...v1.28.0
 [1.27.1]: https://github.com/tasiamah/goldstay/compare/v1.27.0...v1.27.1
 [1.27.0]: https://github.com/tasiamah/goldstay/compare/v1.26.1...v1.27.0
 [1.26.1]: https://github.com/tasiamah/goldstay/compare/v1.26.0...v1.26.1

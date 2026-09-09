@@ -6,6 +6,7 @@ import { Check, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "@/lib/toast";
 import { useCurrentCity } from "@/lib/useCurrentCity";
+import { trackFormLead } from "@/lib/lead-tracking";
 
 // Lightweight tenant capture from /find-a-home. Deliberately short: we only
 // ask for what an agent needs to reply with a shortlist. The deep dossier
@@ -85,6 +86,7 @@ export function WaitlistForm({
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error(await res.text());
+      trackFormLead("tenant-waitlist");
       setSent(true);
       reset();
       toast.success("You're on the waitlist. We'll be in touch within 24 hours.");

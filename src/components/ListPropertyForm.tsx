@@ -10,6 +10,7 @@ import {
   FOUND_VIA_OPTIONS,
 } from "@/lib/lead-attribution";
 import { readFirstTouch } from "@/components/LeadAttribution";
+import { trackFormLead } from "@/lib/lead-tracking";
 
 type FormValues = {
   name: string;
@@ -185,6 +186,7 @@ export function ListPropertyForm() {
         }),
       });
       if (!res.ok) throw new Error(await res.text());
+      trackFormLead("list-property");
       setSent(true);
       reset();
       toast.success("Enquiry sent. We'll call you within 2 hours.");

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { Loader2, ArrowRight, ArrowLeft, ShieldCheck } from "lucide-react";
 import { toast } from "@/lib/toast";
 import { useCurrentCity } from "@/lib/useCurrentCity";
+import { trackFormLead } from "@/lib/lead-tracking";
 
 // Fields intentionally mirror what Goldstay asks for in a verbal reference
 // call today, so the human check after submission is a confirmation exercise
@@ -224,6 +225,7 @@ export function TenantApplicationForm({
         const msg = await res.text();
         throw new Error(msg || "Submission failed");
       }
+      trackFormLead("tenant-application");
       toast.success("Application received. Goldstay will be in touch.");
       router.push("/apply/thank-you");
     } catch (e: unknown) {

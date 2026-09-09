@@ -54,6 +54,7 @@ export type SystemHealth = {
   recentSends: StatementSendHealth[];
   resendConfigured: boolean;
   supabaseConfigured: boolean;
+  analyticsConfigured: boolean;
 };
 
 export async function getSystemHealth(): Promise<SystemHealth> {
@@ -90,5 +91,10 @@ export async function getSystemHealth(): Promise<SystemHealth> {
       process.env.NEXT_PUBLIC_SUPABASE_URL &&
         process.env.SUPABASE_SECRET_KEY,
     ),
+    // <Analytics> renders nothing at all when this is unset, so a
+    // missing measurement ID looks exactly like a working install from
+    // the front end: no script, no error, no events. This is the only
+    // place the difference is visible without opening GA itself.
+    analyticsConfigured: Boolean(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID),
   };
 }

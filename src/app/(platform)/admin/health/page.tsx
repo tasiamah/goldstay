@@ -109,6 +109,15 @@ export default async function SystemHealthPage() {
             ok={true}
             detail={`${health.jobs.length} job names · 24h`}
           />
+          <IntegrationStat
+            label="Google Analytics"
+            ok={health.analyticsConfigured}
+            detail={
+              health.analyticsConfigured
+                ? "Measurement ID configured"
+                : "NEXT_PUBLIC_GA_MEASUREMENT_ID missing"
+            }
+          />
         </ul>
       </section>
 

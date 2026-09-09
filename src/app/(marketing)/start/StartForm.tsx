@@ -15,6 +15,7 @@ import {
   FOUND_VIA_OPTIONS,
 } from "@/lib/lead-attribution";
 import { readFirstTouch } from "@/components/LeadAttribution";
+import { trackFormLead } from "@/lib/lead-tracking";
 
 // The form behind the shareable /start link.
 //
@@ -110,6 +111,7 @@ export function StartForm({
         }),
       });
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
+      trackFormLead("start");
       setStatus("success");
     } catch (err) {
       setErrorMsg((err as Error).message);
