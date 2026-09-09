@@ -142,6 +142,32 @@ describe("the sitemap advertises only pages that serve a 200", () => {
   });
 });
 
+describe("the footer does not link areas that redirect", () => {
+  // The footer renders on all 424 pages, so one link to a consolidated
+  // area is several hundred links to a 301. It mapped the full cities
+  // list, which was correct until 1.16.0 gave the unprofiled areas a
+  // redirect and nobody revisited the footer — the crawler was being
+  // sent to /nairobi/parklands from every page on the site and told
+  // each time that the page is really /nairobi/areas.
+  const FOOTER = readFileSync(
+    join(process.cwd(), "src/components/Footer.tsx"),
+    "utf8",
+  );
+
+  it("builds its list from the areas that have a page", () => {
+    expect(FOOTER).toContain("profiledNeighbourhoods");
+    expect(
+      FOOTER.includes("cities[cityKey].neighbourhoods"),
+      `The footer is mapping every area again, including the ones that ` +
+        `301 to the areas page. Build the list from profiledNeighbourhoods.`,
+    ).toBe(false);
+  });
+
+  it("still offers a route to the consolidated areas", () => {
+    expect(FOOTER).toContain("/areas");
+  });
+});
+
 describe("a profile is substantial enough to justify a URL", () => {
   // The whole point is that these pages stop being near-duplicates,
   // which only holds if the unique part is actually substantial. The

@@ -21,6 +21,20 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.20.1] - 2026-09-09
+
+### Fixed
+- The footer linked every area in the cities map, which was correct
+  until 1.16.0 gave the areas without a profile a 301 to the areas
+  comparison page. Since the footer renders on all 424 pages, that
+  left roughly 850 sitewide links pointing at redirects — a crawler
+  being sent to `/nairobi/parklands` from every page on the site and
+  told each time that the page is really somewhere else. The footer,
+  the city pages and `/long-term-management` now link only the areas
+  that serve a 200, and offer an "All areas" link for the rest.
+- `/accra/areas` had no inbound internal link anywhere on the site, so
+  it was reachable only from the sitemap. The city page now links it.
+
 ## [1.20.0] - 2026-09-09
 
 Completes the area coverage started in 1.19.0. Gigiri is where the UN
@@ -987,7 +1001,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.20.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.20.1...HEAD
+[1.20.1]: https://github.com/tasiamah/goldstay/compare/v1.20.0...v1.20.1
 [1.20.0]: https://github.com/tasiamah/goldstay/compare/v1.19.0...v1.20.0
 [1.19.0]: https://github.com/tasiamah/goldstay/compare/v1.18.0...v1.19.0
 [1.18.0]: https://github.com/tasiamah/goldstay/compare/v1.17.0...v1.18.0

@@ -16,7 +16,15 @@ import { FAQSection } from "./FAQSection";
 import { CTABanner } from "./CTABanner";
 import { SectionHeader } from "./SectionHeader";
 import { Reveal } from "./Reveal";
-import { cities, cityFaq, localizedFaq, waLink, site, neighbourhoodSlug } from "@/lib/site";
+import {
+  cities,
+  cityFaq,
+  localizedFaq,
+  waLink,
+  site,
+  neighbourhoodSlug,
+  profiledNeighbourhoods,
+} from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { BreadcrumbJsonLd, FaqJsonLd, ReviewJsonLd } from "./JsonLd";
 
@@ -77,7 +85,12 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
             lede={`Our tenant base includes ${c.tenantProfile}. We know what they expect, what they pay, and how to keep them.`}
           />
           <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {c.neighbourhoods.map((n, i) => {
+            {/* Only the areas with a page. Mapping the full list sent
+                this page to /<city>/<slug> for areas that 301 to the
+                comparison page, and on /accra that was every one of
+                them. The "All areas" tile below carries the rest and
+                is what gives /<city>/areas an inbound link. */}
+            {profiledNeighbourhoods(city).map((n, i) => {
               // Neighbourhood URLs stay /<city>/<slug> on every host.
               // The .co.ke / .com.gh root rewrite is scoped to "/" only
               // (see next.config.mjs), so /<slug> on those domains would
@@ -98,6 +111,19 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
                 </Reveal>
               );
             })}
+            <Reveal delay={profiledNeighbourhoods(city).length * 0.04}>
+              <Link
+                href={`/${city}/areas`}
+                className="group flex items-center justify-between rounded-2xl border border-dashed border-charcoal/20 bg-cream px-6 py-5 transition-colors duration-300 hover:border-gold-500/40"
+              >
+                <span className="font-serif text-xl">
+                  All {c.neighbourhoods.length} areas
+                </span>
+                <span className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-charcoal/50 transition-colors group-hover:text-gold-700">
+                  Compare →
+                </span>
+              </Link>
+            </Reveal>
           </div>
 
           <Reveal delay={0.1}>

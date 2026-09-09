@@ -29,6 +29,7 @@ import {
   site,
   cities,
   neighbourhoodSlug,
+  profiledNeighbourhoods,
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
@@ -407,7 +408,7 @@ export default function Page() {
               lede="Indicative long-let figures for well-finished 2-bed apartments in the Nairobi neighbourhoods we cover."
             />
             <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {cities.nairobi.neighbourhoods.map((n, i) => (
+              {profiledNeighbourhoods("nairobi").map((n, i) => (
                 <Reveal key={n.name} delay={i * 0.03}>
                   <Link
                     href={`/${linkCity}/${neighbourhoodSlug(n.name)}`}

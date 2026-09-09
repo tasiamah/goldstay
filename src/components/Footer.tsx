@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
-import { cities, neighbourhoodSlug, site, waLink } from "@/lib/site";
+import {
+  neighbourhoodSlug,
+  profiledNeighbourhoods,
+  site,
+  waLink,
+} from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
 import { FooterOffice } from "./FooterOffice";
 import { getServerCity } from "@/lib/getServerCity";
@@ -20,11 +25,22 @@ export function Footer() {
   // descriptive anchor text is the cheapest ranking lever we own and
   // each neighbourhood page targets a distinct long-tail query
   // ("property management Kilimani" etc.).
-  const neighbourhoodLinks = (cityKey: "nairobi" | "accra") =>
-    cities[cityKey].neighbourhoods.map((n) => ({
+  //
+  // Only the areas that have a page. This used to map the full cities
+  // list, which was right until 1.16.0 consolidated the areas without
+  // a profile: after that the footer was pointing every page on the
+  // site at two Nairobi URLs and five Accra ones that 301 away. A
+  // sitewide link to a redirect is the crawler doing a round trip to
+  // be told the page is somewhere else, several hundred times over,
+  // and it is the exact thing `sitemap-routes` was already careful
+  // not to do. The areas comparison page carries the rest.
+  const neighbourhoodLinks = (cityKey: "nairobi" | "accra") => [
+    ...profiledNeighbourhoods(cityKey).map((n) => ({
       href: `/${cityKey}/${neighbourhoodSlug(n.name)}`,
       label: n.name,
-    }));
+    })),
+    { href: `/${cityKey}/areas`, label: "All areas" },
+  ];
 
   // On its own country domain the city landing page lives at the root,
   // so link there directly. /{city} still resolves — it 301s to the root
