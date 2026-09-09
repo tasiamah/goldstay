@@ -21,6 +21,20 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.16.1] - 2026-09-09
+
+### Changed
+- The `/airbnb-management` search snippet no longer closes on "20% of revenue".
+  On the results page for "nairobi airbnb management" that number sat directly
+  beneath a competitor's snippet quoting 18%, so a landlord comparing the two
+  saw us as the dearer option before reading a word about why. The rest of the
+  description was the same five services every competitor on that page claims.
+  It now leads with USD remittance, which none of them offer, and states the
+  fee alongside what it excludes — no setup fee, no exit fee, and no charge in
+  a month without bookings — which is the comparison worth making. Simpl's 18%
+  is levied on booking revenue net of the platform's own cut and carries a
+  USD 195 onboarding fee, so the headline gap is smaller than it appears.
+
 ## [1.16.0] - 2026-09-09
 
 Bumped MINOR rather than MAJOR despite retiring thirteen routes. The rule in
@@ -843,7 +857,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.14.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.16.1...HEAD
+[1.16.1]: https://github.com/tasiamah/goldstay/compare/v1.16.0...v1.16.1
 [1.16.0]: https://github.com/tasiamah/goldstay/compare/v1.15.0...v1.16.0
 [1.15.0]: https://github.com/tasiamah/goldstay/compare/v1.14.0...v1.15.0
 [1.14.0]: https://github.com/tasiamah/goldstay/compare/v1.13.1...v1.14.0

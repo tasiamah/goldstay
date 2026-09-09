@@ -129,7 +129,23 @@ export function generateMetadata(): Metadata {
 
   return {
     title: cityTitle,
-    description: `Full Airbnb and short-stay management in ${cityPhrase}. Photography, dynamic pricing, guest comms, cleaning and USD remittance. 20% of revenue.`,
+    // The old description listed the service — photography, pricing,
+    // guest comms, cleaning — and closed on "20% of revenue".
+    //
+    // On the results page for "nairobi airbnb management" that put a
+    // bare 20% directly beneath a competitor's snippet reading "18%
+    // fee of net booking revenue", so a landlord comparing the two
+    // saw us as the dearer option before reading anything about why.
+    // The service list was no help either: every competitor on that
+    // page claims the same five things.
+    //
+    // This leads with the thing none of them offer — rent remitted in
+    // USD to an account outside the country — and frames the fee as
+    // what it actually is. Their 18% is a headline rate; our 20% has
+    // no setup fee, no exit fee, no cut of the cleaners and no charge
+    // at all in a month without bookings, which is the comparison we
+    // would rather a landlord make.
+    description: `Airbnb management in ${cityPhrase}, with your rent remitted in USD. 20% of revenue — no setup fee, no exit fee, and nothing in a month with no bookings.`,
     alternates: {
       canonical: "/airbnb-management",
       languages: alternateLanguagesFor("/airbnb-management"),
