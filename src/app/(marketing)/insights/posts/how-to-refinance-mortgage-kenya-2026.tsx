@@ -32,6 +32,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "How to refinance a mortgage in Kenya 2026 realistic playbook",

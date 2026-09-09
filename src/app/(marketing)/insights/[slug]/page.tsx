@@ -62,6 +62,12 @@ export function generateMetadata({ params }: Props): Metadata {
     // where titles are short and the brand is worth the room.
     title: { absolute: metaTitle },
     description: metaDescription,
+    // See PostMeta.noindex. `follow` stays on deliberately: the page
+    // is out of the index but its links still pass to the service
+    // pages, which is the direction we want equity flowing anyway.
+    ...(post.meta.noindex
+      ? { robots: { index: false, follow: true } }
+      : {}),
     alternates: insightAlternates(post.meta.slug, post.meta.country),
     openGraph: {
       title: metaTitle,

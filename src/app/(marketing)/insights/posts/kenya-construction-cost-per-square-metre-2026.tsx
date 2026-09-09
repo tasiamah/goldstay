@@ -31,6 +31,7 @@ export const meta: PostMeta = {
     "Property",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Kenya construction cost per square metre 2026 builder honest view",

@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "KCB mortgage 2026 complete review Kenya home loan",

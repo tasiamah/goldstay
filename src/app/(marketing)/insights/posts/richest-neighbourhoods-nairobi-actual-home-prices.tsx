@@ -33,6 +33,7 @@ export const meta: PostMeta = {
     "Ranking",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Richest neighbourhoods in Nairobi 2026 ranked by actual home prices",

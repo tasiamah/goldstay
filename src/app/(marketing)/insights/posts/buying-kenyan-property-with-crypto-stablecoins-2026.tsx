@@ -34,6 +34,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Buying Kenyan property with crypto and stablecoins USDC USDT bitcoin in 2026",

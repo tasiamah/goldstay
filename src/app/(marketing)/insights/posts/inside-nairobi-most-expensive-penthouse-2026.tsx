@@ -31,6 +31,7 @@ export const meta: PostMeta = {
     "Property",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Inside Nairobi most expensive penthouses 2026 KES 800m",

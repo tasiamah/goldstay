@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "HFC mortgage 2026 honest review Kenya home loan",

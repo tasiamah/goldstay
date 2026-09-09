@@ -31,6 +31,7 @@ export const meta: PostMeta = {
     "Research",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "ChatGPT prompts Nairobi property buyers that actually work",

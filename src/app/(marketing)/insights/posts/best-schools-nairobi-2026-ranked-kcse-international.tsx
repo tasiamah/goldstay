@@ -33,6 +33,7 @@ export const meta: PostMeta = {
     "Family",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Best schools in Nairobi 2026 ranked private international KCSE",

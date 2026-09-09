@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Nairobi",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Acorn Holdings PBSA Nairobi 2026 investor review REIT",

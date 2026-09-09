@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Property",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Mortgage rates Kenya banks won’t tell you about 2026 honest",

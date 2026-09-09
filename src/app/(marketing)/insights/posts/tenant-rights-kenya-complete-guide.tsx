@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Property",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Tenant rights Kenya 2026 complete plain-English guide",

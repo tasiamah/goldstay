@@ -157,6 +157,66 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
       <StatementPreview city={city} />
       <DashboardPreview city={city} />
 
+      {/* The operational work, named.
+          
+          Asked to describe this business, a search engine read the
+          site and returned: "a Nairobi-based property research and
+          insights firm... they do not appear to function as a
+          property management company that handles day-to-day
+          operations like tenant placement or rent collection."
+          
+          It was reading what we published. Every page said "premium
+          property management" and none of them said we are the ones
+          who chase the rent, meet the plumber and inspect the flat.
+          The catalogue of articles said "publisher" loudly and the
+          service pages said "manager" only in the abstract. This
+          section is the plain answer, in the verbs a landlord and a
+          crawler both understand. */}
+      <section className="section">
+        <div className="container-gs">
+          <SectionHeader
+            eyebrow="The actual job"
+            title="What we do with your property, every month."
+            lede={`Not advice, and not a listing site. Goldstay is the managing agent on the ground in ${cityName}: we hold the keys, we deal with the tenant, and we are the ones the plumber calls back.`}
+          />
+          <Reveal delay={0.1}>
+            <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                {
+                  title: "We find and vet the tenant",
+                  body: "We market the unit, run the viewings, and reference every applicant — employment, previous landlord, identity. You approve who moves in.",
+                },
+                {
+                  title: "We collect the rent",
+                  body: `Rent is paid to us in ${c.currency} by bank transfer or mobile money. We reconcile it daily and chase the day it is late, so you are never the one sending the reminder.`,
+                },
+                {
+                  title: "We pursue arrears",
+                  body: "A missed payment gets a call, then a formal notice, then legal escalation with our advocates. Documented at every step, in case it ever reaches a tribunal.",
+                },
+                {
+                  title: "We inspect the property",
+                  body: "Routine inspections with dated photographs, so you can see the condition of a home you may not have stood in for years. Issues are flagged before they become invoices.",
+                },
+                {
+                  title: "We handle maintenance and cleaning",
+                  body: "We instruct and supervise the plumber, the electrician and the cleaners, check the work, and settle the invoice from the rent — with the receipt on your statement.",
+                },
+                {
+                  title: "We account for every shilling",
+                  body: "One statement a month: rent in, costs out, the FX rate we used, and the USD figure wired to you. Plus an annual summary for your tax return.",
+                },
+              ].map((s) => (
+                <div key={s.title} className="card h-full">
+                  <h3 className="font-serif text-2xl">{s.title}</h3>
+                  <p className="mt-3 text-sm text-charcoal/70">{s.body}</p>
+                </div>
+              ))}
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container-gs">
           <SectionHeader

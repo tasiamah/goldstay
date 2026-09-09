@@ -33,6 +33,7 @@ export const meta: PostMeta = {
     "Family",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Building a home for parents in shags Kenya, diaspora playbook 2026 budget and project plan",

@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.21.0] - 2026-09-09
+
+Asked to describe this business, a search engine read the site and
+answered: "a Nairobi-based property research and insights firm... they
+do not appear to function as a property management company that
+handles day-to-day operations like tenant placement or rent
+collection."
+
+That was a fair reading of what we had published. Every service page
+said "premium property management" and none of them said we are the
+ones who chase the rent, meet the plumber and inspect the flat. The
+operational work a landlord is actually buying appeared only inside
+prose, never declared.
+
+### Added
+- A "what we do with your property, every month" section on the city
+  pages, which is what the `.co.ke` root serves. Six plain statements
+  in the verbs a landlord uses: we find and vet the tenant, collect
+  the rent, pursue arrears, inspect the property, handle maintenance
+  and cleaning, and account for every shilling.
+- `knowsAbout` on the business schema, naming twenty-one things this
+  firm does — rent collection, tenant placement, arrears recovery,
+  inspections, cleaning, deposit handling, service charge
+  administration and the rest. Nothing previously declared any of it.
+- `hasOfferCatalog` under both management services, itemising the
+  fourteen operations included in long-term management and the ten in
+  short-stay. They are a catalogue rather than separate offers because
+  they are included in the fee, not sold individually.
+- `noindex` on `PostMeta`, with the post route emitting
+  `noindex, follow` and the sitemap filtering on it.
+
+### Changed
+- Thirty articles are out of the index: ten bank mortgage reviews,
+  five on lending mechanics, five written for tenants rather than
+  landlords, three on REITs and crypto, and seven off-topic or
+  traffic-bait pieces. A reader comparing Absa against KCB is shopping
+  for a mortgage, not for a managing agent, and ten such articles in
+  the catalogue were a large part of why the site read as a
+  publication. They are noindexed rather than deleted — the pages
+  still serve whoever lands on one, and `follow` is kept so their
+  links still carry to the service pages.
+
 ## [1.20.1] - 2026-09-09
 
 ### Fixed
@@ -1001,7 +1043,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.20.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.21.0...HEAD
+[1.21.0]: https://github.com/tasiamah/goldstay/compare/v1.20.1...v1.21.0
 [1.20.1]: https://github.com/tasiamah/goldstay/compare/v1.20.0...v1.20.1
 [1.20.0]: https://github.com/tasiamah/goldstay/compare/v1.19.0...v1.20.0
 [1.19.0]: https://github.com/tasiamah/goldstay/compare/v1.18.0...v1.19.0

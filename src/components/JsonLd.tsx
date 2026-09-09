@@ -77,6 +77,42 @@ export function JsonLd() {
     knowsLanguage: ["en"],
     currenciesAccepted: currencies,
     paymentAccepted: "Bank transfer, mobile money",
+    // What this business does, named as plainly as the vocabulary
+    // allows. Added because a search engine asked to describe us read
+    // the site and returned "a Nairobi-based property research and
+    // insights firm... they do not appear to function as a property
+    // management company that handles day-to-day operations like
+    // tenant placement or rent collection."
+    //
+    // That is a fair reading of what we had published. 361 of our 424
+    // URLs are articles, `makesOffer` listed four headline services,
+    // and the operational work a landlord is actually buying — the
+    // rent being collected, the arrears chased, the inspection done,
+    // the plumber sent — appeared only inside prose descriptions.
+    // Nothing declared it. `knowsAbout` is the property that does.
+    knowsAbout: [
+      "Property management",
+      "Rent collection",
+      "Tenant placement",
+      "Tenant screening and referencing",
+      "Tenancy agreements and lease administration",
+      "Rent arrears recovery",
+      "Property maintenance and repairs",
+      "Cleaning and housekeeping",
+      "Property inspections",
+      "Security deposit handling",
+      "Service charge administration",
+      "Landlord financial reporting",
+      "Short-stay and Airbnb management",
+      "Guest communication and turnover",
+      "Rental property marketing and listings",
+      "Void management",
+      "Buy-to-let property sourcing",
+      "Title verification and due diligence",
+      "Rental income tax compliance in Kenya",
+      "Diaspora landlord services",
+      "Foreign currency rent remittance",
+    ],
     makesOffer: [
       {
         "@type": "Offer",
@@ -84,9 +120,38 @@ export function JsonLd() {
           "@type": "Service",
           name: "Long-Term Property Management",
           description:
-            "End-to-end management of residential rental properties for long-term tenants, with monthly USD remittance to overseas accounts.",
+            "End-to-end management of residential rental properties for long-term tenants: we market the unit, vet and place the tenant, collect the rent, chase arrears, hold the deposit, inspect the property, and instruct and supervise maintenance and repairs. Monthly statement and USD remittance to overseas accounts.",
           areaServed: offerAreas,
           provider: { "@id": orgId() },
+          // The operational work itself, itemised. These are included
+          // in the management fee rather than sold separately, which
+          // is why they are a catalogue under the service rather than
+          // offers in their own right — but they need naming, because
+          // "property management" on its own does not tell a reader
+          // or a crawler that we are the ones collecting the rent.
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "What long-term management includes",
+            itemListElement: [
+              "Tenant sourcing and placement",
+              "Tenant screening, referencing and employment checks",
+              "Tenancy agreement drafting and execution",
+              "Monthly rent collection",
+              "Rent arrears follow-up and recovery",
+              "Security deposit handling and reconciliation",
+              "Routine property inspections with photographic reports",
+              "Repairs and maintenance instruction and supervision",
+              "Vendor and contractor management",
+              "Service charge administration",
+              "Utility and council rates administration",
+              "Monthly owner statements and annual tax summaries",
+              "Deposit-deduction assessment and check-out",
+              "Void period management and re-letting",
+            ].map((name) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name },
+            })),
+          },
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",
@@ -99,9 +164,28 @@ export function JsonLd() {
           "@type": "Service",
           name: "Short-Stay / Airbnb Management",
           description:
-            "Full short-stay operations including listing, pricing, guest communication, cleaning and maintenance, with monthly USD remittance.",
+            "Full short-stay operations: we list and photograph the unit, set and revise nightly pricing, answer guests, run every changeover clean, restock consumables, handle maintenance, and remit in USD monthly.",
           areaServed: offerAreas,
           provider: { "@id": orgId() },
+          hasOfferCatalog: {
+            "@type": "OfferCatalog",
+            name: "What short-stay management includes",
+            itemListElement: [
+              "Listing creation, photography and copywriting",
+              "Dynamic nightly pricing and revenue management",
+              "Multi-platform channel management",
+              "Guest vetting, communication and check-in",
+              "Changeover cleaning and housekeeping",
+              "Linen and consumables restocking",
+              "Maintenance and repairs between stays",
+              "Damage assessment and claims",
+              "Occupancy and revenue reporting",
+              "Compliance with county short-stay requirements",
+            ].map((name) => ({
+              "@type": "Offer",
+              itemOffered: { "@type": "Service", name },
+            })),
+          },
         },
         priceSpecification: {
           "@type": "UnitPriceSpecification",

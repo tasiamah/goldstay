@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Top Kenyan SACCOs property loans 2026 comparison",

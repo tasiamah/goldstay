@@ -30,6 +30,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "KMRC Kenya affordable mortgage 2026 explained guide",

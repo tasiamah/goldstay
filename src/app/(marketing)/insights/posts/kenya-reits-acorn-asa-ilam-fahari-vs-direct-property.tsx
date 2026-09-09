@@ -26,6 +26,7 @@ export const meta: PostMeta = {
   author: authors.research,
   tags: ["Kenya", "REIT", "Investment", "Acorn", "ILAM Fahari", "Diaspora"],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Kenyan REITs comparison Acorn ASA ILAM Fahari versus direct Nairobi property investment",

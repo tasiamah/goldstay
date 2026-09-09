@@ -33,6 +33,7 @@ export const meta: PostMeta = {
     "Finance",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Pension-backed mortgages Kenya KMRC explained 2026 buyer guide",

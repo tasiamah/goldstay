@@ -32,6 +32,7 @@ export const meta: PostMeta = {
     "Healthcare",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "How much do you need to retire in Kenya 2026 honest budget diaspora retirees",

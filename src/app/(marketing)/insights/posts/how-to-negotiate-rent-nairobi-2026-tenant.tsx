@@ -32,6 +32,7 @@ export const meta: PostMeta = {
     "Renting",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "How to negotiate rent Nairobi 2026 tenant playbook",

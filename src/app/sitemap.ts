@@ -34,7 +34,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const paths = sitemapPaths({
     host,
-    postSlugs: byMarket((m) => postsForCountry(m).map((p) => p.meta.slug)),
+    // Noindexed articles are excluded. Listing a URL in the sitemap
+    // is a request to crawl and index it, and the page itself carries
+    // a noindex — sending both is a contradiction, and the one Google
+    // reports back as "indexed, though blocked" or simply as wasted
+    // crawl. See PostMeta.noindex.
+    postSlugs: byMarket((m) =>
+      postsForCountry(m)
+        .filter((p) => !p.meta.noindex)
+        .map((p) => p.meta.slug),
+    ),
     // Only advertise category pages that actually contain articles this
     // host serves. Empty categories stay out until they have content.
     categorySlugs: byMarket((m) =>

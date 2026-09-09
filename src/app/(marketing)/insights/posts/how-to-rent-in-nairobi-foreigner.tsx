@@ -31,6 +31,7 @@ export const meta: PostMeta = {
     "Property",
   ],
   country: "kenya",
+  noindex: true,
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "How to rent Nairobi foreigner 2026 step-by-step guide",

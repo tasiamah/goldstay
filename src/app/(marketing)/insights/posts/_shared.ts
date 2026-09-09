@@ -71,6 +71,26 @@ export type PostMeta = {
   // never ship a broken share unfurl.
   heroImage?: string;
   heroAlt?: string;
+  // Keep the article out of the index.
+  //
+  // Set where a piece is genuinely useful to whoever lands on it but
+  // cannot lead to a client, and where its presence in the catalogue
+  // actively misdescribes the business. The bank mortgage reviews are
+  // the clearest case: ten articles comparing Absa, KCB, Equity and
+  // the rest. A reader shopping for a mortgage is not looking for a
+  // managing agent, and ten of them sitting in an index alongside
+  // articles on REITs and school league tables is a large part of
+  // why a search engine, asked what Goldstay is, answered "a
+  // Nairobi-based property research and insights firm... they do not
+  // appear to function as a property management company."
+  //
+  // Noindexed rather than deleted: the pages still serve the person
+  // who arrives on one, and the internal links to them still work.
+  // They are simply no longer part of what we ask Google to weigh
+  // when deciding what this company does. They also drop out of the
+  // sitemap — see sitemap-routes.ts, which filters on this field, so
+  // we are not advertising a URL we have asked not to be indexed.
+  noindex?: true;
 };
 
 // Single source of authors. Keeping bios here means every post page,
