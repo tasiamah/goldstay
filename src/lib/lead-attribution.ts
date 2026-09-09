@@ -318,6 +318,34 @@ export function normaliseSearchTerm(value: unknown): string | null {
   return v.length ? v : null;
 }
 
+// Turns what a landlord said into a channel bucket, for leads that
+// have no browser behind them — a phone call, or a WhatsApp thread an
+// operator types up afterwards. Measured attribution is unavailable by
+// definition in those cases, and a stated one is better than a null.
+//
+// "Saw a Goldstay property" and "Other" return null on purpose: the
+// first happened offline and the second says nothing, and neither maps
+// onto a bucket without inventing a fact.
+//
+// One caveat worth writing down. "Google search" maps to organic
+// because Goldstay runs no paid search; a landlord cannot reliably
+// tell an ad from an organic result, so the day ads start running this
+// mapping begins quietly overstating organic and should move to null.
+export function channelFromFoundVia(
+  foundVia: FoundVia | null,
+): Channel | null {
+  switch (foundVia) {
+    case "Google search":
+      return "organic_search";
+    case "Recommended by someone":
+      return "referral";
+    case "Instagram or Facebook":
+      return "social";
+    default:
+      return null;
+  }
+}
+
 // ---------------------------------------------------------------
 // Server side
 // ---------------------------------------------------------------

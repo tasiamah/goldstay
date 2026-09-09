@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   asksForSearchTerm,
   captureFirstTouch,
+  channelFromFoundVia,
   classifyReferrer,
   describeAttribution,
   FOUND_VIA_OPTIONS,
@@ -277,6 +278,29 @@ describe("describeAttribution", () => {
 
   it("returns null when there is nothing to say, so the email omits the line", () => {
     expect(describeAttribution(parseAttributionPayload({}))).toBeNull();
+  });
+});
+
+describe("channelFromFoundVia", () => {
+  it("buckets the answers that map cleanly", () => {
+    expect(channelFromFoundVia("Google search")).toBe("organic_search");
+    expect(channelFromFoundVia("Recommended by someone")).toBe("referral");
+    expect(channelFromFoundVia("Instagram or Facebook")).toBe("social");
+  });
+
+  it("returns null rather than inventing a channel for the offline answers", () => {
+    // "Saw a Goldstay property" happened in the street and "Other"
+    // says nothing; neither maps onto a bucket without making a fact up.
+    expect(channelFromFoundVia("Saw a Goldstay property")).toBeNull();
+    expect(channelFromFoundVia("Other")).toBeNull();
+    expect(channelFromFoundVia(null)).toBeNull();
+  });
+
+  it("only ever returns a channel the guard accepts", () => {
+    for (const o of FOUND_VIA_OPTIONS) {
+      const c = channelFromFoundVia(o);
+      if (c !== null) expect(isChannel(c)).toBe(true);
+    }
   });
 });
 

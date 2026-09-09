@@ -1,6 +1,7 @@
 "use client";
 
 import { useFormState, useFormStatus } from "react-dom";
+import { FOUND_VIA_OPTIONS } from "@/lib/lead-attribution";
 import { logLeadManuallyAction } from "../actions";
 
 export function ManualLeadForm() {
@@ -66,6 +67,25 @@ export function ManualLeadForm() {
           helperText="Long-term, short-stay, sourcing…"
         />
         <Field label="Availability" name="availability" />
+        {/* Worth asking on the call. A landlord who rang because they
+            found us on Google is the only person who knows what they
+            typed, and this is the sole place a phone or WhatsApp
+            enquiry can have that recorded — those conversations leave
+            no trace a browser could pick up. */}
+        <Select
+          label="How did they find us?"
+          name="foundVia"
+          options={[
+            { value: "", label: "Not asked" },
+            ...FOUND_VIA_OPTIONS.map((o) => ({ value: o, label: o })),
+          ]}
+          helperText="Ask on the call — it is how we learn what to rank for."
+        />
+        <Field
+          label="What did they search for?"
+          name="searchTerm"
+          helperText='Their words, if they found us on Google. e.g. "property management nairobi".'
+        />
       </div>
 
       <label className="block text-sm">
@@ -138,11 +158,13 @@ function Select({
   name,
   options,
   required,
+  helperText,
 }: {
   label: string;
   name: string;
   options: Array<{ value: string; label: string }>;
   required?: boolean;
+  helperText?: string;
 }) {
   return (
     <label className="block text-sm">
@@ -159,6 +181,9 @@ function Select({
           </option>
         ))}
       </select>
+      {helperText ? (
+        <p className="mt-1 text-xs text-stone-500">{helperText}</p>
+      ) : null}
     </label>
   );
 }

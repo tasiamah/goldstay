@@ -21,6 +21,36 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.18.0] - 2026-09-09
+
+1.17.0 added the "how did you find us" question to
+`/list-your-property`, which turns out to be the form Goldstay's leads
+mostly do not use. The one-to-two enquiries a week arrive on WhatsApp,
+and the two surfaces that serve them had no such question.
+
+### Added
+- `/start` — the intake link ops paste into a WhatsApp thread — now
+  asks how the landlord found us, and what they searched for when the
+  answer is Google. This is the one that matters: for a WhatsApp lead
+  the browser fields are worthless, because the landlord arrived by
+  tapping a link in a chat, so the referrer reads as WhatsApp and the
+  landing page as `/start`. What they type is all there is.
+- `/admin/leads/new` now has the same two fields, so an enquiry taken
+  on a phone call can carry the answer. The channel is derived from
+  what the landlord said rather than measured, which is the honest
+  label for somebody's recollection. Answers that happened offline —
+  "saw a Goldstay property" — record no channel rather than being
+  forced into a bucket.
+
+### Note
+- Both mechanisms for logging an off-platform enquiry already existed
+  before this release: `/admin/leads/new` and the intake-link button
+  on `/admin/leads`, which have been on that page and unused. One lead
+  has been logged since May against a real volume of roughly one to
+  two a week, so the gap is habit rather than tooling. Of the two, the
+  intake link is the one that needs no discipline: paste it into the
+  chat and the landlord fills it in themselves.
+
 ## [1.17.0] - 2026-09-09
 
 Prompted by a question that could not be answered: two clients had said
@@ -899,7 +929,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.17.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.18.0...HEAD
+[1.18.0]: https://github.com/tasiamah/goldstay/compare/v1.17.0...v1.18.0
 [1.17.0]: https://github.com/tasiamah/goldstay/compare/v1.16.1...v1.17.0
 [1.16.1]: https://github.com/tasiamah/goldstay/compare/v1.16.0...v1.16.1
 [1.16.0]: https://github.com/tasiamah/goldstay/compare/v1.15.0...v1.16.0

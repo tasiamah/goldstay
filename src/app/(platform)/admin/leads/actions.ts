@@ -16,6 +16,11 @@ import { prisma } from "@/lib/db";
 import { currentAuditActor } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
 import {
+  channelFromFoundVia,
+  normaliseSearchTerm,
+  parseFoundVia,
+} from "@/lib/lead-attribution";
+import {
   attachClientToLead,
   createLead,
   markLeadContacted,
@@ -77,6 +82,15 @@ export async function logLeadManuallyAction(
       propertyType: parsed.data.propertyType ?? null,
       bedrooms: parsed.data.bedrooms ?? null,
       furnished: parsed.data.furnished ?? null,
+      // Typed by an operator off a phone call or a WhatsApp thread, so
+      // there is no browser to read a referrer from — only what the
+      // landlord said. `channel` is set from the answer rather than
+      // measured, which is the honest label for a human's recollection.
+      attribution: {
+        foundVia: parseFoundVia(formData.get("foundVia")),
+        searchTerm: normaliseSearchTerm(formData.get("searchTerm")),
+        channel: channelFromFoundVia(parseFoundVia(formData.get("foundVia"))),
+      },
       serviceInterest: parsed.data.serviceInterest ?? null,
       availability: parsed.data.availability ?? null,
       notes: parsed.data.notes ?? null,

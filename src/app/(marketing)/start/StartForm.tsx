@@ -10,6 +10,11 @@ import {
 } from "@/lib/lead-options";
 import { NAIROBI_NEIGHBOURHOODS } from "@/lib/nairobi-neighbourhoods";
 import { waLink } from "@/lib/site";
+import {
+  asksForSearchTerm,
+  FOUND_VIA_OPTIONS,
+} from "@/lib/lead-attribution";
+import { readFirstTouch } from "@/components/LeadAttribution";
 
 // The form behind the shareable /start link.
 //
@@ -56,6 +61,8 @@ export function StartForm({
   const [service, setService] = useState<string>(SERVICE_OPTIONS[0]);
   const [bedrooms, setBedrooms] = useState("");
   const [notes, setNotes] = useState("");
+  const [foundVia, setFoundVia] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const [status, setStatus] = useState<Status>("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -90,6 +97,16 @@ export function StartForm({
           source: `start:${leadSource.toLowerCase()}`,
           // The LeadSource enum the Postgres row is filed under.
           leadSource,
+          // The browser fields are close to worthless on this page: the
+          // landlord got here by tapping a link ops pasted into a chat,
+          // so the referrer is WhatsApp and the landing page is /start.
+          // They are sent anyway for consistency, but the two answers
+          // below are the ones with any information in them.
+          attribution: {
+            ...(readFirstTouch() ?? {}),
+            foundVia: foundVia || null,
+            searchTerm: asksForSearchTerm(foundVia) ? searchTerm || null : null,
+          },
         }),
       });
       if (!res.ok) throw new Error(`Request failed (${res.status})`);
@@ -270,6 +287,38 @@ export function StartForm({
             ))}
           </select>
         </Field>
+
+        {/* The question that matters most on this particular form.
+            Most enquiries arrive through WhatsApp, and ops paste this
+            link into the thread — so for the bulk of Goldstay's leads
+            this is the only place the origin can be recorded at all.
+            The wa.me jump destroys everything a browser could have
+            told us, and Google would have stripped the query anyway. */}
+        <Field label="How did you find us?" hint="Optional">
+          <select
+            value={foundVia}
+            onChange={(e) => setFoundVia(e.target.value)}
+            className={inputClass}
+          >
+            <option value="">Prefer not to say</option>
+            {FOUND_VIA_OPTIONS.map((o) => (
+              <option key={o} value={o}>
+                {o}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        {asksForSearchTerm(foundVia) ? (
+          <Field label="What did you search for?" hint="Optional">
+            <input
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className={inputClass}
+              placeholder="e.g. property management nairobi"
+            />
+          </Field>
+        ) : null}
 
         <Field label="Anything else we should know?" hint="Optional">
           <textarea
