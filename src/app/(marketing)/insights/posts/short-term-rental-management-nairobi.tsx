@@ -116,7 +116,15 @@ export default function Article() {
           audience. It behaves differently: shorter lead times, more
           last-minute, less price-sensitive on weekdays. For units near
           Westlands and Gigiri it frequently fills midweek nights Airbnb does
-          not.
+          not. The two are compared properly, including the double-booking risk
+          of running both, in{" "}
+          <Link
+            href="/insights/airbnb-vs-booking-com-nairobi"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            Airbnb or Booking.com for a Nairobi short stay
+          </Link>
+          .
         </LI>
         <LI>
           <strong>Corporate and organisational direct.</strong> Consultants,

@@ -192,7 +192,15 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Channel commission.</strong> Airbnb and Booking.com take their
-          cut before you see anything
+          cut before you see anything, and Airbnb&apos;s is now 15.5 percent of
+          the whole booking rather than the old 3 percent split. What each
+          charges, and which one suits a Nairobi unit, is in{" "}
+          <Link
+            href="/insights/airbnb-vs-booking-com-nairobi"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            Airbnb or Booking.com
+          </Link>
         </LI>
         <LI>
           <strong>Replacement.</strong> Linen, towels, crockery, glassware and

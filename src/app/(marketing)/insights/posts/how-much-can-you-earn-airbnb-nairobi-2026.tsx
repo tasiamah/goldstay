@@ -139,9 +139,21 @@ export default function Article() {
       <H3>4. Channel commission</H3>
 
       <P>
-        Airbnb and Booking.com take their share before anything reaches you, and
-        Booking.com generally takes more. If you are on both, your blended
-        commission is higher than the number you remember from signing up.
+        Airbnb and Booking.com take their share before anything reaches you,
+        and they now take roughly the same: Airbnb charges hosts 15.5 percent
+        of the whole booking, Booking.com around 15 percent. That is a recent
+        change and it works against the number most owners remember, because
+        Airbnb used to charge the host about 3 percent and bill the guest the
+        rest. If you signed up before the switch, your commission line is
+        materially bigger than you think it is. The comparison, and what
+        actually separates the two platforms, is in{" "}
+        <Link
+          href="/insights/airbnb-vs-booking-com-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb or Booking.com for a Nairobi short stay
+        </Link>
+        .
       </P>
 
       <H3>5. Replacement and wear</H3>

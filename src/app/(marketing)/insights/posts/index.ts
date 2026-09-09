@@ -705,6 +705,9 @@ import VacationRentalHolidayLetShortStayNairobi, {
 import ServicedApartmentManagementNairobi, {
   meta as servicedApartmentManagementNairobiMeta,
 } from "./serviced-apartment-management-nairobi";
+import AirbnbVsBookingComNairobi, {
+  meta as airbnbVsBookingComNairobiMeta,
+} from "./airbnb-vs-booking-com-nairobi";
 import BtlPortfolioNairobi, {
   meta as btlPortfolioNairobiMeta,
 } from "./btl-portfolio-building-nairobi";
@@ -1568,6 +1571,10 @@ export const posts: readonly Post[] = [
   {
     meta: servicedApartmentManagementNairobiMeta,
     Component: ServicedApartmentManagementNairobi,
+  },
+  {
+    meta: airbnbVsBookingComNairobiMeta,
+    Component: AirbnbVsBookingComNairobi,
   },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
 

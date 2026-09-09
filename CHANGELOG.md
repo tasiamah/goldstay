@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.33.0] - 2026-09-09
+
+### Added
+- "Airbnb or Booking.com for a Nairobi short stay: which one actually
+  pays more?" The comparison owners ask for, answered on the parts that
+  matter rather than the fee. Covers the different guest each platform
+  delivers, the fact that Booking.com invoices its commission monthly
+  rather than deducting it (the most common way a remote owner's listing
+  gets suspended), the gap between booked and stayed on a
+  free-cancellation-heavy channel, and why an iCal link is not the same
+  as a synced calendar.
+
+  Demand-checked first: 239 host-side query variants exist for this
+  comparison, but only one was Kenya-scoped, so the piece targets the
+  localised long tail rather than pretending it can beat Lodgify and
+  Hostaway to the head term.
+
+### Fixed
+- Two articles carried fee arithmetic that Airbnb's pricing change has
+  overtaken. `how-much-can-you-earn-airbnb-nairobi-2026` said
+  Booking.com "generally takes more", which stopped being true when
+  Airbnb moved hosts to a flat 15.5 percent of the whole booking from
+  the old 3 percent host share, and the complete host guide implied the
+  same. Both now state the current numbers and note that owners who
+  signed up before the switch have a materially larger commission line
+  than they expect.
+
 ## [1.32.1] - 2026-09-09
 
 ### Added
@@ -1636,7 +1663,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.32.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.33.0...HEAD
+[1.33.0]: https://github.com/tasiamah/goldstay/compare/v1.32.1...v1.33.0
 [1.32.1]: https://github.com/tasiamah/goldstay/compare/v1.32.0...v1.32.1
 [1.32.0]: https://github.com/tasiamah/goldstay/compare/v1.31.0...v1.32.0
 [1.31.0]: https://github.com/tasiamah/goldstay/compare/v1.30.0...v1.31.0
