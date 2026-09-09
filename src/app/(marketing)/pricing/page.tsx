@@ -137,7 +137,7 @@ export default function Page() {
     // nothing, which deserves a straight answer rather than a pitch.
     // Reproduce with `node scripts/harvest-queries.mjs`.
     {
-      q: "What is a reasonable property management fee?",
+      q: "What is a reasonable property management fee in Kenya?",
       a: "In Kenya, 8% to 15% of collected rent is the normal range for full long-term management and 15% to 25% of revenue for short-stay. Below about 8% the manager is almost certainly running a rent-collection service rather than managing anything, and above about 15% you should expect something specific in return and ask what it is. But the percentage on its own tells you very little. A 10% fee with a setup charge, a markup on every repair and a fee to leave costs more over a year than a 12% fee with none of those, so the only number worth comparing is the total you will actually pay.",
     },
     {
@@ -417,7 +417,16 @@ export default function Page() {
                 six written guarantees
               </Link>{" "}
               behind it, including a fee we waive when we miss our own response
-              window.
+              window. If you are still drawing up a shortlist, we have written
+              the whole comparison out — including the eight questions worth
+              asking every firm, and where we are the wrong answer — on{" "}
+              <Link
+                href="/property-management-companies-nairobi"
+                className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+              >
+                comparing property management companies in {cityPhrase}
+              </Link>
+              .
             </p>
           </Reveal>
           <Reveal delay={0.1}>

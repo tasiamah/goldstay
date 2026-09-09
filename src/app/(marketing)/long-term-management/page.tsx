@@ -231,7 +231,7 @@ export default function Page() {
           be quotable standing alone, not to introduce the page. */}
       <KeyFacts
         question={`What does long-term property management in ${cityPhrase} cost, and what is included?`}
-        answer={`Long-term rental management, also called buy-to-let or residential letting management, is a service where a company runs a tenanted property on the landlord's behalf: tenant sourcing and vetting, the lease, rent collection and arrears chasing, repairs and vendor coordination, statutory compliance and monthly reporting. Goldstay charges 10% of the rent actually collected for this in ${cityPhrase}, with no setup fee, no renewal fee and no commission taken from contractors, and remits the net to your overseas account in USD on the 5th of each month with withholding tax already deducted and paid to ${taxAuthority}.`}
+        answer={`Long-term rental management, also called buy-to-let or residential letting management, is what a letting agent, managing agent or property management company does for a landlord: tenant sourcing and vetting, the lease, rent collection and arrears chasing, repairs and vendor coordination, statutory compliance and monthly reporting. Goldstay charges 10% of the rent actually collected for this in ${cityPhrase}, with no setup fee, no renewal fee and no commission taken from contractors, and remits the net to your overseas account in USD on the 5th of each month with withholding tax already deducted and paid to ${taxAuthority}.`}
         facts={[
           { label: "Management fee", value: "10% of rent collected" },
           {

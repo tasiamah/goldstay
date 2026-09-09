@@ -150,6 +150,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/property-management-companies-nairobi"
+                  className="link-underline"
+                >
+                  Comparing management companies
+                </Link>
+              </li>
+              <li>
                 <Link href="/diaspora-payouts" className="link-underline">
                   Diaspora USD payouts
                 </Link>

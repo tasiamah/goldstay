@@ -49,6 +49,29 @@ const SEEDS = [
   // Fees and switching
   "property management fees kenya",
   "change property manager kenya",
+  // The plural, and the shortlist intent behind it.
+  //
+  // Added after the singular seeds above missed the two heaviest
+  // queries in this market entirely. "property management companies in
+  // kenya" and "property management companies in nairobi" came back
+  // heavier than everything else here combined, and neither surfaced
+  // from "property management nairobi" — Google does not bridge the
+  // singular to the plural, and the intent genuinely differs: the
+  // singular is someone who wants the service, the plural is someone
+  // drawing up a shortlist. We had 26 uses of "property management
+  // company" on the site and zero of the plural, so we could not rank
+  // for the comparison stage at all. Seed both forms of anything that
+  // has one.
+  "property management companies nairobi",
+  "property management companies kenya",
+  "best property management company nairobi",
+  "real estate management companies nairobi",
+  // Self-management, which is the honest alternative to hiring us and
+  // a decision stage the site was silent on.
+  "can i manage my own rental property",
+  "who can i hire to manage my rental property",
+  "are letting agents worth it",
+  "letting agents responsibilities",
 ];
 
 // Alphabet soup plus the modifiers that actually change intent. Google

@@ -21,6 +21,53 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.22.0] - 2026-09-09
+
+Re-ran the query harvest against Google's Kenyan autocomplete across
+thirty management-intent seeds. The two heaviest queries in this
+market — "property management companies in kenya" and "property
+management companies in nairobi", together 41% of all the volume that
+surfaced — could not be ranked for at all, because the plural appeared
+nowhere on the site. "Property management company" occurred 26 times;
+"property management companies" zero.
+
+The singular seeds in `scripts/harvest-queries.mjs` had never
+surfaced them. Google does not bridge the singular to the plural, and
+the intent genuinely differs: the singular is somebody who wants the
+service, the plural is somebody drawing up a shortlist and comparing.
+The site sold the service well and said nothing to a person still
+choosing.
+
+### Added
+- `/property-management-companies-nairobi`, written for the comparison
+  stage rather than the buying stage: the fee models and why a quote
+  of 8% can cost more than one of 10%, the full remit of a letting or
+  managing agent, eight questions to ask every firm, and a section
+  saying plainly when self-management is the better choice and where
+  Goldstay is the wrong answer. Linked from the footer and from the
+  pricing page's comparison section, so it is not an orphan.
+- Seeds for the plural and for the self-management decision in
+  `scripts/harvest-queries.mjs`, with a note on why the singular
+  missed them, so the gap cannot silently return.
+
+### Changed
+- The long-term management summary now names the service the way
+  landlords do — what a letting agent, managing agent or property
+  management company does — rather than only in our own words.
+- The pricing FAQ asks what a reasonable management fee is *in Kenya*,
+  which is how the question is actually typed.
+
+### Notes
+- Deliberately not covered: the "house agents" and "rental agents"
+  clusters, which read as tenant-side ("house agents in nairobi for
+  rent", "house hunting agents"). Chasing them would repeat the
+  mistake 1.21.0 corrected.
+- Blocked: Estate Agents Registration Board licensing content, and
+  the "estate agents scale of fees" query. Cap 533 covers management,
+  so these are fair questions for a landlord to ask — but publishing
+  them before our own registration status is confirmed would invite
+  the question back with no answer ready.
+
 ## [1.21.1] - 2026-09-09
 
 ### Changed
@@ -1059,7 +1106,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.21.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.22.0...HEAD
+[1.22.0]: https://github.com/tasiamah/goldstay/compare/v1.21.1...v1.22.0
 [1.21.1]: https://github.com/tasiamah/goldstay/compare/v1.21.0...v1.21.1
 [1.21.0]: https://github.com/tasiamah/goldstay/compare/v1.20.1...v1.21.0
 [1.20.1]: https://github.com/tasiamah/goldstay/compare/v1.20.0...v1.20.1

@@ -76,6 +76,7 @@ export function sitemapPaths(input: {
     "/property-sourcing",
     "/pricing",
     "/change-property-manager",
+    "/property-management-companies-nairobi",
     "/diaspora-payouts",
     "/yield-calculator",
     "/refer",
