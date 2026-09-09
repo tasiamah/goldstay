@@ -968,6 +968,15 @@ import AirbnbNairobiOccupancy2026, {
 import ChoosingAirbnbManagementCompanyNairobi, {
   meta as choosingAirbnbManagementCompanyNairobiMeta,
 } from "./choosing-airbnb-management-company-nairobi";
+import AirbnbCoHostNairobiWhatTheyDo, {
+  meta as airbnbCoHostNairobiWhatTheyDoMeta,
+} from "./airbnb-co-host-nairobi-what-they-do";
+import SomeoneToManageMyAirbnbNairobi, {
+  meta as someoneToManageMyAirbnbNairobiMeta,
+} from "./someone-to-manage-my-airbnb-nairobi";
+import HowMuchDoAirbnbManagersChargeKenya, {
+  meta as howMuchDoAirbnbManagersChargeKenyaMeta,
+} from "./how-much-do-airbnb-managers-charge-kenya";
 import AirbnbNairobiPricingStrategy2026, {
   meta as airbnbNairobiPricingStrategy2026Meta,
 } from "./airbnb-nairobi-pricing-strategy-2026";
@@ -1836,6 +1845,18 @@ export const posts: readonly Post[] = [
   {
     meta: choosingAirbnbManagementCompanyNairobiMeta,
     Component: ChoosingAirbnbManagementCompanyNairobi,
+  },
+  {
+    meta: airbnbCoHostNairobiWhatTheyDoMeta,
+    Component: AirbnbCoHostNairobiWhatTheyDo,
+  },
+  {
+    meta: someoneToManageMyAirbnbNairobiMeta,
+    Component: SomeoneToManageMyAirbnbNairobi,
+  },
+  {
+    meta: howMuchDoAirbnbManagersChargeKenyaMeta,
+    Component: HowMuchDoAirbnbManagersChargeKenya,
   },
   {
     meta: airbnbNairobiPricingStrategy2026Meta,

@@ -21,6 +21,34 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.26.0] - 2026-09-09
+
+### Added
+
+- Three articles covering how owners actually search for a manager. A
+  harvest of Google's autocomplete for Kenya returned 73 owner-intent
+  queries, and the two largest clusters had no page on the site at all:
+  fifteen variants of "someone to manage my airbnb" and eleven of "find
+  a co-host". A grep of every marketing page returned zero files
+  containing "someone to manage", "manage my airbnb" or "airbnb
+  manager", and three containing "co-host". The catalogue had 40
+  articles teaching an owner to host well and none addressed to the
+  owner who has decided to stop.
+  - `airbnb-co-host-nairobi-what-they-do` — what the role covers, how a
+    co-host payout split works, and why the listing staying on your own
+    account is the difference between keeping a review history and
+    starting again.
+  - `someone-to-manage-my-airbnb-nairobi` — the handover: what to hand
+    over, what to keep, what to agree in writing, and the four weeks
+    that decide whether it worked.
+  - `how-much-do-airbnb-managers-charge-kenya` — the fee basis rather
+    than the headline rate, worked through with the arithmetic shown,
+    since 20% of gross booking value and 20% after commission and
+    cleaning differ by more than a 15% and a 20% quote do.
+- A call to action in each of the three, as a `Callout` with links to
+  `/list-your-property` and `/airbnb-management`. Article pages carry no
+  standing CTA, so a reader who finished one had nowhere to go.
+
 ## [1.25.0] - 2026-09-09
 
 Two findings from a technical and content audit of the site, one of
@@ -1286,6 +1314,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.26.0]: https://github.com/tasiamah/goldstay/compare/v1.25.0...v1.26.0
 [1.25.0]: https://github.com/tasiamah/goldstay/compare/v1.24.2...v1.25.0
 [1.24.2]: https://github.com/tasiamah/goldstay/compare/v1.24.1...v1.24.2
 [1.24.1]: https://github.com/tasiamah/goldstay/compare/v1.24.0...v1.24.1
