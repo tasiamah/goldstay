@@ -68,11 +68,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Articles have honest dates already, so use them. Everything else
   // omits lastmod, which the spec allows and which is better than a
   // number we would be making up.
+  // ...but floored at the date this site began to exist.
+  //
+  // 150 of the 361 articles carry a publishedAt in 2024 or 2025, and
+  // the first commit in this repository is 2026-04-21. The catalogue
+  // was backdated to give the Insights section a publication history.
+  // Whatever that is worth editorially, it cannot be a modification
+  // date: a page cannot have been changed a year before the site
+  // hosting it existed.
+  //
+  // Left unfloored it is worse than the `now` it replaced. Telling
+  // Google a URL was last modified in July 2024 — earlier than it
+  // could possibly have first seen that URL — says there is no reason
+  // to recrawl, on the very articles that are not yet indexed and
+  // that we most want it to fetch. `now` was at least wrong in the
+  // harmless direction.
+  //
+  // So: real dates where they are possible, and this floor where they
+  // are not. The ~90 articles genuinely written since April keep their
+  // own dates, which is the signal worth having.
+  const EPOCH = "2026-04-21";
   const articleDates = new Map<string, string>();
   for (const m of markets) {
     for (const p of postsForCountry(m)) {
       const when = p.meta.updatedAt ?? p.meta.publishedAt;
-      if (when) articleDates.set(`/insights/${p.meta.slug}`, when);
+      if (when) {
+        articleDates.set(`/insights/${p.meta.slug}`, when < EPOCH ? EPOCH : when);
+      }
     }
   }
 

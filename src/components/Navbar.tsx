@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
-import { waLink } from "@/lib/site";
+import { launchedCities, waLink } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
 import clsx from "./clsx";
 
@@ -70,8 +70,27 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
   return [
     { href: "/#services", label: "Services" },
     { href: "/pricing", label: "Fees" },
-    { href: "/nairobi", label: "Nairobi" },
-    { href: "/accra", label: "Accra" },
+    // The city picker, only when there is a city to pick.
+    //
+    // This branch runs whenever no city context is resolved, which on
+    // the client is momentary but on the server is every page whose
+    // path does not start with /nairobi or /accra — so the first HTML
+    // Googlebot sees for all 361 articles, /pricing, and the rest of
+    // the service pages. On .co.ke that meant two links to /accra,
+    // which now carries a noindex, and two to /nairobi, which 301s to
+    // the root. Four wasted links on roughly 370 pages, pointing at a
+    // market we have not opened and a redirect.
+    //
+    // With one market live the question "which city?" does not arise,
+    // and the remaining links already resolve correctly: / is the
+    // Nairobi page on .co.ke. Reads from the same flag as everything
+    // else — see site.launchedMarkets.
+    ...(launchedCities().length > 1
+      ? [
+          { href: "/nairobi", label: "Nairobi" },
+          { href: "/accra", label: "Accra" },
+        ]
+      : []),
     { href: "/property-sourcing", label: "Buy" },
     { href: "/find-a-home", label: "Rent" },
     { href: "/yield-calculator", label: "Yield" },

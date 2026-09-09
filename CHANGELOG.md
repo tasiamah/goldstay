@@ -21,6 +21,45 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.25.0] - 2026-09-09
+
+Two findings from a technical and content audit of the site, one of
+them a regression introduced earlier today.
+
+### Fixed
+- **The sitemap's real dates went too far back.** 1.24.1 replaced a
+  fake "everything changed today" `lastmod` with each article's own
+  publication date. But 150 of the 361 articles are backdated to 2024
+  and 2025, and the first commit in this repository is 2026-04-21 —
+  the catalogue was given a publication history it did not have.
+
+  Published as `lastmod`, that was worse than the value it replaced.
+  Telling Google a URL last changed in July 2024, earlier than it
+  could possibly have first seen that URL, says there is no reason to
+  recrawl — on the very articles that are not yet indexed and that we
+  most want fetched. 227 of the 319 dates shipped were in this state.
+  Dates are now floored at the date the site began to exist; the ~90
+  articles genuinely written since April keep their own.
+
+- **Every page that was not a city page linked to a redirect and a
+  noindexed page.** The navbar renders a Nairobi/Accra city picker
+  whenever no city context is resolved. On the client that is
+  momentary, but on the server it is every path not starting with
+  `/nairobi` or `/accra` — so the first HTML Googlebot sees for all
+  361 articles, `/pricing`, `/long-term-management` and the rest.
+
+  That was two links to `/accra`, which has carried a noindex since
+  1.23.0, and two to `/nairobi`, which 301s to the root on `.co.ke`.
+  Four wasted links on roughly 370 pages. The picker now appears only
+  when more than one market is launched, since otherwise there is no
+  city to pick.
+
+### Notes
+- The backdated `publishedAt` values themselves are untouched. They
+  are visible in bylines and in `datePublished`, and whether to keep a
+  publication history the domain cannot support is an editorial call,
+  not a technical one.
+
 ## [1.24.2] - 2026-09-09
 
 ### Changed
@@ -1246,7 +1285,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.24.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.25.0]: https://github.com/tasiamah/goldstay/compare/v1.24.2...v1.25.0
 [1.24.2]: https://github.com/tasiamah/goldstay/compare/v1.24.1...v1.24.2
 [1.24.1]: https://github.com/tasiamah/goldstay/compare/v1.24.0...v1.24.1
 [1.24.0]: https://github.com/tasiamah/goldstay/compare/v1.23.0...v1.24.0

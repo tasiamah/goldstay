@@ -186,3 +186,20 @@ describe("the sitemap does not fake its lastmod dates", () => {
     expect(src).toMatch(/updatedAt\s*\?\?\s*.*publishedAt/);
   });
 });
+
+// No lastmod may predate the site.
+describe("the sitemap's lastmod floor", () => {
+  const src = readFileSync(join(process.cwd(), "src/app/sitemap.ts"), "utf8");
+
+  it("floors article dates at the repository's first commit", () => {
+    // 150 articles carry a backdated publishedAt in 2024 or 2025; the
+    // first commit here is 2026-04-21. Publishing those as lastmod
+    // tells Google a URL last changed before it could have first seen
+    // it, which reads as "no reason to recrawl" on the articles that
+    // are not yet indexed. Worse than the `now` it replaced.
+    expect(src, "sitemap.ts has no epoch floor for lastmod").toMatch(
+      /EPOCH\s*=\s*"2026-04-21"/,
+    );
+    expect(src).toMatch(/<\s*EPOCH\s*\?\s*EPOCH\s*:/);
+  });
+});
