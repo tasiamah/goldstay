@@ -270,6 +270,21 @@ export default function Article() {
         >
           what you actually get for a management fee
         </Link>
+        . If you have reached the point of wanting somebody else to run
+        it, start with{" "}
+        <Link
+          href="/insights/someone-to-manage-my-airbnb-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what handing a Nairobi Airbnb over involves
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/airbnb-co-host-nairobi-what-they-do"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what an Airbnb co-host does
+        </Link>
         .
       </P>
     </>

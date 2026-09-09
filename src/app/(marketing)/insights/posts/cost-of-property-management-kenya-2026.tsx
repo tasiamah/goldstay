@@ -304,6 +304,24 @@ export default function Article() {
         or on WhatsApp. We will quote in writing and put it on the
         contract. You do not need to switch to get the quote.
       </P>
+
+      <P>
+        Related reading:{" "}
+        <Link
+          href="/insights/how-much-do-airbnb-managers-charge-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how much Airbnb managers charge in Kenya
+        </Link>
+        , which works through what the percentage is charged on, and{" "}
+        <Link
+          href="/insights/someone-to-manage-my-airbnb-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what handing a Nairobi unit over involves
+        </Link>
+        .
+      </P>
     </>
   );
 }

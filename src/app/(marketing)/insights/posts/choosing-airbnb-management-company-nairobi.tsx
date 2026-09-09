@@ -269,6 +269,21 @@ export default function Article() {
         >
           should I fire my Nairobi property manager
         </Link>
+        . For the fee arithmetic on its own, see{" "}
+        <Link
+          href="/insights/how-much-do-airbnb-managers-charge-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how much Airbnb managers charge in Kenya
+        </Link>
+        , and for the difference between a co-host and an operator who
+        takes over your listing, see{" "}
+        <Link
+          href="/insights/airbnb-co-host-nairobi-what-they-do"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what an Airbnb co-host does
+        </Link>
         .
       </P>
     </>

@@ -442,7 +442,14 @@ export default function Article() {
         >
           furnished short let Nairobi
         </Link>
-        .
+        . If you would rather not run it yourself,{" "}
+        <Link
+          href="/insights/airbnb-co-host-nairobi-what-they-do"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what an Airbnb co-host does
+        </Link>{" "}
+        covers the alternative.
       </P>
     </>
   );

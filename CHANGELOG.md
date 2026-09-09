@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.26.1] - 2026-09-09
+
+### Fixed
+
+- The three articles added in 1.26.0 shipped with no inbound internal
+  links, so they were reachable only from the paginated Insights index
+  and the sitemap. That is the same orphan condition that leaves 30
+  other indexable articles at the back of the crawl queue, and it would
+  have applied to the three pages most likely to convert. Added
+  contextual links from `cost-of-property-management-kenya-2026`,
+  `choosing-airbnb-management-company-nairobi`,
+  `airbnb-nairobi-complete-host-guide-2026` and
+  `diaspora-airbnb-nairobi-remote-owner-playbook`, which takes each of
+  the three to four or five inbound links, above the catalogue median of
+  three.
+
 ## [1.26.0] - 2026-09-09
 
 ### Added
@@ -1314,6 +1330,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.25.0...HEAD
+[1.26.1]: https://github.com/tasiamah/goldstay/compare/v1.26.0...v1.26.1
 [1.26.0]: https://github.com/tasiamah/goldstay/compare/v1.25.0...v1.26.0
 [1.25.0]: https://github.com/tasiamah/goldstay/compare/v1.24.2...v1.25.0
 [1.24.2]: https://github.com/tasiamah/goldstay/compare/v1.24.1...v1.24.2
