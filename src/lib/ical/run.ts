@@ -5,6 +5,7 @@
 // "last failure: 504 Gateway Timeout" without needing log access.
 
 import { prisma } from "@/lib/db";
+import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { fetchIcal, IcalFetchError } from "./fetch";
 import { parseIcal } from "./parse";
 import { syncIcalEvents, type IcalSyncResult } from "./sync";
@@ -47,6 +48,14 @@ export async function runFeedSync(feedId: string): Promise<SyncFeedOutcome> {
       where: { id: feed.id },
       data: { lastSyncedAt: now, lastSuccessAt: now, lastError: null },
     });
+    // After the feed is marked synced, so a Resend outage cannot make
+    // a feed that imported correctly look like it failed. Sequential
+    // because a feed's first sync can import a whole season at once
+    // and firing those at Resend in parallel would rate-limit.
+    // notifyClientOfBooking swallows its own errors.
+    for (const bookingId of result.createdBookingIds) {
+      await notifyClientOfBooking(bookingId, "received");
+    }
     return { ok: true, result };
   } catch (err) {
     const message =

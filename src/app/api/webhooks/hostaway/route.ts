@@ -20,6 +20,7 @@ import {
   type HostawayReservation,
 } from "@/lib/hostaway/mapper";
 import { verifyHostawaySignature } from "@/lib/hostaway/signature";
+import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 
 export const runtime = "nodejs";
@@ -190,6 +191,21 @@ export async function POST(request: Request) {
       ),
     );
   }
+
+  // Tell the client. Last, so a Resend problem cannot cost us the
+  // booking row or the transactions, and non-throwing, so Hostaway is
+  // never made to retry a payload we have already stored.
+  //
+  // Safe to call on every event despite the upsert firing on every
+  // upstream modification: notifyClientOfBooking claims a
+  // ClientNotification keyed on this bookingId before sending, so the
+  // second and later events for the same reservation return
+  // already-notified. A cancellation is a distinct kind, so a booking
+  // can still produce one arrival email and one cancellation email.
+  await notifyClientOfBooking(
+    booking.id,
+    mapped.status === "CANCELLED" ? "cancelled" : "received",
+  );
 
   return NextResponse.json({
     ok: true,

@@ -8,6 +8,7 @@ import { currentAuditActor } from "@/lib/auth";
 import { BookingInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { nightsBetween } from "@/lib/bookings/nights";
+import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 import { recordAudit } from "@/lib/audit";
 
@@ -68,6 +69,10 @@ export async function createBookingAction(
       summary: `Booking ${booking.guestName} (${nights}n) created`,
       metadata: { propertyId: booking.propertyId, source: booking.source },
     });
+    // Before the redirect, which throws. Non-throwing itself, so a
+    // Resend outage cannot leave the operator staring at "could not
+    // save the booking" for a booking that saved perfectly well.
+    await notifyClientOfBooking(booking.id, "received");
     revalidatePath("/admin");
     revalidatePath(`/admin/properties/${parsed.data.propertyId}`);
     redirect(`/admin/properties/${parsed.data.propertyId}`);
@@ -94,6 +99,9 @@ export async function cancelBookingAction(bookingId: string): Promise<void> {
     summary: `Booking ${booking.guestName} cancelled`,
     metadata: { propertyId: booking.propertyId },
   });
+  // Only reaches the client if they were told the booking existed;
+  // notifyClientOfBooking checks for the arrival notification first.
+  await notifyClientOfBooking(bookingId, "cancelled");
   revalidatePath("/admin");
   revalidatePath(`/admin/properties/${booking.propertyId}`);
 }
@@ -134,6 +142,12 @@ export async function updateBookingAction(
       summary: `Booking ${updated.guestName} updated`,
       metadata: { propertyId: updated.propertyId },
     });
+    // The edit form can cancel a booking too, not just the cancel
+    // button, and a client told about a booking should hear it is off
+    // whichever control the operator reached for.
+    if (parsed.data.status === "CANCELLED") {
+      await notifyClientOfBooking(bookingId, "cancelled");
+    }
     revalidatePath("/admin");
     revalidatePath(`/admin/properties/${updated.propertyId}`);
     revalidatePath(`/admin/bookings/${bookingId}`);

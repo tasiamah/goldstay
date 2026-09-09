@@ -1613,6 +1613,17 @@ enum ClientNotificationKind {
   // Manually pushed by an admin. sourceRef is null; the admin is
   // responsible for setting resolvedAt when the broadcast expires.
   ADMIN_BROADCAST
+  // Event, not derived. One row per booking (sourceRef is the
+  // bookingId), written the moment the booking lands from any of the
+  // three ingest paths. The row is also the idempotency lock for the
+  // email: creation is attempted first and a unique-constraint
+  // collision means we have already told the client, which is what
+  // stops the Hostaway webhook's upsert re-notifying on every
+  // modification event upstream.
+  BOOKING_RECEIVED
+  // Event. sourceRef is the same bookingId, so a booking can produce
+  // one arrival notice and one cancellation and no more of either.
+  BOOKING_CANCELLED
 
   // Physical enum name predates the owner -> client rename.
   @@map("OwnerNotificationKind")

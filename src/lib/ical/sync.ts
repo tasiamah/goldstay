@@ -20,6 +20,12 @@ export type IcalSyncResult = {
   refreshed: number;
   skippedBlocks: number;
   skippedExisting: number;
+  // Bookings created by this run, in creation order. Returned rather
+  // than acted on because notifying the client is the orchestrator's
+  // job (run.ts): this engine takes an injected prisma so it can be
+  // driven against a test double, and reaching out to Resend from
+  // inside it would undo that.
+  createdBookingIds: string[];
 };
 
 // Prefix the iCal UID with the source so we never clash with manual
@@ -47,6 +53,7 @@ export async function syncIcalEvents({
     refreshed: 0,
     skippedBlocks: 0,
     skippedExisting: 0,
+    createdBookingIds: [],
   };
 
   for (const event of events) {
@@ -89,7 +96,7 @@ export async function syncIcalEvents({
       continue;
     }
 
-    await prisma.booking.create({
+    const created = await prisma.booking.create({
       data: {
         propertyId,
         source,
@@ -106,7 +113,9 @@ export async function syncIcalEvents({
         status: "CONFIRMED",
         notes: "Imported from iCal. Backfill financials when ready.",
       },
+      select: { id: true },
     });
+    result.createdBookingIds.push(created.id);
     result.imported++;
   }
 

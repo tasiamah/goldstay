@@ -17,8 +17,15 @@
 // index on ClientNotification — see the schema comment. We never
 // delete derived rows: when the source condition is no longer true,
 // we set resolvedAt so the client can scroll through "what was true
-// when" without losing context. ADMIN_BROADCAST rows are never
-// touched here.
+// when" without losing context.
+//
+// Reconciliation only applies to kinds this module derives. Anything
+// written as a one-off event — a broadcast, a booking arriving or
+// being cancelled — is invisible to it, because "not in the desired
+// set" is the resolve condition and an event is never in that set.
+// Without the exemption below, a booking notification would be
+// resolved by the very next dashboard render and the client would
+// never see the bell row at all.
 
 import {
   type ManagementAgreement,
@@ -33,6 +40,16 @@ import type {
   SetupChecklist,
   SetupStepKey,
 } from "@/lib/client/setup-status";
+
+// Kinds written as one-off events rather than derived from current
+// state, so this module must not reconcile them. They are recorded
+// once, by whatever caused them, and stay until the client reads
+// them. Adding a kind here is what keeps it out of the resolve sweep.
+export const EVENT_KINDS: ClientNotificationKind[] = [
+  "ADMIN_BROADCAST",
+  "BOOKING_RECEIVED",
+  "BOOKING_CANCELLED",
+];
 
 // Each desired derived notification we'd like to exist right now.
 // The sync diffs this against the active rows in the database and
@@ -179,11 +196,12 @@ export async function syncClientNotifications(
   inputs: SyncInputs,
 ): Promise<void> {
   const desired = buildDesiredNotifications(inputs);
-  // Active = unresolved derived rows. We never touch BROADCAST.
+  // Active = unresolved derived rows. Event kinds are excluded; see
+  // EVENT_KINDS.
   const existing = await prisma.clientNotification.findMany({
     where: {
       clientId,
-      kind: { not: "ADMIN_BROADCAST" },
+      kind: { notIn: EVENT_KINDS },
       resolvedAt: null,
     },
     select: { id: true, kind: true, sourceRef: true },

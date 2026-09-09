@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { buildDesiredNotifications } from "./sync";
+import { Prisma } from "@prisma/client";
+import { buildDesiredNotifications, EVENT_KINDS } from "./sync";
 import type { SetupChecklist } from "@/lib/client/setup-status";
 
 // buildDesiredNotifications is the pure heart of the bell — given a
@@ -131,5 +132,45 @@ describe("buildDesiredNotifications", () => {
     expect(s?.sourceRef).toBe("period:2026-04");
     expect(s?.tone).toBe("INFO");
     expect(s?.title).toContain("April 2026");
+  });
+});
+
+// The sync resolves any unresolved row it does not currently desire.
+// An event kind is never desired, because nothing derives it from
+// state, so leaving one out of EVENT_KINDS means it is written and
+// then resolved by the next dashboard render. The client sees
+// nothing and there is no error anywhere to explain why.
+describe("EVENT_KINDS", () => {
+  it("exempts every kind that is recorded as an event rather than derived", () => {
+    const derived = new Set(
+      buildDesiredNotifications({
+        setup: incompleteSetup,
+        pendingAgreements: [
+          {
+            id: "agr-1",
+            property: { id: "p1", name: "Riverside", unitNumber: "A2" },
+          },
+        ],
+        latestStatement: {
+          periodYear: 2026,
+          periodMonth: 8,
+          sentAt: new Date("2026-09-05T07:00:00.000Z"),
+        },
+        latestPayout: {
+          id: "txn-1",
+          amount: new Prisma.Decimal(48000),
+          currency: "KES",
+          occurredOn: new Date("2026-09-05T00:00:00.000Z"),
+        },
+      }).map((n) => n.kind),
+    );
+    for (const kind of EVENT_KINDS) {
+      expect(derived.has(kind), `${kind} is derived, not an event`).toBe(false);
+    }
+  });
+
+  it("covers the booking kinds, which no code path derives", () => {
+    expect(EVENT_KINDS).toContain("BOOKING_RECEIVED");
+    expect(EVENT_KINDS).toContain("BOOKING_CANCELLED");
   });
 });

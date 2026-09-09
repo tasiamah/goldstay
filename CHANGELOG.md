@@ -21,6 +21,60 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.37.0] - 2026-09-09
+
+### Added
+- Clients are now emailed when a booking lands on one of their units,
+  and when one is cancelled. Until now a booking was visible only if
+  the client thought to open the portal, so an owner could have a
+  guest arriving on Friday and no reason to know.
+
+  The email states the property, the dates, the number of nights, the
+  channel, and the guest and net payout where we have them. It also
+  appears as a row in the portal bell, deep-linked to the property.
+
+  It fires from all three places a booking can arrive — the Hostaway
+  webhook, the iCal sync and the admin booking form — through one
+  choke point rather than three copies. That matters most for the
+  webhook, which upserts on every upstream modification: a guest
+  changing their arrival time three times would otherwise send three
+  identical emails. Sending is claimed against the notification
+  table's unique key first, so the second and later attempts for a
+  reservation stop before Resend is called.
+
+  An iCal booking gets a deliberately different email. That feed
+  carries dates and nothing else, so every amount on the row is a
+  zero placeholder; quoting them would tell an owner they had earned
+  nothing. That version gives the dates and the channel, and says the
+  figures follow on the statement once the channel reports them.
+
+  A cancellation is only sent to someone who was told the booking
+  existed. Otherwise the single message an owner receives about a
+  reservation is that it has gone, which reads as lost income rather
+  than as nothing having happened.
+
+### Fixed
+- Scheduled jobs have never run. `CRON_SECRET` was set in neither
+  GitHub Actions nor Vercel, and the routes fail closed, so all five
+  — agreement reminders, monthly statements, iCal sync, vacancy
+  pitch and acquisition scan — returned 401 on every invocation from
+  both the GitHub schedules and the Vercel cron. No client email that
+  depends on a schedule has ever been sent. Nothing was lost in
+  practice because the portfolio has no active properties or bookings
+  yet, but the agreement reminder ladder had five agreements waiting.
+  A secret is now set in both places and both paths verified against
+  production.
+
+- Booking notifications would have been erased on sight without a
+  change to the notification sync. That sync reconciles the bell
+  against current state and resolves any unresolved row it cannot
+  re-derive, which is right for "your setup is incomplete" and wrong
+  for anything recorded as an event. A booking notification would
+  have been written and then resolved by the client's very next page
+  load, with no error anywhere to explain the silence. Event kinds
+  are now exempt from the sweep, and a test fails if a new one is
+  added without exempting it.
+
 ## [1.36.0] - 2026-09-09
 
 ### Fixed
@@ -1738,7 +1792,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.36.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.37.0...HEAD
+[1.37.0]: https://github.com/tasiamah/goldstay/compare/v1.36.0...v1.37.0
 [1.36.0]: https://github.com/tasiamah/goldstay/compare/v1.35.0...v1.36.0
 [1.35.0]: https://github.com/tasiamah/goldstay/compare/v1.34.0...v1.35.0
 [1.34.0]: https://github.com/tasiamah/goldstay/compare/v1.33.0...v1.34.0
