@@ -21,6 +21,16 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.38.1] - 2026-09-10
+
+### Fixed
+- Booking notifications could not reach clients on their own. The
+  emails added in 1.37.0 are sent when a booking is imported, but
+  the job that imports them from a channel calendar was switched
+  off, so a guest could book and the owner would hear nothing until
+  someone opened the property page and pressed "Sync now". The
+  fifteen-minute poll is now running.
+
 ## [1.38.0] - 2026-09-09
 
 ### Added
@@ -1816,7 +1826,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.38.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.38.1...HEAD
+[1.38.1]: https://github.com/tasiamah/goldstay/compare/v1.38.0...v1.38.1
 [1.38.0]: https://github.com/tasiamah/goldstay/compare/v1.37.0...v1.38.0
 [1.37.0]: https://github.com/tasiamah/goldstay/compare/v1.36.0...v1.37.0
 [1.36.0]: https://github.com/tasiamah/goldstay/compare/v1.35.0...v1.36.0

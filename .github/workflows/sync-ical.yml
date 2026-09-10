@@ -4,15 +4,19 @@
 # plan rejects sub-daily cron schedules; Actions is free and gives
 # us minute-level scheduling without bumping to Vercel Pro.
 #
-# Default state: dormant. We don't have enough connected iCal
-# feeds yet to justify the every-15-minute traffic; for the moment
-# operators trigger manual syncs from the property page when they
-# need fresh availability. The file stays in the repo so flipping
-# this back on is a one-toggle change rather than a code change.
+# Enabled Sep 2026, when booking notifications started depending on
+# it: an imported booking is what emails the client, so a dormant
+# poll meant a guest could book and nobody downstream would hear
+# about it until an operator happened to press "Sync now".
 #
-# To re-enable the scheduled poll:
+# A run with no connected feeds is a no-op that costs a couple of
+# seconds, so leaving this on while feeds are still being attached
+# is cheaper than remembering to flip it later.
+#
+# To pause the scheduled poll (or re-enable it):
 #   GitHub → Settings → Secrets and variables → Actions → Variables
-#   → New repository variable → name: ICAL_SYNC_ENABLED, value: true
+#   → ICAL_SYNC_ENABLED. Any value other than "true" pauses it;
+#   deleting the variable pauses it too.
 #
 # To run a one-off sync without flipping the variable:
 #   GitHub → Actions → Sync iCal feeds → Run workflow
