@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.46.0] - 2026-09-10
+
+### Added
+- A booking notification that was deliberately not sent now says so on the
+  client's activity timeline, with the reason in plain words. Cancelling a
+  booking the client was never told about sends nothing on purpose, since
+  otherwise the only message they would ever get about that reservation is
+  that it disappeared. Until now that decision was invisible, so anyone
+  asking "why wasn't she told?" had nothing to look at. The same applies to
+  a booking that arrives already cancelled and to a client record with no
+  email address on it.
+
+  Suppressions are recorded as activity rather than as communications,
+  because the communications panel is the record of what was actually said
+  to a client and must not imply an email that never went out.
+
 ## [1.45.1] - 2026-09-10
 
 ### Fixed
@@ -1973,6 +1989,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.46.0]: https://github.com/tasiamah/goldstay/compare/v1.45.1...v1.46.0
 [1.45.1]: https://github.com/tasiamah/goldstay/compare/v1.45.0...v1.45.1
 [1.45.0]: https://github.com/tasiamah/goldstay/compare/v1.44.0...v1.45.0
 [1.44.0]: https://github.com/tasiamah/goldstay/compare/v1.43.1...v1.44.0

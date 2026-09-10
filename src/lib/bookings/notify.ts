@@ -35,6 +35,7 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { logCommunication, updateCommunicationStatus } from "@/lib/comms";
+import { recordAudit, type AuditActor } from "@/lib/audit";
 import { formatMoney } from "@/lib/agreements/format";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
@@ -47,6 +48,80 @@ import {
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
+
+// Ingest runs under cron or a webhook, so there is no admin session to
+// attribute a suppression to. Same convention as the reminder ladder.
+const SYSTEM_ACTOR: AuditActor = {
+  adminId: null,
+  email: "system@goldstay.co.ke",
+};
+
+// Why a client was not emailed, in the words an operator would use.
+//
+// Deliberately not written to CommunicationLog. That table is the
+// record of what we have said to a client, and a suppressed email was
+// never said; filing it there would make the Communications panel
+// claim we sent something we did not. The same rule is why the
+// agreement escalation notice stays out of it. An audit row instead,
+// which the client's activity timeline already renders alongside the
+// comms it merges in.
+export const SUPPRESSION_SUMMARY: Record<string, string> = {
+  never_announced:
+    "Cancellation not sent: the client was never told this booking existed, so the only message about it would have been that it was gone",
+  arrived_cancelled:
+    "Booking not announced: it was already cancelled when it reached us",
+  client_has_no_email:
+    "Booking not announced: no email address on the client record",
+  unexpected_error:
+    "Booking notification failed unexpectedly. Check the logs for this booking",
+};
+
+// Skip reasons that deliberately leave no trace on the client's
+// timeline, with the reason why. Asserted against the source in
+// notify.test.ts, so a new skip reason fails the suite until someone
+// decides which of these two lists it belongs in.
+export const SILENT_SKIP_REASONS: Record<string, string> = {
+  // No booking means no property and no client, so there is no
+  // timeline to write to.
+  booking_not_found: "nothing to attach the row to",
+};
+
+// Suppressions worth a row. "already-notified" is excluded on purpose:
+// it is the idempotency guard doing its job, the original email is
+// already in the comms panel, and the Hostaway webhook fires on every
+// upstream edit, so recording it would bury the timeline in rows that
+// mean "nothing happened".
+async function recordSuppression(input: {
+  clientId: string;
+  bookingId: string;
+  event: BookingEvent;
+  reason: string;
+  propertyLabel: string | null;
+}): Promise<void> {
+  const summary = SUPPRESSION_SUMMARY[input.reason];
+  if (!summary) return;
+
+  try {
+    await recordAudit({
+      actor: SYSTEM_ACTOR,
+      entity: "CLIENT",
+      entityId: input.clientId,
+      action: "booking.notify.suppressed",
+      summary: input.propertyLabel
+        ? `${summary} (${input.propertyLabel})`
+        : summary,
+      metadata: {
+        bookingId: input.bookingId,
+        event: input.event,
+        reason: input.reason,
+      },
+    });
+  } catch (err) {
+    // Same contract as the rest of this file: an ingest path must not
+    // fail because we could not write an explanatory row.
+    console.error("[booking-notify] could not record suppression", err);
+  }
+}
 
 export type BookingEvent = "received" | "cancelled";
 
@@ -103,13 +178,36 @@ async function run(
   if (!booking) return { kind: "skipped", reason: "booking_not_found" };
 
   const client = booking.property.client;
-  if (!client?.email) return { kind: "skipped", reason: "client_has_no_email" };
+  const label = formatPropertyDisplayName(
+    booking.property.name,
+    booking.property.unitNumber,
+  );
+
+  if (!client?.email) {
+    if (client?.id) {
+      await recordSuppression({
+        clientId: client.id,
+        bookingId: booking.id,
+        event,
+        reason: "client_has_no_email",
+        propertyLabel: label,
+      });
+    }
+    return { kind: "skipped", reason: "client_has_no_email" };
+  }
 
   // A booking that arrives already cancelled is not news. Hostaway
   // does send reservation events for reservations that are dead on
   // arrival, and announcing one would be the first the client had
   // heard of it.
   if (event === "received" && booking.status === "CANCELLED") {
+    await recordSuppression({
+      clientId: client.id,
+      bookingId: booking.id,
+      event,
+      reason: "arrived_cancelled",
+      propertyLabel: label,
+    });
     return { kind: "skipped", reason: "arrived_cancelled" };
   }
 
@@ -130,13 +228,17 @@ async function run(
       },
       select: { id: true },
     });
-    if (!announced) return { kind: "skipped", reason: "never_announced" };
+    if (!announced) {
+      await recordSuppression({
+        clientId: client.id,
+        bookingId: booking.id,
+        event,
+        reason: "never_announced",
+        propertyLabel: label,
+      });
+      return { kind: "skipped", reason: "never_announced" };
+    }
   }
-
-  const propertyLabel = formatPropertyDisplayName(
-    booking.property.name,
-    booking.property.unitNumber,
-  );
 
   // An iCal import is a placeholder: sync.ts writes every money field
   // as zero because the feed carries dates and nothing else. That is
@@ -152,7 +254,7 @@ async function run(
     kind:
       event === "cancelled" ? "cancelled" : isSparse ? "sparse" : "full",
     clientFirstName: firstNameOf(client.fullName),
-    propertyLabel,
+    propertyLabel: label,
     checkIn: booking.checkIn,
     checkOut: booking.checkOut,
     nights: booking.nights,
