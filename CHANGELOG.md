@@ -21,6 +21,17 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.45.1] - 2026-09-10
+
+### Fixed
+- Agreement reminders now say which agreement they are chasing. A single
+  unit can carry two agreements at once, a short-let at 20% and a long-let
+  at 10%, and both reminders read identically down to the unit number, so a
+  client was asked twice to sign an unnamed contract with no way to tell the
+  two apart. The email that issues an agreement always named it; every
+  reminder after it did not, because the reminder query never read the
+  template. The title now appears in the subject and in the body.
+
 ## [1.45.0] - 2026-09-10
 
 ### Added
@@ -1962,6 +1973,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.45.1]: https://github.com/tasiamah/goldstay/compare/v1.45.0...v1.45.1
 [1.45.0]: https://github.com/tasiamah/goldstay/compare/v1.44.0...v1.45.0
 [1.44.0]: https://github.com/tasiamah/goldstay/compare/v1.43.1...v1.44.0
 [1.43.1]: https://github.com/tasiamah/goldstay/compare/v1.43.0...v1.43.1

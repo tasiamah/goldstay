@@ -70,6 +70,12 @@ export type ReminderEmailInput = {
   step: number;
   clientName: string;
   propertyLabel: string;
+  /**
+   * Human title of the template being chased, e.g. "Short-let property
+   * management agreement". Optional so a caller without it still sends
+   * a reminder rather than none.
+   */
+  agreementTitle?: string | null;
   reference: string | null;
   link: string;
 };
@@ -82,7 +88,18 @@ export function renderReminderEmail(
 
   // The property is in the subject so a client with several of them can
   // tell which one is being chased from the inbox list alone.
-  const subject = `${copy.subject} · ${input.propertyLabel}`;
+  //
+  // The property alone is not always enough. One unit can carry a
+  // short-let and a long-let agreement at the same time, on different
+  // commission, and on 10 Sep 2026 a client received two reminders 310
+  // milliseconds apart that were identical down to the unit number. The
+  // agreement that was issued said which contract it was; every chase
+  // after it did not. Appending the template title costs nothing when
+  // there is only one agreement and is the whole message when there are
+  // two.
+  const subject = input.agreementTitle
+    ? `${copy.subject} · ${input.propertyLabel} · ${input.agreementTitle}`
+    : `${copy.subject} · ${input.propertyLabel}`;
   return {
     subject,
     text: renderText(input, copy),
@@ -101,6 +118,7 @@ function renderText(input: ReminderEmailInput, copy: ReminderCopy): string {
     copy.lead,
     "",
     `Property: ${input.propertyLabel}`,
+    ...(input.agreementTitle ? [`Agreement: ${input.agreementTitle}`] : []),
     ...(referenceLine ? [referenceLine] : []),
     "",
     copy.body,
@@ -122,6 +140,10 @@ function renderHtml(input: ReminderEmailInput, copy: ReminderCopy): string {
     ? `<p style="color:#78716c;font-size:13px;margin:8px 0 0 0">Reference ${escapeHtml(input.reference)}</p>`
     : "";
 
+  const agreementLine = input.agreementTitle
+    ? `<p style="color:#78716c;font-size:13px;margin:4px 0 0 0">${escapeHtml(input.agreementTitle)}</p>`
+    : "";
+
   return `<!doctype html>
 <html lang="en">
   <body style="margin:0;background:#fafaf9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1c1917">
@@ -135,6 +157,7 @@ function renderHtml(input: ReminderEmailInput, copy: ReminderCopy): string {
                 <h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Hi ${escapeHtml(firstNameOf(input.clientName))},</h1>
                 <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${escapeHtml(copy.lead)}</p>
                 <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0"><strong>${escapeHtml(input.propertyLabel)}</strong></p>
+                ${agreementLine}
                 ${referenceLine}
                 <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${escapeHtml(copy.body)}</p>
                 <p style="margin:32px 0;text-align:center"><a href="${escapeHtml(input.link)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">${escapeHtml(copy.cta)} &rarr;</a></p>

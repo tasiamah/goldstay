@@ -36,6 +36,7 @@ import {
   renderEscalationEmail,
   renderReminderEmail,
 } from "./reminder-email";
+import { AGREEMENT_TEMPLATE_TITLE } from "./template";
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
@@ -186,6 +187,10 @@ async function findCandidates() {
       status: true,
       sentAt: true,
       reference: true,
+      // Needed for the subject line. One unit can carry two agreements
+      // at once, a short-let and a long-let, and without the template
+      // every reminder for both reads identically in the inbox.
+      template: true,
       reminders: { select: { step: true, status: true, attempts: true } },
       property: {
         select: {
@@ -318,6 +323,7 @@ async function sendReminder(
     step,
     clientName: client.fullName,
     propertyLabel,
+    agreementTitle: AGREEMENT_TEMPLATE_TITLE[agreement.template],
     reference: agreement.reference,
     link,
   });

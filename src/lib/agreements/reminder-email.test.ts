@@ -83,6 +83,49 @@ describe("renderReminderEmail", () => {
     expect(out.subject).toContain("Riverside Apartments 4B");
   });
 
+  it("distinguishes two agreements on the same unit", () => {
+    // The real case this exists for: one unit, a short-let agreement at
+    // 20% and a long-let at 10%, both unsigned. The property label is
+    // identical for both, so without the template title the client gets
+    // two reminders he cannot tell apart and has no way to know which
+    // contract he is being asked to sign.
+    const shortLet = renderReminderEmail({
+      ...BASE,
+      step: 2,
+      agreementTitle: "Short-let property management agreement",
+    })!;
+    const longLet = renderReminderEmail({
+      ...BASE,
+      step: 2,
+      agreementTitle: "Long-term property management agreement",
+    })!;
+
+    expect(shortLet.subject).not.toBe(longLet.subject);
+    expect(shortLet.subject).toContain("Short-let");
+    expect(longLet.subject).toContain("Long-term");
+    // Also in the body, so it is unmistakable once opened and not only
+    // in the inbox list.
+    expect(shortLet.text).toContain("Short-let property management agreement");
+    expect(shortLet.html).toContain("Short-let property management agreement");
+  });
+
+  it("still sends without an agreement title", () => {
+    const out = renderReminderEmail({ ...BASE, step: 2 })!;
+    expect(out.subject).toContain("Riverside Apartments 4B");
+    expect(out.subject).not.toContain("undefined");
+    expect(out.text).not.toContain("Agreement:");
+  });
+
+  it("escapes an agreement title in the html", () => {
+    const out = renderReminderEmail({
+      ...BASE,
+      step: 2,
+      agreementTitle: "<script>alert(1)</script>",
+    })!;
+    expect(out.html).not.toContain("<script>");
+    expect(out.html).toContain("&lt;script&gt;");
+  });
+
   it("includes the sign-in link in both text and html", () => {
     const out = renderReminderEmail({ ...BASE, step: 2 })!;
     expect(out.text).toContain(BASE.link);
