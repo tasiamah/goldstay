@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import type { SigningCapacity } from "@prisma/client";
 import type { PropertyActionResult } from "./actions";
+import { AirbnbImportPanel } from "./AirbnbImportPanel";
 import {
   findCanonicalNairobiNeighbourhood,
   isNairobiCity,
@@ -47,7 +48,7 @@ type Defaults = {
 
 export function PropertyForm({
   action,
-  defaults,
+  defaults: defaultsProp,
   submitLabel,
   clientCountry,
   isEditing = false,
@@ -73,9 +74,41 @@ export function PropertyForm({
   const fieldError = (key: string) =>
     state && !state.ok ? state.fieldErrors?.[key] : undefined;
 
+  // Airbnb prefill. The fields below are uncontrolled and read their
+  // defaultValue once, so applying an import means remounting them —
+  // hence the counter used as a key rather than just swapping the
+  // values. That is also why the panel warns you to import before you
+  // start typing: the remount discards anything already entered.
+  const [imported, setImported] = useState<Partial<Defaults> | null>(null);
+  const [importCount, setImportCount] = useState(0);
+  // Shadows the prop deliberately, so every defaultValue below reads
+  // the merged object without thirteen call sites having to remember
+  // which variable is the current one.
+  const defaults: Defaults = imported
+    ? { ...defaultsProp, ...imported }
+    : defaultsProp;
+
   return (
     <form action={formAction} className="space-y-6">
       <input type="hidden" name="clientId" value={defaults.clientId} />
+
+      {isEditing ? null : (
+        <AirbnbImportPanel
+          onImport={(mapping) => {
+            // Only non-null fields overwrite, so a listing missing a
+            // bedroom count leaves whatever was already there rather
+            // than blanking it.
+            const next: Partial<Defaults> = {};
+            for (const [k, v] of Object.entries(mapping.defaults)) {
+              if (v !== null) (next as Record<string, unknown>)[k] = v;
+            }
+            setImported(next);
+            setImportCount((n) => n + 1);
+          }}
+        />
+      )}
+
+      <div key={importCount} className="space-y-6">
 
       {/* Building name and unit number sit side-by-side so it's visually
           obvious that "Pinetree Plaza" alone isn't a complete address.
@@ -207,6 +240,7 @@ export function PropertyForm({
         name="status"
         value={defaults.status ?? "ONBOARDING"}
       />
+      </div>
 
       {state && !state.ok ? (
         <p className="rounded-md border border-red-200 bg-red-50 p-3 text-sm text-red-800">

@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.50.0] - 2026-09-10
+
+### Added
+- The new-property form takes an Airbnb listing URL and fills itself in from
+  what Airbnb publishes: property name, description, bedrooms, bathrooms,
+  maximum occupancy, city and neighbourhood, with the rental model set to
+  short-term. It saves retyping a unit that already exists on Airbnb, which
+  is most of them.
+- The prefill states what it got wrong rather than leaving it to be found.
+  The imported name is an Airbnb marketing title and not a building name;
+  the street address is always blank because Airbnb withholds it until a
+  booking is confirmed and offsets the map pin on purpose; half-bathrooms
+  are rounded because the column is a whole number; and photos are counted
+  but not saved, because there is nowhere to put them yet.
+
+### Notes
+- Reads the schema.org data Airbnb publishes for search engines rather than
+  scraping the page, so a redesign does not silently start returning empty
+  fields. It never fetches the URL it is handed: it takes the numeric room
+  id out, rejects any host that is not Airbnb under a public suffix, and
+  rebuilds the address from the id, so the admin-facing fetcher cannot be
+  pointed at an internal service.
+- Prefill only appears when creating a property, never when editing, because
+  applying an import replaces the fields below it and doing that to a unit
+  with a signed agreement against it is worse than retyping a bedroom count.
+- Nightly rates are deliberately not imported. Airbnb prices are dynamic and
+  absent from the published data, so any figure taken from a listing page
+  would be one night at one occupancy on one date presented as "the price".
+
 ## [1.49.1] - 2026-09-10
 
 ### Fixed
@@ -2098,6 +2127,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.50.0]: https://github.com/tasiamah/goldstay/compare/v1.49.1...v1.50.0
 [1.49.1]: https://github.com/tasiamah/goldstay/compare/v1.49.0...v1.49.1
 [1.49.0]: https://github.com/tasiamah/goldstay/compare/v1.48.1...v1.49.0
 [1.48.1]: https://github.com/tasiamah/goldstay/compare/v1.48.0...v1.48.1

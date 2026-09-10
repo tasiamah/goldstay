@@ -1,6 +1,6 @@
 {
   "name": "goldstay",
-  "version": "1.49.1",
+  "version": "1.50.0",
   "private": true,
   "packageManager": "pnpm@10.33.1",
   "scripts": {
