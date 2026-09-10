@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
 import { Reveal } from "@/components/Reveal";
-import { phone, waLink, alternateLanguagesFor } from "@/lib/site";
+import { phone, site, waLink, alternateLanguagesFor } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getServerCity } from "@/lib/getServerCity";
 
 // Per-domain metadata so goldstay.co.ke reads as a Kenya-only brand in search
@@ -38,8 +39,22 @@ export default function Page() {
     ? `If you're still looking for the right property in ${cityName}, start with our Property Sourcing service. On-the-ground search, inspection, negotiation and title verification, free for you as the buyer.`
     : "If you're still looking for the right property in Nairobi or Accra, start with our Property Sourcing service. On-the-ground search, inspection, negotiation and title verification, free for you as the buyer.";
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "List Your Property", url: `${baseUrl}/list-your-property` },
+        ]}
+      />
+
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-16 md:pb-28">

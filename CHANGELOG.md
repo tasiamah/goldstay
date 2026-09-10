@@ -21,6 +21,28 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.49.0] - 2026-09-10
+
+### Added
+- The yield calculator now describes itself to Google as a free tool
+  rather than as an unlabelled document. It had no page-level structured
+  data at all, only the organisation block every page carries, which is a
+  poor trade for the one page on the site built specifically to be linked
+  to: a calculator is what other sites cite without being asked, and
+  nothing on it said what it was or that it costs nothing to use.
+- Breadcrumb data on the four pages that had none: the calculator, list
+  your property, find a home, and about. Google renders a breadcrumb
+  trail instead of a bare URL in results when it has one, which is worth
+  more on these than on the service pages that already had it.
+
+### Changed
+- Nothing was added to the pricing page or property sourcing, despite
+  both showing as gaps in the audit. Pricing would have needed a Service
+  entity that competes with the real service pages for the same identity,
+  and property sourcing has no FAQ content on the page to mark up, so a
+  FAQ block there would describe text that does not exist. Recorded here
+  because "the audit says it is missing" will come round again.
+
 ## [1.48.1] - 2026-09-10
 
 ### Fixed
@@ -2056,6 +2078,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.49.0]: https://github.com/tasiamah/goldstay/compare/v1.48.1...v1.49.0
 [1.48.1]: https://github.com/tasiamah/goldstay/compare/v1.48.0...v1.48.1
 [1.48.0]: https://github.com/tasiamah/goldstay/compare/v1.47.0...v1.48.0
 [1.47.0]: https://github.com/tasiamah/goldstay/compare/v1.46.0...v1.47.0

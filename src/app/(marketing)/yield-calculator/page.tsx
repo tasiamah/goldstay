@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
+import { BreadcrumbJsonLd, WebApplicationJsonLd } from "@/components/JsonLd";
 import { alternateLanguagesFor, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { YieldCalculatorClient } from "./YieldCalculatorClient";
@@ -26,8 +27,27 @@ export function generateMetadata(): Metadata {
 export default function Page() {
   const city = getServerCity();
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+
   return (
     <>
+      <WebApplicationJsonLd
+        name="Diaspora Landlord Yield Calculator"
+        description="Compares the net yield on a Nairobi or Accra rental property when self-managed against when professionally managed, showing every assumption behind the figure."
+        url={`${baseUrl}/yield-calculator`}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Yield Calculator", url: `${baseUrl}/yield-calculator` },
+        ]}
+      />
+
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-12 md:pb-20">

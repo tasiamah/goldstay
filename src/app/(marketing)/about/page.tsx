@@ -7,6 +7,7 @@ import { Reveal } from "@/components/Reveal";
 import { CTABanner } from "@/components/CTABanner";
 import { alternateLanguagesFor, launchedCityPhrase, site, waLink } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // The About page is an SEO-visible page, so we generate city-scoped
 // metadata the same way the root layout does. On .co.ke we talk about
@@ -45,8 +46,22 @@ export default function AboutPage() {
   const showNairobi = city !== "accra";
   const showAccra = city !== "nairobi";
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "About", url: `${baseUrl}/about` },
+        ]}
+      />
+
       <Hero city={city} />
       <Thesis city={city} />
       <Principles />

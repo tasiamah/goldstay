@@ -470,3 +470,50 @@ export function ReviewJsonLd() {
     />
   );
 }
+
+// WebApplication schema for the yield calculator.
+//
+// The calculator had no page-level structured data at all, only the
+// Organization block the layout emits on every URL, so the one page on
+// this site built to be linked to described itself to Google as an
+// unlabelled document. A tool is the thing other sites cite without
+// being asked, and WebApplication is how you say "this is a free thing
+// that does a calculation" rather than leaving it to be inferred from
+// prose.
+//
+// `offers` at price 0 is not decoration. WebApplication without an
+// offer reads as software that might cost money, and free is the
+// entire proposition here.
+export function WebApplicationJsonLd({
+  name,
+  description,
+  url,
+}: {
+  name: string;
+  description: string;
+  url: string;
+}) {
+  return (
+    <JsonLdScript
+      data={{
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        name,
+        description,
+        url,
+        applicationCategory: "FinanceApplication",
+        // Runs in the browser, so there is no platform requirement
+        // worth declaring beyond that.
+        operatingSystem: "All",
+        browserRequirements: "Requires JavaScript",
+        isAccessibleForFree: true,
+        offers: {
+          "@type": "Offer",
+          price: "0",
+          priceCurrency: "USD",
+        },
+        provider: { "@id": orgId() },
+      }}
+    />
+  );
+}

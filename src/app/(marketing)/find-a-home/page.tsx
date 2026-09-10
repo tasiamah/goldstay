@@ -4,7 +4,8 @@ import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
 import { FindHomeSearch } from "@/components/FindHomeSearch";
 import { getServerCity } from "@/lib/getServerCity";
-import { alternateLanguagesFor, launchedCityPhrase } from "@/lib/site";
+import { alternateLanguagesFor, launchedCityPhrase, site } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // Tenant-facing front door. Unlike /list-your-property (which is for
 // landlords signing us on) and /apply (which is the private deep-dossier
@@ -39,8 +40,22 @@ export default function Page() {
         ? "Accra"
         : launchedCityPhrase();
 
+  const baseUrl =
+    city === "nairobi"
+      ? `https://${site.domains.nairobi}`
+      : city === "accra"
+        ? `https://${site.domains.accra}`
+        : `https://${site.domain}`;
+
   return (
     <>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Find a Home", url: `${baseUrl}/find-a-home` },
+        ]}
+      />
+
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         {/* next/image hero so the LCP element loads with priority and
             the asset is visible to Google Images. The previous CSS
