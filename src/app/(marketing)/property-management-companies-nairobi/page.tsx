@@ -157,6 +157,10 @@ export default function Page() {
       a: "There is no single answer, and any company telling you it is the best one for every landlord is selling rather than advising. The right choice depends on what you own and where you live. If you are resident in Nairobi with one flat nearby and time to deal with it, self-management is genuinely viable and an agent is a convenience rather than a necessity. If you are abroad, own furnished stock, or need money to arrive in a foreign account on a predictable date, the things to compare are the fee basis, the quality of the monthly statement, how repairs are priced and whether the firm actually remits internationally.",
     },
     {
+      q: `Is there a reliable list of property management companies in ${cityPhrase}?`,
+      a: `Not one worth trusting by itself. Most of what ranks is a directory or a paid placement, and "top 10 property management companies in ${cityPhrase}" is a headline rather than a finding: nobody publishing those has read a monthly statement or spoken to a landlord who was three months in arrears. Worth knowing too that real estate management companies and property management companies are the same firms under two names in Kenya, so searching both only returns you the same pool. Build a shortlist of three from evidence instead — the best-run building near yours, other landlords in your block, and property advocates who see what bad management leaves behind.`,
+    },
+    {
       q: `Can I manage my own rental property in ${cityPhrase} instead?`,
       a: "Yes, and if you live in the city and own one or two units it may well be the right decision. What you are taking on is tenant sourcing and referencing, the lease, collecting the rent and chasing it when it is late, being reachable when something breaks, finding and supervising trades, holding and reconciling the deposit, and handling your own rental income tax. That is manageable locally. It becomes hard when you are in a different timezone, because every one of those tasks needs someone physically present at short notice, and a relative doing it as a favour is the arrangement that most often fails.",
     },
@@ -216,8 +220,10 @@ export default function Page() {
                 <em className="italic">tell them apart</em>.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
-                Most of them quote a percentage and a list of services that
-                reads identically. The differences that decide what you
+                Search for the best property management companies in{" "}
+                {cityPhrase} and you get rankings nobody has verified. The
+                firms themselves quote a percentage and a list of services
+                that reads identically. The differences that decide what you
                 actually pay, and whether you can audit it, are two levels
                 below the brochure. Here is where to look — and where we are
                 the wrong choice.
@@ -415,7 +421,7 @@ export default function Page() {
               </Link>{" "}
               and{" "}
               <Link href="/tenant-finding" className="link-gold">
-                tenant finding
+                letting agent
               </Link>{" "}
               pages set out exactly what each service covers, and{" "}
               <Link href="/pricing" className="link-gold">

@@ -41,16 +41,29 @@ export function generateMetadata(): Metadata {
         ? "Accra"
         : launchedCityPhrase();
 
+  // "Letting agent" leads, "tenant finding" follows.
+  //
+  // This page has always been the letting-agent page and never said so.
+  // Both the title and the H1 used "tenant finding", which is the name
+  // for the service inside this company; the words a Nairobi landlord
+  // types are "letting agents nairobi", "rental agents nairobi" and
+  // "property agents nairobi", and none of them appeared anywhere on
+  // it. Same failure as the Airbnb page's H1 before v1.40.0: the page
+  // existed and was invisible to the query it answers.
+  //
+  // Not a separate /letting-agents-nairobi page, deliberately. That
+  // would put two URLs in front of one query and split it, which is
+  // the mistake this fix is the cheap alternative to.
   const title =
     city === "nairobi"
-      ? "Tenant Finding & Vetting Nairobi"
+      ? "Letting Agent Nairobi: Tenant Finding & Vetting"
       : city === "accra"
-        ? "Tenant Finding & Vetting Accra"
-        : `Tenant Finding & Vetting in ${launchedCityPhrase()}`;
+        ? "Letting Agent Accra: Tenant Finding & Vetting"
+        : `Letting Agent in ${launchedCityPhrase()}: Tenant Finding`;
 
   return {
     title,
-    description: `Tenant finding and vetting in ${cityPhrase} for landlords who manage their own property. Marketing, viewings, background and income checks, lease drafting and handover. One-time fee of one month's rent.`,
+    description: `Looking for a letting agent in ${cityPhrase}? We find and vet the tenant and hand the property over, then step back: marketing, viewings, background and income checks, lease drafting and handover. One-time fee of one month's rent, payable only when someone moves in.`,
     alternates: {
       canonical: "/tenant-finding",
       languages: alternateLanguagesFor("/tenant-finding"),
@@ -105,6 +118,20 @@ export default function Page() {
     {
       q: `What does tenant finding cost in ${cityPhrase}?`,
       a: "A one-time fee of one month's rent, payable when the lease is signed and the tenant has moved in. Nothing is due if we do not place a tenant, and there is no monthly charge afterwards because we are not managing the property.",
+    },
+    // The statutory scale, stated plainly. The Remuneration Rules are
+    // public and almost never quoted accurately: agents cite "one
+    // month's rent" as though it were the whole rule, when the scale
+    // turns on lease length and drops to a negotiable half-scale floor
+    // once management is involved. A landlord who knows this can tell
+    // whether a quote is the scale, below it, or an invention.
+    {
+      q: `What do letting agents charge in ${cityPhrase}?`,
+      a: "The Estate Agents (Remuneration) Rules set a scale, and for residential lettings it turns on the length of the lease: 7.5% of the annual gross rent for a lease of up to a year, or one month's rent for a lease longer than that. Commercial work is 7.5% on a sole agency and 10% on a general agency. The rules also say that where management services are involved the letting fee is by negotiation but not less than half scale, which is the clause most quotes never mention. In practice most Nairobi agents ask for one month's rent whatever the lease length, and it is negotiable. Ours is one month's rent, charged once, and nothing if we do not place anyone.",
+    },
+    {
+      q: "Are letting agents, rental agents and property agents different things?",
+      a: "Not in Nairobi, no. The three terms get used for the same work: marketing a vacant unit, running viewings, referencing applicants and getting a lease signed. Estate agent is broader and usually implies sales as well. What matters is not the label but where the engagement stops. A letting agent's job ends at handover; a managing agent stays on and collects the rent for a monthly percentage. Firms that call themselves one and quietly do the other are where the surprise fees come from.",
     },
     {
       q: "How is this different from full management?",
@@ -162,10 +189,10 @@ export default function Page() {
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">
-                Tenant finding · One-time fee
+                Letting agent · One-time fee
               </div>
               <h1 className="mt-6 font-serif text-display-lg text-cream balance">
-                Tenant finding in <em className="italic">{cityPhrase}</em>, for
+                A letting agent in <em className="italic">{cityPhrase}</em> for
                 landlords who manage their own property.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">

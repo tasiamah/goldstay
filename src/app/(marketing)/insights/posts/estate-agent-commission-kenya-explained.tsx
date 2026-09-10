@@ -65,13 +65,27 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Lettings (residential)</strong>:
-          one month rent finder fee, sometimes 8
-          to 10 percent of annual rent
+          the scale turns on the length of the
+          lease. Up to one year it is 7.5 percent
+          of the annual gross rent; longer than a
+          year it is one month rent. In practice
+          most Nairobi agents ask for one month
+          whichever it is
         </LI>
         <LI>
           <strong>Lettings (commercial)</strong>:
-          variable; often 10 to 15 percent of
-          annual rent
+          7.5 percent of annual gross rent on a
+          sole agency, 10 percent on a general
+          agency
+        </LI>
+        <LI>
+          <strong>Letting plus management</strong>:
+          by negotiation, but the rules set a
+          floor of half the letting scale. The
+          clause exists because an agent who also
+          collects the rent earns twice from the
+          same tenancy, and it is the one almost
+          no quote mentions
         </LI>
         <LI>
           <strong>Sole agency</strong>: lower
@@ -123,8 +137,17 @@ export default function Article() {
           Act
         </LI>
         <LI>
-          The Act provides scale fees as guidance
-          (Schedule)
+          The scale itself is the Estate Agents
+          (Remuneration) Rules, 1987, amended by
+          Legal Notice 198 of 2002. It is a
+          published schedule, not a trade custom,
+          so a quote can be checked against it
+        </LI>
+        <LI>
+          The scale is a reference rather than a
+          ceiling or a floor in ordinary
+          practice: parties vary it by agreement,
+          and most do
         </LI>
         <LI>
           Many practitioners in the market are

@@ -21,6 +21,28 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.41.0] - 2026-09-10
+
+### Changed
+- The tenant-finding page now calls itself a letting agent, which is
+  what landlords in Nairobi search for. It was titled "Tenant Finding
+  & Vetting", the name this company uses internally, and the phrase
+  "letting agent" appeared nowhere on it, so the page that answers
+  "letting agents nairobi" was invisible to it. No new page was added
+  for the term on purpose: two URLs chasing one query split it.
+- The page comparing management companies now uses the wordings people
+  actually type. It was built from a query harvest that found "best",
+  "top 10", "list of" and "real estate management companies" variants,
+  but those ended up only in a source comment and never in the copy.
+
+### Fixed
+- The estate agent commission guide gave the residential letting fee
+  as "one month rent, sometimes 8 to 10 percent". The published scale
+  turns on the lease: 7.5% of annual gross rent up to a year, one
+  month's rent beyond it, and where the agent also manages, a floor of
+  half scale that quotes rarely mention. A landlord can now check a
+  quote against the actual rule.
+
 ## [1.40.0] - 2026-09-10
 
 ### Changed
@@ -1864,7 +1886,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.40.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.41.0...HEAD
+[1.41.0]: https://github.com/tasiamah/goldstay/compare/v1.40.0...v1.41.0
 [1.40.0]: https://github.com/tasiamah/goldstay/compare/v1.39.1...v1.40.0
 [1.39.1]: https://github.com/tasiamah/goldstay/compare/v1.39.0...v1.39.1
 [1.39.0]: https://github.com/tasiamah/goldstay/compare/v1.38.1...v1.39.0
