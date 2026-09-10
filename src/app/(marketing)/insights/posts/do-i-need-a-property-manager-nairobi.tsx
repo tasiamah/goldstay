@@ -248,7 +248,15 @@ export default function Article() {
           the questions to ask before you sign
         </Link>
         , which includes our own answers so you can compare us against whoever
-        else you are considering.
+        else you are considering. If you are still at the stage of working out
+        who to approach,{" "}
+        <Link
+          href="/property-management-companies-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property management companies in Nairobi
+        </Link>{" "}
+        covers the kinds of firm and how each of them prices.
       </P>
 
       <Callout title="Tell us the situation and we will tell you honestly">

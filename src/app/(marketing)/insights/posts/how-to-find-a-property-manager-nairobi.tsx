@@ -159,10 +159,19 @@ export default function Article() {
 
       <P>
         Three is the right number: enough to see a range, few enough that you
-        actually read the replies. The important discipline is sending all
-        three the same brief, in writing, and asking for the answer in writing.
-        Phone quotes cannot be compared and are not remembered accurately by
-        either party.
+        actually read the replies. Pick them from different types of firm
+        rather than three of the same kind. The sales-led agency, the boutique
+        manager and the one-person operator price and behave differently, and{" "}
+        <Link
+          href="/property-management-companies-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how property management companies in Nairobi differ
+        </Link>{" "}
+        sets out what to expect from each. The important discipline is sending
+        all three the same brief, in writing, and asking for the answer in
+        writing. Phone quotes cannot be compared and are not remembered
+        accurately by either party.
       </P>
 
       <Callout title="The brief, to adapt and send to all three">

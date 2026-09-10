@@ -196,7 +196,15 @@ export default function Article() {
 
       <P>
         Everyone answers yes to “do you vet tenants” and “do you send
-        statements”. These are harder to fake.
+        statements”. These are harder to fake, and the answers vary by the
+        kind of firm you are asking. See{" "}
+        <Link
+          href="/property-management-companies-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property management companies in Nairobi
+        </Link>{" "}
+        for how the types differ before you ask them.
       </P>
 
       <OL>

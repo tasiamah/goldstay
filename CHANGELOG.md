@@ -21,7 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.39.1] - 2026-09-10
+## [1.40.0] - 2026-09-10
+
+### Changed
+- The Airbnb management page now says what it sells in its own headline.
+  It opened with "Turn your Nairobi apartment into a five-star short-stay",
+  which named the city but never the service, so the largest text on the
+  page supported the location half of what people search and none of the
+  rest. The two service pages that do name themselves plainly, long-term
+  management and pricing, were both ranking first on the day this was
+  checked, while this one sat thirteenth. The promise is kept: it now
+  reads "Airbnb management in Nairobi, without lifting a finger".
+- The page comparing property management companies had one link pointing
+  at it from 379 articles, despite being the page for people deciding who
+  to hire. Five more now link to it from the articles where a reader is
+  making that exact decision, including the fee guide, which is one of
+  the better-ranking articles on the site.
 
 ### Fixed
 - The footer and the search-engine data said the Nairobi office opens
@@ -1849,7 +1864,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.39.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.40.0...HEAD
+[1.40.0]: https://github.com/tasiamah/goldstay/compare/v1.39.1...v1.40.0
 [1.39.1]: https://github.com/tasiamah/goldstay/compare/v1.39.0...v1.39.1
 [1.39.0]: https://github.com/tasiamah/goldstay/compare/v1.38.1...v1.39.0
 [1.38.1]: https://github.com/tasiamah/goldstay/compare/v1.38.0...v1.38.1

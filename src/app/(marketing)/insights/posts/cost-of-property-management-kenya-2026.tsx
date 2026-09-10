@@ -82,7 +82,15 @@ export default function Article() {
         charge, and the rate the diaspora landlords we onboard most
         often migrate from. Some smaller agents quote 8%. A few
         boutique operators quote 12% and make the case that they do
-        more.
+        more. Which of those you are being quoted by usually follows
+        from the kind of firm it is, which{" "}
+        <Link
+          href="/property-management-companies-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property management companies in Nairobi
+        </Link>{" "}
+        sets out.
       </P>
 
       <H3 id="what-10-percent-buys">What 10% should buy</H3>

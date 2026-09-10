@@ -250,13 +250,25 @@ export default function Page() {
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">Airbnb · Short-stay</div>
-              {/* City named in the H1 as well as the title. Reads
-                  naturally and puts the geo term in the second-heaviest
-                  on-page element for a query that always carries it. */}
+              {/* Service and city both named, in the words the query
+                  uses. The city was already here; the service was not.
+                  "Turn your Nairobi apartment into a five-star
+                  short-stay" put the geo term in the second-heaviest
+                  on-page element and left the thing being sold out of
+                  it entirely, so the H1 supported the location half of
+                  "airbnb management nairobi" and none of the rest.
+
+                  The comparison that prompted this: /long-term-management
+                  and /pricing both open by naming the service the way it
+                  is searched, and on 9 Sep both sat at position 1. This
+                  page led with a benefit and sat at 13. One day of data
+                  is not proof, but the on-page principle does not depend
+                  on it, and the promise is kept rather than dropped —
+                  "without lifting a finger" is the half of the old line
+                  that was doing the persuading. */}
               <h1 className="mt-6 font-serif text-display-lg text-cream balance">
-                Turn your {cityName ? `${cityName} ` : ""}apartment into a{" "}
-                <em className="italic">five-star</em> short-stay, without
-                lifting a finger.
+                Airbnb management{cityName ? ` in ${cityName}` : ""},{" "}
+                <em className="italic">without lifting a finger</em>.
               </h1>
               {/* The service named the way people search for it.
                   "Short-term rental management" appeared nowhere on the

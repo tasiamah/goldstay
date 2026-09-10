@@ -217,7 +217,15 @@ export default function Article() {
           how to find a property manager in Nairobi
         </Link>
         , which also includes a one page brief to send to everyone you
-        shortlist so the replies are actually comparable.
+        shortlist so the replies are actually comparable. If you would rather
+        start from how the firms are structured than from names,{" "}
+        <Link
+          href="/property-management-companies-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property management companies in Nairobi
+        </Link>{" "}
+        breaks down the types and what each charges for.
       </P>
 
       <Callout title="Three names, one written brief">
