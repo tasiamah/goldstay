@@ -41,6 +41,17 @@ const airbnbFaqs = [
     q: "Do you work as an Airbnb co-host?",
     a: "Yes. Co-hosting is what this service is, in Airbnb's own vocabulary: your listing stays on your account and we run it, handling the calendar, pricing, guest messaging, check-ins, cleaning turnovers and maintenance. We can either be added as a co-host on your existing listing or build the listing from scratch if there is not one yet. The fee is the same 20% of revenue either way.",
   },
+  // "Airbnb agent" was absent from the entire site, money pages and
+  // all 379 articles, until Sep 2026. We said manager and co-host and
+  // never agent, which is the word a good share of Nairobi owners
+  // actually use, and on 10 Sep the top result for "airbnb agents in
+  // nairobi" was a competitor's Instagram profile with 840 followers.
+  // A social profile outranking every website on a commercial query
+  // means Google could not find a page that answers it.
+  {
+    q: "Are you an Airbnb agent or an Airbnb management company?",
+    a: "In Nairobi they are two names for the same job and owners use them interchangeably. An Airbnb agent, a short-stay agent, a co-host and an Airbnb management company all describe someone who runs a furnished unit on your behalf: the listing, the nightly pricing, guest screening and messaging, check-ins, turnover cleaning and the money. The label tells you nothing useful. What separates firms is whether the listing stays on your account or moves to theirs, whether the fee is charged on revenue collected or on something more flattering, and whether you get an itemised monthly statement or a figure in a message. Ours stays on your account, the fee is 20% of revenue collected, and the statement is itemised.",
+  },
   {
     q: "Do you manage serviced apartments, holiday homes and furnished lets too?",
     a: "They are the same operation under different names, and yes. Whether it is marketed as a serviced apartment, a holiday home, a furnished short let or an Airbnb, the work is a furnished unit let by the night or the week, and it is run the same way. What changes is the channel mix: some units earn better on direct and corporate bookings than on Airbnb, and we list wherever the demand for that address actually is.",

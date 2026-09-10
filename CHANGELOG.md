@@ -21,6 +21,16 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.44.0] - 2026-09-10
+
+### Added
+- The Airbnb management page now answers the question "are you an
+  Airbnb agent or a management company", because "agent" is the word
+  a good share of Nairobi owners use and it appeared nowhere on the
+  site, money pages or articles. The top result for "airbnb agents in
+  nairobi" was a competitor's Instagram profile, which is Google
+  saying it could not find a page that answers the query.
+
 ## [1.43.1] - 2026-09-10
 
 ### Fixed
@@ -1924,7 +1934,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.43.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.44.0]: https://github.com/tasiamah/goldstay/compare/v1.43.1...v1.44.0
 [1.43.1]: https://github.com/tasiamah/goldstay/compare/v1.43.0...v1.43.1
 [1.43.0]: https://github.com/tasiamah/goldstay/compare/v1.42.0...v1.43.0
 [1.42.0]: https://github.com/tasiamah/goldstay/compare/v1.41.0...v1.42.0
