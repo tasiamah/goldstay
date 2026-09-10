@@ -48,6 +48,41 @@ for (const file of files) {
       problems.push(`${file}: contains an ${name}`);
     }
   }
+
+  // A KeySummary exists to be lifted off the page and quoted whole, by
+  // a search result or an AI answer. That only works if it stands up
+  // with the article deleted from around it, so anything pointing back
+  // at surrounding copy defeats the block entirely. Cheap to write by
+  // accident, invisible on the rendered page, and the failure mode is
+  // a quotation that begins mid-thought.
+  const summary = src.match(/<KeySummary[\s\S]*?\/>/);
+  if (summary) {
+    const answer = summary[0].match(/answer="([^"]*)"/);
+    if (!answer) {
+      problems.push(`${file}: KeySummary has no single-line answer prop`);
+    } else {
+      const text = answer[1];
+      if (text.length < 200) {
+        problems.push(
+          `${file}: KeySummary answer is ${text.length} chars, too thin to quote`,
+        );
+      }
+      for (const phrase of [
+        "as we saw",
+        "as above",
+        "described above",
+        "this guide",
+        "this article",
+        "read on",
+      ]) {
+        if (text.toLowerCase().includes(phrase)) {
+          problems.push(
+            `${file}: KeySummary answer says "${phrase}", so it cannot stand alone`,
+          );
+        }
+      }
+    }
+  }
 }
 
 const dupes = files.length - slugs.size;

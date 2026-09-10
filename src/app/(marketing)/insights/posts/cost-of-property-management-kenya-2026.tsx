@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   H3,
   LI,
   Lede,
@@ -46,6 +47,19 @@ export default function Article() {
         a bargain you should be suspicious of or a premium you
         should ask hard questions about.
       </Lede>
+
+      <KeySummary
+        question="How much does property management cost in Kenya in 2026?"
+        answer="Long-term residential management runs 8 to 12 percent of the rent collected, short-stay and Airbnb management 18 to 25 percent of revenue, and tenant-finding on its own about one month's rent as a single charge. The percentage is the least useful part of a quote. What decides the real cost is whether the fee is charged on rent collected or rent merely due, and what sits outside it: setup fees, separate tenant placement, lease renewal fees, exit clawbacks, and any margin the manager takes on contractor invoices. Goldstay charges 10 percent of rent collected for long-term, 20 percent of revenue for Airbnb and one month's rent for tenant-finding, with no setup fee, no repair markup, no vacancy fee, no renewal fee and no exit clawback."
+        facts={[
+          { label: "Long-term, market", value: "8% to 12% of rent collected" },
+          { label: "Short-stay, market", value: "18% to 25% of revenue" },
+          { label: "Tenant-finding, market", value: "About one month's rent" },
+          { label: "Goldstay, long-term", value: "10% of rent collected" },
+          { label: "Goldstay, short-stay", value: "20% of revenue" },
+          { label: "Ask first", value: "Collected or due, and what is excluded" },
+        ]}
+      />
 
       <P>
         Below is what each fee actually buys, what shows up on the

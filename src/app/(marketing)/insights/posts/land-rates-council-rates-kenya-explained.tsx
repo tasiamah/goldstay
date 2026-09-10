@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   LI,
   Lede,
   P,
@@ -48,6 +49,28 @@ export default function Article() {
         methods of calculation. Here is the honest
         2026 guide.
       </Lede>
+
+      <KeySummary
+        question="What is the difference between land rates and ground rent in Kenya?"
+        answer="They are two separate annual charges, collected by two different governments, and a leasehold owner in Nairobi pays both. Land rates are a county tax on the unimproved site value of the land, roughly 0.115 percent of that value in Nairobi, due by 31 March, with interest of 2 to 3 percent a month once you are late. Ground rent is a national government charge that applies to leasehold land only, fixed by the lease itself and typically KES 2,000 to KES 30,000 a year, now collected mostly through Ardhisasa. Freehold owners pay no ground rent. Anyone running the property as a short stay also needs a county Single Business Permit, which starts around KES 5,000."
+        facts={[
+          {
+            label: "Land rates",
+            value: "County. About 0.115% of site value in Nairobi",
+          },
+          {
+            label: "Ground rent",
+            value: "National. KES 2,000 to 30,000 a year, leasehold only",
+          },
+          { label: "Land rates due", value: "31 March in most counties" },
+          { label: "Late payment", value: "2% to 3% a month, on rates" },
+          {
+            label: "Short-stay operators",
+            value: "Single Business Permit too, from KES 5,000",
+          },
+          { label: "Freehold land", value: "Rates yes, ground rent no" },
+        ]}
+      />
 
       <H2 id="rates">County land rates</H2>
 

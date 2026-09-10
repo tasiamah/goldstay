@@ -83,6 +83,69 @@ export function Pullquote({ children }: { children: ReactNode }) {
 
 // Inline soft-callout box for "what this means in practice" or
 // "common mistake" asides.
+/**
+ * An answer-first summary for the top of an article.
+ *
+ * The money pages have had `KeyFacts` for a while and the articles have
+ * had nothing, which turned out to be the wrong way round. On 9 Sep
+ * thirty-eight articles were ranking in Google's top ten and
+ * thirty-five of them took no clicks at all, which is what it looks
+ * like when an AI Overview answers the question above the result. The
+ * ranking is not the problem on those pages; there is simply nothing on
+ * them shaped like an answer to lift.
+ *
+ * `Lede` is not that shape and should not be made into it. A lede sets
+ * the problem up and earns the next paragraph: "three charges, three
+ * collectors, three methods, here is the honest guide". That is a
+ * promise, and a promise cannot be quoted.
+ *
+ * `answer` has to survive being cut out of the page. No "as we saw
+ * above", no pronoun pointing at the lede, no "this guide explains".
+ * State the answer, in numbers where there are numbers. If it reads
+ * oddly pasted into a search result on its own, rewrite it.
+ *
+ * Sits after the lede rather than before it so the human still gets the
+ * hook first; a machine does not care about order, only about finding a
+ * self-contained paragraph somewhere near the top.
+ */
+export function KeySummary({
+  question,
+  answer,
+  facts,
+}: {
+  question?: string;
+  answer: string;
+  facts?: { label: string; value: string }[];
+}) {
+  return (
+    <aside className="my-10 rounded-2xl border border-charcoal/12 bg-sand/40 p-6 md:p-8">
+      <div className="font-mono text-[0.7rem] uppercase tracking-widest-xl text-gold-700">
+        In short
+      </div>
+      {question && (
+        <h2 className="mt-3 font-serif text-xl text-charcoal md:text-2xl">
+          {question}
+        </h2>
+      )}
+      <p className="mt-3 text-base leading-[1.7] text-charcoal/85 md:text-lg">
+        {answer}
+      </p>
+      {facts && facts.length > 0 && (
+        <dl className="mt-6 grid gap-x-8 gap-y-4 border-t border-charcoal/10 pt-6 sm:grid-cols-2">
+          {facts.map((f) => (
+            <div key={f.label} className="flex flex-col gap-1">
+              <dt className="font-mono text-[0.65rem] uppercase tracking-widest-xl text-charcoal/50">
+                {f.label}
+              </dt>
+              <dd className="text-sm text-charcoal/85">{f.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )}
+    </aside>
+  );
+}
+
 export function Callout({
   title,
   children,

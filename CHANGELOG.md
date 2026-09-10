@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.42.0] - 2026-09-10
+
+### Added
+- Articles can now carry an "In short" summary at the top: a
+  self-contained answer to the question the article is named after,
+  with the key numbers beside it. Thirty-eight articles were ranking
+  in Google's top ten and thirty-five of them took no clicks at all,
+  which is what it looks like when an AI answer sits above the result
+  and nothing on the page is shaped like something to quote. Added so
+  far to the guides on land rates and ground rent, estate agent
+  commission, eviction, and what management costs.
+- The article checker now rejects a summary that leans on the copy
+  around it, with phrases like "as we saw" or "this guide". A summary
+  that only makes sense in place cannot be quoted, which is the one
+  job it has.
+
 ## [1.41.0] - 2026-09-10
 
 ### Changed
@@ -1886,7 +1902,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.41.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.42.0...HEAD
+[1.42.0]: https://github.com/tasiamah/goldstay/compare/v1.41.0...v1.42.0
 [1.41.0]: https://github.com/tasiamah/goldstay/compare/v1.40.0...v1.41.0
 [1.40.0]: https://github.com/tasiamah/goldstay/compare/v1.39.1...v1.40.0
 [1.39.1]: https://github.com/tasiamah/goldstay/compare/v1.39.0...v1.39.1

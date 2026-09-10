@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   H3,
   LI,
   Lede,
@@ -45,6 +46,30 @@ export default function Article() {
         wreck cases, and the practical playbook for keeping
         timelines short.
       </Lede>
+
+      <KeySummary
+        question="How do you legally evict a tenant in Kenya?"
+        answer="Through the courts, never by changing the locks. For non-payment the sequence is a written 14 day notice to pay or vacate, then a notice to terminate of one month on a monthly tenancy, then a plaint filed at the Magistrate's Court with jurisdiction over the property, which for most Nairobi units is Milimani Commercial Courts. The tenant must be personally served and then has 14 days to enter appearance and 21 days to file a defence. Most tenants in arrears file nothing, which lets the landlord apply for judgment in default. The court issues an order for vacant possession and, if the tenant still will not go, a warrant of eviction executed by a court bailiff or licensed auctioneer. Court costs run KES 12,000 to KES 25,000 for a typical one or two bedroom case. An uncontested eviction takes roughly 90 to 120 days from first notice to executed warrant; a contested one routinely runs 9 to 18 months."
+        facts={[
+          {
+            label: "First step",
+            value: "Written 14 day notice to pay or vacate",
+          },
+          {
+            label: "Notice to terminate",
+            value: "One month on a monthly tenancy",
+          },
+          {
+            label: "Where to file",
+            value: "Magistrate's Court. Milimani for Nairobi",
+          },
+          { label: "Tenant's clock", value: "14 days to appear, 21 to defend" },
+          { label: "Court costs", value: "KES 12,000 to 25,000, 1 or 2 bed" },
+          { label: "Uncontested", value: "About 90 to 120 days" },
+          { label: "Contested", value: "9 to 18 months" },
+          { label: "Never valid as notice", value: "A WhatsApp message" },
+        ]}
+      />
 
       <Callout title="Refreshed for July 2026">
         Updated for 2026 with current tribunal and

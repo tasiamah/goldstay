@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   LI,
   Lede,
   P,
@@ -49,6 +50,25 @@ export default function Article() {
         introduced the buyer derail deals every week.
         Here is the honest 2026 guide.
       </Lede>
+
+      <KeySummary
+        question="How much commission do estate agents charge in Kenya?"
+        answer="On a residential sale, agents in practice charge 1.25 to 3 percent of the price, and the seller pays. The published scale behind that is the Estate Agents (Remuneration) Rules, 1987, as amended in 2002: 10 percent of the first KES 100,000, 6 percent of the next KES 900,000 and 3 percent of the balance, which on a KES 10 million sale works out at KES 334,000. On lettings the scale turns on the lease: 7.5 percent of the annual gross rent for a lease up to a year, or one month's rent for anything longer, paid by the landlord. Where the agent also manages the property the letting fee is negotiable but cannot fall below half scale. The scale is a published reference rather than a fixed price, so any of these can be varied by written agreement, and most are."
+        facts={[
+          { label: "Residential sale, practice", value: "1.25% to 3%" },
+          {
+            label: "Residential sale, scale",
+            value: "10% / 6% / 3% on the first 100k, next 900k, balance",
+          },
+          {
+            label: "Letting up to one year",
+            value: "7.5% of annual gross rent",
+          },
+          { label: "Letting over one year", value: "One month's rent" },
+          { label: "Letting plus management", value: "Not below half scale" },
+          { label: "Who pays", value: "Seller on sales, landlord on lettings" },
+        ]}
+      />
 
       <H2 id="rates">Standard rates</H2>
 
