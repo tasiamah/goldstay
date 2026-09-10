@@ -24,6 +24,7 @@ import {
   site,
   neighbourhoodSlug,
   profiledNeighbourhoods,
+  cityTrail,
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { BreadcrumbJsonLd, FaqJsonLd, ReviewJsonLd } from "./JsonLd";
@@ -50,24 +51,18 @@ export function CityPage({ city }: { city: "nairobi" | "accra" }) {
   // eligible for AI Overviews and PAA without duplicating copy.
   const faqForSchema = [...cityFaq[city], ...localizedFaq(city)];
 
-  // Cross-domain canonical for breadcrumbs: on .co.ke or .com.gh the
-  // city page lives at "/", on .com it lives at "/nairobi" or "/accra".
-  const baseUrl =
-    domainCity === "nairobi"
-      ? `https://${site.domains.nairobi}`
-      : domainCity === "accra"
-        ? `https://${site.domains.accra}`
-        : `https://${site.domain}`;
-  const cityPath = domainCity ? "" : `/${city}`;
-
   return (
     <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", url: baseUrl },
-          { name: cityName, url: `${baseUrl}${cityPath || `/${city}`}` },
-        ]}
-      />
+      {/* cityTrail rather than a trail built here. The version this
+          replaced computed an empty cityPath on a country domain and
+          then fell through `||` to "/nairobi", so goldstay.co.ke's
+          homepage claimed to be a child page of itself and pointed at
+          a URL that 308s straight back. Two names on one URL is the
+          case Google drops the whole BreadcrumbList over, which is
+          what cityTrail exists to prevent and what site.test.ts has
+          asserted since it was written. Every other city-scoped page
+          already used it; this one never got moved across. */}
+      <BreadcrumbJsonLd items={cityTrail(city, domainCity)} />
       <FaqJsonLd items={faqForSchema} />
       <ReviewJsonLd />
       <Hero

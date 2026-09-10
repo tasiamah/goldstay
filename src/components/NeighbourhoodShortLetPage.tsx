@@ -18,6 +18,7 @@ import { CTABanner } from "./CTABanner";
 import { FAQSection } from "./FAQSection";
 import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "./JsonLd";
 import {
+  cityTrail,
   neighbourhoodSlug,
   shortLetNeighbourhoods,
   site,
@@ -163,10 +164,13 @@ export function NeighbourhoodShortLetPage({
 
   return (
     <>
+      {/* cityTrail for the leading steps. The hardcoded "/nairobi"
+          this replaced 308s to the root on goldstay.co.ke, so the
+          trail carried a redirect in the middle and named the same
+          page twice. */}
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", url: baseUrl },
-          { name: "Nairobi", url: `${baseUrl}/nairobi` },
+          ...cityTrail("nairobi", domainCity),
           { name, url: `${baseUrl}/nairobi/${slug}` },
           { name: "Airbnb Management", url: selfUrl },
         ]}

@@ -13,7 +13,7 @@ import { Reveal } from "./Reveal";
 import { SectionHeader } from "./SectionHeader";
 import { CTABanner } from "./CTABanner";
 import { FAQSection } from "./FAQSection";
-import { citySourcing, waLink, site } from "@/lib/site";
+import { citySourcing, cityTrail, waLink, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { BreadcrumbJsonLd } from "./JsonLd";
 
@@ -99,15 +99,17 @@ export function CityBuyPage({ city }: { city: City }) {
       : domainCity === "accra"
         ? `https://${site.domains.accra}`
         : `https://${site.domain}`;
-  const cityUrl = domainCity ? baseUrl : `${baseUrl}/${city}`;
   const buyUrl = domainCity ? `${baseUrl}/buy` : `${baseUrl}/${city}/buy`;
 
   return (
     <>
+      {/* cityTrail rather than Home plus city built here. On a country
+          domain the city page is the root, so the old pair put "Home"
+          and "Nairobi" on one identical URL, which is the ambiguity
+          Google resolves by discarding the trail. */}
       <BreadcrumbJsonLd
         items={[
-          { name: "Home", url: baseUrl },
-          { name: cityName, url: cityUrl },
+          ...cityTrail(city, domainCity),
           { name: `Buy in ${cityName}`, url: buyUrl },
         ]}
       />

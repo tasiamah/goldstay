@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerCity } from "@/lib/getServerCity";
-import { emailFor, offices, site } from "@/lib/site";
+import { baseUrlFor, emailFor, offices, site } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // The privacy notice is the single public-facing document that answers
 // "what are you doing with my data and under what law?". It is surfaced
@@ -72,8 +73,16 @@ export default function Page() {
         : "Nairobi, Kenya"
       : "Accra, Ghana";
 
+  const baseUrl = baseUrlFor(city);
+
   return (
     <section className="section pt-40">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Privacy", url: `${baseUrl}/privacy` },
+        ]}
+      />
       <div className="container-gs max-w-3xl">
         <div className="eyebrow">Privacy</div>
         <h1 className="mt-4 font-serif text-display-md">Privacy notice</h1>

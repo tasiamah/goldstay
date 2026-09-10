@@ -21,6 +21,26 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.49.1] - 2026-09-10
+
+### Fixed
+- The homepage on goldstay.co.ke was telling Google it was a child page
+  of itself. Its breadcrumb read "Home" then "Nairobi", with Nairobi
+  pointing at `/nairobi`, which redirects straight back to the homepage.
+  Two names on one page with a redirect in between is the case Google
+  resolves by discarding the trail, so the highest-traffic page on the
+  site had no working breadcrumb at all. The same defect was on the
+  buy-in-city pages and the neighbourhood short-let pages.
+- The helper that prevents this, `cityTrail`, was written months ago and
+  tested. The three broken components had simply never been moved onto
+  it, and testing the helper in isolation could not detect that. A test
+  now reads the components off disk and fails if a city-scoped page
+  builds its own trail, which is how the two beyond the homepage were
+  found.
+- Breadcrumb data added to the privacy and terms pages, the last two
+  indexable pages without it. The remaining pages without breadcrumbs
+  are all noindex, where it would do nothing.
+
 ## [1.49.0] - 2026-09-10
 
 ### Added
@@ -2078,6 +2098,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.49.1]: https://github.com/tasiamah/goldstay/compare/v1.49.0...v1.49.1
 [1.49.0]: https://github.com/tasiamah/goldstay/compare/v1.48.1...v1.49.0
 [1.48.1]: https://github.com/tasiamah/goldstay/compare/v1.48.0...v1.48.1
 [1.48.0]: https://github.com/tasiamah/goldstay/compare/v1.47.0...v1.48.0

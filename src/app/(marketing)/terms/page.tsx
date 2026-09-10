@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerCity } from "@/lib/getServerCity";
-import { emailFor, site } from "@/lib/site";
+import { baseUrlFor, emailFor, site } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // Website terms of use. These govern use of the public site only: the
 // services themselves (management, sourcing, tenant placement) are
@@ -47,8 +48,16 @@ export default function Page() {
       ? "the competent courts sitting in Accra, Ghana"
       : "the competent courts sitting in Nairobi, Kenya or Accra, Ghana, as applicable to the transaction giving rise to the dispute";
 
+  const baseUrl = baseUrlFor(city);
+
   return (
     <section className="section pt-40">
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Terms", url: `${baseUrl}/terms` },
+        ]}
+      />
       <div className="container-gs max-w-3xl">
         <div className="eyebrow">Terms</div>
         <h1 className="mt-4 font-serif text-display-md">Terms of use</h1>
