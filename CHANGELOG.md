@@ -21,6 +21,43 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.51.0] - 2026-09-10
+
+### Added
+- "Nairobi's highest-rated property manager" now appears under the calls to
+  action on the homepage hero and on `/list-your-property`, each time beside
+  a link to the Google Business Profile where a reader can check it in one
+  click. The link is part of the claim rather than a nicety: an unverifiable
+  superlative is worth less than nothing to landlords who have been burned by
+  an agent before, and Google Ads will not run a superlative in an ad unless
+  third-party verification is visible on the landing page it points at —
+  which is why the claim is repeated on the page the ads target rather than
+  left on the homepage.
+- `ratingClaim` in `site.ts` holds the wording, the source and the date it
+  was last verified, with `rating-claim.test.ts` asserting all three survive
+  future edits. Unlike "premium", this claim is a statement of fact about
+  other companies' ratings, so it is only defensible while true — and it can
+  stop being true with no change to this repo when a competitor gains
+  reviews. Re-check quarterly and move `verifiedOn`; if it stops holding,
+  delete it rather than hedging it to "one of the highest-rated", which
+  persuades nobody and still has to be defended.
+
+### Changed
+- The homepage title and the footer's bottom legal line now carry the full
+  trading name — "Goldstay | Property Management, Airbnb Co-Hosting & Short
+  Let Consultancy Nairobi, Kenya" — and the Nairobi `LocalBusiness` schema
+  declares it as `alternateName`. Google requires the name on a Business
+  Profile to be the one the business is consistently represented by
+  elsewhere, and the website is the first thing checked when someone
+  complains about a profile name; without the name on the site, that
+  complaint succeeds. Defined once as `tradingName()` in `site.ts` so the
+  three copies cannot drift, since a near-miss reads as a different name and
+  is worse than not stating it.
+- Inner pages are untouched. The title change is `title.default` only, so it
+  applies to the homepage rather than all 394 URLs, and the visible brand
+  stays "Goldstay" in the navbar, the logo, the OG title and the schema
+  `name`.
+
 ## [1.50.0] - 2026-09-10
 
 ### Added
@@ -2126,7 +2163,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.51.0...HEAD
+[1.51.0]: https://github.com/tasiamah/goldstay/compare/v1.50.0...v1.51.0
 [1.50.0]: https://github.com/tasiamah/goldstay/compare/v1.49.1...v1.50.0
 [1.49.1]: https://github.com/tasiamah/goldstay/compare/v1.49.0...v1.49.1
 [1.49.0]: https://github.com/tasiamah/goldstay/compare/v1.48.1...v1.49.0

@@ -5,6 +5,7 @@ import {
   logoObject,
   openingHours,
   orgId,
+  tradingName,
   websiteId,
   whatsapp,
 } from "@/lib/site";
@@ -226,6 +227,14 @@ export function JsonLd() {
     "@type": "LocalBusiness",
     "@id": `${baseUrl}/nairobi#localbusiness`,
     name: `${site.name} Nairobi`,
+    // The Business Profile name, which is longer than the brand.
+    // Declared as alternateName rather than name so `name` stays the
+    // clean form for anything that renders it, while Google still gets
+    // the profile name to match the place against. Saying "this
+    // business is also known as X" is exactly what the field is for,
+    // and it is a claim we can support: it is on the homepage title and
+    // in the footer too. See tradingName in site.ts.
+    alternateName: tradingName("nairobi"),
     url: `${baseUrl}/nairobi`,
     parentOrganization: { "@id": orgId() },
     logo: logoObject(),
@@ -285,6 +294,7 @@ export function JsonLd() {
     "@type": "LocalBusiness",
     "@id": `${baseUrl}/accra#localbusiness`,
     name: `${site.name} Accra`,
+    alternateName: tradingName("accra"),
     url: `${baseUrl}/accra`,
     parentOrganization: { "@id": orgId() },
     logo: logoObject(),

@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { ArrowDown } from "lucide-react";
 import { launchedCityPhrase, waLink } from "@/lib/site";
+import { RatingClaim } from "./RatingClaim";
 
 export function Hero({
   // Reads from the launch flag: "Nairobi" today, "Nairobi ·
@@ -141,6 +142,13 @@ export function Hero({
               Learn more <ArrowDown className="ml-1 inline h-3.5 w-3.5" />
             </Link>
           </div>
+
+          {/* Directly under the CTAs rather than up in the eyebrow,
+              because this is where the hesitation is. The eyebrow is
+              read before anyone has decided they want the service; the
+              gap between "I might" and clicking is where a checkable
+              third-party claim does its work. */}
+          <RatingClaim className="mt-6 justify-center" />
         </div>
       </div>
 

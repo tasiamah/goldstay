@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Instagram, Linkedin } from "lucide-react";
 import { Logo } from "./Logo";
 import { AirbnbDisclosureLine } from "./AirbnbDisclosure";
-import { launchedCityPhrase, neighbourhoodSlug, profiledNeighbourhoods, site, waLink } from "@/lib/site";
+import { launchedCityPhrase, neighbourhoodSlug, profiledNeighbourhoods, site, tradingName, waLink } from "@/lib/site";
 import { FooterContactEmail } from "./FooterContactEmail";
 import { FooterOffice } from "./FooterOffice";
 import { getServerCity } from "@/lib/getServerCity";
@@ -311,6 +311,13 @@ export function Footer() {
 
         <div className="mt-20 flex flex-col items-start justify-between gap-4 border-t border-charcoal/10 pt-8 text-xs text-charcoal/50 md:flex-row md:items-center">
           <div className="space-y-2">
+            {/* The full trading name, matching the Google Business
+                Profile exactly. When someone complains about a profile
+                name, the reviewer looks for it on the website, and the
+                bottom legal line is where a full business name belongs.
+                The brand everywhere a visitor actually reads stays
+                "Goldstay". See tradingName in site.ts. */}
+            <div>{tradingName(city ?? undefined)}</div>
             <div>
               © {new Date().getFullYear()} Goldstay. {site.parent}.
             </div>

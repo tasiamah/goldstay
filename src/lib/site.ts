@@ -326,6 +326,67 @@ export function launchedCityPhrase(separator = " and ") {
   return names.join(separator);
 }
 
+// The full trading name, as set on the Google Business Profile.
+//
+// Longer than site.name on purpose. Google requires the name on a
+// Business Profile to be the one the business is consistently
+// represented by everywhere else, and the website is the first place a
+// reviewer looks when someone files a complaint about a name. So this
+// string has to appear on the site, and it has to be byte-identical to
+// what is on the profile — a near-miss reads as two different names,
+// which is worse than not having it at all.
+//
+// Hence one helper rather than three literals. It is emitted from the
+// homepage title, the footer business-name line and the LocalBusiness
+// alternateName, and three copies of a long string drift. A drifted
+// copy is the evidence that loses the appeal.
+//
+// This does not replace site.name. "Goldstay" remains the brand
+// everywhere a human reads it: the navbar, the logo, the OG title, the
+// schema `name`. This is the long form and belongs only in the places
+// a full business name belongs.
+//
+// Defaults to Nairobi because the profile is a Nairobi place. Accra
+// gets its own form for the day goldstay.com.gh serves and claims a
+// profile of its own.
+export function tradingName(city?: "nairobi" | "accra") {
+  const place = city === "accra" ? "Accra, Ghana" : "Nairobi, Kenya";
+  return `${site.name} | Property Management, Airbnb Co-Hosting & Short Let Consultancy ${place}`;
+}
+
+// The only superlative on the site, and the terms it is allowed on.
+//
+// "Highest-rated" is not puffery. "Premium" and "exceptional" are
+// subjective and nobody reads them as facts; this one says something
+// checkable about other companies' ratings, which makes it a
+// representation of fact under the Consumer Protection Act 2012 and
+// the Competition Act 2010. It is defensible exactly as long as it is
+// true — and it can stop being true without anything in this repo
+// changing, which is the whole difficulty with it. A competitor
+// gaining reviews is not an event we get notified about.
+//
+// So it is never stated bare. Three things travel with it: the source
+// a reader can check in one click, the date somebody last checked, and
+// one definition used in every place it appears. Google Ads also
+// refuses unsubstantiated superlatives unless third-party verification
+// is displayed on the landing page, and the profile link is what
+// satisfies that — self-published stars would not.
+//
+// Re-check it quarterly, or whenever a competitor's profile moves, and
+// update verifiedOn. If it stops being true, delete it rather than
+// softening it to "one of the highest-rated": a hedged superlative
+// persuades nobody and still has to be defended.
+export const ratingClaim = {
+  text: "Nairobi's highest-rated property manager",
+  // Where a reader — or an ads reviewer — verifies it. The Business
+  // Profile rather than our own markup, deliberately: see the note on
+  // aggregateRating in JsonLd.tsx for why we publish no rating of our
+  // own.
+  sourceUrl: googleMapsUrl,
+  sourceLabel: "See our Google reviews",
+  verifiedOn: "2026-09-10",
+} as const;
+
 // The domain to fall back to whenever the one we'd naturally name is not
 // live yet. Prefers the Kenya host, which is both the only live domain
 // today and the one we want ranking in Nairobi.

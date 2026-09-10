@@ -11,7 +11,7 @@ import { WhatsAppTracking } from "@/components/WhatsAppTracking";
 import { LeadAttribution } from "@/components/LeadAttribution";
 import { JsonLd } from "@/components/JsonLd";
 import { LayoutClientExtras } from "@/components/LayoutClientExtras";
-import { alternateLanguagesFor, launchedCityPhrase, site } from "@/lib/site";
+import { alternateLanguagesFor, site, tradingName } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 
 const instrumentSerif = Instrument_Serif({
@@ -31,12 +31,6 @@ export function generateMetadata(): Metadata {
   // treatment for goldstay.com.gh. Neutral goldstay.com remains dual-market.
   const isNairobi = city === "nairobi";
   const isAccra = city === "accra";
-
-  const titleSuffix = isNairobi
-    ? "Premium Property Management in Nairobi"
-    : isAccra
-      ? "Premium Property Management in Accra"
-      : `Premium Property Management in ${launchedCityPhrase()}`;
 
   const description = isNairobi
     ? "Premium property management in Nairobi for diaspora landlords. We handle everything. You receive monthly USD transfers."
@@ -74,8 +68,17 @@ export function generateMetadata(): Metadata {
 
   return {
     metadataBase,
+    // The homepage title carries the full trading name, because it is
+    // the page a Business Profile reviewer opens and the name has to
+    // match the profile. Only the default: `template` keeps every inner
+    // page on the short brand, so this is one URL rather than 394.
+    //
+    // Google truncates the displayed title around 60 characters, so the
+    // tail of this is cut in the results. That costs less than it
+    // sounds — truncation is a display limit, not a ranking one, and
+    // the tail is doing a different job here anyway.
     title: {
-      default: `${site.name} | ${titleSuffix}`,
+      default: tradingName(city ?? undefined),
       template: `%s | ${site.name}`,
     },
     description,

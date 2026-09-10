@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ListPropertyForm } from "@/components/ListPropertyForm";
+import { RatingClaim } from "@/components/RatingClaim";
 import { Reveal } from "@/components/Reveal";
 import { phone, site, waLink, alternateLanguagesFor } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
@@ -85,6 +86,11 @@ export default function Page() {
                 </a>
                 .
               </p>
+              {/* Repeated here rather than left on the homepage alone.
+                  This is the page the ads point at, and a superlative
+                  in an ad has to be substantiated on its own landing
+                  page — a link on a different page does not count. */}
+              <RatingClaim className="mt-6" />
             </div>
           </Reveal>
         </div>
