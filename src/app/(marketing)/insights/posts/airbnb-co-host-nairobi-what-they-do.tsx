@@ -61,6 +61,19 @@ export default function Article() {
       </P>
 
       <P>
+        Plenty of Nairobi owners reach for a different word for the same
+        person and search for an{" "}
+        <Link
+          href="/insights/airbnb-agents-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb agent instead
+        </Link>
+        , which turns up a stranger set of results and a market full of people
+        who want to become one rather than be hired as one.
+      </P>
+
+      <P>
         That is the structural point and it is the one most owners miss. There
         are two quite different arrangements sold under similar language:
       </P>

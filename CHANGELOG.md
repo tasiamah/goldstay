@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.48.0] - 2026-09-10
+
+### Added
+- A new insight, "Airbnb agents in Nairobi: hiring one, or becoming one",
+  covering a word the site never used. Owners here say agent at least as
+  often as co-host or management company, and nothing on the site ranked
+  for it: competitors hold the whole first page of "airbnb agents in
+  nairobi" and Goldstay appears nowhere on it. Harvested autocomplete
+  also showed that "how to become an airbnb agent" comes back against
+  every variation of the phrase, which is why an Instagram profile with a
+  few hundred followers currently outranks every management company in the
+  city on it. Much of that traffic cannot hire a manager, but it can
+  become a rent-to-rent operator, and leased units are now most of the
+  short-let book, so the article answers both halves and routes the second
+  to management for operators rather than treating it as waste.
+
+### Changed
+- The two co-host articles now link across to the agent article. Neither
+  used the word agent anywhere, so an owner who searched the term and
+  landed on either had no route to the other half of the vocabulary.
+
 ## [1.47.0] - 2026-09-10
 
 ### Changed
@@ -2012,6 +2033,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.48.0]: https://github.com/tasiamah/goldstay/compare/v1.47.0...v1.48.0
 [1.47.0]: https://github.com/tasiamah/goldstay/compare/v1.46.0...v1.47.0
 [1.46.0]: https://github.com/tasiamah/goldstay/compare/v1.45.1...v1.46.0
 [1.45.1]: https://github.com/tasiamah/goldstay/compare/v1.45.0...v1.45.1

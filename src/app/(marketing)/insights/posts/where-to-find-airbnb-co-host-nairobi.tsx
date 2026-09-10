@@ -99,6 +99,19 @@ export default function Article() {
         .
       </P>
 
+      <P>
+        One thing to try before the routes below, because it costs nothing:
+        search for an{" "}
+        <Link
+          href="/insights/airbnb-agents-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb agent rather than a co-host
+        </Link>
+        . It is the same job under a word more Kenyan owners use, and it
+        surfaces firms that never describe themselves as co-hosts at all.
+      </P>
+
       <H2 id="five-routes">The five routes that work in Nairobi</H2>
 
       <P>
