@@ -109,6 +109,33 @@ export default function Article() {
 
       <H2 id="patterns">What the trusted developers share</H2>
 
+      <P>
+        We have looked at several of these individually rather than as brands,
+        which is the only way to see whether the reputation survives contact
+        with a specific project. Our reviews of{" "}
+        <Link
+          href="/insights/centum-real-estate-review-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Centum Real Estate
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/superior-homes-review-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Superior Homes
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/mi-vida-homes-review-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Mi Vida Homes
+        </Link>{" "}
+        each start from delivered stock rather than from the brochure.
+      </P>
+
       <UL>
         <LI>
           Multiple delivered projects you

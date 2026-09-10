@@ -195,6 +195,21 @@ export default function Article() {
 
       <H2 id="all-in">All-in build cost benchmarks</H2>
 
+      <P>
+        Materials are the part of a build with a published price, which is
+        exactly why quotes cluster around them and then diverge everywhere
+        else. What the finished figure per square metre really comes to once
+        labour, professional fees and the contingency nobody budgets are added
+        is set out in{" "}
+        <Link
+          href="/insights/kenya-construction-cost-per-square-metre-2026"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          construction cost per square metre in Kenya
+        </Link>
+        .
+      </P>
+
       <UL>
         <LI>
           <strong>Mid-spec 4-bed Nairobi

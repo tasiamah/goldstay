@@ -207,7 +207,16 @@ export default function Article() {
         tenant has exclusive possession for the
         term, and entering without a right to do
         so is a trespass no matter whose name is
-        on the title.
+        on the title. What a tenant can actually do
+        about it once it has happened, which is the
+        call we field most often, is set out in{" "}
+        <Link
+          href="/insights/landlord-entered-without-notice-what-to-do"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          landlord entered without notice
+        </Link>
+        .
       </P>
 
       <P>

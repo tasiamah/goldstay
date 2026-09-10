@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.48.1] - 2026-09-10
+
+### Fixed
+- Nineteen articles that no other article linked to now have a link from
+  one that does, written into the prose rather than appended as a "related
+  reading" line. Three of them were the site's best performers: the guides
+  to estate agent commission, land rates and a landlord entering without
+  notice all rank in the top ten and had nothing pointing at them, which
+  is the worst combination available because those are the pages most able
+  to use the equity. 71 articles still have no editorial inbound link.
+- The related-articles block already guaranteed every article three
+  inbound links, so nothing here was unreachable. What it could not do is
+  put a link inside a sentence where a reader is already thinking about
+  the subject, which is both a stronger ranking signal and the only kind
+  of link anybody actually clicks.
+
+### Added
+- `scripts/find-link-anchors.mjs`, which finds prose that is already on
+  the subject of an unlinked article and reports it as a candidate anchor.
+  Reports only, because choosing the anchor phrase needs judgement, and
+  the previous attempt at this by hand missed that the top-ranking pages
+  were among the orphans.
+
 ## [1.48.0] - 2026-09-10
 
 ### Added
@@ -2033,6 +2056,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.48.1]: https://github.com/tasiamah/goldstay/compare/v1.48.0...v1.48.1
 [1.48.0]: https://github.com/tasiamah/goldstay/compare/v1.47.0...v1.48.0
 [1.47.0]: https://github.com/tasiamah/goldstay/compare/v1.46.0...v1.47.0
 [1.46.0]: https://github.com/tasiamah/goldstay/compare/v1.45.1...v1.46.0

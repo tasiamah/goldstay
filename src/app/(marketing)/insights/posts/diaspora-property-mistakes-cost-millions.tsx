@@ -47,6 +47,20 @@ export default function Article() {
         each.
       </Lede>
 
+      <P>
+        Land is where the losses concentrate, and it is worth understanding
+        why before working through the list: the failure is rarely a single
+        bad decision and is usually a sequence of reasonable ones taken at a
+        distance. We traced that sequence in{" "}
+        <Link
+          href="/insights/why-diaspora-kenyans-lose-money-nairobi-land"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          why diaspora Kenyans keep losing money on Nairobi land
+        </Link>
+        .
+      </P>
+
       <H2 id="trust">Mistake 1: Sending money to a relative without escrow</H2>
 
       <P>

@@ -286,6 +286,32 @@ export default function Article() {
         costs you the review that costs you the ranking.
       </P>
 
+      <P>
+        Three of these are local rather than general, and they come up in
+        Nairobi reviews far more than anywhere else we operate:{" "}
+        <Link
+          href="/insights/water-storage-airbnb-nairobi-tanks"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          water storage and what happens on a rationing day
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/parking-and-arrival-airbnb-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          parking and how a guest actually gets through the gate
+        </Link>
+        , and the{" "}
+        <Link
+          href="/insights/small-things-that-win-airbnb-reviews-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          small things that decide whether a review is a four or a five
+        </Link>
+        .
+      </P>
+
       <UL>
         <LI>
           Water that runs, hot, at any hour. This is the most common single

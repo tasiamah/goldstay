@@ -101,6 +101,42 @@ export default function Article() {
 
       <H2 id="mortgage">Mortgage qualification</H2>
 
+      <P>
+        What a bank will actually lend against depends less on the size of
+        your income than on what kind of income it is, which is why two people
+        earning the same figure get different answers. We worked the numbers
+        through separately for{" "}
+        <Link
+          href="/insights/buying-property-doctors-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          doctors
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/buying-property-teacher-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          teachers
+        </Link>
+        ,{" "}
+        <Link
+          href="/insights/buying-property-techie-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          people in tech
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/buying-property-ngo-worker-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          NGO staff on contract
+        </Link>
+        , because the payslip, the contract length and the currency all change
+        the answer.
+      </P>
+
       <UL>
         <LI>
           Banks lend on stable income,

@@ -68,7 +68,15 @@ export default function Article() {
         >
           housing levy piece
         </Link>
-        . Units are delivered in three tiers:
+        . How much of it has actually been built, as against announced, is a
+        separate question we counted up in{" "}
+        <Link
+          href="/insights/affordable-housing-programme-2026-delivered"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what the programme has delivered
+        </Link>
+        . Units come in three tiers:
       </P>
 
       <OL>

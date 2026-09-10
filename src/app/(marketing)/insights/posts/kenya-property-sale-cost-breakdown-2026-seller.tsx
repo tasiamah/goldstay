@@ -65,7 +65,16 @@ export default function Article() {
           typically 3 per cent of sale price
           inclusive of VAT for a standard mandate.
           Negotiable on higher-value transactions
-          and on shorter mandates.
+          and on shorter mandates. What counts as
+          normal, and the charging structures that
+          should make you walk, are in{" "}
+          <Link
+            href="/insights/estate-agent-commission-kenya-explained"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            estate agent commission in Kenya
+          </Link>
+          .
         </LI>
         <LI>
           <strong>Advocate legal fees:</strong> 1

@@ -71,7 +71,15 @@ export default function Article() {
       <P>
         Buruburu, Adams Arcade adjacency,
         Kabete corridor. Mid-market with
-        family-anchored character.
+        family-anchored character. We walked the whole stretch from{" "}
+        <Link
+          href="/insights/ngong-road-corridor-suburb-by-suburb"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Adams Arcade out to Karen, suburb by suburb
+        </Link>
+        , because the corridor changes character several times over eight
+        kilometres and the averages hide it.
       </P>
 
       <H2 id="ridgeways">Ridgeways and Garden Estate</H2>

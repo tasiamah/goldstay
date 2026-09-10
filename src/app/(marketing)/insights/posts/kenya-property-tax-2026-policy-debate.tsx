@@ -71,7 +71,16 @@ export default function Article() {
           by counties on land in gazetted urban areas.
           Typically 0.075 to 0.115 percent of the
           unimproved site value. Counties enforce with
-          varying degrees of rigour.
+          varying degrees of rigour. What Nairobi County
+          actually bills, and what happens when the
+          arrears have been running for years, is in{" "}
+          <Link
+            href="/insights/land-rates-council-rates-kenya-explained"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            land rates and council rates in Kenya
+          </Link>
+          .
         </LI>
         <LI>
           <strong>Land rent</strong>: charged annually

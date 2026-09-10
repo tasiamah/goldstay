@@ -153,6 +153,27 @@ export default function Article() {
 
       <H2 id="strategy">Buyer strategy for lawyers</H2>
 
+      <P>
+        Much of what follows applies to anyone whose income is partly variable
+        rather than to lawyers specifically. Two neighbouring cases worth
+        reading if that describes you are{" "}
+        <Link
+          href="/insights/buying-property-government-professional-nairobi"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buying on a government salary
+        </Link>
+        , where the income is the opposite of variable and the lending
+        conversation changes completely, and{" "}
+        <Link
+          href="/insights/buying-property-unmarried-couple-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buying with a partner you are not married to
+        </Link>
+        , where the legal exposure is the part people underestimate.
+      </P>
+
       <UL>
         <LI>
           Retain independent counsel for
