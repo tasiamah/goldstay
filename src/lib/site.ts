@@ -647,16 +647,51 @@ export const phone = {
 
 // Office hours, as openingHours in schema.org's day-time notation.
 //
-// These are the hours the platform already behaves according to:
-// SEND_WINDOW in reminder-schedule.ts holds client email to 08:00–18:00
-// local, and the callback promise on every lead form is "within two
-// hours during business hours". Declaring anything wider here would
-// contradict code that is already live.
+// Weekdays-only from 08:00 until Sep 2026, when the Google Business
+// Profile turned out to say Mo-Sa 09:00-18:00. Two sources disagreeing
+// about opening times is a weaker signal than two disagreeing about an
+// address, but it is still the site and the profile describing
+// different businesses, and the profile is the one customers act on.
+// Matched to it here.
 //
-// Saturday is deliberately absent rather than guessed. If the Nairobi
-// office does take calls on a Saturday, add it — a business that shows
-// as closed when it is open loses the enquiry to whoever shows as open.
-export const openingHours = ["Mo-Fr 08:00-18:00"] as const;
+// Note this no longer lines up with SEND_WINDOW in
+// agreements/reminder-schedule.ts, which starts client email at 08:00.
+// Nothing reads one from the other and the gap is harmless: a reminder
+// arriving an hour before the phones are staffed is fine, where one
+// arriving at 03:00 would not be. Kept separate rather than tied
+// together, because when we open is a fact about the office and when
+// we are willing to email is a decision about courtesy.
+export const openingHours = ["Mo-Sa 09:00-18:00"] as const;
+
+// Human-readable form of the above.
+//
+// Derived rather than written out. The footer used to render this by
+// replacing the literal "Mo-Fr", which did nothing once the days
+// changed and would have put raw schema notation on the page.
+const DAY_NAMES: Record<string, string> = {
+  Mo: "Mon",
+  Tu: "Tue",
+  We: "Wed",
+  Th: "Thu",
+  Fr: "Fri",
+  Sa: "Sat",
+  Su: "Sun",
+};
+
+export function formatOpeningHours(
+  spec: readonly string[] = openingHours,
+): string {
+  return spec
+    .map((entry) => {
+      const [days, times] = entry.split(" ");
+      const named = days
+        .split("-")
+        .map((day) => DAY_NAMES[day] ?? day)
+        .join("–");
+      return times ? `${named} ${times}` : named;
+    })
+    .join(", ");
+}
 
 export function waLink(message: string, city?: "nairobi" | "accra") {
   const number =

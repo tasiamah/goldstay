@@ -1,7 +1,7 @@
 "use client";
 
 import { MapPin, Phone } from "lucide-react";
-import { offices, openingHours, phone } from "@/lib/site";
+import { formatOpeningHours, offices, phone } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
 
 // Renders the physical office block for the current city. Falls back to the
@@ -58,7 +58,7 @@ export function FooterOffice() {
             {line.display}
           </a>
           <div className="mt-1 text-xs text-charcoal/55">
-            {openingHours.join(", ").replace("Mo-Fr", "Mon–Fri")}
+            {formatOpeningHours()}
           </div>
         </div>
       ) : null}

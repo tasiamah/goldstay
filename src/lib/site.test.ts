@@ -6,8 +6,10 @@ import {
   cities,
   cityCanonical,
   cityTrail,
+  formatOpeningHours,
   type Neighbourhood,
   insightAlternates,
+  openingHours,
   isLiveDomain,
   liveDomainOr,
   logoObject,
@@ -491,5 +493,46 @@ describe("site.sameAs", () => {
   it("claims the Maps place exactly once", () => {
     const maps = site.sameAs.filter((u) => u.includes("google.com/maps"));
     expect(maps).toEqual([site.googleMapsUrl]);
+  });
+});
+
+// The footer used to humanise these hours with a literal replace of
+// "Mo-Fr". That is invisible when it stops matching: the string still
+// renders, just as raw schema notation, so the page reads "Mo-Sa
+// 09:00-18:00" and nothing fails. These tests exist so the next
+// change to the hours cannot do that again.
+describe("openingHours", () => {
+  it("is valid schema.org day-time notation", () => {
+    for (const entry of openingHours) {
+      expect(entry, entry).toMatch(
+        /^(Mo|Tu|We|Th|Fr|Sa|Su)(-(Mo|Tu|We|Th|Fr|Sa|Su))? \d{2}:\d{2}-\d{2}:\d{2}$/,
+      );
+    }
+  });
+
+  it("opens before it closes", () => {
+    for (const entry of openingHours) {
+      const [, times] = entry.split(" ");
+      const [open, close] = times.split("-");
+      expect(open.localeCompare(close), entry).toBeLessThan(0);
+    }
+  });
+
+  it("renders every day abbreviation as a word", () => {
+    expect(formatOpeningHours()).not.toMatch(
+      /\b(Mo|Tu|We|Th|Fr|Sa|Su)\b/,
+    );
+  });
+
+  it("humanises a day range", () => {
+    expect(formatOpeningHours(["Mo-Sa 09:00-18:00"])).toBe(
+      "Mon–Sat 09:00-18:00",
+    );
+  });
+
+  it("humanises a single day and joins multiple entries", () => {
+    expect(formatOpeningHours(["Mo-Fr 09:00-18:00", "Sa 10:00-14:00"])).toBe(
+      "Mon–Fri 09:00-18:00, Sat 10:00-14:00",
+    );
   });
 });

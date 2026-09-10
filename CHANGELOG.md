@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.39.1] - 2026-09-10
+
+### Fixed
+- The footer and the search-engine data said the Nairobi office opens
+  at 08:00 and closes for the weekend. It opens at 09:00 and is open
+  on Saturday, which is what the Google Business Profile has been
+  telling customers all along. Anyone who read the site and rang on a
+  Saturday assumed we were shut.
+- The footer turned those hours into words by substituting one exact
+  string, so changing the days would have printed the raw notation —
+  "Mo-Sa 09:00-18:00" — on the page. It is now derived from the hours
+  themselves.
+
 ## [1.39.0] - 2026-09-10
 
 ### Added
@@ -1836,7 +1849,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.39.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.39.1...HEAD
+[1.39.1]: https://github.com/tasiamah/goldstay/compare/v1.39.0...v1.39.1
 [1.39.0]: https://github.com/tasiamah/goldstay/compare/v1.38.1...v1.39.0
 [1.38.1]: https://github.com/tasiamah/goldstay/compare/v1.38.0...v1.38.1
 [1.38.0]: https://github.com/tasiamah/goldstay/compare/v1.37.0...v1.38.0
