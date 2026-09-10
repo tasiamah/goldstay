@@ -24,8 +24,6 @@ import {
   PropertyReadinessSummary,
 } from "@/components/client/PropertyReadinessBadge";
 import { computePropertyReadiness } from "@/lib/client/property-readiness";
-import { computeSetupChecklist } from "@/lib/client/setup-status";
-import { listPayoutMethodsFor } from "@/lib/payouts";
 import {
   OccupancyCalendar,
   clampHeatmapMonths,
@@ -101,35 +99,11 @@ export default async function ClientPropertyDetailPage({
 
   if (!property) notFound();
 
-  // Setup completeness drives the readiness badge below. Two cheap
-  // reads — same shape the dashboard uses — so the property header
-  // can show "what's missing" without a navigation back to /client.
-  const [payoutMethods, kycCounts] = await Promise.all([
-    listPayoutMethodsFor(client.id, { includeArchived: false }),
-    prisma.document.groupBy({
-      by: ["kind"],
-      where: {
-        clientId: client.id,
-        kind: { in: ["ID_DOCUMENT", "PROOF_OF_PAYOUT_ACCOUNT"] },
-      },
-      _count: { _all: true },
-    }),
-  ]);
-  const kycByKind = Object.fromEntries(
-    kycCounts.map((c) => [c.kind, c._count._all]),
-  );
-  const setupChecklist = computeSetupChecklist({
-    client: {
-      fullName: client.fullName,
-      phone: client.phone,
-      address: client.address,
-      entityType: client.entityType,
-      companyName: client.companyName,
-    },
-    hasIdDocument: (kycByKind.ID_DOCUMENT ?? 0) > 0,
-    hasProofOfAccount: (kycByKind.PROOF_OF_PAYOUT_ACCOUNT ?? 0) > 0,
-    payoutMethodCount: payoutMethods.length,
-  });
+  // The account checklist used to be read here to feed the readiness
+  // badge, at the cost of two queries on every property page load. It
+  // no longer gates a listing, so the reads went with it. The
+  // checklist still lives on the dashboard, where it belongs: it is
+  // about getting the client paid, not about getting the flat let.
 
   const olderBookingCount =
     heatmapMonthsBack < HEATMAP_MAX_MONTHS
@@ -179,7 +153,6 @@ export default async function ClientPropertyDetailPage({
     propertyStatus: property.status,
     hasPendingAgreement:
       latestAgreement != null && latestAgreement.status === "SENT",
-    setupComplete: setupChecklist.doneCount === setupChecklist.totalCount,
   });
 
   return (

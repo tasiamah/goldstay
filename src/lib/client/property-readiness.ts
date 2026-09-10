@@ -6,26 +6,35 @@
 // real-world blockers a client can act on (or wait on) so the UI
 // can display them inline rather than leaving the client to guess.
 //
-// Three possible blockers, in the order a client would tackle them:
+// Two possible blockers:
 //
-//   1. setup            — client hasn't finished the 3-step account
-//                          checklist (details / legal / bank).
-//   2. agreement        — Goldstay has issued a management agreement
+//   1. agreement        — Goldstay has issued a management agreement
 //                          for this property and the client hasn't
-//                          signed it yet.
-//   3. goldstay_review  — client's side is done but Goldstay hasn't
-//                          flipped the property to ACTIVE yet (e.g.
-//                          waiting on title-deed verification, photo
-//                          shoot, OTA listing setup).
+//                          signed it yet. This is the only thing that
+//                          holds a listing back.
+//   2. goldstay_review  — signed, but not flipped to ACTIVE yet. Rare
+//                          now that acceptance activates the property
+//                          automatically; kept for properties that
+//                          predate that and for the moments between.
+//
+// The account checklist (details / legal / bank) used to be listed
+// here as blocker one, above the agreement. It was never true: the
+// admin gate is decidePropertyGoLive, which takes agreement statuses
+// and nothing else, and the document requirement that once existed
+// was deliberately removed. Showing it told clients their listing was
+// waiting on a KRA PIN and a bank account when it was not, and the
+// practical cost was momentum — owners who take weeks to produce an
+// ID were sitting on an empty property that could have been earning.
+//
+// Bank details are still needed, for paying the client rather than
+// for letting the property, and the dashboard already carries the
+// setup checklist for that. It just does not belong on a property.
 //
 // Pure with respect to its inputs — easy to unit-test.
 
 import type { PropertyStatus } from "@prisma/client";
 
-export type ReadinessBlockerKey =
-  | "setup"
-  | "agreement"
-  | "goldstay_review";
+export type ReadinessBlockerKey = "agreement" | "goldstay_review";
 
 export type ReadinessBlocker = {
   key: ReadinessBlockerKey;
@@ -51,9 +60,6 @@ export type ReadinessInputs = {
   // Whether this specific property has a management agreement in
   // SENT state awaiting the client's signature. Drives blocker #2.
   hasPendingAgreement: boolean;
-  // Client-wide setup completeness. Same number the dashboard banner
-  // uses; we don't recompute here so a single source of truth.
-  setupComplete: boolean;
 };
 
 export function computePropertyReadiness(
@@ -70,13 +76,6 @@ export function computePropertyReadiness(
   }
 
   const blockers: ReadinessBlocker[] = [];
-  if (!inputs.setupComplete) {
-    blockers.push({
-      key: "setup",
-      label: "Finish your account setup",
-      href: "/client",
-    });
-  }
   if (inputs.hasPendingAgreement) {
     blockers.push({
       key: "agreement",

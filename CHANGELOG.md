@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.47.0] - 2026-09-10
+
+### Changed
+- A property now goes live the moment its client accepts the management
+  agreement, instead of waiting for someone to open the property in admin
+  and press a button. The rule itself has not moved: acceptance was always
+  the only requirement. It just had to be applied by hand, so a signature
+  in the evening sat until an operator noticed. Three properties were
+  found sitting in onboarding with signed agreements, one of them already
+  taking bookings, and have been set live.
+- The client portal no longer tells an owner their listing is waiting on
+  their account setup. Finishing details, ID and bank account was shown as
+  the first thing blocking a property, above the agreement, and it never
+  blocked anything: the go-live check reads agreement status and nothing
+  else. Bank details are needed to pay a client rather than to let their
+  property, and the dashboard still asks for them there. The practical
+  cost of the old wording was owners who took weeks over an ID sitting on
+  an empty flat that could have been earning.
+
+### Removed
+- Two database queries per client property page. They existed only to work
+  out account-setup completeness for a badge that no longer depends on it.
+
 ## [1.46.0] - 2026-09-10
 
 ### Added
@@ -1989,6 +2012,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.47.0]: https://github.com/tasiamah/goldstay/compare/v1.46.0...v1.47.0
 [1.46.0]: https://github.com/tasiamah/goldstay/compare/v1.45.1...v1.46.0
 [1.45.1]: https://github.com/tasiamah/goldstay/compare/v1.45.0...v1.45.1
 [1.45.0]: https://github.com/tasiamah/goldstay/compare/v1.44.0...v1.45.0

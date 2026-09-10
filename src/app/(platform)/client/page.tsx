@@ -441,7 +441,6 @@ export default async function ClientDashboardPage() {
               const readiness = computePropertyReadiness({
                 propertyStatus: p.status,
                 hasPendingAgreement,
-                setupComplete,
               });
               return (
                 <li key={p.id} className="py-3">

@@ -9,6 +9,7 @@ import { readImpersonationCookie } from "@/lib/admin/impersonation";
 import { newAcceptanceReference } from "@/lib/agreements/reference";
 import { notifyTeamOfAcceptance } from "@/lib/agreements/notify";
 import { revokeAgreementShare } from "@/lib/agreements/share";
+import { activatePropertyOnAcceptance } from "@/lib/properties/activate";
 import { recordAudit } from "@/lib/audit";
 
 export type SignAgreementResult =
@@ -144,6 +145,16 @@ export async function signAgreementAction(
       acceptanceReference,
       ip,
     },
+  });
+
+  // Acceptance is the only thing standing between a property and a
+  // live listing, so apply it here rather than leaving it for an
+  // operator to spot. Runs before the revalidate calls below so the
+  // pages they refresh already show the new status.
+  await activatePropertyOnAcceptance({
+    propertyId: agreement.propertyId,
+    clientId: client.id,
+    actorEmail: client.email,
   });
 
   revalidatePath("/client");
