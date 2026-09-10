@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   H3,
   LI,
   Lede,
@@ -46,6 +47,25 @@ export default function Article() {
         which layers your prospective property has, what each
         one is for, and how to read the underlying accounts.
       </Lede>
+
+      <KeySummary
+        question="What is the difference between service charge and HOA fees in Nairobi?"
+        answer="They are separate layers and a property inside a gated estate can carry both. Apartment service charge is paid to the block's management committee or managing agent and runs the building itself: cleaning, security, lifts, bulk water, generator fuel, external repairs and the reserve fund. For a quality two bedroom in Nairobi that is typically KES 12,000 to KES 25,000 a month. The HOA or estate management fee is a second charge paid to the estate where the block sits inside a larger development such as Garden City, Two Rivers, Tatu City or Migaa, and it covers what is outside your building: estate roads, perimeter security, gatehouses, communal water and sewer mains, landscaping and any club facilities. That layer typically runs KES 4,000 to KES 15,000 per unit per month. A well-run scheme collects from 92 to 98 percent of owners and holds 9 to 12 months of service charge in reserve. Managing agent fees above 15 percent of the levy, and increases of 30 percent year on year while rents are flat, are the signals worth checking the accounts over."
+        facts={[
+          {
+            label: "Apartment service charge",
+            value: "KES 12,000 to 25,000 a month, quality 2 bed",
+          },
+          {
+            label: "HOA or estate fee",
+            value: "KES 4,000 to 15,000 per unit per month",
+          },
+          { label: "Healthy collection rate", value: "92% to 98% of owners" },
+          { label: "Healthy reserve", value: "9 to 12 months of service charge" },
+          { label: "Agent fee warning sign", value: "Above 15% of the levy" },
+          { label: "Ask before you buy", value: "Which layers this property has" },
+        ]}
+      />
 
       <H2 id="three-layers">The three fee layers in Nairobi residential property</H2>
 

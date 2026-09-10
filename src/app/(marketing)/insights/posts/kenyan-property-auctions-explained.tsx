@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   H3,
   LI,
   Lede,
@@ -50,6 +51,20 @@ export default function Article() {
         real disasters for unprepared ones. Here is
         the honest 2026 guide.
       </Lede>
+
+      <KeySummary
+        question="How do property auctions work in Kenya, and are they worth it?"
+        answer="A bank issues statutory notices on a defaulting borrower, typically three months under the Land Act, sets a reserve based on a forced-sale valuation, advertises, and sells to the highest bidder above that reserve. The winner pays a 25 percent deposit on the fall of the hammer and the remaining 75 percent within 30 to 90 days, so the money has to be ready before you raise your hand. The discounts are real but smaller than the headlines: roughly 10 to 25 percent below market on a distressed apartment, 5 to 20 percent on a premium home, 15 to 35 percent on land and up to 40 percent on industrial property. The deepest discounts are attached to the worst problems. Property is sold as is, where is, so a defective title stays defective, and the biggest single risk is an occupant who will not leave, leaving the buyer to run an eviction that takes months."
+        facts={[
+          { label: "Deposit on the hammer", value: "25%, immediately" },
+          { label: "Balance", value: "75% within 30 to 90 days" },
+          { label: "Distressed apartment", value: "10% to 25% below market" },
+          { label: "Premium home", value: "5% to 20% below market" },
+          { label: "Land", value: "15% to 35% below market" },
+          { label: "Sold", value: "As is, where is. Title is not cleansed" },
+          { label: "Biggest risk", value: "Occupants who refuse to vacate" },
+        ]}
+      />
 
       <H2 id="why-auction">Why properties end up at auction</H2>
 

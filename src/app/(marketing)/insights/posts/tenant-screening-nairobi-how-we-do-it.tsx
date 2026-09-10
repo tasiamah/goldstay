@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   H3,
   LI,
   Lede,
@@ -45,6 +46,19 @@ export default function Article() {
         offered in cash up front is more often a red flag
         than an opportunity.
       </Lede>
+
+      <KeySummary
+        question="How do you screen a tenant in Nairobi?"
+        answer="With documents you verify rather than documents you are handed. A CRB credit report costs KES 200 to KES 500 per check and shows any defaults, which makes it the cheapest thing a landlord can do and the one most often skipped. A pay slip is worth less than it looks: around 5 percent of those handed to us in any given quarter are either fake or for a job that has already ended, so income gets confirmed with the employer rather than read off the document. Goldstay runs eight checks on every prospective tenant in Nairobi and turns down roughly 30 to 40 percent of them. The economics are one-sided: screening costs a few hundred shillings and a week, while an eviction takes 90 days at best and up to 18 months contested. Six months of rent offered in cash up front is usually a warning rather than an opportunity."
+        facts={[
+          { label: "CRB credit check", value: "KES 200 to 500 per applicant" },
+          { label: "Checks run", value: "Eight, on every applicant" },
+          { label: "Rejection rate", value: "Roughly 30% to 40%" },
+          { label: "Fake or stale pay slips", value: "About 5% of those shown" },
+          { label: "Cost of getting it wrong", value: "90 days to 18 months" },
+          { label: "Common red flag", value: "Six months' rent, cash, up front" },
+        ]}
+      />
 
       <H2 id="why-it-matters">Why screening matters more in Kenya</H2>
 

@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   LI,
   Lede,
   P,
@@ -47,6 +48,19 @@ export default function Article() {
         tenant rights, the legal framework
         and the practical response.
       </Lede>
+
+      <KeySummary
+        question="Can a landlord enter without notice in Kenya?"
+        answer="Only in a genuine emergency. A tenant has a right to quiet enjoyment of the property, and a landlord must give reasonable notice before entering, which in practice means 24 to 48 hours. Emergencies that justify immediate entry are things like a burst pipe, a fire risk, a gas leak or an immediate structural danger. What does not qualify is a routine inspection, showing the place to prospective tenants, repair work that could have been scheduled, or simply checking up on the tenant. The proportionate response to a first breach is a written note asking for notice in future and citing the notice clause in the lease. If it continues, escalate in writing, and then to the Rent Restriction Tribunal where the tenancy falls within its scope, or the small claims court for damages or an injunction where it does not."
+        facts={[
+          { label: "Notice required", value: "Reasonable, typically 24 to 48 hours" },
+          { label: "Emergency entry", value: "Burst pipe, fire, gas, structural" },
+          { label: "Not an emergency", value: "Inspections, viewings, checking up" },
+          { label: "First response", value: "Written note citing the lease clause" },
+          { label: "If it continues", value: "Tribunal, or small claims court" },
+          { label: "Underlying right", value: "Quiet enjoyment of the property" },
+        ]}
+      />
 
       <H2 id="legal">The legal framework</H2>
 

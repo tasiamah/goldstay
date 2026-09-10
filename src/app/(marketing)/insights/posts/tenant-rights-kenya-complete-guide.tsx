@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   LI,
   Lede,
   P,
@@ -51,6 +52,32 @@ export default function Article() {
         is the honest 2026 plain-English
         guide.
       </Lede>
+
+      <KeySummary
+        question="What rights does a tenant have in Kenya?"
+        answer="A residential tenant cannot be evicted without the court process, cannot have the locks changed on them, and is entitled to reasonable notice before the landlord enters, which in practice means 24 to 48 hours for anything that is not an emergency. Entry without notice for a routine inspection is not permitted. The deposit is refundable on exit less deductions that must be documented with photographs and itemised invoices, not asserted. How much further the protection goes depends on the rent: the Rent Restriction Act covers most residential lettings below a threshold that is revised periodically, and within its scope the rent cannot be raised without tribunal approval and deposit disputes can go to the Rent Restriction Tribunal. Premium properties usually fall outside it, and there the lease governs."
+        facts={[
+          { label: "Entry notice", value: "24 to 48 hours, non-emergency" },
+          { label: "Routine inspection", value: "No entry without notice" },
+          {
+            label: "Deposit",
+            value: "Refundable less documented deductions",
+          },
+          {
+            label: "Rent increase, in scope",
+            value: "Tribunal approval required",
+          },
+          {
+            label: "Rent increase, out of scope",
+            value: "Per the lease terms",
+          },
+          {
+            label: "Disputes",
+            value: "Rent Restriction Tribunal, or small claims",
+          },
+          { label: "Eviction", value: "Court process only, never self-help" },
+        ]}
+      />
 
       <H2 id="general">General tenant rights</H2>
 

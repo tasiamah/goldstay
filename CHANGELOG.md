@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.43.0] - 2026-09-10
+
+### Added
+- "In short" summaries on six more articles that already rank: rental
+  income tax, tenant rights, tenant screening, entry without notice,
+  HOA and estate fees, and property auctions. Ten of the thirty-eight
+  top-ten articles now carry one.
+
+### Fixed
+- The tenant screening guide's summary first said a large share of pay
+  slips are fake. The article says around 5 percent, which is a
+  different claim and the one supported by what we actually see.
+
 ## [1.42.0] - 2026-09-10
 
 ### Added
@@ -1902,7 +1915,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.42.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.43.0...HEAD
+[1.43.0]: https://github.com/tasiamah/goldstay/compare/v1.42.0...v1.43.0
 [1.42.0]: https://github.com/tasiamah/goldstay/compare/v1.41.0...v1.42.0
 [1.41.0]: https://github.com/tasiamah/goldstay/compare/v1.40.0...v1.41.0
 [1.40.0]: https://github.com/tasiamah/goldstay/compare/v1.39.1...v1.40.0

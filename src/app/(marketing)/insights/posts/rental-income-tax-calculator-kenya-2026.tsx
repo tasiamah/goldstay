@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  KeySummary,
   LI,
   Lede,
   P,
@@ -48,6 +49,25 @@ export default function Article() {
         regime is better. Here are the honest
         2026 worked examples.
       </Lede>
+
+      <KeySummary
+        question="How is rental income taxed in Kenya in 2026?"
+        answer="Two regimes are available to a residential landlord. Monthly Rental Income tax is 7.5 percent of gross rent with no deductions allowed, so on KES 1,200,000 of annual rent the bill is KES 90,000 whatever your costs were. The normal income tax regime instead taxes profit at progressive rates and lets you deduct legitimate expenses, including mortgage interest, which is why a geared landlord often pays less under it: on that same KES 1,200,000 with KES 700,000 of mortgage interest, the taxable figure collapses. Most landlords default to MRI because it is simpler, and for an unmortgaged property that is usually right. The regime is a choice worth working out rather than accepting, and the arithmetic turns mainly on whether you carry debt on the property."
+        facts={[
+          { label: "MRI rate", value: "7.5% of gross rent, no deductions" },
+          {
+            label: "Normal regime",
+            value: "Progressive rates on profit, deductions allowed",
+          },
+          { label: "MRI on KES 1.2m rent", value: "KES 90,000" },
+          { label: "MRI on KES 600k rent", value: "KES 45,000" },
+          {
+            label: "What tips the choice",
+            value: "Mortgage interest and real costs",
+          },
+          { label: "Whose liability", value: "The landlord's, not the agent's" },
+        ]}
+      />
 
       <H2 id="mri">MRI in summary</H2>
 
