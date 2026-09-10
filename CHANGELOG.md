@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.43.1] - 2026-09-10
+
+### Fixed
+- The page for landlords replacing their manager had no links from
+  any of the 379 articles, only the sitewide footer, so the two
+  articles read by exactly that person led nowhere useful. Both now
+  link to it where the reader is deciding: at "line up the new
+  manager first", and after the handover terms.
+
 ## [1.43.0] - 2026-09-10
 
 ### Added
@@ -1915,7 +1924,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.43.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.43.1...HEAD
+[1.43.1]: https://github.com/tasiamah/goldstay/compare/v1.43.0...v1.43.1
 [1.43.0]: https://github.com/tasiamah/goldstay/compare/v1.42.0...v1.43.0
 [1.42.0]: https://github.com/tasiamah/goldstay/compare/v1.41.0...v1.42.0
 [1.41.0]: https://github.com/tasiamah/goldstay/compare/v1.40.0...v1.41.0

@@ -324,7 +324,16 @@ export default function Article() {
         We charge nothing for onboarding and nothing to leave, which is
         deliberate: an agent with an exit fee has a reason to make leaving
         unpleasant, and having been on the receiving end of a hundred of these
-        handovers, I would rather be the firm that does not.
+        handovers, I would rather be the firm that does not. The full sequence,
+        including what we do in the first fortnight and what we need from you,
+        is on{" "}
+        <Link
+          href="/change-property-manager"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          changing property manager
+        </Link>
+        .
       </P>
 
       <Callout title="Want us to handle the handover?">

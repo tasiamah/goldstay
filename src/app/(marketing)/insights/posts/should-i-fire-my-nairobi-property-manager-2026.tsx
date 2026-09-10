@@ -231,7 +231,15 @@ export default function Article() {
           management agreement, agree the start date, and get
           their bank details in place before you notify the
           incumbent. Doing it the other way around leaves you
-          in a gap.
+          in a gap. If you are considering us for the job,{" "}
+          <Link
+            href="/change-property-manager"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            changing property manager
+          </Link>{" "}
+          sets out how we take a property over mid-tenancy and
+          what we need from the outgoing agent.
         </LI>
         <LI>
           Give notice in writing (email is fine unless the
