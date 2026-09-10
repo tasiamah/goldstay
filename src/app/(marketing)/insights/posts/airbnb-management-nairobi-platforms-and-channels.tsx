@@ -344,11 +344,35 @@ export default function Article() {
 
       <P>
         We list on Airbnb and Booking.com, and we build a direct route for
-        repeat guests. We do not list on Expedia or Vrbo, because for the units
-        we run in Nairobi the demand is not there yet, and we would rather run
-        two channels properly than five badly. Our fee is 20 percent of the
-        revenue collected, with no setup fee, no listing fee and no exit fee,
-        and the statement shows platform fees and our fee as separate lines.
+        repeat guests. We signed with Expedia Group in September 2026 and no
+        unit of ours is live there yet, so treat it as a channel we can open
+        rather than one with a track record behind it. We still do not list on
+        Vrbo. Our fee is 20 percent of the revenue collected, with no setup
+        fee, no listing fee and no exit fee, and the statement shows platform
+        fees and our fee as separate lines.
+      </P>
+
+      <P>
+        Expedia is also less of a single decision than it looks, because the
+        group runs two separate sign-up routes and the property type decides
+        which one you get. That, and the refund clause worth reading before you
+        list, is in{" "}
+        <Link
+          href="/insights/expedia-nairobi-short-let-hosts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what listing a Nairobi short let on Expedia means
+        </Link>
+        .
+      </P>
+
+      <P>
+        An earlier version of this article said we did not list on Expedia and
+        would rather run two channels properly than five badly. The second half
+        of that is still what we think, and it is the reason a third channel
+        gets opened per property rather than switched on across the portfolio.
+        The first half stopped being true when the agreement was signed, and
+        leaving it up would have been the easier option.
       </P>
 
       <P>

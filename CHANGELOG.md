@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.45.0] - 2026-09-10
+
+### Added
+- Expedia is now a booking channel the platform understands. Until now the
+  only channels that existed were Airbnb, Booking.com, Vrbo and direct, so an
+  Expedia stay could not be recorded at all and would have had to be filed
+  under another channel to get a statement out. Staff can now record an
+  Expedia booking and attach an iCal feed for it like any other channel.
+- A guide to what listing a Nairobi short let on Expedia actually involves:
+  the two separate sign-up routes and how the property type decides which one
+  you get, why no Kenyan commission band is published anywhere, and the force
+  majeure clause that can override a strict cancellation policy.
+
+### Changed
+- Airbnb management and short-term rental management now list Expedia among
+  the channels a property can be launched on.
+
+### Fixed
+- The platforms guide stated we do not list on Expedia, which stopped being
+  true when the agreement was signed. It now says Expedia is signed but that
+  no unit is live there yet, rather than quietly dropping the old claim.
+- Channel labels existed in two places, `booking-sources.ts` and
+  `bookings.ts`, and adding Expedia updated one and not the other. The
+  duplicate is gone and three files that hardcoded the channel list as a
+  string union now use the enum, so adding the next channel is the one-line
+  change the code always claimed it was.
+
 ## [1.44.0] - 2026-09-10
 
 ### Added
@@ -1935,6 +1962,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.44.0...HEAD
+[1.45.0]: https://github.com/tasiamah/goldstay/compare/v1.44.0...v1.45.0
 [1.44.0]: https://github.com/tasiamah/goldstay/compare/v1.43.1...v1.44.0
 [1.43.1]: https://github.com/tasiamah/goldstay/compare/v1.43.0...v1.43.1
 [1.43.0]: https://github.com/tasiamah/goldstay/compare/v1.42.0...v1.43.0

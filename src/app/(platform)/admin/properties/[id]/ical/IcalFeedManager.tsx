@@ -1,4 +1,5 @@
 "use client";
+import type { BookingSource } from "@prisma/client";
 
 import { useState, useTransition } from "react";
 import { useFormState, useFormStatus } from "react-dom";
@@ -12,7 +13,7 @@ import { ACTIVE_OTA_SOURCES, SOURCE_LABEL } from "@/lib/booking-sources";
 
 type Feed = {
   id: string;
-  source: "AIRBNB" | "BOOKING_COM" | "VRBO" | "DIRECT";
+  source: BookingSource;
   url: string;
   lastSyncedAt: Date | null;
   lastSuccessAt: Date | null;
@@ -143,7 +144,7 @@ function AddFeedForm({
   availableSources,
 }: {
   propertyId: string;
-  availableSources: ReadonlyArray<"AIRBNB" | "BOOKING_COM" | "VRBO" | "DIRECT">;
+  availableSources: ReadonlyArray<BookingSource>;
 }) {
   const [state, formAction] = useFormState(
     upsertIcalFeedAction,

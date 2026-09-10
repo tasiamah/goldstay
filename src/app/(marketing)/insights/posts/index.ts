@@ -717,6 +717,9 @@ import AirbnbVsBookingComNairobi, {
 import AirbnbManagementNairobiPlatformsAndChannels, {
   meta as airbnbManagementNairobiPlatformsAndChannelsMeta,
 } from "./airbnb-management-nairobi-platforms-and-channels";
+import ExpediaNairobiShortLetHosts, {
+  meta as expediaNairobiShortLetHostsMeta,
+} from "./expedia-nairobi-short-let-hosts";
 import EnrogueKileleshwaHandoverGuide, {
   meta as enrogueKileleshwaHandoverGuideMeta,
 } from "./enrogue-kileleshwa-handover-guide";
@@ -1591,6 +1594,10 @@ export const posts: readonly Post[] = [
   {
     meta: airbnbManagementNairobiPlatformsAndChannelsMeta,
     Component: AirbnbManagementNairobiPlatformsAndChannels,
+  },
+  {
+    meta: expediaNairobiShortLetHostsMeta,
+    Component: ExpediaNairobiShortLetHosts,
   },
   {
     meta: enrogueKileleshwaHandoverGuideMeta,

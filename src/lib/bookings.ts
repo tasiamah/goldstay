@@ -18,9 +18,12 @@ export const BOOKING_STATUS_CLASSES: Record<BookingStatus, string> = {
   CANCELLED: "bg-stone-100 text-stone-600 border-stone-200",
 };
 
-export const BOOKING_SOURCE_LABEL: Record<BookingSource, string> = {
-  AIRBNB: "Airbnb",
-  BOOKING_COM: "Booking.com",
-  VRBO: "Vrbo",
-  DIRECT: "Direct",
-};
+// Channel labels live in booking-sources.ts, next to the decision about
+// which channels are switched on, and are re-exported here only so the
+// long-standing import path keeps working.
+//
+// This was a second copy of the same map until Sep 2026, when adding
+// Expedia updated one and not the other and the build caught it. Two
+// maps over one enum will always drift; the compiler only notices
+// because both are typed Record<BookingSource, string>.
+export { SOURCE_LABEL as BOOKING_SOURCE_LABEL } from "./booking-sources";

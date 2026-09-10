@@ -1,4 +1,5 @@
 "use client";
+import type { BookingSource } from "@prisma/client";
 
 import { useFormState, useFormStatus } from "react-dom";
 import type { BookingActionResult } from "./actions";
@@ -14,7 +15,7 @@ type FormAction = (
 
 type Defaults = {
   propertyId: string;
-  source?: "AIRBNB" | "BOOKING_COM" | "VRBO" | "DIRECT";
+  source?: BookingSource;
   externalId?: string | null;
   guestName?: string;
   guestEmail?: string | null;

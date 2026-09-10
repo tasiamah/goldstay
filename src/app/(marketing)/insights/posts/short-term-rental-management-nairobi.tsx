@@ -319,7 +319,8 @@ export default function Article() {
       <P>
         On your account rather than ours, so the listing, the review history
         and the guest relationships stay yours and you can remove us at any
-        time. We list across Airbnb, Booking.com and direct, quote corporate
+        time. We list across Airbnb, Booking.com, Expedia and direct, quote
+        corporate
         bookings against invoice, price weekly, and report gross revenue,
         every deduction itemised, occupancy and average nightly rate monthly.
         The fee is 20 percent of revenue with no setup fee, no commission taken

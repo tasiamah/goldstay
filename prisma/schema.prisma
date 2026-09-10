@@ -44,6 +44,13 @@ enum PropertyType {
 enum BookingSource {
   AIRBNB
   BOOKING_COM
+  // Expedia Group. One agreement distributes across Expedia, Hotels.com
+  // and the rest of the network, so a stay booked anywhere in it lands
+  // here. Vrbo is the exception: it is the same group but has its own
+  // enum value below, because it charges the guest a service fee where
+  // the others do not and a payout reconciled against the wrong fee
+  // model is a support ticket, not a rounding error.
+  EXPEDIA
   VRBO
   DIRECT
 }

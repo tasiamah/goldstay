@@ -162,7 +162,7 @@ const pillars = [
   {
     icon: Camera,
     title: "Listing & Photography",
-    body: "Professional photography, copywriting and listing launch across Airbnb, Booking.com and direct booking channels.",
+    body: "Professional photography, copywriting and listing launch across Airbnb, Booking.com, Expedia and direct booking channels.",
   },
   {
     icon: LineChart,

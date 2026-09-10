@@ -1,0 +1,16 @@
+-- Expedia as a booking source.
+--
+-- Until now the platform could not record an Expedia stay at all: the
+-- enum held AIRBNB, BOOKING_COM, VRBO and DIRECT, and nothing else.
+-- That was accurate while we ran two channels, and stopped being
+-- accurate the moment we signed with Expedia Group.
+--
+-- Postgres will not let a value added to an enum be used in the same
+-- transaction block that adds it, so this migration only adds it.
+-- Nothing reads the new value until the application deploy that
+-- follows, which is the order AGENTS.md requires anyway: migration
+-- first, then the code that depends on it.
+--
+-- IF NOT EXISTS so a re-run against a database that already has the
+-- value is a no-op rather than a failure.
+ALTER TYPE "BookingSource" ADD VALUE IF NOT EXISTS 'EXPEDIA';
