@@ -1,3 +1,15 @@
+// The Google Business Profile for Goldstay, as a Maps place.
+//
+// Hoisted out of the `site` literal below because two fields need it
+// and one of them, `sameAs`, is declared before the place would be.
+//
+// The `?q=place_id:` form rather than the URL the Maps address bar
+// produces: that one carries a viewport, a zoom level and a session
+// token, none of which identify anything, and it changes every time
+// somebody copies it. This form is the stable name for the place.
+const googleMapsPlaceId = "ChIJfSiLsYEELIMRHhnw9yeAthg";
+const googleMapsUrl = `https://www.google.com/maps/place/?q=place_id:${googleMapsPlaceId}`;
+
 export const site = {
   name: "Goldstay",
   // The host every absolute URL we emit is built from: canonicals,
@@ -52,24 +64,20 @@ export const site = {
   // be true in that stricter sense.
   //
   // Add the LinkedIn back the day there is a /company/ page to point
-  // at, and add the Google Business Profile here too once it is
-  // verified, since that is the highest-value corroboration available.
-  sameAs: ["https://instagram.com/goldstay.ke"],
-  // The Google Maps place for the Nairobi office.
+  // at.
   //
-  // Recorded here rather than added to `sameAs` above, deliberately.
-  // A place existing on Maps is not the same thing as a Business
-  // Profile claimed and verified by us — Google generates unclaimed
-  // listings from other signals, and an unclaimed listing cannot be
-  // categorised, cannot properly collect reviews and does not compete
-  // in the local pack. Until we can confirm the profile is verified
-  // and ours, `hasMap` is the honest claim: here is a map of this
-  // address. `sameAs` asserts identity, and is a stronger statement
-  // than we can currently support. Promote it the day verification
-  // is confirmed.
-  googleMapsPlaceId: "ChIJfSiLsYEELIMRHhnw9yeAthg",
-  googleMapsUrl:
-    "https://www.google.com/maps/place/?q=place_id:ChIJfSiLsYEELIMRHhnw9yeAthg",
+  // The Maps place is asserted here as of Sep 2026. It was held out
+  // until then because a place existing on Maps is not the same thing
+  // as a profile claimed by us — Google generates unclaimed listings
+  // from other signals, and identity is too strong a claim to make
+  // about one. The profile turned out to be claimed and carrying
+  // reviews, and its feature ID decodes to the same place recorded
+  // below, so the claim is now one we can support.
+  sameAs: ["https://instagram.com/goldstay.ke", googleMapsUrl],
+  // The same place again, for `hasMap`, which says something weaker
+  // and still useful: here is a map of this business.
+  googleMapsPlaceId,
+  googleMapsUrl,
   domains: {
     main: "goldstay.com",
     nairobi: "goldstay.co.ke",

@@ -21,6 +21,16 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.39.0] - 2026-09-10
+
+### Added
+- The site now tells search engines that the Goldstay on Google Maps
+  is this Goldstay. The profile turned out to be claimed and holding
+  reviews, which is the confirmation the schema had been waiting for
+  since it was written; until then the map link said only "here is a
+  map of this address", which cannot lend the reviews or the local
+  listing to the site.
+
 ## [1.38.1] - 2026-09-10
 
 ### Fixed
@@ -1826,7 +1836,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.38.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.39.0...HEAD
+[1.39.0]: https://github.com/tasiamah/goldstay/compare/v1.38.1...v1.39.0
 [1.38.1]: https://github.com/tasiamah/goldstay/compare/v1.38.0...v1.38.1
 [1.38.0]: https://github.com/tasiamah/goldstay/compare/v1.37.0...v1.38.0
 [1.37.0]: https://github.com/tasiamah/goldstay/compare/v1.36.0...v1.37.0

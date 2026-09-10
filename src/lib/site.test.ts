@@ -475,4 +475,21 @@ describe("site.sameAs", () => {
   it("has no duplicates", () => {
     expect(new Set(site.sameAs).size).toBe(site.sameAs.length);
   });
+
+  // The Maps URL is the one entry a person is likely to "update" by
+  // pasting what the Maps address bar gave them. That URL carries a
+  // viewport, a zoom level and a session token, so it differs every
+  // time it is copied and names a view rather than a place. Two
+  // copies of it would also read as two different profiles.
+  it("names the Maps place by its stable place ID", () => {
+    expect(site.googleMapsUrl).toBe(
+      `https://www.google.com/maps/place/?q=place_id:${site.googleMapsPlaceId}`,
+    );
+    expect(site.sameAs).toContain(site.googleMapsUrl);
+  });
+
+  it("claims the Maps place exactly once", () => {
+    const maps = site.sameAs.filter((u) => u.includes("google.com/maps"));
+    expect(maps).toEqual([site.googleMapsUrl]);
+  });
 });
