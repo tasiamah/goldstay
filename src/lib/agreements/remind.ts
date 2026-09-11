@@ -22,9 +22,10 @@ import { recordAudit, type AuditActor } from "@/lib/audit";
 import { createTask } from "@/lib/tasks";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
+  emailStepLabel,
   ESCALATION_STEP,
+  isEmailStep,
   isFollowUpStep,
-  LAST_EMAIL_STEP,
   planAgreementReminder,
   REMINDER_LADDER,
   timeZoneForCountry,
@@ -369,7 +370,7 @@ async function sendReminder(
         entity: "AGREEMENT",
         entityId: agreement.id,
         action: "agreement.reminder.sent",
-        summary: `Reminder ${step} of ${LAST_EMAIL_STEP} sent to ${client.email}`,
+        summary: `Reminder ${emailStepLabel(step)} sent to ${client.email}`,
         metadata: { step, propertyId: agreement.property.id, providerId },
       }),
     );
@@ -416,8 +417,12 @@ async function escalate(
   );
   const siteUrl = process.env.PUBLIC_SITE_URL || DEFAULT_SITE;
   const adminLink = `${siteUrl}/admin/properties/${agreement.property.id}`;
+  // By kind, not by `step <= LAST_EMAIL_STEP`. The email steps are 1,
+  // 2, 3, 4, 7, 8 with the handover at 5 sitting between them, so a
+  // threshold would count the handover itself as an email and report
+  // one more reminder than the client ever received.
   const emailsSent = agreement.reminders.filter(
-    (r) => r.status === "SENT" && r.step <= LAST_EMAIL_STEP,
+    (r) => r.status === "SENT" && isEmailStep(r.step),
   ).length;
 
   // 0 for the handover, then 1, 2, 3… for each weekly follow-up.

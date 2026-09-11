@@ -31,20 +31,31 @@ export type ReminderStep = {
 const HOURS = 1;
 const DAYS = 24 * HOURS;
 
-// 24h, 48h, 72h, 7 days, then a human on day 8.
+// 24h, 48h, 72h, then weekly on days 7, 14 and 21, then a human on
+// day 22.
 //
 // Front-loaded hard, because signature intent decays fast: a client who
 // has not signed within a day has usually lost the email rather than
 // decided against it, and that is the cheapest possible save. Three
 // daily emails catch almost all of those.
 //
-// Then it stops quickly, and that is the deliberate part. This used to
-// run 1/3/7/14 days with the handover on day 21, and the reason for
-// compressing it is not impatience — it is that the handover is the
-// step that actually converts. Somebody who has ignored four emails
-// about a contract is not going to read a fifth; they need a person.
-// Reaching that person on day 8 rather than day 21 is both more
-// aggressive and less email than the old ladder was.
+// The weekly tail is there because these are worth closing. A
+// management agreement is a multi-year relationship, so a client who
+// goes quiet for a fortnight and then signs is a good outcome, not a
+// nuisance — and three weekly emails is a bounded tail rather than a
+// drip, which is what keeps it off the sending domain's reputation.
+// The distinction that matters is not how many emails but whether the
+// sequence ends: this one does, on day 21, and then a person takes over.
+//
+// On the step numbers, which are not in chronological order and cannot
+// be. They are persisted, they are half of the unique index the runner
+// claims against, and a number that changes meaning silently
+// reinterprets rows already written — a step-5 row recorded when 5 was
+// the handover would be read as "the day-14 email already went out",
+// skipping it and never escalating. So 1 to 4 keep the meaning they
+// have always had, 5 stays the handover with only its timing moved, 6
+// is retired rather than reused, and the two new emails take 7 and 8.
+// Ordering comes from this array, never from the numbers.
 export const REMINDER_LADDER: readonly ReminderStep[] = [
   { step: 1, afterHours: 24 * HOURS, kind: "EMAIL" },
   { step: 2, afterHours: 48 * HOURS, kind: "EMAIL" },
@@ -53,11 +64,34 @@ export const REMINDER_LADDER: readonly ReminderStep[] = [
   // as a malfunction rather than as diligence, and the weekend falls
   // in here for most agreements.
   { step: 4, afterHours: 7 * DAYS, kind: "EMAIL" },
-  { step: 5, afterHours: 8 * DAYS, kind: "ESCALATION" },
+  { step: 7, afterHours: 14 * DAYS, kind: "EMAIL" },
+  { step: 8, afterHours: 21 * DAYS, kind: "EMAIL" },
+  // The day after the last email, not a week after it. By this point
+  // the property has been off the market for three weeks and the
+  // remaining question is not whether to chase but who does it.
+  { step: 5, afterHours: 22 * DAYS, kind: "ESCALATION" },
 ];
 
-export const LAST_EMAIL_STEP = 4;
+// The last email in the sequence, for the copy that has to know it is
+// the last one. Not a threshold: the email steps are 1, 2, 3, 4, 7, 8
+// and the escalation sits at 5 in between them, so anything asking
+// "is this an email" has to ask the ladder rather than compare numbers.
+export const LAST_EMAIL_STEP = 8;
 export const ESCALATION_STEP = 5;
+
+export function isEmailStep(step: number): boolean {
+  return REMINDER_LADDER.some((s) => s.step === step && s.kind === "EMAIL");
+}
+
+// "3 of 6", for an audit line a human reads. The step number is not the
+// position any more — step 7 is the fifth email — so anything phrased
+// as "reminder N of M" has to be given the position rather than the
+// identifier, or the timeline claims we sent a seventh of six.
+export function emailStepLabel(step: number): string {
+  const emails = REMINDER_LADDER.filter((s) => s.kind === "EMAIL");
+  const index = emails.findIndex((s) => s.step === step);
+  return index === -1 ? `step ${step}` : `${index + 1} of ${emails.length}`;
+}
 
 // After the handover, a task a week until somebody closes it.
 //
@@ -73,7 +107,13 @@ export const ESCALATION_STEP = 5;
 // who can see that a client has gone quiet for a reason and close it —
 // something a cron will never do.
 export const FOLLOW_UP_INTERVAL_HOURS = 7 * DAYS;
-export const FIRST_FOLLOW_UP_STEP = 6;
+
+// Starts at 20 rather than 9, leaving a gap above the emails. Step 6
+// was briefly the first follow-up before the weekly emails were added
+// and is retired rather than recycled, and the gap means another email
+// can be slotted into the sequence later without colliding with a
+// follow-up number already written to a row.
+export const FIRST_FOLLOW_UP_STEP = 20;
 
 // A year of weekly tasks. Not a real cadence decision — nobody is
 // signing in week 53 — but the generator below needs a bound, and an

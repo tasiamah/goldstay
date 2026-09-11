@@ -44,8 +44,10 @@ export type ReminderCopy = {
   footnote: string;
 };
 
-// Keyed by ladder step. Step 5 is the escalation and has no client
-// email, so it is absent here by design.
+// Keyed by ladder step, which is not the same as position in the
+// sequence: step 5 is the handover and has no client email, so it is
+// absent here by design and the two weekly emails after it are 7 and 8.
+// See the note on step numbering in reminder-schedule.ts.
 const COPY: Record<number, ReminderCopy> = {
   1: {
     subject: "Your management agreement is ready when you are",
@@ -70,9 +72,23 @@ const COPY: Record<number, ReminderCopy> = {
     footnote: "The property stays off the market until it is accepted.",
   },
   4: {
+    subject: "Still here whenever you are ready",
+    lead: "Your management agreement is still waiting, and there is no rush at our end — we just did not want it to disappear on you.",
+    body: "Everything in it is the same as when we sent it, and it stays valid until you accept it. If you would rather we held off for a while, reply and tell us when suits.",
+    cta: "Accept my agreement",
+    footnote: "The property goes on the market the day it is accepted.",
+  },
+  7: {
+    subject: "Would a quick call be easier?",
+    lead: "Your management agreement is still unsigned, so rather than send it over again, we thought we would offer to talk instead.",
+    body: "Fifteen minutes on a call is usually quicker than reading a contract, and you can ask about the commission or the notice period directly. Reply with a time that suits and we will ring you.",
+    cta: "Or read it here",
+    footnote: "Happy to answer anything by email too — just reply.",
+  },
+  8: {
     subject: "We will stop emailing after this one",
     lead: "This is the last email we will send about your management agreement.",
-    body: "Rather than fill your inbox, someone from the team will say hello on WhatsApp instead — it is an easier place to ask a quick question anyway.",
+    body: "Rather than fill your inbox, someone from the team will say hello on WhatsApp instead — an easier place for a quick question anyway.",
     cta: "Or accept it here now",
     footnote:
       "Prefer to talk it through first? Reply and we will arrange a time.",

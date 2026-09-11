@@ -21,6 +21,40 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.53.0] - 2026-09-11
+
+### Added
+- Two more reminder emails, on day 14 and day 21, so the sequence now runs
+  24h, 48h, 72h, day 7, day 14, day 21 before handing over to a human on day
+  22. A management agreement is a multi-year relationship, so a client who
+  goes quiet for a fortnight and then signs is a good outcome rather than a
+  nuisance, and the earlier version gave up emailing on day 7. What keeps
+  this off the sending domain's reputation is that the sequence still ends —
+  on day 21 — rather than dripping indefinitely.
+- The day-14 email offers a fifteen-minute call instead of resending the
+  contract, since talking is usually faster than reading one.
+
+### Changed
+- Step numbers are now deliberately out of chronological order: the ladder
+  reads 1, 2, 3, 4, 7, 8 with the handover at 5 sitting between two emails.
+  They are persisted and form half of the unique index the runner claims
+  against, so a number cannot change meaning — a step-5 row written when 5
+  was the handover would otherwise be read as "the day-14 email already went
+  out", skipping it and never escalating. 6 is retired rather than reused and
+  the weekly follow-up tasks moved to 20 and up, leaving room for another
+  email to be slotted in later without colliding with a row already written.
+- The "last email" framing moved from day 7 to day 21, and day 7 is now a
+  gentle check-in rather than a sign-off.
+
+### Fixed
+- Two places decided what a step was by comparing it to a threshold, which
+  breaks now that the handover sits numerically between two emails: the
+  escalation email would have counted the handover itself as a client email
+  and reported one more reminder than was ever sent, and the audit line would
+  have read "Reminder 7 of 6". Both now ask the ladder — `isEmailStep` and
+  `emailStepLabel` — and a test pins the numbering so the next edit sees why
+  it looks wrong.
+
 ## [1.52.1] - 2026-09-11
 
 ### Changed
@@ -2223,7 +2257,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.52.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.53.0...HEAD
+[1.53.0]: https://github.com/tasiamah/goldstay/compare/v1.52.1...v1.53.0
 [1.52.1]: https://github.com/tasiamah/goldstay/compare/v1.52.0...v1.52.1
 [1.52.0]: https://github.com/tasiamah/goldstay/compare/v1.51.0...v1.52.0
 [1.51.0]: https://github.com/tasiamah/goldstay/compare/v1.50.0...v1.51.0
