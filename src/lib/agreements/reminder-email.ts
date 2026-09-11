@@ -11,6 +11,14 @@
 // to read a longer version of reminder two, and the shrinking length is
 // itself a signal that this is the end of the road rather than the
 // start of a drip campaign.
+//
+// They count sends rather than days — "the third time we have written",
+// not "it has been a week". An earlier version named the calendar in
+// every step, which meant the copy silently became false the moment the
+// cadence was retuned: when the ladder moved to 24/48/72h the email
+// that opens "it has been a week" was going out on day three. Anything
+// tied to a duration is tied to REMINDER_LADDER, and the two live in
+// different files edited for different reasons.
 
 import { formatHours, REMINDER_LADDER } from "./reminder-schedule";
 import { launchedCityPhrase } from "@/lib/site";
@@ -39,7 +47,7 @@ const COPY: Record<number, ReminderCopy> = {
   },
   2: {
     subject: "Your property is waiting on one signature",
-    lead: "Your management agreement has been sitting unsigned for a few days now.",
+    lead: "Your management agreement is still unsigned.",
     body: "We cannot list or let the property until it is accepted, so every day it waits is a day the property earns nothing. That is the only thing standing between it and going live.",
     cta: "Accept and get the property live",
     footnote:
@@ -47,7 +55,7 @@ const COPY: Record<number, ReminderCopy> = {
   },
   3: {
     subject: "Still waiting on your management agreement",
-    lead: "It has been a week since we sent your management agreement and we have not heard back.",
+    lead: "This is the third time we have written about your management agreement and we have not heard back.",
     body: "If you have questions about the commission, the term or the exit terms, reply to this email and a real person will talk you through them. If you have changed your mind, tell us that too — we would rather know than keep emailing you.",
     cta: "Read the agreement",
     footnote: "The property stays off the market until it is accepted.",
@@ -55,8 +63,8 @@ const COPY: Record<number, ReminderCopy> = {
   4: {
     subject: "Last email about your management agreement",
     lead: "This is the last email we will send about your management agreement.",
-    body: "It has been two weeks. After this we will stop emailing and someone from the team will call you instead, so if email is not the right way to reach you, this sorts itself out.",
-    cta: "Accept it now and save us the call",
+    body: "After this we stop emailing and someone from the team will message you on WhatsApp instead, so if email is not the right way to reach you, this sorts itself out.",
+    cta: "Accept it now and save us the message",
     footnote:
       "Prefer to talk it through first? Reply and we will arrange a time.",
   },
@@ -192,8 +200,32 @@ export type EscalationInput = {
   sentAt: Date;
   emailsSent: number;
   adminLink: string;
+  /**
+   * Deeplink that opens WhatsApp with the message below prefilled, or
+   * null when the client's number could not be resolved to an
+   * international one. See wa-contact.ts for why that is a null rather
+   * than a guess.
+   */
+  waLink: string | null;
+  /**
+   * 0 for the handover itself, then 1, 2, 3… for the weekly follow-ups
+   * after it. Changes the framing entirely: the first one is news, the
+   * rest are a standing reminder that nobody has closed this out.
+   */
+  followUpNumber?: number;
   now: Date;
 };
+
+// The message an operator sends, prefilled into the deeplink so the
+// chase costs one tap rather than a paragraph nobody feels like
+// writing at 5pm. Short, first-person and it ends in a question,
+// because "your agreement is unsigned" invites no reply.
+export function escalationWaMessage(input: {
+  clientName: string;
+  propertyLabel: string;
+}): string {
+  return `Hi ${firstNameOf(input.clientName)}, this is Goldstay. Your management agreement for ${input.propertyLabel} is still unsigned, and we can't put the property on the market until it is. Is there anything in it you'd like me to walk you through?`;
+}
 
 export function renderEscalationEmail(input: EscalationInput): {
   subject: string;
@@ -206,18 +238,54 @@ export function renderEscalationEmail(input: EscalationInput): {
     dateStyle: "long",
     timeZone: "Africa/Nairobi",
   });
+  const followUp = input.followUpNumber ?? 0;
+
+  // WhatsApp first, and not as a style preference. These clients are
+  // mostly diaspora, so a call means working out a timezone and often
+  // an international dial; WhatsApp reaches them wherever they are and
+  // leaves a thread the next person can read. The phone number stays
+  // in the email either way, because a number that could not be
+  // resolved still needs to be visible to whoever picks this up.
+  const contactLines = input.waLink
+    ? [
+        "WhatsApp them — this link opens the chat with a message ready",
+        "to send:",
+        input.waLink,
+        "",
+        `If they would rather talk, the number is ${input.clientPhone ?? "not on file"}.`,
+      ]
+    : [
+        `WhatsApp them on ${input.clientPhone ?? "— no number on file"}.`,
+        "",
+        input.clientPhone
+          ? "No deeplink: we could not tell which country that number belongs to, so it needs dialling by hand rather than guessing a country code."
+          : "There is no phone number on this client, so email or the portal is the only route until someone adds one.",
+      ];
+
+  const subject =
+    followUp === 0
+      ? `Unsigned after ${days} days · ${input.propertyLabel} · ${input.clientName}`
+      : `Still unsigned after ${days} days (week ${followUp}) · ${input.propertyLabel} · ${input.clientName}`;
+
+  const opening =
+    followUp === 0
+      ? `Issued ${issued} — ${days} days ago. We have sent ${input.emailsSent} ${
+          input.emailsSent === 1 ? "reminder" : "reminders"
+        } and had no response, so automated emailing has stopped here.`
+      : `Issued ${issued} — ${days} days ago, and still unsigned ${followUp} ${
+          followUp === 1 ? "week" : "weeks"
+        } after it was handed over. Nobody has closed the task.`;
 
   return {
-    subject: `Unsigned after ${days} days · ${input.propertyLabel} · ${input.clientName}`,
+    subject,
     text: [
       `${input.clientName} has not signed the management agreement for ${input.propertyLabel}, ${input.propertyCity}.`,
       "",
-      `Issued ${issued} — ${days} days ago. We have sent ${input.emailsSent} ${
-        input.emailsSent === 1 ? "reminder" : "reminders"
-      } and had no response, so automated chasing has stopped here.`,
+      opening,
       "",
-      "Someone needs to call them. A task has been added to the",
-      "property so this does not get lost:",
+      ...contactLines,
+      "",
+      "A task is on the property so this does not get lost:",
       input.adminLink,
       "",
       "For the record",
@@ -226,8 +294,9 @@ export function renderEscalationEmail(input: EscalationInput): {
       `  Agreement reference: ${input.reference ?? "none"}`,
       `  Reminder cadence: ${describeCadence()}`,
       "",
-      "The property stays off the market until the agreement is",
-      "accepted, so this is blocking revenue.",
+      followUp === 0
+        ? "The property stays off the market until the agreement is accepted, so this is blocking revenue."
+        : "If this client has gone quiet for a reason, close the task. It will keep arriving every week until someone does, and that is the point.",
     ].join("\n"),
   };
 }
@@ -241,22 +310,46 @@ function describeCadence(): string {
 export function escalationTaskTitle(input: {
   clientName: string;
   propertyLabel: string;
+  followUpNumber?: number;
 }): string {
-  return `Call ${input.clientName} — agreement unsigned for ${input.propertyLabel}`;
+  const followUp = input.followUpNumber ?? 0;
+  // The weekly ones are titled differently so an ops queue with three
+  // of them in it does not look like the same task duplicated. The week
+  // number is the useful part: it says how long this has been ignored
+  // at a glance.
+  return followUp === 0
+    ? `WhatsApp ${input.clientName} — agreement unsigned for ${input.propertyLabel}`
+    : `Week ${followUp}: ${input.clientName} still has not signed for ${input.propertyLabel}`;
 }
 
 export function escalationTaskNotes(input: {
   emailsSent: number;
   clientPhone: string | null;
   clientEmail: string;
+  waLink: string | null;
+  followUpNumber?: number;
 }): string {
+  const followUp = input.followUpNumber ?? 0;
+
   return [
-    `${input.emailsSent} email ${
-      input.emailsSent === 1 ? "reminder" : "reminders"
-    } sent with no response, so automated chasing has stopped.`,
+    followUp === 0
+      ? `${input.emailsSent} email ${
+          input.emailsSent === 1 ? "reminder" : "reminders"
+        } sent with no response, so automated emailing has stopped.`
+      : `Handed over ${followUp} ${
+          followUp === 1 ? "week" : "weeks"
+        } ago and still unsigned.`,
+    input.waLink
+      ? `WhatsApp (message prefilled): ${input.waLink}`
+      : "No WhatsApp deeplink — the number on file could not be resolved to a country, so dial it by hand.",
     `Phone: ${input.clientPhone ?? "not on file"}`,
     `Email: ${input.clientEmail}`,
     "The property cannot go live until the agreement is accepted.",
+    ...(followUp === 0
+      ? []
+      : [
+          "Close this task if the client has gone quiet for a reason — it repeats weekly until someone does.",
+        ]),
   ].join("\n");
 }
 

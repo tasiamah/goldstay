@@ -21,6 +21,53 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.52.0] - 2026-09-11
+
+### Changed
+- Unsigned agreements are now chased at 24h, 48h, 72h and day 7, then handed
+  to a human on day 8. It was 1, 3, 7 and 14 days with the handover on day 21.
+  Signature intent decays fast — someone who has not signed by day two has
+  usually lost the email rather than decided against it — so three daily
+  emails catch most of the recoverable cases, and reaching a person on day 8
+  rather than day 21 is both more aggressive and less email than before.
+- The handover asks for a WhatsApp message rather than a phone call, with the
+  deeplink and a prefilled message in the task and the ops email. These
+  clients are mostly abroad, so a call means working out a timezone and an
+  international dial, whereas WhatsApp reaches them anywhere and leaves a
+  thread the next person can read.
+- Reminder copy counts sends instead of days. It previously said "a few days"
+  on the second email and "it has been a week" on the third, which were true
+  on the old ladder and became false the moment it was retuned — the wording
+  and the timings live in different files, edited for different reasons.
+  `reminder-email.test.ts` now fails if any step names an elapsed duration.
+
+### Added
+- A weekly follow-up task after the handover, repeating until someone closes
+  it, titled by week number so three of them in a queue do not look like one
+  task duplicated. Tasks rather than the weekly *email* originally proposed:
+  this domain also sends statements and payout confirmations, and repeated
+  unopened mail to a non-responder is what degrades reputation at Gmail and
+  Outlook. An unsigned agreement costs one onboarding; statements in spam
+  costs every client's confidence in the platform. A task keeps the pressure
+  and lets a human decide the client has gone quiet for a reason, which a
+  cron will never do.
+- `wa-contact.ts` builds a wa.me deeplink to a *client's* number, returning
+  null rather than guessing when it cannot tell which country the number
+  belongs to. Most of these landlords are diaspora with a Kenyan property and
+  a foreign mobile, and a UK number in national form ("07700 900123") turned
+  into 254-something is a real WhatsApp account belonging to a stranger who
+  would then receive a message about somebody else's management agreement.
+  Callers fall back to showing the raw number.
+
+### Fixed
+- When several ladder steps came due at once — a stalled cron, or a backlog —
+  the planner took the most advanced one, which with weekly follow-ups in
+  play would have raised "Week 3: still has not signed" for a client nobody
+  had contacted once, skipping the handover that tells ops automated chasing
+  has stopped. The handover now always goes first, and the weeks after it are
+  settled in the same pass so the next three hourly runs do not raise a task
+  each.
+
 ## [1.51.0] - 2026-09-10
 
 ### Added
@@ -2163,7 +2210,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.51.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.52.0...HEAD
+[1.52.0]: https://github.com/tasiamah/goldstay/compare/v1.51.0...v1.52.0
 [1.51.0]: https://github.com/tasiamah/goldstay/compare/v1.50.0...v1.51.0
 [1.50.0]: https://github.com/tasiamah/goldstay/compare/v1.49.1...v1.50.0
 [1.49.1]: https://github.com/tasiamah/goldstay/compare/v1.49.0...v1.49.1

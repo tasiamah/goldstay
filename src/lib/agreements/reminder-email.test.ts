@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import {
   escalationTaskNotes,
   escalationTaskTitle,
+  escalationWaMessage,
   reminderCopy,
   renderEscalationEmail,
   renderReminderEmail,
@@ -63,14 +64,39 @@ describe("reminder copy coverage", () => {
     expect(lengths[lengths.length - 1]).toBeLessThan(lengths[0]);
   });
 
-  it("promises a call in the final email and nowhere earlier", () => {
+  it("promises the WhatsApp handover in the final email and nowhere earlier", () => {
     const final = reminderCopy(LAST_EMAIL_STEP)!;
-    expect(final.body.toLowerCase()).toContain("call");
+    expect(final.body.toLowerCase()).toContain("whatsapp");
     expect(final.lead.toLowerCase()).toContain("last email");
     for (const step of EMAIL_STEPS.filter((s) => s !== LAST_EMAIL_STEP)) {
       expect(reminderCopy(step)!.lead.toLowerCase()).not.toContain(
         "last email",
       );
+    }
+  });
+
+  it("never states an elapsed duration", () => {
+    // The copy used to say "a few days" on step 2 and "it has been a
+    // week" on step 3. Both were true on the 1/3/7/14-day ladder and
+    // both became lies the day it moved to 24/48/72h, because the
+    // wording lives in this file and the timings live in
+    // reminder-schedule.ts. Counting sends survives a retune; counting
+    // days does not.
+    for (const step of EMAIL_STEPS) {
+      const c = reminderCopy(step)!;
+      const prose = `${c.subject} ${c.lead} ${c.body}`.toLowerCase();
+      for (const phrase of [
+        "a few days",
+        "a week",
+        "two weeks",
+        "a fortnight",
+        "days ago",
+        "24 hours",
+        "48 hours",
+        "72 hours",
+      ]) {
+        expect(prose, `step ${step} says "${phrase}"`).not.toContain(phrase);
+      }
     }
   });
 });
@@ -199,30 +225,50 @@ describe("renderEscalationEmail", () => {
     sentAt: new Date("2026-03-01T10:00:00Z"),
     emailsSent: 4,
     adminLink: "https://goldstay.co.ke/admin/properties/p1",
-    now: new Date("2026-03-22T10:00:00Z"),
+    waLink: "https://wa.me/254700000000?text=Hi%20Asha",
+    now: new Date("2026-03-09T10:00:00Z"),
   };
 
   it("leads with how long it has been unsigned", () => {
     const out = renderEscalationEmail(ESC);
-    expect(out.subject).toContain("21 days");
+    expect(out.subject).toContain("8 days");
     expect(out.subject).toContain("Riverside Apartments 4B");
   });
 
-  it("says that automated chasing has stopped", () => {
+  it("says that automated emailing has stopped", () => {
     // Ops must not assume the system is still working on it, or the
     // client falls into the gap between the two.
     const out = renderEscalationEmail(ESC);
-    expect(out.text).toContain("automated chasing has stopped");
-    expect(out.text).toContain("Someone needs to call them");
+    expect(out.text).toContain("automated emailing has stopped");
   });
 
-  it("carries the phone number, since the ask is a phone call", () => {
-    expect(renderEscalationEmail(ESC).text).toContain("+254700000000");
+  it("leads the ask with the WhatsApp deeplink", () => {
+    // These clients are mostly abroad. A call means working out a
+    // timezone and an international dial; the deeplink is one tap and
+    // leaves a thread the next person can read.
+    const out = renderEscalationEmail(ESC);
+    expect(out.text).toContain(ESC.waLink);
+    expect(out.text).toContain("WhatsApp them");
   });
 
-  it("says so plainly when there is no phone number on file", () => {
-    const out = renderEscalationEmail({ ...ESC, clientPhone: null });
+  it("explains itself when the number could not be resolved", () => {
+    // Silence here would read as "we forgot the link" rather than "we
+    // could not tell which country this number is".
+    const out = renderEscalationEmail({ ...ESC, waLink: null });
+    expect(out.text).not.toContain("wa.me");
+    expect(out.text).toContain("could not tell which country");
+    // The raw number still has to be there to act on.
+    expect(out.text).toContain("+254700000000");
+  });
+
+  it("says there is no number at all when there is not", () => {
+    const out = renderEscalationEmail({
+      ...ESC,
+      clientPhone: null,
+      waLink: null,
+    });
     expect(out.text).toContain("Phone: not on file");
+    expect(out.text).toContain("no phone number on this client");
   });
 
   it("links to the property in admin", () => {
@@ -235,6 +281,25 @@ describe("renderEscalationEmail", () => {
     );
     expect(renderEscalationEmail(ESC).text).toContain("4 reminders");
   });
+
+  it("reframes the weekly follow-ups as nobody having closed it", () => {
+    // Week three of the same email reading like week one is how an ops
+    // inbox learns to ignore it.
+    const wk3 = renderEscalationEmail({ ...ESC, followUpNumber: 3 });
+    expect(wk3.subject).toContain("week 3");
+    expect(wk3.text).toContain("Nobody has closed the task");
+    expect(wk3.text).toContain("3 weeks after it was handed over");
+    // And it offers the way out, which the handover email must not:
+    // closing the task is the only thing that stops the weekly arrival.
+    expect(wk3.text).toContain("close the task");
+    expect(renderEscalationEmail(ESC).text).not.toContain("close the task");
+  });
+
+  it("says week 1 in the singular", () => {
+    const wk1 = renderEscalationEmail({ ...ESC, followUpNumber: 1 });
+    expect(wk1.text).toContain("1 week after");
+    expect(wk1.text).not.toContain("1 weeks");
+  });
 });
 
 describe("escalation task", () => {
@@ -244,8 +309,22 @@ describe("escalation task", () => {
       clientName: "Asha Kimani",
       propertyLabel: "Riverside Apartments 4B",
     });
-    expect(title).toContain("Call Asha Kimani");
+    expect(title).toContain("WhatsApp Asha Kimani");
     expect(title).toContain("Riverside Apartments 4B");
+  });
+
+  it("titles the weekly ones differently so they do not look duplicated", () => {
+    const first = escalationTaskTitle({
+      clientName: "Asha Kimani",
+      propertyLabel: "Riverside Apartments 4B",
+    });
+    const week2 = escalationTaskTitle({
+      clientName: "Asha Kimani",
+      propertyLabel: "Riverside Apartments 4B",
+      followUpNumber: 2,
+    });
+    expect(week2).not.toBe(first);
+    expect(week2).toContain("Week 2");
   });
 
   it("puts the contact details in the notes so nobody has to hunt", () => {
@@ -253,10 +332,50 @@ describe("escalation task", () => {
       emailsSent: 4,
       clientPhone: "+254700000000",
       clientEmail: "asha@example.com",
+      waLink: "https://wa.me/254700000000?text=Hi%20Asha",
     });
+    expect(notes).toContain("wa.me/254700000000");
     expect(notes).toContain("+254700000000");
     expect(notes).toContain("asha@example.com");
     expect(notes).toContain("4 email reminders sent");
     expect(notes).toContain("cannot go live");
+  });
+
+  it("tells the operator to dial by hand when there is no deeplink", () => {
+    const notes = escalationTaskNotes({
+      emailsSent: 4,
+      clientPhone: "07700900123",
+      clientEmail: "asha@example.com",
+      waLink: null,
+    });
+    expect(notes).toContain("dial it by hand");
+    expect(notes).toContain("07700900123");
+  });
+
+  it("tells the operator how to stop the weekly ones", () => {
+    const notes = escalationTaskNotes({
+      emailsSent: 4,
+      clientPhone: "+254700000000",
+      clientEmail: "asha@example.com",
+      waLink: null,
+      followUpNumber: 2,
+    });
+    expect(notes).toContain("repeats weekly until someone does");
+    expect(notes).toContain("2 weeks ago");
+  });
+});
+
+describe("escalationWaMessage", () => {
+  it("is first-person, names the property and ends in a question", () => {
+    // A statement invites no reply. The whole point of the handover is
+    // to start a conversation with someone email has failed to reach.
+    const msg = escalationWaMessage({
+      clientName: "Asha Kimani",
+      propertyLabel: "Riverside Apartments 4B",
+    });
+    expect(msg).toContain("Asha");
+    expect(msg).not.toContain("Kimani");
+    expect(msg).toContain("Riverside Apartments 4B");
+    expect(msg.trim().endsWith("?")).toBe(true);
   });
 });

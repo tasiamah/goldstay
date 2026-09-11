@@ -23,6 +23,7 @@ import { createTask } from "@/lib/tasks";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import {
   ESCALATION_STEP,
+  isFollowUpStep,
   LAST_EMAIL_STEP,
   planAgreementReminder,
   REMINDER_LADDER,
@@ -33,9 +34,11 @@ import {
 import {
   escalationTaskNotes,
   escalationTaskTitle,
+  escalationWaMessage,
   renderEscalationEmail,
   renderReminderEmail,
 } from "./reminder-email";
+import { clientWaLink } from "@/lib/wa-contact";
 import { AGREEMENT_TEMPLATE_TITLE } from "./template";
 
 const DEFAULT_FROM = "Goldstay <hello@goldstay.co.ke>";
@@ -388,10 +391,15 @@ async function sendReminder(
   }
 }
 
-// End of the ladder. Stops the automated chasing, puts a task on the
-// property so the follow-up is owned, and tells ops — the task alone
-// would sit unassigned and unseen, and an email alone would be read
-// once and forgotten.
+// Hands the client to a human. Stops the automated emailing, puts a
+// task on the property so the follow-up is owned, and tells ops — the
+// task alone would sit unassigned and unseen, and an email alone would
+// be read once and forgotten.
+//
+// Also handles the weekly follow-ups after it, which are the same two
+// actions with different wording. Same code path deliberately: a
+// separate one would drift, and the only real difference is whether
+// this is news or a standing reproach.
 async function escalate(
   agreement: Candidate,
   step: number,
@@ -412,19 +420,35 @@ async function escalate(
     (r) => r.status === "SENT" && r.step <= LAST_EMAIL_STEP,
   ).length;
 
+  // 0 for the handover, then 1, 2, 3… for each weekly follow-up.
+  const followUpNumber = isFollowUpStep(step) ? step - ESCALATION_STEP : 0;
+
+  const waLink = clientWaLink({
+    phone: client.phone,
+    country: client.country,
+    message: escalationWaMessage({
+      clientName: client.fullName,
+      propertyLabel,
+    }),
+  });
+
   try {
     await createTask({
       actor: SYSTEM_ACTOR,
       title: escalationTaskTitle({
         clientName: client.fullName,
         propertyLabel,
+        followUpNumber,
       }),
       notes: escalationTaskNotes({
         emailsSent,
         clientPhone: client.phone,
         clientEmail: client.email,
+        waLink,
+        followUpNumber,
       }),
-      // Due immediately: it is already three weeks late.
+      // Due immediately. The property has been off the market for over
+      // a week at this point and every day of that is lost rent.
       dueAt: now,
       entity: "PROPERTY",
       entityId: agreement.property.id,
@@ -441,6 +465,8 @@ async function escalate(
         sentAt: agreement.sentAt ?? now,
         emailsSent,
         adminLink,
+        waLink,
+        followUpNumber,
         now,
       }),
     );
@@ -456,11 +482,15 @@ async function escalate(
         entity: "AGREEMENT",
         entityId: agreement.id,
         action: "agreement.reminder.escalated",
-        summary: `Unsigned after ${emailsSent} reminders — raised for a call`,
+        summary:
+          followUpNumber === 0
+            ? `Unsigned after ${emailsSent} reminders — raised for a WhatsApp chase`
+            : `Still unsigned ${followUpNumber} ${followUpNumber === 1 ? "week" : "weeks"} after handover — weekly task raised`,
         metadata: {
           step,
           propertyId: agreement.property.id,
           emailsSent,
+          followUpNumber,
         },
       }),
     );
@@ -515,9 +545,12 @@ async function markFailed(
 }
 
 function kindOf(step: number): "EMAIL" | "ESCALATION" {
-  return step === ESCALATION_STEP
-    ? "ESCALATION"
-    : (REMINDER_LADDER.find((s) => s.step === step)?.kind ?? "EMAIL");
+  // The weekly follow-ups are generated above the end of the array, so
+  // a lookup misses them. Defaulting those to EMAIL would send the
+  // runner looking for copy that does not exist and fail the row every
+  // hour, forever.
+  if (step === ESCALATION_STEP || isFollowUpStep(step)) return "ESCALATION";
+  return REMINDER_LADDER.find((s) => s.step === step)?.kind ?? "EMAIL";
 }
 
 // Bookkeeping writes that must not turn a delivered email into a
