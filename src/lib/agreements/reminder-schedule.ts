@@ -31,21 +31,20 @@ export type ReminderStep = {
 const HOURS = 1;
 const DAYS = 24 * HOURS;
 
-// 24h, 48h, 72h, then weekly on days 7, 14 and 21, then a human on
-// day 22.
+// 24h, 48h, 72h, then days 7, 14, 21 and 30, then a human on day 31.
 //
 // Front-loaded hard, because signature intent decays fast: a client who
 // has not signed within a day has usually lost the email rather than
 // decided against it, and that is the cheapest possible save. Three
 // daily emails catch almost all of those.
 //
-// The weekly tail is there because these are worth closing. A
-// management agreement is a multi-year relationship, so a client who
-// goes quiet for a fortnight and then signs is a good outcome, not a
-// nuisance — and three weekly emails is a bounded tail rather than a
-// drip, which is what keeps it off the sending domain's reputation.
-// The distinction that matters is not how many emails but whether the
-// sequence ends: this one does, on day 21, and then a person takes over.
+// The long tail is there because these are worth closing. A management
+// agreement is a multi-year relationship, so a client who goes quiet
+// for a month and then signs is a good outcome, not a nuisance — and
+// four spaced emails is a bounded tail rather than a drip, which is
+// what keeps it off the sending domain's reputation. The distinction
+// that matters is not how many emails but whether the sequence ends:
+// this one does, on day 30, and then a person takes over.
 //
 // On the step numbers, which are not in chronological order and cannot
 // be. They are persisted, they are half of the unique index the runner
@@ -54,8 +53,9 @@ const DAYS = 24 * HOURS;
 // the handover would be read as "the day-14 email already went out",
 // skipping it and never escalating. So 1 to 4 keep the meaning they
 // have always had, 5 stays the handover with only its timing moved, 6
-// is retired rather than reused, and the two new emails take 7 and 8.
-// Ordering comes from this array, never from the numbers.
+// is retired rather than reused, and each email added since has taken
+// the next free number: 7, 8, 9. Ordering comes from this array, never
+// from the numbers.
 export const REMINDER_LADDER: readonly ReminderStep[] = [
   { step: 1, afterHours: 24 * HOURS, kind: "EMAIL" },
   { step: 2, afterHours: 48 * HOURS, kind: "EMAIL" },
@@ -66,17 +66,22 @@ export const REMINDER_LADDER: readonly ReminderStep[] = [
   { step: 4, afterHours: 7 * DAYS, kind: "EMAIL" },
   { step: 7, afterHours: 14 * DAYS, kind: "EMAIL" },
   { step: 8, afterHours: 21 * DAYS, kind: "EMAIL" },
+  // The one email allowed to name the calendar, because at a month
+  // "it has been a month" is the message rather than decoration. Its
+  // copy is pinned to this timing by a test, so moving this step tells
+  // you which sentence starts lying.
+  { step: 9, afterHours: 30 * DAYS, kind: "EMAIL" },
   // The day after the last email, not a week after it. By this point
-  // the property has been off the market for three weeks and the
-  // remaining question is not whether to chase but who does it.
-  { step: 5, afterHours: 22 * DAYS, kind: "ESCALATION" },
+  // the property has been off the market for a month and the remaining
+  // question is not whether to chase but who does it.
+  { step: 5, afterHours: 31 * DAYS, kind: "ESCALATION" },
 ];
 
 // The last email in the sequence, for the copy that has to know it is
-// the last one. Not a threshold: the email steps are 1, 2, 3, 4, 7, 8
-// and the escalation sits at 5 in between them, so anything asking
+// the last one. Not a threshold: the email steps are 1, 2, 3, 4, 7, 8,
+// 9 and the escalation sits at 5 in between them, so anything asking
 // "is this an email" has to ask the ladder rather than compare numbers.
-export const LAST_EMAIL_STEP = 8;
+export const LAST_EMAIL_STEP = 9;
 export const ESCALATION_STEP = 5;
 
 export function isEmailStep(step: number): boolean {

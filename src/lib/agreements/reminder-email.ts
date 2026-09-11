@@ -12,14 +12,17 @@
 // itself a signal that this is the end of the road rather than the
 // start of a drip campaign.
 //
-// Two things they deliberately never do.
+// Two things they almost never do.
 //
-// They never name a duration. An earlier version said "a few days" on
+// They do not name a duration. An earlier version said "a few days" on
 // step 2 and "it has been a week" on step 3, which was true on the old
 // 1/3/7/14-day ladder and became false the moment it moved to
 // 24/48/72h — the wording lives here and the timings live in
 // reminder-schedule.ts, and the two get edited for different reasons by
-// people not thinking about each other.
+// people not thinking about each other. The single exception is the
+// day-30 email, where a month having passed is the entire point; that
+// one is allowed to say so and a test pins it to a step that really is
+// thirty days out, so the exception cannot quietly spread or drift.
 //
 // And they never count themselves. "This is the third time we have
 // written and we have not heard back" is accurate, and it reads as a
@@ -86,12 +89,23 @@ const COPY: Record<number, ReminderCopy> = {
     footnote: "Happy to answer anything by email too — just reply.",
   },
   8: {
-    subject: "We will stop emailing after this one",
-    lead: "This is the last email we will send about your management agreement.",
-    body: "Rather than fill your inbox, someone from the team will say hello on WhatsApp instead — an easier place for a quick question anyway.",
+    subject: "Has anything changed with the property?",
+    lead: "Before we chase this any further, we wanted to check whether your plans for the property have changed.",
+    body: "If you have decided to sell it, hold it empty or go with someone else, do just say — it is genuinely useful to know, and we will stop. If you still want us to manage it, the agreement is one click away.",
+    cta: "Accept my agreement",
+    footnote: "Either answer is fine. We would simply rather know than wonder.",
+  },
+  // The only step allowed to name the calendar. At a month the elapsed
+  // time is the whole message, and the right thing to offer alongside
+  // it is a way out rather than another push. See the pinning test in
+  // reminder-email.test.ts.
+  9: {
+    subject: "A month on — shall we leave it there?",
+    lead: "This is the last email we will send, and it has been a month now.",
+    body: "If the timing is simply wrong, say so and we will close the file with the door open. Otherwise someone will say hello on WhatsApp.",
     cta: "Or accept it here now",
     footnote:
-      "Prefer to talk it through first? Reply and we will arrange a time.",
+      "Nothing in the agreement has changed, and it is still valid whenever you want it.",
   },
 };
 

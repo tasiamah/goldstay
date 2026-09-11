@@ -98,6 +98,31 @@ describe("reminder copy coverage", () => {
     }
   });
 
+  it("pins the one duration it does state to a step that is really a month out", () => {
+    // The day-30 email is the deliberate exception to the rule below:
+    // at a month, the elapsed time is the message. Pinned rather than
+    // trusted, because the sentence lives here and the timing lives in
+    // reminder-schedule.ts — if that step is ever retuned, this fails
+    // and names the copy that would start lying.
+    const monthStep = REMINDER_LADDER.find((s) =>
+      reminderCopy(s.step)?.lead.toLowerCase().includes("a month"),
+    );
+    expect(monthStep, "no step claims a month has passed").toBeDefined();
+    const days = monthStep!.afterHours / 24;
+    expect(days).toBeGreaterThanOrEqual(28);
+    expect(days).toBeLessThanOrEqual(31);
+
+    // And it stays the exception: no earlier step may borrow it.
+    const earlier = EMAIL_STEPS.filter((s) => s !== monthStep!.step);
+    for (const step of earlier) {
+      const c = reminderCopy(step)!;
+      expect(
+        `${c.subject} ${c.lead} ${c.body}`.toLowerCase(),
+        `step ${step}`,
+      ).not.toContain("a month");
+    }
+  });
+
   it("never states an elapsed duration", () => {
     // The copy used to say "a few days" on step 2 and "it has been a
     // week" on step 3. Both were true on the 1/3/7/14-day ladder and

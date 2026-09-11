@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.54.0] - 2026-09-11
+
+### Added
+- A final reminder on day 30 that says a month has passed, moving the
+  handover to day 31. The sequence is now 24h, 48h, 72h, day 7, day 14, day
+  21, day 30. At a month the elapsed time is the message rather than
+  decoration, so this is the one email allowed to name the calendar — and
+  what it offers alongside that is a way out rather than another push, since
+  "say so and we will close the file with the door open" is more likely to
+  get an answer at that point than a seventh nudge.
+- The day-21 email now asks whether plans for the property have changed and
+  invites a plain no, which took over from day 21's previous sign-off role.
+
+### Changed
+- `reminder-email.test.ts` pins the month claim to a ladder step that really
+  is 28 to 31 days out, and fails if any earlier email borrows the phrase.
+  The rule that copy must not name a duration stands — it was broken once
+  already, when "it has been a week" ended up going out on day three — so
+  the exception is enforced rather than trusted, and retuning that step now
+  names the sentence that would start lying.
+
 ## [1.53.0] - 2026-09-11
 
 ### Added
@@ -2257,7 +2278,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.53.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.54.0...HEAD
+[1.54.0]: https://github.com/tasiamah/goldstay/compare/v1.53.0...v1.54.0
 [1.53.0]: https://github.com/tasiamah/goldstay/compare/v1.52.1...v1.53.0
 [1.52.1]: https://github.com/tasiamah/goldstay/compare/v1.52.0...v1.52.1
 [1.52.0]: https://github.com/tasiamah/goldstay/compare/v1.51.0...v1.52.0

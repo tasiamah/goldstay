@@ -52,7 +52,7 @@ const sent = (step: number): ReminderRecord => ({
 });
 
 describe("the ladder itself", () => {
-  it("stops emailing after six, however long it runs on", () => {
+  it("stops emailing after seven, however long it runs on", () => {
     // The load-bearing invariant of the whole design. The weekly
     // follow-ups after the handover are tasks, and they have to stay
     // tasks: this is the domain that sends statements and payout
@@ -61,7 +61,7 @@ describe("the ladder itself", () => {
     // likely to respond. A regression that made any step past the
     // handover an EMAIL is the one to catch here.
     const emails = REMINDER_LADDER.filter((s) => s.kind === "EMAIL");
-    expect(emails).toHaveLength(6);
+    expect(emails).toHaveLength(7);
     expect(REMINDER_LADDER[REMINDER_LADDER.length - 1].kind).toBe("ESCALATION");
 
     const anchor = new Date("2026-01-01T00:00:00Z");
@@ -73,9 +73,9 @@ describe("the ladder itself", () => {
     }
   });
 
-  it("runs 24h, 48h, 72h then days 7, 14 and 21, handing over on day 22", () => {
+  it("runs 24h, 48h, 72h then days 7, 14, 21 and 30, handing over on day 31", () => {
     expect(REMINDER_LADDER.map((s) => s.afterHours)).toEqual([
-      24, 48, 72, 168, 336, 504, 528,
+      24, 48, 72, 168, 336, 504, 720, 744,
     ]);
     // Chronological order comes from the array, so it has to actually
     // be in order — the step numbers no longer tell you.
@@ -96,8 +96,8 @@ describe("the ladder itself", () => {
     // So 1 to 4 keep the meaning they have always had, 5 stays the
     // handover with only its timing moved, 6 is retired rather than
     // reused, and the two weekly emails took the next free numbers.
-    expect(REMINDER_LADDER.map((s) => s.step)).toEqual([1, 2, 3, 4, 7, 8, 5]);
-    expect(LAST_EMAIL_STEP).toBe(8);
+    expect(REMINDER_LADDER.map((s) => s.step)).toEqual([1, 2, 3, 4, 7, 8, 9, 5]);
+    expect(LAST_EMAIL_STEP).toBe(9);
     expect(ESCALATION_STEP).toBe(5);
 
     // Which means nothing may decide what a step is by comparing it to
@@ -105,6 +105,7 @@ describe("the ladder itself", () => {
     expect(isEmailStep(4)).toBe(true);
     expect(isEmailStep(5)).toBe(false);
     expect(isEmailStep(7)).toBe(true);
+    expect(isEmailStep(9)).toBe(true);
     expect(isEmailStep(6)).toBe(false);
 
     // And the follow-ups stay clear of all of it.
@@ -116,10 +117,11 @@ describe("the ladder itself", () => {
 
   it("labels an email by its position, not by its step number", () => {
     // "Reminder 7 of 6" in an audit line is what happens otherwise.
-    expect(emailStepLabel(1)).toBe("1 of 6");
-    expect(emailStepLabel(4)).toBe("4 of 6");
-    expect(emailStepLabel(7)).toBe("5 of 6");
-    expect(emailStepLabel(8)).toBe("6 of 6");
+    expect(emailStepLabel(1)).toBe("1 of 7");
+    expect(emailStepLabel(4)).toBe("4 of 7");
+    expect(emailStepLabel(7)).toBe("5 of 7");
+    expect(emailStepLabel(8)).toBe("6 of 7");
+    expect(emailStepLabel(9)).toBe("7 of 7");
   });
 
   it("spaces the follow-ups a week apart, starting a week after handover", () => {
@@ -127,13 +129,13 @@ describe("the ladder itself", () => {
     const hours = (h: number) =>
       new Date(anchor.getTime() + h * 60 * 60 * 1000);
 
-    // Day 22 is the handover; the first follow-up is day 29.
-    expect(followUpStepsDue(anchor, hours(528 + 167))).toHaveLength(0);
-    expect(followUpStepsDue(anchor, hours(528 + 168))).toEqual([
-      { step: FIRST_FOLLOW_UP_STEP, afterHours: 696, kind: "ESCALATION" },
+    // Day 31 is the handover; the first follow-up is day 38.
+    expect(followUpStepsDue(anchor, hours(744 + 167))).toHaveLength(0);
+    expect(followUpStepsDue(anchor, hours(744 + 168))).toEqual([
+      { step: FIRST_FOLLOW_UP_STEP, afterHours: 912, kind: "ESCALATION" },
     ]);
     expect(
-      followUpStepsDue(anchor, hours(528 + 168 * 3)).map((s) => s.step),
+      followUpStepsDue(anchor, hours(744 + 168 * 3)).map((s) => s.step),
     ).toEqual([
       FIRST_FOLLOW_UP_STEP,
       FIRST_FOLLOW_UP_STEP + 1,
@@ -189,6 +191,16 @@ describe("planAgreementReminder cadence", () => {
     expect(
       plan(hoursAfterSent(504), [sent(1), sent(2), sent(3), sent(4), sent(7)]),
     ).toMatchObject({ action: "send", step: 8 });
+    expect(
+      plan(hoursAfterSent(720), [
+        sent(1),
+        sent(2),
+        sent(3),
+        sent(4),
+        sent(7),
+        sent(8),
+      ]),
+    ).toMatchObject({ action: "send", step: 9 });
   });
 
   it("waits between steps instead of resending the last one", () => {
@@ -198,10 +210,18 @@ describe("planAgreementReminder cadence", () => {
     });
   });
 
-  const ALL_EMAILS = [sent(1), sent(2), sent(3), sent(4), sent(7), sent(8)];
+  const ALL_EMAILS = [
+    sent(1),
+    sent(2),
+    sent(3),
+    sent(4),
+    sent(7),
+    sent(8),
+    sent(9),
+  ];
 
-  it("hands over to a human after the final email, not a seventh email", () => {
-    expect(plan(hoursAfterSent(528), ALL_EMAILS)).toEqual({
+  it("hands over to a human after the final email, not an eighth email", () => {
+    expect(plan(hoursAfterSent(744), ALL_EMAILS)).toEqual({
       action: "send",
       step: ESCALATION_STEP,
       kind: "ESCALATION",
@@ -214,7 +234,7 @@ describe("planAgreementReminder cadence", () => {
     // quiet for a fortnight and then signs is a good outcome. Nothing
     // should reach for a human while emails are still owed.
     const partial = [sent(1), sent(2), sent(3), sent(4)];
-    for (const hours of [200, 336, 400, 504]) {
+    for (const hours of [200, 336, 400, 504, 600, 720]) {
       const result = plan(hoursAfterSent(hours), partial);
       if (result.action === "send") {
         expect(result.kind, `at ${hours}h`).toBe("EMAIL");
@@ -229,16 +249,16 @@ describe("planAgreementReminder cadence", () => {
     const history = [...ALL_EMAILS, sent(5)];
 
     // Nothing between the handover and the first weekly follow-up.
-    expect(plan(hoursAfterSent(528), history)).toEqual({
+    expect(plan(hoursAfterSent(744), history)).toEqual({
       action: "wait",
       reason: "no-step-due",
     });
-    expect(plan(hoursAfterSent(600), history)).toEqual({
+    expect(plan(hoursAfterSent(800), history)).toEqual({
       action: "wait",
       reason: "no-step-due",
     });
 
-    expect(plan(hoursAfterSent(696), history)).toEqual({
+    expect(plan(hoursAfterSent(912), history)).toEqual({
       action: "send",
       step: FIRST_FOLLOW_UP_STEP,
       kind: "ESCALATION",
@@ -246,7 +266,7 @@ describe("planAgreementReminder cadence", () => {
     });
 
     expect(
-      plan(hoursAfterSent(864), [...history, sent(FIRST_FOLLOW_UP_STEP)]),
+      plan(hoursAfterSent(1080), [...history, sent(FIRST_FOLLOW_UP_STEP)]),
     ).toMatchObject({
       step: FIRST_FOLLOW_UP_STEP + 1,
       kind: "ESCALATION",
@@ -261,7 +281,7 @@ describe("planAgreementReminder cadence", () => {
         sent(FIRST_FOLLOW_UP_STEP + i),
       ),
     ];
-    const wellPastTheEnd = hoursAfterSent(528 + MAX_FOLLOW_UPS * 168 + 1000);
+    const wellPastTheEnd = hoursAfterSent(744 + MAX_FOLLOW_UPS * 168 + 1000);
     expect(plan(wellPastTheEnd, everything)).toEqual({
       action: "wait",
       reason: "ladder-complete",
@@ -293,15 +313,15 @@ describe("catching up after nothing ran", () => {
   });
 
   it("goes straight to the human when the whole ladder is overdue", () => {
-    // Twenty-two days unsigned and never chased: email is not the
-    // right instrument any more, so it hands over and marks all six
+    // Thirty-one days unsigned and never chased: email is not the
+    // right instrument any more, so it hands over and marks all seven
     // missed.
-    const result = plan(hoursAfterSent(528));
+    const result = plan(hoursAfterSent(744));
     expect(result).toEqual({
       action: "send",
       step: ESCALATION_STEP,
       kind: "ESCALATION",
-      supersede: [1, 2, 3, 4, 7, 8],
+      supersede: [1, 2, 3, 4, 7, 8, 9],
     });
   });
 
@@ -312,7 +332,7 @@ describe("catching up after nothing ran", () => {
     // tells ops automated chasing has stopped. The later weeks are
     // settled in the same pass so the next three hourly runs do not
     // each raise a task.
-    const result = plan(hoursAfterSent(528 + 168 * 3));
+    const result = plan(hoursAfterSent(744 + 168 * 3));
     expect(result).toMatchObject({
       action: "send",
       step: ESCALATION_STEP,
@@ -406,10 +426,18 @@ describe("quiet hours", () => {
   it("does not delay the internal escalation for quiet hours", () => {
     // Escalation is a task plus an email to our own inbox. Holding it
     // until morning would delay the handover for no one's benefit.
-    // 00:00 UTC is 03:00 EAT, and this is past the day-22 step.
-    const middleOfNight = new Date("2026-03-25T00:00:00Z");
+    // 00:00 UTC is 03:00 EAT, and this is past the day-31 step.
+    const middleOfNight = new Date("2026-04-03T00:00:00Z");
     expect(
-      plan(middleOfNight, [sent(1), sent(2), sent(3), sent(4), sent(7), sent(8)]),
+      plan(middleOfNight, [
+        sent(1),
+        sent(2),
+        sent(3),
+        sent(4),
+        sent(7),
+        sent(8),
+        sent(9),
+      ]),
     ).toMatchObject({ action: "send", kind: "ESCALATION" });
   });
 
