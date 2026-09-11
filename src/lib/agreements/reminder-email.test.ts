@@ -75,6 +75,29 @@ describe("reminder copy coverage", () => {
     }
   });
 
+  it("never counts its own reminders at the client", () => {
+    // "This is the third time we have written and we have not heard
+    // back" is accurate and reads as a telling-off. Nobody signs a
+    // contract because they have been kept score of, and the firmness
+    // is meant to come from what each email offers instead.
+    for (const step of EMAIL_STEPS) {
+      const c = reminderCopy(step)!;
+      const prose = `${c.subject} ${c.lead} ${c.body}`.toLowerCase();
+      for (const phrase of [
+        "second time",
+        "third time",
+        "fourth time",
+        "second email",
+        "third email",
+        "not heard back",
+        "again and again",
+        "as we said",
+      ]) {
+        expect(prose, `step ${step} says "${phrase}"`).not.toContain(phrase);
+      }
+    }
+  });
+
   it("never states an elapsed duration", () => {
     // The copy used to say "a few days" on step 2 and "it has been a
     // week" on step 3. Both were true on the 1/3/7/14-day ladder and

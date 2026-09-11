@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.52.1] - 2026-09-11
+
+### Changed
+- Rewrote the four agreement reminders to nudge rather than tally. The third
+  one opened "This is the third time we have written about your management
+  agreement and we have not heard back", which is accurate and reads as a
+  telling-off — nobody signs a contract because they have been kept score of.
+  Each email now escalates by what it offers instead: that it may have got
+  lost, then what accepting unlocks, then help with the specific clauses,
+  then the handover to WhatsApp. `reminder-email.test.ts` fails if any step
+  counts its own reminders, alongside the existing check that none of them
+  names an elapsed duration.
+
 ## [1.52.0] - 2026-09-11
 
 ### Changed
@@ -2210,7 +2223,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.52.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.52.1...HEAD
+[1.52.1]: https://github.com/tasiamah/goldstay/compare/v1.52.0...v1.52.1
 [1.52.0]: https://github.com/tasiamah/goldstay/compare/v1.51.0...v1.52.0
 [1.51.0]: https://github.com/tasiamah/goldstay/compare/v1.50.0...v1.51.0
 [1.50.0]: https://github.com/tasiamah/goldstay/compare/v1.49.1...v1.50.0

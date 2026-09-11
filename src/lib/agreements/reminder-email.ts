@@ -12,13 +12,22 @@
 // itself a signal that this is the end of the road rather than the
 // start of a drip campaign.
 //
-// They count sends rather than days — "the third time we have written",
-// not "it has been a week". An earlier version named the calendar in
-// every step, which meant the copy silently became false the moment the
-// cadence was retuned: when the ladder moved to 24/48/72h the email
-// that opens "it has been a week" was going out on day three. Anything
-// tied to a duration is tied to REMINDER_LADDER, and the two live in
-// different files edited for different reasons.
+// Two things they deliberately never do.
+//
+// They never name a duration. An earlier version said "a few days" on
+// step 2 and "it has been a week" on step 3, which was true on the old
+// 1/3/7/14-day ladder and became false the moment it moved to
+// 24/48/72h — the wording lives here and the timings live in
+// reminder-schedule.ts, and the two get edited for different reasons by
+// people not thinking about each other.
+//
+// And they never count themselves. "This is the third time we have
+// written and we have not heard back" is accurate, and it reads as a
+// telling-off; nobody signs a contract because they have been kept
+// score of. Escalating firmness is carried by what each email offers
+// instead — first that it may have got lost, then what accepting
+// unlocks, then help with the clauses, then the handover — so the
+// sequence still goes somewhere without the client being counted at.
 
 import { formatHours, REMINDER_LADDER } from "./reminder-schedule";
 import { launchedCityPhrase } from "@/lib/site";
@@ -39,32 +48,32 @@ export type ReminderCopy = {
 // email, so it is absent here by design.
 const COPY: Record<number, ReminderCopy> = {
   1: {
-    subject: "Your management agreement is waiting",
-    lead: "We sent your management agreement yesterday and it is still unsigned, so this is just in case it went astray.",
-    body: "Nothing has changed since we sent it. It sets out our commission, the term, the notice period and what we handle on your behalf. Reading it takes a couple of minutes and agreeing takes one click.",
+    subject: "Your management agreement is ready when you are",
+    lead: "We sent your management agreement over and it is still waiting for you, so here it is again in case it got buried.",
+    body: "It sets out our commission, the term, the notice period and what we handle on your behalf. Reading it takes a couple of minutes and accepting takes one click.",
     cta: "Review & accept my agreement",
     footnote: "Already signed it? Then this crossed with you — ignore it.",
   },
   2: {
-    subject: "Your property is waiting on one signature",
-    lead: "Your management agreement is still unsigned.",
-    body: "We cannot list or let the property until it is accepted, so every day it waits is a day the property earns nothing. That is the only thing standing between it and going live.",
+    subject: "One signature and we can get started",
+    lead: "Just a nudge about your management agreement — it is still waiting on a signature.",
+    body: "Once it is accepted we can get the property on the market and start earning for you. That is honestly the only thing left to do at your end.",
     cta: "Accept and get the property live",
     footnote:
-      "If something in the contract is holding you up, reply and tell us which clause. We would rather fix it than have you sit on it.",
+      "If something in the contract is giving you pause, reply and tell us which clause. We would much rather fix it than have you sit on it.",
   },
   3: {
-    subject: "Still waiting on your management agreement",
-    lead: "This is the third time we have written about your management agreement and we have not heard back.",
-    body: "If you have questions about the commission, the term or the exit terms, reply to this email and a real person will talk you through them. If you have changed your mind, tell us that too — we would rather know than keep emailing you.",
+    subject: "Any questions about your agreement?",
+    lead: "Your management agreement is still unsigned, so we thought we would check whether anything in it needs explaining.",
+    body: "If you would like to go through the commission, the term or the exit terms, just reply and a real person will talk you through them. And if now is not the right moment, do say so — we would far rather know than guess.",
     cta: "Read the agreement",
     footnote: "The property stays off the market until it is accepted.",
   },
   4: {
-    subject: "Last email about your management agreement",
+    subject: "We will stop emailing after this one",
     lead: "This is the last email we will send about your management agreement.",
-    body: "After this we stop emailing and someone from the team will message you on WhatsApp instead, so if email is not the right way to reach you, this sorts itself out.",
-    cta: "Accept it now and save us the message",
+    body: "Rather than fill your inbox, someone from the team will say hello on WhatsApp instead — it is an easier place to ask a quick question anyway.",
+    cta: "Or accept it here now",
     footnote:
       "Prefer to talk it through first? Reply and we will arrange a time.",
   },
