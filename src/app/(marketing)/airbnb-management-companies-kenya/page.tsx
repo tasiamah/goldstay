@@ -48,6 +48,15 @@ import { getServerCity } from "@/lib/getServerCity";
 // what the first year of a short let is actually building. That is the
 // switching cost nobody quotes, and it belongs on this page.
 //
+// Until v1.63.3 this page answered that question with "ours stay on
+// the host's account" and called a manager who keeps the listing
+// someone holding a hostage. Our own default is a GoldStay-controlled
+// account — clause 4.5 of the short-let agreement — with co-hosting on
+// the client's account as the alternative under 4.6. So the page was
+// attacking our own arrangement, and the line was quotable straight
+// back at us by any client who read both. It now states the default,
+// the argument for it, and the alternative.
+//
 // Deliberately not here: any claim to be the best or the top of a
 // list. The page ranks for those phrases by answering them honestly —
 // see the FAQ — rather than by asserting them, and the ratings claim
@@ -258,13 +267,13 @@ export default function Page() {
 
       <KeyFacts
         question={`What do Airbnb management companies in ${country} charge, and what should you compare?`}
-        answer={`Airbnb management companies in ${country} typically charge between 15% and 25% of revenue for full short-stay management. The headline percentage is a poor basis for comparison on its own: what matters more is whether the fee is charged on revenue collected or on a definition of "net booking revenue" that has already had platform fees, cleaning and consumables deducted, what sits outside the fee — onboarding, photography, exit fees, a markup on cleaners, a minimum charge in an empty month — and whether the listing stays on the host's own Airbnb account so the review history remains theirs. Goldstay charges 20% of revenue collected in ${cityPhrase}, with no onboarding, listing or exit fee, no margin on any contractor, nothing at all in a month with no bookings, the listing kept on the host's account, and net proceeds remitted to an overseas account in USD each month against an itemised statement.`}
+        answer={`Airbnb management companies in ${country} typically charge between 15% and 25% of revenue for full short-stay management. The headline percentage is a poor basis for comparison on its own: what matters more is whether the fee is charged on revenue collected or on a definition of "net booking revenue" that has already had platform fees, cleaning and consumables deducted, what sits outside the fee — onboarding, photography, exit fees, a markup on cleaners, a minimum charge in an empty month — and whether the listing stays on the host's own Airbnb account so the review history remains theirs. Goldstay charges 20% of revenue collected in ${cityPhrase}, with no onboarding, listing or exit fee, no margin on any contractor, nothing at all in a month with no bookings, and net proceeds remitted to an overseas account in USD each month against an itemised statement. A listing we build sits on our Airbnb account; if you are already hosting the unit yourself we co-host on yours instead, so your reviews and Superhost status stay with you.`}
         facts={[
           { label: "Typical market fee", value: "15%–25% of revenue" },
           { label: "Goldstay", value: "20% of revenue collected" },
           { label: "Charged on", value: "Revenue collected, not “net”" },
           { label: "In a month with no bookings", value: "Nothing" },
-          { label: "Listing ownership", value: "Stays on your account" },
+          { label: "Listing account", value: "Ours, or yours if you host" },
           { label: "What to compare first", value: "The base, not the rate" },
         ]}
         footnote="Every figure here is the figure you would be quoted on a call, and each one is written into the management agreement rather than described on a website."
@@ -319,11 +328,27 @@ export default function Page() {
               the decision was made when the listing was set up.
             </p>
             <p className="mt-4 text-lg text-cream/80 pretty">
-              Ours stay on the host&rsquo;s account, with us added as a
-              co-host. It is the arrangement Airbnb designed for exactly this,
-              it means the review history is yours on the day you leave, and
-              it is the reason our notice period can be thirty days without an
-              exit fee. A manager confident in the work does not need a hostage.
+              There is a real argument on the other side, and it is why we
+              default to ours. A new account starts with no reviews, no
+              Superhost status and no ranking history, and Airbnb&rsquo;s
+              search results treat it accordingly: the first two or three
+              months of a brand-new listing are spent buying visibility with
+              discounted nights. A listing launched on an established account
+              inherits some of that standing and fills faster. In the first
+              year that is usually worth more to an owner than a question they
+              will not face until they leave.
+            </p>
+            <p className="mt-4 text-lg text-cream/80 pretty">
+              So the answer we would rather give you is which one it is, before
+              you sign rather than after. A listing we build goes on our
+              account, named as such in Schedule 1 of the agreement. If you are
+              already hosting the unit and want to keep the reviews and
+              Superhost status you have built, we co-host on your account
+              instead and all of it stays yours. If we are building from
+              scratch and you would still rather hold the account, say so — it
+              changes how bookings are collected and paid out, so it is a
+              conversation rather than a checkbox, but it is available. Thirty
+              days&rsquo; notice and no exit fee apply either way.
             </p>
           </div>
         </div>

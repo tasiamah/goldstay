@@ -317,9 +317,7 @@ export default function Article() {
       <H2 id="how-we-run-it">How we run it</H2>
 
       <P>
-        On your account rather than ours, so the listing, the review history
-        and the guest relationships stay yours and you can remove us at any
-        time. We list across Airbnb, Booking.com, Expedia and direct, quote
+        We list across Airbnb, Booking.com, Expedia and direct, quote
         corporate
         bookings against invoice, price weekly, and report gross revenue,
         every deduction itemised, occupancy and average nightly rate monthly.

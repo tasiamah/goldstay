@@ -21,7 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.63.2] - 2026-09-13
+## [1.63.3] - 2026-09-13
+
+### Fixed
+- Thirteen places on the site told owners that their Airbnb listing stays on
+  their own account. The short-let agreement defaults the other way: clause 4.5
+  puts a listing we build on a GoldStay-controlled account, with co-hosting on
+  the client's account as the alternative under 4.6. Both arrangements are real
+  and we offer both, but the site described the alternative as though it were
+  the rule, so an owner could sign an agreement that contradicted the page that
+  sold it to them.
+
+  The sharpest case was the Airbnb management comparison page, whose argument is
+  that whose account holds the listing is the first question to ask any firm,
+  and which called a manager who keeps the listing someone holding a hostage —
+  a line quotable straight back at us. It now states the default, the argument
+  for it (a new account has no reviews, no Superhost status and no ranking, so a
+  listing launched on an established one fills faster), and the alternative.
+
+  `/airbnb-management` and the co-host article carry the full two-way answer
+  because a reader there is asking about account ownership specifically. The
+  five sign-offs where it was one item in a fee list — three building guides and
+  two service articles — simply drop the claim rather than explaining the
+  arrangement twice.
+
+  No change to the agreement itself, so no template version bump: the contract
+  was right and the copy was wrong.
 
 ### Fixed
 - The privacy notice and the terms of use now declare hreflang alternates. Both
@@ -2666,7 +2691,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.3...HEAD
+[1.63.3]: https://github.com/tasiamah/goldstay/compare/v1.63.2...v1.63.3
 [1.63.2]: https://github.com/tasiamah/goldstay/compare/v1.63.1...v1.63.2
 [1.63.1]: https://github.com/tasiamah/goldstay/compare/v1.63.0...v1.63.1
 [1.63.0]: https://github.com/tasiamah/goldstay/compare/v1.62.0...v1.63.0

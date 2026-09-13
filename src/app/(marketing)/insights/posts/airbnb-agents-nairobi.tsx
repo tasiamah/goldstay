@@ -266,9 +266,8 @@ export default function Article() {
       <P>
         If you are an owner, we manage furnished units in Nairobi for 20
         percent of revenue collected, with no setup fee, no listing fee and no
-        exit fee. The listing stays on your Airbnb account, so the review
-        history and Superhost status you build stay yours and you can leave
-        whenever you like. The monthly statement shows nights sold, platform
+        exit fee, so thirty days&rsquo; notice is all it takes to leave. The
+        monthly statement shows nights sold, platform
         fees, our fee and costs as separate lines. That is{" "}
         <Link
           href="/airbnb-management"

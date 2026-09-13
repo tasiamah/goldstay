@@ -333,8 +333,7 @@ export default function Article() {
       <P>
         We manage apartments in Westlands on both routes, and we offer
         management at GTC. Ten percent of rent collected on a long let, twenty
-        percent of revenue on a short stay, no setup fee and no exit fee. The
-        listing stays on your account.
+        percent of revenue on a short stay, no setup fee and no exit fee.
       </P>
 
       <P>

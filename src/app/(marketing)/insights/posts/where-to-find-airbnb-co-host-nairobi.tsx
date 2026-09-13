@@ -236,8 +236,15 @@ export default function Article() {
       <H2 id="us">Where we fit</H2>
 
       <P>
-        We co-host in Nairobi, on your account rather than ours, so the listing
-        and the review history stay yours and you can remove us at any time.
+        We co-host in Nairobi. If you are already hosting the unit, that is
+        co-hosting in the strict sense: you add us to your own listing, the
+        review history and Superhost status stay on your account, and you can
+        remove us from your settings at any time. If there is no listing yet we
+        usually build it on our account instead, which the agreement names
+        before you sign rather than after.
+      </P>
+
+      <P>
         The fee is 20 percent of revenue, published rather than quoted on a
         call, with no setup fee, no commission taken from cleaners and nothing
         payable to leave. We answer any request within 48 hours or waive that

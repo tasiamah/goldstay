@@ -459,7 +459,7 @@ export default function Article() {
       <P>
         We let and manage apartments in Westlands on both routes, long term at
         10 percent of rent collected and short stay at 20 percent of revenue,
-        with no setup fee, no exit fee, and the listing on your own account.
+        with no setup fee and no exit fee.
         We did not sell anything in this building, we are not the nominated
         agent, and we have no interest in defending a completion date or a
         rental projection that somebody else published.

@@ -39,7 +39,7 @@ const airbnbFaqs = [
   // think of their property as an Airbnb.
   {
     q: "Do you work as an Airbnb co-host?",
-    a: "Yes. Co-hosting is what this service is, in Airbnb's own vocabulary: your listing stays on your account and we run it, handling the calendar, pricing, guest messaging, check-ins, cleaning turnovers and maintenance. We can either be added as a co-host on your existing listing or build the listing from scratch if there is not one yet. The fee is the same 20% of revenue either way.",
+    a: "Yes, and it is the right word for the work: the calendar, pricing, guest messaging, check-ins, cleaning turnovers and maintenance, run on your behalf. If you are already hosting the unit, that is exactly the arrangement — you add us as a co-host and your reviews, Superhost status and ranking stay on your account. If there is no listing yet we usually build it on ours, which is named as such in the agreement and gets a new unit visible faster than a brand-new account can. The fee is the same 20% of revenue either way.",
   },
   // "Airbnb agent" was absent from the entire site, money pages and
   // all 379 articles, until Sep 2026. We said manager and co-host and
@@ -50,7 +50,7 @@ const airbnbFaqs = [
   // means Google could not find a page that answers it.
   {
     q: "Are you an Airbnb agent or an Airbnb management company?",
-    a: "In Nairobi they are two names for the same job and owners use them interchangeably. An Airbnb agent, a short-stay agent, a co-host and an Airbnb management company all describe someone who runs a furnished unit on your behalf: the listing, the nightly pricing, guest screening and messaging, check-ins, turnover cleaning and the money. The label tells you nothing useful. What separates firms is whether the listing stays on your account or moves to theirs, whether the fee is charged on revenue collected or on something more flattering, and whether you get an itemised monthly statement or a figure in a message. Ours stays on your account, the fee is 20% of revenue collected, and the statement is itemised.",
+    a: "In Nairobi they are two names for the same job and owners use them interchangeably. An Airbnb agent, a short-stay agent, a co-host and an Airbnb management company all describe someone who runs a furnished unit on your behalf: the listing, the nightly pricing, guest screening and messaging, check-ins, turnover cleaning and the money. The label tells you nothing useful. What separates firms is whether the listing stays on your account or moves to theirs, whether the fee is charged on revenue collected or on something more flattering, and whether you get an itemised monthly statement or a figure in a message. We co-host on your account if you are already hosting and build on ours if you are not, the fee is 20% of revenue collected, and the statement is itemised.",
   },
   {
     q: "Do you manage serviced apartments, holiday homes and furnished lets too?",
@@ -86,7 +86,7 @@ const airbnbFaqs = [
   },
   {
     q: "Am I locked in?",
-    a: "No. Thirty days' written notice ends the agreement with no exit fee, and the listing and its review history remain associated with your property.",
+    a: "No. Thirty days' written notice ends the agreement, with no exit fee and nothing to pay on the way out. Where we co-host on your own account, the listing and its review history are yours and simply stay put. Where we built the listing on ours, the account stays with us — which is why the agreement names it before you sign rather than leaving it to be found out at the end.",
   },
   // Operators, who are the majority of the short-let book but were a
   // reader this page addressed nowhere: everything above says "your
@@ -371,8 +371,8 @@ export default function Page() {
             >
               How to tell Airbnb management companies apart
             </Link>{" "}
-            sets out what the percentage is really charged on, why the listing
-            staying on your own account matters more than the rate, and eight
+            sets out what the percentage is really charged on, why whose
+            account holds the listing matters more than the rate, and eight
             questions worth asking every firm — us included.
           </p>
         </div>

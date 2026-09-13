@@ -382,9 +382,8 @@ export default function Article() {
         We manage short stay and long let apartments in Westlands, and we would
         like to manage yours at Skynest. Twenty percent of revenue on a short
         stay, ten percent of rent collected on a long let, no setup fee and no
-        exit fee. The listing stays on your own account, which means the review
-        history and the direct guests you build are yours and they stay yours
-        if you ever leave us.
+        exit fee. If your unit is already listed and earning, we co-host on
+        your own account so the review history you have built stays with you.
       </P>
 
       <P>
