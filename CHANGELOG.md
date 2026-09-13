@@ -21,6 +21,39 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.58.0] - 2026-09-13
+
+### Added
+- An owners' guide to GTC Residences, inside the gated Global Trade Centre on
+  Westlands Road at Chiromo Lane. It leads on the nightly rate, which really
+  is among the highest in Nairobi: agents quote roughly KES 16,000 to 22,000,
+  or about USD 125 to 170, against the USD 100 to 150 we record for Westlands
+  generally, with only Gigiri reaching higher. The guide gives the reason
+  rather than just the number. The 175 suite Pan Pacific shares the gate and
+  publishes about USD 275 for a one bedroom suite, so a privately owned unit
+  there is undercutting a five star operator on the same pool, gym, mall and
+  security instead of undercutting the apartment down the road. GTC also sits
+  in the submarket with the best occupancy in the city at 65% to 75%.
+- The guide then does a sum that argues against our own higher fee, because it
+  is what the numbers say. GTC long let rents are exceptional too, around KES
+  340,000 a month for a one bedroom, on allowance backed diplomatic and
+  executive tenants. After a 20% short stay fee and the electricity, water,
+  internet, consumables and linen the owner funds on nightly turnover, the
+  long let usually nets more. So the guide says the honest answer for a one or
+  two bedroom at GTC is often long letting at our 10%, and names the three
+  cases where nightly still wins: owner use for part of the year, three
+  bedrooms and penthouses where nightly scales more steeply, and a month with
+  no allowance backed tenant in it.
+- It tells owners to get the house rules on nightly letting in writing before
+  anything else, since a gated estate with a five star operator inside it has
+  an obvious interest in how many private units sell nights, and to price
+  GTC's own serviced apartment programme against an independent manager before
+  choosing either. As with Shangri-La, it separates agent asking rents from
+  achieved rents and asks for the void period alongside.
+- A tenant section, because much of the search volume on a development name is
+  people who want to live there, and a reciprocal link between this and the
+  Shangri-La guide: the two now describe opposite ends of the same submarket.
+
 ## [1.57.0] - 2026-09-13
 
 ### Added
@@ -2383,7 +2416,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.57.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.58.0...HEAD
+[1.58.0]: https://github.com/tasiamah/goldstay/compare/v1.57.0...v1.58.0
 [1.57.0]: https://github.com/tasiamah/goldstay/compare/v1.56.0...v1.57.0
 [1.56.0]: https://github.com/tasiamah/goldstay/compare/v1.55.0...v1.56.0
 [1.55.0]: https://github.com/tasiamah/goldstay/compare/v1.54.0...v1.55.0

@@ -497,7 +497,16 @@ export default function Article() {
         >
           the Coco Brookside handover guide
         </Link>
-        , for owners about to be in the same position.
+        , for owners about to be in the same position. For the other end of the
+        same submarket, where the nightly rate is the highest in Nairobi
+        because a five star hotel shares the gate, see{" "}
+        <Link
+          href="/insights/gtc-residences-pan-pacific-westlands-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          GTC Residences and the Pan Pacific
+        </Link>
+        .
       </P>
     </>
   );
