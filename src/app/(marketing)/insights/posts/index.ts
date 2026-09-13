@@ -732,6 +732,9 @@ import ShangriLaResidencyWestlandsLettingGuide, {
 import GtcResidencesPanPacificWestlandsOwnersGuide, {
   meta as gtcResidencesPanPacificWestlandsOwnersGuideMeta,
 } from "./gtc-residences-pan-pacific-westlands-owners-guide";
+import SkynestResidencesWestlandsOwnersGuide, {
+  meta as skynestResidencesWestlandsOwnersGuideMeta,
+} from "./skynest-residences-westlands-owners-guide";
 import AirbnbAgentsNairobi, {
   meta as airbnbAgentsNairobiMeta,
 } from "./airbnb-agents-nairobi";
@@ -1626,6 +1629,10 @@ export const posts: readonly Post[] = [
   {
     meta: gtcResidencesPanPacificWestlandsOwnersGuideMeta,
     Component: GtcResidencesPanPacificWestlandsOwnersGuide,
+  },
+  {
+    meta: skynestResidencesWestlandsOwnersGuideMeta,
+    Component: SkynestResidencesWestlandsOwnersGuide,
   },
   { meta: airbnbAgentsNairobiMeta, Component: AirbnbAgentsNairobi },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },

@@ -241,6 +241,21 @@ export default function Article() {
         >
           the best Nairobi suburbs for Airbnb
         </Link>
+        . For two Westlands buildings in particular, and why the same submarket
+        produces opposite answers in each, see{" "}
+        <Link
+          href="/insights/skynest-residences-westlands-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Skynest Residences
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/insights/gtc-residences-pan-pacific-westlands-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          GTC Residences
+        </Link>
         .
       </P>
     </>

@@ -506,6 +506,14 @@ export default function Article() {
         >
           GTC Residences and the Pan Pacific
         </Link>
+        . For the building in the same submarket that earns the most on a
+        nightly basis, and what separates it from an average listing, see{" "}
+        <Link
+          href="/insights/skynest-residences-westlands-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Skynest Residences
+        </Link>
         .
       </P>
     </>

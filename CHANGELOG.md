@@ -21,6 +21,44 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.59.0] - 2026-09-13
+
+### Added
+- An owners' guide to Skynest Residences on Mkungu Close, Westlands, the 249
+  unit furnished building next to the Movenpick. It substantiates the claim
+  that Skynest is one of the strongest short stay addresses in Nairobi rather
+  than asserting it: agents quote its furnished two beds at KES 15,000 to
+  16,900 a night, about USD 115 to 130, against the USD 47 average daily rate
+  AirDNA publishes across 13,110 active Nairobi listings as at July 2026. That
+  is roughly two and a half times the city average.
+- The guide then spends most of its length on why the rate is not the
+  investment case, which is the part owners there get wrong. AirDNA has the
+  average Nairobi listing selling 41% of its nights, the top quartile above
+  57% and the top decile above 78%, and we record 65% to 75% for Westlands. So
+  the arithmetic is set out at each level: a Skynest two bed at 41% occupancy
+  nets around KES 88,000 a month after fee, utilities, linen and service
+  charge, which is less than letting the same flat unfurnished on a long lease
+  at KES 100,000 to 150,000, while the same unit at 70% nets around KES
+  193,000 and roughly doubles it. The entire case sits in the gap between
+  those occupancies, and that gap is not a property of the building, since all
+  249 owners share the address, the rooftop pool and the walk to Sarit.
+- Because the building runs as an aparthotel under the CityBlue brand while
+  units are privately owned, and at least one independent operator markets its
+  own Skynest apartments, the guide sets out four genuinely different routes
+  rather than pitching one, and says what an owner gives up by sitting in an
+  operator's pool: the guest relationship, the reviews and any listing history
+  they could leave with. It also names the demand stream nobody in the
+  building writes for, which is regional medical travel to MP Shah and the Aga
+  Khan, longer staying and counter cyclical to the corporate calendar.
+- Where AirDNA is cited it is cited for what it actually publishes. Building
+  level reads sit behind their paid product, so the market baseline is
+  attributed to them and the building level reading is marked as ours.
+- Three editorial inbound links now point at it with "Skynest Residences" as
+  the anchor, from the GTC and Shangri-La guides and the Westlands host guide,
+  and the three building guides cross-reference each other. The Westlands
+  cluster now reads as one argument: the same submarket produces opposite
+  answers building by building.
+
 ## [1.58.0] - 2026-09-13
 
 ### Added
@@ -2416,7 +2454,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.58.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.59.0...HEAD
+[1.59.0]: https://github.com/tasiamah/goldstay/compare/v1.58.0...v1.59.0
 [1.58.0]: https://github.com/tasiamah/goldstay/compare/v1.57.0...v1.58.0
 [1.57.0]: https://github.com/tasiamah/goldstay/compare/v1.56.0...v1.57.0
 [1.56.0]: https://github.com/tasiamah/goldstay/compare/v1.55.0...v1.56.0

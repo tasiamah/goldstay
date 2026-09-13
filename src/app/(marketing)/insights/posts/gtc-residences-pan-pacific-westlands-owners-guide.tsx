@@ -405,7 +405,15 @@ export default function Article() {
         >
           how Westlands went vertical
         </Link>
-        , which covers the office wave GTC belongs to.
+        , which covers the office wave GTC belongs to. For the building a few
+        minutes away where the nightly numbers come out the other way, see{" "}
+        <Link
+          href="/insights/skynest-residences-westlands-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Skynest Residences
+        </Link>
+        .
       </P>
     </>
   );
