@@ -21,7 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.63.3] - 2026-09-13
+## [1.64.0] - 2026-09-13
+
+### Added
+- Published furnishing package prices, at
+  `/insights/apartment-furnishing-packages-nairobi`. Two tiers, from KES 700,000
+  for a short-let ready studio to KES 2.75m for a premium three bedroom, with
+  what sits inside the price, what does not, and the delivery time for each
+  sourcing route. The site had a cost guide telling owners what furnishing
+  costs, which answers a research question, and nothing answering the buying
+  one: who will do it and what will they charge. It also states plainly that
+  the furniture is the owner's outright on installation, with nothing recovered
+  out of booking revenue, because the alternative arrangements in this market
+  quietly convert a furnishing spend into a notice period.
+
+### Changed
+- The cost to furnish a Nairobi apartment guide now separates unit size from
+  specification tier. It previously indexed its three tiers by both at once,
+  "mid-market 1 to 2-bed" through "premium 3 to 4-bed", so it had no answer to
+  what a premium one bedroom costs. It also priced only an owner-occupier
+  furnish, which undersells a rental specification by about half again: a let
+  unit carries three sets of linen rather than one, blackout window treatments,
+  a workspace, safety equipment, a spare of every breakable item and a mattress
+  chosen for four hundred strangers a year. Rental grade budgets are now given
+  by unit size, and both articles judge the spend against the rent differential
+  rather than against a cost table, using the Riverside One figures already
+  published on the site.
 
 ### Fixed
 - Thirteen places on the site told owners that their Airbnb listing stays on
@@ -2691,7 +2716,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.3...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.64.0...HEAD
+[1.64.0]: https://github.com/tasiamah/goldstay/compare/v1.63.3...v1.64.0
 [1.63.3]: https://github.com/tasiamah/goldstay/compare/v1.63.2...v1.63.3
 [1.63.2]: https://github.com/tasiamah/goldstay/compare/v1.63.1...v1.63.2
 [1.63.1]: https://github.com/tasiamah/goldstay/compare/v1.63.0...v1.63.1

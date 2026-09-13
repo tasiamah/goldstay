@@ -883,6 +883,9 @@ import SevenThingsNairobiTenantShouldAsk, {
 import CostFurnishNairobiApartment2026, {
   meta as costFurnishNairobiApartment2026Meta,
 } from "./cost-furnish-nairobi-apartment-2026";
+import ApartmentFurnishingPackagesNairobi, {
+  meta as apartmentFurnishingPackagesNairobiMeta,
+} from "./apartment-furnishing-packages-nairobi";
 import WhyLavingtonOvertakingKaren, {
   meta as whyLavingtonOvertakingKarenMeta,
 } from "./why-lavington-overtaking-karen-family-suburb";
@@ -1814,6 +1817,10 @@ export const posts: readonly Post[] = [
   {
     meta: costFurnishNairobiApartment2026Meta,
     Component: CostFurnishNairobiApartment2026,
+  },
+  {
+    meta: apartmentFurnishingPackagesNairobiMeta,
+    Component: ApartmentFurnishingPackagesNairobi,
   },
   {
     meta: whyLavingtonOvertakingKarenMeta,
