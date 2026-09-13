@@ -726,6 +726,9 @@ import EnrogueKileleshwaHandoverGuide, {
 import CocoBrooksideWestlandsHandoverGuide, {
   meta as cocoBrooksideWestlandsHandoverGuideMeta,
 } from "./coco-brookside-westlands-handover-guide";
+import ShangriLaResidencyWestlandsLettingGuide, {
+  meta as shangriLaResidencyWestlandsLettingGuideMeta,
+} from "./shangri-la-residency-westlands-letting-guide";
 import AirbnbAgentsNairobi, {
   meta as airbnbAgentsNairobiMeta,
 } from "./airbnb-agents-nairobi";
@@ -1612,6 +1615,10 @@ export const posts: readonly Post[] = [
   {
     meta: cocoBrooksideWestlandsHandoverGuideMeta,
     Component: CocoBrooksideWestlandsHandoverGuide,
+  },
+  {
+    meta: shangriLaResidencyWestlandsLettingGuideMeta,
+    Component: ShangriLaResidencyWestlandsLettingGuide,
   },
   { meta: airbnbAgentsNairobiMeta, Component: AirbnbAgentsNairobi },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },

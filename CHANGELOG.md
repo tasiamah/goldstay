@@ -21,6 +21,40 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.57.0] - 2026-09-13
+
+### Added
+- A letting guide for Shangri-La Residency on 25 Westlands Road. It is not a
+  handover guide like Coco or Enrogue, because the building has already handed
+  over: it sold out off plan, largely to investors, and around eighty units
+  reached the letting market within a few weeks of each other. The owners who
+  are searching for it now have a specific problem, which is a unit that has
+  been advertised for a while without a tenant, so the guide answers that
+  rather than reciting the development.
+- The argument is that a unit sitting empty there is losing to the other
+  apartments in its own building rather than to the wider market, which is our
+  own reading of Westlands rather than a guess: more apartments have been
+  delivered there than anywhere comparable, and a void in Westlands is a
+  presentation problem far more often than a pricing problem. So the guide
+  tells an owner to get the viewing count before touching the rent, because no
+  viewings and thirty viewings without an offer have different causes and
+  different fixes, and cutting the rent against dozens of identical
+  neighbours only resets the building's achievable rent for everybody.
+- For the 500 square foot studios and one beds it names short letting as the
+  better business, since a small unit cannot differentiate on a long let but
+  can on a nightly one, and Westlands runs USD 100 to 150 a night at 65% to
+  75% occupancy on corporate demand that holds midweek.
+- The guide also serves tenants, who are a good share of the people searching
+  a building by name, with a section on what to negotiate and a route to
+  `/find-a-home`. An owner three months into a void moves on terms before they
+  move on rent, and saying so is useful to both sides.
+- On the published figures, the guide states where the sources disagree rather
+  than picking: floors appear as both seventeen and twenty, and completion was
+  published as August, September and December 2025. It also treats the
+  brochure's quoted rents of KES 85,000 to 110,000 as achievable for a well
+  presented unit and optimistic for an undifferentiated one, which is the
+  honest position and more useful than either reassurance or alarm.
+
 ## [1.56.0] - 2026-09-13
 
 ### Added
@@ -2349,7 +2383,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.56.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.57.0...HEAD
+[1.57.0]: https://github.com/tasiamah/goldstay/compare/v1.56.0...v1.57.0
 [1.56.0]: https://github.com/tasiamah/goldstay/compare/v1.55.0...v1.56.0
 [1.55.0]: https://github.com/tasiamah/goldstay/compare/v1.54.0...v1.55.0
 [1.54.0]: https://github.com/tasiamah/goldstay/compare/v1.53.0...v1.54.0
