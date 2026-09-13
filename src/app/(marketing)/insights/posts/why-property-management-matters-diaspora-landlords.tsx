@@ -29,6 +29,28 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Nairobi residential building exterior, the case for professional property management for diaspora landlords",
+  // Four of the five interview questions in the body. The first, "Show
+  // me a real monthly statement", is an instruction rather than a
+  // question, and a Question entity whose name is not one reads badly
+  // wherever it surfaces.
+  faq: [
+    {
+      q: "How do you handle MRI / withholding tax?",
+      a: "The right answer is specific: filed in your name on your KRA PIN by the 20th of each month, 7.5 percent withheld from collection, the e-slip attached to the statement. In Ghana, 8 percent deducted at source and remitted to GRA by the 15th with the acknowledgement attached. Anything vaguer is a future penalty waiting to surface.",
+    },
+    {
+      q: "What is your maintenance authority threshold?",
+      a: "A real figure that exists in the contract. Zero means approving every light bulb at 3am your time; no cap means the manager spends your money without accountability. The honest range for a residential unit is roughly USD 50 for routine work, USD 50 to 250 itemised, and prior written approval above that.",
+    },
+    {
+      q: "How do you remit funds to my foreign account?",
+      a: "A complete answer names the currency, the frequency, the FX rate basis and the disclosed spread: collected in KES and wired in USD on the 5th at wholesale interbank rate, with the spread shown on the statement. Without that you pay retail FX and unflagged spreads for years.",
+    },
+    {
+      q: "What happens to my property if you close?",
+      a: "Tenant relationships are yours, not the manager's, and bank details sit on your accounts rather than theirs. The lease, statements, vendor list and keys should be deliverable on 14 days' notice, with no lock-in and no clawback. A manager who treats your tenants as their asset has made you a supplier rather than a client.",
+    },
+  ],
 };
 
 export default function Article() {

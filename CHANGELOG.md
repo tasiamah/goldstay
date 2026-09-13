@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.62.0] - 2026-09-13
+
+### Added
+- Articles can now publish their question and answer sections as FAQPage
+  schema, via a `faq` field on `PostMeta`. `FaqJsonLd` has been live on 28
+  commercial and neighbourhood URLs for a while but no article could emit it,
+  because there was nowhere to put the pairs. Google withdrew the FAQ rich
+  result for most sites in 2023, so this is not about the search result: the
+  structured data still feeds AI Overviews, People Also Ask and Bing's answer
+  cards, which is where a question like "is a management fee charged on rent
+  collected or rent due" now gets answered.
+- The two articles whose bodies genuinely carry the Q&A now do so: the twelve
+  questions to ask a property manager before you sign, and four of the five
+  interview questions in the case for management. Sixteen pairs, each answer
+  written to be read with the article deleted from around it, because that is
+  how an AI Overview quotes it.
+- `scripts/check-insights.mjs` asserts both halves of that. Every question in
+  a `faq` block must also be an H3 in the body, ignoring the number the reader
+  sees and the schema drops, so the markup cannot promise an answer the page
+  does not give — which is the abuse Google withdrew the rich result over. And
+  every answer gets the KeySummary treatment: long enough to quote, and no
+  "as above" pointing at copy that will not be there.
+
 ## [1.61.1] - 2026-09-13
 
 ### Fixed
@@ -2579,6 +2602,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.61.0...HEAD
+[1.62.0]: https://github.com/tasiamah/goldstay/compare/v1.61.1...v1.62.0
 [1.61.1]: https://github.com/tasiamah/goldstay/compare/v1.61.0...v1.61.1
 [1.61.0]: https://github.com/tasiamah/goldstay/compare/v1.60.0...v1.61.0
 [1.60.0]: https://github.com/tasiamah/goldstay/compare/v1.59.0...v1.60.0

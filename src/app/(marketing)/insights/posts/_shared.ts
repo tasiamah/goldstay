@@ -73,6 +73,25 @@ export type PostMeta = {
   // never ship a broken share unfurl.
   heroImage?: string;
   heroAlt?: string;
+  // Question and answer pairs to publish as FAQPage schema.
+  //
+  // Google pulled the FAQ rich result for most sites in 2023, so this
+  // is not about stars in the search result. The structured data still
+  // feeds AI Overviews, People Also Ask and Bing's answer cards, which
+  // is where the queries this catalogue answers increasingly land.
+  //
+  // Two rules, both enforced by scripts/check-insights.mjs:
+  //
+  // Every question here must also be a heading in the article body.
+  // Schema describing an answer the reader cannot find on the page is
+  // the thing Google penalises, and it is the failure mode that makes
+  // FAQ markup worth avoiding when it is written to game a result
+  // rather than to describe one.
+  //
+  // Every answer must stand on its own, for the same reason KeySummary
+  // does: it is lifted out of the page and read with no surrounding
+  // context, so "it depends on the above" is worse than no answer.
+  faq?: readonly { q: string; a: string }[];
   // Keep the article out of the index.
   //
   // Set where a piece is genuinely useful to whoever lands on it but

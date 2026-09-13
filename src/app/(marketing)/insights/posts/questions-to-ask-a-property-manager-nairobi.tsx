@@ -35,6 +35,59 @@ export const meta: PostMeta = {
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Interviewing a property management company in Nairobi",
+  // The twelve H3 questions in the body, with the answer each section
+  // arrives at. Written to be read on their own, because that is how an
+  // AI Overview will quote them.
+  faq: [
+    {
+      q: "Is your fee charged on rent collected or rent due?",
+      a: "Collected, ideally in one word with no qualification. A fee on rent due is payable whether or not the tenant paid, so a month where you receive nothing still costs you, and it removes the manager's financial reason to chase arrears.",
+    },
+    {
+      q: "What else is charged, over a full year?",
+      a: "Ask for the annual total rather than the percentage. Four additions turn a low headline into a high cost: a setup or onboarding fee, a markup on maintenance, a letting fee charged again when a sitting tenant renews, and a fee to leave. A 10 percent quote carrying all four is more expensive than a 13 percent quote carrying none.",
+    },
+    {
+      q: "Where does my rent sit between the tenant paying and me receiving?",
+      a: "In a designated client account, separate from the company's trading account, which makes it identifiably yours if the firm fails while holding two months of it. Rent paid into the operating account is a debt owed by a company that may not have the money.",
+    },
+    {
+      q: "When am I paid, and what happens if you are late?",
+      a: "Every manager has a payment date; far fewer have a consequence for missing it. An agreed consequence is the difference between a term and an intention, and it is the cheapest test of whether the firm expects to be held to anything.",
+    },
+    {
+      q: "Who calculates and files the MRI, and do I get the receipt?",
+      a: "Kenyan residential rental income attracts Monthly Rental Income tax at 7.5 percent. If the manager holds the money but the filing is nominally yours, you carry a KRA obligation on funds you never touched. Insist on the receipt reference: withholding and filing are different acts and only one leaves a trace.",
+    },
+    {
+      q: "What is the notice period, and is anything payable if I leave?",
+      a: "Look for notice that runs both ways, no minimum term to serve before you may give notice at all, and nothing payable on exit. A firm with an exit fee has a financial interest in making leaving unpleasant, and you discover how much of one at the worst possible moment.",
+    },
+    {
+      q: "How much can you spend on a repair without asking me?",
+      a: "There should be a figure in shillings, per incident. Without one you are choosing between a manager who cannot act on a burst pipe until you wake up and one who has already replaced the water heater and sent the invoice.",
+    },
+    {
+      q: "Who physically visits the property, and how often?",
+      a: "Ask for a name and a frequency, then ask what the last visit found. A manager who inspects quarterly and writes it up can tell you what condition your asset is in. One who does not is administering a payment rather than managing a property.",
+    },
+    {
+      q: "What is your response time, and what if you miss it?",
+      a: "The consequence is the substance. A published response time with nothing attached to missing it is a marketing claim rather than a term.",
+    },
+    {
+      q: "How many properties does one manager carry?",
+      a: "There is no correct number, but there is a number beyond which quarterly inspection cannot physically happen. A firm that has never counted is telling you nobody is accountable for a specific list of homes.",
+    },
+    {
+      q: "Walk me through how you vetted your last tenant.",
+      a: "Ask about a specific past letting rather than the policy, because policies are easy and recall is not. Listen for employer verification, bank statements or pay slips actually seen, a previous landlord actually telephoned, and identity documents checked against the person who turned up.",
+    },
+    {
+      q: "What happens if the tenant you place defaults?",
+      a: "The honest range runs from helping you pursue it through to replacing the tenant at the manager's own cost. What matters is that the answer is specific and written into the agreement, because default is where a landlord abroad is least able to act.",
+    },
+  ],
 };
 
 export default function Article() {

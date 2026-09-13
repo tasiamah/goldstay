@@ -3,7 +3,7 @@ import Image from "next/image";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { CTABanner } from "./CTABanner";
-import { BreadcrumbJsonLd } from "./JsonLd";
+import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 import { logoObject, orgId, site } from "@/lib/site";
 import type { Post, PostMeta } from "@/app/(marketing)/insights/posts";
 import { categoriesForPost } from "@/app/(marketing)/insights/categories";
@@ -98,6 +98,11 @@ export function ArticleLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
       />
+      {/* Only where the article really carries the Q&A on the page.
+          See PostMeta.faq — check-insights.mjs asserts each question
+          appears as a heading in the body, so this cannot describe an
+          answer a reader arriving from an AI Overview will not find. */}
+      {meta.faq?.length ? <FaqJsonLd items={meta.faq} /> : null}
 
       <article className="bg-cream">
         <header className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
