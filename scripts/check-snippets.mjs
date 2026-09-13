@@ -227,8 +227,8 @@ const WIDEST_CITY_PHRASE = "Nairobi and Accra";
 // Google Business Profile. Worth knowing about because it was the
 // homepage title for twelve versions at 826px, and a checker that only
 // reads string literals cannot see a title that is a function call —
-// which is exactly how it passed this script while Google was
-// discarding it.
+// which is exactly how a title 1.4x over budget passed this script
+// every time it ran.
 const TRADING_NAME = `Goldstay | Property Management, Airbnb Co-Hosting & Short Let Consultancy ${WIDEST_CITY_PHRASE}`;
 
 const RENDERED = [
@@ -446,11 +446,10 @@ function routePaths() {
 
 // A page with no metadata export inherits its layout's, which for the
 // marketing group is the homepage — the most valuable title on the site
-// and the one this script could not see until v1.63.0. It shipped at
-// 826px against a 600px budget, and Google was not truncating it but
-// replacing it wholesale with a string of its own. The page loop skips
-// anything with no metadata export, so the default had to be read from
-// the layout itself.
+// and the one this script could not see until v1.63.0, by which point
+// it had been shipping a 826px title against a 600px budget for twelve
+// releases. The page loop skips anything with no metadata export, so
+// the default had to be read from the layout itself.
 function layoutDefaults() {
   const rows = [];
   const walk = (dir, segments) => {

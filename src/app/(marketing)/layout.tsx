@@ -71,16 +71,23 @@ export function generateMetadata(): Metadata {
     // This carried the full trading name from v1.51.0 until v1.63.0,
     // because the name was in front of a Business Profile reviewer and
     // had to match the profile. That reviewer has now approved it, so
-    // the title no longer has that job to do — and the reasoning
-    // alongside it turned out to be wrong on the point that mattered.
+    // the title no longer has that job to do.
     //
-    // It assumed Google would truncate the tail, which is only a
-    // display cost. At 826px against a budget of about 600, Google did
-    // not truncate it: it discarded it and wrote its own, and the
-    // homepage has been showing "Goldstay: Property Management Nairobi"
-    // — a string that has never appeared in this repository. Losing the
-    // tail is cheap. Losing the whole title on the most valuable URL on
-    // the site is not.
+    // The shortening stands on the width alone: at 826px against a
+    // display budget of about 600, the tail was never going to be
+    // shown, and the visible part was brand rather than anything a
+    // searcher typed.
+    //
+    // A stronger claim was made here in v1.63.0 and is wrong, so it is
+    // written down rather than quietly dropped. It said Google had
+    // discarded the title outright and substituted "Goldstay: Property
+    // Management Nairobi", on the evidence of a live search result. The
+    // description on that same result was the homepage copy from before
+    // 2026-09-09, and the trading name did not ship until 2026-09-10 —
+    // so the result predates the long title and cannot be evidence
+    // about it. The substituted string is almost certainly Google
+    // reformatting the title that was live then, "Property Management
+    // Nairobi | Goldstay", which is what this now returns to.
     //
     // The trading name still corroborates the profile from the two
     // places a full legal name belongs: `alternateName` on the

@@ -21,6 +21,26 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.63.1] - 2026-09-13
+
+### Fixed
+- Corrects the reasoning recorded against the homepage title in 1.63.0, in the
+  changelog entry below and in the comment in the marketing layout. That entry
+  said Google had discarded the title outright and substituted "Goldstay:
+  Property Management Nairobi", citing a live search result. The result is real
+  but it cannot show that: the description on it is the homepage copy from
+  before 2026-09-09, and the trading name did not become the title until
+  2026-09-10, so the result predates the title it was being used as evidence
+  about. The substituted string is almost certainly Google reformatting the
+  title that was live at the time — "Property Management Nairobi | Goldstay",
+  confirmed by a third-party audit taken on 2026-09-09 — which is close to what
+  1.63.0 restored.
+- The change in 1.63.0 was still the right one, on narrower grounds: 826px
+  against a display budget of roughly 600 means the tail is never shown and the
+  visible part is brand rather than anything a searcher typed. No code changes,
+  only the justification attached to it, which is what a later reader would
+  otherwise have trusted.
+
 ## [1.63.0] - 2026-09-13
 
 ### Changed
@@ -2633,7 +2653,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.1...HEAD
+[1.63.1]: https://github.com/tasiamah/goldstay/compare/v1.63.0...v1.63.1
 [1.63.0]: https://github.com/tasiamah/goldstay/compare/v1.62.0...v1.63.0
 [1.62.0]: https://github.com/tasiamah/goldstay/compare/v1.61.1...v1.62.0
 [1.61.1]: https://github.com/tasiamah/goldstay/compare/v1.61.0...v1.61.1
