@@ -332,9 +332,15 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        We furnish apartments in Nairobi at published fixed prices, from
-        KES 700,000 for a short-let ready studio to KES 2.75m for a premium
-        three bedroom, covering specification, sourcing, delivery,
+        We furnish apartments in Nairobi at{" "}
+        <Link
+          href="/furnishing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          published fixed prices
+        </Link>
+        , from KES 700,000 for a short-let ready studio to KES 2.75m for a
+        premium three bedroom, covering specification, sourcing, delivery,
         installation, snagging and photography. What is inside each price,
         what sits outside it, and the delivery time for each route are in{" "}
         <Link

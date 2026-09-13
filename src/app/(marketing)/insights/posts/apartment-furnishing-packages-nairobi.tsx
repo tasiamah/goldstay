@@ -347,7 +347,15 @@ export default function Article() {
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
-        We furnish apartments in Nairobi at the prices above, and we
+        We furnish apartments in Nairobi at the prices above, set out with
+        the process and the exclusions on{" "}
+        <Link
+          href="/furnishing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our furnishing page
+        </Link>
+        . We
         specify for revenue rather than for taste, because we are the ones
         who then have to run the unit and answer for the reviews. The
         specification is standardised across the portfolio deliberately:

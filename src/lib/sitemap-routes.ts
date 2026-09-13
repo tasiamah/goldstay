@@ -81,6 +81,11 @@ export function sitemapPaths(input: {
     "/long-term-management",
     "/tenant-finding",
     "/property-sourcing",
+    // Kenya-only in substance, like /airbnb-management-companies-kenya
+    // below: the prices on it are KES and the goods are imported into
+    // Kenya. It sits here rather than under nairobiRoutes because it is
+    // a top-level route, not a /nairobi/* one.
+    "/furnishing",
     "/pricing",
     "/change-property-manager",
     "/property-management-companies-nairobi",

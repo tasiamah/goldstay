@@ -237,11 +237,19 @@ export default function Article() {
         analysis as part of onboarding: target tenant
         profile, comparable rents in both modes, expected
         rent premium, and total furnishing cost. If
-        furnishing makes sense, we coordinate the project
-        directly: trusted suppliers, fixed budget,
-        delivery and installation typically inside three
-        weeks, and the landlord pays suppliers direct (no
-        Goldstay markup).
+        furnishing makes sense, we will do it, at{" "}
+        <Link
+          href="/furnishing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a published fixed price
+        </Link>{" "}
+        covering specification, sourcing, delivery,
+        installation, snagging and photography. The
+        furniture is yours outright the day it is
+        installed, with no monthly charge and nothing
+        recovered out of booking revenue. If the analysis
+        says leave it unfurnished, we will say so.
       </P>
 
       <P>

@@ -130,6 +130,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/furnishing" className="link-underline">
+                  Apartment furnishing
+                </Link>
+              </li>
+              <li>
                 {/* Anchored on "fees" rather than "pricing": it is both
                     the phrase the page targets and the word a landlord
                     scanning for the cost is looking for. */}

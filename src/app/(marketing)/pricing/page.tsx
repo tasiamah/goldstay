@@ -154,7 +154,7 @@ export default function Page() {
     },
     {
       q: "What is not included in the management fee?",
-      a: "The fee buys our work, not third-party costs. Maintenance and repairs, utilities, service charge, insurance, statutory taxes and the cost of furnishing a short-stay unit are yours, billed at what we were charged with no markup. Expenses over USD 50 carry a photo receipt and anything over USD 250 needs your written approval first.",
+      a: "The fee buys our work, not third-party costs. Maintenance and repairs, utilities, service charge, insurance and statutory taxes are yours, billed at what we were charged with no markup. Expenses over USD 50 carry a photo receipt and anything over USD 250 needs your written approval first. Furnishing a unit is also yours to pay for, but it is a separate service rather than a pass-through expense: it is sold at a published fixed price covering specification, sourcing, delivery, installation and photography, and the furniture is yours outright on installation.",
     },
     {
       q: "How does that compare to other Nairobi property managers?",

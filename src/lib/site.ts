@@ -847,6 +847,29 @@ export const services = [
       "Move-in inventory and handover",
     ],
   },
+  // The only service billed as a one-off purchase rather than a fee on
+  // someone else's money, and the only one whose price is in shillings
+  // rather than a percentage. The fee reads "700k+" because the column
+  // it renders in is a 4xl serif alongside "20%" and "1 month", and
+  // "From KES 700,000" does not fit that. Nairobi only for now: the
+  // prices are KES and the goods are imported into Kenya.
+  {
+    slug: "furnishing",
+    title: "Apartment Furnishing",
+    fee: "700k+",
+    feeLabel: "KES, fixed price",
+    detailHref: "/furnishing",
+    blurb:
+      "Empty floor to let-ready at a published price, with the furniture yours outright the day it is installed.",
+    features: [
+      "Written specification against your actual unit",
+      "Nairobi stock or imported to order, both priced",
+      "Delivery, assembly, wall mounting and curtain fitting",
+      "Snagging walk-through and damage replacement handled",
+      "Professional photography of the finished unit",
+      "Owned outright, with nothing recovered from bookings",
+    ],
+  },
 ];
 
 // Neighbourhood-level economics. Ranges are indicative monthly rent in USD

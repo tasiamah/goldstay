@@ -21,6 +21,40 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.65.0] - 2026-09-13
+
+### Added
+- A furnishing service page at `/furnishing`, so the fixed-price packages have a
+  page rather than only an article. The prices, the two tiers, the five steps of
+  the work, the delivery time for each sourcing route and the exclusions are all
+  on it, with the payback arithmetic from Riverside One shown rather than
+  asserted. It exists separately from the two furnishing articles because the
+  queries differ: an article answers "how much does furnishing cost", a service
+  page answers "who will furnish my apartment", and Google ranks an article
+  badly for the second.
+- Furnishing now appears in the `services` list, on `/pricing`, in the footer
+  service links, in the sitemap and in the organisation's `makesOffer` schema.
+  It does not appear in the three featured services on the homepage, which
+  still show sourcing, long-term and short-stay.
+
+### Changed
+- The `/furnishing` page is deliberately not city-switched, unlike the other
+  service pages. Its prices are in shillings and the goods are imported into
+  Kenya, so interpolating "Accra" into it would quote a currency and a supply
+  chain that do not apply there. Accra needs its own numbers before it gets the
+  page.
+
+### Fixed
+- Two places promised furnishing would be billed as a pass-through with no
+  Goldstay margin, which the fixed-price package contradicts. The
+  `/pricing` answer on what the management fee excludes listed furnishing
+  alongside maintenance and utilities as billed at cost; the furnished-or-
+  unfurnished article said the landlord pays suppliers direct with no Goldstay
+  markup. Both now describe furnishing as a separate service at a published
+  price, with the furniture owned outright on installation. Same class of
+  problem as the listing-ownership wording fixed in 1.63.3: marketing written
+  before the commercial model settled.
+
 ## [1.64.0] - 2026-09-13
 
 ### Added
@@ -2716,7 +2750,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.64.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.65.0...HEAD
+[1.65.0]: https://github.com/tasiamah/goldstay/compare/v1.64.0...v1.65.0
 [1.64.0]: https://github.com/tasiamah/goldstay/compare/v1.63.3...v1.64.0
 [1.63.3]: https://github.com/tasiamah/goldstay/compare/v1.63.2...v1.63.3
 [1.63.2]: https://github.com/tasiamah/goldstay/compare/v1.63.1...v1.63.2

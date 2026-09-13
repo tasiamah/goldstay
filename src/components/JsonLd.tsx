@@ -109,6 +109,7 @@ export function JsonLd() {
       "Rental property marketing and listings",
       "Void management",
       "Buy-to-let property sourcing",
+      "Apartment furnishing and fit-out for letting",
       "Title verification and due diligence",
       "Rental income tax compliance in Kenya",
       "Diaspora landlord services",
@@ -216,6 +217,27 @@ export function JsonLd() {
         priceSpecification: {
           "@type": "UnitPriceSpecification",
           description: "One-time fee equivalent to one month's rent",
+        },
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Apartment Furnishing",
+          description:
+            "Fixed-price furnishing of apartments for letting: written specification against the unit, sourcing from local trade stock or imported to order, delivery, assembly and installation, snagging, and professional photography of the finished unit. The furniture is owned outright by the client on installation.",
+          // Nairobi rather than offerAreas, and deliberately. The
+          // published prices are in shillings and the goods are
+          // imported into Kenya, so the offer does not extend to
+          // Accra until it has its own numbers.
+          areaServed: ["Nairobi"],
+          provider: { "@id": orgId() },
+        },
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          description:
+            "Fixed price from KES 700,000 for a studio to KES 2,750,000 for a premium three bedroom",
+          priceCurrency: "KES",
         },
       },
     ],
@@ -399,7 +421,7 @@ export function BreadcrumbJsonLd({
 }
 
 // Per-service Service schema. The homepage Organization block already
-// declares makesOffer for all four services, but Google matches a
+// declares makesOffer for every service, but Google matches a
 // service-page URL to its own Service entity more reliably than to a
 // nested makesOffer on a different URL. Each service page emits its
 // own Service node here.
