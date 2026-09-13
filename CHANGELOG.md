@@ -21,6 +21,49 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.60.0] - 2026-09-13
+
+### Added
+- A handover guide for 1870 West, HassConsult's tower at Lower Kabete and
+  Peponi beside Sarit Centre: twenty nine residential floors under a thirtieth
+  floor amenity level, nine floors of parking, sold out, published for
+  completion in Q4 2026 against an original thirty six month programme that
+  targeted Q4 2025.
+- It leads on the letting clause rather than on the building, because that is
+  what decides whether these owners can hire anybody at all. Published
+  analysis of the scheme describes a dedicated company, 1870 West Residences
+  Ltd, handling letting and resale exclusively. The guide is careful that a
+  brochure describing a management company is not the same as a sale agreement
+  binding you to one, says you cannot tell which you bought from the marketing
+  and can only tell by reading your own agreement, and lists the six things to
+  establish: whether it is exclusive, for how long, whether it covers short
+  stays, what the fee is charged on, what happens if you are unhappy, and
+  whether it extends to resale. It names the conflict plainly, which is that
+  HassConsult is the developer, a major estate agency, and connected to the
+  company that will let and resell the unit.
+- On the delay, it prices it rather than complaining about it. Owners on the
+  three year plan have made a year of instalments against an asset that was
+  meant to be producing rent, so the guide tells them to read the delay
+  provision and raise it as a credit against the final instalment rather than
+  as a claim, on the reasoning that a developer will discuss an instalment
+  adjustment far sooner than a cheque, and that leverage disappears the moment
+  the balance is paid.
+- Two handover checks are specific to this building rather than generic. The
+  consultants have described finishing top down floor by floor, which is
+  exactly the sequence that seals pipework behind tile, and that question was
+  put to the team publicly on their own progress update, so the guide tells
+  owners to demand their floor's pressure test certificate. The second is lift
+  provision, since twenty nine floors over nine parking levels is heavy
+  vertical traffic and it is fixed on the day it is commissioned.
+- It also warns that a sold out tower of this size hands over to many investor
+  owners in the same weeks, which is the Shangri-La problem at several times
+  the scale, and links there for what that looks like once it has happened.
+  Diaspora owners are told to have someone physically attend handover, since a
+  video call inspection finds a fraction of what running taps do and the
+  defects schedule attached on the day is the one that binds.
+- Three editorial inbound links now point at it, from the Coco guide for the
+  same developer, the Shangri-La guide, and the off plan red flags article.
+
 ## [1.59.0] - 2026-09-13
 
 ### Added
@@ -2454,7 +2497,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.59.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.60.0...HEAD
+[1.60.0]: https://github.com/tasiamah/goldstay/compare/v1.59.0...v1.60.0
 [1.59.0]: https://github.com/tasiamah/goldstay/compare/v1.58.0...v1.59.0
 [1.58.0]: https://github.com/tasiamah/goldstay/compare/v1.57.0...v1.58.0
 [1.57.0]: https://github.com/tasiamah/goldstay/compare/v1.56.0...v1.57.0

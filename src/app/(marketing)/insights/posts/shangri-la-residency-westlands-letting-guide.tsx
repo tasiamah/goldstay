@@ -514,7 +514,15 @@ export default function Article() {
         >
           Skynest Residences
         </Link>
-        .
+        . And if you are reading this because you own at{" "}
+        <Link
+          href="/insights/1870-west-westlands-handover-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          1870 West
+        </Link>{" "}
+        and can see what is coming, that guide is written for the months before
+        keys rather than the months after.
       </P>
     </>
   );

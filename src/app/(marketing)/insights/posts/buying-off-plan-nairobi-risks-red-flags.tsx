@@ -302,6 +302,20 @@ export default function Article() {
         common way diaspora buyers lose serious money in
         Kenya.
       </P>
+
+      <P>
+        For two of these risks in a specific building, a
+        completion date that moved by a year and a letting
+        arrangement that may be written into the sale
+        agreement, see{" "}
+        <Link
+          href="/insights/1870-west-westlands-handover-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          1870 West
+        </Link>
+        .
+      </P>
     </>
   );
 }

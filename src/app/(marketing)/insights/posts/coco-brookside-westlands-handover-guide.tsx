@@ -462,6 +462,19 @@ export default function Article() {
       </P>
 
       <P>
+        For the same developer&rsquo;s larger Westlands tower, which hands over
+        sold out in the fourth quarter of 2026 after slipping a year, and where
+        the letting arrangement is the thing to read before anything else, see{" "}
+        <Link
+          href="/insights/1870-west-westlands-handover-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          1870 West
+        </Link>
+        .
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/how-to-find-a-property-manager-nairobi"
