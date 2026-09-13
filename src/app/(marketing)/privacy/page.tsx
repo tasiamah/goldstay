@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerCity } from "@/lib/getServerCity";
-import { baseUrlFor, emailFor, offices, site } from "@/lib/site";
+import {
+  alternateLanguagesFor,
+  baseUrlFor,
+  emailFor,
+  offices,
+  site,
+} from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // The privacy notice is the single public-facing document that answers
@@ -29,7 +35,17 @@ export function generateMetadata(): Metadata {
   return {
     title: "Privacy notice",
     description: `How Goldstay collects, uses, shares and protects your personal data under the ${regulator}.`,
-    alternates: { canonical: "/privacy" },
+    alternates: {
+      canonical: "/privacy",
+      // This page exists at the same path on every domain and says a
+      // different thing on each — Kenya law here, Ghana law there.
+      // Without hreflang those are three near-identical English pages
+      // competing to be the canonical one, which is the case hreflang
+      // is for. It matters more here than on a service page precisely
+      // because the wording is so close: the regulator's name is most
+      // of what differs.
+      languages: alternateLanguagesFor("/privacy"),
+    },
     robots: { index: true, follow: true },
   };
 }

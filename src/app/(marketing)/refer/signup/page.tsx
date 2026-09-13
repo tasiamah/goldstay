@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Reveal } from "@/components/Reveal";
-import { alternateLanguagesFor } from "@/lib/site";
+import { alternateLanguagesFor, baseUrlFor } from "@/lib/site";
+import { getServerCity } from "@/lib/getServerCity";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { SignupForm } from "./SignupForm";
 
 export function generateMetadata(): Metadata {
@@ -30,8 +32,19 @@ export default function Page({
       ? searchParams.type
       : "AGENT";
 
+  const baseUrl = baseUrlFor(getServerCity());
+
   return (
     <>
+      {/* Three levels, so this is the page that makes the /refer trail
+          worth having at all. */}
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Refer", url: `${baseUrl}/refer` },
+          { name: "Sign up", url: `${baseUrl}/refer/signup` },
+        ]}
+      />
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-12 md:pb-16">

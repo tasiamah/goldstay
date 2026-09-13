@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getServerCity } from "@/lib/getServerCity";
-import { baseUrlFor, emailFor, site } from "@/lib/site";
+import { alternateLanguagesFor, baseUrlFor, emailFor, site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
 
 // Website terms of use. These govern use of the public site only: the
@@ -22,7 +22,12 @@ export function generateMetadata(): Metadata {
   return {
     title: "Terms of use",
     description: `Terms governing the use of the Goldstay website, under the laws of ${jurisdiction}.`,
-    alternates: { canonical: "/terms" },
+    alternates: {
+      canonical: "/terms",
+      // Same reasoning as the privacy notice: one path, a different
+      // governing law per domain, and otherwise near-identical English.
+      languages: alternateLanguagesFor("/terms"),
+    },
     robots: { index: true, follow: true },
   };
 }

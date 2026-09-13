@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.63.2] - 2026-09-13
+
+### Fixed
+- The privacy notice and the terms of use now declare hreflang alternates. Both
+  are indexable and both say a materially different thing per domain — Kenyan
+  data protection law on one, Ghanaian on the other — while otherwise reading
+  almost identically. That near-identical English at the same path on several
+  hosts is the exact case hreflang exists to resolve, and these were the only
+  two indexable marketing pages that declared a canonical without it.
+- `/refer` and `/refer/signup` now emit BreadcrumbList. They were the only two
+  pages in the sitemap with no breadcrumb schema, so the referral funnel was
+  the one part of the site whose position Google had to infer from the URL.
+
 ## [1.63.1] - 2026-09-13
 
 ### Fixed
@@ -2653,7 +2666,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.2...HEAD
+[1.63.2]: https://github.com/tasiamah/goldstay/compare/v1.63.1...v1.63.2
 [1.63.1]: https://github.com/tasiamah/goldstay/compare/v1.63.0...v1.63.1
 [1.63.0]: https://github.com/tasiamah/goldstay/compare/v1.62.0...v1.63.0
 [1.62.0]: https://github.com/tasiamah/goldstay/compare/v1.61.1...v1.62.0

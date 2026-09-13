@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Reveal } from "@/components/Reveal";
-import { alternateLanguagesFor, site, waLink } from "@/lib/site";
+import { alternateLanguagesFor, baseUrlFor, site, waLink } from "@/lib/site";
+import { BreadcrumbJsonLd } from "@/components/JsonLd";
 import { getServerCity } from "@/lib/getServerCity";
 import { defaultsForType } from "@/lib/referrals/payouts";
 
@@ -40,9 +41,18 @@ const landlord = defaultsForType("LANDLORD");
 
 export default function Page() {
   const city = getServerCity();
+  const baseUrl = baseUrlFor(city);
 
   return (
     <>
+      {/* Both referral pages are in the sitemap and indexable, and were
+          the only two such pages on the site with no BreadcrumbList. */}
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: baseUrl },
+          { name: "Refer", url: `${baseUrl}/refer` },
+        ]}
+      />
       <section className="relative overflow-hidden bg-charcoal pt-32 text-cream sm:pt-40">
         <div className="absolute inset-0 -z-10 grain opacity-40" />
         <div className="container-gs pb-12 md:pb-20">
