@@ -21,6 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.56.0] - 2026-09-13
+
+### Added
+- A handover guide for Coco in Brookside, Westlands, the sibling of the
+  Enrogue piece and aimed at the same moment: owners who have bought off plan
+  and have not yet taken keys, which is when the letting decision is actually
+  made. Published while completion is still a way off, because the unit that
+  is furnished, photographed and listed the week it is released lets better
+  than the one that starts competing in month three.
+- The guide differs from Enrogue's in the two places the facts do. Westlands
+  is the strongest short-stay market in Nairobi rather than a market where
+  short stay merely works, so it leads with the furnishing decision and uses
+  our own letting figures for the area: USD 100 to 150 a night at 65% to 75%
+  occupancy on corporate, UN and NGO demand that holds midweek. And because
+  Coco is eighteen floors of one and two bedroom units funding a heated
+  infinity pool, a gym and a manned entrance with no larger apartments to
+  carry a share, the service charge per square metre gets a section rather
+  than a bullet.
+- On the completion date, the guide states HassConsult's published Q1 2027 and
+  names Q4 2026 as the earlier date owners are being told, rather than
+  choosing between them. Being wrong in the earlier direction is what causes
+  the loss the guide exists to warn about: a signed tenancy against a date
+  that moves, and an owner paying to house someone elsewhere. It says the same
+  about the payment schedule, which appears on the developer's own page as
+  both five months and twelve.
+
 ## [1.55.0] - 2026-09-13
 
 ### Added
@@ -2323,7 +2349,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.55.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.56.0...HEAD
+[1.56.0]: https://github.com/tasiamah/goldstay/compare/v1.55.0...v1.56.0
 [1.55.0]: https://github.com/tasiamah/goldstay/compare/v1.54.0...v1.55.0
 [1.54.0]: https://github.com/tasiamah/goldstay/compare/v1.53.0...v1.54.0
 [1.53.0]: https://github.com/tasiamah/goldstay/compare/v1.52.1...v1.53.0

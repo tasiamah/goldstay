@@ -723,6 +723,9 @@ import ExpediaNairobiShortLetHosts, {
 import EnrogueKileleshwaHandoverGuide, {
   meta as enrogueKileleshwaHandoverGuideMeta,
 } from "./enrogue-kileleshwa-handover-guide";
+import CocoBrooksideWestlandsHandoverGuide, {
+  meta as cocoBrooksideWestlandsHandoverGuideMeta,
+} from "./coco-brookside-westlands-handover-guide";
 import AirbnbAgentsNairobi, {
   meta as airbnbAgentsNairobiMeta,
 } from "./airbnb-agents-nairobi";
@@ -1605,6 +1608,10 @@ export const posts: readonly Post[] = [
   {
     meta: enrogueKileleshwaHandoverGuideMeta,
     Component: EnrogueKileleshwaHandoverGuide,
+  },
+  {
+    meta: cocoBrooksideWestlandsHandoverGuideMeta,
+    Component: CocoBrooksideWestlandsHandoverGuide,
   },
   { meta: airbnbAgentsNairobiMeta, Component: AirbnbAgentsNairobi },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },
