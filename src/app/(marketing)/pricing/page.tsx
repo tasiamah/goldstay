@@ -63,7 +63,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `What property management costs in ${cityPhrase}: 10% of collected rent for long-term, 20% of revenue for Airbnb and short-stay, one month's rent for tenant finding only. No setup fee, no contractor commissions, no exit fee.`,
+    description: `What property management costs in ${cityPhrase}: 10% of collected rent long-term, 20% for Airbnb, one month's rent to find a tenant. No setup fee.`,
     alternates: {
       canonical: "/pricing",
       languages: alternateLanguagesFor("/pricing"),

@@ -5,7 +5,9 @@ import { SignupForm } from "./SignupForm";
 
 export function generateMetadata(): Metadata {
   return {
-    title: "Join the Goldstay Partner Programme",
+    // `absolute` because the title already names the brand, and the
+    // layout's "%s | Goldstay" template would render it twice.
+    title: { absolute: "Join the Goldstay Partner Programme" },
     description:
       "Sign up in two minutes. Refer landlords to Goldstay and earn a recurring share of every monthly management fee.",
     alternates: {

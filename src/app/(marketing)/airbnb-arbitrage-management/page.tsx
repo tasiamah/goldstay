@@ -72,7 +72,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `Run an Airbnb business in ${cityPhrase} without owning the property. We manage short-let units for operators who lease and re-let with the owner's written consent: pricing, guests, turnovers and compliance for 20% of revenue.`,
+    description: `Run an Airbnb business in ${cityPhrase} without owning it. We manage short-let units for operators who lease and re-let. 20% of revenue.`,
     alternates: {
       canonical: "/airbnb-arbitrage-management",
       languages: alternateLanguagesFor("/airbnb-arbitrage-management"),

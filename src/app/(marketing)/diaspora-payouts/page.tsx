@@ -56,7 +56,7 @@ export function generateMetadata(): Metadata {
       city === "accra"
         ? "Receive Rent from Ghana in USD: Diaspora Payouts"
         : "Receive Rent from Kenya in USD: Diaspora Payouts",
-    description: `How diaspora landlords receive their rental income from ${cityPhrase} in USD. Wise, SWIFT and M-Pesa rails compared, FX spreads explained, monthly statements and verified payout accounts.`,
+    description: `How diaspora landlords receive rent from ${cityPhrase} in USD. Wise, SWIFT and M-Pesa compared, FX spreads explained, monthly statements.`,
     alternates: {
       canonical: "/diaspora-payouts",
       languages: alternateLanguagesFor("/diaspora-payouts"),

@@ -7,9 +7,13 @@
 // and an article that never got added to the registry (compiles fine,
 // unreachable at every route).
 //
-// Also flags em and en dashes, which are house style violations.
+// Also flags em and en dashes, which are house style violations, and a
+// heroImage with no file behind it. That last one shipped on three coast
+// articles for months: the path was plausible, nothing resolves it at
+// build time, and since the route reuses heroImage as the OpenGraph
+// image the pages had a broken hero and unfurled a 404 when shared.
 
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const DIR = "src/app/(marketing)/insights/posts";
@@ -38,6 +42,11 @@ for (const file of files) {
     if (!slugs.has(m[1])) {
       problems.push(`${file}: links to /insights/${m[1]}, which does not exist`);
     }
+  }
+
+  const heroImage = src.match(/heroImage:\s*"([^"]+)"/)?.[1];
+  if (heroImage && !existsSync(join("public", heroImage))) {
+    problems.push(`${file}: heroImage ${heroImage} is not in public/`);
   }
 
   // Only the prose matters, but scanning the whole file is fine: no

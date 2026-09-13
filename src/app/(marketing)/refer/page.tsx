@@ -18,7 +18,7 @@ import { defaultsForType } from "@/lib/referrals/payouts";
 // there without being the first thing.
 export function generateMetadata(): Metadata {
   return {
-    title: "Property Referral Commission Kenya: Earn for 12 Months",
+    title: "Property Referral Commission Kenya: Earn for a Year",
     description:
       "Estate agents and brokers in Kenya: introduce a landlord to Goldstay and earn 25% of our monthly management fee for 12 months. No cost to join.",
     alternates: {
@@ -26,7 +26,7 @@ export function generateMetadata(): Metadata {
       languages: alternateLanguagesFor("/refer"),
     },
     openGraph: {
-      title: "Property Referral Commission Kenya: Earn for 12 Months",
+      title: "Property Referral Commission Kenya: Earn for a Year",
       description:
         "Introduce a landlord to Goldstay and earn a share of the management fee every month for a year.",
       url: "/refer",

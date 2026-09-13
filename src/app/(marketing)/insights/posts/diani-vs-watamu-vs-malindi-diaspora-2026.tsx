@@ -34,7 +34,7 @@ export const meta: PostMeta = {
     "Comparison",
   ],
   country: "kenya",
-  heroImage: "/images/locations/mombasa.jpg",
+  heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Diani Watamu Malindi coastal Kenya diaspora property market comparison 2026",
 };

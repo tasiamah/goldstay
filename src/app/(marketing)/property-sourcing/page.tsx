@@ -17,7 +17,9 @@ export function generateMetadata(): Metadata {
         : launchedCityPhrase();
 
   return {
-    title: "Buy Property with Goldstay",
+    // `absolute` because the title already names the brand, and the
+    // layout's "%s | Goldstay" template would render it twice.
+    title: { absolute: "Buy Property with Goldstay" },
     description: `Buy-side property sourcing for diaspora buyers in ${cityPhrase}. Search, inspection, negotiation, title verification and handover. Free for buyers.`,
     alternates: {
       canonical: "/property-sourcing",

@@ -34,7 +34,7 @@ export const meta: PostMeta = {
     "Buying",
   ],
   country: "kenya",
-  heroImage: "/images/locations/mombasa.jpg",
+  heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Mombasa Old Town Swahili architecture, diaspora property buyer guide 2026",
 };

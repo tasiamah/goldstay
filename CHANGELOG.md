@@ -21,6 +21,45 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.61.1] - 2026-09-13
+
+### Fixed
+- Twelve service and city pages had search descriptions too wide for the space
+  Google gives them, `/tenant-finding` at 1.7 times the limit and `/accra/buy`,
+  `/nairobi/buy`, `/pricing` and `/long-term-management` among the rest. Google
+  rewrites the snippet from page copy once it has to cut, so the sentence
+  written to earn the click was being replaced by whatever the crawler picked
+  out. Every one now fits with its numbers intact — the fee, the percentage,
+  the areas — because those are what a landlord comparing firms is reading for.
+  A thirteenth, `/airbnb-management`, fitted as rendered today and would have
+  overflowed the day Ghana launches; it was shortened too.
+- `/refer` had a title 7px too wide, so "Earn for 12 Months" was being cut.
+  It now reads "Earn for a Year", which says the same in less room.
+- `/about`, `/property-sourcing` and `/refer/signup` rendered the brand twice
+  — "About Goldstay | Goldstay" — because the page title already named it and
+  the layout appends it. They now opt out of the template rather than pay for
+  the word twice.
+- Three coast articles pointed `heroImage` at `/images/locations/mombasa.jpg`,
+  which has never existed. The hero was broken on the page, and because the
+  article route reuses that path as the OpenGraph image, sharing one on
+  WhatsApp or LinkedIn unfurled a 404. They now use the Nairobi image like the
+  other 371 until there is a coast photograph to put there.
+
+### Changed
+- `scripts/check-snippets.mjs` now measures the routes under `src/app` as well
+  as the article catalogue, which is how the fourteen above went unnoticed: it
+  read only `insights/posts`, so it covered 387 articles and none of the pages
+  that sell the service. Scope it with `--articles` or `--routes`.
+  `src/lib/route-snippets.test.ts` asserts the routes, so a wide description on
+  a service page now fails the suite and names the page.
+  It resolves the interpolations first, measuring `${cityPhrase}` as the
+  widest city phrase the site can render rather than as fourteen characters of
+  punctuation, and reports a title that says Goldstay before the layout
+  appends it.
+- `scripts/check-insights.mjs` now asserts that every `heroImage` has a file
+  behind it in `public/`. Nothing resolved that path at build time, which is
+  why a missing image shipped on three articles and stayed.
+
 ## [1.61.0] - 2026-09-13
 
 ### Added
@@ -2540,6 +2579,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.61.0...HEAD
+[1.61.1]: https://github.com/tasiamah/goldstay/compare/v1.61.0...v1.61.1
 [1.61.0]: https://github.com/tasiamah/goldstay/compare/v1.60.0...v1.61.0
 [1.60.0]: https://github.com/tasiamah/goldstay/compare/v1.59.0...v1.60.0
 [1.59.0]: https://github.com/tasiamah/goldstay/compare/v1.58.0...v1.59.0

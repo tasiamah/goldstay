@@ -1,5 +1,11 @@
-// Asserts that every article's search-result title and description fit
-// in the space Google gives them.
+// Asserts that every search-result title and description on the site
+// fits in the space Google gives them.
+//
+// Covers both the article catalogue and the routes under src/app. It
+// read only the catalogue until v1.62.0, which meant it measured 387
+// articles and none of the pages that sell the service — and 14 of
+// those were overflowing the whole time. Scope it with --articles or
+// --routes; the default is both.
 //
 // Character counts are the usual shorthand but they are a proxy for
 // what actually decides it, which is pixel width. "Illinois Wisconsin
@@ -16,12 +22,13 @@
 // Run bare for a report, --strict to exit non-zero on any overflow
 // (which is how the test suite runs it), --csv for the full table.
 
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { argv } from "node:process";
 import { fileURLToPath } from "node:url";
 
 const POSTS = "src/app/(marketing)/insights/posts";
+const APP = "src/app";
 
 // Where Google's ellipsis lands. Titles render at 20px, descriptions at
 // 14px, both in Arial.
@@ -193,38 +200,320 @@ export function readArticles() {
   return { rows, unparsed };
 }
 
-function main() {
-  const { rows, unparsed } = readArticles();
+// ---------------------------------------------------------------------
+// Routes
+//
+// Articles keep their copy in a flat PostMeta object, so a regex on the
+// key is enough. Route metadata is code: a generateMetadata() that
+// branches on the host city and interpolates a phrase into a template
+// literal. Measuring the source text would count "${cityPhrase}" as
+// fourteen characters of punctuation instead of the seven that "Nairobi"
+// renders as, so the literals are resolved to their widest real value
+// first and every branch of a ternary is measured, not just the first.
 
-  if (process.argv.includes("--csv")) {
-    console.log(
-      "slug,title_px,desc_px,title_override,desc_override,title,description",
-    );
-    const csv = (s) => `"${s.replace(/"/g, '""')}"`;
-    for (const r of rows) {
-      console.log(
-        [
-          r.slug,
-          r.titlePx,
-          r.descPx,
-          r.hasTitleOverride,
-          r.hasDescOverride,
-          csv(r.effectiveTitle),
-          csv(r.effectiveDesc),
-        ].join(","),
-      );
+// Calls and member expressions, which have no local declaration to read
+// a value out of.
+//
+// launchedCityPhrase() resolves to "Nairobi" today because Ghana is not
+// launched, and this deliberately measures it as the wider "Nairobi and
+// Accra" it becomes the day the flag flips. Measuring what it renders
+// today would pass copy that overflows on the neutral domain the moment
+// Ghana opens, with no code change to fail on — the same shape of
+// problem as a rating claim with no verified date. It costs 67px of
+// budget on the pages that use it, which is cheap.
+const WIDEST_CITY_PHRASE = "Nairobi and Accra";
+
+const RENDERED = [
+  [/\$\{launchedCityPhrase\(\)\}/g, WIDEST_CITY_PHRASE],
+  [/\$\{site\.name\}/g, "Goldstay"],
+  [/\$\{site\.domain\}/g, "goldstay.co.ke"],
+];
+
+// Everything else is a local const, so read it rather than keeping a
+// list of names here that goes stale the moment a page renames one.
+// Takes the widest branch of a ternary, since that is the one that
+// decides whether the snippet overflows. A count read off an array
+// length cannot be known statically, so it stands in as two digits —
+// the widest a suburb or bedroom count is going to be.
+function constValues(src) {
+  const values = new Map();
+  for (const m of src.matchAll(
+    /\bconst\s+([A-Za-z_$][\w$]*)\s*=([^;]*);/g,
+  )) {
+    const [, name, expression] = m;
+    if (/\.length\b/.test(expression)) {
+      values.set(name, "00");
+      continue;
     }
-    process.exit(0);
+    const literals = [...expression.matchAll(/"((?:[^"\\]|\\.)*)"|`([^`]*)`/g)]
+      .map((lit) => lit[1] ?? lit[2])
+      .filter(Boolean);
+    // The usual shape is `city === "nairobi" ? "Nairobi" : city ===
+    // "accra" ? "Accra" : launchedCityPhrase()`. The last branch is a
+    // call rather than a literal and is the widest of the three, so
+    // without this the neutral domain goes unmeasured.
+    if (/launchedCityPhrase\(/.test(expression)) {
+      literals.push(WIDEST_CITY_PHRASE);
+    }
+    if (!literals.length) continue;
+    values.set(
+      name,
+      literals.reduce((a, b) => (widthPx(b, 14) > widthPx(a, 14) ? b : a)),
+    );
+  }
+  return values;
+}
+
+function render(raw, consts) {
+  let text = RENDERED.reduce((acc, [re, value]) => acc.replace(re, value), raw);
+
+  // Consts can hold consts, so resolve until it settles. Bounded rather
+  // than while(true) because a self-referential const would not.
+  for (let pass = 0; pass < 4 && text.includes("${"); pass += 1) {
+    text = text.replace(/\$\{\s*([A-Za-z_$][\w$]*)\s*\}/g, (whole, name) =>
+      consts.has(name) ? consts.get(name) : whole,
+    );
   }
 
+  text = text
+    .replace(/\\"/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+
+  // An interpolation nothing could resolve would be measured as literal
+  // punctuation and quietly pass. Say so instead of guessing.
+  return { text, unresolved: /\$\{/.test(text) };
+}
+
+// The metadata export, brace-matched rather than regexed to a closing
+// line, because the bodies contain comments and nested objects. Tracks
+// string and comment state so a brace inside either does not count.
+function metaSource(src) {
+  const signature =
+    /export\s+(?:async\s+)?function\s+generateMetadata\s*\(|export\s+const\s+metadata\b[^=]*=/.exec(
+      src,
+    );
+  if (!signature) return null;
+
+  // For a function, the brace that opens the body is the one after the
+  // parameter list closes — not the first brace, which may be a
+  // destructuring pattern in the parameters. /insights takes
+  // { searchParams }, and reading that as the body found no copy at all.
+  let cursor = signature.index + signature[0].length;
+  if (signature[0].endsWith("(")) {
+    let parens = 1;
+    while (cursor < src.length && parens > 0) {
+      if (src[cursor] === "(") parens += 1;
+      else if (src[cursor] === ")") parens -= 1;
+      cursor += 1;
+    }
+  }
+
+  const open = src.indexOf("{", cursor);
+  if (open === -1) return null;
+
+  let depth = 0;
+  let quote = "";
+  for (let i = open; i < src.length; i += 1) {
+    const ch = src[i];
+    if (quote) {
+      if (ch === "\\") i += 1;
+      else if (ch === quote) quote = "";
+      continue;
+    }
+    if (ch === "/" && src[i + 1] === "/") {
+      i = src.indexOf("\n", i);
+      if (i === -1) break;
+      continue;
+    }
+    if (ch === "/" && src[i + 1] === "*") {
+      i = src.indexOf("*/", i) + 1;
+      continue;
+    }
+    if (ch === '"' || ch === "'" || ch === "`") {
+      quote = ch;
+      continue;
+    }
+    if (ch === "{") depth += 1;
+    else if (ch === "}") {
+      depth -= 1;
+      if (depth === 0) return src.slice(open, i + 1);
+    }
+  }
+  return null;
+}
+
+// Every string a key could resolve to, whether it is written inline on
+// the key or assigned to a const above the return, and whether it is one
+// literal or the branches of a ternary. All of them are measured; the
+// widest is the one that decides whether the page overflows.
+function candidates(block, key, consts) {
+  const re = new RegExp(
+    `\\b(?:const\\s+${key}\\s*=|${key}:)([\\s\\S]*?)` +
+      `(?=\\n\\s*(?:[a-zA-Z_$][\\w$]*\\s*:|\\}|const\\s|return\\s))`,
+    "g",
+  );
+  const out = [];
+  for (const match of block.matchAll(re)) {
+    for (const lit of match[1].matchAll(
+      /"((?:[^"\\]|\\.)*)"|`((?:[^`\\]|\\.)*)`/g,
+    )) {
+      const raw = lit[1] ?? lit[2];
+      // Skips the fragments that are plainly not snippet copy: a
+      // canonical path, a type string, an icon name.
+      if (!raw || raw.length < 12 || raw.startsWith("/")) continue;
+      out.push(render(raw, consts));
+    }
+  }
+  return out;
+}
+
+// openGraph and twitter mirror the title and description for social
+// cards, where the limits are different and nothing truncates at 600px.
+// Measuring them as page titles double-counted /about, whose card title
+// is `${title} | ${site.name}` and so appeared to say Goldstay twice.
+function withoutSocialBlocks(block) {
+  return block.replace(
+    /\b(?:openGraph|twitter)\s*:\s*\{[\s\S]*?\n(\s*)\},?/g,
+    "",
+  );
+}
+
+// Routes crawlers are told not to fetch, mirroring the disallow list in
+// src/app/robots.ts. These are behind auth or gated by a token, so they
+// have no search result to overflow. Kept as prefixes here rather than
+// imported because robots.ts is TSX that reads request headers.
+const NOT_PUBLIC = [
+  "/admin",
+  "/client",
+  "/auth",
+  "/login",
+  "/account",
+  "/api",
+  "/go",
+  "/agreements",
+  "/statements",
+  "/apply",
+  "/start",
+];
+
+const isPublic = (route) =>
+  !NOT_PUBLIC.some((p) => route === p || route.startsWith(`${p}/`));
+
+// Walks src/app for directories holding a page.tsx, which is what makes
+// a route in the App Router. Route groups are parentheses in the path
+// and contribute no segment.
+function routePaths() {
+  const found = [];
+  const walk = (dir, segments) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const next = join(dir, entry.name);
+      const grouped =
+        (entry.name.startsWith("(") && entry.name.endsWith(")")) ||
+        entry.name.startsWith("_");
+      const path = grouped ? segments : [...segments, entry.name];
+      if (existsSync(join(next, "page.tsx"))) {
+        found.push({ route: `/${path.join("/")}`, file: join(next, "page.tsx") });
+      }
+      walk(next, path);
+    }
+  };
+  walk(APP, []);
+  return found;
+}
+
+export function readRoutes() {
+  const rows = [];
+  const unparsed = [];
+
+  for (const { route, file } of routePaths().sort((a, b) =>
+    a.route.localeCompare(b.route),
+  )) {
+    // Dynamic routes carry no static copy to measure — the article
+    // detail page reads its title from the catalogue, which the
+    // article pass already covers.
+    if (route.includes("[")) continue;
+    if (!isPublic(route)) continue;
+
+    const src = readFileSync(file, "utf8");
+    const block = metaSource(src);
+
+    // A page with no metadata export inherits the layout's, which is
+    // measured once as the root route rather than 40 times.
+    if (!block) continue;
+
+    // Only pages Google is allowed to index can overflow a search
+    // result. The rest are embed and intake routes.
+    if (/robots:[\s\S]{0,120}?index:\s*false/.test(block)) continue;
+
+    const consts = constValues(src);
+    const copy = withoutSocialBlocks(block);
+    const titles = candidates(copy, "title", consts);
+    const descriptions = candidates(copy, "description", consts);
+
+    // The marketing layout sets a "%s | Goldstay" template, so a page
+    // title reaches the head with the brand appended unless it opts out
+    // with title.absolute. Measure what the head will actually carry.
+    const absolute = /title:\s*\{[\s\S]{0,80}?absolute/.test(block);
+    const suffix = absolute ? "" : " | Goldstay";
+
+    if (!titles.length && !descriptions.length) {
+      unparsed.push(route);
+      continue;
+    }
+
+    const widest = (list) =>
+      list.length
+        ? list.reduce((a, b) => (b.px > a.px ? b : a))
+        : null;
+
+    const title = widest(
+      titles.map((t) => ({ ...t, text: t.text + suffix, px: titlePx(t.text + suffix) })),
+    );
+    const description = widest(
+      descriptions.map((d) => ({ ...d, px: descPx(d.text) })),
+    );
+
+    rows.push({
+      slug: route,
+      effectiveTitle: title?.text ?? null,
+      effectiveDesc: description?.text ?? null,
+      titlePx: title?.px ?? 0,
+      descPx: description?.px ?? 0,
+      branches: Math.max(titles.length, descriptions.length),
+      unresolved: Boolean(title?.unresolved || description?.unresolved),
+      // The brand appearing twice is not a truncation problem, but it
+      // wastes the widest words in the snippet on a word already there.
+      brandRepeated: !absolute && /Goldstay/.test(title?.text.slice(0, -suffix.length || undefined) ?? ""),
+    });
+  }
+
+  return { rows, unparsed };
+}
+
+// Reports one scope and returns how many problems it found. Thin
+// descriptions and a repeated brand are printed but not counted: both
+// are worth fixing and neither is Google cutting the snippet off.
+function report(label, { rows, unparsed }) {
   const wideTitles = rows.filter((r) => r.titlePx > TITLE_PX);
   const wideDescs = rows.filter((r) => r.descPx > DESC_PX);
   const thinDescs = rows.filter((r) => r.descPx < DESC_THIN_PX);
+  const unresolved = rows.filter((r) => r.unresolved);
+  const brandRepeated = rows.filter((r) => r.brandRepeated);
 
-  console.log(`Checked ${rows.length} articles.`);
+  console.log(`Checked ${rows.length} ${label}.`);
+
   if (unparsed.length) {
-    console.log(`\nCould not parse meta in ${unparsed.length} file(s):`);
+    console.log(`\nCould not parse meta in ${unparsed.length} ${label}:`);
     for (const f of unparsed) console.log(`  ${f}`);
+  }
+
+  if (unresolved.length) {
+    console.log(
+      `\n${unresolved.length} ${label} interpolate something this script cannot resolve, so the width below is a guess — teach RENDERED about it:`,
+    );
+    for (const r of unresolved) console.log(`  ${r.slug}`);
   }
 
   if (wideTitles.length) {
@@ -251,12 +540,59 @@ function main() {
     }
   }
 
-  const failed = unparsed.length + wideTitles.length + wideDescs.length;
-  if (failed === 0) {
+  if (brandRepeated.length) {
     console.log(
-      `\nNo problems found. Overrides in use: ${rows.filter((r) => r.hasTitleOverride).length} titles, ${rows.filter((r) => r.hasDescOverride).length} descriptions.`,
+      `\n${brandRepeated.length} title(s) already say Goldstay before the layout appends it:`,
     );
-  } else if (process.argv.includes("--strict")) {
+    for (const r of brandRepeated) {
+      console.log(`  ${r.slug}\n          ${r.effectiveTitle}`);
+    }
+  }
+
+  return unparsed.length + wideTitles.length + wideDescs.length;
+}
+
+function main() {
+  const scope = argv.includes("--routes")
+    ? "routes"
+    : argv.includes("--articles")
+      ? "articles"
+      : "all";
+
+  if (argv.includes("--csv")) {
+    const { rows } = scope === "routes" ? readRoutes() : readArticles();
+    console.log(
+      "slug,title_px,desc_px,title_override,desc_override,title,description",
+    );
+    const csv = (s) => `"${String(s ?? "").replace(/"/g, '""')}"`;
+    for (const r of rows) {
+      console.log(
+        [
+          r.slug,
+          r.titlePx,
+          r.descPx,
+          r.hasTitleOverride ?? "",
+          r.hasDescOverride ?? "",
+          csv(r.effectiveTitle),
+          csv(r.effectiveDesc),
+        ].join(","),
+      );
+    }
+    process.exit(0);
+  }
+
+  let failed = 0;
+  if (scope !== "routes") {
+    failed += report("articles", readArticles());
+  }
+  if (scope !== "articles") {
+    if (scope === "all") console.log("");
+    failed += report("indexable routes", readRoutes());
+  }
+
+  if (failed === 0) {
+    console.log("\nNo problems found.");
+  } else if (argv.includes("--strict")) {
     console.log(`\n${failed} problem(s).`);
     process.exitCode = 1;
   }

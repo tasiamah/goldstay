@@ -27,7 +27,11 @@ export function generateMetadata(): Metadata {
       : `Meet the team behind Goldstay. Premium property management in ${launchedCityPhrase()}, built for diaspora landlords.`;
 
   return {
-    title,
+    // `absolute` because the title already names the brand, and the
+    // layout's "%s | Goldstay" template would render it twice. The
+    // social card below still wants the suffix, where there is no
+    // template and the brand has to be stated.
+    title: { absolute: title },
     description,
     alternates: {
       canonical: "/about",

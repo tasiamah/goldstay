@@ -58,7 +58,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `Full long-term property management in ${cityPhrase} for landlords abroad. Tenant vetting, lease drafting, rent collection, maintenance and monthly USD remittance. 10% of collected rent.`,
+    description: `Full long-term property management in ${cityPhrase} for landlords abroad. Tenant vetting, lease drafting, rent collection. 10% of collected rent.`,
     alternates: {
       canonical: "/long-term-management",
       languages: alternateLanguagesFor("/long-term-management"),

@@ -6,7 +6,7 @@ import { alternateLanguagesFor, robotsForCity } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Buy Property in Accra",
   description:
-    "Buy-side property sourcing in Accra for diaspora buyers. On-the-ground search in East Legon, Airport Residential, Cantonments and Labone. In-person inspection, price negotiation, full title chain verification at the Lands Commission and handover. Free for buyers.",
+    "Buy-side property sourcing in Accra for diaspora buyers: East Legon, Cantonments and Labone. Lands Commission title checks. Free for buyers.",
   alternates: {
     canonical: "/accra/buy",
     languages: alternateLanguagesFor("/accra/buy"),

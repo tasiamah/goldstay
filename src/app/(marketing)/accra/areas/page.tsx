@@ -16,7 +16,7 @@ const count = cities.accra.neighbourhoods.length;
 
 export function generateMetadata(): Metadata {
   const title = `Accra Rent Prices by Area: ${count} Suburbs Compared`;
-  const description = `What a two-bedroom apartment lets for in ${count} Accra suburbs and who rents in each. Indicative bands from recently let stock, for diaspora landlords weighing where to buy.`;
+  const description = `What a two-bedroom lets for in ${count} Accra suburbs and who rents in each. Indicative bands from recently let stock, for landlords weighing where to buy.`;
 
   return {
     title,

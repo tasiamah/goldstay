@@ -150,7 +150,7 @@ export function generateMetadata(): Metadata {
     // no setup fee, no exit fee, no cut of the cleaners and no charge
     // at all in a month without bookings, which is the comparison we
     // would rather a landlord make.
-    description: `Airbnb management in ${cityPhrase}, with your rent remitted in USD. 20% of revenue — no setup fee, no exit fee, and nothing in a month with no bookings.`,
+    description: `Airbnb management in ${cityPhrase}, with your rent remitted in USD. 20% of revenue, no setup or exit fee, nothing in a month with no bookings.`,
     alternates: {
       canonical: "/airbnb-management",
       languages: alternateLanguagesFor("/airbnb-management"),

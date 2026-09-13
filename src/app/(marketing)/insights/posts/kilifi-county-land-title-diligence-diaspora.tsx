@@ -33,7 +33,7 @@ export const meta: PostMeta = {
     "Diaspora",
   ],
   country: "kenya",
-  heroImage: "/images/locations/mombasa.jpg",
+  heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Kilifi County coastal Kenya land title diligence for diaspora buyers 2026",
 };

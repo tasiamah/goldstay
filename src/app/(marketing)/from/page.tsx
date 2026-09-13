@@ -14,7 +14,7 @@ export function generateMetadata(): Metadata {
     // a property from wherever they are living.
     title: "Manage Your Kenya Property From Abroad",
     description:
-      "Property management in Nairobi for landlords living abroad. Rent collected, tax withheld and remitted, and your net paid to your overseas account in USD on the 5th. UK, USA, UAE, Canada, Australia, Ireland and more.",
+      "Property management in Nairobi for landlords living abroad. Rent collected, tax withheld and remitted, your net paid overseas in USD on the 5th.",
     alternates: {
       canonical: "/from",
       languages: alternateLanguagesFor("/from"),

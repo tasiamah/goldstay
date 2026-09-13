@@ -68,7 +68,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `Comparing property management companies in ${cityPhrase}? How property management companies in Kenya price the work, what the percentage is charged on, the costs that sit outside it, and eight questions to ask before you sign.`,
+    description: `How property management companies in ${cityPhrase} price the work, what the percentage is really charged on, and eight questions to ask before you sign.`,
     alternates: {
       canonical: "/property-management-companies-nairobi",
       languages: alternateLanguagesFor(

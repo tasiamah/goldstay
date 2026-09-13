@@ -67,7 +67,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `How to change property manager in ${cityPhrase}: the signs your agent is failing you, what to collect before you give notice, and how a handover actually works. No setup fee to move to Goldstay.`,
+    description: `How to change property manager in ${cityPhrase}: what to collect before you give notice, and how a handover works. No setup fee.`,
     alternates: {
       canonical: "/change-property-manager",
       languages: alternateLanguagesFor("/change-property-manager"),

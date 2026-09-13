@@ -14,7 +14,7 @@ const count = cities.nairobi.neighbourhoods.length;
 
 export function generateMetadata(): Metadata {
   const title = `Nairobi Rent Prices by Area: ${count} Suburbs Compared`;
-  const description = `What a two-bedroom apartment lets for in ${count} Nairobi suburbs, who rents in each, and where nightly letting earns more than a lease. Indicative bands from recently let stock.`;
+  const description = `What a two-bedroom lets for in ${count} Nairobi suburbs, who rents in each, and where nightly letting beats a lease. Bands from recently let stock.`;
 
   return {
     title,

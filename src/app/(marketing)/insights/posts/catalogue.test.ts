@@ -41,10 +41,18 @@ describe("insights catalogue", () => {
   it("has no search-result title or description that Google will truncate", () => {
     let output: string;
     try {
-      output = execFileSync("node", ["scripts/check-snippets.mjs", "--strict"], {
-        encoding: "utf8",
-        cwd: process.cwd(),
-      });
+      // Scoped to articles. The same script also measures the routes
+      // under src/app, which route-snippets.test.ts asserts, so a wide
+      // description on /pricing fails there and names the page rather
+      // than failing inside a test about the article catalogue.
+      output = execFileSync(
+        "node",
+        ["scripts/check-snippets.mjs", "--articles", "--strict"],
+        {
+          encoding: "utf8",
+          cwd: process.cwd(),
+        },
+      );
     } catch (err) {
       const e = err as { stdout?: string; stderr?: string };
       throw new Error(e.stdout ?? e.stderr ?? "check-snippets.mjs failed");

@@ -63,7 +63,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `Looking for a letting agent in ${cityPhrase}? We find and vet the tenant and hand the property over, then step back: marketing, viewings, background and income checks, lease drafting and handover. One-time fee of one month's rent, payable only when someone moves in.`,
+    description: `A letting agent in ${cityPhrase} who finds and vets the tenant, then steps back. Viewings, income checks and lease drafting for one month's rent.`,
     alternates: {
       canonical: "/tenant-finding",
       languages: alternateLanguagesFor("/tenant-finding"),
