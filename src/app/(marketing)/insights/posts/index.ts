@@ -738,6 +738,9 @@ import SkynestResidencesWestlandsOwnersGuide, {
 import EighteenSeventyWestWestlandsHandoverGuide, {
   meta as eighteenSeventyWestWestlandsHandoverGuideMeta,
 } from "./1870-west-westlands-handover-guide";
+import RiversideOneResidencyNairobiOwnersGuide, {
+  meta as riversideOneResidencyNairobiOwnersGuideMeta,
+} from "./riverside-one-residency-nairobi-owners-guide";
 import AirbnbAgentsNairobi, {
   meta as airbnbAgentsNairobiMeta,
 } from "./airbnb-agents-nairobi";
@@ -1640,6 +1643,10 @@ export const posts: readonly Post[] = [
   {
     meta: eighteenSeventyWestWestlandsHandoverGuideMeta,
     Component: EighteenSeventyWestWestlandsHandoverGuide,
+  },
+  {
+    meta: riversideOneResidencyNairobiOwnersGuideMeta,
+    Component: RiversideOneResidencyNairobiOwnersGuide,
   },
   { meta: airbnbAgentsNairobiMeta, Component: AirbnbAgentsNairobi },
   { meta: btlPortfolioNairobiMeta, Component: BtlPortfolioNairobi },

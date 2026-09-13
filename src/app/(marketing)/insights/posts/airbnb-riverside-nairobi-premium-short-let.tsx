@@ -227,6 +227,14 @@ export default function Article() {
         >
           Nairobi Airbnb occupancy month by month
         </Link>
+        . For a building where we think the furnished monthly tenant beats the
+        nightly guest, and the arithmetic behind that, see{" "}
+        <Link
+          href="/insights/riverside-one-residency-nairobi-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Riverside One Residency
+        </Link>
         .
       </P>
     </>

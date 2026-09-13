@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.61.0] - 2026-09-13
+
+### Added
+- An owners' guide to Riverside One Residency, the completed fifteen floor
+  Oasis Development building on Riverside Drive, two and three bedrooms only.
+  It is the first of these building guides where we manage in the building, so
+  it says so as the reason to trust the tenant profile, and it deliberately
+  publishes nothing about any owner's unit or returns.
+- The lead is an arithmetic gap in the building's own published rates that
+  most owners there have not acted on. A two bedroom lets unfurnished at KES
+  140,000 to 150,000 and furnished at KES 270,000 to 290,000, and a three
+  bedroom at KES 200,000 to 250,000 against KES 370,000 to 390,000. Furnishing
+  does not add a premium here, it very nearly doubles the rent, and against an
+  extra KES 135,000 a month even a generous furnishing budget pays back in
+  about eighteen months. The reason is the tenant rather than the furniture:
+  Riverside is a diplomatic and NGO corridor and those tenants arrive on a
+  posting without a household, which is also why the corridor carries the
+  highest rent band we record anywhere at USD 1,500 to 2,100 for a two bed.
+- It then argues against nightly letting despite the building's agents quoting
+  KES 14,000 to 16,000 a night. At the 60% to 70% occupancy we record for
+  Riverside, a two bedroom grosses about KES 296,000 nightly against KES
+  280,000 furnished monthly, so the gross is a wash and the monthly tenant
+  wins decisively on net after the lower fee, no turnover cost and the tenant
+  paying utilities. It also suits what Riverside is, a quiet corridor with no
+  retail or nightlife, which is the wrong profile for a three night guest.
+- The most useful section is that a void here is the inverse of the Westlands
+  problem. There is almost no competing stock, so a unit is empty because very
+  few people are looking rather than because a hundred flats are competing,
+  and cutting the rent therefore does nothing. The tenants who pay Riverside
+  rents are placed by employers, relocation agents and embassy housing
+  officers, so if those channels do not know the unit exists the rent is
+  irrelevant. The guide keeps our existing advice that a Riverside unit takes
+  longer to let and that anyone needing occupancy next month bought the wrong
+  address.
+- Two building specific advantages are named because both are usually buried:
+  it is walkable to Riverside Square, which removes the corridor's standing
+  weakness that there is no retail on foot, and the three bedrooms carry
+  domestic staff quarters, which for this tenant pool is a requirement rather
+  than an extra.
+- Two editorial inbound links now point at it, from the Riverside Drive
+  corridor guide and the Riverside premium short let article.
+
 ## [1.60.0] - 2026-09-13
 
 ### Added
@@ -2497,7 +2539,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.60.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.61.0...HEAD
+[1.61.0]: https://github.com/tasiamah/goldstay/compare/v1.60.0...v1.61.0
 [1.60.0]: https://github.com/tasiamah/goldstay/compare/v1.59.0...v1.60.0
 [1.59.0]: https://github.com/tasiamah/goldstay/compare/v1.58.0...v1.59.0
 [1.58.0]: https://github.com/tasiamah/goldstay/compare/v1.57.0...v1.58.0

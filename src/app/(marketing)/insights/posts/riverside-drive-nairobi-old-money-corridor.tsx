@@ -216,7 +216,15 @@ export default function Article() {
         >
           letting it through Goldstay
         </Link>{" "}
-        would involve.
+        would involve. For one building on the road in detail, including why
+        furnishing there nearly doubles the achievable rent, see{" "}
+        <Link
+          href="/insights/riverside-one-residency-nairobi-owners-guide"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Riverside One Residency
+        </Link>
+        .
       </P>
     </>
   );
