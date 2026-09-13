@@ -378,13 +378,26 @@ export function tradingName(city?: "nairobi" | "accra") {
 // persuades nobody and still has to be defended.
 export const ratingClaim = {
   text: "Nairobi's highest-rated property manager",
+  // The figures behind the claim, read off the Business Profile on the
+  // verifiedOn date below. Stated in prose rather than published as
+  // aggregateRating — see the note in JsonLd.tsx for why we emit no
+  // rating of our own.
+  //
+  // The number matters more than the adjective. "Highest-rated" is a
+  // comparison a reader cannot run; "5.0 from 17 reviews" is a fact
+  // they can check against the profile in one click, and it is the
+  // part that survives being read sceptically. Seventeen is a modest
+  // count and saying so is still better than implying a larger one:
+  // the claim is about the rating, and rounding the evidence up is how
+  // a defensible claim turns into an indefensible one.
+  rating: 5.0,
+  reviewCount: 17,
   // Where a reader — or an ads reviewer — verifies it. The Business
   // Profile rather than our own markup, deliberately: see the note on
   // aggregateRating in JsonLd.tsx for why we publish no rating of our
   // own.
   sourceUrl: googleMapsUrl,
-  sourceLabel: "See our Google reviews",
-  verifiedOn: "2026-09-10",
+  verifiedOn: "2026-09-13",
 } as const;
 
 // The domain to fall back to whenever the one we'd naturally name is not

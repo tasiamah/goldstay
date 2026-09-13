@@ -16,7 +16,27 @@ describe("ratingClaim", () => {
     // Google Ads. It has to point somewhere we do not control the
     // number.
     expect(ratingClaim.sourceUrl).toMatch(/^https:\/\/www\.google\.com\/maps\//);
-    expect(ratingClaim.sourceLabel.length).toBeGreaterThan(8);
+  });
+
+  it("states the figures the superlative rests on", () => {
+    // The adjective is a comparison a reader cannot run. The figures
+    // are a fact they can check against the profile in one click, and
+    // they are what the claim actually stands on.
+    expect(ratingClaim.rating).toBeGreaterThan(0);
+    expect(ratingClaim.rating).toBeLessThanOrEqual(5);
+    expect(ratingClaim.reviewCount).toBeGreaterThan(0);
+    // Integers. A fractional count of reviews means somebody has
+    // averaged something that should not have been averaged.
+    expect(Number.isInteger(ratingClaim.reviewCount)).toBe(true);
+  });
+
+  it("cannot claim to be highest-rated on a rating that is not top", () => {
+    // Not a check that we are the highest — nothing here can know
+    // that. A check that the claim is at least internally coherent:
+    // "highest-rated" alongside a 4.1 is a contradiction a reader
+    // spots before we do, and it is the shape the claim takes when the
+    // rating slips and only the number gets updated.
+    expect(ratingClaim.rating).toBeGreaterThanOrEqual(4.8);
   });
 
   it("records when it was last verified, as a real past date", () => {

@@ -223,10 +223,27 @@ export function readArticles() {
 // budget on the pages that use it, which is cheap.
 const WIDEST_CITY_PHRASE = "Nairobi and Accra";
 
+// tradingName() from site.ts, which is the full name as set on the
+// Google Business Profile. Worth knowing about because it was the
+// homepage title for twelve versions at 826px, and a checker that only
+// reads string literals cannot see a title that is a function call —
+// which is exactly how it passed this script while Google was
+// discarding it.
+const TRADING_NAME = `Goldstay | Property Management, Airbnb Co-Hosting & Short Let Consultancy ${WIDEST_CITY_PHRASE}`;
+
 const RENDERED = [
   [/\$\{launchedCityPhrase\(\)\}/g, WIDEST_CITY_PHRASE],
+  [/\$\{tradingName\([^)]*\)\}/g, TRADING_NAME],
   [/\$\{site\.name\}/g, "Goldstay"],
   [/\$\{site\.domain\}/g, "goldstay.co.ke"],
+];
+
+// Helpers that return display copy rather than a literal. A value that
+// is only ever a call reaches the head all the same, so the script has
+// to know what it produces or it silently measures nothing at all.
+const CALL_VALUES = [
+  [/\btradingName\s*\(/, TRADING_NAME],
+  [/\blaunchedCityPhrase\s*\(/, WIDEST_CITY_PHRASE],
 ];
 
 // Everything else is a local const, so read it rather than keeping a
@@ -364,6 +381,10 @@ function candidates(block, key, consts) {
       if (!raw || raw.length < 12 || raw.startsWith("/")) continue;
       out.push(render(raw, consts));
     }
+    // A value assigned straight from a helper, with no literal to find.
+    for (const [pattern, value] of CALL_VALUES) {
+      if (pattern.test(match[1])) out.push({ text: value, unresolved: false });
+    }
   }
   return out;
 }
@@ -423,9 +444,60 @@ function routePaths() {
   return found;
 }
 
+// A page with no metadata export inherits its layout's, which for the
+// marketing group is the homepage — the most valuable title on the site
+// and the one this script could not see until v1.63.0. It shipped at
+// 826px against a 600px budget, and Google was not truncating it but
+// replacing it wholesale with a string of its own. The page loop skips
+// anything with no metadata export, so the default had to be read from
+// the layout itself.
+function layoutDefaults() {
+  const rows = [];
+  const walk = (dir, segments) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      const next = join(dir, entry.name);
+      const grouped =
+        (entry.name.startsWith("(") && entry.name.endsWith(")")) ||
+        entry.name.startsWith("_");
+      const path = grouped ? segments : [...segments, entry.name];
+      const file = join(next, "layout.tsx");
+      if (existsSync(file)) {
+        const route = `/${path.join("/")}`;
+        const src = readFileSync(file, "utf8");
+        const block = metaSource(src);
+        // A layout that sets no title default supplies nothing a search
+        // result displays, and one covering noindex routes has no
+        // result to display it in.
+        if (
+          block &&
+          isPublic(route) &&
+          !/robots:[\s\S]{0,120}?index:\s*false/.test(block)
+        ) {
+          const consts = constValues(src);
+          const copy = withoutSocialBlocks(block);
+          // `default` rather than `title`, because a layout's title is
+          // an object holding both the default and the "%s | Goldstay"
+          // template, and the template is not a title anybody sees.
+          const titles = candidates(copy, "default", consts);
+          const descriptions = candidates(copy, "description", consts);
+          if (titles.length || descriptions.length) {
+            rows.push({ route, titles, descriptions });
+          }
+        }
+      }
+      walk(next, path);
+    }
+  };
+  walk(APP, []);
+  return rows;
+}
+
 export function readRoutes() {
   const rows = [];
   const unparsed = [];
+
+  const measured = [];
 
   for (const { route, file } of routePaths().sort((a, b) =>
     a.route.localeCompare(b.route),
@@ -439,8 +511,8 @@ export function readRoutes() {
     const src = readFileSync(file, "utf8");
     const block = metaSource(src);
 
-    // A page with no metadata export inherits the layout's, which is
-    // measured once as the root route rather than 40 times.
+    // A page with no metadata export inherits its layout's, which
+    // layoutDefaults() measures once rather than 40 times.
     if (!block) continue;
 
     // Only pages Google is allowed to index can overflow a search
@@ -449,15 +521,28 @@ export function readRoutes() {
 
     const consts = constValues(src);
     const copy = withoutSocialBlocks(block);
-    const titles = candidates(copy, "title", consts);
-    const descriptions = candidates(copy, "description", consts);
 
     // The marketing layout sets a "%s | Goldstay" template, so a page
     // title reaches the head with the brand appended unless it opts out
     // with title.absolute. Measure what the head will actually carry.
     const absolute = /title:\s*\{[\s\S]{0,80}?absolute/.test(block);
-    const suffix = absolute ? "" : " | Goldstay";
 
+    measured.push({
+      route,
+      titles: candidates(copy, "title", consts),
+      descriptions: candidates(copy, "description", consts),
+      // A layout's default is the title; no template applies to it.
+      suffix: absolute ? "" : " | Goldstay",
+    });
+  }
+
+  // A layout default is already the finished title — the template it
+  // sits beside applies to child pages, not to itself — so no suffix.
+  for (const layout of layoutDefaults()) {
+    measured.push({ ...layout, suffix: "" });
+  }
+
+  for (const { route, titles, descriptions, suffix } of measured) {
     if (!titles.length && !descriptions.length) {
       unparsed.push(route);
       continue;
@@ -485,7 +570,11 @@ export function readRoutes() {
       unresolved: Boolean(title?.unresolved || description?.unresolved),
       // The brand appearing twice is not a truncation problem, but it
       // wastes the widest words in the snippet on a word already there.
-      brandRepeated: !absolute && /Goldstay/.test(title?.text.slice(0, -suffix.length || undefined) ?? ""),
+      // Only meaningful where a suffix is being appended at all.
+      brandRepeated: Boolean(
+        suffix &&
+          /Goldstay/.test((title?.text ?? "").slice(0, -suffix.length)),
+      ),
     });
   }
 

@@ -21,6 +21,38 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.63.0] - 2026-09-13
+
+### Changed
+- The homepage title is now "Property Management Nairobi & Airbnb Co-Hosting |
+  Goldstay" rather than the full trading name. The trading name went in as the
+  title in 1.51.0 to corroborate the Business Profile name while it sat in
+  Google's review queue; that name has now been approved, so the title no
+  longer has that job.
+- It also was not doing the job well. The note alongside it reasoned that
+  Google would truncate the tail and that a display cost was acceptable. At
+  826px against a budget of roughly 600, Google did not truncate it — it
+  discarded it and substituted "Goldstay: Property Management Nairobi", a
+  string that has never appeared in this repository. Losing the tail of a
+  title is cheap. Losing the whole title on the highest-value URL on the site
+  is not, and it had been that way for twelve releases.
+- The trading name still corroborates the profile from `alternateName` on the
+  LocalBusiness node and the footer legal line, which is where a full trading
+  name belongs and costs nothing that a reader sees.
+- The rating claim now reads "5.0 from 17 Google reviews" as the link text
+  instead of "See our Google reviews". The figures are the part a sceptical
+  reader can check, and the superlative rests on them.
+
+### Fixed
+- `scripts/check-snippets.mjs` could not see the homepage at all, which is why
+  an 826px title survived an audit that measured 25 other routes. Two separate
+  blind spots: it skipped any page with no metadata export, so a title set as
+  a layout's `title.default` was never read, and it only recognised string
+  literals, so a title assigned straight from `tradingName()` measured as
+  nothing rather than as 853px. It now reads layout defaults as the route they
+  serve, and resolves `tradingName()` and `launchedCityPhrase()` where they
+  are used as whole values. 26 routes, up from 25.
+
 ## [1.62.0] - 2026-09-13
 
 ### Added
@@ -2601,7 +2633,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.61.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.63.0...HEAD
+[1.63.0]: https://github.com/tasiamah/goldstay/compare/v1.62.0...v1.63.0
 [1.62.0]: https://github.com/tasiamah/goldstay/compare/v1.61.1...v1.62.0
 [1.61.1]: https://github.com/tasiamah/goldstay/compare/v1.61.0...v1.61.1
 [1.61.0]: https://github.com/tasiamah/goldstay/compare/v1.60.0...v1.61.0

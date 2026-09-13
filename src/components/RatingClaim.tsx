@@ -32,13 +32,18 @@ export function RatingClaim({ className = "" }: { className?: string }) {
         aria-hidden
       />
       <span>{ratingClaim.text}</span>
+      {/* The figures carry more weight than the superlative, so they
+          are the link text: a reader who does not believe "highest-
+          rated" can check "5.0 from 17 reviews" in one click, which is
+          the whole reason the claim is allowed to stand. */}
       <a
         href={ratingClaim.sourceUrl}
         target="_blank"
         rel="noopener noreferrer"
         className="link-underline text-gold-400"
       >
-        {ratingClaim.sourceLabel}
+        {ratingClaim.rating.toFixed(1)} from {ratingClaim.reviewCount} Google
+        reviews
       </a>
     </p>
   );

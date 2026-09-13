@@ -68,17 +68,31 @@ export function generateMetadata(): Metadata {
 
   return {
     metadataBase,
-    // The homepage title carries the full trading name, because it is
-    // the page a Business Profile reviewer opens and the name has to
-    // match the profile. Only the default: `template` keeps every inner
-    // page on the short brand, so this is one URL rather than 394.
+    // This carried the full trading name from v1.51.0 until v1.63.0,
+    // because the name was in front of a Business Profile reviewer and
+    // had to match the profile. That reviewer has now approved it, so
+    // the title no longer has that job to do — and the reasoning
+    // alongside it turned out to be wrong on the point that mattered.
     //
-    // Google truncates the displayed title around 60 characters, so the
-    // tail of this is cut in the results. That costs less than it
-    // sounds — truncation is a display limit, not a ranking one, and
-    // the tail is doing a different job here anyway.
+    // It assumed Google would truncate the tail, which is only a
+    // display cost. At 826px against a budget of about 600, Google did
+    // not truncate it: it discarded it and wrote its own, and the
+    // homepage has been showing "Goldstay: Property Management Nairobi"
+    // — a string that has never appeared in this repository. Losing the
+    // tail is cheap. Losing the whole title on the most valuable URL on
+    // the site is not.
+    //
+    // The trading name still corroborates the profile from the two
+    // places a full legal name belongs: `alternateName` on the
+    // LocalBusiness node, which is the machine-readable claim, and the
+    // footer legal line. Neither costs a title tag to say.
+    //
+    // `template` keeps every inner page on the short brand, so this
+    // default is one URL rather than 394.
     title: {
-      default: tradingName(city ?? undefined),
+      default: isAccra
+        ? "Property Management Accra & Airbnb Co-Hosting | Goldstay"
+        : "Property Management Nairobi & Airbnb Co-Hosting | Goldstay",
       template: `%s | ${site.name}`,
     },
     description,
