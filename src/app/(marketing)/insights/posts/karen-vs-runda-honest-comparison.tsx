@@ -16,10 +16,11 @@ export const meta: PostMeta = {
   slug: "karen-vs-runda-honest-comparison",
   title:
     "Karen vs Runda: an honest comparison after 30 years",
+  metaTitle: "Karen vs Runda 2026: prices, resale and who lives there",
   description:
     "Karen and Runda have been Nairobi’s two flagship premium suburbs for 30 years. Despite the cliche of comparing them, the two markets have evolved into very different propositions. Here is the honest 2026 comparison covering price, character, who actually lives there, school catchment, security, traffic, resale and long-term outlook.",
   metaDescription:
-    "Karen and Runda have been Nairobi’s two flagship premium suburbs for 30 years.",
+    "KES 150m buys a smaller, older house on a bigger plot in Karen, or a newer one on less land in Runda. Karen resale takes 6 to 18 months.",
   publishedAt: "2024-09-10",
   readingMinutes: 7,
   author: authors.editors,

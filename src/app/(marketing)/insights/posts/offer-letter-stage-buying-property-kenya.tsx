@@ -16,11 +16,11 @@ export const meta: PostMeta = {
   slug: "offer-letter-stage-buying-property-kenya",
   title:
     "The offer letter stage in Kenya: what to include, what to avoid, what it costs you to skip",
-  metaTitle: "The offer letter stage in Kenya property deals",
+  metaTitle: "Offer letter stage in Kenya: what to include and what to avoid",
   description:
-    "The offer letter is the cheapest place to win or lose a Nairobi property deal. Most diaspora buyers either skip it or sign whatever the agent puts in front of them. Here is what a strong offer letter actually contains, what binds you and what does not, and why a properly written offer protects 10 to 15 percent of the price.",
+    "The offer letter is the cheapest place to win or lose a Nairobi property deal. Most diaspora buyers either skip it or sign whatever the agent puts in front of them. Here is what a strong offer letter actually contains, what binds you and what does not, and how the right wording takes five to seven percent off the asking price before a lawyer is involved.",
   metaDescription:
-    "The offer letter is the cheapest place to win or lose a Nairobi property deal.",
+    "Why the deposit should be 5% rather than 10%, how to ask for 90 days to complete instead of 60, and what in an offer letter actually binds you.",
   publishedAt: "2025-10-15",
   readingMinutes: 7,
   author: authors.legal,

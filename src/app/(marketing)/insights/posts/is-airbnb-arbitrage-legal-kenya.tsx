@@ -392,6 +392,18 @@ export default function Article() {
         compares it with the three routes that
         carry less risk.
       </P>
+      <P>
+        Running the model legitimately is a different question from running it
+        well. If the consent is in place and the operation is what you would
+        rather hand over, that is{" "}
+        <Link
+          href="/airbnb-arbitrage-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          short-stay management for operators
+        </Link>
+        .
+      </P>
     </>
   );
 }

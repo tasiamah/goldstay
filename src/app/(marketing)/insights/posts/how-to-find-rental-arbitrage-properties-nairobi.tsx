@@ -318,6 +318,17 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Finding the unit is the first half. If you would rather not also run
+        the calendar, the guests and the changeovers,{" "}
+        <Link
+          href="/airbnb-arbitrage-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          we manage units for operators
+        </Link>{" "}
+        on the same terms as owner-occupied stock.
+      </P>
     </>
   );
 }

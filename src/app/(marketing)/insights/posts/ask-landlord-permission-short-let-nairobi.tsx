@@ -428,6 +428,18 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you have the owner&rsquo;s written permission in hand and would
+        rather somebody else ran the unit day to day, that is{" "}
+        <Link
+          href="/airbnb-arbitrage-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          management for operators
+        </Link>
+        . We ask to see the permission before taking a unit on, for the reason
+        set out above.
+      </P>
     </>
   );
 }

@@ -15,11 +15,11 @@ export const meta: PostMeta = {
   slug: "land-rates-council-rates-kenya-explained",
   title:
     "Land rates and council rates in Kenya: what the county actually charges in 2026",
-  metaTitle: "Land rates and council rates in Kenya, 2026",
+  metaTitle: "Land rates and council rates in Kenya 2026: what you pay",
   description:
     "Land rates, ground rent and county service charges are confusing line items every Kenyan property owner pays but few understand. Here is the honest 2026 guide on what each charge is, who collects it, how it is calculated and what happens when you do not pay.",
   metaDescription:
-    "Land rates, ground rent and county service charges are confusing line items every Kenyan property owner pays but few understand.",
+    "Nairobi land rates are about 0.115% of site value, due 31 March, then 2% to 3% a month late. Ground rent runs KES 2,000 to 30,000 a year.",
   publishedAt: "2026-01-13",
   readingMinutes: 6,
   author: authors.research,

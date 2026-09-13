@@ -300,6 +300,25 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        If you have reached the point of putting the same questions to three
+        firms at once, we have set the whole comparison out in one place,
+        including the parts where we are the wrong answer:{" "}
+        <Link
+          href="/airbnb-management-companies-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to tell Airbnb management companies apart
+        </Link>
+        . What we do and what it costs is on{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our Airbnb management page
+        </Link>
+        .
+      </P>
     </>
   );
 }

@@ -15,11 +15,11 @@ export const meta: PostMeta = {
   slug: "estate-agent-commission-kenya-explained",
   title:
     "Estate agent commission in Kenya: what is normal and what is not in 2026",
-  metaTitle: "Estate agent commission in Kenya, 2026",
+  metaTitle: "Estate agent commission in Kenya 2026: rates and who pays",
   description:
     "Estate agent commission in Kenya is one of the least transparent line items in property transactions. Here is the honest 2026 guide on the standard rates, who pays what, who is allowed to charge what, and how to avoid the common commission disputes that derail deals.",
   metaDescription:
-    "Estate agent commission in Kenya is one of the least transparent line items in property transactions.",
+    "Agents charge 1.25% to 3% on a sale and 7.5% of annual rent on a letting. The 1987 statutory scale, who pays it, and where VAT applies.",
   publishedAt: "2026-01-22",
   readingMinutes: 6,
   author: authors.editors,

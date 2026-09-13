@@ -357,6 +357,27 @@ export default function Page() {
         footnote="Every figure here is the figure you would be quoted on a call, and each one is written into the management agreement rather than described on a website."
       />
 
+      {/* Routes the reader who has not decided on a firm yet. This page
+          assumes that decision is made; a host still holding three
+          quotes needs the comparison page, and sending them there is
+          better than having them bounce to find it elsewhere. */}
+      <section className="pt-16">
+        <div className="container-gs">
+          <p className="mx-auto max-w-3xl text-center text-sm text-charcoal/60 pretty">
+            Still comparing?{" "}
+            <Link
+              href="/airbnb-management-companies-kenya"
+              className="link-gold"
+            >
+              How to tell Airbnb management companies apart
+            </Link>{" "}
+            sets out what the percentage is really charged on, why the listing
+            staying on your own account matters more than the rate, and eight
+            questions worth asking every firm — us included.
+          </p>
+        </div>
+      </section>
+
       <section className="section">
         <div className="container-gs">
           <SectionHeader

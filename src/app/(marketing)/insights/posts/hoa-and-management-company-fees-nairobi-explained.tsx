@@ -17,11 +17,11 @@ export const meta: PostMeta = {
   slug: "hoa-and-management-company-fees-nairobi-explained",
   title:
     "HOA and management company fees in Nairobi: what you actually pay and what you actually get",
-  metaTitle: "HOA and management company fees in Nairobi",
+  metaTitle: "HOA and management company fees in Nairobi, 2026",
   description:
     "Apartment service charge gets most of the airtime, but the second layer of fees that gated communities and townhouse compounds in Nairobi charge through their HOA or management company is just as material. Here is what each layer covers, what good governance looks like, and how to read building accounts before you buy.",
   metaDescription:
-    "Service charge gets the airtime, but HOA and management company fees in Nairobi’s gated communities are just as material. What you pay and get.",
+    "HOA fees run KES 4,000 to 15,000 a unit monthly, on top of service charge. A well-run scheme collects from 92% of owners and holds 9 months.",
   publishedAt: "2026-01-17",
   readingMinutes: 7,
   author: authors.poonam,

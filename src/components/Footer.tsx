@@ -154,6 +154,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/airbnb-management-companies-kenya"
+                  className="link-underline"
+                >
+                  Comparing Airbnb co-hosts
+                </Link>
+              </li>
+              <li>
                 <Link href="/diaspora-payouts" className="link-underline">
                   Diaspora USD payouts
                 </Link>

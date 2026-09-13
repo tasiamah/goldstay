@@ -21,6 +21,51 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.55.0] - 2026-09-13
+
+### Added
+- A page for Airbnb management companies in Kenya, at
+  `/airbnb-management-companies-kenya`. The site's own query harvest already
+  recorded that "airbnb management companies in kenya" is the heaviest
+  completion Google offers for "airbnb management" in Kenya, and the plural,
+  country-scoped phrase had no page: `/airbnb-management` answers "who will
+  run my short let" for someone who has decided to appoint a firm, and
+  nothing answered the question before it. Written as a buyer's guide rather
+  than a pitch, on the two things that decide a short-stay comparison and do
+  not arise in letting: what the percentage is charged on, since a fee on
+  "net booking revenue" can cost more than a higher rate on revenue
+  collected, and whose Airbnb account the listing lives on, since a listing
+  built on the manager's account takes its review history with it when you
+  leave. Same shape as `/property-management-companies-nairobi`, which exists
+  for the same reason.
+- Links from eight short-stay articles to the service pages they were missing.
+  The Airbnb cluster was densely interlinked to itself and had no exits: the
+  article on where to find a co-host in Nairobi linked to three other
+  articles and no service page at all.
+
+### Changed
+- The eight articles that rank on page one of Google and get almost no clicks
+  now lead their search-result snippets with the answer instead of the topic.
+  The estate agent commission article draws 214 impressions a week at
+  position 6.7 and converted three of them, and its description read "Estate
+  agent commission in Kenya is one of the least transparent line items in
+  property transactions" — which the searcher already knew, since it is why
+  they searched. It now opens "Agents charge 1.25% to 3% on a sale and 7.5%
+  of annual rent on a letting." Every figure used is one the article already
+  contains. Roughly 48 clicks a week sit behind these pages at their current
+  positions, against 47 clicks for the whole site.
+
+### Fixed
+- Both comparison pages' titles were being truncated in search results. With
+  the " | Goldstay" the layout appends, "Property Management Companies in
+  Nairobi: How to Choose" came to 638px against the roughly 600px Google
+  renders a title in, so the brand and the intent were both cut. Now
+  "Compared", which says the same thing in 594px.
+- The offer letter article's standfirst claimed a well-written offer "protects
+  10 to 15 percent of the price", a figure that appears nowhere in the article
+  and is not supported by anything in it. It now says five to seven percent
+  off the asking price, which is the number the article actually argues for.
+
 ## [1.54.0] - 2026-09-11
 
 ### Added
@@ -2278,7 +2323,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.54.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.55.0...HEAD
+[1.55.0]: https://github.com/tasiamah/goldstay/compare/v1.54.0...v1.55.0
 [1.54.0]: https://github.com/tasiamah/goldstay/compare/v1.53.0...v1.54.0
 [1.53.0]: https://github.com/tasiamah/goldstay/compare/v1.52.1...v1.53.0
 [1.52.1]: https://github.com/tasiamah/goldstay/compare/v1.52.0...v1.52.1

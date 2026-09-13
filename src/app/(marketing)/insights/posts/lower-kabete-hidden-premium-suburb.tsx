@@ -14,10 +14,11 @@ export const meta: PostMeta = {
   slug: "lower-kabete-hidden-premium-suburb",
   title:
     "Lower Kabete: Nairobi’s hidden premium suburb",
+  metaTitle: "Lower Kabete, Nairobi: prices, rents and who buys there",
   description:
     "Lower Kabete sits between Westlands, Spring Valley, Loresho and Kitisuru and is one of the least-discussed premium pockets in Nairobi. Here is the honest 2026 guide on Lower Kabete property, who buys there and what the market actually looks like.",
   metaDescription:
-    "Lower Kabete sits between Westlands, Spring Valley, Loresho and Kitisuru and is one of the least-discussed premium pockets in Nairobi.",
+    "A quarter-acre plot runs KES 35m to 90m, a half acre KES 60m to 150m, and family standalones rent for KES 200,000 to 500,000 a month.",
   publishedAt: "2026-04-12",
   readingMinutes: 5,
   author: authors.editors,

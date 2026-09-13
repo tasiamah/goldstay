@@ -84,6 +84,7 @@ export function sitemapPaths(input: {
     "/pricing",
     "/change-property-manager",
     "/property-management-companies-nairobi",
+    "/airbnb-management-companies-kenya",
     "/diaspora-payouts",
     "/yield-calculator",
     "/refer",

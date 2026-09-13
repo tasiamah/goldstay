@@ -358,6 +358,18 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Confirming a building&rsquo;s position on short lets, and who holds the
+        permit, is work we do before listing anything rather than after a
+        notice arrives from the management committee. It is part of{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what Airbnb management covers
+        </Link>
+        .
+      </P>
     </>
   );
 }

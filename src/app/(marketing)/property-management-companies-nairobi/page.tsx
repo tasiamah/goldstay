@@ -57,10 +57,14 @@ export function generateMetadata(): Metadata {
   const cityPhrase =
     city === "accra" ? "Accra" : city === "nairobi" ? "Nairobi" : "Nairobi";
 
+  // "Compared" rather than "How to Choose". Both signal the intent, but
+  // the layout appends " | Goldstay" and "How to Choose" took the title
+  // to 638px against the ~600px Google renders, so the suffix and the
+  // intent were both being cut off.
   const title =
     city === "accra"
-      ? "Property Management Companies in Accra: How to Choose"
-      : "Property Management Companies in Nairobi: How to Choose";
+      ? "Property Management Companies in Accra: Compared"
+      : "Property Management Companies in Nairobi: Compared";
 
   return {
     title,

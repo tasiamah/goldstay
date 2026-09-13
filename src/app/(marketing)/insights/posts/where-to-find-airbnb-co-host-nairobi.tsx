@@ -283,6 +283,18 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        And if you would rather compare the firms you find against each other
+        on the things that actually differ,{" "}
+        <Link
+          href="/airbnb-management-companies-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          we have written that comparison out
+        </Link>        {" "}
+        on fee bases, listing ownership and eight questions that work on us
+        too.
+      </P>
     </>
   );
 }

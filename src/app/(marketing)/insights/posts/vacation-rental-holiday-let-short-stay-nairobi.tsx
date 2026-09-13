@@ -233,6 +233,25 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        All four names describe the same job, and it is the one we do. What it
+        covers is on our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management page
+        </Link>
+        , and if you are still deciding between operators rather than deciding
+        whether to appoint one,{" "}
+        <Link
+          href="/airbnb-management-companies-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          how to tell the firms apart
+        </Link>{" "}
+        is the more useful page.
+      </P>
     </>
   );
 }

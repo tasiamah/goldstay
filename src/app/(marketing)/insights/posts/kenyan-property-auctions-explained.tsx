@@ -17,11 +17,11 @@ export const meta: PostMeta = {
   slug: "kenyan-property-auctions-explained",
   title:
     "Kenyan property auctions explained: how they work and whether to buy",
-  metaTitle: "Kenyan property auctions: how they work",
+  metaTitle: "Kenyan property auctions 2026: process, discounts and risks",
   description:
     "Auction property in Kenya is everywhere in the press but poorly explained in practice. Here is the honest 2026 guide to how Kenyan property auctions actually work, what kinds of properties end up at auction, the realistic discounts, the genuine risks, and how to participate safely as a buyer.",
   metaDescription:
-    "Auction property in Kenya is everywhere in the press but poorly explained in practice.",
+    "Discounts are 10% to 25% below market on distressed flats and 15% to 35% on land. You pay 25% at the hammer, the balance in 30 to 90 days.",
   publishedAt: "2024-08-16",
   readingMinutes: 7,
   author: authors.editors,

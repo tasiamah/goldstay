@@ -275,6 +275,26 @@ export default function Article() {
         </Link>
         .
       </P>
+      <P>
+        Whichever way the arithmetic falls for your unit, we run both sides of
+        it:{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management
+        </Link>{" "}
+        at 20% of revenue collected, and{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management
+        </Link>{" "}
+        at 10% of rent collected. Send us the address and we will tell you
+        which one the unit is actually better on, including when that is the
+        long lease.
+      </P>
     </>
   );
 }
