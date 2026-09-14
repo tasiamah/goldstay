@@ -35,16 +35,26 @@ import { getServerCity } from "@/lib/getServerCity";
 // It exists separately from the two insight articles because they
 // answer different questions. The cost guide is research, the packages
 // article is the detailed buying answer, and this is the page that
-// should rank for "furnishing company nairobi" and its variants, which
+// should rank for "airbnb furnishing nairobi" and its variants, which
 // are commercial queries an article ranks badly for.
+//
+// Titled on "Airbnb furnishing" rather than "apartment furnishing".
+// Every established competitor in this market is optimised for the
+// Airbnb phrasing, and the reason is sound: the owner spending a
+// million shillings furnishing a unit they will not live in is a
+// short-let host. "Apartment furnishing" is the in-house name for the
+// service and also catches owner-occupiers, who buy nothing here. The
+// body still covers the furnished long lease, because for a building
+// that bans short lets that is the answer, and the title has to pick
+// one fight regardless.
 
 export function generateMetadata(): Metadata {
-  const title = "Apartment Furnishing Nairobi: Packages & Prices";
+  const title = "Airbnb Furnishing Nairobi: Packages & Prices";
 
   return {
     title,
     description:
-      "Fixed-price apartment furnishing in Nairobi, from a KES 700,000 studio to a KES 2.75m three bedroom. Specified, delivered, installed and photographed.",
+      "Fixed-price Airbnb furnishing in Nairobi, from a KES 700,000 studio to a KES 2.75m three bedroom. Specified, delivered, installed and photographed.",
     alternates: {
       canonical: "/furnishing",
       languages: alternateLanguagesFor("/furnishing"),
@@ -116,8 +126,12 @@ export default function Page() {
 
   const faqs = [
     {
-      q: "What does a furnishing package cost in Nairobi?",
+      q: "What does an Airbnb furnishing package cost in Nairobi?",
       a: "Two tiers, published rather than quoted. Short-let ready is KES 700,000 for a studio, 950,000 for a one bedroom, 1.4m for a two bedroom and 1.95m for a three bedroom. Premium is 1m, 1.45m, 2m and 2.75m for the same sizes. Each price includes specification, sourcing, delivery, installation, snagging and professional photography.",
+    },
+    {
+      q: "Why a fixed price rather than billing me at cost?",
+      a: "Because a fixed price puts the variance on us rather than on you. The two ways to sell this work are to invoice the furniture at what it cost and add a separate fee for the labour, or to quote one number. Pass-through looks more open, and in one respect it is, but it hands the owner every overrun: the consignment that clears at a higher duty than the quote assumed, the wardrobe that arrives cracked and is replaced at this month's price, the item discontinued between order and delivery. On a pass-through all three land on your invoice. On ours they land on ours, and the number you were quoted is the number you pay. What you give up is sight of our margin on the goods, which is a real trade and worth naming rather than hiding. If you would rather see every line item, say so before we start and we will talk about it.",
     },
     {
       q: "Who owns the furniture afterwards?",
@@ -159,10 +173,10 @@ export default function Page() {
       />
       <ReviewJsonLd />
       <ServiceJsonLd
-        name="Apartment Furnishing"
-        description="Fixed-price apartment furnishing in Nairobi for landlords and short-let owners: specification, sourcing, delivery, installation, snagging and professional photography, with the furniture owned outright by the client on installation."
+        name="Airbnb and Rental Apartment Furnishing"
+        description="Fixed-price furnishing in Nairobi for short-let hosts and landlords letting furnished: specification, sourcing, delivery, installation, snagging and professional photography, with the furniture owned outright by the client on installation."
         url={`${baseUrl}/furnishing`}
-        serviceType="Apartment furnishing and fit-out"
+        serviceType="Airbnb and rental apartment furnishing"
         areaServed={["Nairobi"]}
         priceDescription="Fixed price from KES 700,000 for a studio to KES 2.75m for a premium three bedroom"
       />
@@ -183,17 +197,18 @@ export default function Page() {
           <Reveal>
             <div className="max-w-3xl">
               <div className="eyebrow text-gold-400">
-                Furnishing · Fixed price
+                Airbnb furnishing · Fixed price
               </div>
               <h1 className="mt-6 font-serif text-display-lg text-cream balance">
-                Apartment furnishing in <em className="italic">Nairobi</em>, at
-                a published price.
+                Airbnb furnishing in <em className="italic">Nairobi</em>, at a
+                published price.
               </h1>
               <p className="mt-6 max-w-2xl text-lg text-cream/80 pretty md:text-xl">
                 Empty floor to let-ready: furniture, appliances, kitchen, linen,
                 blinds and styling, specified, delivered, installed and
-                photographed. From KES 700,000 for a studio. The furniture is
-                yours outright the day it goes in.
+                photographed. From KES 700,000 for a studio, for a short let or
+                a furnished long lease. The furniture is yours outright the day
+                it goes in.
               </p>
               <div className="mt-10 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center">
                 <a
@@ -217,7 +232,7 @@ export default function Page() {
       </section>
 
       <KeyFacts
-        question="What does it cost to furnish an apartment in Nairobi?"
+        question="What does it cost to furnish an Airbnb in Nairobi?"
         answer="Goldstay furnishes Nairobi apartments at published fixed prices across two tiers. Short-let ready is KES 700,000 for a studio, 950,000 for a one bedroom, 1.4m for a two bedroom and 1.95m for a three bedroom. Premium is 1m, 1.45m, 2m and 2.75m for the same sizes, buying a better sofa, a hardwood dining set, a higher grade mattress and imported soft furnishings. Every price covers specification, sourcing, delivery, installation, snagging and professional photography, and the furniture belongs to the owner outright on installation with nothing recovered out of booking revenue. Delivery runs two to three weeks from Nairobi stock or eight to twelve weeks imported to order, the imported route being meaningfully cheaper for the same quality. Whether the spend is worth making depends on the rent differential in the specific building: at Riverside One a two bedroom lets at KES 140,000 to 150,000 unfurnished against 270,000 to 290,000 furnished, so a furnish is recovered inside a year."
         facts={[
           { label: "Studio", value: "KES 700,000, or 1m premium" },
@@ -304,6 +319,57 @@ export default function Page() {
                 what each package includes
               </Link>
               .
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* The answer to the strongest competing pitch in this market.
+          Several Nairobi firms invoice the furniture at what it cost
+          and take their margin as a visible flat fee, and they market
+          that as transparency. It is a good pitch and it deserves an
+          answer rather than silence, because an owner comparing the two
+          sees receipts on one side and a single number on the other.
+          The honest answer is that the fixed price is not more open, it
+          is a different allocation of risk — so the section says that
+          and names what the owner gives up, rather than claiming a
+          transparency we do not have. */}
+      <section className="section">
+        <div className="container-gs max-w-4xl">
+          <SectionHeader
+            eyebrow="Fixed price, not receipts"
+            title="Why we quote one number instead of showing you the invoices."
+          />
+          <Reveal>
+            <p className="mt-10 text-lg leading-relaxed text-charcoal/85 pretty">
+              There are two ways to sell this work. Invoice the furniture at
+              what it cost and charge a separate fee for the labour, or quote
+              one fixed price. Several good firms in Nairobi do the first and
+              describe it as transparency. It is worth saying plainly why we do
+              not.
+            </p>
+          </Reveal>
+          <Reveal delay={0.05}>
+            <p className="mt-6 text-lg leading-relaxed text-charcoal/85 pretty">
+              A pass-through invoice shows you every line, and it also hands you
+              every overrun. The consignment that clears at a higher duty than
+              the quote assumed, the wardrobe that arrives cracked and is
+              replaced at this month&rsquo;s price, the sofa discontinued
+              between order and delivery: on a cost-plus arrangement all three
+              appear on your invoice, and the budget you agreed was never really
+              a budget. On ours they appear on ours. The number you are quoted
+              is the number you pay, and if the freight bill comes in high that
+              is our problem to have.
+            </p>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mt-6 text-lg leading-relaxed text-charcoal/85 pretty">
+              What you give up is sight of our margin on the goods, and we would
+              rather name that than pretend a fixed price is the more open of
+              the two. It is not more open. It is a different allocation of
+              risk, and for most owners furnishing remotely, certainty on the
+              total is worth more than visibility on the mark-up. If you take
+              the other view, say so before we start and we will talk about it.
             </p>
           </Reveal>
         </div>

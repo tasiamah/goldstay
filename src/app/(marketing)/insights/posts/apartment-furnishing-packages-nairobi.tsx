@@ -29,25 +29,45 @@ import {
 // scripts/check-insights.mjs only collects H3 headings when it checks
 // that FAQPage schema describes answers the page actually contains.
 // Each sits under an H2 that frames it, so the hierarchy still holds.
+//
+// Titled on "Airbnb furnishing" rather than "apartment furnishing",
+// which is what it said when it shipped. Every firm ranking for this
+// work in Nairobi is optimised for the Airbnb phrasing, and they are
+// right: the owner spending a million shillings on furniture for a
+// unit they will not live in is a short-let host, and that is the word
+// they type. "Apartment furnishing" also catches owner-occupiers, who
+// are not buying this.
+//
+// The slug still says apartment, deliberately. A slug is a far weaker
+// signal than a title, and changing one buys a permanent redirect to
+// maintain in exchange for very little.
 export const meta: PostMeta = {
   slug: "apartment-furnishing-packages-nairobi",
   title:
-    "Apartment furnishing packages in Nairobi: what they include and what they cost",
-  metaTitle: "Nairobi apartment furnishing packages and prices",
+    "Airbnb furnishing packages in Nairobi: what they include and what they cost",
+  metaTitle: "Nairobi Airbnb furnishing packages and prices",
   description:
-    "What a furnishing package costs in Nairobi, from a KES 700,000 studio to a KES 2.75m three bedroom across two tiers, what sits inside the price and what does not, how long delivery takes, and the rent differential that decides whether the spend is worth making.",
+    "What an Airbnb furnishing package costs in Nairobi, from a KES 700,000 studio to a KES 2.75m three bedroom across two tiers, what sits inside the price and what does not, how long delivery takes, and the rent differential that decides whether the spend is worth making.",
   metaDescription:
-    "Nairobi furnishing package prices: a studio from KES 700,000 to a three bedroom at KES 2.75m, what is included, and how long delivery takes.",
+    "Nairobi Airbnb furnishing package prices: a studio from KES 700,000 to a three bedroom at KES 2.75m, what is included, and how long it takes.",
   publishedAt: "2026-09-13",
   readingMinutes: 9,
   author: authors.editors,
-  tags: ["Furnishing", "Nairobi", "Short Let", "Apartment", "Pricing", "2026"],
+  tags: [
+    "Furnishing",
+    "Nairobi",
+    "Airbnb",
+    "Short Let",
+    "Apartment",
+    "Pricing",
+    "2026",
+  ],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
-  heroAlt: "Nairobi apartment furnishing packages and prices 2026",
+  heroAlt: "Nairobi Airbnb furnishing packages and prices 2026",
   faq: [
     {
-      q: "What does a furnishing package cost in Nairobi?",
+      q: "What does an Airbnb furnishing package cost in Nairobi?",
       a: "Goldstay publishes two tiers. Short-let ready is KES 700,000 for a studio, 950,000 for a one bedroom, 1.4m for a two bedroom and 1.95m for a three bedroom. Premium is 1m, 1.45m, 2m and 2.75m for the same sizes. Across the Nairobi market, rental grade furnishing runs roughly KES 400,000 to 1.3m for a studio and 700,000 to 2.5m for a two bedroom, depending on tier.",
     },
     {
@@ -225,7 +245,9 @@ export default function Article() {
 
       <H2 id="prices">Prices</H2>
 
-      <H3 id="package-prices">What does a furnishing package cost in Nairobi?</H3>
+      <H3 id="package-prices">
+        What does an Airbnb furnishing package cost in Nairobi?
+      </H3>
 
       <P>
         Published rather than quoted on a call. These are fixed prices

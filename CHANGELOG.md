@@ -21,6 +21,30 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.65.1] - 2026-09-13
+
+### Fixed
+- `/furnishing` and the furnishing packages article were titled on "apartment
+  furnishing", which is the in-house name for the service and not what anyone
+  searches. Every established firm ranking for this work in Nairobi is
+  optimised for the Airbnb phrasing, and they are right: the owner spending a
+  million shillings on furniture for a unit they will not live in is a
+  short-let host. Both now lead on "Airbnb furnishing", which is also far
+  closer to the topical authority this site already has. Same failure as
+  `/tenant-finding` before 1.40.0, where the page existed and was invisible to
+  the query it answers. Slugs unchanged: a slug is a much weaker signal than a
+  title and changing one buys a permanent redirect for very little.
+
+### Added
+- A section on `/furnishing` answering the strongest competing pitch in this
+  market. Several Nairobi firms invoice the furniture at cost and take their
+  margin as a visible flat fee, marketed as transparency. It is a good pitch
+  and the page now answers it rather than ignoring it: a fixed price is not
+  more open, it is a different allocation of risk, and the duty rise, the
+  cracked wardrobe and the discontinued sofa land on our invoice instead of the
+  owner's. The section names what the owner gives up, which is sight of our
+  margin on the goods, rather than claiming an openness we do not have.
+
 ## [1.65.0] - 2026-09-13
 
 ### Added
@@ -2750,7 +2774,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.65.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.65.1...HEAD
+[1.65.1]: https://github.com/tasiamah/goldstay/compare/v1.65.0...v1.65.1
 [1.65.0]: https://github.com/tasiamah/goldstay/compare/v1.64.0...v1.65.0
 [1.64.0]: https://github.com/tasiamah/goldstay/compare/v1.63.3...v1.64.0
 [1.63.3]: https://github.com/tasiamah/goldstay/compare/v1.63.2...v1.63.3
