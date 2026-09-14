@@ -1,8 +1,14 @@
 // /client/properties/[id] — drill-down for a single property in the
-// landlord's portfolio. Read-only: the active tenancy, the documents,
-// and the full transaction history (newest first) for that one
-// property. The dashboard sends them here when they click on a
-// property name.
+// landlord's portfolio. Read-only apart from the handbook: the active
+// tenancy, the documents, and the full transaction history (newest
+// first) for that one property. The dashboard sends them here when
+// they click on a property name.
+//
+// The handbook is the one thing on this page the client can write,
+// and only for a short let. Everything else here is either a
+// commercial term we agreed or a number we produced, whereas the
+// operating notes are the part of the record where the owner is the
+// only person who knows the answer on day one.
 //
 // We use findFirst with a scoped where clause (id + clientId) so a
 // landlord can never load another landlord's property by guessing
@@ -33,6 +39,12 @@ import {
 } from "@/components/OccupancyCalendar";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 import { SOURCE_LABEL } from "@/lib/booking-sources";
+import { PropertyHandbookForm } from "@/components/properties/PropertyHandbookForm";
+import {
+  handbookCompleteness,
+  handbookValuesFrom,
+} from "@/lib/properties/handbook";
+import { updateClientHandbookAction } from "./handbook-actions";
 import {
   occupancyPercentForPeriod,
   revenueTotalsByCurrency,
@@ -94,6 +106,11 @@ export default async function ClientPropertyDetailPage({
         orderBy: { createdAt: "desc" },
         take: 1,
       },
+      // Null until the owner or an operator has saved one. Cheap
+      // enough to include unconditionally: it is a 1:1 row on an
+      // indexed FK, and branching the include on propertyType would
+      // save one index lookup at the cost of two query shapes.
+      handbook: true,
     },
   });
 
@@ -147,6 +164,9 @@ export default async function ClientPropertyDetailPage({
   const revenue30 = isShortTerm
     ? revenueTotalsByCurrency(bookingsForAgg, period)
     : [];
+
+  const handbookValues = handbookValuesFrom(property.handbook);
+  const handbook = handbookCompleteness(handbookValues);
 
   const latestAgreement = property.agreements[0] ?? null;
   const readiness = computePropertyReadiness({
@@ -333,6 +353,42 @@ export default async function ClientPropertyDetailPage({
           </Card>
         )}
       </section>
+
+      {/* Short lets only, which is what was asked for. A furnished
+          long let has a token meter and a gate too, so this is a
+          condition worth revisiting rather than a law — but a
+          long-let landlord whose tenant has been in place two years
+          has no use for a WiFi password field. */}
+      {isShortTerm ? (
+        <Card title="Property handbook">
+          <p className="mt-1 text-sm text-stone-500">
+            The things only you know about this unit. Our operations team,
+            the cleaners and the people meeting your guests all work from
+            this, so it is worth a few minutes now.{" "}
+            {handbook.essentialsDone
+              ? "The essentials are all filled in."
+              : `Still needed: ${handbook.missingEssentialLabels.join(", ")}.`}
+          </p>
+          {property.handbook ? (
+            <p className="mt-2 text-xs text-stone-500">
+              Last updated{" "}
+              {property.handbook.updatedAt.toLocaleDateString("en-GB", {
+                day: "2-digit",
+                month: "short",
+                year: "numeric",
+              })}
+              {property.handbook.updatedByAdminId ? " by Goldstay" : ""}. If
+              something here has changed, such as the WiFi password, please
+              update it.
+            </p>
+          ) : null}
+          <PropertyHandbookForm
+            values={handbookValues}
+            action={updateClientHandbookAction.bind(null, property.id)}
+            audience="client"
+          />
+        </Card>
+      ) : null}
 
       <Card title="Transaction history">
         <p className="mt-1 text-sm text-stone-500">

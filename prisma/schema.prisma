@@ -324,6 +324,7 @@ model Property {
   bookings     Booking[]
   icalFeeds    PropertyIcalFeed[]
   agreements   ManagementAgreement[]
+  handbook     PropertyHandbook?
 
   @@index([clientId])
   @@index([country])
@@ -454,6 +455,72 @@ model Booking {
 // only — no guest names, no money. We import calendar holds as
 // placeholder Booking rows so the occupancy calendar lights up;
 // the operator backfills financials later from the OTA dashboard.
+// The operating notes for a short let: how to get in, what the WiFi
+// password is, how the token meter is topped up, who to call at the
+// gate. Everything an operator, a cleaner or a guest needs and that
+// only the owner knows on day one.
+//
+// A separate table rather than ten more columns on Property, for three
+// reasons. Property already carries thirty-odd fields and these would
+// be null on every long-let row. The handbook needs its own
+// `updatedAt`, because a WiFi password last confirmed six months ago
+// is worse than a blank one and a Property.updatedAt that moves every
+// time a booking lands cannot tell us that. And a 1:1 row means the
+// read path can skip the join entirely for the long-let pages that
+// will never show it.
+//
+// Not constrained to SHORT_TERM at the database level, deliberately.
+// Only the short-let UI renders it today, which is what was asked
+// for, but a furnished long let has a token meter and a gate too, so
+// turning it on there should be a UI change rather than a migration.
+//
+// Credentials here are stored as plain text and that is a considered
+// choice, not an oversight. The WiFi password is given to every guest
+// and cleaner who enters the unit, so it is not a secret and
+// encrypting it would only make it harder for the people who need it.
+// `securityContact` is different in kind: it is a third party's
+// personal number, given to us by the owner, and it must not be piped
+// to a guest-facing surface without deciding that separately.
+model PropertyHandbook {
+  id         String   @id @default(cuid())
+  propertyId String   @unique
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Getting in: gate procedure, concierge desk, lockbox, key handover.
+  checkInNotes     String?
+  wifiNetwork      String?
+  wifiPassword     String?
+  // Kenya Power token meters are the norm, so this is usually a meter
+  // number plus the paybill and the steps. Free text because the
+  // arrangement differs by building: some blocks bill electricity
+  // through the service charge and there is nothing to top up.
+  electricityNotes String?
+  // Tank, borehole, and above all where the pump switch is. A guest
+  // with no water at 6am is a one-star review that the switch behind
+  // the kitchen door would have prevented.
+  waterNotes       String?
+  // Name and number for the guard, caretaker or concierge.
+  securityContact  String?
+  parkingNotes     String?
+  // Quiet hours, committee restrictions, refuse days. Also where an
+  // owner records a short-let restriction we need to work within.
+  buildingRules    String?
+  // The quirks: which switch is the geyser, which gas supplier
+  // refills the cylinder, the oven that runs hot.
+  applianceNotes   String?
+  otherNotes       String?
+
+  // Who last saved it. Mirrors the audit actor shape used across the
+  // platform: an admin id when ops edited it, null with the client's
+  // email when the owner did. Both null on a row that somehow
+  // predates attribution.
+  updatedByEmail   String?
+  updatedByAdminId String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model PropertyIcalFeed {
   id            String        @id @default(cuid())
   propertyId    String

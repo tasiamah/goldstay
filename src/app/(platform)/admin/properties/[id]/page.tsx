@@ -42,6 +42,12 @@ import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
 import { PropertyFinanceCard } from "@/components/admin/finance/PropertyFinanceCard";
+import { PropertyHandbookForm } from "@/components/properties/PropertyHandbookForm";
+import {
+  handbookCompleteness,
+  handbookValuesFrom,
+} from "@/lib/properties/handbook";
+import { updateAdminHandbookAction } from "./handbook-actions";
 
 export const dynamic = "force-dynamic";
 
@@ -128,6 +134,8 @@ export default async function PropertyDetailPage({
           },
         },
       },
+      // Null until the owner or an operator has saved one.
+      handbook: true,
     },
   });
 
@@ -153,6 +161,9 @@ export default async function PropertyDetailPage({
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
+
+  const handbookValues = handbookValuesFrom(property.handbook);
+  const handbook = handbookCompleteness(handbookValues);
 
   // Which step of the go-live sequence this property is at. Derived
   // from the same rule the server action enforces, so the button can
@@ -352,6 +363,54 @@ export default async function PropertyDetailPage({
                     }))}
                   />
                 </div>
+              </div>
+              {/* The same row the client edits on their own property
+                  page. Editable here rather than read-only because
+                  most of it arrives verbally: an owner walks an
+                  operator through the gate procedure on a handover
+                  call, and asking them to go and type it in later is
+                  how a handbook stays empty. */}
+              <div className="rounded-lg border border-stone-200 bg-white p-6">
+                <div className="flex flex-wrap items-baseline justify-between gap-3">
+                  <h3 className="text-base font-medium text-stone-900">
+                    Property handbook
+                  </h3>
+                  <span
+                    className={`rounded px-2 py-0.5 text-xs ${
+                      handbook.essentialsDone
+                        ? "bg-emerald-50 text-emerald-700"
+                        : "bg-amber-50 text-amber-800"
+                    }`}
+                  >
+                    {handbook.essentialsDone
+                      ? "Essentials complete"
+                      : `${handbook.essentialFilled}/${handbook.essentialTotal} essentials`}
+                  </span>
+                </div>
+                <p className="mt-1 text-sm text-stone-500">
+                  Access, WiFi, tokens, water, security and building rules.
+                  The client edits the same row from their portal.{" "}
+                  {handbook.essentialsDone
+                    ? null
+                    : `Missing: ${handbook.missingEssentialLabels.join(", ")}.`}
+                </p>
+                <p className="mt-2 text-xs text-stone-500">
+                  {property.handbook
+                    ? `Last updated ${property.handbook.updatedAt.toLocaleDateString(
+                        "en-GB",
+                        { day: "2-digit", month: "short", year: "numeric" },
+                      )}${
+                        property.handbook.updatedByEmail
+                          ? ` by ${property.handbook.updatedByEmail}`
+                          : ""
+                      }${property.handbook.updatedByAdminId ? " (Goldstay)" : ""}`
+                    : "Never filled in."}
+                </p>
+                <PropertyHandbookForm
+                  values={handbookValues}
+                  action={updateAdminHandbookAction.bind(null, property.id)}
+                  audience="admin"
+                />
               </div>
             </>
           ) : (

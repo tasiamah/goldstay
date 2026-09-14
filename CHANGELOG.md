@@ -21,6 +21,43 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.66.0] - 2026-09-14
+
+### Added
+- A property handbook on every short-stay unit: the operating notes only the
+  owner knows on day one. Getting in, the WiFi network and password,
+  electricity and token top-ups, water and where the pump switch is, the
+  security or caretaker contact, parking, building rules and appliance quirks,
+  plus a freeform box for whatever the fields did not ask. Clients fill it in
+  themselves on `/client/properties/[id]`, which until now was entirely
+  read-only, and operators edit the same row on the admin property page,
+  because most of this arrives verbally on a handover call and asking an owner
+  to type it in afterwards is how a handbook stays empty.
+- The four fields an operator cannot run a changeover without (access, WiFi
+  name, WiFi password, electricity) are marked essential and counted
+  separately. The admin card shows "Essentials complete" or names what is
+  missing, and the client card asks for the gaps by name. A single progress bar
+  over all ten would have called a usable handbook 40% done.
+- Every save records who last touched it and when. A WiFi password last
+  confirmed six months ago is worse than a blank one, and `Property.updatedAt`
+  moves every time a booking lands, so the handbook carries its own timestamp.
+
+### Changed
+- `PropertyHandbook` is a new table rather than ten more columns on `Property`,
+  which already carries thirty-odd fields that would all have been null on
+  every long-let row. Migration `20260914090000_property_handbook` is additive
+  only: one table, no change to any existing column.
+
+### Security
+- Handbook audit entries record field names only, never values. The audit log
+  is read by every operator and exported, so writing a WiFi password or a
+  caretaker's phone number into it would copy both into a second, wider-read
+  place and leave them there after the handbook itself was corrected.
+- `securityContact` holds a third party's personal number, given to us by the
+  owner. Noted in the schema as not to be piped to any guest-facing surface
+  without deciding that separately, which matters because this data is the
+  obvious input to the guest house manual that is still on the backlog.
+
 ## [1.65.1] - 2026-09-13
 
 ### Fixed
@@ -2774,7 +2811,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.65.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.0...HEAD
+[1.66.0]: https://github.com/tasiamah/goldstay/compare/v1.65.1...v1.66.0
 [1.65.1]: https://github.com/tasiamah/goldstay/compare/v1.65.0...v1.65.1
 [1.65.0]: https://github.com/tasiamah/goldstay/compare/v1.64.0...v1.65.0
 [1.64.0]: https://github.com/tasiamah/goldstay/compare/v1.63.3...v1.64.0
