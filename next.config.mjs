@@ -53,6 +53,19 @@ const nextConfig = {
     // first the client accepts, so putting WebP first would mean no
     // browser ever received AVIF.
     formats: ["image/avif", "image/webp"],
+    // Optimised images were coming back `max-age=0, must-revalidate`,
+    // so a returning visitor revalidated every hero on the page
+    // before showing it. Vercel's edge cached them regardless — a
+    // September check found one sitting on a HIT with an age of 24
+    // days — so this was never a first-load cost, only a round trip
+    // per image on every repeat visit.
+    //
+    // A year is safe because the cache key includes the source URL,
+    // width and quality. Change any of those and it is a different
+    // key, so a replaced photograph cannot serve stale: the only way
+    // to hit this entry again is to ask for the same file at the same
+    // size, which is exactly when a year-old answer is still right.
+    minimumCacheTTL: 31536000,
     remotePatterns: [
       {
         protocol: "https",

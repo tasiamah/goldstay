@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.66.2] - 2026-09-15
+
+### Removed
+- The meta keywords tag, which the marketing layout put on 346 pages. Google
+  stopped reading it in 2009 and Bing treats it as a spam signal at worst, so it
+  bought nothing. Removed rather than varied per page, because a unique
+  keywords tag is worth exactly as much as a duplicate one.
+
+### Changed
+- Optimised images now carry a year-long cache lifetime instead of
+  `max-age=0, must-revalidate`, so a returning visitor no longer revalidates
+  every hero on the page before seeing it. Vercel's edge cached them regardless,
+  so this was never a first-load cost, only a round trip per image on every
+  repeat visit. Safe because the cache key includes source, width and quality,
+  so a replaced photograph is a different key and cannot serve stale.
+
 ## [1.66.1] - 2026-09-15
 
 ### Changed
@@ -2839,6 +2855,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.0...HEAD
+[1.66.2]: https://github.com/tasiamah/goldstay/compare/v1.66.1...v1.66.2
 [1.66.1]: https://github.com/tasiamah/goldstay/compare/v1.66.0...v1.66.1
 [1.66.0]: https://github.com/tasiamah/goldstay/compare/v1.65.1...v1.66.0
 [1.65.1]: https://github.com/tasiamah/goldstay/compare/v1.65.0...v1.65.1

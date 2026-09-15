@@ -46,20 +46,18 @@ export function generateMetadata(): Metadata {
         : `https://${site.domain}`,
   );
 
-  const allKeywords = [
-    "property management Nairobi",
-    "property management Accra",
-    "diaspora landlord Kenya",
-    "diaspora landlord Ghana",
-    "Airbnb management Nairobi",
-    "Airbnb management Accra",
-    "USD rent remittance",
-  ];
-  const keywords = isNairobi
-    ? allKeywords.filter((k) => !/accra|ghana/i.test(k))
-    : isAccra
-      ? allKeywords.filter((k) => !/nairobi|kenya/i.test(k))
-      : allKeywords;
+  // No `keywords`. This layout used to emit a meta keywords tag, which
+  // put the same four phrases on 346 pages, because the layout default
+  // applies to every route that does not set its own.
+  //
+  // Google stopped reading the tag in 2009 and Bing treats it as a
+  // spam signal at worst, so it bought nothing. A third-party crawl in
+  // September reported the 346 duplicates as its single largest
+  // finding, which is a fair description of the tag's only remaining
+  // effect: filling an audit with a problem that is not one.
+  //
+  // Removing it rather than varying it per page, because a unique
+  // keywords tag is worth exactly as much as a duplicate one.
 
   // hreflang map for the homepage. Layout-level alternates only apply
   // when a child page doesn't declare its own; every page that ships a
@@ -103,7 +101,6 @@ export function generateMetadata(): Metadata {
       template: `%s | ${site.name}`,
     },
     description,
-    keywords,
     authors: [{ name: "Goldstay" }],
     alternates: {
       canonical: "/",
