@@ -7,6 +7,7 @@ import { BreadcrumbJsonLd, FaqJsonLd } from "./JsonLd";
 import { logoObject, orgId, site } from "@/lib/site";
 import type { Post, PostMeta } from "@/app/(marketing)/insights/posts";
 import { categoriesForPost } from "@/app/(marketing)/insights/categories";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 // Shared shell for every insights post. Renders the hero, byline,
 // JSON-LD (Article + Person + Breadcrumb), prose body and a
@@ -112,7 +113,7 @@ export function ArticleLayout({
             fill
             priority
             sizes="100vw"
-            quality={80}
+            quality={HERO_IMAGE_QUALITY}
             className="-z-10 object-cover opacity-60"
           />
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/65 via-charcoal/75 to-charcoal/95" />

@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ArrowDown } from "lucide-react";
 import { launchedCityPhrase, waLink } from "@/lib/site";
 import { RatingClaim } from "./RatingClaim";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 export function Hero({
   // Reads from the launch flag: "Nairobi" today, "Nairobi ·
@@ -85,7 +86,7 @@ export function Hero({
         fill
         priority
         sizes="100vw"
-        quality={80}
+        quality={HERO_IMAGE_QUALITY}
         className="-z-10 object-cover"
         style={{ objectPosition: heroPosition }}
       />

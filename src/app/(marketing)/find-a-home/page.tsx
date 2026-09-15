@@ -6,6 +6,7 @@ import { FindHomeSearch } from "@/components/FindHomeSearch";
 import { getServerCity } from "@/lib/getServerCity";
 import { alternateLanguagesFor, launchedCityPhrase, site } from "@/lib/site";
 import { BreadcrumbJsonLd } from "@/components/JsonLd";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 // Tenant-facing front door. Unlike /list-your-property (which is for
 // landlords signing us on) and /apply (which is the private deep-dossier
@@ -67,7 +68,7 @@ export default function Page() {
           fill
           priority
           sizes="100vw"
-          quality={80}
+          quality={HERO_IMAGE_QUALITY}
           className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/85 via-charcoal/70 to-charcoal/95" />
@@ -89,9 +90,21 @@ export default function Page() {
         </div>
       </section>
 
+      {/* The search block used to sit under the h1 with no heading of
+          its own, which left the page with a single h1 and nothing
+          under it, and left FindHomeSearch's own h3 as the next
+          heading down, so the outline skipped a level. One h2 fixes
+          both and names the thing a tenant came here to do. */}
       <section className="section">
         <div className="container-gs">
-          <FindHomeSearch />
+          <Reveal>
+            <h2 className="font-serif text-2xl text-charcoal sm:text-3xl">
+              Search homes to rent in {cityPhrase}
+            </h2>
+          </Reveal>
+          <div className="mt-8">
+            <FindHomeSearch />
+          </div>
         </div>
       </section>
 

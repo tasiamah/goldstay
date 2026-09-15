@@ -42,6 +42,17 @@ const nextConfig = {
     serverComponentsExternalPackages: ["@react-pdf/renderer"],
   },
   images: {
+    // AVIF first, WebP behind it. Next's default is WebP alone, so no
+    // AVIF was ever offered: a crawl in September found the heroes at
+    // 160KB WebP where AVIF lands them nearer 100KB for the same
+    // picture. The browser picks from the Accept header it sends, so
+    // anything that does not do AVIF still gets WebP and anything
+    // that does neither still gets the JPEG.
+    //
+    // Order matters. Next tries these left to right and serves the
+    // first the client accepts, so putting WebP first would mean no
+    // browser ever received AVIF.
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
       {
         protocol: "https",

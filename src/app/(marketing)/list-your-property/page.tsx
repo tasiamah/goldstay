@@ -101,7 +101,11 @@ export default function Page() {
           <ListPropertyForm />
           <aside className="space-y-8">
             <div>
-              <div className="eyebrow">What happens next</div>
+              {/* An h2 rather than a div. It was already the heading
+                  for the numbered list beneath it; the .eyebrow class
+                  carries the whole look, so this changes the outline
+                  and not a pixel. */}
+              <h2 className="eyebrow">What happens next</h2>
               <ol className="mt-5 space-y-5 text-charcoal/75">
                 {[
                   "We review your property details and do a quick market read.",

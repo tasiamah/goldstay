@@ -81,6 +81,14 @@ export function SignupForm({ presetType }: { presetType: Type }) {
       onSubmit={onSubmit}
       className="grid gap-5 rounded-2xl bg-white p-6 shadow-soft md:p-8"
     >
+      {/* The page's only other heading is its h1, so without this the
+          outline stopped there. It lives inside the form rather than
+          on the page so that SuccessPanel's "Your referral link is
+          live" replaces it on submit instead of sitting underneath a
+          heading telling you to sign up. */}
+      <h2 className="font-serif text-xl text-charcoal md:text-2xl">
+        Create your referral account
+      </h2>
       <fieldset className="grid gap-2">
         <legend className="font-serif text-lg text-charcoal">
           I&rsquo;m signing up as a&hellip;

@@ -16,6 +16,7 @@ import { FAQSection } from "./FAQSection";
 import { citySourcing, cityTrail, waLink, site } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { BreadcrumbJsonLd } from "./JsonLd";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 type City = "nairobi" | "accra";
 
@@ -123,7 +124,7 @@ export function CityBuyPage({ city }: { city: City }) {
           fill
           priority
           sizes="100vw"
-          quality={80}
+          quality={HERO_IMAGE_QUALITY}
           className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/80 via-charcoal/70 to-charcoal/95" />

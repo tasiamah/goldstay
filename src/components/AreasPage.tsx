@@ -13,6 +13,7 @@ import {
   type Neighbourhood,
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 type City = "nairobi" | "accra";
 
@@ -75,7 +76,7 @@ export function AreasPage({ city }: { city: City }) {
           fill
           priority
           sizes="100vw"
-          quality={80}
+          quality={HERO_IMAGE_QUALITY}
           className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/65 via-charcoal/70 to-charcoal/95" />

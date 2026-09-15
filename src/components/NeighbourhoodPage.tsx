@@ -25,6 +25,7 @@ import {
   type Neighbourhood,
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 type City = "nairobi" | "accra";
 
@@ -145,7 +146,7 @@ export function NeighbourhoodPage({
           fill
           priority
           sizes="100vw"
-          quality={80}
+          quality={HERO_IMAGE_QUALITY}
           className="-z-10 object-cover"
           style={{ objectPosition: city === "accra" ? "center 38%" : "center" }}
         />

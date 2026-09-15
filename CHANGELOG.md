@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.66.1] - 2026-09-15
+
+### Changed
+- Hero photographs are served as AVIF where the browser takes it. Next defaults
+  to WebP alone unless you name the formats, so AVIF was never offered to
+  anyone: a September crawl found the Nairobi hero arriving at 160KB when AVIF
+  puts the same picture nearer 100KB.
+- Hero image quality drops from 80 to 60. Every hero on the site sits behind a
+  charcoal gradient running from 65% to 95% opacity, so the detail we were
+  paying for never reached anyone: the pixels arrived, got multiplied by 0.2 and
+  landed as texture. The hero is the LCP element on these pages, and
+  `nairobi.jpg` alone is referenced from 251 of them.
+- `accra.jpg` is cropped from portrait to a 1800x1350 landscape frame, cutting
+  44% of its pixels. It was a 1800x2400 phone photograph, and every one of the
+  eighteen surfaces using it, from the homepage locations card to thirteen Ghana
+  article heroes, is a landscape box that threw most of it away after paying to
+  download it. The skyline stays centred, so the framing is unchanged.
+
+### Fixed
+- `/find-a-home`, `/list-your-property` and `/refer/signup` had an `h1` and no
+  `h2` at all, so the page outline stopped at the title. `/find-a-home` also
+  skipped a level, because the next heading down was an `h3` inside the search
+  component. Each now has one real heading naming what the section does.
+- The `/refer/signup` heading lives inside the form rather than on the page, so
+  that the confirmation panel's "Your referral link is live" replaces it on
+  submit instead of appearing under a heading still inviting you to sign up.
+
 ## [1.66.0] - 2026-09-14
 
 ### Added
@@ -2812,6 +2839,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.0...HEAD
+[1.66.1]: https://github.com/tasiamah/goldstay/compare/v1.66.0...v1.66.1
 [1.66.0]: https://github.com/tasiamah/goldstay/compare/v1.65.1...v1.66.0
 [1.65.1]: https://github.com/tasiamah/goldstay/compare/v1.65.0...v1.65.1
 [1.65.0]: https://github.com/tasiamah/goldstay/compare/v1.64.0...v1.65.0

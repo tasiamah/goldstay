@@ -27,6 +27,7 @@ import {
 } from "@/lib/site";
 import { getServerCity } from "@/lib/getServerCity";
 import { postsForCountry } from "@/app/(marketing)/insights/posts";
+import { HERO_IMAGE_QUALITY } from "@/lib/images";
 
 // Service-plus-location landing page: "Airbnb management in Kilimani".
 //
@@ -192,7 +193,7 @@ export function NeighbourhoodShortLetPage({
           fill
           priority
           sizes="100vw"
-          quality={80}
+          quality={HERO_IMAGE_QUALITY}
           className="-z-10 object-cover"
         />
         <div className="absolute inset-0 -z-10 bg-gradient-to-b from-charcoal/75 via-charcoal/75 to-charcoal/95" />
