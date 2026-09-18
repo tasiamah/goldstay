@@ -255,7 +255,12 @@ export default function Article() {
         separate from our own fee. So a line reads: gross, the
         platform&apos;s commission, cleaning, our 20 percent, your net. You can
         see what Airbnb took and what Booking.com took, per booking, rather
-        than a single blended number you have to trust.
+        than a single blended number you have to trust. Running both channels
+        is part of{" "}
+        <Link className="link-underline" href="/airbnb-management">
+          our Airbnb management service
+        </Link>{" "}
+        rather than an extra.
       </P>
 
       <P>

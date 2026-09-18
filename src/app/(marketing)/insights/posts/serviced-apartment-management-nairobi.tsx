@@ -243,7 +243,12 @@ export default function Article() {
         through the low season and go back to nightly pricing for December. We
         invoice organisations directly with our own KRA PIN, hold the county and
         Tourism Regulatory Authority permits, and report occupancy, average
-        rate and every deduction monthly.
+        rate and every deduction monthly. What is included, and what is not,
+        is set out on our{" "}
+        <Link className="link-underline" href="/airbnb-management">
+          Airbnb management
+        </Link>{" "}
+        page.
       </P>
 
       <P>

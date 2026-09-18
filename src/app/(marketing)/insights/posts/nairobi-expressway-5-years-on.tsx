@@ -12,14 +12,34 @@ import {
   UL,
 } from "@/components/ArticleProse";
 
+// The elapsed-time claim is gone from this article, deliberately.
+//
+// It said "five years on" in the title, both descriptions, the hero
+// alt and the lede. The expressway opened for public trials on
+// 14 May 2022 and was commissioned on 31 July 2022, so five years
+// does not arrive until mid-2027. As of September 2026 it was four,
+// which is also what the sibling article
+// (nairobi-expressway-effect-on-property-prices) says: two indexed
+// articles disagreeing on the same date, with the wrong one saying it
+// in a title tag.
+//
+// Fixed by dropping the count rather than changing five to four. That
+// article already owns "four years on, and here is the price impact",
+// so repeating the number here would have duplicated its framing to
+// no benefit, and a hardcoded age needs an edit every twelve months
+// or it silently becomes wrong again. "What it actually changed" is
+// the angle that distinguishes this piece anyway.
+//
+// The slug still reads 5-years-on. Left alone on purpose: renaming it
+// buys a cosmetic match and costs a permanent redirect on a URL that
+// already has inbound links.
 export const meta: PostMeta = {
   slug: "nairobi-expressway-5-years-on",
-  title:
-    "The Nairobi Expressway five years on: what it actually changed",
+  title: "The Nairobi Expressway: what it actually changed",
   description:
-    "Five years after the Nairobi Expressway opened, the picture is clearer than the hype that surrounded it. Here is the honest 2026 audit of what the expressway actually changed for property values, suburb access, commuter behaviour and the longer term shape of the city.",
+    "The Nairobi Expressway opened in 2022 and the picture is now clearer than the hype that surrounded it. Here is the honest 2026 audit of what the expressway actually changed for property values, suburb access, commuter behaviour and the longer term shape of the city.",
   metaDescription:
-    "Five years after the Nairobi Expressway opened, the picture is clearer than the hype that surrounded it.",
+    "What the Nairobi Expressway actually changed since 2022: property values, suburb access and commuter behaviour, audited honestly.",
   publishedAt: "2024-08-31",
   readingMinutes: 6,
   author: authors.research,
@@ -34,16 +54,17 @@ export const meta: PostMeta = {
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
-    "Nairobi Expressway five years on impact analysis 2026",
+    "Nairobi Expressway property impact analysis 2026",
 };
 
 export default function Article() {
   return (
     <>
       <Lede>
-        Five years after the Nairobi Expressway opened
-        in 2022, the picture is clearer than the hype
-        that surrounded it. Some of what was promised
+        The Nairobi Expressway opened in 2022, and far
+        enough has passed that the picture is now
+        clearer than the hype that surrounded it. Some
+        of what was promised
         landed. Some of what was promised did not. The
         expressway has materially reshaped commuter
         behaviour and certain micro-markets, while
@@ -179,24 +200,24 @@ export default function Article() {
       <UL>
         <LI>
           Syokimau apartment prices: roughly +25 to
-          +40 percent over 5 years
+          +40 percent since 2022
         </LI>
         <LI>
           Mlolongo apartment prices: roughly +15 to
-          +30 percent over 5 years
+          +30 percent since 2022
         </LI>
         <LI>
           South C apartment prices: roughly +10 to
-          +20 percent over 5 years
+          +20 percent since 2022
         </LI>
         <LI>
           Westlands apartment prices: roughly +20 to
-          +50 percent over 5 years (multiple drivers
+          +50 percent since 2022 (multiple drivers
           including but not limited to expressway)
         </LI>
         <LI>
           Karen and Runda standalone home prices:
-          roughly flat to +10 percent over 5 years
+          roughly flat to +10 percent since 2022
           in real terms
         </LI>
       </UL>

@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   OL,
@@ -128,7 +129,7 @@ export default function Article() {
 
       <H2 id="paths">Recovery paths</H2>
 
-      <H2 id="path1">Path 1: resume with same contractor</H2>
+      <H3 id="path1">Path 1: resume with same contractor</H3>
 
       <UL>
         <LI>
@@ -153,7 +154,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="path2">Path 2: terminate and re-engage</H2>
+      <H3 id="path2">Path 2: terminate and re-engage</H3>
 
       <UL>
         <LI>
@@ -180,7 +181,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="path3">Path 3: pause and restart later</H2>
+      <H3 id="path3">Path 3: pause and restart later</H3>
 
       <UL>
         <LI>
@@ -204,7 +205,7 @@ export default function Article() {
         </LI>
       </UL>
 
-      <H2 id="path4">Path 4: dispose of the project as is</H2>
+      <H3 id="path4">Path 4: dispose of the project as is</H3>
 
       <UL>
         <LI>

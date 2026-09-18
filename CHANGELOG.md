@@ -21,6 +21,36 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.66.3] - 2026-09-18
+
+### Fixed
+- "The Nairobi Expressway five years on" was published while the road was
+  four years old. It opened for public trials on 14 May 2022 and was
+  commissioned on 31 July 2022, so five years does not arrive until
+  mid-2027, and the sibling article on expressway price impact already said
+  four. Two indexed articles disagreed on the same date and the wrong one
+  said it in its title tag. The count is now gone from the title, both
+  descriptions, the hero alt and the lede rather than corrected to four:
+  the price article owns the "four years on" framing, and a hardcoded age
+  goes wrong again every twelve months. The five price movements it quoted
+  "over 5 years" are now quoted since 2022. The slug still reads
+  `5-years-on` and is deliberately left alone, since renaming it costs a
+  permanent redirect on a URL that already has inbound links.
+- The four "Path N" recovery options in the stalled-construction guide were
+  marked up as `H2` siblings of the "Recovery paths" heading they sit
+  under, so the document outline read as eight top-level sections instead
+  of four subsections of one. They are now `H3`.
+
+### Changed
+- Three articles named after a service we sell linked to each other and to
+  a dozen other articles but never to the service page itself: the
+  short-term rental management guide, the serviced apartment management
+  guide, and the Airbnb versus Booking.com comparison. Each now links to
+  `/airbnb-management` from the section describing how we actually run a
+  unit. The Booking.com piece is the one Search Console shows at position
+  six, so it was the best-placed article on the site with no route to a
+  page that sells anything.
+
 ## [1.66.2] - 2026-09-15
 
 ### Removed
@@ -2854,7 +2884,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.3...HEAD
+[1.66.3]: https://github.com/tasiamah/goldstay/compare/v1.66.2...v1.66.3
 [1.66.2]: https://github.com/tasiamah/goldstay/compare/v1.66.1...v1.66.2
 [1.66.1]: https://github.com/tasiamah/goldstay/compare/v1.66.0...v1.66.1
 [1.66.0]: https://github.com/tasiamah/goldstay/compare/v1.65.1...v1.66.0

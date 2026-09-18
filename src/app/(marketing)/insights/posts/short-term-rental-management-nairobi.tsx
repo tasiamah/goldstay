@@ -324,7 +324,11 @@ export default function Article() {
         The fee is 20 percent of revenue with no setup fee, no commission taken
         from cleaners or contractors and nothing payable to leave. Licensing
         sits with us. Any request gets a response inside 48 hours or we waive
-        that property&rsquo;s fee for the month.
+        that property&rsquo;s fee for the month. The full terms sit on our{" "}
+        <Link className="link-underline" href="/airbnb-management">
+          Airbnb management
+        </Link>{" "}
+        page.
       </P>
 
       <Callout title="Send us the unit and we will model it">
