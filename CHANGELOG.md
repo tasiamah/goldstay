@@ -21,6 +21,28 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.67.0] - 2026-09-22
+
+### Added
+- An **Archive property** button on the admin property page. A property
+  attached to the wrong client could only be left there: the archive
+  machinery already supported `PROPERTY`, and `ArchiveButton` already
+  described itself as being for "client / property / lease / transaction
+  detail pages", but it was only ever wired to the client page. Archiving
+  is a soft delete, audited, restorable for 30 days from `/admin/archive`,
+  and hides the property from the portfolio, from statements and from the
+  client's own portal. It returns the operator to the client rather than to
+  the property list, because the reason to archive a property is almost
+  always that it belongs to somebody else.
+
+### Fixed
+- The admin property page rendered an archived property exactly as if it
+  were live. The page is a `findUnique` on the id with no `archivedAt`
+  filter and `/admin/archive` links straight to it, so an operator could
+  archive a property, follow a link back, and see no sign it had worked. It
+  now carries a banner saying the property is archived and whether it is
+  still inside the restore window.
+
 ## [1.66.3] - 2026-09-18
 
 ### Fixed
@@ -2884,7 +2906,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.66.3...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[1.67.0]: https://github.com/tasiamah/goldstay/compare/v1.66.3...v1.67.0
 [1.66.3]: https://github.com/tasiamah/goldstay/compare/v1.66.2...v1.66.3
 [1.66.2]: https://github.com/tasiamah/goldstay/compare/v1.66.1...v1.66.2
 [1.66.1]: https://github.com/tasiamah/goldstay/compare/v1.66.0...v1.66.1

@@ -36,6 +36,11 @@ import {
   revenueTotalsByCurrency,
   type BookingLike,
 } from "@/lib/bookings/aggregate";
+import { ArchiveButton } from "@/components/admin/ArchiveButton";
+import {
+  ARCHIVE_RESTORE_WINDOW_DAYS,
+  isWithinRestoreWindow,
+} from "@/lib/admin/archive";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { Tip } from "@/components/admin/Tip";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
@@ -246,13 +251,60 @@ export default async function PropertyDetailPage({
               {property.country === "KE" ? "Kenya" : "Ghana"}
             </p>
           </div>
-          <PropertyLifecycleActions
-            propertyId={property.id}
-            status={property.status}
-            agreementStage={agreementStage}
-          />
+          <div className="flex shrink-0 flex-wrap items-start justify-end gap-2">
+            <PropertyLifecycleActions
+              propertyId={property.id}
+              status={property.status}
+              agreementStage={agreementStage}
+            />
+            {/* Archiving sends the operator to the client rather than
+                to /admin/properties. The reason to archive a property
+                is almost always that it does not belong to this
+                client, so the next thing they need is that client's
+                page, not the global list. */}
+            {property.archivedAt ? null : (
+              <ArchiveButton
+                entity="PROPERTY"
+                id={property.id}
+                returnPath={`/admin/properties/${property.id}`}
+                redirectAfter={`/admin/clients/${property.client.id}`}
+                label="Archive property"
+              />
+            )}
+          </div>
         </div>
       </div>
+
+      {/* This page is reachable while archived: the query is a
+          findUnique on the id with no archivedAt filter, and
+          /admin/archive links straight here. Without this the page
+          renders identically to a live property, so an operator could
+          archive, follow a link back, and see no sign it had worked. */}
+      {property.archivedAt ? (
+        <div className="rounded-lg border border-amber-300 bg-amber-50 p-4">
+          <p className="text-sm font-medium text-amber-900">
+            This property is archived.
+          </p>
+          <p className="mt-1 text-sm text-amber-800">
+            It is hidden from the portfolio, from statements and from the
+            client&rsquo;s own portal.{" "}
+            {isWithinRestoreWindow(property.archivedAt) ? (
+              <>
+                You can restore it from{" "}
+                <Link href="/admin/archive" className="underline">
+                  the archive
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                It is past the {ARCHIVE_RESTORE_WINDOW_DAYS} day restore
+                window, so the archive no longer offers a restore button.
+              </>
+            )}
+          </p>
+        </div>
+      ) : null}
 
       {isShortTerm ? (
         <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
