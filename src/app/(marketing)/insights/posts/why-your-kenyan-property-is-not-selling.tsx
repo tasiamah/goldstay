@@ -248,8 +248,18 @@ export default function Article() {
       <P>
         For sellers we run a frank diagnostic
         review at the listing stage and fix the
-        issues that matter. Read also our pieces
-        on{" "}
+        issues that matter. Occasionally the diagnostic
+        says the property is fine and the buyers simply
+        are not there this year. Where that is true,{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          putting it on a lease we manage
+        </Link>{" "}
+        beats cutting the asking price by fifteen percent,
+        and we say so even though it is the slower fee for
+        us. Read also our pieces on{" "}
         <Link
           href="/insights/how-to-sell-nairobi-property-30-days"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

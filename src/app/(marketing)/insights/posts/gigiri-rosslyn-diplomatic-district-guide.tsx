@@ -216,8 +216,18 @@ export default function Article() {
         For investor clients targeting diplomatic
         tenants we cover the district intensively
         and run the operations to the standard the
-        tenant pool requires. Read also our pieces
-        on{" "}
+        tenant pool requires. Embassy and UN leases are
+        long, paid on time and unforgiving about response
+        times, which is why we usually put them on{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management
+        </Link>{" "}
+        rather than on a nightly programme that would earn
+        us more and serve the owner worse. Read also our
+        pieces on{" "}
         <Link
           href="/insights/diplomatic-tenant-market-gigiri-rosslyn-runda-un-embassy-rent"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

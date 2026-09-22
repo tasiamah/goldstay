@@ -283,6 +283,19 @@ export default function Article() {
       </P>
 
       <P>
+        A well-located Kilimani one bed frequently earns
+        more on nightly stays than on a lease, and{" "}
+        <Link
+          href="/nairobi/kilimani/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our Kilimani short let management
+        </Link>{" "}
+        takes 20 percent of revenue, so a quiet month
+        costs the owner nothing in fees.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"

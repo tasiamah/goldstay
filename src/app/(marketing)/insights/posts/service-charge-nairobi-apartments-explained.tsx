@@ -235,7 +235,15 @@ export default function Article() {
         your approval, and pay from collected rent (or top
         up if needed). We attend AGMs as your proxy by
         default, vote in your interest, and minute the
-        outcomes for you.
+        outcomes for you. All of it sits inside{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          full management at 10 percent of collected rent
+        </Link>{" "}
+        rather than being billed on top, because chasing a
+        committee is not optional work.
       </P>
 
       <P>

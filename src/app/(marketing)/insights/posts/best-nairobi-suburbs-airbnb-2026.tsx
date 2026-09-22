@@ -86,7 +86,15 @@ export default function Article() {
         The trade is competition. Westlands has the most listings and the most
         good listings. You will not win here on being adequate. Specification,
         photographs and review score decide it, and the price you can hold is
-        a direct function of your rating.
+        a direct function of your rating. What we charge and what we run in
+        the suburb is on our{" "}
+        <Link
+          href="/nairobi/westlands/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Westlands Airbnb management
+        </Link>{" "}
+        page.
       </P>
 
       <H3>Kilimani</H3>
@@ -108,7 +116,14 @@ export default function Article() {
         >
           how the Kilimani apartment market is changing
         </Link>
-        .
+        , and what we do with a unit here on our{" "}
+        <Link
+          href="/nairobi/kilimani/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Kilimani Airbnb management
+        </Link>{" "}
+        page.
       </P>
 
       <H3>Riverside and Riverside Drive</H3>
@@ -129,7 +144,14 @@ export default function Article() {
         >
           the Riverside Drive corridor
         </Link>
-        .
+        , or our{" "}
+        <Link
+          href="/nairobi/riverside/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Riverside Airbnb management
+        </Link>{" "}
+        page for how we run one.
       </P>
 
       <H3>Gigiri and Rosslyn</H3>
@@ -151,6 +173,20 @@ export default function Article() {
         >
           the Gigiri and Rosslyn guide
         </Link>
+        . We run units in both:{" "}
+        <Link
+          href="/nairobi/gigiri/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Gigiri
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/nairobi/rosslyn/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Rosslyn
+        </Link>
         .
       </P>
 
@@ -164,13 +200,31 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Kileleshwa.</strong> Good for one and two beds in buildings
-          with real services. Weak for large formats, and the newer tower stock
-          varies a lot on water and lift reliability
+          <strong>
+            <Link
+              href="/nairobi/kileleshwa/airbnb-management"
+              className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+            >
+              Kileleshwa
+            </Link>
+            .
+          </strong>{" "}
+          Good for one and two beds in buildings with real services. Weak for
+          large formats, and the newer tower stock varies a lot on water and
+          lift reliability
         </LI>
         <LI>
-          <strong>Lavington.</strong> Better for families and month long stays
-          than for weekend bookings. Larger units do better here than studios
+          <strong>
+            <Link
+              href="/nairobi/lavington/airbnb-management"
+              className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+            >
+              Lavington
+            </Link>
+            .
+          </strong>{" "}
+          Better for families and month long stays than for weekend bookings.
+          Larger units do better here than studios
         </LI>
         <LI>
           <strong>Upper Hill and Community.</strong> Hospital, conference and
@@ -178,8 +232,17 @@ export default function Article() {
           quiet months
         </LI>
         <LI>
-          <strong>Parklands and Highridge.</strong> Steady regional and medical
-          visitor demand, often overlooked, and cheaper to enter
+          <strong>
+            <Link
+              href="/nairobi/parklands/airbnb-management"
+              className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+            >
+              Parklands
+            </Link>{" "}
+            and Highridge.
+          </strong>{" "}
+          Steady regional and medical visitor demand, often overlooked, and
+          cheaper to enter
         </LI>
         <LI>
           <strong>Karen.</strong> Works for large houses and groups, poorly for

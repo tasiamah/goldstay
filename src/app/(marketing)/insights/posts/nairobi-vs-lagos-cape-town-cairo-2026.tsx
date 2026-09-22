@@ -218,8 +218,17 @@ export default function Article() {
         diaspora investors evaluating
         across markets we provide an
         honest Nairobi view in the
-        comparison. Read also our pieces
-        on{" "}
+        comparison. If Nairobi is where you land,{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our sourcing desk
+        </Link>{" "}
+        covers the search, the inspection, the negotiation
+        and the title verification. We hold no view worth
+        selling you on Lagos, Cape Town or Cairo. Read
+        also our pieces on{" "}
         <Link
           href="/insights/nairobi-vs-lagos-vs-cape-town-vs-kigali-property-compared"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

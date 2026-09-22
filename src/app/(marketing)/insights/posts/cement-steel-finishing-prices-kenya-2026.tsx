@@ -279,8 +279,18 @@ export default function Article() {
       <P>
         For build clients we work with QS
         partners to lock prices, schedule
-        procurement and track usage. Read also
-        our pieces on{" "}
+        procurement and track usage. Finishing is where
+        most budgets go wrong, and it is also the stage
+        where a fixed price becomes worth having:{" "}
+        <Link
+          href="/furnishing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our furnishing packages
+        </Link>{" "}
+        start at KES 700,000 for a studio and the
+        furniture is yours outright from the day it is
+        installed. Read also our pieces on{" "}
         <Link
           href="/insights/cost-of-building-3-bedroom-house-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

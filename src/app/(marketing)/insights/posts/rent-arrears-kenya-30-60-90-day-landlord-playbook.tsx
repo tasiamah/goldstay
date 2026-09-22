@@ -290,6 +290,21 @@ export default function Article() {
       </P>
 
       <P>
+        Running arrears at that pace is a job with a diary
+        attached, and the diary is most of what an owner
+        is buying under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management
+        </Link>
+        : the reminder on day three, the call on day seven
+        and the formal notice on day thirty go out whether
+        or not anyone remembered them.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/eviction-kenya-2026-landlord-playbook"

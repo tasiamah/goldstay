@@ -248,12 +248,19 @@ export default function Article() {
       </P>
 
       <P>
-        See what else is covered under{" "}
+        See what else is covered under Goldstay&rsquo;s Airbnb management in{" "}
         <Link
-          href="/airbnb-management"
+          href="/nairobi/gigiri/airbnb-management"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          Goldstay’s Airbnb management in Nairobi
+          Gigiri
+        </Link>{" "}
+        and{" "}
+        <Link
+          href="/nairobi/rosslyn/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Rosslyn
         </Link>
         .
       </P>

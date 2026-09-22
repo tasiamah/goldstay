@@ -660,6 +660,19 @@ export default function Article() {
       </P>
 
       <P>
+        Where a permit and a purchase have to be
+        sequenced, we will tell you which one has to
+        happen first before any money moves.{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          The buying side
+        </Link>{" "}
+        is the half of that we run ourselves.
+      </P>
+
+      <P>
         Read the related pieces on{" "}
         <Link
           href="/insights/freehold-vs-leasehold-kenya-citizenship-rules"

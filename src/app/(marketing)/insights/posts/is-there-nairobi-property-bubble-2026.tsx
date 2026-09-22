@@ -156,7 +156,17 @@ export default function Article() {
       <P>
         For sourcing clients we run
         segment-by-segment fundamentals
-        diligence. Read also our pieces on{" "}
+        diligence. That diligence is most of what{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our sourcing service
+        </Link>{" "}
+        consists of, and since the buyer does not pay for
+        it we have no reason to talk anyone into a segment
+        we would not buy into ourselves. Read also our
+        pieces on{" "}
         <Link
           href="/insights/why-nairobi-property-prices-keep-rising-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

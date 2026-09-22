@@ -151,6 +151,17 @@ export default function Article() {
         </LI>
       </UL>
 
+      <P>
+        We keep the live version of these figures, alongside who is renting
+        at each level, on our <Link
+          href="/nairobi/karen"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Karen letting page
+        </Link>
+        .
+      </P>
+
       <H2 id="schools">Schools</H2>
 
       <UL>

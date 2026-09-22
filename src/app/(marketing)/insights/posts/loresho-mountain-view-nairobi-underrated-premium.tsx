@@ -190,8 +190,17 @@ export default function Article() {
         For sourcing clients with a family-home
         brief in the KES 25m to KES 60m band we
         regularly recommend Loresho and Mountain
-        View alongside the higher-profile suburbs.
-        Read also our pieces on{" "}
+        View alongside the higher-profile suburbs. The
+        case is arithmetic rather than taste, since the
+        same money buys more house here, and testing that
+        against live asking prices is precisely{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          what we do on the buy side
+        </Link>
+        . Read also our pieces on{" "}
         <Link
           href="/insights/spring-valley-vs-lavington-vs-riverside"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

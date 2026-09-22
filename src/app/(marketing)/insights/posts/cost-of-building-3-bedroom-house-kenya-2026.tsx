@@ -330,6 +330,17 @@ export default function Article() {
         </Link>{" "}
         before you decide.
       </P>
+
+      <P>
+        If the answer comes out as buy, the buy side is{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>
+        , and it costs the buyer nothing.
+      </P>
     </>
   );
 }

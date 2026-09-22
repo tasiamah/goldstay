@@ -268,6 +268,19 @@ export default function Article() {
       </P>
 
       <P>
+        That work is{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our buy-side sourcing service
+        </Link>
+        , free to the buyer, and Old Town is one of the
+        few places where we tell a client up front that
+        the shortlist may come back empty.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/diani-vs-watamu-vs-malindi-diaspora-2026"

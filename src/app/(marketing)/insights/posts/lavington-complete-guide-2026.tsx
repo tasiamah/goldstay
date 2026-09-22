@@ -285,8 +285,16 @@ export default function Article() {
 
       <P>
         For premium family clients Lavington is
-        almost always on the shortlist. Read also
-        our pieces on{" "}
+        almost always on the shortlist. What a unit
+        here lets for, who rents it and the
+        compliance that comes with it is on our{" "}
+        <Link
+          href="/nairobi/lavington"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Lavington letting page
+        </Link>
+        . Read also our pieces on{" "}
         <Link
           href="/insights/spring-valley-vs-lavington-vs-riverside"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

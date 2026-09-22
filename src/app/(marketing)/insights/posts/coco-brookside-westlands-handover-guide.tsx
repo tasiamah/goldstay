@@ -430,7 +430,15 @@ export default function Article() {
         percent of rent collected on a long let and 20 percent of revenue on a
         short stay, with no setup fee and no exit fee, and we will tell you
         before you commit which of the two your specific unit is actually
-        suited to.
+        suited to. What the short stay side looks like on this side of
+        Westlands is set out under{" "}
+        <Link
+          href="/nairobi/brookside/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management in Brookside
+        </Link>
+        .
       </P>
 
       <P>

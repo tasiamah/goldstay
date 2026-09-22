@@ -332,6 +332,20 @@ export default function Article() {
       </P>
 
       <P>
+        Landlords who would rather never run this process
+        themselves hand the tenancy over under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          full long-term management
+        </Link>{" "}
+        at 10 percent of collected rent, where the
+        notices, the advocate instruction and the court
+        attendance are ours to carry rather than yours.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/rent-arrears-kenya-30-60-90-day-landlord-playbook"

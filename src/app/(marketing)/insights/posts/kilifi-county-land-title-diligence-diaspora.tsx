@@ -263,6 +263,21 @@ export default function Article() {
       </P>
 
       <P>
+        We decline Kilifi instructions where a deposit has
+        already gone down on a parcel nobody has walked,
+        because by then we would be validating a decision
+        rather than making one. Everything{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the sourcing service
+        </Link>{" "}
+        does happens on the buyer&rsquo;s side of the
+        table, before the deposit.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/diani-vs-watamu-vs-malindi-diaspora-2026"

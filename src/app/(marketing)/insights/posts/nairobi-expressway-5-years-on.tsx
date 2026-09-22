@@ -282,6 +282,21 @@ export default function Article() {
       </P>
 
       <P>
+        Whether the access is worth paying for depends on
+        the specific junction and the specific commute,
+        which is a question we answer address by address
+        for{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buyers we source for
+        </Link>
+        , usually by driving the route at the hour they
+        would be driving it.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/nairobi-expressway-effect-on-property-prices"

@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.67.1] - 2026-09-22
+
+### Changed
+- 58 articles now link to the service they are about. 44 of them previously
+  linked only to other articles, so a reader who arrived on a guide about
+  building costs or rent arrears had no route to the thing we would charge
+  them for, and the pages that earn enquiries got no internal authority from
+  the 388-article library sitting next to them.
+- Each of the nine Nairobi neighbourhood short-let pages now has at least one
+  inbound article link. They were reachable only from the sitemap and the
+  suburb index before this.
+- The four suburb guides that overlap their own profile pages
+  (Westlands, Karen, Kileleshwa, Lavington) now cross-link to them, so the
+  buyer-focused guide and the letting-focused profile stop competing for the
+  same queries and start pointing at each other instead.
+
+  The added prose is written per article rather than templated, and every fee
+  it quotes is the published one: 10% of collected rent, 20% of short-let
+  revenue, one month's rent to find a tenant, free buy-side sourcing,
+  furnishing from KES 700,000.
+
 ## [1.67.0] - 2026-09-22
 
 ### Added
@@ -2907,6 +2928,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[1.67.1]: https://github.com/tasiamah/goldstay/compare/v1.67.0...v1.67.1
 [1.67.0]: https://github.com/tasiamah/goldstay/compare/v1.66.3...v1.67.0
 [1.66.3]: https://github.com/tasiamah/goldstay/compare/v1.66.2...v1.66.3
 [1.66.2]: https://github.com/tasiamah/goldstay/compare/v1.66.1...v1.66.2

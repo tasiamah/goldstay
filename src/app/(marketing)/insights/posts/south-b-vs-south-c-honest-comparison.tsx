@@ -165,8 +165,19 @@ export default function Article() {
       <P>
         For sourcing clients targeting
         either, we run compound diligence
-        and tenant-profile mapping. Read
-        also our pieces on{" "}
+        and tenant-profile mapping. Both suburbs get
+        bought for yield rather than for the address, so
+        the only figure that counts is net of service
+        charge, rental tax and a management fee. Our{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>{" "}
+        takes a purchase price and a rent and hands back
+        that figure with every assumption printed on it.
+        Read also our pieces on{" "}
         <Link
           href="/insights/cheapest-decent-suburbs-nairobi-2026-buyer-guide"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

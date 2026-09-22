@@ -242,8 +242,17 @@ export default function Article() {
       <P>
         For sourcing and management
         clients we incorporate honest
-        forward views into strategy. Read
-        also our pieces on{" "}
+        forward views into strategy. A forecast matters
+        less than the entry price you actually negotiate,
+        and negotiating that on the ground while the buyer
+        is somewhere else is the working half of{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>
+        . Read also our pieces on{" "}
         <Link
           href="/insights/will-nairobi-house-prices-crash-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

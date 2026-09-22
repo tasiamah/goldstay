@@ -291,6 +291,18 @@ export default function Article() {
       </P>
 
       <P>
+        To get that model for your own property,{" "}
+        <Link
+          href="/list-your-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          list it with us
+        </Link>{" "}
+        and the walk-away figure comes back before anybody
+        starts discussing an asking price.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/selling-nairobi-apartment-from-abroad-2026-playbook"

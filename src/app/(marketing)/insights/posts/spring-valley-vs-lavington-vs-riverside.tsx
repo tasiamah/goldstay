@@ -219,8 +219,19 @@ export default function Article() {
       <P>
         For premium clients we walk through the
         actual life implications of each suburb
-        rather than reflecting back assumptions.
-        Read also our pieces on{" "}
+        rather than reflecting back assumptions. We have
+        that conversation with tenants too, not only with
+        buyers, and{" "}
+        <Link
+          href="/find-a-home"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the tenant waitlist
+        </Link>{" "}
+        is where to start if you would rather be matched
+        to the next flat that fits than trawl three
+        suburbs of listings yourself. Read also our pieces
+        on{" "}
         <Link
           href="/insights/karen-vs-runda-honest-comparison"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

@@ -223,8 +223,20 @@ export default function Article() {
       <P>
         For self-build family clients we
         coordinate professional team and
-        budget discipline. Read also our
-        pieces on{" "}
+        budget discipline. Plenty of these houses get
+        built years before the family actually moves home.
+        If yours will stand empty in the meantime, a 4
+        bedroom in the right suburb lets well to a
+        corporate or diplomatic tenant, and we run those
+        leases under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management
+        </Link>{" "}
+        at 10 percent of the rent we collect. Read also
+        our pieces on{" "}
         <Link
           href="/insights/cost-of-building-3-bedroom-house-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

@@ -285,8 +285,18 @@ export default function Article() {
       <P>
         For build clients we run the full cost
         spreadsheet against the design at the
-        QS stage, before contracts are signed.
-        Read also our pieces on{" "}
+        QS stage, before contracts are signed. We take the
+        same view of our own charges: everything we bill
+        sits on{" "}
+        <Link
+          href="/pricing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a single pricing page
+        </Link>
+        , so there is no setup fee, no markup on repairs
+        and no exit fee waiting in a schedule at the back
+        of the agreement. Read also our pieces on{" "}
         <Link
           href="/insights/cost-of-building-3-bedroom-house-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

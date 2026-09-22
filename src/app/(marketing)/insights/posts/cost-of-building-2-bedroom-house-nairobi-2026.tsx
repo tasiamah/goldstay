@@ -210,8 +210,19 @@ export default function Article() {
       <P>
         For self-build clients we
         coordinate professional team and
-        cost discipline. Read also our
-        pieces on{" "}
+        cost discipline. A 2 bedroom is usually built to
+        let, so before the slab goes down it is worth
+        putting your build cost and a realistic monthly
+        rent into the{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>
+        , which shows the self-managed column next to the
+        managed one with every assumption listed. Read
+        also our pieces on{" "}
         <Link
           href="/insights/cost-of-building-3-bedroom-house-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

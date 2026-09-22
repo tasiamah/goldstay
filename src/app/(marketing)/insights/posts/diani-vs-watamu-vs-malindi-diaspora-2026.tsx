@@ -287,6 +287,20 @@ export default function Article() {
       </P>
 
       <P>
+        To put that partner stack to work against a real
+        budget, start with{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our property sourcing
+        </Link>
+        . Where a coastal shortlist will not clear the
+        diligence, we say so and suggest keeping the money
+        in Nairobi.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/buying-property-mombasa-old-town-2026-diaspora"

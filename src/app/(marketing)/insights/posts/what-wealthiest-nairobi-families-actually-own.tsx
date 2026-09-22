@@ -242,8 +242,19 @@ export default function Article() {
       <P>
         For UHNW family clients we
         coordinate sourcing across the
-        portfolio approach. Read also our
-        pieces on{" "}
+        portfolio approach. Nothing in the pattern needs
+        a family office to copy it. The land, the income
+        property and the house you live in can be
+        assembled one purchase at a time, which is how
+        most of the{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          sourcing mandates
+        </Link>{" "}
+        we run actually proceed. Read also our pieces
+        on{" "}
         <Link
           href="/insights/secret-nairobi-suburb-wealthy-second-home"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

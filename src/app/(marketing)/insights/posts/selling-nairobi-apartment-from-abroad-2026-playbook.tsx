@@ -312,6 +312,22 @@ export default function Article() {
       </P>
 
       <P>
+        Fourteen weeks assumes the file is already in
+        order, which it usually is on a flat we have been
+        managing. Owners starting cold are better off
+        taking a few minutes to{" "}
+        <Link
+          href="/list-your-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          open a file with us
+        </Link>{" "}
+        before instructing an agent, so the title and
+        service charge questions surface in week one
+        rather than in week twelve.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/kenya-property-sale-cost-breakdown-2026-seller"

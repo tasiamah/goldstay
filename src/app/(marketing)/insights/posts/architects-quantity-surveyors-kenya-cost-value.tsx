@@ -251,7 +251,18 @@ export default function Article() {
         For build clients we connect to BORAQS
         registered architects and IQSK registered
         QS partners we have worked with for
-        years. Read also our pieces on{" "}
+        years. We take no cut of their fees and we do not
+        run the build. What we do pick up is the finished
+        house: send it through{" "}
+        <Link
+          href="/list-your-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          list your property
+        </Link>{" "}
+        and we will come back with an achievable rent
+        before you commit to the final finishes. Read also
+        our pieces on{" "}
         <Link
           href="/insights/cost-of-building-3-bedroom-house-kenya-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

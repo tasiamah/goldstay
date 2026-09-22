@@ -242,7 +242,19 @@ export default function Article() {
         We focus on residential sourcing
         and management. For commercial we
         coordinate with specialised
-        partners. Read also our pieces on{" "}
+        partners. On the residential side the service
+        is{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management
+        </Link>{" "}
+        at 10 percent of collected rent, and it includes
+        calculating and remitting the 7.5 percent rental
+        income tax to KRA by the 20th of each month, which
+        is a line commercial landlords handle very
+        differently. Read also our pieces on{" "}
         <Link
           href="/insights/multi-unit-property-investment-nairobi"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

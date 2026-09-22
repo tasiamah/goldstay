@@ -388,6 +388,20 @@ export default function Article() {
       </P>
 
       <P>
+        In practice that looks like{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management at 10 percent of collected
+          rent
+        </Link>
+        : the rent lands in our account and leaves it
+        against a dated statement, so nobody in the family
+        is ever holding your money.
+      </P>
+
+      <P>
         Read also our{" "}
         <Link
           href="/insights/black-tax-diaspora-kenyans-property-family-pressure"

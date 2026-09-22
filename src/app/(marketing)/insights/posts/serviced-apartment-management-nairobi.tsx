@@ -245,7 +245,7 @@ export default function Article() {
         Tourism Regulatory Authority permits, and report occupancy, average
         rate and every deduction monthly. What is included, and what is not,
         is set out on our{" "}
-        <Link className="link-underline" href="/airbnb-management">
+        <Link className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700" href="/airbnb-management">
           Airbnb management
         </Link>{" "}
         page.

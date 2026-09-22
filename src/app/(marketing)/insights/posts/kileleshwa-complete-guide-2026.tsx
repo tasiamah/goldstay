@@ -111,6 +111,17 @@ export default function Article() {
         </LI>
       </UL>
 
+      <P>
+        For what a landlord actually nets on these, and the compliance that
+        comes with it, see our <Link
+          href="/nairobi/kileleshwa"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Kileleshwa letting page
+        </Link>
+        .
+      </P>
+
       <H2 id="who">Who buys here</H2>
 
       <UL>

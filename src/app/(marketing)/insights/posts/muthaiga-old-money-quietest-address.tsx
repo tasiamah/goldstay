@@ -162,8 +162,17 @@ export default function Article() {
       <P>
         For Muthaiga sourcing clients we run
         diligence on plot, structure and
-        modernisation budget. Read also our
-        pieces on{" "}
+        modernisation budget. That last figure decides
+        whether a Muthaiga house is a bargain or a
+        project, so we walk a builder through it before
+        any offer goes in.{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Our sourcing service
+        </Link>{" "}
+        includes that costing. Read also our pieces on{" "}
         <Link
           href="/insights/karen-vs-runda-honest-comparison"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

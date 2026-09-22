@@ -292,6 +292,21 @@ export default function Article() {
       </P>
 
       <P>
+        On a built property the cheapest protection is a
+        documented tenancy, so{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long-term management at 10 percent of collected
+          rent
+        </Link>{" "}
+        does two jobs at once: it produces income, and it
+        leaves a dated paper trail of lawful occupation
+        behind your title.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/how-to-buy-plot-of-land-kenya-step-by-step"

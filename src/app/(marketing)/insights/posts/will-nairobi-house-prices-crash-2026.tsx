@@ -365,6 +365,21 @@ export default function Article() {
       </P>
 
       <P>
+        Saying that out loud costs us instructions, and we
+        would rather lose them than put a client into a
+        building we expect to be reletting at a discount
+        three years from now. The judgement gets applied
+        deal by deal in{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the sourcing work we do for buyers
+        </Link>
+        .
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"

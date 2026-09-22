@@ -328,6 +328,22 @@ export default function Article() {
       </P>
 
       <P>
+        Once clearance is through and the balance is
+        released, the money still has to reach you. We move
+        owner funds out on{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          diaspora payouts
+        </Link>{" "}
+        at the live Wise mid-market rate, with the fee
+        shown in both shillings and your own currency on
+        the statement rather than buried in the exchange
+        rate.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/selling-nairobi-apartment-from-abroad-2026-playbook"

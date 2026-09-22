@@ -311,6 +311,22 @@ export default function Article() {
       </P>
 
       <P>
+        Much of the new one and two bed stock in those
+        towers was built for nightly stays rather than for
+        families, and we run those units under{" "}
+        <Link
+          href="/nairobi/westlands/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Westlands short let management
+        </Link>{" "}
+        at 20 percent of revenue. Where a building cannot
+        hold water and power reliably we push the owner
+        towards a long lease instead, and it earns us
+        less.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/best-gated-communities-nairobi-2026"

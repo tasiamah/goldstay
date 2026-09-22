@@ -155,6 +155,17 @@ export default function Article() {
         </LI>
       </UL>
 
+      <P>
+        What those rents look like once a unit is actually let, with tenant
+        profile and the compliance side, sits on our <Link
+          href="/nairobi/westlands"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Westlands letting page
+        </Link>
+        .
+      </P>
+
       <H2 id="who">Who buys here</H2>
 
       <UL>

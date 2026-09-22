@@ -162,8 +162,18 @@ export default function Article() {
       <P>
         For Ridgeways and Garden Estate
         sourcing clients we run compound and
-        commute diligence. Read also our
-        pieces on{" "}
+        commute diligence. Compound governance is what
+        separates two identical-looking houses here, so we
+        read the last two sets of AGM minutes before
+        recommending either, and clients get that as
+        standard when we{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          source a purchase
+        </Link>{" "}
+        for them. Read also our pieces on{" "}
         <Link
           href="/insights/loresho-mountain-view-nairobi-underrated-premium"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

@@ -264,7 +264,18 @@ export default function Article() {
       <P>
         For sellers requiring speed we run a
         defined 30 day mandate with our legal
-        partners. Read also our pieces on{" "}
+        partners. Thirty days is achievable on a
+        priced-to-move flat and it is not achievable on an
+        overpriced one, so the quickest way to find out
+        which you own is to{" "}
+        <Link
+          href="/list-your-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          send us the property
+        </Link>{" "}
+        and let us give you the honest number first. Read
+        also our pieces on{" "}
         <Link
           href="/insights/why-your-kenyan-property-is-not-selling"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

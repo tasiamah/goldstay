@@ -475,6 +475,21 @@ export default function Article() {
       </P>
 
       <P>
+        The same rails carry monthly rent for owners who
+        are not selling, and what they cost is set out
+        on{" "}
+        <Link
+          href="/diaspora-payouts"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our diaspora payouts page
+        </Link>
+        : the live Wise mid-market rate, the fee itemised
+        in both currencies, and funds in your account one
+        to two working days after the statement is issued.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/capital-gains-tax-kenya-property-sellers"

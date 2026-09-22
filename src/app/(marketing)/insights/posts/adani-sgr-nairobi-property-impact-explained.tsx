@@ -314,7 +314,18 @@ export default function Article() {
         delivery rate on Kenyan mega-projects is
         modest. Recommendations to clients are anchored
         to what is actually built and what is operating,
-        not to renderings and press releases.
+        not to renderings and press releases. Buyers who
+        want that filter applied to a specific shortlist
+        come to us through{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>
+        , which is free to the buyer and includes the
+        in-person inspection a press release cannot give
+        you.
       </P>
 
       <P>

@@ -289,6 +289,19 @@ export default function Article() {
         properties have meaningfully lower arrears and
         damage rates than the Nairobi average.
       </P>
+
+      <P>
+        None of this is reserved for full management
+        clients. Owners who want only the vetting and the
+        lease take{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        on its own, and the eight checks are identical.
+      </P>
     </>
   );
 }

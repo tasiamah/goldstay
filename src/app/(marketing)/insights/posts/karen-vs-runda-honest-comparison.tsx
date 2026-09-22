@@ -333,6 +333,21 @@ export default function Article() {
       </P>
 
       <P>
+        Both suburbs sit on our{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          buy-side sourcing
+        </Link>{" "}
+        patch, and the part of that job which earns its
+        keep is the visit in person. Plot orientation,
+        borehole yield, the state of the access road and
+        the height of the neighbour&rsquo;s wall do not
+        photograph.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/best-gated-communities-nairobi-2026"

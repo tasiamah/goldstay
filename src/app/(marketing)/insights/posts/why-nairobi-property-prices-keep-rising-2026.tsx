@@ -160,8 +160,18 @@ export default function Article() {
 
       <P>
         For sourcing clients we run honest
-        segment-by-segment pricing analysis.
-        Read also our pieces on{" "}
+        segment-by-segment pricing analysis. A rising
+        headline price matters less to a landlord than the
+        rent a unit commands against what it cost, and
+        that is testable on the{" "}
+        <Link
+          href="/yield-calculator"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          yield calculator
+        </Link>{" "}
+        using your own purchase figure instead of a market
+        average. Read also our pieces on{" "}
         <Link
           href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

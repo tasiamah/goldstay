@@ -186,7 +186,17 @@ export default function Article() {
       <P>
         For premium family clients with a quieter
         brief we cover Kitisuru and Nyari alongside
-        Spring Valley and Karen. Read also our
+        Spring Valley and Karen. Stock at this end of the
+        market rarely reaches a portal, so most of what we
+        put in front of{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          sourcing clients
+        </Link>{" "}
+        comes off relationships with agents and owners
+        rather than off a listings feed. Read also our
         pieces on{" "}
         <Link
           href="/insights/best-gated-communities-nairobi-2026"

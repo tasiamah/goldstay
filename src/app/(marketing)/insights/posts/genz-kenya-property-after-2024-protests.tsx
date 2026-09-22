@@ -296,6 +296,21 @@ export default function Article() {
       </P>
 
       <P>
+        The younger professional is also a different
+        tenant to screen: shorter employment histories,
+        more self-employment, more income arriving through
+        M-Pesa than through payroll. We price{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        at one month&rsquo;s rent, charged once, with
+        nothing due if we fail to place anybody.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/nairobi-apartment-oversupply-2026-suburbs-to-avoid"

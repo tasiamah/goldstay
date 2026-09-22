@@ -310,8 +310,18 @@ export default function Article() {
       <P>
         For build clients in distress we
         coordinate the QS, legal and new-
-        contractor leg of the recovery. Read
-        also our pieces on{" "}
+        contractor leg of the recovery. Sometimes the
+        honest recommendation is to stop: sell the shell,
+        take the loss, and buy something finished. We will
+        cost that route through{" "}
+        <Link
+          href="/property-sourcing"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          property sourcing
+        </Link>{" "}
+        alongside the recovery estimate so the comparison
+        is a real one. Read also our pieces on{" "}
         <Link
           href="/insights/what-to-do-developer-goes-bankrupt-kenya"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

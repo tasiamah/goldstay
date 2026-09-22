@@ -202,8 +202,19 @@ export default function Article() {
       <P>
         For family sourcing clients we run
         the commute, school-run and total
-        cost conversation honestly. Read
-        also our pieces on{" "}
+        cost conversation honestly. Families who plan to
+        rent first, which is the sensible way to test a
+        school run before committing to it, can give us
+        the brief on{" "}
+        <Link
+          href="/find-a-home"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          find a home
+        </Link>{" "}
+        and we will match it against what is genuinely
+        available in both suburbs. Read also our pieces
+        on{" "}
         <Link
           href="/insights/karen-complete-guide-2026"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"

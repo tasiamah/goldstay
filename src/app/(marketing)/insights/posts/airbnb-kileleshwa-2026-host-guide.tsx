@@ -207,10 +207,10 @@ export default function Article() {
       <P>
         See what else is covered under{" "}
         <Link
-          href="/airbnb-management"
+          href="/nairobi/kileleshwa/airbnb-management"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          Goldstay’s Airbnb management in Nairobi
+          Goldstay’s Airbnb management in Kileleshwa
         </Link>
         .
       </P>
