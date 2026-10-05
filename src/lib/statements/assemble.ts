@@ -31,10 +31,8 @@ import {
   type ShortTermPropertyRow,
 } from "./short-term";
 import { periodRange, type Period } from "./period";
-import {
-  earningCurrencyByProperty,
-  normaliseCosts,
-} from "./fx-normalise";
+import { earningCurrencyByProperty, normaliseCosts } from "./fx-normalise";
+import { firstStatementFacts, firstStatementNote } from "./first-statement";
 import {
   convert,
   monthlyRate,
@@ -62,6 +60,11 @@ export type AssembledStatement = {
   // to. Null when there is nothing to convert, nothing owed, or no
   // rate on file — never a guess.
   payoutInPreferred: PayoutInPreferred | null;
+  // Sentences to show above the figures when this is the first
+  // statement this client has received, explaining the two things
+  // that make a first month low and self-correcting. Empty on every
+  // later statement.
+  firstStatementNote: string[];
   // An empty period still gets a statement, because a landlord
   // reading nothing cannot tell "no activity" from "the job did not
   // run". The email body changes rather than the send being skipped.
@@ -79,44 +82,68 @@ export async function assembleStatement({
 }): Promise<AssembledStatement> {
   const { start, end } = periodRange(period);
 
-  const [transactions, bookings, rateRows] = await Promise.all([
-    prisma.transaction.findMany({
-      where: {
-        occurredOn: { gte: start, lt: end },
-        property: { clientId: client.id },
-        // Archived means deleted as far as anyone outside the admin
-        // is concerned. Leaving these in was the bug that let a
-        // corrected ledger entry keep appearing on a client's PDF.
-        archivedAt: null,
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-        lease: { select: { id: true, tenantName: true } },
-      },
-      orderBy: { occurredOn: "asc" },
-    }),
-    // Any stay that overlaps the period at all. buildShortTermSummary
-    // clips nights to the window and drops cancellations; gross and
-    // fees stay attached to the stay's own period so the figure
-    // matches the bank.
-    prisma.booking.findMany({
-      where: {
-        property: { clientId: client.id, propertyType: "SHORT_TERM" },
-        checkIn: { lt: end },
-        checkOut: { gt: start },
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-      },
-    }),
-    // Only the period's own rates. A month converts at a rate
-    // published during it or not at all — borrowing a neighbouring
-    // month's would value September using October's shilling.
-    prisma.fxRate.findMany({
-      where: { asOf: { gte: start, lt: end } },
-      select: { base: true, quote: true, asOf: true, rate: true },
-    }),
-  ]);
+  const [transactions, bookings, rateRows, earlierSend, clientRow] =
+    await Promise.all([
+      prisma.transaction.findMany({
+        where: {
+          occurredOn: { gte: start, lt: end },
+          property: { clientId: client.id },
+          // Archived means deleted as far as anyone outside the admin
+          // is concerned. Leaving these in was the bug that let a
+          // corrected ledger entry keep appearing on a client's PDF.
+          archivedAt: null,
+        },
+        include: {
+          property: { select: { id: true, name: true } },
+          lease: { select: { id: true, tenantName: true } },
+        },
+        orderBy: { occurredOn: "asc" },
+      }),
+      // Any stay that overlaps the period at all. buildShortTermSummary
+      // clips nights to the window and drops cancellations; gross and
+      // fees stay attached to the stay's own period so the figure
+      // matches the bank.
+      prisma.booking.findMany({
+        where: {
+          property: { clientId: client.id, propertyType: "SHORT_TERM" },
+          checkIn: { lt: end },
+          checkOut: { gt: start },
+        },
+        include: {
+          property: { select: { id: true, name: true } },
+        },
+      }),
+      // Only the period's own rates. A month converts at a rate
+      // published during it or not at all — borrowing a neighbouring
+      // month's would value September using October's shilling.
+      prisma.fxRate.findMany({
+        where: { asOf: { gte: start, lt: end } },
+        select: { base: true, quote: true, asOf: true, rate: true },
+      }),
+      // Any statement for an earlier period. Keyed on "earlier" rather
+      // than "any" so re-rendering September after it has been sent
+      // still knows September was the first one — otherwise the note
+      // would vanish from the copy in the portal the moment the email
+      // went out.
+      prisma.statementSend.findFirst({
+        where: {
+          clientId: client.id,
+          OR: [
+            { periodYear: { lt: period.year } },
+            { periodYear: period.year, periodMonth: { lt: period.month } },
+          ],
+        },
+        select: { id: true },
+      }),
+      // Read here rather than taken from the caller. Four callers build
+      // this statement and the note has to appear on all of them; a
+      // field one of them forgot to select is how the preview and the
+      // PDF drifted apart the last time.
+      prisma.client.findUnique({
+        where: { id: client.id },
+        select: { createdAt: true },
+      }),
+    ]);
 
   const rates: FxRate[] = rateRows.map((r) => ({
     base: r.base,
@@ -188,8 +215,7 @@ export async function assembleStatement({
     converted
       .filter(
         (t) =>
-          t.type === "GOLDSTAY_COMMISSION" ||
-          OWNER_COST_TYPES.includes(t.type),
+          t.type === "GOLDSTAY_COMMISSION" || OWNER_COST_TYPES.includes(t.type),
       )
       .map((t) => ({
         propertyId: t.propertyId,
@@ -201,6 +227,8 @@ export async function assembleStatement({
     { start, end },
   );
 
+  const isEmpty = transactions.length === 0 && bookings.length === 0;
+
   return {
     statement,
     shortTerm,
@@ -210,7 +238,20 @@ export async function assembleStatement({
       rates,
       period: { start, end },
     }),
-    isEmpty: transactions.length === 0 && bookings.length === 0,
+    // Suppressed on an empty month: there is no low figure to explain,
+    // and a note about first-month earnings above a statement showing
+    // none reads as an apology for nothing having happened.
+    firstStatementNote:
+      earlierSend || isEmpty
+        ? []
+        : firstStatementNote(
+            firstStatementFacts({
+              joinedOn: clientRow?.createdAt ?? null,
+              period: { start, end },
+            }),
+            period,
+          ),
+    isEmpty,
   };
 }
 

@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.80.0] - 2026-10-05
+
+### Added
+- A client's first statement now carries a short note under the payout
+  explaining the two things that make a first month low and that both
+  correct themselves: it usually covers a part month, and a listing with
+  no reviews has to undercut established units nearby to win its first
+  guests. A first statement is the worst one a client will ever receive
+  and it arrives before they have any basis for judging us, so saying this
+  unprompted is cheaper than saying it to someone who has already decided
+  to leave.
+- The note states the actual dates rather than claiming "a partial month" —
+  "You joined Goldstay on 5 September, so this statement covers 26 of
+  September 2026's 30 days" — and is left out entirely for a client who
+  joined before the month began. An excuse a client can disprove from their
+  own records costs more than the reassurance is worth.
+- It appears in the body of the statement email as well as in the attached
+  PDF, because the figure a client reacts to is the one they read on their
+  phone rather than the one in an attachment they open later.
+- Nothing is promised. The note says the nightly rate and occupancy
+  "usually climb", which is a description of how new listings behave, and a
+  test fails the build if it ever starts saying "will".
+
 ## [1.79.0] - 2026-10-05
 
 ### Changed
@@ -3327,7 +3350,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.79.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.80.0...HEAD
+[1.80.0]: https://github.com/tasiamah/goldstay/compare/v1.79.0...v1.80.0
 [1.79.0]: https://github.com/tasiamah/goldstay/compare/v1.78.0...v1.79.0
 [1.78.0]: https://github.com/tasiamah/goldstay/compare/v1.77.0...v1.78.0
 [1.77.0]: https://github.com/tasiamah/goldstay/compare/v1.76.0...v1.77.0

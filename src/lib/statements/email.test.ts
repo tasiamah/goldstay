@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { copiedLine, renderEmailBody } from "./email";
+import { copiedLine, renderEmailBody, renderEmailHtml } from "./email";
+import { firstStatementFacts, firstStatementNote } from "./first-statement";
 
 // The statement is the only client email that reaches anybody other
 // than the account holder, so the line disclosing that is worth
@@ -92,5 +93,64 @@ describe("renderEmailBody", () => {
   it("contains no sign-in link", () => {
     const text = body([{ email: "w@example.com", name: "Wanjiru" }]);
     expect(text).not.toMatch(/magiclink|access_token|hashed_token|supabase/i);
+  });
+});
+
+// The note explaining a low first month has to reach the body of the
+// email, not only the attached PDF: the figure a client reacts to is
+// the one they read on their phone, and the attachment is opened
+// later if at all.
+describe("first-statement note in the email", () => {
+  const note = firstStatementNote(
+    firstStatementFacts({
+      joinedOn: new Date(Date.UTC(2026, 7, 5)),
+      period: {
+        start: new Date(Date.UTC(2026, 7, 1)),
+        end: new Date(Date.UTC(2026, 8, 1)),
+      },
+    }),
+    PERIOD,
+  );
+
+  function withNote(render: typeof renderEmailBody | typeof renderEmailHtml) {
+    return render({
+      client: CLIENT,
+      period: PERIOD,
+      siteUrl: "https://goldstay.co.ke",
+      isEmpty: false,
+      summary: "12 transactions",
+      observers: [],
+      firstStatementNote: note,
+    });
+  }
+
+  it("carries every sentence into the text body", () => {
+    const text = withNote(renderEmailBody);
+    for (const line of note) expect(text).toContain(line);
+    expect(text).toContain("About your first statement");
+  });
+
+  it("carries every sentence into the HTML body", () => {
+    const html = withNote(renderEmailHtml);
+    for (const line of note) {
+      // The apostrophe in "August 2026's" is escaped in HTML, which
+      // is correct and means comparing against the raw sentence
+      // would pass for the wrong reason.
+      expect(html).toContain(line.replace(/'/g, "&#39;"));
+    }
+  });
+
+  it("leaves a normal month's email exactly as it was", () => {
+    expect(body([])).not.toContain("About your first statement");
+    expect(
+      renderEmailHtml({
+        client: CLIENT,
+        period: PERIOD,
+        siteUrl: "https://goldstay.co.ke",
+        isEmpty: false,
+        summary: "12 transactions",
+        observers: [],
+      }),
+    ).not.toContain("About your first statement");
   });
 });

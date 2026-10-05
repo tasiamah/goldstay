@@ -14,11 +14,7 @@ import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { StatementDocument } from "@/lib/statements/StatementDocument";
 import { assembleStatement } from "@/lib/statements/assemble";
-import {
-  formatPeriod,
-  parsePeriod,
-  periodSlug,
-} from "@/lib/statements/period";
+import { formatPeriod, parsePeriod, periodSlug } from "@/lib/statements/period";
 
 export const dynamic = "force-dynamic";
 
@@ -33,11 +29,12 @@ export async function GET(
 
   const { client } = await requireClient();
 
-  const { statement, shortTerm, payoutInPreferred } = await assembleStatement({
-    prisma,
-    client,
-    period,
-  });
+  const { statement, shortTerm, payoutInPreferred, firstStatementNote } =
+    await assembleStatement({
+      prisma,
+      client,
+      period,
+    });
 
   const buffer = await renderToBuffer(
     StatementDocument({
@@ -51,6 +48,7 @@ export async function GET(
       statement,
       shortTerm,
       payoutInPreferred,
+      firstStatementNote,
       generatedAt: new Date(),
     }),
   );

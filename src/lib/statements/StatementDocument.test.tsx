@@ -4,6 +4,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { StatementDocument } from "./StatementDocument";
 import { buildStatement, type StatementTransaction } from "./aggregate";
 import { buildShortTermSummary } from "./short-term";
+import { firstStatementFacts, firstStatementNote } from "./first-statement";
 
 // The statement PDF had no test of any kind, because tsconfig sets
 // "jsx": "preserve" for Next and Vite could not then parse a .tsx at
@@ -72,6 +73,7 @@ async function render(
   transactions: StatementTransaction[],
   deductions: Parameters<typeof buildShortTermSummary>[1] = [],
   stays: Parameters<typeof buildShortTermSummary>[0] = [],
+  extra: { firstStatementNote?: string[] } = {},
 ) {
   return renderToBuffer(
     StatementDocument({
@@ -82,6 +84,7 @@ async function render(
       }),
       shortTerm: buildShortTermSummary(stays, deductions, period),
       generatedAt: new Date(Date.UTC(2026, 9, 5)),
+      ...extra,
     }),
   );
 }
@@ -93,6 +96,26 @@ const isPdf = (buf: Buffer) =>
   buf.length > 1000 && buf.subarray(0, 5).toString() === "%PDF-";
 
 describe("StatementDocument", () => {
+  it("renders the first-statement note without falling over", async () => {
+    // Real sentences, including the long one, because the note is a
+    // new block of flowing text in a template whose other text is all
+    // short labels and figures.
+    const note = firstStatementNote(
+      firstStatementFacts({
+        joinedOn: new Date(Date.UTC(2026, 8, 5)),
+        period: { start: period.start, end: period.end },
+      }),
+      september,
+    );
+    expect(note.length).toBeGreaterThan(1);
+    const buf = await render([tx()], [], [], { firstStatementNote: note });
+    expect(isPdf(buf)).toBe(true);
+    // The note is several lines of prose; a template that silently
+    // dropped it would come out visibly smaller.
+    const without = await render([tx()]);
+    expect(buf.length).toBeGreaterThan(without.length);
+  });
+
   it("renders a month with nothing in it", async () => {
     // The emptiest possible input. Every optional branch in the
     // template is skipped, which is exactly when a missing null guard

@@ -57,11 +57,12 @@ export async function GET(
     return new NextResponse("Client not found", { status: 404 });
   }
 
-  const { statement, shortTerm, payoutInPreferred } = await assembleStatement({
-    prisma,
-    client,
-    period,
-  });
+  const { statement, shortTerm, payoutInPreferred, firstStatementNote } =
+    await assembleStatement({
+      prisma,
+      client,
+      period,
+    });
 
   const buffer = await renderToBuffer(
     StatementDocument({
@@ -75,6 +76,7 @@ export async function GET(
       statement,
       shortTerm,
       payoutInPreferred,
+      firstStatementNote,
       generatedAt: new Date(),
     }),
   );

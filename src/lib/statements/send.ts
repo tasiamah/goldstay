@@ -63,7 +63,10 @@ export async function sendStatementForClient(
       },
     },
   });
-  if (existing && (existing.status === "SENT" || existing.status === "DELIVERED")) {
+  if (
+    existing &&
+    (existing.status === "SENT" || existing.status === "DELIVERED")
+  ) {
     return { ok: true, status: "skipped", sendId: existing.id };
   }
 
@@ -71,8 +74,13 @@ export async function sendStatementForClient(
   // statements" — we still send the cover for an empty month so
   // landlords see a heartbeat, but with a different note in the
   // email body. This also avoids the "did the cron run?" panic.
-  const { statement, shortTerm, payoutInPreferred, isEmpty } =
-    await assembleStatement({
+  const {
+    statement,
+    shortTerm,
+    payoutInPreferred,
+    firstStatementNote,
+    isEmpty,
+  } = await assembleStatement({
     prisma,
     client,
     period,
@@ -128,6 +136,7 @@ export async function sendStatementForClient(
         statement,
         shortTerm,
         payoutInPreferred,
+        firstStatementNote,
         generatedAt: new Date(),
       }),
     );
@@ -152,6 +161,7 @@ export async function sendStatementForClient(
         isEmpty,
         summary,
         observers: recipients.observers,
+        firstStatementNote,
       }),
       status: "QUEUED",
       // Sent by the system, not a person — actor is null so no
@@ -204,6 +214,7 @@ export async function sendStatementForClient(
         isEmpty,
         summary,
         observers: recipients.observers,
+        firstStatementNote,
       }),
       html: renderEmailHtml({
         client,
@@ -212,6 +223,7 @@ export async function sendStatementForClient(
         isEmpty,
         summary,
         observers: recipients.observers,
+        firstStatementNote,
       }),
       attachments: [
         {
@@ -266,10 +278,7 @@ function summariseStatementForLog(
   if (isEmpty) return "Empty period (no transactions or bookings)";
   const totals = statement.totalsByCurrency
     .slice(0, 2)
-    .map(
-      (t) =>
-        `${t.currency} ${formatNumber(t.net)} net`,
-    )
+    .map((t) => `${t.currency} ${formatNumber(t.net)} net`)
     .join(" · ");
   return `${statement.transactionCount} transactions${totals ? ` · ${totals}` : ""}`;
 }

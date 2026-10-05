@@ -16,17 +16,27 @@ function makePrisma(
     transactions?: unknown[];
     bookings?: unknown[];
     fxRates?: unknown[];
+    earlierSend?: unknown;
+    joinedOn?: Date | null;
   } = {},
 ) {
   const txFindMany = vi.fn().mockResolvedValue(rows.transactions ?? []);
   const bookingFindMany = vi.fn().mockResolvedValue(rows.bookings ?? []);
   const fxFindMany = vi.fn().mockResolvedValue(rows.fxRates ?? []);
+  const sendFindFirst = vi.fn().mockResolvedValue(rows.earlierSend ?? null);
+  const clientFindUnique = vi
+    .fn()
+    .mockResolvedValue(
+      "joinedOn" in rows ? { createdAt: rows.joinedOn } : null,
+    );
   const prisma = {
     transaction: { findMany: txFindMany },
     booking: { findMany: bookingFindMany },
     fxRate: { findMany: fxFindMany },
+    statementSend: { findFirst: sendFindFirst },
+    client: { findUnique: clientFindUnique },
   } as unknown as PrismaClient;
-  return { prisma, txFindMany, bookingFindMany, fxFindMany };
+  return { prisma, txFindMany, bookingFindMany, fxFindMany, sendFindFirst };
 }
 
 function rate(day: number, value: number) {
@@ -194,6 +204,85 @@ describe("assembleStatement", () => {
       { currency: "KES", inflow: 40_000, outflow: 0, net: 40_000 },
     ]);
     expect(statement.propertyGroups[0].propertyName).toBe("Polaris Residency");
+  });
+});
+
+// A first statement is the worst one a client ever gets and arrives
+// before they have any basis for judging us. These pin when the
+// explaining note appears, because the failure modes run both ways:
+// missing on the one statement that needs it, or still apologising
+// for a quiet first month a year later.
+describe("assembleStatement first-statement note", () => {
+  it("explains the first statement a client receives", async () => {
+    const { prisma } = makePrisma({
+      transactions: [tx()],
+      joinedOn: new Date("2026-09-05T00:00:00.000Z"),
+    });
+    const { firstStatementNote: note } = await assembleStatement({
+      prisma,
+      client: { id: "client-1" },
+      period: PERIOD,
+    });
+
+    expect(note.join(" ")).toContain(
+      "You joined Goldstay on 5 September, so this statement covers 26 of September 2026's 30 days",
+    );
+    expect(note.join(" ")).toContain("no reviews");
+  });
+
+  it("says nothing once an earlier statement has been sent", async () => {
+    const { prisma } = makePrisma({
+      transactions: [tx()],
+      joinedOn: new Date("2026-09-05T00:00:00.000Z"),
+      earlierSend: { id: "send-august" },
+    });
+    const { firstStatementNote: note } = await assembleStatement({
+      prisma,
+      client: { id: "client-1" },
+      period: PERIOD,
+    });
+    expect(note).toEqual([]);
+  });
+
+  it("only counts statements for earlier periods, not this one", async () => {
+    // September stays the first statement after September has been
+    // sent, or the note would vanish from the portal copy the moment
+    // the email went out.
+    const { prisma, sendFindFirst } = makePrisma({
+      transactions: [tx()],
+      joinedOn: new Date("2026-09-05T00:00:00.000Z"),
+    });
+    await assembleStatement({
+      prisma,
+      client: { id: "client-1" },
+      period: PERIOD,
+    });
+    expect(sendFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [
+            { periodYear: { lt: 2026 } },
+            { periodYear: 2026, periodMonth: { lt: 9 } },
+          ],
+        }),
+      }),
+    );
+  });
+
+  it("says nothing on an empty month", async () => {
+    // There is no low figure to explain, and the note above a
+    // statement showing nothing reads as an apology for nothing
+    // having happened.
+    const { prisma } = makePrisma({
+      joinedOn: new Date("2026-09-05T00:00:00.000Z"),
+    });
+    const { firstStatementNote: note, isEmpty } = await assembleStatement({
+      prisma,
+      client: { id: "client-1" },
+      period: PERIOD,
+    });
+    expect(isEmpty).toBe(true);
+    expect(note).toEqual([]);
   });
 });
 

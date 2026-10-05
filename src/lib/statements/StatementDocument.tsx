@@ -7,15 +7,10 @@
 // Helvetica (which is what react-pdf's default ships and matches the
 // neutral GeistSans aesthetic at the small sizes used in a statement).
 
-import {
-  Document,
-  Page,
-  StyleSheet,
-  Text,
-  View,
-} from "@react-pdf/renderer";
+import { Document, Page, StyleSheet, Text, View } from "@react-pdf/renderer";
 import { splitByPayoutDirection, type Statement } from "./aggregate";
 import type { PayoutInPreferred } from "./assemble";
+import { FIRST_STATEMENT_TITLE } from "./first-statement";
 import { formatPeriod, type Period } from "./period";
 import type { ShortTermPropertyRow } from "./short-term";
 import {
@@ -203,6 +198,29 @@ const styles = StyleSheet.create({
     color: colors.body,
     marginTop: 3,
   },
+  // Sits under the payout rather than above it. Leading with the
+  // explanation would mean an owner reading why their month was
+  // quiet before learning what they earned, which reads as an
+  // apology being made before the news.
+  noteBox: {
+    borderLeftWidth: 2,
+    borderLeftColor: colors.muted,
+    paddingLeft: 10,
+    marginTop: 14,
+  },
+  noteTitle: {
+    fontSize: 9,
+    color: colors.ink,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  noteLine: {
+    fontSize: 9,
+    color: colors.body,
+    lineHeight: 1.5,
+    marginBottom: 3,
+  },
 
   // Deductions are grouped by who actually took the money. Listed flat
   // in one column, Airbnb's 24% and our 20% read as a single ~50% bite
@@ -270,6 +288,7 @@ export function StatementDocument({
   statement,
   shortTerm,
   payoutInPreferred,
+  firstStatementNote,
   generatedAt,
 }: {
   period: Period;
@@ -282,6 +301,7 @@ export function StatementDocument({
   statement: Statement;
   shortTerm?: ShortTermPropertyRow[];
   payoutInPreferred?: PayoutInPreferred | null;
+  firstStatementNote?: string[];
   generatedAt: Date;
 }) {
   const clientPrimary = formatClientDisplayName(client);
@@ -352,8 +372,8 @@ export function StatementDocument({
                 therefore has to be visible rather than implied. */}
             {payoutInPreferred ? (
               <Text style={styles.heroConverted}>
-                {payoutInPreferred.currency} {fmt(payoutInPreferred.amount)}{" "}
-                at {payoutInPreferred.rates.map((r) => r.label).join(", ")}
+                {payoutInPreferred.currency} {fmt(payoutInPreferred.amount)} at{" "}
+                {payoutInPreferred.rates.map((r) => r.label).join(", ")}
               </Text>
             ) : null}
             {/* A currency the property earned nothing in nets
@@ -367,6 +387,21 @@ export function StatementDocument({
                 {payoutCurrencies.length > 0
                   ? " — costs we paid in " + row.currency
                   : ""}
+              </Text>
+            ))}
+          </View>
+        ) : null}
+
+        {/* Why a first month is low, said once and unprompted. Both
+            reasons self-correct, and a client who works that out for
+            themselves three months from now has spent three months
+            assuming the first figure was the normal one. */}
+        {firstStatementNote && firstStatementNote.length > 0 ? (
+          <View style={styles.noteBox}>
+            <Text style={styles.noteTitle}>{FIRST_STATEMENT_TITLE}</Text>
+            {firstStatementNote.map((line, i) => (
+              <Text key={i} style={styles.noteLine}>
+                {line}
               </Text>
             ))}
           </View>
@@ -513,10 +548,7 @@ export function StatementDocument({
               return (
                 <View
                   key={row.currency}
-                  style={[
-                    styles.totalsRow,
-                    isLast ? styles.totalsRowLast : {},
-                  ]}
+                  style={[styles.totalsRow, isLast ? styles.totalsRowLast : {}]}
                 >
                   <Text style={styles.cellCurrency}>{row.currency}</Text>
                   <Text style={[styles.cellNum, styles.inflow]}>
@@ -552,9 +584,7 @@ export function StatementDocument({
                   <Text key={row.currency} style={styles.miniTotal}>
                     {row.currency} net{" "}
                     <Text
-                      style={
-                        row.net >= 0 ? styles.net : styles.netNegative
-                      }
+                      style={row.net >= 0 ? styles.net : styles.netNegative}
                     >
                       {fmt(row.net)}
                     </Text>
@@ -571,9 +601,7 @@ export function StatementDocument({
                 </View>
                 {g.transactions.map((t) => {
                   const amt =
-                    typeof t.amount === "string"
-                      ? Number(t.amount)
-                      : t.amount;
+                    typeof t.amount === "string" ? Number(t.amount) : t.amount;
                   return (
                     <View key={t.id} style={styles.txRow}>
                       <Text style={styles.txDate}>
@@ -637,13 +665,7 @@ function ShortTermSubTotal({
   );
 }
 
-function ShortTermPayout({
-  label,
-  amount,
-}: {
-  label: string;
-  amount: number;
-}) {
+function ShortTermPayout({ label, amount }: { label: string; amount: number }) {
   return (
     <View style={styles.payoutRow}>
       <Text
@@ -681,12 +703,7 @@ function ShortTermLine({
   const isTotal = sign === "=";
   return (
     <View style={styles.txRow}>
-      <Text
-        style={[
-          styles.txDesc,
-          bold ? { color: colors.ink } : {},
-        ]}
-      >
+      <Text style={[styles.txDesc, bold ? { color: colors.ink } : {}]}>
         {label}
       </Text>
       <Text

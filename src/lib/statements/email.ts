@@ -10,6 +10,7 @@
 // Pure. No database, no Resend key, no environment.
 
 import type { Client } from "@prisma/client";
+import { FIRST_STATEMENT_TITLE } from "./first-statement";
 import { formatPeriod, type Period } from "./period";
 
 type Observer = { email: string; name: string | null };
@@ -45,16 +46,23 @@ export function renderEmailBody(opts: {
   isEmpty: boolean;
   summary: string;
   observers?: Observer[];
+  // Why a first month is low. In the email as well as the PDF,
+  // because the figure a client reacts to is the one in the body of
+  // the mail they read on their phone, not the one in the attachment
+  // they open later.
+  firstStatementNote?: string[];
 }): string {
   const greeting = `Hi ${opts.client.fullName.split(/\s+/)[0] || "there"},`;
   const lead = opts.isEmpty
     ? `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. There was no rent or booking activity to report this month — the cover page confirms a clean ledger.`
     : `Your Goldstay statement for ${formatPeriod(opts.period)} is attached. ${opts.summary}.`;
   const copied = copiedLine(opts.observers ?? [], opts.client.fullName);
+  const note = opts.firstStatementNote ?? [];
   return [
     greeting,
     "",
     lead,
+    ...(note.length > 0 ? ["", `${FIRST_STATEMENT_TITLE}:`, ...note] : []),
     "",
     `You can also browse the same statement, line-by-line, in your portal:`,
     `${opts.siteUrl}/client/statements/${opts.period.year}/${opts.period.month}`,
@@ -73,6 +81,7 @@ export function renderEmailHtml(opts: {
   isEmpty: boolean;
   summary: string;
   observers?: Observer[];
+  firstStatementNote?: string[];
 }): string {
   const firstName = opts.client.fullName.split(/\s+/)[0] || "there";
   const lead = opts.isEmpty
@@ -85,6 +94,23 @@ export function renderEmailHtml(opts: {
   const copiedBlock = copied
     ? `<p style="color:#a8a29e;font-size:12px;line-height:1.55;margin:16px 0 0 0">${escapeHtml(copied)}</p>`
     : "";
+  const note = opts.firstStatementNote ?? [];
+  const noteBlock =
+    note.length > 0
+      ? `<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0 0 0"><tr><td style="border-left:2px solid #d6d3d1;padding:2px 0 2px 14px">
+              <p style="color:#1c1917;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;margin:0 0 6px 0">${escapeHtml(
+                FIRST_STATEMENT_TITLE,
+              )}</p>
+              ${note
+                .map(
+                  (line) =>
+                    `<p style="color:#44403c;font-size:13px;line-height:1.55;margin:0 0 6px 0">${escapeHtml(
+                      line,
+                    )}</p>`,
+                )
+                .join("\n              ")}
+            </td></tr></table>`
+      : "";
   return `<!doctype html>
 <html lang="en">
   <body style="margin:0;background:#fafaf9;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#1c1917">
@@ -95,6 +121,7 @@ export function renderEmailHtml(opts: {
             <p style="font-size:18px;font-family:Georgia,serif;color:#1c1917;margin:0 0 4px 0">Goldstay<span style="color:#b91c1c">.</span></p>
             <h1 style="font-size:22px;font-family:Georgia,serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Hi ${escapeHtml(firstName)},</h1>
             <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${lead}</p>
+            ${noteBlock}
             <p style="margin:32px 0;text-align:center"><a href="${escapeAttr(url)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:6px;font-weight:600;font-size:14px;display:inline-block">Open statement in portal →</a></p>
             <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Net payouts are remitted by the 10th of every month per your management agreement. If anything in this statement looks off, reply and we'll investigate same-day.</p>
             ${copiedBlock}
