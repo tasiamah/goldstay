@@ -21,6 +21,25 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.75.0] - 2026-10-05
+
+### Added
+- "Utilities" is now its own cost type, covering prepaid electricity tokens,
+  water and internet. Which one it was goes in the description.
+
+### Changed
+- An owner's statement now names each cost on its own line instead of
+  totalling them as "Costs on the property". A lump sum told the owner money
+  had left without saying what for, which is the one question a deduction
+  always prompts. Yar's September statement now reads "Electricity top-up —
+  KES 2,000 at 129.748 (XE)" against the 15.41 rather than an unexplained
+  figure. Costs recorded without a description fall back to naming the type.
+
+### Fixed
+- The September electricity top-up on Polaris Residency was dated 30
+  September; it was paid on the 16th. Corrected, and recorded as Utilities
+  rather than a generic Expense.
+
 ## [1.74.0] - 2026-10-05
 
 ### Added
@@ -3211,7 +3230,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.74.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.75.0...HEAD
+[1.75.0]: https://github.com/tasiamah/goldstay/compare/v1.74.0...v1.75.0
 [1.74.0]: https://github.com/tasiamah/goldstay/compare/v1.73.3...v1.74.0
 [1.73.3]: https://github.com/tasiamah/goldstay/compare/v1.73.2...v1.73.3
 [1.73.2]: https://github.com/tasiamah/goldstay/compare/v1.73.1...v1.73.2

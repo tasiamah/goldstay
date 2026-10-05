@@ -35,6 +35,7 @@ export type StatementBooking = {
 export const OWNER_COST_TYPES: readonly TransactionType[] = [
   "EXPENSE",
   "REPAIR",
+  "UTILITIES",
 ];
 
 export type StatementBookingTransaction = {
@@ -42,6 +43,16 @@ export type StatementBookingTransaction = {
   type: TransactionType;
   amount: number;
   currency: string;
+  description?: string | null;
+};
+
+// One line per cost, carrying whatever the operator typed when they
+// recorded it. A single "Costs on the property — 15.41" tells an owner
+// money left without telling them what for, which is the one question
+// a deduction always prompts.
+export type ShortTermExpenseItem = {
+  label: string;
+  amount: number;
 };
 
 export type ShortTermPropertyRow = {
@@ -55,8 +66,19 @@ export type ShortTermPropertyRow = {
   cleaning: number;
   goldstayCommission: number;
   expenses: number;
+  expenseItems: ShortTermExpenseItem[];
   payout: number;
 };
+
+// Falls back to the cost type when nobody wrote a description, so the
+// line still says something ("Repair") rather than sitting blank next
+// to an amount.
+function costLabel(tx: StatementBookingTransaction): string {
+  const written = tx.description?.trim();
+  if (written) return written;
+  const words = tx.type.toLowerCase().split("_").join(" ");
+  return words.charAt(0).toUpperCase() + words.slice(1);
+}
 
 export function buildShortTermSummary(
   bookings: (StatementBooking & { propertyName: string })[],
@@ -91,6 +113,7 @@ export function buildShortTermSummary(
       cleaning: 0,
       goldstayCommission: 0,
       expenses: 0,
+      expenseItems: [],
       payout: 0,
     };
 
@@ -145,6 +168,7 @@ export function buildShortTermSummary(
       row.goldstayCommission += tx.amount;
     } else if (OWNER_COST_TYPES.includes(tx.type)) {
       row.expenses += tx.amount;
+      row.expenseItems.push({ label: costLabel(tx), amount: tx.amount });
     } else {
       continue;
     }

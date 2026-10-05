@@ -81,6 +81,7 @@ enum TransactionType {
   REFUND
   EXPENSE
   REPAIR // fixing something that broke — the most common cost on a unit
+  UTILITIES // electricity tokens, water, internet
   MANAGEMENT_FEE
   PAYOUT
   // Short-term rental flavours.

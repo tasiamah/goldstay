@@ -132,6 +132,7 @@ export async function assembleStatement({
         type: t.type,
         amount: Number(t.amount),
         currency: t.currency,
+        description: t.description,
       })),
     { start, end },
   );

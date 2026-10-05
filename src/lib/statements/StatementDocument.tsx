@@ -300,13 +300,17 @@ export function StatementDocument({
                       sign="-"
                     />
                   ) : null}
-                  {row.expenses > 0 ? (
+                  {/* One line per cost, named. A lump sum labelled
+                      "Costs on the property" tells the owner money
+                      left without saying what for. */}
+                  {row.expenseItems.map((item, i) => (
                     <ShortTermLine
-                      label="Costs on the property"
-                      amount={row.expenses}
+                      key={`${item.label}-${i}`}
+                      label={item.label}
+                      amount={item.amount}
                       sign="-"
                     />
-                  ) : null}
+                  ))}
                   <ShortTermLine
                     label="Net payout"
                     amount={row.payout}

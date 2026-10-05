@@ -17,7 +17,7 @@
 //   * CLEANING_FEE   (OUTFLOW) — when we absorb a cleaning fee
 //     instead of passing it on (ad-hoc, currently rare).
 //
-// Everything else (RENT, DEPOSIT, EXPENSE, REPAIR, PAYOUT, REFUND,
+// Everything else (RENT, DEPOSIT, EXPENSE, REPAIR, UTILITIES, PAYOUT, REFUND,
 // GUEST_REFUND) is pass-through to the client ledger and explicitly
 // excluded so the P&L doesn't double-count client-side flows.
 //

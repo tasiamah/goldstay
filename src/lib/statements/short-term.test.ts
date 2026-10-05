@@ -247,6 +247,69 @@ describe("buildShortTermSummary", () => {
     }
   });
 
+  // "Costs on the property — 15.41" tells an owner money left without
+  // telling them what for, which is the one question a deduction
+  // always prompts.
+  it("names each cost with what the operator wrote", () => {
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "UTILITIES",
+          amount: 2_000,
+          currency: "KES",
+          description: "Electricity top-up",
+        },
+        {
+          propertyId: "polaris",
+          type: "REPAIR",
+          amount: 4_500,
+          currency: "KES",
+          description: "Shower mixer replaced",
+        },
+      ],
+      september,
+    );
+
+    expect(row.expenseItems).toEqual([
+      { label: "Electricity top-up", amount: 2_000 },
+      { label: "Shower mixer replaced", amount: 4_500 },
+    ]);
+    // The itemised lines have to add up to the figure subtracted from
+    // the payout, or the statement argues with itself again.
+    expect(
+      row.expenseItems.reduce((sum, i) => sum + i.amount, 0),
+    ).toBe(row.expenses);
+  });
+
+  it("falls back to the cost type when no description was written", () => {
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "REPAIR",
+          amount: 4_500,
+          currency: "KES",
+          description: null,
+        },
+        {
+          propertyId: "polaris",
+          type: "UTILITIES",
+          amount: 2_000,
+          currency: "KES",
+          description: "   ",
+        },
+      ],
+      september,
+    );
+    expect(row.expenseItems.map((i) => i.label)).toEqual([
+      "Repair",
+      "Utilities",
+    ]);
+  });
+
   it("ignores transaction types that are not its own deductions", () => {
     // RENT already reached this row through the booking. Subtracting
     // it here too would double count.

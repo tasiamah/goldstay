@@ -39,6 +39,11 @@ const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[]
     { value: "DEPOSIT", label: "Deposit", direction: "INFLOW" },
     { value: "REFUND", label: "Refund (deposit returned)", direction: "OUTFLOW" },
     { value: "REPAIR", label: "Repair", direction: "OUTFLOW" },
+    {
+      value: "UTILITIES",
+      label: "Utilities (electricity, water, internet)",
+      direction: "OUTFLOW",
+    },
     { value: "EXPENSE", label: "Expense (other running cost)", direction: "OUTFLOW" },
     {
       value: "MANAGEMENT_FEE",
