@@ -129,4 +129,98 @@ describe("buildShortTermSummary", () => {
     expect(row.goldstayCommission).toBe(12_000);
     expect(row.payout).toBe(57_170 - 12_000);
   });
+
+  // The September statement led with "Net payout = 365.57" while the
+  // Summary immediately below it said 350.16. The gap was exactly the
+  // month's electricity bill: this row subtracted commission but not
+  // expenses, so the bold headline figure was the one number on the
+  // page the owner was not actually going to be paid.
+  it("deducts property expenses from the payout it reports", () => {
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "EXPENSE",
+          amount: 2_000,
+          currency: "KES",
+        },
+      ],
+      september,
+    );
+    expect(row.expenses).toBe(2_000);
+    expect(row.payout).toBe(57_170 - 2_000);
+  });
+
+  it("reports a payout its own line items add up to", () => {
+    // The real failure was not a wrong total, it was two totals. This
+    // asserts the row is internally consistent, so any future
+    // deduction that forgets to touch `payout` fails here.
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "GOLDSTAY_COMMISSION",
+          amount: 12_000,
+          currency: "KES",
+        },
+        {
+          propertyId: "polaris",
+          type: "EXPENSE",
+          amount: 2_000,
+          currency: "KES",
+        },
+      ],
+      september,
+    );
+
+    expect(row.payout).toBe(
+      row.gross -
+        row.otaFees -
+        row.cleaning -
+        row.goldstayCommission -
+        row.expenses,
+    );
+    expect(row.payout).toBe(43_170);
+  });
+
+  // We convert no currency anywhere on the platform, so a shilling
+  // receipt against a dollar-earning unit cannot be folded into the
+  // dollar payout. It belongs to the Summary's KES block instead.
+  it("leaves a cost in a currency the unit took no bookings in alone", () => {
+    const [row] = buildShortTermSummary(
+      [stay({ currency: "USD", grossAmount: 400, netPayout: 380 })],
+      [
+        {
+          propertyId: "polaris",
+          type: "EXPENSE",
+          amount: 2_000,
+          currency: "KES",
+        },
+      ],
+      september,
+    );
+    expect(row.currency).toBe("USD");
+    expect(row.expenses).toBe(0);
+    expect(row.payout).toBe(380);
+  });
+
+  it("ignores transaction types that are not its own deductions", () => {
+    // RENT already reached this row through the booking. Subtracting
+    // it here too would double count.
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "RENT",
+          amount: 60_000,
+          currency: "KES",
+        },
+      ],
+      september,
+    );
+    expect(row.payout).toBe(57_170);
+  });
 });

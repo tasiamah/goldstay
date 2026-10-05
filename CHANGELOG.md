@@ -21,6 +21,24 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.73.3] - 2026-10-05
+
+### Fixed
+- A monthly statement showed two different final figures. The Short-term
+  rentals block led with a bold "Net payout" that subtracted Airbnb's fees,
+  cleaning and our commission but not the month's costs on the property,
+  while the Summary directly below it subtracted everything. On Yar's
+  September statement the headline read 365.57 and the Summary read 350.16 —
+  the gap was the electricity top-up, and the bigger number was the one the
+  owner was never going to be paid. Costs now appear as their own line and
+  the two figures agree.
+
+### Changed
+- The statement line "Airbnb fees" is now "Airbnb fees & withheld tax".
+  Airbnb's deduction is its host service fee plus tax it withholds at source,
+  which together run closer to 24% than the ~15% an owner expects to see, so
+  the old label looked like an error and invited a question it did not answer.
+
 ## [1.73.2] - 2026-10-05
 
 ### Fixed
@@ -3178,7 +3196,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.3...HEAD
+[1.73.3]: https://github.com/tasiamah/goldstay/compare/v1.73.2...v1.73.3
 [1.73.2]: https://github.com/tasiamah/goldstay/compare/v1.73.1...v1.73.2
 [1.73.1]: https://github.com/tasiamah/goldstay/compare/v1.73.0...v1.73.1
 [1.73.0]: https://github.com/tasiamah/goldstay/compare/v1.72.1...v1.73.0

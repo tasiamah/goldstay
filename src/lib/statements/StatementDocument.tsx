@@ -275,7 +275,7 @@ export function StatementDocument({
                   />
                   {row.otaFees > 0 ? (
                     <ShortTermLine
-                      label="Airbnb fees"
+                      label="Airbnb fees & withheld tax"
                       amount={row.otaFees}
                       sign="-"
                     />
@@ -297,6 +297,13 @@ export function StatementDocument({
                           : ""
                       }`}
                       amount={row.goldstayCommission}
+                      sign="-"
+                    />
+                  ) : null}
+                  {row.expenses > 0 ? (
+                    <ShortTermLine
+                      label="Costs on the property"
+                      amount={row.expenses}
                       sign="-"
                     />
                   ) : null}

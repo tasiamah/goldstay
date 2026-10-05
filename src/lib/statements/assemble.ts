@@ -113,11 +113,14 @@ export async function assembleStatement({
       status: b.status,
     })),
     // Goldstay's commission lives on Transaction rather than Booking
-    // because the rate can change over time. Sourced from the same
-    // filtered list above, so an archived commission row cannot be
-    // deducted from a payout the client is shown.
+    // because the rate can change over time, and expenses because
+    // they belong to the unit rather than to a stay. Sourced from the
+    // same filtered list above, so an archived row cannot be deducted
+    // from a payout the client is shown.
     transactions
-      .filter((t) => t.type === "GOLDSTAY_COMMISSION")
+      .filter(
+        (t) => t.type === "GOLDSTAY_COMMISSION" || t.type === "EXPENSE",
+      )
       .map((t) => ({
         propertyId: t.propertyId,
         type: t.type,

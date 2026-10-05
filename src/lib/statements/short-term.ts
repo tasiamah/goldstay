@@ -41,12 +41,13 @@ export type ShortTermPropertyRow = {
   otaFees: number;
   cleaning: number;
   goldstayCommission: number;
+  expenses: number;
   payout: number;
 };
 
 export function buildShortTermSummary(
   bookings: (StatementBooking & { propertyName: string })[],
-  commissionTransactions: StatementBookingTransaction[],
+  deductionTransactions: StatementBookingTransaction[],
   period: { start: Date; end: Date },
 ): ShortTermPropertyRow[] {
   const startMs = period.start.getTime();
@@ -76,6 +77,7 @@ export function buildShortTermSummary(
       otaFees: 0,
       cleaning: 0,
       goldstayCommission: 0,
+      expenses: 0,
       payout: 0,
     };
 
@@ -106,15 +108,33 @@ export function buildShortTermSummary(
     rows.set(k, row);
   }
 
-  // Layer in Goldstay commission transactions. They live on
-  // Transaction (not Booking) because the % can vary over time. We
-  // attribute by (property, currency) so the row math reads cleanly:
-  // payout = gross − otaFees − cleaning − goldstayCommission.
-  for (const tx of commissionTransactions) {
+  // Layer in the deductions that live on Transaction rather than
+  // Booking: Goldstay's commission, because the % can vary over time,
+  // and out-of-pocket costs on the unit, because they have nothing to
+  // do with any one stay.
+  //
+  // Both have to be here. While only commission was subtracted, this
+  // row's "Net payout" was larger than the Summary below it by
+  // exactly the month's expenses — two different final figures on one
+  // page, with the bigger one in bold at the top.
+  //
+  // Row math now reads:
+  //   payout = gross − otaFees − cleaning − goldstayCommission − expenses
+  //
+  // A cost in a currency the property took no bookings in finds no row
+  // and is left to the Summary, which groups by currency. Converting
+  // it here would be the only FX in the platform.
+  for (const tx of deductionTransactions) {
     const k = keyFor(tx.propertyId, tx.currency);
     const row = rows.get(k);
     if (!row) continue;
-    row.goldstayCommission += tx.amount;
+    if (tx.type === "GOLDSTAY_COMMISSION") {
+      row.goldstayCommission += tx.amount;
+    } else if (tx.type === "EXPENSE") {
+      row.expenses += tx.amount;
+    } else {
+      continue;
+    }
     row.payout -= tx.amount;
   }
 
