@@ -29,13 +29,35 @@ const HOSTAWAY_STATUS_TO_BOOKING: Record<string, BookingStatus> = {
   new: BookingStatus.CONFIRMED,
   modified: BookingStatus.CONFIRMED,
   ownerStay: BookingStatus.CONFIRMED,
+  // A booking that existed and then was called off. Kept, because it
+  // is real history and may carry a refund.
   cancelled: BookingStatus.CANCELLED,
-  declined: BookingStatus.CANCELLED,
-  expired: BookingStatus.CANCELLED,
-  inquiry: BookingStatus.CONFIRMED,
-  inquiryPreapproved: BookingStatus.CONFIRMED,
-  inquiryDenied: BookingStatus.CANCELLED,
 };
+
+// Statuses that never became a stay: someone asked about dates, or a
+// request lapsed or was turned down. Hostaway returns these from
+// /reservations alongside real bookings and gives them a totalPrice,
+// so treating them as bookings invents revenue — and because an
+// enquiry usually covers the dates the guest went on to book, it
+// invents it on top of the booking it turned into.
+const NON_BOOKING_STATUSES = new Set([
+  "inquiry",
+  "inquiryPreapproved",
+  "inquiryDenied",
+  "inquiryTimedout",
+  "inquiryNotPossible",
+  "expired",
+  "declined",
+  "pending",
+  "awaitingPayment",
+]);
+
+export function isNonBooking(reservation: HostawayReservation): boolean {
+  return (
+    typeof reservation.status === "string" &&
+    NON_BOOKING_STATUSES.has(reservation.status)
+  );
+}
 
 export type HostawayReservation = {
   id?: number | string;
@@ -49,12 +71,44 @@ export type HostawayReservation = {
   arrivalDate?: string; // YYYY-MM-DD
   departureDate?: string;
   nights?: number;
-  totalPrice?: number | string;
+  // Money fields are nullable, not merely absent. Hostaway returns an
+  // explicit null for every fee it has no value for, so a type that
+  // only allowed undefined would describe a payload we never receive.
+  totalPrice?: number | string | null;
   currency?: string;
-  channelCommissionAmount?: number | string;
-  hostPayout?: number | string;
-  cleaningFee?: number | string;
+  channelCommissionAmount?: number | string | null;
+  hostPayout?: number | string | null;
+  cleaningFee?: number | string | null;
+  // What the channel says it will actually pay out. On Airbnb
+  // reservations this is the only honest payout figure: the account
+  // we read leaves channelCommissionAmount null on every booking, so
+  // deriving the fee from it would report that Airbnb took nothing.
+  airbnbExpectedPayoutAmount?: number | string | null;
+  financeField?: Array<{
+    name?: string;
+    total?: number | string | null;
+  }> | null;
 };
+
+// Hostaway repeats the payout inside financeField as `airbnbPayoutSum`
+// and the two have always agreed on this account, but the flat field
+// is not documented as guaranteed, so we fall through to the array
+// rather than silently reporting a zero payout if it disappears.
+function channelPayout(reservation: HostawayReservation): number {
+  const flat = toNumber(reservation.airbnbExpectedPayoutAmount);
+  if (flat > 0) return flat;
+
+  const declared = toNumber(reservation.hostPayout);
+  if (declared > 0) return declared;
+
+  for (const field of reservation.financeField ?? []) {
+    if (field?.name === "airbnbPayoutSum") {
+      const value = toNumber(field.total);
+      if (value > 0) return value;
+    }
+  }
+  return 0;
+}
 
 export type MappedBooking = {
   externalId: string;
@@ -77,6 +131,12 @@ function toNumber(v: number | string | undefined | null): number {
   if (v === undefined || v === null) return 0;
   const n = typeof v === "number" ? v : parseFloat(v);
   return Number.isFinite(n) ? n : 0;
+}
+
+// Money arrives as fractional dollars and the subtraction above can
+// leave a float tail; the column is DECIMAL(12,2).
+function round2(n: number): number {
+  return Math.round(n * 100) / 100;
 }
 
 function toDate(v: string | undefined): Date | null {
@@ -164,16 +224,32 @@ export function mapHostawayReservation(
       : Math.round(ms / (1000 * 60 * 60 * 24));
 
   const grossAmount = toNumber(reservation.totalPrice);
-  const otaCommission = toNumber(reservation.channelCommissionAmount);
   const cleaningFee = toNumber(reservation.cleaningFee);
-  // Prefer Hostaway's hostPayout if present, otherwise derive it so
-  // we never store a payout that disagrees with the components we
-  // also store on the same row.
-  const declaredPayout = toNumber(reservation.hostPayout);
-  const derivedPayout =
-    grossAmount - otaCommission - cleaningFee;
+
+  // A payout above the gross is not a payout, it is a field we have
+  // misread; fall back rather than store it.
+  const quoted = channelPayout(reservation);
+  const payout = quoted > 0 && quoted <= grossAmount ? quoted : 0;
+
+  // What the channel kept, as the gap between what the guest paid and
+  // what reaches us, less any cleaning the channel itemised — that
+  // sits in the gap too but is not a channel fee. Derived rather than
+  // read from a named field because Airbnb splits its cut across
+  // several of them and leaves channelCommissionAmount null, so
+  // trusting that field alone reports that Airbnb took nothing.
+  const otaCommission =
+    payout > 0
+      ? Math.max(0, round2(grossAmount - payout - cleaningFee))
+      : toNumber(reservation.channelCommissionAmount);
+
+  // The payout the channel quoted, which is what actually lands in
+  // the bank. Our own cleaning charge comes off it downstream in
+  // applyStandardCleaning. Falls back to deriving it so a row can
+  // never claim a payout that disagrees with the figures beside it.
   const netPayout =
-    declaredPayout > 0 ? declaredPayout : Math.max(0, derivedPayout);
+    payout > 0
+      ? payout
+      : Math.max(0, grossAmount - otaCommission - cleaningFee);
 
   return {
     externalId,

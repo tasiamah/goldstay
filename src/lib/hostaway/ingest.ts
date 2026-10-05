@@ -32,12 +32,17 @@ import {
 import { applyStandardCleaning } from "@/lib/bookings/cleaning";
 import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
-import { mapHostawayReservation, type HostawayReservation } from "./mapper";
+import {
+  isNonBooking,
+  mapHostawayReservation,
+  type HostawayReservation,
+} from "./mapper";
 
 const ICAL_PREFIX = "ical:";
 
 export type IngestResult =
   | { status: "unmappable" }
+  | { status: "not_a_booking"; reservationStatus: string }
   | { status: "unknown_listing"; listingId: string }
   | {
       status: "ingested";
@@ -59,6 +64,15 @@ export async function ingestHostawayReservation({
   notify: boolean;
   supersedePlaceholders?: boolean;
 }): Promise<IngestResult> {
+  // Checked before mapping. An enquiry carries dates and a price and
+  // would map perfectly well into a booking nobody ever made.
+  if (isNonBooking(reservation)) {
+    return {
+      status: "not_a_booking",
+      reservationStatus: String(reservation.status),
+    };
+  }
+
   const mapped = mapHostawayReservation(reservation);
   if (!mapped) return { status: "unmappable" };
 

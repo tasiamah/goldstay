@@ -84,6 +84,17 @@ export async function POST(request: Request) {
     );
   }
 
+  if (result.status === "not_a_booking") {
+    // An enquiry or a lapsed request. Hostaway pushes these on the
+    // same webhook as real reservations and gives them a price, so
+    // they are acknowledged and dropped rather than stored as
+    // revenue for a stay nobody booked.
+    return NextResponse.json(
+      { ok: true, ignored: "not_a_booking", status: result.reservationStatus },
+      { status: 200 },
+    );
+  }
+
   if (result.status === "unknown_listing") {
     // A listing we don't manage in the portal, or one whose
     // hostawayListingId has not been filled in yet. 200 rather than

@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { extractReservation, mapHostawayReservation } from "./mapper";
+import {
+  extractReservation,
+  isNonBooking,
+  mapHostawayReservation,
+} from "./mapper";
 
 const base = {
   id: 12345,
@@ -51,9 +55,11 @@ describe("mapHostawayReservation", () => {
     expect(
       mapHostawayReservation({ ...base, arrivalDate: "2026-03-10", departureDate: "2026-03-10" }),
     ).toBeNull();
-    for (const status of ["cancelled", "declined", "expired"]) {
-      expect(mapHostawayReservation({ ...base, status })!.status).toBe("CANCELLED");
-    }
+    // declined and expired are no longer folded in here: they never
+    // became a stay, so isNonBooking rejects them before mapping.
+    expect(
+      mapHostawayReservation({ ...base, status: "cancelled" })!.status,
+    ).toBe("CANCELLED");
   });
 
   it("derives netPayout from gross - commission - cleaning when hostPayout is missing", () => {
@@ -107,5 +113,99 @@ describe("extractReservation", () => {
     expect(extractReservation(null)).toBeNull();
     expect(extractReservation("a string")).toBeNull();
     expect(extractReservation([base])).toBeNull();
+  });
+});
+
+// Shapes below are taken from real Airbnb reservations on Hostaway
+// account 212175, listing 594702.
+describe("isNonBooking", () => {
+  it("rejects enquiries, which carry a price but were never booked", () => {
+    for (const status of [
+      "inquiry",
+      "inquiryPreapproved",
+      "inquiryDenied",
+      "expired",
+      "declined",
+    ]) {
+      expect(isNonBooking({ status })).toBe(true);
+    }
+  });
+
+  it("accepts the statuses that mean a stay exists", () => {
+    for (const status of ["new", "modified", "ownerStay", "cancelled"]) {
+      expect(isNonBooking({ status })).toBe(false);
+    }
+  });
+});
+
+describe("mapHostawayReservation — Airbnb payout fields", () => {
+  const airbnb = {
+    id: 66657497,
+    listingMapId: 594702,
+    channelId: 2018,
+    status: "new",
+    guestName: "",
+    arrivalDate: "2026-09-13",
+    departureDate: "2026-09-19",
+    nights: 6,
+    totalPrice: 240,
+    currency: "USD",
+    // Null on every booking in this account, which is exactly why it
+    // cannot be the source of the fee.
+    channelCommissionAmount: null as number | null,
+    airbnbExpectedPayoutAmount: 182.99,
+  };
+
+  it("takes the channel's cut as guest paid minus host payout", () => {
+    const mapped = mapHostawayReservation(airbnb)!;
+    expect(mapped.grossAmount).toBe(240);
+    expect(mapped.otaCommission).toBe(57.01);
+    expect(mapped.netPayout).toBe(182.99);
+    // The figures have to reconcile or the statement column will not
+    // add up for the owner reading it.
+    expect(mapped.grossAmount - mapped.otaCommission).toBeCloseTo(
+      mapped.netPayout,
+      2,
+    );
+  });
+
+  it("would have reported a zero fee from channelCommissionAmount alone", () => {
+    const mapped = mapHostawayReservation({
+      ...airbnb,
+      airbnbExpectedPayoutAmount: undefined,
+    })!;
+    expect(mapped.otaCommission).toBe(0);
+    expect(mapped.netPayout).toBe(240);
+  });
+
+  it("falls back to airbnbPayoutSum inside financeField", () => {
+    const mapped = mapHostawayReservation({
+      ...airbnb,
+      airbnbExpectedPayoutAmount: undefined,
+      financeField: [
+        { name: "totalPaid", total: 240 },
+        { name: "airbnbPayoutSum", total: 182.99 },
+      ],
+    })!;
+    expect(mapped.otaCommission).toBe(57.01);
+    expect(mapped.netPayout).toBe(182.99);
+  });
+
+  it("keeps two decimal places rather than a float tail", () => {
+    const mapped = mapHostawayReservation({
+      ...airbnb,
+      totalPrice: 78.3,
+      airbnbExpectedPayoutAmount: 61.81,
+    })!;
+    expect(mapped.otaCommission).toBe(16.49);
+  });
+
+  it("ignores a payout larger than the gross instead of inverting the fee", () => {
+    const mapped = mapHostawayReservation({
+      ...airbnb,
+      airbnbExpectedPayoutAmount: 999,
+    })!;
+    expect(mapped.otaCommission).toBe(0);
+    expect(mapped.netPayout).toBe(240);
   });
 });

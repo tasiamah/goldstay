@@ -21,6 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.73.0] - 2026-10-05
+
+### Fixed
+- Hostaway enquiries were being stored as confirmed bookings.
+  `inquiry` and `inquiryPreapproved` both mapped to `CONFIRMED`, and
+  Hostaway returns enquiries from the same endpoint as real
+  reservations with a price attached. Because an enquiry usually
+  covers the dates the guest went on to book, importing them invented
+  revenue *on top of* the booking they turned into. On Polaris alone
+  that was USD 1,052 of September income for stays nobody ever
+  booked. Enquiries, declined and lapsed requests are now recognised
+  as non-bookings and no row is written at all; the webhook
+  acknowledges and drops them.
+- Channel fees were read from `channelCommissionAmount`, which the
+  Airbnb integration leaves null on every booking — so every imported
+  stay claimed Airbnb took nothing, and the owner's payout was
+  overstated by roughly a quarter. The fee is now derived from the
+  gap between what the guest paid and what the channel says it will
+  pay out (`airbnbExpectedPayoutAmount`, falling back to
+  `airbnbPayoutSum`), less any cleaning the channel itemised, so the
+  statement column reconciles to the figure that reaches the bank.
+- The reservation type described money fields as optional when
+  Hostaway in fact sends an explicit `null` for every fee it has no
+  value for.
+
 ## [1.72.1] - 2026-10-05
 
 ### Fixed
@@ -3124,7 +3149,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.72.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.0...HEAD
+[1.73.0]: https://github.com/tasiamah/goldstay/compare/v1.72.1...v1.73.0
 [1.72.1]: https://github.com/tasiamah/goldstay/compare/v1.72.0...v1.72.1
 [1.72.0]: https://github.com/tasiamah/goldstay/compare/v1.71.0...v1.72.0
 [1.71.0]: https://github.com/tasiamah/goldstay/compare/v1.70.0...v1.71.0
