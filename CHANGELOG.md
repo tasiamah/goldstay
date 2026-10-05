@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.73.1] - 2026-10-05
+
+### Changed
+- The standard cleaning charge is now KES 1,000 / USD 7.70, from
+  KES 1,030 / USD 7. The two halves of the old pair implied a rate of
+  147 KES to the dollar, where the actual rate is about 130, so a
+  property billing in dollars was charged roughly 13% less for the
+  same clean than one billing in shillings. At the new pair the two
+  figures are equivalent.
+
+Applies to stays ingested from here on. September's Polaris bookings
+were backfilled at the old USD 7 and are unchanged.
+
 ## [1.73.0] - 2026-10-05
 
 ### Fixed
@@ -3149,7 +3162,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.1...HEAD
+[1.73.1]: https://github.com/tasiamah/goldstay/compare/v1.73.0...v1.73.1
 [1.73.0]: https://github.com/tasiamah/goldstay/compare/v1.72.1...v1.73.0
 [1.72.1]: https://github.com/tasiamah/goldstay/compare/v1.72.0...v1.72.1
 [1.72.0]: https://github.com/tasiamah/goldstay/compare/v1.71.0...v1.72.0

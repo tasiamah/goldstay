@@ -156,7 +156,7 @@ describe("ingestHostawayReservation", () => {
     const cleaning = txCreate.mock.calls
       .map((c) => (c[0] as { data: { type: string; amount: number } }).data)
       .find((d) => d.type === "CLEANING_FEE");
-    expect(cleaning?.amount).toBe(1_030);
+    expect(cleaning?.amount).toBe(1_000);
 
     // All dated to check-in, so a stay spanning a month end lands in
     // the same month as the short-stay table reports it.

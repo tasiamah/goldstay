@@ -16,8 +16,8 @@ describe("applyStandardCleaning", () => {
   it("applies the standard rate when the source supplied none", () => {
     const out = applyStandardCleaning(base);
     expect(out.applied).toBe(true);
-    expect(out.cleaningFee).toBe(1030);
-    expect(out.netPayout).toBe(18_970);
+    expect(out.cleaningFee).toBe(1000);
+    expect(out.netPayout).toBe(19_000);
   });
 
   it("leaves a fee the channel already charged alone", () => {
@@ -81,7 +81,7 @@ describe("applyStandardCleaning", () => {
       grossAmount: 500,
       netPayout: 500,
     });
-    expect(out.cleaningFee).toBe(1030);
+    expect(out.cleaningFee).toBe(1000);
     expect(out.netPayout).toBe(0);
   });
 });

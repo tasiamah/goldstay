@@ -20,9 +20,15 @@
 // is no FX pass anywhere in this codebase, and a stay priced in USD
 // settling against a KES rate would be a silently wrong deduction on
 // someone's statement.
+// The two figures are deliberately equivalent at the prevailing rate
+// (XE mid-market, 5 Oct 2026: 1 USD = 129.748 KES, so USD 7.70 is
+// KES 999). Keeping them in step matters because a property is
+// charged in whichever currency its bookings settle in, and a pair
+// that has drifted would quietly charge a USD-earning unit more than
+// a KES-earning one for the same clean.
 export const STANDARD_CLEANING_FEE: Record<string, number> = {
-  KES: 1030,
-  USD: 7,
+  KES: 1000,
+  USD: 7.7,
 };
 
 export type CleaningInput = {
