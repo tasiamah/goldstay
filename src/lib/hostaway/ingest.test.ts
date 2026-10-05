@@ -157,6 +157,13 @@ describe("ingestHostawayReservation", () => {
       .map((c) => (c[0] as { data: { type: string; amount: number } }).data)
       .find((d) => d.type === "CLEANING_FEE");
     expect(cleaning?.amount).toBe(1_030);
+
+    // All dated to check-in, so a stay spanning a month end lands in
+    // the same month as the short-stay table reports it.
+    const dates = txCreate.mock.calls.map(
+      (c) => (c[0] as { data: { occurredOn: Date } }).data.occurredOn,
+    );
+    expect(dates.every((d) => d.getTime() === checkIn.getTime())).toBe(true);
   });
 
   it("does not email the owner when backfilling a finished stay", async () => {

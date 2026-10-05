@@ -79,21 +79,30 @@ export function buildShortTermSummary(
       payout: 0,
     };
 
-    // Clip nights to the window for accurate per-period split. Money
-    // is *not* clipped — short-term accounting books the full guest
-    // payment to the period the stay belongs to (anchored to
-    // check-in) so it matches the bank statement.
+    // Nights are clipped to the window, because occupancy genuinely
+    // splits: a 28 Sep -> 5 Oct stay filled three nights of
+    // September and four of October.
     const inMs = Math.max(b.checkIn.getTime(), startMs);
     const outMs = Math.min(b.checkOut.getTime(), endMs);
     const clipped =
       outMs > inMs ? nightsBetween(new Date(inMs), new Date(outMs)) : 0;
-
-    row.bookings += 1;
     row.nights += clipped;
-    row.gross += b.grossAmount;
-    row.otaFees += b.otaCommission ?? 0;
-    row.cleaning += b.cleaningFee ?? 0;
-    row.payout += b.netPayout;
+
+    // Money is not clipped — a guest payment is one payment, and
+    // splitting it pro-rata would never match the bank. So it is
+    // booked whole to the period the stay began in, and only there.
+    // Adding it to every period the stay touches, which is what this
+    // used to do, reported the same payment on two statements: the
+    // owner saw October revenue they had already been paid for in
+    // September.
+    const checkInMs = b.checkIn.getTime();
+    if (checkInMs >= startMs && checkInMs < endMs) {
+      row.bookings += 1;
+      row.gross += b.grossAmount;
+      row.otaFees += b.otaCommission ?? 0;
+      row.cleaning += b.cleaningFee ?? 0;
+      row.payout += b.netPayout;
+    }
     rows.set(k, row);
   }
 

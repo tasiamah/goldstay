@@ -21,6 +21,25 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.72.1] - 2026-10-05
+
+### Fixed
+- A stay spanning the end of a month had its **full** revenue counted
+  in both months' statements. A guest staying 28 September to 5
+  October produced the same gross, the same fees and the same payout
+  on September's statement and again on October's, so an owner was
+  shown money in October they had already been paid for in
+  September. A stay's money now belongs whole to the month it began
+  in, and only there. Nights are still split across the two months,
+  because the occupancy genuinely was.
+- Booking transactions are now dated to check-in rather than
+  check-out. For a stay crossing a month end the two halves of the
+  same statement disagreed: the short-stay table put the guest
+  payment in one month and the transaction ledger below it put the
+  same payment in the next.
+- `buildShortTermSummary` had no test coverage at all, which is how
+  both of the above survived. It now has eight tests.
+
 ## [1.72.0] - 2026-10-05
 
 ### Added
@@ -3105,7 +3124,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.72.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.72.1...HEAD
+[1.72.1]: https://github.com/tasiamah/goldstay/compare/v1.72.0...v1.72.1
 [1.72.0]: https://github.com/tasiamah/goldstay/compare/v1.71.0...v1.72.0
 [1.71.0]: https://github.com/tasiamah/goldstay/compare/v1.70.0...v1.71.0
 [1.70.0]: https://github.com/tasiamah/goldstay/compare/v1.69.0...v1.70.0

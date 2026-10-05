@@ -191,13 +191,19 @@ export async function ingestHostawayReservation({
       });
     }
 
+    // Dated to check-in, matching buildShortTermSummary's rule that a
+    // stay's money belongs whole to the period it began in. Dating
+    // these to check-out instead put a stay spanning a month end in
+    // one month's short-stay table and the next month's ledger, so
+    // the two halves of the same statement disagreed about when the
+    // guest paid.
     await prisma.$transaction(
       rows.map((row) =>
         prisma.transaction.create({
           data: {
             propertyId: property.id,
             bookingId: booking.id,
-            occurredOn: mapped.checkOut,
+            occurredOn: mapped.checkIn,
             type: row.type,
             direction: row.direction,
             amount: row.amount,
