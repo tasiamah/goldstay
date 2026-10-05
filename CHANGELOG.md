@@ -21,6 +21,37 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.72.0] - 2026-10-05
+
+### Added
+- **Import from Hostaway** on short-stay property pages. The webhook
+  only ever hears about bookings made after it was registered, so a
+  property that has been running on an iCal feed has months of stays
+  recorded as dates with no money against them. Importing pulls the
+  last 12 months of reservations with their real figures and writes
+  the gross, channel fee, cleaning and commission rows, so a busy
+  month stops reporting as having earned nothing.
+- The import replaces calendar-only rows rather than sitting beside
+  them. A zero-gross placeholder covering the same property and the
+  same dates as a real reservation is removed, so the stay is counted
+  once instead of twice. Matching is on exact dates, since
+  back-to-back stays share a day and an overlap match would take the
+  neighbouring stay's placeholder too. Placeholders that already have
+  transactions against them are left alone — someone has reconciled
+  those by hand, and deleting them would discard that work.
+
+### Changed
+- Client statements now lead with the short-stay section, which runs
+  gross down through each deduction to the net payout in bold. The
+  inflow and outflow summary follows it. The figure an owner is
+  looking for is what they are being paid, and that was previously
+  below a bookkeeping table.
+- The webhook and the importer now share one ingest path
+  (`lib/hostaway/ingest`), so a backfilled month cannot be priced
+  differently from a live one. Backfills deliberately send no email:
+  importing a year of history would otherwise notify the owner about
+  every guest who has already checked out.
+
 ## [1.71.0] - 2026-10-05
 
 ### Added
@@ -3074,7 +3105,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.71.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.72.0...HEAD
+[1.72.0]: https://github.com/tasiamah/goldstay/compare/v1.71.0...v1.72.0
 [1.71.0]: https://github.com/tasiamah/goldstay/compare/v1.70.0...v1.71.0
 [1.70.0]: https://github.com/tasiamah/goldstay/compare/v1.69.0...v1.70.0
 [1.69.0]: https://github.com/tasiamah/goldstay/compare/v1.68.0...v1.69.0

@@ -245,52 +245,12 @@ export function StatementDocument({
           </View>
         </View>
 
-        <Text style={styles.sectionTitle}>Summary</Text>
-        {statement.totalsByCurrency.length === 0 ? (
-          <Text style={styles.empty}>
-            No transactions recorded for this period.
-          </Text>
-        ) : (
-          <View style={styles.totalsTable}>
-            <View style={styles.totalsHeader}>
-              <Text style={[styles.cellCurrency, styles.thLabel]}>
-                Currency
-              </Text>
-              <Text style={[styles.cellNum, styles.thLabel]}>Inflow</Text>
-              <Text style={[styles.cellNum, styles.thLabel]}>Outflow</Text>
-              <Text style={[styles.cellNum, styles.thLabel]}>Net</Text>
-            </View>
-            {statement.totalsByCurrency.map((row, i) => {
-              const isLast = i === statement.totalsByCurrency.length - 1;
-              return (
-                <View
-                  key={row.currency}
-                  style={[
-                    styles.totalsRow,
-                    isLast ? styles.totalsRowLast : {},
-                  ]}
-                >
-                  <Text style={styles.cellCurrency}>{row.currency}</Text>
-                  <Text style={[styles.cellNum, styles.inflow]}>
-                    {fmt(row.inflow)}
-                  </Text>
-                  <Text style={[styles.cellNum, styles.outflow]}>
-                    {fmt(row.outflow)}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.cellNum,
-                      row.net >= 0 ? styles.net : styles.netNegative,
-                    ]}
-                  >
-                    {fmt(row.net)}
-                  </Text>
-                </View>
-              );
-            })}
-          </View>
-        )}
-
+        {/* Short-stay first. It is the section shaped like the
+            question the client is asking — what am I being paid —
+            running gross down through each deduction to the net
+            payout in bold. The inflow/outflow summary below it is
+            the bookkeeping view, which is the right detail to offer
+            second rather than the first thing they read. */}
         {shortTerm && shortTerm.length > 0 ? (
           <>
             <Text style={styles.sectionTitle}>Short-term rentals</Text>
@@ -351,6 +311,52 @@ export function StatementDocument({
             ))}
           </>
         ) : null}
+
+        <Text style={styles.sectionTitle}>Summary</Text>
+        {statement.totalsByCurrency.length === 0 ? (
+          <Text style={styles.empty}>
+            No transactions recorded for this period.
+          </Text>
+        ) : (
+          <View style={styles.totalsTable}>
+            <View style={styles.totalsHeader}>
+              <Text style={[styles.cellCurrency, styles.thLabel]}>
+                Currency
+              </Text>
+              <Text style={[styles.cellNum, styles.thLabel]}>Inflow</Text>
+              <Text style={[styles.cellNum, styles.thLabel]}>Outflow</Text>
+              <Text style={[styles.cellNum, styles.thLabel]}>Net</Text>
+            </View>
+            {statement.totalsByCurrency.map((row, i) => {
+              const isLast = i === statement.totalsByCurrency.length - 1;
+              return (
+                <View
+                  key={row.currency}
+                  style={[
+                    styles.totalsRow,
+                    isLast ? styles.totalsRowLast : {},
+                  ]}
+                >
+                  <Text style={styles.cellCurrency}>{row.currency}</Text>
+                  <Text style={[styles.cellNum, styles.inflow]}>
+                    {fmt(row.inflow)}
+                  </Text>
+                  <Text style={[styles.cellNum, styles.outflow]}>
+                    {fmt(row.outflow)}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.cellNum,
+                      row.net >= 0 ? styles.net : styles.netNegative,
+                    ]}
+                  >
+                    {fmt(row.net)}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        )}
 
         <Text style={styles.sectionTitle}>By property</Text>
         {statement.propertyGroups.length === 0 ? (

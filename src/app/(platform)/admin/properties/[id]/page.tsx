@@ -46,6 +46,8 @@ import { Tip } from "@/components/admin/Tip";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
+import { HostawayImportButton } from "../HostawayImportButton";
+import { importHostawayAction } from "../hostaway-actions";
 import { PropertyCostsCard } from "@/components/admin/finance/PropertyCostsCard";
 import { PropertyFinanceCard } from "@/components/admin/finance/PropertyFinanceCard";
 import { PropertyHandbookForm } from "@/components/properties/PropertyHandbookForm";
@@ -392,6 +394,7 @@ export default async function PropertyDetailPage({
             <>
               <BookingsCard
                 propertyId={property.id}
+                hostawayListingId={property.hostawayListingId}
                 bookings={property.bookings.slice(0, 25)}
               />
               <div className="rounded-lg border border-stone-200 bg-white p-6">
@@ -577,9 +580,11 @@ export default async function PropertyDetailPage({
 
 function BookingsCard({
   propertyId,
+  hostawayListingId,
   bookings,
 }: {
   propertyId: string;
+  hostawayListingId: string | null;
   bookings: Array<{
     id: string;
     source: string;
@@ -606,8 +611,15 @@ function BookingsCard({
       </div>
       <p className="mt-1 text-sm text-stone-500">
         Bookings synced from Hostaway land here automatically. You can also
-        record direct bookings manually.
+        record direct bookings manually. Importing pulls the last 12 months
+        of reservations with their real figures, and replaces any
+        calendar-only rows an iCal feed left behind for the same stay.
       </p>
+      <HostawayImportButton
+        action={importHostawayAction.bind(null, propertyId)}
+        disabled={!hostawayListingId}
+        disabledReason="Set a Hostaway listing ID in Details to import past bookings with their real figures."
+      />
       {bookings.length === 0 ? (
         <p className="mt-4 text-sm text-stone-500">
           No bookings yet for this property.
