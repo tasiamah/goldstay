@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { buildShortTermSummary } from "@/lib/statements/short-term";
+import {
+  buildShortTermSummary,
+  OWNER_COST_TYPES,
+} from "@/lib/statements/short-term";
 
 const september = {
   start: new Date(Date.UTC(2026, 8, 1)),
@@ -204,6 +207,44 @@ describe("buildShortTermSummary", () => {
     expect(row.currency).toBe("USD");
     expect(row.expenses).toBe(0);
     expect(row.payout).toBe(380);
+  });
+
+  // Repairs are the most frequent cost on a unit, so a new type that
+  // did not reach this row would quietly overpay the owner on most
+  // statements rather than on the rare one.
+  it("treats a repair as a cost to the owner, like any other", () => {
+    const [row] = buildShortTermSummary(
+      [stay()],
+      [
+        {
+          propertyId: "polaris",
+          type: "REPAIR",
+          amount: 4_500,
+          currency: "KES",
+        },
+      ],
+      september,
+    );
+    expect(row.expenses).toBe(4_500);
+    expect(row.payout).toBe(57_170 - 4_500);
+  });
+
+  it("every owner cost type is deducted, not just the ones we wrote tests for", () => {
+    // Walks the exported list rather than naming members, so adding a
+    // type to OWNER_COST_TYPES without wiring it into the row fails
+    // here instead of on a client's PDF.
+    expect(OWNER_COST_TYPES.length).toBeGreaterThan(0);
+    for (const type of OWNER_COST_TYPES) {
+      const [row] = buildShortTermSummary(
+        [stay()],
+        [{ propertyId: "polaris", type, amount: 1_000, currency: "KES" }],
+        september,
+      );
+      expect(row.expenses, `${type} was not counted as a cost`).toBe(1_000);
+      expect(row.payout, `${type} was not deducted from the payout`).toBe(
+        57_170 - 1_000,
+      );
+    }
   });
 
   it("ignores transaction types that are not its own deductions", () => {

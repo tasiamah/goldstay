@@ -1,0 +1,11 @@
+-- Repairs are the most frequent cost booked against a unit, and they
+-- were being recorded as a generic EXPENSE with the detail left to the
+-- description. Giving them their own type lets an owner's statement and
+-- the per-unit costs card separate "something broke" from running costs
+-- like electricity.
+--
+-- Additive only: existing EXPENSE rows keep their meaning and nothing
+-- needs backfilling. Postgres allows ADD VALUE inside a transaction so
+-- long as the new value is not used in that same transaction, which is
+-- why this file only declares it.
+ALTER TYPE "TransactionType" ADD VALUE IF NOT EXISTS 'REPAIR' AFTER 'EXPENSE';

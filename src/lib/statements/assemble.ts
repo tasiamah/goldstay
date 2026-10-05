@@ -25,7 +25,11 @@
 
 import type { PrismaClient } from "@prisma/client";
 import { buildStatement, type Statement } from "./aggregate";
-import { buildShortTermSummary, type ShortTermPropertyRow } from "./short-term";
+import {
+  buildShortTermSummary,
+  OWNER_COST_TYPES,
+  type ShortTermPropertyRow,
+} from "./short-term";
 import { periodRange, type Period } from "./period";
 
 export type AssembledStatement = {
@@ -119,7 +123,9 @@ export async function assembleStatement({
     // from a payout the client is shown.
     transactions
       .filter(
-        (t) => t.type === "GOLDSTAY_COMMISSION" || t.type === "EXPENSE",
+        (t) =>
+          t.type === "GOLDSTAY_COMMISSION" ||
+          OWNER_COST_TYPES.includes(t.type),
       )
       .map((t) => ({
         propertyId: t.propertyId,

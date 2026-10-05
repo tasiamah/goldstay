@@ -21,6 +21,21 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.74.0] - 2026-10-05
+
+### Added
+- "Repair" is now its own cost type when recording a transaction. Repairs are
+  the most frequent thing spent on a unit and were going in as a generic
+  Expense with the detail buried in the description, so they could not be
+  totalled or filtered separately from running costs like electricity.
+  Existing Expense entries are untouched and keep their meaning.
+
+### Changed
+- The pass-through cost types a statement deducts from an owner's payout are
+  now declared in one place rather than spelled out separately in the
+  aggregator and the assembler. The two had already drifted apart once, which
+  is what produced the contradictory payout figure fixed in 1.73.3.
+
 ## [1.73.3] - 2026-10-05
 
 ### Fixed
@@ -3196,7 +3211,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.3...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.74.0...HEAD
+[1.74.0]: https://github.com/tasiamah/goldstay/compare/v1.73.3...v1.74.0
 [1.73.3]: https://github.com/tasiamah/goldstay/compare/v1.73.2...v1.73.3
 [1.73.2]: https://github.com/tasiamah/goldstay/compare/v1.73.1...v1.73.2
 [1.73.1]: https://github.com/tasiamah/goldstay/compare/v1.73.0...v1.73.1

@@ -24,6 +24,19 @@ export type StatementBooking = {
   status: "CONFIRMED" | "CANCELLED" | "COMPLETED";
 };
 
+// Costs we incur on the unit and pass through to the owner, as
+// opposed to the cut Goldstay keeps. Named once and exported because
+// two modules have to agree on it: this one, which subtracts them
+// from the payout it prints, and assemble.ts, which decides which
+// transactions are even handed over. When those two disagreed the
+// statement showed a headline payout larger than its own summary.
+//
+// Add a new pass-through cost type here and both follow.
+export const OWNER_COST_TYPES: readonly TransactionType[] = [
+  "EXPENSE",
+  "REPAIR",
+];
+
 export type StatementBookingTransaction = {
   propertyId: string;
   type: TransactionType;
@@ -130,7 +143,7 @@ export function buildShortTermSummary(
     if (!row) continue;
     if (tx.type === "GOLDSTAY_COMMISSION") {
       row.goldstayCommission += tx.amount;
-    } else if (tx.type === "EXPENSE") {
+    } else if (OWNER_COST_TYPES.includes(tx.type)) {
       row.expenses += tx.amount;
     } else {
       continue;

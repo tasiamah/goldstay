@@ -80,6 +80,7 @@ enum TransactionType {
   DEPOSIT
   REFUND
   EXPENSE
+  REPAIR // fixing something that broke — the most common cost on a unit
   MANAGEMENT_FEE
   PAYOUT
   // Short-term rental flavours.

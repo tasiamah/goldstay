@@ -14,6 +14,7 @@ const PREFILLABLE_TYPES = new Set([
   "DEPOSIT",
   "REFUND",
   "EXPENSE",
+  "REPAIR",
   "MANAGEMENT_FEE",
   "PAYOUT",
   "OTA_COMMISSION",
