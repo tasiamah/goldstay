@@ -21,6 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.67.2] - 2026-10-05
+
+### Fixed
+- The Hostaway webhook could never have accepted a real Hostaway
+  request. It verified an HMAC-SHA256 digest in an `X-Hostaway-Signature`
+  header, and Hostaway does not sign webhook bodies at all: the only
+  protection it offers is an optional login and password sent as HTTP
+  Basic. Every genuine delivery would have been rejected with a 401,
+  retried three times and then turned into a failure email. The route
+  now checks Basic credentials from `HOSTAWAY_WEBHOOK_USER` and
+  `HOSTAWAY_WEBHOOK_PASSWORD`.
+- The route also read the reservation from the wrong place. A unified
+  webhook posts `{ event, data }` with the reservation under `data`,
+  and we looked only for `reservation` or a flat body. That failure was
+  silent: the payload mapped to null and returned 200, so a booking
+  would simply never appear and nothing would log. Extraction now
+  accepts `data`, `reservation` or a flat body, ignores the message
+  events that share the same webhook, and logs the top-level keys of
+  anything it cannot map so a shape change is visible in the logs.
+  Keys only, never values, because the payload carries guest names and
+  email addresses.
+
+### Changed
+- The webhook reads the request body after authenticating rather than
+  before, so an unauthenticated caller cannot make us buffer a body.
+
 ## [1.67.1] - 2026-09-22
 
 ### Changed
@@ -2928,6 +2954,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[1.67.2]: https://github.com/tasiamah/goldstay/compare/v1.67.1...v1.67.2
 [1.67.1]: https://github.com/tasiamah/goldstay/compare/v1.67.0...v1.67.1
 [1.67.0]: https://github.com/tasiamah/goldstay/compare/v1.66.3...v1.67.0
 [1.66.3]: https://github.com/tasiamah/goldstay/compare/v1.66.2...v1.66.3

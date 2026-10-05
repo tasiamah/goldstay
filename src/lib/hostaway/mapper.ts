@@ -109,6 +109,37 @@ function lookupStatus(reservation: HostawayReservation): BookingStatus {
   );
 }
 
+// Pull the reservation out of whatever envelope Hostaway wrapped it
+// in. A unified webhook posts `{ event, data }` with the reservation
+// under `data`, but Hostaway does not publish the payload schema and
+// the shape has moved before, so we also accept `reservation` and a
+// flat body rather than hard-coding one key and silently dropping
+// everything the day it changes.
+//
+// Returns null for events that carry no reservation at all. The same
+// webhook delivers "new message received", and a conversation
+// message has no listing or stay attached to map.
+export function extractReservation(
+  payload: unknown,
+): HostawayReservation | null {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return null;
+  }
+  const envelope = payload as Record<string, unknown>;
+
+  const event = typeof envelope.event === "string" ? envelope.event : null;
+  if (event && !event.startsWith("reservation")) return null;
+
+  for (const key of ["data", "reservation", "result"]) {
+    const nested = envelope[key];
+    if (nested && typeof nested === "object" && !Array.isArray(nested)) {
+      return nested as HostawayReservation;
+    }
+  }
+
+  return envelope as HostawayReservation;
+}
+
 export function mapHostawayReservation(
   reservation: HostawayReservation,
 ): MappedBooking | null {

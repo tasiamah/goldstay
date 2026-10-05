@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { mapHostawayReservation } from "./mapper";
+import { extractReservation, mapHostawayReservation } from "./mapper";
 
 const base = {
   id: 12345,
@@ -60,5 +60,52 @@ describe("mapHostawayReservation", () => {
     expect(
       mapHostawayReservation({ ...base, hostPayout: undefined })!.netPayout,
     ).toBe(33_800);
+  });
+});
+
+// Envelope handling is separate from field mapping because Hostaway
+// does not publish the webhook payload schema. A unified webhook
+// posts the reservation under `data`; reading the wrong key does not
+// throw, it silently maps to null and the booking never arrives,
+// which is the worst possible failure mode for revenue data.
+
+describe("extractReservation", () => {
+  it("reads the reservation out of a unified webhook envelope", () => {
+    const out = extractReservation({
+      event: "reservation.created",
+      accountId: 10638,
+      data: base,
+    });
+    expect(out).toMatchObject({ id: 12345, listingMapId: 999 });
+    expect(mapHostawayReservation(out!)!.hostawayListingId).toBe("999");
+  });
+
+  it("still accepts the legacy `reservation` key and a flat body", () => {
+    expect(
+      extractReservation({ event: "reservation.updated", reservation: base }),
+    ).toMatchObject({ id: 12345 });
+    expect(
+      extractReservation({ event: "reservation.created", ...base }),
+    ).toMatchObject({ id: 12345 });
+    // No envelope at all, as the earlier implementation assumed.
+    expect(extractReservation(base)).toMatchObject({ id: 12345 });
+  });
+
+  it("ignores message events, which share the same webhook", () => {
+    expect(
+      extractReservation({
+        event: "message.received",
+        data: { id: 7, conversationId: 42, body: "What time is check-in?" },
+      }),
+    ).toBeNull();
+    expect(
+      extractReservation({ event: "conversationMessage.received", data: {} }),
+    ).toBeNull();
+  });
+
+  it("returns null for shapes that carry nothing mappable", () => {
+    expect(extractReservation(null)).toBeNull();
+    expect(extractReservation("a string")).toBeNull();
+    expect(extractReservation([base])).toBeNull();
   });
 });

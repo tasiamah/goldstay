@@ -2,10 +2,16 @@
 // Hostaway and upserts a Booking row + emits the matching
 // Transaction rows (gross / OTA fee / cleaning) idempotently.
 //
-// Auth: HMAC-SHA256 over the raw request body, secret in
-// HOSTAWAY_WEBHOOK_SECRET. On signature failure we return 401 so
-// Hostaway retries; on a malformed payload or unknown listing we
-// return 200 to avoid an infinite retry loop, but log the reason.
+// Auth: HTTP Basic, credentials in HOSTAWAY_WEBHOOK_USER and
+// HOSTAWAY_WEBHOOK_PASSWORD, matching the login and password set on
+// the webhook in Hostaway. Hostaway does not sign webhook bodies, so
+// Basic is the only protection on offer; see lib/hostaway/auth.ts.
+//
+// On bad credentials we return 401 so Hostaway retries. On a payload
+// we cannot map or a listing we do not manage we return 200, because
+// Hostaway posts every reservation on the account and emails the
+// owner after three failures, so refusing them would generate alerts
+// for listings that are deliberately not in the portal.
 //
 // Idempotency: Booking is keyed on (source, externalId) which is a
 // unique index, so we use upsert. Transactions are idempotent via
@@ -16,42 +22,42 @@ import { NextResponse } from "next/server";
 import { TransactionDirection, TransactionType } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import {
+  extractReservation,
   mapHostawayReservation,
-  type HostawayReservation,
 } from "@/lib/hostaway/mapper";
-import { verifyHostawaySignature } from "@/lib/hostaway/signature";
+import { verifyHostawayBasicAuth } from "@/lib/hostaway/auth";
 import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-type HostawayEvent = {
-  event?: string; // e.g. "reservation.created"
-  reservation?: HostawayReservation;
-  // Some Hostaway tenants flatten the payload at the top level.
-  id?: number | string;
-};
-
 export async function POST(request: Request) {
-  const secret = process.env.HOSTAWAY_WEBHOOK_SECRET;
-  if (!secret) {
+  const user = process.env.HOSTAWAY_WEBHOOK_USER;
+  const password = process.env.HOSTAWAY_WEBHOOK_PASSWORD;
+  if (!user || !password) {
     return NextResponse.json(
-      { ok: false, error: "Webhook secret not configured" },
+      { ok: false, error: "Webhook credentials not configured" },
       { status: 500 },
     );
   }
 
-  const rawBody = await request.text();
-  const signature = request.headers.get("x-hostaway-signature");
-  if (!verifyHostawaySignature(rawBody, signature, secret)) {
+  if (
+    !verifyHostawayBasicAuth(
+      request.headers.get("authorization"),
+      user,
+      password,
+    )
+  ) {
     return NextResponse.json(
-      { ok: false, error: "Invalid signature" },
-      { status: 401 },
+      { ok: false, error: "Unauthorized" },
+      { status: 401, headers: { "WWW-Authenticate": "Basic" } },
     );
   }
 
-  let payload: HostawayEvent;
+  const rawBody = await request.text();
+
+  let payload: unknown;
   try {
     payload = JSON.parse(rawBody);
   } catch {
@@ -61,11 +67,19 @@ export async function POST(request: Request) {
     );
   }
 
-  // Accept both the nested `reservation` shape and a flat shape (some
-  // Hostaway accounts post the reservation fields at the top level).
-  const reservation = payload.reservation ?? (payload as HostawayReservation);
-  const mapped = mapHostawayReservation(reservation);
+  const reservation = extractReservation(payload);
+  const mapped = reservation ? mapHostawayReservation(reservation) : null;
   if (!mapped) {
+    // Log the keys but never the values: a reservation payload
+    // carries guest names and emails, and this lands in Vercel's log
+    // drain. Keys alone are enough to tell a message event apart
+    // from a reservation whose envelope has moved again.
+    console.warn(
+      "[hostaway] ignored payload, top-level keys:",
+      payload && typeof payload === "object"
+        ? Object.keys(payload as Record<string, unknown>).join(",")
+        : typeof payload,
+    );
     return NextResponse.json(
       { ok: true, ignored: "unmappable_payload" },
       { status: 200 },
@@ -77,7 +91,9 @@ export async function POST(request: Request) {
     select: { id: true },
   });
   if (!property) {
-    // Unknown listing — don't make Hostaway retry forever.
+    // A listing we don't manage in the portal, or one whose
+    // hostawayListingId has not been filled in yet. 200 rather than
+    // an error: see the retry note at the top of the file.
     return NextResponse.json(
       { ok: true, ignored: "unknown_listing" },
       { status: 200 },
