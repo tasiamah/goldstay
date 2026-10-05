@@ -12,6 +12,15 @@ import {
   sortToParam,
   type SortState,
 } from "@/lib/admin/table";
+import {
+  filtersToParams,
+  monthParam,
+  occurredOnRange,
+  parseTransactionFilters,
+  summariseByCurrency,
+  type TransactionFilters,
+} from "@/lib/admin/transaction-filters";
+import { formatPeriod, recentPeriods } from "@/lib/statements/period";
 
 export const dynamic = "force-dynamic";
 
@@ -35,14 +44,20 @@ export default async function TransactionsListPage({
     { column: "occurredOn", direction: "desc" },
   );
   const { page, pageSize } = parsePagination(rawParams);
+  const filters = parseTransactionFilters(rawParams);
+  const range = occurredOnRange(filters.period);
 
-  const where: Prisma.TransactionWhereInput = { archivedAt: null };
+  const where: Prisma.TransactionWhereInput = {
+    archivedAt: null,
+    ...(filters.propertyId ? { propertyId: filters.propertyId } : {}),
+    ...(range ? { occurredOn: range } : {}),
+  };
 
   const orderBy: Prisma.TransactionOrderByWithRelationInput = {
     [sort.column]: sort.direction,
   } as Prisma.TransactionOrderByWithRelationInput;
 
-  const [txs, totalCount] = await Promise.all([
+  const [txs, totalCount, totalsRows, properties] = await Promise.all([
     prisma.transaction.findMany({
       where,
       orderBy,
@@ -54,7 +69,32 @@ export default async function TransactionsListPage({
       },
     }),
     prisma.transaction.count({ where }),
+    // Totals cover the whole filtered set rather than the page in
+    // front of you. A per-page subtotal would answer a question
+    // nobody asked and quietly change as you paged.
+    prisma.transaction.findMany({
+      where,
+      select: { direction: true, amount: true, currency: true },
+    }),
+    prisma.property.findMany({
+      orderBy: [{ city: "asc" }, { name: "asc" }],
+      select: { id: true, name: true, city: true },
+    }),
   ]);
+
+  const totals = summariseByCurrency(
+    totalsRows.map((t) => ({
+      direction: t.direction,
+      amount: t.amount.toString(),
+      currency: t.currency,
+    })),
+  );
+
+  const selectedProperty = filters.propertyId
+    ? properties.find((p) => p.id === filters.propertyId)
+    : undefined;
+  const isFiltered = Boolean(filters.propertyId || filters.period);
+  const monthOptions = recentPeriods(new Date(), 18);
 
   return (
     <div className="space-y-6">
@@ -67,27 +107,132 @@ export default async function TransactionsListPage({
           </p>
         </div>
         <Link
-          href="/admin/transactions/new"
+          href={`/admin/transactions/new${
+            filters.propertyId ? `?propertyId=${filters.propertyId}` : ""
+          }`}
           className="inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
         >
           Record transaction
         </Link>
       </div>
 
+      <form
+        method="get"
+        className="flex flex-wrap items-end gap-3 rounded-lg border border-stone-200 bg-white p-4"
+      >
+        <label className="text-xs uppercase tracking-wider text-stone-500">
+          Property
+          <select
+            name="propertyId"
+            defaultValue={filters.propertyId ?? ""}
+            className="mt-1 block rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-900 focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500"
+          >
+            <option value="">All properties</option>
+            {properties.map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.name} · {p.city}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        <label className="text-xs uppercase tracking-wider text-stone-500">
+          Month
+          <select
+            name="month"
+            defaultValue={filters.period ? monthParam(filters.period) : ""}
+            className="mt-1 block rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-900 focus:border-stone-500 focus:outline-none focus:ring-1 focus:ring-stone-500"
+          >
+            <option value="">All time</option>
+            {monthOptions.map((p) => (
+              <option key={monthParam(p)} value={monthParam(p)}>
+                {formatPeriod(p)}
+              </option>
+            ))}
+          </select>
+        </label>
+
+        {/* Sort and page size ride along so applying a filter does not
+            silently reset the view the operator had set up. */}
+        <input type="hidden" name="sort" value={sortToParam(sort)} />
+        <input type="hidden" name="pageSize" value={String(pageSize)} />
+
+        <button
+          type="submit"
+          className="rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-900 hover:bg-stone-50"
+        >
+          Apply
+        </button>
+        {isFiltered ? (
+          <Link
+            href="/admin/transactions"
+            className="rounded-md px-2 py-1.5 text-sm text-stone-500 hover:text-stone-900"
+          >
+            Clear
+          </Link>
+        ) : null}
+      </form>
+
+      {totals.length > 0 ? (
+        <section className="rounded-lg border border-stone-200 bg-white p-4">
+          <h3 className="text-xs uppercase tracking-wider text-stone-500">
+            {selectedProperty ? selectedProperty.name : "All properties"}
+            {filters.period ? ` · ${formatPeriod(filters.period)}` : " · all time"}
+          </h3>
+          <div className="mt-2 overflow-x-auto">
+            <table className="w-full text-sm tabular-nums">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
+                  <th className="py-1">Currency</th>
+                  <th className="py-1 text-right">In</th>
+                  <th className="py-1 text-right">Out</th>
+                  <th className="py-1 text-right">Net</th>
+                </tr>
+              </thead>
+              <tbody>
+                {totals.map((t) => (
+                  <tr key={t.currency} className="border-t border-stone-100">
+                    <td className="py-1.5 text-stone-900">{t.currency}</td>
+                    <td className="py-1.5 text-right text-emerald-700">
+                      {money(t.inflow)}
+                    </td>
+                    <td className="py-1.5 text-right text-red-700">
+                      {money(t.outflow)}
+                    </td>
+                    <td
+                      className={`py-1.5 text-right font-medium ${
+                        t.net >= 0 ? "text-stone-900" : "text-red-700"
+                      }`}
+                    >
+                      {money(t.net)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
+
       {txs.length === 0 ? (
         <div className="rounded-lg border border-dashed border-stone-300 bg-white p-10 text-center">
           <h3 className="text-base font-medium text-stone-900">
-            No transactions yet
+            {isFiltered
+              ? "Nothing recorded for this filter"
+              : "No transactions yet"}
           </h3>
           <p className="mt-1 text-sm text-stone-500">
-            Record rent payments, expenses, payouts, and refunds here. They
-            roll up into the client&rsquo;s monthly statement.
+            {isFiltered
+              ? "An empty month is not the same as a month nobody has entered yet. Widen the filter before concluding there were no costs."
+              : "Record rent payments, expenses, payouts, and refunds here. They roll up into the client\u2019s monthly statement."}
           </p>
           <Link
-            href="/admin/transactions/new"
+            href={`/admin/transactions/new${
+              filters.propertyId ? `?propertyId=${filters.propertyId}` : ""
+            }`}
             className="mt-4 inline-flex items-center rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800"
           >
-            Record first transaction
+            {isFiltered ? "Record a cost here" : "Record first transaction"}
           </Link>
         </div>
       ) : (
@@ -100,7 +245,7 @@ export default async function TransactionsListPage({
                   label="Date"
                   current={sort}
                   basePath="/admin/transactions"
-                  params={txTableParams(sort, pageSize)}
+                  params={txTableParams(sort, pageSize, filters)}
                 />
                 <PlainHeader>Property</PlainHeader>
                 <PlainHeader>Lease</PlainHeader>
@@ -109,14 +254,14 @@ export default async function TransactionsListPage({
                   label="Type"
                   current={sort}
                   basePath="/admin/transactions"
-                  params={txTableParams(sort, pageSize)}
+                  params={txTableParams(sort, pageSize, filters)}
                 />
                 <SortableHeader
                   column="amount"
                   label="Amount"
                   current={sort}
                   basePath="/admin/transactions"
-                  params={txTableParams(sort, pageSize)}
+                  params={txTableParams(sort, pageSize, filters)}
                   align="right"
                 />
               </tr>
@@ -182,7 +327,7 @@ export default async function TransactionsListPage({
           </table>
           <Pagination
             basePath="/admin/transactions"
-            params={txTableParams(sort, pageSize)}
+            params={txTableParams(sort, pageSize, filters)}
             page={page}
             pageSize={pageSize}
             totalRows={totalCount}
@@ -193,12 +338,24 @@ export default async function TransactionsListPage({
   );
 }
 
+// Filters ride along with the sort and page size. Without this,
+// clicking a column header would clear the property or the month and
+// relabel the totals without changing the heading above them.
 function txTableParams(
   sort: SortState,
   pageSize: number,
+  filters: TransactionFilters,
 ): Record<string, string> {
   return {
     sort: sortToParam(sort),
     pageSize: String(pageSize),
+    ...filtersToParams(filters),
   };
+}
+
+function money(n: number): string {
+  return n.toLocaleString("en-GB", {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 }

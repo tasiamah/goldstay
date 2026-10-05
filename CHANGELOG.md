@@ -21,6 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.70.0] - 2026-10-05
+
+### Added
+- The admin transactions list can now be filtered by property and by
+  month, and shows the inflow, outflow and net for whatever is
+  filtered rather than only for the page in front of you. Answering
+  "what did this unit cost us in September" previously meant reading
+  the whole list and adding it up by eye.
+- Property pages carry a **Costs on this unit** card: the last six
+  months of spending against that property, one row per month,
+  linking through to the filtered list. Months with nothing in them
+  show as zero rather than being skipped, because a missing month
+  reads as "no costs" when it usually means nobody has entered them
+  yet.
+- "Record cost" on that card opens the transaction form with the
+  property and the expense type already filled in.
+
+### Fixed
+- Archived transactions were still counted in six places: the client
+  dashboard, the client statements list, the Goldstay P&L page, the
+  executive KPI strip and the per-property P&L card. Deleting a
+  transaction removed it from the admin list and from the statement
+  PDF but left it in every total a client could see, so a correction
+  made the two disagree instead of agreeing.
+
 ## [1.69.0] - 2026-10-05
 
 ### Fixed
@@ -3025,7 +3050,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.70.0...HEAD
+[1.70.0]: https://github.com/tasiamah/goldstay/compare/v1.69.0...v1.70.0
 [1.69.0]: https://github.com/tasiamah/goldstay/compare/v1.68.0...v1.69.0
 [1.68.0]: https://github.com/tasiamah/goldstay/compare/v1.67.2...v1.68.0
 [1.67.2]: https://github.com/tasiamah/goldstay/compare/v1.67.1...v1.67.2

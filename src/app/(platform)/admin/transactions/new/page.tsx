@@ -5,11 +5,38 @@ import { loadPropertyOptions } from "../_loadProperties";
 
 export const dynamic = "force-dynamic";
 
+// Prefill from a link rather than trusting the query string: an
+// unrecognised type would reach the form as a select with no matching
+// option, which renders as the first entry and quietly files the
+// transaction as rent.
+const PREFILLABLE_TYPES = new Set([
+  "RENT",
+  "DEPOSIT",
+  "REFUND",
+  "EXPENSE",
+  "MANAGEMENT_FEE",
+  "PAYOUT",
+  "OTA_COMMISSION",
+  "CLEANING_FEE",
+  "GUEST_REFUND",
+  "GOLDSTAY_COMMISSION",
+  "OTHER",
+]);
+
 export default async function NewTransactionPage({
   searchParams,
 }: {
-  searchParams: { propertyId?: string; leaseId?: string; bookingId?: string };
+  searchParams: {
+    propertyId?: string;
+    leaseId?: string;
+    bookingId?: string;
+    type?: string;
+  };
 }) {
+  const prefilledType =
+    searchParams.type && PREFILLABLE_TYPES.has(searchParams.type)
+      ? searchParams.type
+      : "RENT";
   const properties = await loadPropertyOptions();
 
   return (
@@ -45,8 +72,7 @@ export default async function NewTransactionPage({
               leaseId: searchParams.leaseId,
               bookingId: searchParams.bookingId,
               occurredOn: new Date(),
-              type: "RENT",
-              direction: "INFLOW",
+              type: prefilledType,
             }}
             submitLabel="Record transaction"
           />

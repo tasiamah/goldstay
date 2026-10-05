@@ -31,6 +31,7 @@ export async function PropertyFinanceCard({
   const txns = await prisma.transaction.findMany({
     where: {
       propertyId,
+      archivedAt: null,
       occurredOn: { gte: trailing12Start },
       type: { in: [...GOLDSTAY_REVENUE_TYPES, ...GOLDSTAY_COST_TYPES] },
     },

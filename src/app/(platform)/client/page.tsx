@@ -85,6 +85,7 @@ export default async function ClientDashboardPage() {
     prisma.transaction.groupBy({
       by: ["currency", "direction"],
       where: {
+        archivedAt: null,
         property: { clientId: client.id },
         occurredOn: { gte: twelveMonthsAgo },
       },
@@ -95,6 +96,7 @@ export default async function ClientDashboardPage() {
     // inside the result set and we don't need a second round-trip.
     prisma.transaction.findMany({
       where: {
+        archivedAt: null,
         property: { clientId: client.id },
         occurredOn: { gte: thirteenMonthsAgo },
       },
@@ -107,7 +109,7 @@ export default async function ClientDashboardPage() {
       },
     }),
     prisma.transaction.findMany({
-      where: { property: { clientId: client.id } },
+      where: { archivedAt: null, property: { clientId: client.id } },
       orderBy: { occurredOn: "desc" },
       take: 10,
       include: {

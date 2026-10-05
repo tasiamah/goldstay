@@ -78,6 +78,7 @@ export default async function ClientStatementsPage({
   const [headers, properties, transactions, total] = await Promise.all([
     prisma.transaction.findMany({
       where: {
+        archivedAt: null,
         property: { clientId: client.id },
         occurredOn: { gte: horizon },
       },
@@ -613,6 +614,10 @@ function buildWhere(
   propertyId: string | undefined,
 ): Prisma.TransactionWhereInput {
   const where: Prisma.TransactionWhereInput = {
+    // Archived transactions are deleted as far as the client is
+    // concerned. Leaving them in here would show a line on screen
+    // that the statement PDF for the same month no longer counts.
+    archivedAt: null,
     property: propertyId
       ? { clientId, id: propertyId }
       : { clientId },

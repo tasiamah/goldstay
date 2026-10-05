@@ -46,6 +46,7 @@ import { Tip } from "@/components/admin/Tip";
 import { NotesPanel } from "@/components/admin/notes/NotesPanel";
 import { TasksPanel } from "@/components/admin/tasks/TasksPanel";
 import { ActivityTimeline } from "@/components/admin/ActivityTimeline";
+import { PropertyCostsCard } from "@/components/admin/finance/PropertyCostsCard";
 import { PropertyFinanceCard } from "@/components/admin/finance/PropertyFinanceCard";
 import { PropertyHandbookForm } from "@/components/properties/PropertyHandbookForm";
 import {
@@ -547,6 +548,8 @@ export default async function PropertyDetailPage({
           ) : null}
         </div>
       </section>
+
+      <PropertyCostsCard propertyId={property.id} />
 
       <PropertyFinanceCard propertyId={property.id} />
 

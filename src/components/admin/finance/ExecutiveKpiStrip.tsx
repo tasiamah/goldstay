@@ -216,6 +216,7 @@ function fmt(n: number): string {
 function loadTxns(earliest: Date) {
   return prisma.transaction.findMany({
     where: {
+      archivedAt: null,
       occurredOn: { gte: earliest },
       type: { in: [...GOLDSTAY_REVENUE_TYPES, ...GOLDSTAY_COST_TYPES] },
     },

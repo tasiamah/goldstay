@@ -72,6 +72,7 @@ export default async function FinancePage({
   // trip drives both the headline and the per-property table.
   const txns = await prisma.transaction.findMany({
     where: {
+      archivedAt: null,
       occurredOn: { gte: trailing12Start },
       type: { in: [...GOLDSTAY_REVENUE_TYPES, ...GOLDSTAY_COST_TYPES] },
     },
