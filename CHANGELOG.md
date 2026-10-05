@@ -21,6 +21,29 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.76.0] - 2026-10-05
+
+### Changed
+- An owner's statement now opens with their payout, in large type, before any
+  of the working. It used to be the last figure on the page, reached by
+  reading down a column of deductions — the same number, but discovered by
+  subtraction rather than stated.
+- Deductions are grouped by who took the money: what Airbnb withheld at
+  source, what it cost to run the property, and Goldstay's fee. Listed flat
+  in one column, Airbnb's ~24% and our 20% read as a single 50% bite by the
+  manager, which is not what happened. The block now also shows what actually
+  arrived from Airbnb, so the channel's cut is visibly taken before we touch
+  the money.
+- Pass-through costs carry a line confirming they are billed at what we were
+  charged, with no markup, which is what /pricing promises but the statement
+  never said.
+
+### Fixed
+- A month could lead with "Your payout — KES −6,000.00". A cost paid in
+  shillings on a unit that bills guests in dollars nets that currency
+  negative, and the heading claimed it as a payout. Those are now stated
+  separately as a balance to settle.
+
 ## [1.75.0] - 2026-10-05
 
 ### Added
@@ -3230,7 +3253,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.75.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.76.0...HEAD
+[1.76.0]: https://github.com/tasiamah/goldstay/compare/v1.75.0...v1.76.0
 [1.75.0]: https://github.com/tasiamah/goldstay/compare/v1.74.0...v1.75.0
 [1.74.0]: https://github.com/tasiamah/goldstay/compare/v1.73.3...v1.74.0
 [1.73.3]: https://github.com/tasiamah/goldstay/compare/v1.73.2...v1.73.3

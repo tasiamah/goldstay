@@ -131,3 +131,22 @@ function toNumber(v: number | string | null | undefined): number {
   const n = Number(v);
   return Number.isFinite(n) ? n : 0;
 }
+
+// Splits the month's per-currency totals into what the owner is paid
+// and what they owe.
+//
+// A currency can net negative when we paid for something in shillings
+// on a unit that bills its guests in dollars: the costs land in KES
+// with no KES income to offset them. There is no FX anywhere in this
+// codebase, so the two cannot be combined — but printing the shilling
+// side under "your payout" states that the owner is being paid minus
+// six thousand, which is both alarming and false. It is a balance to
+// settle, and the statement has to say which is which.
+export function splitByPayoutDirection(
+  totals: readonly StatementCurrencyTotal[],
+): { paid: StatementCurrencyTotal[]; owed: StatementCurrencyTotal[] } {
+  return {
+    paid: totals.filter((t) => t.net >= 0),
+    owed: totals.filter((t) => t.net < 0),
+  };
+}

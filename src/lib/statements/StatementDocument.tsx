@@ -14,7 +14,7 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
-import type { Statement } from "./aggregate";
+import { splitByPayoutDirection, type Statement } from "./aggregate";
 import { formatPeriod, type Period } from "./period";
 import type { ShortTermPropertyRow } from "./short-term";
 import {
@@ -162,6 +162,78 @@ const styles = StyleSheet.create({
   txDesc: { width: "40%", fontSize: 9, color: colors.body },
   txAmount: { width: "26%", textAlign: "right", fontSize: 9 },
 
+  // The payout, stated once at the top in the size it deserves. It is
+  // the only figure the owner opened the file for, and it used to be
+  // the last thing on the page, reached by reading down a column of
+  // deductions. Same number, read first instead of last.
+  heroBox: {
+    backgroundColor: colors.bg,
+    borderWidth: 1,
+    borderColor: colors.faint,
+    borderRadius: 4,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    marginBottom: 6,
+  },
+  heroLabel: {
+    fontSize: 8,
+    color: colors.muted,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginBottom: 4,
+  },
+  heroAmount: {
+    fontSize: 22,
+    color: colors.ink,
+    fontFamily: "Times-Roman",
+  },
+  heroRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  heroOwed: {
+    fontSize: 9,
+    color: colors.outflow,
+    marginTop: 4,
+  },
+
+  // Deductions are grouped by who actually took the money. Listed flat
+  // in one column, Airbnb's 24% and our 20% read as a single ~50% bite
+  // by the manager, which is not what happened.
+  groupLabel: {
+    fontSize: 8,
+    color: colors.muted,
+    textTransform: "uppercase",
+    letterSpacing: 0.5,
+    marginTop: 8,
+    marginBottom: 2,
+    paddingHorizontal: 4,
+  },
+  groupNote: {
+    fontSize: 8,
+    color: colors.muted,
+    paddingHorizontal: 4,
+    marginTop: 1,
+    marginBottom: 2,
+  },
+  subTotalRow: {
+    flexDirection: "row",
+    paddingVertical: 4,
+    paddingHorizontal: 4,
+    borderTopWidth: 1,
+    borderTopColor: colors.faint,
+    marginTop: 2,
+  },
+  payoutRow: {
+    flexDirection: "row",
+    paddingVertical: 7,
+    paddingHorizontal: 4,
+    borderTopWidth: 1.5,
+    borderTopColor: colors.ink,
+    marginTop: 4,
+  },
+
   empty: {
     fontSize: 10,
     color: colors.muted,
@@ -206,6 +278,8 @@ export function StatementDocument({
 }) {
   const clientPrimary = formatClientDisplayName(client);
   const clientSecondary = formatClientSecondaryName(client);
+  const { paid: payoutCurrencies, owed: owedCurrencies } =
+    splitByPayoutDirection(statement.totalsByCurrency);
   return (
     <Document
       title={`Goldstay statement ${formatPeriod(period)} — ${clientPrimary}`}
@@ -245,6 +319,40 @@ export function StatementDocument({
           </View>
         </View>
 
+        {/* The answer, before the working. Everything below this is
+            the owner checking a number they have already been told,
+            which is a different and much calmer act than totting up
+            deductions to discover it. */}
+        {statement.totalsByCurrency.length > 0 ? (
+          <View style={styles.heroBox}>
+            <Text style={styles.heroLabel}>
+              {payoutCurrencies.length > 0
+                ? `Your payout for ${formatPeriod(period)}`
+                : `${formatPeriod(period)}`}
+            </Text>
+            {payoutCurrencies.map((row) => (
+              <View key={row.currency} style={styles.heroRow}>
+                <Text style={styles.heroAmount}>
+                  {row.currency} {fmt(row.net)}
+                </Text>
+              </View>
+            ))}
+            {/* A currency the property earned nothing in nets
+                negative: costs we paid in shillings on a unit that
+                bills guests in dollars. Printing that as "your payout
+                — KES −6,000" is alarming and untrue. It is a balance
+                to settle, so it says so. */}
+            {owedCurrencies.map((row) => (
+              <Text key={row.currency} style={styles.heroOwed}>
+                Plus {row.currency} {fmt(Math.abs(row.net))} to settle
+                {payoutCurrencies.length > 0
+                  ? " — costs we paid in " + row.currency
+                  : ""}
+              </Text>
+            ))}
+          </View>
+        ) : null}
+
         {/* Short-stay first. It is the section shaped like the
             question the client is asking — what am I being paid —
             running gross down through each deduction to the net
@@ -269,54 +377,85 @@ export function StatementDocument({
                 </Text>
                 <View style={styles.txTable}>
                   <ShortTermLine
-                    label="Gross from guests"
+                    label="Guest payments"
                     amount={row.gross}
                     sign="+"
                   />
+
+                  {/* Airbnb's cut is taken at source: it never reaches
+                      a Goldstay account. Saying so, and showing what
+                      did arrive, is the difference between a fee the
+                      owner can place and one they assume is ours. */}
                   {row.otaFees > 0 ? (
-                    <ShortTermLine
-                      label="Airbnb fees & withheld tax"
-                      amount={row.otaFees}
-                      sign="-"
-                    />
+                    <>
+                      <Text style={styles.groupLabel}>Taken by Airbnb</Text>
+                      <ShortTermLine
+                        label="Host service fee & tax withheld at source"
+                        amount={row.otaFees}
+                        sign="-"
+                      />
+                      <ShortTermSubTotal
+                        label="Received from Airbnb"
+                        amount={row.gross - row.otaFees}
+                      />
+                    </>
                   ) : null}
-                  {row.cleaning > 0 ? (
-                    <ShortTermLine
-                      label="Cleaning"
-                      amount={row.cleaning}
-                      sign="-"
-                    />
+
+                  {row.cleaning > 0 || row.expenseItems.length > 0 ? (
+                    <>
+                      <Text style={styles.groupLabel}>
+                        Running the property
+                      </Text>
+                      {row.cleaning > 0 ? (
+                        <ShortTermLine
+                          label={
+                            row.bookings > 0
+                              ? `Cleaning (${row.bookings} ${
+                                  row.bookings === 1 ? "turnover" : "turnovers"
+                                })`
+                              : "Cleaning"
+                          }
+                          amount={row.cleaning}
+                          sign="-"
+                        />
+                      ) : null}
+                      {/* One line per cost, named. A lump sum labelled
+                          "Costs on the property" tells the owner money
+                          left without saying what for. */}
+                      {row.expenseItems.map((item, i) => (
+                        <ShortTermLine
+                          key={`${item.label}-${i}`}
+                          label={item.label}
+                          amount={item.amount}
+                          sign="-"
+                        />
+                      ))}
+                      {row.expenseItems.length > 0 ? (
+                        <Text style={styles.groupNote}>
+                          Billed at what we were charged. We add no markup.
+                        </Text>
+                      ) : null}
+                    </>
                   ) : null}
+
                   {row.goldstayCommission > 0 ? (
-                    <ShortTermLine
-                      label={`Goldstay commission${
-                        row.gross > 0
-                          ? ` (${Math.round(
-                              (row.goldstayCommission / row.gross) * 100,
-                            )}%)`
-                          : ""
-                      }`}
-                      amount={row.goldstayCommission}
-                      sign="-"
-                    />
+                    <>
+                      <Text style={styles.groupLabel}>Goldstay</Text>
+                      <ShortTermLine
+                        label={`Management fee${
+                          row.gross > 0
+                            ? ` (${Math.round(
+                                (row.goldstayCommission / row.gross) * 100,
+                              )}% of guest payments)`
+                            : ""
+                        }`}
+                        amount={row.goldstayCommission}
+                        sign="-"
+                      />
+                    </>
                   ) : null}
-                  {/* One line per cost, named. A lump sum labelled
-                      "Costs on the property" tells the owner money
-                      left without saying what for. */}
-                  {row.expenseItems.map((item, i) => (
-                    <ShortTermLine
-                      key={`${item.label}-${i}`}
-                      label={item.label}
-                      amount={item.amount}
-                      sign="-"
-                    />
-                  ))}
-                  <ShortTermLine
-                    label="Net payout"
-                    amount={row.payout}
-                    sign="="
-                    bold
-                  />
+
+                  <ShortTermPayout label="Your payout" amount={row.payout} />
                 </View>
               </View>
             ))}
@@ -445,6 +584,54 @@ export function StatementDocument({
         </Text>
       </Page>
     </Document>
+  );
+}
+
+// What actually landed, after the channel took its cut and before
+// anyone at Goldstay touched it.
+function ShortTermSubTotal({
+  label,
+  amount,
+}: {
+  label: string;
+  amount: number;
+}) {
+  return (
+    <View style={styles.subTotalRow}>
+      <Text style={[styles.txDesc, { color: colors.ink }]}>{label}</Text>
+      <Text style={[styles.txAmount, { color: colors.ink }]}>
+        {fmt(amount)}
+      </Text>
+    </View>
+  );
+}
+
+function ShortTermPayout({
+  label,
+  amount,
+}: {
+  label: string;
+  amount: number;
+}) {
+  return (
+    <View style={styles.payoutRow}>
+      <Text
+        style={[
+          styles.txDesc,
+          { color: colors.ink, fontFamily: "Helvetica-Bold", fontSize: 11 },
+        ]}
+      >
+        {label}
+      </Text>
+      <Text
+        style={[
+          styles.txAmount,
+          { color: colors.ink, fontFamily: "Helvetica-Bold", fontSize: 11 },
+        ]}
+      >
+        {fmt(amount)}
+      </Text>
+    </View>
   );
 }
 
