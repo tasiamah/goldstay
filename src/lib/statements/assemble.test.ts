@@ -207,6 +207,94 @@ describe("assembleStatement", () => {
   });
 });
 
+// Paying a client is the one money movement that must not show up in
+// their statement's arithmetic. September's payout leaves in October,
+// in shillings, against a unit that earns dollars — so without this
+// it is converted like a cost and deducted from October, while the
+// short-stay block keeps showing the full figure. The statement then
+// disagrees with itself by exactly what we had just paid them.
+describe("assembleStatement settlement handling", () => {
+  const payout = tx({
+    id: "tx-payout",
+    occurredOn: new Date("2026-09-20T00:00:00.000Z"),
+    type: "PAYOUT",
+    direction: "OUTFLOW",
+    amount: { toString: () => "39159.24" },
+    currency: "KES",
+    description: "September payout to KCB",
+  });
+
+  it("keeps a payout out of the totals entirely", async () => {
+    const { prisma } = makePrisma({
+      transactions: [
+        tx({ id: "tx-rent", amount: { toString: () => "712" }, currency: "USD" }),
+        payout,
+      ],
+      fxRates: [rate(16, 129.748)],
+    });
+    const { statement } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(statement.totalsByCurrency).toEqual([
+      { currency: "USD", inflow: 712, outflow: 0, net: 712 },
+    ]);
+    expect(statement.transactionCount).toBe(1);
+    expect(
+      statement.propertyGroups[0].transactions.map((t) => t.type),
+    ).not.toContain("PAYOUT");
+  });
+
+  it("does not let a payout reduce the figure we offer to convert", async () => {
+    // The specific harm: the owner is told they are owed less than
+    // the stays on the same page add up to.
+    const { prisma } = makePrisma({
+      transactions: [
+        tx({ id: "tx-rent", amount: { toString: () => "712" }, currency: "USD" }),
+        payout,
+      ],
+      fxRates: [rate(16, 129)],
+    });
+    const { payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(payoutInPreferred?.amount).toBe(91_848);
+  });
+
+  it("still counts a genuine cost paid in the same currency", async () => {
+    // Guarding the filter is not the same as ignoring shilling
+    // outflows: a real KES cost must still convert and deduct.
+    const { prisma } = makePrisma({
+      transactions: [
+        tx({ id: "tx-rent", amount: { toString: () => "712" }, currency: "USD" }),
+        payout,
+        tx({
+          id: "tx-repair",
+          type: "REPAIR",
+          direction: "OUTFLOW",
+          amount: { toString: () => "6450" },
+          currency: "KES",
+        }),
+      ],
+      fxRates: [rate(16, 129)],
+    });
+    const { statement } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(statement.totalsByCurrency).toEqual([
+      { currency: "USD", inflow: 712, outflow: 50, net: 662 },
+    ]);
+  });
+});
+
 // A first statement is the worst one a client ever gets and arrives
 // before they have any basis for judging us. These pin when the
 // explaining note appears, because the failure modes run both ways:

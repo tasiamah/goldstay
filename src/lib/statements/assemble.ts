@@ -23,7 +23,7 @@
 // Takes an injected prisma, like the iCal sync engine, so the
 // assembly rules can be tested without a database.
 
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient, TransactionType } from "@prisma/client";
 import { buildStatement, type Statement } from "./aggregate";
 import {
   buildShortTermSummary,
@@ -40,6 +40,12 @@ import {
   sameCurrency,
   type FxRate,
 } from "@/lib/fx/convert";
+
+// Money moving between us and the client to settle a balance the
+// statement has already reported, rather than money the property
+// earned or spent. Kept as a list because a reversal type will
+// belong here too the first time a payout is sent back.
+const SETTLEMENT_TYPES: readonly TransactionType[] = ["PAYOUT"];
 
 export type PayoutRateUsed = {
   from: string;
@@ -156,20 +162,34 @@ export async function assembleStatement({
   // before anything is totalled, so the ledger, the short-stay block
   // and the summary all agree. Done once here rather than in each of
   // the three, which is how they drifted apart last time.
-  const flat = transactions.map((t) => ({
-    id: t.id,
-    occurredOn: t.occurredOn,
-    type: t.type,
-    direction: t.direction,
-    amount: Number(t.amount),
-    currency: t.currency,
-    description: t.description,
-    reference: t.reference,
-    propertyId: t.propertyId,
-    propertyName: t.property.name,
-    leaseId: t.leaseId,
-    tenantName: t.lease?.tenantName ?? null,
-  }));
+  const flat = transactions
+    // A PAYOUT is us settling what a statement already said we owed.
+    // It is not a cost of running the property and not a deduction
+    // from what the property earned, so it must not appear in this
+    // arithmetic at all.
+    //
+    // Left in, it does real damage rather than merely reading oddly.
+    // September's payout is paid in October, in shillings, against a
+    // unit that earns dollars — so it would be converted like a cost
+    // and taken off October's total, while the short-stay block
+    // (which only deducts commission and owner costs) would go on
+    // showing the full figure. The statement would contradict itself
+    // by exactly the amount we had just paid the owner.
+    .filter((t) => !SETTLEMENT_TYPES.includes(t.type))
+    .map((t) => ({
+      id: t.id,
+      occurredOn: t.occurredOn,
+      type: t.type,
+      direction: t.direction,
+      amount: Number(t.amount),
+      currency: t.currency,
+      description: t.description,
+      reference: t.reference,
+      propertyId: t.propertyId,
+      propertyName: t.property.name,
+      leaseId: t.leaseId,
+      tenantName: t.lease?.tenantName ?? null,
+    }));
 
   const earningCurrency = earningCurrencyByProperty([
     ...flat,

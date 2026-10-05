@@ -21,7 +21,24 @@ Which part to bump:
 
 ## [Unreleased]
 
-## [1.80.1] - 2026-10-05
+## [1.81.0] - 2026-10-05
+
+### Fixed
+- A payout to a client no longer appears in that client's own statement
+  arithmetic. Paying someone is us settling a balance an earlier statement
+  already reported, not a cost of running their property, but the statement
+  treated it as any other money-out row — so a September payout sent in
+  October, in shillings, against a unit that earns dollars would have been
+  converted like a cost and deducted from October's total, while the
+  short-stay block went on showing the full figure. The statement would
+  have contradicted itself by exactly the amount just paid.
+  No payout had ever been recorded before today, so nothing already issued
+  was affected.
+
+### Changed
+- Settlement transaction types are now named in one place in the statement
+  assembler rather than assumed, so a reversal type can be added to the
+  same list when one is needed. - 2026-10-05
 
 ### Changed
 - The first-statement note no longer names the date a client joined or
@@ -3362,7 +3379,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.80.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.81.0]: https://github.com/tasiamah/goldstay/compare/v1.80.1...v1.81.0
 [1.80.1]: https://github.com/tasiamah/goldstay/compare/v1.80.0...v1.80.1
 [1.80.0]: https://github.com/tasiamah/goldstay/compare/v1.79.0...v1.80.0
 [1.79.0]: https://github.com/tasiamah/goldstay/compare/v1.78.0...v1.79.0
