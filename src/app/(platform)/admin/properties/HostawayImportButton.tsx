@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 
 import type { HostawayImportResult } from "./hostaway-actions";
 
@@ -16,7 +16,7 @@ export function HostawayImportButton({
   disabled?: boolean;
   disabledReason?: string;
 }) {
-  const [state, formAction, pending] = useActionState(action, null);
+  const [state, formAction] = useFormState(action, null);
 
   if (disabled) {
     return (
@@ -26,13 +26,7 @@ export function HostawayImportButton({
 
   return (
     <form action={formAction} className="mt-3">
-      <button
-        type="submit"
-        disabled={pending}
-        className="rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50"
-      >
-        {pending ? "Importing…" : "Import from Hostaway"}
-      </button>
+      <ImportButton />
       {state && !state.ok ? (
         <p className="mt-2 text-xs text-red-700">{state.error}</p>
       ) : null}
@@ -40,5 +34,18 @@ export function HostawayImportButton({
         <p className="mt-2 text-xs text-emerald-700">{state.message}</p>
       ) : null}
     </form>
+  );
+}
+
+function ImportButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-700 hover:bg-stone-50 disabled:opacity-50"
+    >
+      {pending ? "Importing…" : "Import from Hostaway"}
+    </button>
   );
 }

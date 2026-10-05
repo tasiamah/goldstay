@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import {
   applyClientImportAction,
@@ -16,10 +17,10 @@ import { WELCOME_SEND_CAP } from "./limits";
 export function ImportClient() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [preview, formAction, pending] = useActionState<
-    ClientImportPreview | null,
-    FormData
-  >(previewClientImportAction, null);
+  const [preview, formAction] = useFormState<ClientImportPreview | null, FormData>(
+    previewClientImportAction,
+    null,
+  );
 
   return (
     <div className="space-y-6">
@@ -37,13 +38,7 @@ export function ImportClient() {
           />
         </label>
         <div className="mt-4 flex items-center justify-end">
-          <button
-            type="submit"
-            disabled={pending}
-            className="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-60"
-          >
-            {pending ? "Validating…" : "Preview"}
-          </button>
+          <PreviewButton />
         </div>
       </form>
 
@@ -63,6 +58,19 @@ export function ImportClient() {
         />
       ) : null}
     </div>
+  );
+}
+
+function PreviewButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-60"
+    >
+      {pending ? "Validating…" : "Preview"}
+    </button>
   );
 }
 

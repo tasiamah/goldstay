@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
 import { toast } from "sonner";
 import {
   applyPropertyImportAction,
@@ -15,7 +16,7 @@ import {
 export function ImportClient() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [preview, formAction, pending] = useActionState<
+  const [preview, formAction] = useFormState<
     PropertyImportPreview | null,
     FormData
   >(previewPropertyImportAction, null);
@@ -39,13 +40,7 @@ export function ImportClient() {
           />
         </label>
         <div className="mt-4 flex items-center justify-end">
-          <button
-            type="submit"
-            disabled={pending}
-            className="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-60"
-          >
-            {pending ? "Validating…" : "Preview"}
-          </button>
+          <PreviewButton />
         </div>
       </form>
 
@@ -150,5 +145,18 @@ export function ImportClient() {
         </section>
       ) : null}
     </div>
+  );
+}
+
+function PreviewButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button
+      type="submit"
+      disabled={pending}
+      className="rounded-md bg-stone-900 px-4 py-2 text-sm font-medium text-white hover:bg-stone-800 disabled:opacity-60"
+    >
+      {pending ? "Validating…" : "Preview"}
+    </button>
   );
 }

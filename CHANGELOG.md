@@ -21,6 +21,22 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.73.2] - 2026-10-05
+
+### Fixed
+- Opening a short-term property in the admin portal showed "something went
+  wrong" instead of the property. The Bookings card called `useActionState`,
+  a React 19 hook that does not exist in the React 18 this project runs, so
+  the page threw as soon as it rendered. Affected every short-term unit.
+- The client CSV import and the property CSV import screens were broken the
+  same way and would have failed the moment either page was opened.
+
+### Added
+- A test that fails if any source file uses `useActionState` or
+  `useOptimistic`. Next pulls in React's canary type definitions, which
+  declare both hooks, so `tsc`, `next lint` and `next build` all pass while
+  the page throws in the browser — nothing we run before pushing caught this.
+
 ## [1.73.1] - 2026-10-05
 
 ### Changed
@@ -3162,7 +3178,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.73.2...HEAD
+[1.73.2]: https://github.com/tasiamah/goldstay/compare/v1.73.1...v1.73.2
 [1.73.1]: https://github.com/tasiamah/goldstay/compare/v1.73.0...v1.73.1
 [1.73.0]: https://github.com/tasiamah/goldstay/compare/v1.72.1...v1.73.0
 [1.72.1]: https://github.com/tasiamah/goldstay/compare/v1.72.0...v1.72.1
