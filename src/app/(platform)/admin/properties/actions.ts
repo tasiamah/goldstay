@@ -45,6 +45,7 @@ function fromForm(formData: FormData) {
     maxOccupancy: String(formData.get("maxOccupancy") ?? ""),
     startupCostsBudget: String(formData.get("startupCostsBudget") ?? ""),
     operatingReserve: String(formData.get("operatingReserve") ?? ""),
+    cleaningFeePerStay: String(formData.get("cleaningFeePerStay") ?? ""),
     launchedAt: String(formData.get("launchedAt") ?? ""),
     hostawayListingId: String(formData.get("hostawayListingId") ?? ""),
   };

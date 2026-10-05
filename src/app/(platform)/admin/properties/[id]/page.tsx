@@ -373,6 +373,7 @@ export default async function PropertyDetailPage({
                 signingCapacity: property.signingCapacity,
                 maxOccupancy: property.maxOccupancy,
                 startupCostsBudget: property.startupCostsBudget?.toString(),
+                cleaningFeePerStay: property.cleaningFeePerStay?.toString(),
                 operatingReserve: property.operatingReserve?.toString(),
                 // A date input needs yyyy-mm-dd, and the column is a
                 // calendar date rather than an instant, so slice off

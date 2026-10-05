@@ -77,6 +77,8 @@ export const PropertyInput = z.object({
   maxOccupancy: optionalInt,
   startupCostsBudget: optionalDecimal,
   operatingReserve: optionalDecimal,
+  // Null leaves the property on the standard turnover rate.
+  cleaningFeePerStay: optionalDecimal,
   // Clause 1.4 "Launch Date" — when the listing first went live. The
   // three-month Initial Commitment Period runs from it, so it is set
   // deliberately by an operator rather than inferred.

@@ -41,6 +41,7 @@ type Defaults = {
   // yyyy-mm-dd strings so they can go straight into a date input.
   maxOccupancy?: number | null;
   startupCostsBudget?: string | number | null;
+  cleaningFeePerStay?: string | number | null;
   operatingReserve?: string | number | null;
   launchedAt?: string | null;
   hostawayListingId?: string | null;
@@ -573,6 +574,16 @@ function ScheduleOneFields({
           min={0}
           placeholder="Float retained between payouts"
           error={fieldError("operatingReserve")}
+        />
+        <Field
+          label={`Cleaning cost per stay (${currency})`}
+          name="cleaningFeePerStay"
+          type="number"
+          step="0.01"
+          defaultValue={asInput(defaults.cleaningFeePerStay)}
+          min={0}
+          placeholder="Leave blank for the standard rate"
+          error={fieldError("cleaningFeePerStay")}
         />
       </div>
     </fieldset>

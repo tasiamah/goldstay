@@ -21,6 +21,7 @@
 import { NextResponse } from "next/server";
 import { TransactionDirection, TransactionType } from "@prisma/client";
 import { prisma } from "@/lib/db";
+import { applyStandardCleaning } from "@/lib/bookings/cleaning";
 import {
   extractReservation,
   mapHostawayReservation,
@@ -88,7 +89,7 @@ export async function POST(request: Request) {
 
   const property = await prisma.property.findUnique({
     where: { hostawayListingId: mapped.hostawayListingId },
-    select: { id: true },
+    select: { id: true, cleaningFeePerStay: true },
   });
   if (!property) {
     // A listing we don't manage in the portal, or one whose
@@ -99,6 +100,22 @@ export async function POST(request: Request) {
       { status: 200 },
     );
   }
+
+  // Hostaway sends cleaningFee only where the channel itemised one.
+  // Where it didn't, the turnover still happened and still cost us,
+  // so the standard rate stands in. Deterministic from the payload,
+  // which matters because a reservation update re-runs this upsert:
+  // the same reservation always resolves to the same figure rather
+  // than stacking a second charge on each edit.
+  const cleaning = applyStandardCleaning({
+    currency: mapped.currency,
+    grossAmount: mapped.grossAmount,
+    cleaningFee: mapped.cleaningFee,
+    netPayout: mapped.netPayout,
+    propertyFee: property.cleaningFeePerStay
+      ? Number(property.cleaningFeePerStay)
+      : null,
+  });
 
   const booking = await prisma.booking.upsert({
     where: {
@@ -118,8 +135,8 @@ export async function POST(request: Request) {
       nights: mapped.nights,
       grossAmount: mapped.grossAmount,
       otaCommission: mapped.otaCommission,
-      cleaningFee: mapped.cleaningFee,
-      netPayout: mapped.netPayout,
+      cleaningFee: cleaning.cleaningFee,
+      netPayout: cleaning.netPayout,
       currency: mapped.currency,
       status: mapped.status,
     },
@@ -131,8 +148,8 @@ export async function POST(request: Request) {
       nights: mapped.nights,
       grossAmount: mapped.grossAmount,
       otaCommission: mapped.otaCommission,
-      cleaningFee: mapped.cleaningFee,
-      netPayout: mapped.netPayout,
+      cleaningFee: cleaning.cleaningFee,
+      netPayout: cleaning.netPayout,
       currency: mapped.currency,
       status: mapped.status,
     },
@@ -164,12 +181,14 @@ export async function POST(request: Request) {
         description: `${mapped.source} commission`,
       });
     }
-    if (mapped.cleaningFee > 0) {
+    if (cleaning.cleaningFee > 0) {
       rows.push({
         type: TransactionType.CLEANING_FEE,
         direction: TransactionDirection.OUTFLOW,
-        amount: mapped.cleaningFee,
-        description: "Turnover cleaning",
+        amount: cleaning.cleaningFee,
+        description: cleaning.applied
+          ? "Turnover cleaning (standard rate)"
+          : "Turnover cleaning",
       });
     }
     // Goldstay's 20% short-stay commission is auto-recorded against

@@ -303,6 +303,11 @@ model Property {
   maxOccupancy        Int?
   startupCostsBudget  Decimal?        @db.Decimal(12, 2)
   operatingReserve    Decimal?        @db.Decimal(12, 2)
+  // What one turnover costs on this property, in the currency its
+  // bookings settle in. Null means the standard rate in
+  // lib/bookings/cleaning applies; set it only where a unit genuinely
+  // costs more or less to clean than the standard.
+  cleaningFeePerStay  Decimal?        @db.Decimal(12, 2)
   // "Launch Date" per clause 1.4: the date the Property is first
   // published and bookable on an approved Booking Channel. The
   // three-month Initial Commitment Period runs from here rather than

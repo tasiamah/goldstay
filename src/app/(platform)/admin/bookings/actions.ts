@@ -8,6 +8,7 @@ import { currentAuditActor } from "@/lib/auth";
 import { BookingInput } from "@/lib/validation/schemas";
 import { flattenZodErrors } from "@/lib/validation/preprocessors";
 import { nightsBetween } from "@/lib/bookings/nights";
+import { applyStandardCleaning } from "@/lib/bookings/cleaning";
 import { notifyClientOfBooking } from "@/lib/bookings/notify";
 import { SHORT_TERM_COMMISSION_RATE } from "@/lib/commission";
 import { recordAudit } from "@/lib/audit";
@@ -57,9 +58,31 @@ export async function createBookingAction(
     };
   }
 
+  // Leaving the cleaning box empty means "the usual", not "no clean".
+  // Same resolver the Hostaway webhook uses, so a direct booking and
+  // a channel booking on the same property carry the same charge.
+  const property = await prisma.property.findUnique({
+    where: { id: parsed.data.propertyId },
+    select: { cleaningFeePerStay: true },
+  });
+  const cleaning = applyStandardCleaning({
+    currency: parsed.data.currency,
+    grossAmount: parsed.data.grossAmount,
+    cleaningFee: parsed.data.cleaningFee,
+    netPayout: parsed.data.netPayout,
+    propertyFee: property?.cleaningFeePerStay
+      ? Number(property.cleaningFeePerStay)
+      : null,
+  });
+
   try {
     const booking = await prisma.booking.create({
-      data: { ...parsed.data, nights },
+      data: {
+        ...parsed.data,
+        nights,
+        cleaningFee: cleaning.cleaningFee,
+        netPayout: cleaning.netPayout,
+      },
     });
     await recordAudit({
       actor,

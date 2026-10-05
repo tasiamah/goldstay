@@ -21,6 +21,30 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.71.0] - 2026-10-05
+
+### Added
+- A stay that arrives without a cleaning fee of its own now picks up
+  the standard turnover charge automatically — KES 1,030 or USD 7,
+  cleaner's time plus consumables — so nobody has to enter a clean by
+  hand for every booking. It applies to Hostaway bookings and to
+  direct bookings recorded in the admin, and the amount is charged in
+  the currency the stay settled in rather than converted.
+- Properties can carry their own `Cleaning cost per stay` where a
+  unit genuinely costs more or less than the standard to turn over.
+  Left blank, the property stays on the standard rate.
+
+### Changed
+- The charge is never stacked. A booking that already carries a
+  cleaning fee from the channel keeps it, and because the figure is
+  derived from the reservation rather than remembered, a Hostaway
+  reservation update re-resolves to the same amount instead of adding
+  a second one.
+- Stays with no revenue on them are left alone. An iCal feed carries
+  dates and nothing else, so charging a clean against one would show
+  the owner a deduction on a stay their statement reports no income
+  for.
+
 ## [1.70.0] - 2026-10-05
 
 ### Added
@@ -3050,7 +3074,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.70.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.71.0...HEAD
+[1.71.0]: https://github.com/tasiamah/goldstay/compare/v1.70.0...v1.71.0
 [1.70.0]: https://github.com/tasiamah/goldstay/compare/v1.69.0...v1.70.0
 [1.69.0]: https://github.com/tasiamah/goldstay/compare/v1.68.0...v1.69.0
 [1.68.0]: https://github.com/tasiamah/goldstay/compare/v1.67.2...v1.68.0
