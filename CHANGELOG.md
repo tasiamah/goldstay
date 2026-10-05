@@ -21,6 +21,32 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.78.0] - 2026-10-05
+
+### Added
+- Statements now convert a cost into the currency the property earns in, so a
+  shilling repair on a dollar-earning apartment no longer appears as a separate
+  negative KES line the owner cannot add to their dollar payout. The conversion
+  uses the rate on the day the cost was paid and prints it on the line — for
+  example "Electricity token machine repair — KES 6,000 at 1 USD = 128.4 KES" —
+  so the owner can check we passed on exactly what we were charged, which is
+  what `/pricing` promises.
+- The payout headline now also shows the amount in the currency the owner has
+  chosen to be paid in, with the rate used. Where the statement body stays in
+  the currency Airbnb pays us, this is the figure that will actually land in
+  their account.
+- A daily job records USD exchange rates for KES, GHS, EUR and GBP
+  (`/api/cron/fx-rates`, 02:30 UTC), because the free rate sources publish
+  today's rate only and a statement issued weeks later needs the rate as it
+  was. Without a stored rate for a day, a cost stays in its own currency
+  rather than being converted at a guess.
+
+### Changed
+- The payout conversion uses the month's rate that hands over the fewest units
+  of the owner's currency. We buy the foreign currency on the day we pay, so
+  without this a rate that moved against us between the stay and the payout
+  came out of our margin rather than out of the exchange.
+
 ## [1.77.0] - 2026-10-05
 
 ### Added
@@ -3274,7 +3300,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.77.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.78.0...HEAD
+[1.78.0]: https://github.com/tasiamah/goldstay/compare/v1.77.0...v1.78.0
 [1.77.0]: https://github.com/tasiamah/goldstay/compare/v1.76.0...v1.77.0
 [1.76.0]: https://github.com/tasiamah/goldstay/compare/v1.75.0...v1.76.0
 [1.75.0]: https://github.com/tasiamah/goldstay/compare/v1.74.0...v1.75.0

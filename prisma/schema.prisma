@@ -92,6 +92,29 @@ enum TransactionType {
   OTHER
 }
 
+// Daily exchange rates, stored rather than fetched, because a
+// statement must render the same figure every time it is opened. A
+// rate looked up live would quietly restate a month that has already
+// been sent to the owner.
+//
+// `rate` is how many units of `quote` one unit of `base` buys, so
+// (USD, KES, 129.748) reads "1 USD = 129.748 KES".
+model FxRate {
+  id     String   @id @default(cuid())
+  base   String
+  quote  String
+  asOf   DateTime @db.Date
+  rate   Decimal  @db.Decimal(18, 8)
+  // Where it came from, so a figure on a statement can be traced:
+  // the provider's hostname, or "manual:XE" when an operator keyed it.
+  source String
+
+  createdAt DateTime @default(now())
+
+  @@unique([base, quote, asOf])
+  @@index([base, quote, asOf])
+}
+
 enum TransactionDirection {
   INFLOW
   OUTFLOW

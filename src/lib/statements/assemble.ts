@@ -31,10 +31,39 @@ import {
   type ShortTermPropertyRow,
 } from "./short-term";
 import { periodRange, type Period } from "./period";
+import {
+  earningCurrencyByProperty,
+  normaliseCosts,
+} from "./fx-normalise";
+import {
+  convert,
+  formatRate,
+  leastCostlyRate,
+  round2,
+  sameCurrency,
+  type FxRate,
+} from "@/lib/fx/convert";
+
+export type PayoutRateUsed = {
+  from: string;
+  to: string;
+  label: string;
+  asOf: Date;
+};
+
+export type PayoutInPreferred = {
+  currency: string;
+  amount: number;
+  rates: PayoutRateUsed[];
+};
 
 export type AssembledStatement = {
   statement: Statement;
   shortTerm: ShortTermPropertyRow[];
+  // The payout restated in the currency the client's account is set
+  // to. Null when there is nothing to convert, nothing owed, or no
+  // rate on file — never a guess.
+  payoutInPreferred: PayoutInPreferred | null;
   // An empty period still gets a statement, because a landlord
   // reading nothing cannot tell "no activity" from "the job did not
   // run". The email body changes rather than the send being skipped.
@@ -52,7 +81,14 @@ export async function assembleStatement({
 }): Promise<AssembledStatement> {
   const { start, end } = periodRange(period);
 
-  const [transactions, bookings] = await Promise.all([
+  // Reach back beyond the period: a cost on the 1st needs the rate
+  // from the last day a rate was published, which is in the previous
+  // month. 45 days covers a long public holiday without pulling the
+  // whole table.
+  const ratesFrom = new Date(start);
+  ratesFrom.setUTCDate(ratesFrom.getUTCDate() - 45);
+
+  const [transactions, bookings, rateRows] = await Promise.all([
     prisma.transaction.findMany({
       where: {
         occurredOn: { gte: start, lt: end },
@@ -82,25 +118,56 @@ export async function assembleStatement({
         property: { select: { id: true, name: true } },
       },
     }),
+    prisma.fxRate.findMany({
+      where: { asOf: { gte: ratesFrom, lt: end } },
+      select: { base: true, quote: true, asOf: true, rate: true },
+    }),
   ]);
 
-  const statement = buildStatement(
-    transactions.map((t) => ({
-      id: t.id,
-      occurredOn: t.occurredOn,
-      type: t.type,
-      direction: t.direction,
-      amount: t.amount.toString(),
-      currency: t.currency,
-      description: t.description,
-      reference: t.reference,
-      propertyId: t.propertyId,
-      propertyName: t.property.name,
-      leaseId: t.leaseId,
-      tenantName: t.lease?.tenantName ?? null,
+  const rates: FxRate[] = rateRows.map((r) => ({
+    base: r.base,
+    quote: r.quote,
+    asOf: r.asOf,
+    rate: Number(r.rate),
+  }));
+
+  // Costs are brought into the currency each property earns in
+  // before anything is totalled, so the ledger, the short-stay block
+  // and the summary all agree. Done once here rather than in each of
+  // the three, which is how they drifted apart last time.
+  const flat = transactions.map((t) => ({
+    id: t.id,
+    occurredOn: t.occurredOn,
+    type: t.type,
+    direction: t.direction,
+    amount: Number(t.amount),
+    currency: t.currency,
+    description: t.description,
+    reference: t.reference,
+    propertyId: t.propertyId,
+    propertyName: t.property.name,
+    leaseId: t.leaseId,
+    tenantName: t.lease?.tenantName ?? null,
+  }));
+
+  const earningCurrency = earningCurrencyByProperty([
+    ...flat,
+    // Bookings count as income too. Without them a short-stay
+    // property whose rent lands as one monthly transaction still
+    // resolves, but one paid per booking would not.
+    ...bookings.map((b) => ({
+      propertyId: b.propertyId,
+      direction: "INFLOW" as const,
+      amount: Number(b.grossAmount),
+      currency: b.currency,
     })),
-    { preferredCurrency: client.preferredCurrency },
-  );
+  ]);
+
+  const { rows: converted } = normaliseCosts(flat, rates, earningCurrency);
+
+  const statement = buildStatement(converted, {
+    preferredCurrency: client.preferredCurrency,
+  });
 
   const shortTerm = buildShortTermSummary(
     bookings.map((b) => ({
@@ -121,7 +188,7 @@ export async function assembleStatement({
     // they belong to the unit rather than to a stay. Sourced from the
     // same filtered list above, so an archived row cannot be deducted
     // from a payout the client is shown.
-    transactions
+    converted
       .filter(
         (t) =>
           t.type === "GOLDSTAY_COMMISSION" ||
@@ -130,7 +197,7 @@ export async function assembleStatement({
       .map((t) => ({
         propertyId: t.propertyId,
         type: t.type,
-        amount: Number(t.amount),
+        amount: t.amount,
         currency: t.currency,
         description: t.description,
       })),
@@ -140,6 +207,71 @@ export async function assembleStatement({
   return {
     statement,
     shortTerm,
+    payoutInPreferred: convertPayout({
+      totals: statement.totalsByCurrency,
+      preferred: client.preferredCurrency,
+      rates,
+      period: { start, end },
+    }),
     isEmpty: transactions.length === 0 && bookings.length === 0,
   };
+}
+
+// What the owner receives in the currency their account is set to.
+//
+// Unlike the cost conversion above, this is a trade we actually
+// perform: we hold dollars and hand over shillings, and we carry the
+// spread between the rate on any given day and the rate we get. So it
+// takes the rate across the month that leaves us least short, and
+// prints that rate on the statement — a margin the owner can see and
+// check is a different thing from one they cannot.
+function convertPayout({
+  totals,
+  preferred,
+  rates,
+  period,
+}: {
+  totals: readonly { currency: string; net: number }[];
+  preferred?: string | null;
+  rates: readonly FxRate[];
+  period: { start: Date; end: Date };
+}): PayoutInPreferred | null {
+  const to = preferred?.trim().toUpperCase();
+  if (!to) return null;
+
+  // Only what the owner is actually owed. A currency that nets
+  // negative is a balance to settle, and rolling it into the headline
+  // would hide it.
+  const owed = totals.filter((t) => t.net > 0);
+  if (owed.length === 0) return null;
+
+  // Already entirely in their currency: there is nothing to convert
+  // and a second line saying so would be noise.
+  if (owed.every((t) => sameCurrency(t.currency, to))) return null;
+
+  let total = 0;
+  const usedRates: PayoutRateUsed[] = [];
+  for (const t of owed) {
+    if (sameCurrency(t.currency, to)) {
+      total += t.net;
+      continue;
+    }
+    const rate = leastCostlyRate(rates, t.currency, to, period);
+    // One unconvertible currency sinks the whole figure rather than
+    // producing a total that silently omits part of what is owed.
+    if (!rate) return null;
+    total += convert(t.net, rate);
+    usedRates.push({
+      from: t.currency,
+      to,
+      // Printed the way a person quotes it — "1 USD = 128.4 KES" —
+      // regardless of which way the stored row ran.
+      label: rate.inverted
+        ? formatRate(to, t.currency, 1 / rate.rate)
+        : formatRate(t.currency, to, rate.rate),
+      asOf: rate.asOf,
+    });
+  }
+
+  return { currency: to, amount: round2(total), rates: usedRates };
 }

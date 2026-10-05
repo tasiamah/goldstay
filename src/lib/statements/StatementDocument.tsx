@@ -15,6 +15,7 @@ import {
   View,
 } from "@react-pdf/renderer";
 import { splitByPayoutDirection, type Statement } from "./aggregate";
+import type { PayoutInPreferred } from "./assemble";
 import { formatPeriod, type Period } from "./period";
 import type { ShortTermPropertyRow } from "./short-term";
 import {
@@ -197,6 +198,11 @@ const styles = StyleSheet.create({
     color: colors.outflow,
     marginTop: 4,
   },
+  heroConverted: {
+    fontSize: 10,
+    color: colors.body,
+    marginTop: 3,
+  },
 
   // Deductions are grouped by who actually took the money. Listed flat
   // in one column, Airbnb's 24% and our 20% read as a single ~50% bite
@@ -263,6 +269,7 @@ export function StatementDocument({
   client,
   statement,
   shortTerm,
+  payoutInPreferred,
   generatedAt,
 }: {
   period: Period;
@@ -274,6 +281,7 @@ export function StatementDocument({
   };
   statement: Statement;
   shortTerm?: ShortTermPropertyRow[];
+  payoutInPreferred?: PayoutInPreferred | null;
   generatedAt: Date;
 }) {
   const clientPrimary = formatClientDisplayName(client);
@@ -337,6 +345,17 @@ export function StatementDocument({
                 </Text>
               </View>
             ))}
+
+            {/* The same money in the currency their account is set
+                to, with the rate used spelled out. We carry the
+                spread on this conversion, so the rate is ours — and
+                therefore has to be visible rather than implied. */}
+            {payoutInPreferred ? (
+              <Text style={styles.heroConverted}>
+                {payoutInPreferred.currency} {fmt(payoutInPreferred.amount)}{" "}
+                at {payoutInPreferred.rates.map((r) => r.label).join(", ")}
+              </Text>
+            ) : null}
             {/* A currency the property earned nothing in nets
                 negative: costs we paid in shillings on a unit that
                 bills guests in dollars. Printing that as "your payout

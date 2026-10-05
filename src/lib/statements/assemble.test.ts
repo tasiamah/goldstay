@@ -15,15 +15,27 @@ function makePrisma(
   rows: {
     transactions?: unknown[];
     bookings?: unknown[];
+    fxRates?: unknown[];
   } = {},
 ) {
   const txFindMany = vi.fn().mockResolvedValue(rows.transactions ?? []);
   const bookingFindMany = vi.fn().mockResolvedValue(rows.bookings ?? []);
+  const fxFindMany = vi.fn().mockResolvedValue(rows.fxRates ?? []);
   const prisma = {
     transaction: { findMany: txFindMany },
     booking: { findMany: bookingFindMany },
+    fxRate: { findMany: fxFindMany },
   } as unknown as PrismaClient;
-  return { prisma, txFindMany, bookingFindMany };
+  return { prisma, txFindMany, bookingFindMany, fxFindMany };
+}
+
+function rate(day: number, value: number) {
+  return {
+    base: "USD",
+    quote: "KES",
+    asOf: new Date(Date.UTC(2026, 8, day)),
+    rate: value,
+  };
 }
 
 function tx(overrides: Record<string, unknown> = {}) {
@@ -182,5 +194,128 @@ describe("assembleStatement", () => {
       { currency: "KES", inflow: 40_000, outflow: 0, net: 40_000 },
     ]);
     expect(statement.propertyGroups[0].propertyName).toBe("Polaris Residency");
+  });
+});
+
+// A property earning in USD could still be billed a cost in KES, and the
+// statement then showed two currencies that could not be added together —
+// a USD payout alongside a bare negative KES line. These pin the two
+// halves of the fix: costs are converted into what the property earns,
+// and the headline payout is additionally shown in the currency we will
+// actually pay out in.
+describe("assembleStatement currency conversion", () => {
+  const usdRent = tx({
+    id: "tx-rent",
+    amount: { toString: () => "712" },
+    currency: "USD",
+  });
+  const kesRepair = tx({
+    id: "tx-repair",
+    occurredOn: new Date("2026-09-28T00:00:00.000Z"),
+    type: "REPAIR",
+    direction: "OUTFLOW",
+    amount: { toString: () => "6000" },
+    currency: "KES",
+    description: "Electricity token machine repair",
+  });
+
+  it("converts a cost into the currency the property earns in", async () => {
+    const { prisma } = makePrisma({
+      transactions: [usdRent, kesRepair],
+      fxRates: [rate(16, 129.748), rate(28, 120)],
+    });
+    const { statement } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    // The rate on the day the cost was paid, not the best one in the
+    // month: we pass on what we were charged and take no FX margin.
+    expect(statement.totalsByCurrency).toEqual([
+      { currency: "USD", inflow: 712, outflow: 50, net: 662 },
+    ]);
+    const repairRow = statement.propertyGroups[0].transactions.find(
+      (t) => t.type === "REPAIR",
+    );
+    expect(repairRow?.currency).toBe("USD");
+    expect(repairRow?.description).toContain("KES 6,000 at 1 USD = 120 KES");
+  });
+
+  it("leaves a cost in its own currency when no rate covers the day", async () => {
+    const { prisma } = makePrisma({
+      transactions: [usdRent, kesRepair],
+      // Only a rate from after the cost was paid; looking forward would
+      // be inventing a number.
+      fxRates: [{ ...rate(30, 120) }],
+    });
+    const { statement } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(statement.totalsByCurrency).toEqual([
+      { currency: "KES", inflow: 0, outflow: 6_000, net: -6_000 },
+      { currency: "USD", inflow: 712, outflow: 0, net: 712 },
+    ]);
+  });
+
+  it("converts the payout at the month's rate that costs us least", async () => {
+    const { prisma } = makePrisma({
+      transactions: [usdRent, kesRepair],
+      fxRates: [rate(16, 129.748), rate(28, 120), rate(30, 135)],
+    });
+    const { payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    // 662 USD payable. Of the month's rates, 120 KES per USD hands over
+    // the fewest shillings, so that is the one we use.
+    expect(payoutInPreferred).not.toBeNull();
+    expect(payoutInPreferred?.currency).toBe("KES");
+    expect(payoutInPreferred?.amount).toBe(79_440);
+    expect(payoutInPreferred?.rates[0].label).toBe("1 USD = 120 KES");
+  });
+
+  it("does not convert the payout when the client is already paid in their currency", async () => {
+    const { prisma } = makePrisma({
+      transactions: [usdRent],
+      fxRates: [rate(16, 129.748)],
+    });
+    const { payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "USD" },
+      period: PERIOD,
+    });
+
+    expect(payoutInPreferred).toBeNull();
+  });
+
+  it("shows no converted payout rather than a guessed one when the month has no rate", async () => {
+    const { prisma } = makePrisma({ transactions: [usdRent], fxRates: [] });
+    const { payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(payoutInPreferred).toBeNull();
+  });
+
+  it("does not offer to convert a month that owes us money", async () => {
+    const { prisma } = makePrisma({
+      transactions: [kesRepair],
+      fxRates: [rate(28, 120)],
+    });
+    const { payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    expect(payoutInPreferred).toBeNull();
   });
 });

@@ -91,6 +91,7 @@ const state = {
   transactions,
   bookings,
   lastSend: null as unknown,
+  fxRates: [] as unknown[],
 };
 
 vi.mock("@/lib/db", () => ({
@@ -99,6 +100,7 @@ vi.mock("@/lib/db", () => ({
     transaction: { findMany: async () => state.transactions },
     booking: { findMany: async () => state.bookings },
     statementSend: { findFirst: async () => state.lastSend },
+    fxRate: { findMany: async () => state.fxRates },
   },
 }));
 

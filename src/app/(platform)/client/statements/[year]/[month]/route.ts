@@ -33,7 +33,7 @@ export async function GET(
 
   const { client } = await requireClient();
 
-  const { statement, shortTerm } = await assembleStatement({
+  const { statement, shortTerm, payoutInPreferred } = await assembleStatement({
     prisma,
     client,
     period,
@@ -50,6 +50,7 @@ export async function GET(
       },
       statement,
       shortTerm,
+      payoutInPreferred,
       generatedAt: new Date(),
     }),
   );

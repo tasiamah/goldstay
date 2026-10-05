@@ -71,7 +71,8 @@ export async function sendStatementForClient(
   // statements" — we still send the cover for an empty month so
   // landlords see a heartbeat, but with a different note in the
   // email body. This also avoids the "did the cron run?" panic.
-  const { statement, shortTerm, isEmpty } = await assembleStatement({
+  const { statement, shortTerm, payoutInPreferred, isEmpty } =
+    await assembleStatement({
     prisma,
     client,
     period,
@@ -126,6 +127,7 @@ export async function sendStatementForClient(
         },
         statement,
         shortTerm,
+        payoutInPreferred,
         generatedAt: new Date(),
       }),
     );
