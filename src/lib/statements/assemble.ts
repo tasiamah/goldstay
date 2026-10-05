@@ -37,8 +37,7 @@ import {
 } from "./fx-normalise";
 import {
   convert,
-  formatRate,
-  leastCostlyRate,
+  monthlyRate,
   round2,
   sameCurrency,
   type FxRate,
@@ -48,7 +47,6 @@ export type PayoutRateUsed = {
   from: string;
   to: string;
   label: string;
-  asOf: Date;
 };
 
 export type PayoutInPreferred = {
@@ -81,13 +79,6 @@ export async function assembleStatement({
 }): Promise<AssembledStatement> {
   const { start, end } = periodRange(period);
 
-  // Reach back beyond the period: a cost on the 1st needs the rate
-  // from the last day a rate was published, which is in the previous
-  // month. 45 days covers a long public holiday without pulling the
-  // whole table.
-  const ratesFrom = new Date(start);
-  ratesFrom.setUTCDate(ratesFrom.getUTCDate() - 45);
-
   const [transactions, bookings, rateRows] = await Promise.all([
     prisma.transaction.findMany({
       where: {
@@ -118,8 +109,11 @@ export async function assembleStatement({
         property: { select: { id: true, name: true } },
       },
     }),
+    // Only the period's own rates. A month converts at a rate
+    // published during it or not at all — borrowing a neighbouring
+    // month's would value September using October's shilling.
     prisma.fxRate.findMany({
-      where: { asOf: { gte: ratesFrom, lt: end } },
+      where: { asOf: { gte: start, lt: end } },
       select: { base: true, quote: true, asOf: true, rate: true },
     }),
   ]);
@@ -163,7 +157,10 @@ export async function assembleStatement({
     })),
   ]);
 
-  const { rows: converted } = normaliseCosts(flat, rates, earningCurrency);
+  const { rows: converted } = normaliseCosts(flat, rates, earningCurrency, {
+    start,
+    end,
+  });
 
   const statement = buildStatement(converted, {
     preferredCurrency: client.preferredCurrency,
@@ -219,12 +216,12 @@ export async function assembleStatement({
 
 // What the owner receives in the currency their account is set to.
 //
-// Unlike the cost conversion above, this is a trade we actually
-// perform: we hold dollars and hand over shillings, and we carry the
-// spread between the rate on any given day and the rate we get. So it
-// takes the rate across the month that leaves us least short, and
-// prints that rate on the statement — a margin the owner can see and
-// check is a different thing from one they cannot.
+// Uses the same month rate as the costs above, rounded the other way
+// because this is money leaving rather than money already spent. We
+// hold dollars and hand over shillings, and we carry the spread
+// between any published rate and the one we actually get, so the
+// rounding keeps that spread from coming out of the management fee.
+// The rate is printed beside the figure.
 function convertPayout({
   totals,
   preferred,
@@ -256,21 +253,12 @@ function convertPayout({
       total += t.net;
       continue;
     }
-    const rate = leastCostlyRate(rates, t.currency, to, period);
+    const rate = monthlyRate(rates, t.currency, to, period, "disburse");
     // One unconvertible currency sinks the whole figure rather than
     // producing a total that silently omits part of what is owed.
     if (!rate) return null;
-    total += convert(t.net, rate);
-    usedRates.push({
-      from: t.currency,
-      to,
-      // Printed the way a person quotes it — "1 USD = 128.4 KES" —
-      // regardless of which way the stored row ran.
-      label: rate.inverted
-        ? formatRate(to, t.currency, 1 / rate.rate)
-        : formatRate(t.currency, to, rate.rate),
-      asOf: rate.asOf,
-    });
+    total += convert(t.net, rate.rate);
+    usedRates.push({ from: t.currency, to, label: rate.label });
   }
 
   return { currency: to, amount: round2(total), rates: usedRates };

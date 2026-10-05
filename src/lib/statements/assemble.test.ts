@@ -230,8 +230,9 @@ describe("assembleStatement currency conversion", () => {
       period: PERIOD,
     });
 
-    // The rate on the day the cost was paid, not the best one in the
-    // month: we pass on what we were charged and take no FX margin.
+    // One rate for the month, taken from its safest day and rounded
+    // down from 129.748 to 120 — the whole-unit step at this
+    // magnitude — so KES 6,000 bills at USD 50.
     expect(statement.totalsByCurrency).toEqual([
       { currency: "USD", inflow: 712, outflow: 50, net: 662 },
     ]);
@@ -242,12 +243,14 @@ describe("assembleStatement currency conversion", () => {
     expect(repairRow?.description).toContain("KES 6,000 at 1 USD = 120 KES");
   });
 
-  it("leaves a cost in its own currency when no rate covers the day", async () => {
+  it("leaves a cost in its own currency when the month published no rate", async () => {
     const { prisma } = makePrisma({
       transactions: [usdRent, kesRepair],
-      // Only a rate from after the cost was paid; looking forward would
-      // be inventing a number.
-      fxRates: [{ ...rate(30, 120) }],
+      // A rate, but from October. Valuing September with it would
+      // restate the month using a number from outside it.
+      fxRates: [
+        { base: "USD", quote: "KES", asOf: new Date(Date.UTC(2026, 9, 3)), rate: 120 },
+      ],
     });
     const { statement } = await assembleStatement({
       prisma,
@@ -259,6 +262,33 @@ describe("assembleStatement currency conversion", () => {
       { currency: "KES", inflow: 0, outflow: 6_000, net: -6_000 },
       { currency: "USD", inflow: 712, outflow: 0, net: 712 },
     ]);
+  });
+
+  it("converts the costs and the payout at one rate for the month", async () => {
+    // A statement that quoted one rate for a repair and another for
+    // the payout invited exactly the question we cannot answer well.
+    const { prisma } = makePrisma({
+      transactions: [usdRent, kesRepair],
+      fxRates: [rate(16, 129.748), rate(28, 129.2)],
+    });
+    const { statement, payoutInPreferred } = await assembleStatement({
+      prisma,
+      client: { id: "client-1", preferredCurrency: "KES" },
+      period: PERIOD,
+    });
+
+    // September's lowest is 129.2, rounded down to a whole shilling.
+    const repairRow = statement.propertyGroups[0].transactions.find(
+      (t) => t.type === "REPAIR",
+    );
+    expect(repairRow?.description).toContain("1 USD = 129 KES");
+    expect(payoutInPreferred?.rates[0].label).toBe("1 USD = 129 KES");
+
+    // And the arithmetic holds end to end: 6000/129 off a 712 gross,
+    // then the remainder back into shillings at the same 129.
+    expect(repairRow?.amount).toBe(46.51);
+    expect(statement.totalsByCurrency[0].net).toBe(665.49);
+    expect(payoutInPreferred?.amount).toBe(85_848.21);
   });
 
   it("converts the payout at the month's rate that costs us least", async () => {

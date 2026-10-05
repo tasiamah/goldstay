@@ -6,18 +6,27 @@
 // reading two separate balances and a payout that did not include one
 // of them.
 //
-// Two different questions are asked here, and they take different
-// rates on purpose:
+// One rate per currency pair per month, used for everything on that
+// month's statement. A rate that changed per transaction was more
+// faithful to the day but gave a statement several different rates
+// for the same month, which nobody could check at a glance and which
+// an operator could not explain on the phone.
 //
-//   1. What did a cost actually cost? Converted at the rate on the day
-//      we paid it. We recover what we spent and no more, which is what
-//      "billed at what we were charged, no markup" on /pricing means.
+// The month's rate is chosen conservatively and then rounded to a
+// clean number in the same direction, because converting currency
+// costs us a spread we would otherwise absorb: KES 2,000 at a true
+// 129.6 becomes KES 2,000 at 129, and the owner's statement says 129.
+// The rounding is at most one step — under 1% at every magnitude we
+// deal in — and the rate is printed next to every converted figure.
+// A margin the owner can see and check is a different thing from one
+// they cannot.
 //
-//   2. What will we pay the owner? We really do convert currency to
-//      pay them and we really do carry the spread, so that conversion
-//      uses the rate across the period least likely to leave us short.
-//      The rate used is printed on the statement; a margin the owner
-//      cannot see is a different thing from one they can.
+// Which way "conservative" rounds depends on which side of the trade
+// we are on, so it is derived rather than hardcoded. In practice both
+// of ours point the same way: we earn dollars from Airbnb, we spend
+// shillings on the property and we pay the owner in shillings, so a
+// lower shillings-per-dollar rate is the safe one whether we are
+// recovering a cost or handing over a payout.
 
 export type FxRate = {
   base: string;
@@ -60,68 +69,110 @@ export function sameCurrency(from: string, to: string): boolean {
   return norm(from) === norm(to);
 }
 
-// The rate in force on a given day: the most recent one at or before
-// it. Rates are not published at weekends, so a Saturday cost has to
-// look back rather than find nothing.
-//
-// Deliberately never looks forward. Using a later rate to value an
-// earlier payment restates history with information we did not have.
-export function rateOnOrBefore(
-  rates: readonly FxRate[],
-  from: string,
-  to: string,
-  date: Date,
-): ResolvedRate | null {
-  if (sameCurrency(from, to)) {
-    return { rate: 1, asOf: date, inverted: false };
-  }
-  const cutoff = date.getTime();
-  let best: ResolvedRate | null = null;
-  for (const r of rates) {
-    const oriented = orient(r, from, to);
-    if (!oriented) continue;
-    if (oriented.asOf.getTime() > cutoff) continue;
-    if (!best || oriented.asOf.getTime() > best.asOf.getTime()) {
-      best = oriented;
-    }
-  }
-  return best;
+// Which side of a conversion we are on, which is what decides the
+// safe direction to round.
+export type RateUse =
+  // We already spent money in `from` and are restating it in `to` to
+  // bill it on. Spending too little of `to` is what leaves us short,
+  // so a larger `to` figure is the safe one.
+  | "recover"
+  // We owe money in `from` and are handing it over in `to`. Here it
+  // is a larger `to` figure that leaves us short, so the safe
+  // direction is the opposite one.
+  | "disburse";
+
+export type MonthlyRate = {
+  // Units of `to` per 1 `from`, already rounded, ready to multiply.
+  rate: number;
+  // The rate written the way a person quotes it: whichever side of
+  // the pair reads as a number above one. "1 USD = 129 KES".
+  label: string;
+  // How many published rates the month offered. One is enough to
+  // convert, but it is worth being able to say it was one.
+  observations: number;
+};
+
+// The step we round the quoted rate to. Coarse enough to produce a
+// number an owner recognises, fine enough that the margin it creates
+// stays under 1% at every magnitude: 129.748 to 129 is 0.58%, 15.67
+// to 15.6 is 0.45%, 1.163 to 1.16 is 0.26%.
+function stepFor(quoted: number): number {
+  if (quoted >= 100) return 1;
+  if (quoted >= 10) return 0.1;
+  return 0.01;
 }
 
-// The rate for the payout conversion: of everything recorded in the
-// period, the one that hands over the fewest units of `to`.
+// Rounding a decimal to a decimal step through binary floating point
+// needs the division settled first: 15.6 / 0.1 is 155.99999999999997,
+// which would floor to 15.5 rather than staying at 15.6.
+const round6 = (n: number) => Math.round(n * 1e6) / 1e6;
+
+function toStep(n: number, step: number, up: boolean): number {
+  const steps = round6(n / step);
+  return round6((up ? Math.ceil(steps) : Math.floor(steps)) * step);
+}
+
+// The single rate a month's statement converts everything at: of the
+// rates published during the month, the one least likely to leave us
+// short, rounded one step further the same way.
 //
-// Expressed as "fewest units of the currency we are paying out in"
-// rather than as a minimum or a maximum, because which of those it is
-// flips with the direction of the stored pair.
-export function leastCostlyRate(
+// Returns null for a month we hold no rates for. Reaching into a
+// neighbouring month would restate a period using a rate from outside
+// it; the caller shows the currencies apart instead, which is what
+// the statement did before any of this existed.
+export function monthlyRate(
   rates: readonly FxRate[],
   from: string,
   to: string,
   period: { start: Date; end: Date },
-): ResolvedRate | null {
+  use: RateUse,
+): MonthlyRate | null {
   if (sameCurrency(from, to)) {
-    return { rate: 1, asOf: period.start, inverted: false };
+    return { rate: 1, label: formatRate(from, to, 1), observations: 0 };
   }
+
   const startMs = period.start.getTime();
   const endMs = period.end.getTime();
-  let best: ResolvedRate | null = null;
+  const oriented: number[] = [];
   for (const r of rates) {
-    const oriented = orient(r, from, to);
-    if (!oriented) continue;
-    const t = oriented.asOf.getTime();
+    const o = orient(r, from, to);
+    if (!o) continue;
+    const t = o.asOf.getTime();
     if (t < startMs || t >= endMs) continue;
-    if (!best || oriented.rate < best.rate) best = oriented;
+    oriented.push(o.rate);
   }
-  // A month we hold no rates for must not silently convert at some
-  // unrelated day's rate. The caller decides whether to fall back to
-  // the last known rate or to show the currencies apart, which is
-  // what we did before any of this existed.
-  return best;
+  if (oriented.length === 0) return null;
+
+  const wantLarge = use === "recover";
+  const picked = wantLarge
+    ? Math.max(...oriented)
+    : Math.min(...oriented);
+
+  // Round on the side of the pair that is quoted above one. Doing the
+  // same work on 0.0077 USD per KES would mean picking an arbitrary
+  // number of decimal places and printing a rate nobody would
+  // recognise as the shilling rate.
+  const quotedIsOriented = picked >= 1;
+  const quoted = quotedIsOriented ? picked : 1 / picked;
+  // Inverting the pair inverts which extreme is the safe one.
+  const roundUp = quotedIsOriented ? wantLarge : !wantLarge;
+  const rounded = toStep(quoted, stepFor(quoted), roundUp);
+
+  return {
+    // The reciprocal is kept at full precision. Rounding it too would
+    // reintroduce an error that grows with the amount — 1/131 to six
+    // places turns KES 131,000 into USD 1,000.05 — and the number we
+    // owe the owner an explanation for is the quoted one.
+    rate: quotedIsOriented ? rounded : 1 / rounded,
+    label: quotedIsOriented
+      ? formatRate(from, to, rounded)
+      : formatRate(to, from, rounded),
+    observations: oriented.length,
+  };
 }
 
-export function convert(amount: number, rate: ResolvedRate): number {
-  return round2(amount * rate.rate);
+export function convert(amount: number, rate: number): number {
+  return round2(amount * rate);
 }
 
 export function round2(n: number): number {

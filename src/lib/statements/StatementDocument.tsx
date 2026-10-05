@@ -450,8 +450,20 @@ export function StatementDocument({
                         />
                       ))}
                       {row.expenseItems.length > 0 ? (
+                        /* The second sentence appears only where
+                           something was actually converted. We add
+                           nothing to an invoice, but the month rate is
+                           rounded to a whole unit in our favour, and a
+                           note claiming no markup beside a figure that
+                           carries one is the kind of small dishonesty
+                           an owner finds on their own. */
                         <Text style={styles.groupNote}>
                           Billed at what we were charged. We add no markup.
+                          {row.expenseItems.some((i) =>
+                            i.label.includes(" at 1 "),
+                          )
+                            ? " Costs paid in another currency are converted at this month's rate, rounded to the whole unit."
+                            : ""}
                         </Text>
                       ) : null}
                     </>

@@ -87,7 +87,7 @@ const notCharged = [
   },
   {
     title: "No markup on maintenance",
-    body: "You pay the invoice we pay. Every expense over USD 50 reaches your statement with a photo receipt and a vendor reference, and anything over USD 250 is approved by you in writing before we spend it.",
+    body: "You pay the invoice we pay. Every expense over USD 50 reaches your statement with a photo receipt and a vendor reference, and anything over USD 250 is approved by you in writing before we spend it. Where a cost was paid in a different currency to the one your unit earns in, your statement shows the original amount and the rate we converted it at.",
   },
   {
     title: "No exit fee and no claw-back",
@@ -155,7 +155,7 @@ export default function Page() {
     },
     {
       q: "What is not included in the management fee?",
-      a: "The fee buys our work, not third-party costs. Maintenance and repairs, utilities, service charge, insurance and statutory taxes are yours, billed at what we were charged with no markup. Expenses over USD 50 carry a photo receipt and anything over USD 250 needs your written approval first. Furnishing a unit is also yours to pay for, but it is a separate service rather than a pass-through expense: it is sold at a published fixed price covering specification, sourcing, delivery, installation and photography, and the furniture is yours outright on installation.",
+      a: "The fee buys our work, not third-party costs. Maintenance and repairs, utilities, service charge, insurance and statutory taxes are yours, billed at what we were charged with no markup. Expenses over USD 50 carry a photo receipt and anything over USD 250 needs your written approval first. One statement is issued per month in a single currency, so a cost we paid in shillings on a unit that earns dollars is converted at that month's rate, which is printed next to the figure along with the original amount. Furnishing a unit is also yours to pay for, but it is a separate service rather than a pass-through expense: it is sold at a published fixed price covering specification, sourcing, delivery, installation and photography, and the furniture is yours outright on installation.",
     },
     {
       q: "How does that compare to other Nairobi property managers?",

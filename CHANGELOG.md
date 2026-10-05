@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.79.0] - 2026-10-05
+
+### Changed
+- A statement now converts everything at a single rate for the month,
+  rather than at the rate published on each cost's own day. A September
+  statement quoting 129.748 on one line and 128.4 on another was accurate
+  and impossible to check; one rate per month is a number an owner can
+  verify and an operator can explain on the phone.
+- That month rate is taken from the month's safest day and rounded one step
+  further the same way — 129.748 becomes 1 USD = 129 KES — because
+  converting currency costs us a spread that was otherwise coming out of
+  the management fee. The rounding is under 1% and the rate is printed
+  beside every figure it was applied to.
+- `/pricing` and the statement's own footnote now say that costs paid in
+  another currency are converted at the month's rate, rounded. "No markup"
+  is still true of every invoice we pass on, but it was sitting next to a
+  figure that carried a small conversion margin, and an owner who worked
+  that out for themselves would have been right to ask why we had not said
+  so.
+
+### Fixed
+- Yar's September electricity top-up was recorded as the USD 15.41 someone
+  had converted by hand, with the rate typed into the description. It is now
+  recorded as the KES 2,000 that was actually paid, so it converts like
+  every other shilling cost instead of printing a second rate on a
+  statement that quotes one.
+
 ## [1.78.0] - 2026-10-05
 
 ### Added
@@ -3300,7 +3327,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.78.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.79.0...HEAD
+[1.79.0]: https://github.com/tasiamah/goldstay/compare/v1.78.0...v1.79.0
 [1.78.0]: https://github.com/tasiamah/goldstay/compare/v1.77.0...v1.78.0
 [1.77.0]: https://github.com/tasiamah/goldstay/compare/v1.76.0...v1.77.0
 [1.76.0]: https://github.com/tasiamah/goldstay/compare/v1.75.0...v1.76.0
