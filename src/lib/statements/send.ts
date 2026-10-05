@@ -34,14 +34,9 @@ import { recordObserverSend } from "@/lib/clients/observers";
 import { resolveStatementRecipients } from "@/lib/clients/recipients";
 import { StatementDocument } from "./StatementDocument";
 import { renderEmailBody, renderEmailHtml } from "./email";
-import { buildStatement } from "./aggregate";
-import { buildShortTermSummary } from "./short-term";
-import {
-  formatPeriod,
-  periodRange,
-  periodSlug,
-  type Period,
-} from "./period";
+import { assembleStatement } from "./assemble";
+import type { buildStatement } from "./aggregate";
+import { formatPeriod, periodSlug, type Period } from "./period";
 
 const DEFAULT_FROM = "Goldstay Statements <statements@goldstay.co.ke>";
 const DEFAULT_SITE = "https://goldstay.co.ke";
@@ -72,80 +67,15 @@ export async function sendStatementForClient(
     return { ok: true, status: "skipped", sendId: existing.id };
   }
 
-  const { start, end } = periodRange(period);
-
-  const [transactions, shortTermBookings] = await Promise.all([
-    prisma.transaction.findMany({
-      where: {
-        occurredOn: { gte: start, lt: end },
-        property: { clientId: client.id },
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-        lease: { select: { id: true, tenantName: true } },
-      },
-      orderBy: { occurredOn: "asc" },
-    }),
-    prisma.booking.findMany({
-      where: {
-        property: { clientId: client.id, propertyType: "SHORT_TERM" },
-        checkIn: { lt: end },
-        checkOut: { gt: start },
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-      },
-    }),
-  ]);
-
   // Goldstay's brand promise on the marketing site is "monthly
   // statements" — we still send the cover for an empty month so
   // landlords see a heartbeat, but with a different note in the
   // email body. This also avoids the "did the cron run?" panic.
-  const isEmpty = transactions.length === 0 && shortTermBookings.length === 0;
-
-  const statement = buildStatement(
-    transactions.map((t) => ({
-      id: t.id,
-      occurredOn: t.occurredOn,
-      type: t.type,
-      direction: t.direction,
-      amount: t.amount.toString(),
-      currency: t.currency,
-      description: t.description,
-      reference: t.reference,
-      propertyId: t.propertyId,
-      propertyName: t.property.name,
-      leaseId: t.leaseId,
-      tenantName: t.lease?.tenantName ?? null,
-    })),
-    { preferredCurrency: client.preferredCurrency },
-  );
-
-  const shortTerm = buildShortTermSummary(
-    shortTermBookings.map((b) => ({
-      propertyId: b.propertyId,
-      propertyName: b.property.name,
-      checkIn: b.checkIn,
-      checkOut: b.checkOut,
-      nights: b.nights,
-      grossAmount: Number(b.grossAmount),
-      otaCommission: b.otaCommission ? Number(b.otaCommission) : null,
-      cleaningFee: b.cleaningFee ? Number(b.cleaningFee) : null,
-      netPayout: Number(b.netPayout),
-      currency: b.currency,
-      status: b.status,
-    })),
-    transactions
-      .filter((t) => t.type === "GOLDSTAY_COMMISSION")
-      .map((t) => ({
-        propertyId: t.propertyId,
-        type: t.type,
-        amount: Number(t.amount),
-        currency: t.currency,
-      })),
-    { start, end },
-  );
+  const { statement, shortTerm, isEmpty } = await assembleStatement({
+    prisma,
+    client,
+    period,
+  });
 
   const summary = summariseStatementForLog(statement, isEmpty);
 

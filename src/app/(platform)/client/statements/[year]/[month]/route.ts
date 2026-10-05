@@ -13,12 +13,10 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { StatementDocument } from "@/lib/statements/StatementDocument";
-import { buildStatement } from "@/lib/statements/aggregate";
-import { buildShortTermSummary } from "@/lib/statements/short-term";
+import { assembleStatement } from "@/lib/statements/assemble";
 import {
   formatPeriod,
   parsePeriod,
-  periodRange,
   periodSlug,
 } from "@/lib/statements/period";
 
@@ -35,77 +33,11 @@ export async function GET(
 
   const { client } = await requireClient();
 
-  const { start, end } = periodRange(period);
-
-  const [transactions, shortTermBookings] = await Promise.all([
-    prisma.transaction.findMany({
-      where: {
-        occurredOn: { gte: start, lt: end },
-        property: { clientId: client.id },
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-        lease: { select: { id: true, tenantName: true } },
-      },
-      orderBy: { occurredOn: "asc" },
-    }),
-    // Bookings whose stay overlaps the period at all. The aggregator
-    // clips nights to the window; gross / fees stay attached to the
-    // booking's anchor period so it matches the bank.
-    prisma.booking.findMany({
-      where: {
-        property: { clientId: client.id, propertyType: "SHORT_TERM" },
-        checkIn: { lt: end },
-        checkOut: { gt: start },
-      },
-      include: {
-        property: { select: { id: true, name: true } },
-      },
-    }),
-  ]);
-
-  const statement = buildStatement(
-    transactions.map((t) => ({
-      id: t.id,
-      occurredOn: t.occurredOn,
-      type: t.type,
-      direction: t.direction,
-      amount: t.amount.toString(),
-      currency: t.currency,
-      description: t.description,
-      reference: t.reference,
-      propertyId: t.propertyId,
-      propertyName: t.property.name,
-      leaseId: t.leaseId,
-      tenantName: t.lease?.tenantName ?? null,
-    })),
-    { preferredCurrency: client.preferredCurrency },
-  );
-
-  const shortTerm = buildShortTermSummary(
-    shortTermBookings.map((b) => ({
-      propertyId: b.propertyId,
-      propertyName: b.property.name,
-      checkIn: b.checkIn,
-      checkOut: b.checkOut,
-      nights: b.nights,
-      grossAmount: Number(b.grossAmount),
-      otaCommission: b.otaCommission ? Number(b.otaCommission) : null,
-      cleaningFee: b.cleaningFee ? Number(b.cleaningFee) : null,
-      netPayout: Number(b.netPayout),
-      currency: b.currency,
-      status: b.status,
-    })),
-    transactions
-      .filter((t) => t.type === "GOLDSTAY_COMMISSION")
-      .map((t) => ({
-        propertyId: t.propertyId,
-        type: t.type,
-        amount: Number(t.amount),
-        currency: t.currency,
-      })),
-    { start, end },
-  );
+  const { statement, shortTerm } = await assembleStatement({
+    prisma,
+    client,
+    period,
+  });
 
   const buffer = await renderToBuffer(
     StatementDocument({

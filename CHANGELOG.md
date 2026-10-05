@@ -21,6 +21,41 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.69.0] - 2026-10-05
+
+### Fixed
+- The admin statement preview did not show the same statement the
+  client gets, which made it unusable for the one thing it is for.
+  Three code paths each built a statement from their own pair of
+  queries and had drifted apart:
+  - The preview excluded archived transactions. The client's PDF
+    download and the emailed statement did not, so a ledger entry an
+    operator had deleted stayed on the document the client received
+    while being absent from the screen the operator checked it on. No
+    live statement was affected, since there are no archived
+    transactions on record yet, but the next correction would have
+    been wrong.
+  - The preview never loaded bookings, so it had no short-stay
+    section. On a short-let client that is most of the statement, and
+    it was the half nobody could check.
+  All three now call one `assembleStatement`, so the preview, the PDF
+  and the email cannot disagree again.
+- The preview's "Download PDF" button pointed at
+  `/client/statements/<year>/<month>`, which resolves the *signed-in*
+  user's client record. An operator clicking it got their own
+  statement, or a redirect to `/client/pending`, but never the
+  statement of the client whose page they were on.
+
+### Added
+- `/admin/clients/<id>/statement/pdf?month=YYYY-MM` renders any
+  client's statement PDF for an operator, which is what the preview's
+  "Open PDF" button now uses. Opens inline so it can sit in a tab
+  beside the preview.
+- A short-stay rollup on the preview: stays, nights, gross, OTA fees,
+  cleaning, Goldstay commission and payout per property and currency.
+  Nights are clipped to the period while money stays with the period
+  the stay belongs to, matching the PDF and the bank.
+
 ## [1.68.0] - 2026-10-05
 
 ### Added
@@ -2991,6 +3026,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[1.69.0]: https://github.com/tasiamah/goldstay/compare/v1.68.0...v1.69.0
 [1.68.0]: https://github.com/tasiamah/goldstay/compare/v1.67.2...v1.68.0
 [1.67.2]: https://github.com/tasiamah/goldstay/compare/v1.67.1...v1.67.2
 [1.67.1]: https://github.com/tasiamah/goldstay/compare/v1.67.0...v1.67.1

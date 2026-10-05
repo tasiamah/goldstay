@@ -1,12 +1,17 @@
-// Admin statement preview.
+// Admin statement preview: the screen for checking a statement is
+// right before anybody receives it.
 //
-// Mirrors the data the client sees on /client/statements/[year]/[month]
-// (which is the PDF route), but rendered as HTML so an operator can
-// scan it without downloading. Includes:
+// Every number here comes from assembleStatement, which is also what
+// renders the PDF and what the monthly email sends. That shared call
+// is load-bearing rather than tidiness: this page used to run its own
+// query that filtered archived transactions while the PDF paths did
+// not, and it never loaded bookings at all, so the short-stay half of
+// a short-let statement had nothing to check it against. A preview
+// that disagrees with the document is worse than no preview.
 //
 //   - month picker (?month=YYYY-MM) with the last 12 periods
-//   - per-currency totals + per-property breakdown
-//   - "Download PDF" link (proxies to the client PDF route)
+//   - per-currency totals, short-stay rollup, per-property ledger
+//   - "Open PDF" renders this client's PDF via the sibling pdf route
 //   - "Send to landlord" button that calls sendStatementForClient
 //
 // We never send PDFs unless the operator explicitly clicks the send
@@ -18,11 +23,10 @@ import { prisma } from "@/lib/db";
 import { requireAdmin } from "@/lib/auth";
 import { Breadcrumbs } from "@/components/admin/Breadcrumbs";
 import { formatClientDisplayName } from "@/lib/format-client";
-import { buildStatement } from "@/lib/statements/aggregate";
+import { assembleStatement } from "@/lib/statements/assemble";
 import {
   formatPeriod,
   isValidPeriod,
-  periodRange,
   recentPeriods,
   type Period,
 } from "@/lib/statements/period";
@@ -52,38 +56,14 @@ export default async function AdminStatementPreviewPage({
   if (!client) notFound();
 
   const period = parseMonthParam(searchParams.month) ?? defaultPeriod();
-  const { start, end } = periodRange(period);
 
-  const transactions = await prisma.transaction.findMany({
-    where: {
-      occurredOn: { gte: start, lt: end },
-      property: { clientId: client.id },
-      archivedAt: null,
-    },
-    include: {
-      property: { select: { id: true, name: true } },
-      lease: { select: { id: true, tenantName: true } },
-    },
-    orderBy: { occurredOn: "asc" },
+  // Same function the PDF and the emailed statement use, so what an
+  // operator signs off on here is the arithmetic the client receives.
+  const { statement, shortTerm } = await assembleStatement({
+    prisma,
+    client,
+    period,
   });
-
-  const statement = buildStatement(
-    transactions.map((t) => ({
-      id: t.id,
-      occurredOn: t.occurredOn,
-      type: t.type,
-      direction: t.direction,
-      amount: t.amount.toString(),
-      currency: t.currency,
-      description: t.description,
-      reference: t.reference,
-      propertyId: t.propertyId,
-      propertyName: t.property.name,
-      leaseId: t.leaseId,
-      tenantName: t.lease?.tenantName ?? null,
-    })),
-    { preferredCurrency: client.preferredCurrency },
-  );
 
   const monthOptions = recentPeriods(new Date(), 12);
   const lastSend = await prisma.statementSend.findFirst({
@@ -114,8 +94,10 @@ export default async function AdminStatementPreviewPage({
           Statement preview · {formatClientDisplayName(client)}
         </h2>
         <p className="text-sm text-stone-500">
-          Same numbers your client sees in their portal and PDF. Use the picker
-          to step through previous months.
+          Built by the same code as the PDF and the monthly email, so
+          what you check here is what the client receives. Archived
+          transactions are excluded from all three. Use the picker to
+          step through previous months.
         </p>
       </div>
 
@@ -151,12 +133,14 @@ export default async function AdminStatementPreviewPage({
 
         <div className="flex flex-wrap items-center gap-2">
           <Link
-            href={`/client/statements/${period.year}/${period.month}`}
+            href={`/admin/clients/${client.id}/statement/pdf?month=${
+              period.year
+            }-${String(period.month).padStart(2, "0")}`}
             target="_blank"
             rel="noopener"
             className="rounded-md border border-stone-300 bg-white px-3 py-1.5 text-sm text-stone-900 hover:bg-stone-50"
           >
-            Download PDF
+            Open PDF
           </Link>
           <form action={sendBound} className="inline">
             <input type="hidden" name="year" value={period.year} />
@@ -228,6 +212,72 @@ export default async function AdminStatementPreviewPage({
           </div>
         )}
       </section>
+
+      {shortTerm.length > 0 ? (
+        <section className="rounded-lg border border-stone-200 bg-white p-6">
+          <h3 className="text-base font-medium text-stone-900">
+            Short stays
+          </h3>
+          <p className="mt-1 text-xs text-stone-500">
+            Nights are clipped to this period. Gross and fees stay with
+            the period the stay belongs to, so the figure matches the
+            bank rather than the calendar.
+          </p>
+          <div className="mt-3 overflow-x-auto">
+            <table className="w-full text-sm tabular-nums">
+              <thead>
+                <tr className="text-left text-xs uppercase tracking-wider text-stone-500">
+                  <th className="py-2">Property</th>
+                  <th className="py-2 text-right">Stays</th>
+                  <th className="py-2 text-right">Nights</th>
+                  <th className="py-2 text-right">Gross</th>
+                  <th className="py-2 text-right">OTA fees</th>
+                  <th className="py-2 text-right">Cleaning</th>
+                  <th className="py-2 text-right">Goldstay</th>
+                  <th className="py-2 text-right">Payout</th>
+                  <th className="py-2">Currency</th>
+                </tr>
+              </thead>
+              <tbody>
+                {shortTerm.map((row) => (
+                  <tr
+                    key={`${row.propertyId}-${row.currency}`}
+                    className="border-t border-stone-100"
+                  >
+                    <td className="py-2 text-stone-900">{row.propertyName}</td>
+                    <td className="py-2 text-right text-stone-700">
+                      {row.bookings}
+                    </td>
+                    <td className="py-2 text-right text-stone-700">
+                      {row.nights}
+                    </td>
+                    <td className="py-2 text-right text-stone-900">
+                      {fmt(row.gross)}
+                    </td>
+                    <td className="py-2 text-right text-red-700">
+                      {row.otaFees ? `-${fmt(row.otaFees)}` : fmt(0)}
+                    </td>
+                    <td className="py-2 text-right text-red-700">
+                      {row.cleaning ? `-${fmt(row.cleaning)}` : fmt(0)}
+                    </td>
+                    <td className="py-2 text-right text-red-700">
+                      {row.goldstayCommission
+                        ? `-${fmt(row.goldstayCommission)}`
+                        : fmt(0)}
+                    </td>
+                    <td className="py-2 text-right font-medium text-stone-900">
+                      {fmt(row.payout)}
+                    </td>
+                    <td className="py-2 text-xs text-stone-500">
+                      {row.currency}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+      ) : null}
 
       {statement.propertyGroups.map((group) => (
         <section
