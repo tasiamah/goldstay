@@ -11,6 +11,14 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // tsconfig.json sets "jsx": "preserve" because Next does its own JSX
+  // transform. Vite honours that and then cannot parse what it emits,
+  // which is why no .tsx file could be imported into a test — and why
+  // a React-19-only hook in a client component, and a PDF template
+  // that threw, both reached production with a green suite.
+  oxc: {
+    jsx: { runtime: "automatic", importSource: "react" },
+  },
   test: {
     environment: "node",
     include: ["src/**/*.test.ts", "src/**/*.test.tsx"],

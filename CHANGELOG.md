@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.77.0] - 2026-10-05
+
+### Added
+- Tests can now import `.tsx` files. `tsconfig.json` sets `"jsx": "preserve"`
+  because Next does its own transform, Vite honoured that and then could not
+  parse the result, so no component, page or PDF template could be tested at
+  all. This is the root reason runtime errors kept reaching production with a
+  green suite: `tsc`, `next lint` and `next build` type-check and compile a
+  component but never execute it.
+- Eleven tests that render the statement PDF: an empty month, a long-let
+  client with no short-stay section, a month where one currency nets
+  negative, a direct booking with no channel fee, several properties in
+  several currencies, a ledger long enough to paginate, and a cost with no
+  description. The template had no test of any kind.
+- A smoke test that server-renders the admin statement preview page, covering
+  a malformed `?month=` and an empty month.
+- The React-version guard now asks the installed React whether each name
+  imported from it actually exists, rather than checking a hand-written list
+  of banned hooks. It needs no maintenance and covers React 19 APIs nobody
+  has thought to ban yet.
+
 ## [1.76.0] - 2026-10-05
 
 ### Changed
@@ -3253,7 +3274,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.76.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.77.0...HEAD
+[1.77.0]: https://github.com/tasiamah/goldstay/compare/v1.76.0...v1.77.0
 [1.76.0]: https://github.com/tasiamah/goldstay/compare/v1.75.0...v1.76.0
 [1.75.0]: https://github.com/tasiamah/goldstay/compare/v1.74.0...v1.75.0
 [1.74.0]: https://github.com/tasiamah/goldstay/compare/v1.73.3...v1.74.0

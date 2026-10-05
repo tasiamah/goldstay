@@ -1,32 +1,23 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import * as React from "react";
 
 // `useActionState` compiles cleanly on this project but does not exist
 // at runtime. Next pulls in @types/react's canary definitions, which
-// declare the hook, while the installed react is 18.3.1, where it was
-// never shipped — it landed in React 19. So `tsc`, `next lint` and
-// `next build` all pass and the page throws
+// declare the React 19 surface, while the installed react is 18.3.1.
+// So `tsc`, `next lint` and `next build` all pass, and the page throws
 // "useActionState is not a function" the moment a browser opens it.
 //
-// That is how the admin property page 500'd in production for every
-// short-term unit: one client component used the React 19 hook and
-// every automated gate we run said it was fine.
+// That is how the admin property page 500'd for every short-term unit,
+// and both CSV import screens with it.
 //
-// The rest of the codebase uses `useFormState` + `useFormStatus` from
-// react-dom, which is the React 18 spelling. This test holds that line
-// until react itself is upgraded, at which point delete it and migrate
-// the call sites together.
-const BANNED = [
-  "useActionState",
-  // Same story: React 19 only, declared by the canary types.
-  "useOptimistic",
-];
+// Rather than keep a hand-written list of banned names, this asks the
+// installed React whether each thing we import from it actually
+// exists. It needs no maintenance, and it covers hooks nobody has
+// thought to ban yet.
 
 const SRC = join(process.cwd(), "src");
-
-// This file names the banned hooks in order to ban them, so it has to
-// leave itself out of its own scan.
 const SELF = "react-version-hooks.test.ts";
 
 function sourceFiles(dir: string): string[] {
@@ -42,38 +33,63 @@ function sourceFiles(dir: string): string[] {
   return out;
 }
 
-describe("React 18 runtime compatibility", () => {
+// Named, value-position imports from "react" only. `import type` is
+// erased before it can fail, and a namespace import gives us no names
+// to check.
+const IMPORT_FROM_REACT =
+  /import\s+(?!type\s)\{([^}]*)\}\s*from\s*["']react["']/g;
+
+// Exports React only ships under the "react-server" condition, which
+// is what Next resolves for Server Components but not what a plain
+// require() in this test sees. Real, and not checkable this way.
+const SERVER_CONDITION_EXPORTS = new Set(["cache"]);
+
+function reactImports(source: string): string[] {
+  const names: string[] = [];
+  for (const match of source.matchAll(IMPORT_FROM_REACT)) {
+    for (const raw of match[1].split(",")) {
+      const specifier = raw.trim();
+      // `import { useState, type FormEvent }` — the inline type is
+      // erased at compile time and can never fail at runtime, so it
+      // is skipped rather than looked up.
+      if (!specifier || /^type\s/.test(specifier)) continue;
+      const name = specifier.split(/\s+as\s+/)[0].trim();
+      if (name && !SERVER_CONDITION_EXPORTS.has(name)) names.push(name);
+    }
+  }
+  return names;
+}
+
+describe("everything imported from react exists in the installed react", () => {
   const files = sourceFiles(SRC);
 
   it("scans the whole source tree", () => {
-    // Guards the guard: if the walk silently returned nothing, every
-    // assertion below would pass vacuously.
+    // Guards the guard: a walk that silently returned nothing would
+    // make every assertion below pass vacuously.
     expect(files.length).toBeGreaterThan(100);
   });
 
-  it("installs a react whose major matches the hooks we allow", () => {
-    const { version } = JSON.parse(
-      readFileSync(
-        join(process.cwd(), "node_modules", "react", "package.json"),
-        "utf8",
-      ),
-    ) as { version: string };
-    // When this fails, React has been upgraded and the ban below is
-    // obsolete rather than wrong — remove the file, don't loosen it.
-    expect(version.startsWith("18.")).toBe(true);
+  it("finds the react imports that are actually there", () => {
+    // Likewise for the regex. If it stops matching, nothing is checked.
+    const all = files.flatMap((f) => reactImports(readFileSync(f, "utf8")));
+    expect(all).toContain("useState");
+    expect(all.length).toBeGreaterThan(20);
   });
 
-  for (const hook of BANNED) {
-    it(`does not use ${hook}, which React 18 does not ship`, () => {
-      const offenders = files.filter((f) =>
-        readFileSync(f, "utf8").includes(hook),
-      );
-      // Report paths, not just a count — a bare "expected 1 to be 0"
-      // tells whoever hits this nothing about where to look.
-      expect(
-        offenders.map((f) => f.slice(SRC.length + 1)),
-        `${hook} is React 19 only; use the react-dom useFormState / useFormStatus pair instead`,
-      ).toEqual([]);
-    });
-  }
+  it("imports nothing react does not export", () => {
+    const offenders: string[] = [];
+    for (const file of files) {
+      for (const name of reactImports(readFileSync(file, "utf8"))) {
+        if (!(name in React)) {
+          offenders.push(`${file.slice(SRC.length + 1)} imports ${name}`);
+        }
+      }
+    }
+    expect(
+      offenders,
+      `react ${React.version} does not export these. A React 19 API on a ` +
+        `React 18 runtime type-checks but throws in the browser; the ` +
+        `react-dom useFormState / useFormStatus pair is the 18 spelling.`,
+    ).toEqual([]);
+  });
 });
