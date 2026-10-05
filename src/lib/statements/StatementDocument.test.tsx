@@ -4,7 +4,7 @@ import { renderToBuffer } from "@react-pdf/renderer";
 import { StatementDocument } from "./StatementDocument";
 import { buildStatement, type StatementTransaction } from "./aggregate";
 import { buildShortTermSummary } from "./short-term";
-import { firstStatementFacts, firstStatementNote } from "./first-statement";
+import { firstStatementNote } from "./first-statement";
 
 // The statement PDF had no test of any kind, because tsconfig sets
 // "jsx": "preserve" for Next and Vite could not then parse a .tsx at
@@ -100,13 +100,7 @@ describe("StatementDocument", () => {
     // Real sentences, including the long one, because the note is a
     // new block of flowing text in a template whose other text is all
     // short labels and figures.
-    const note = firstStatementNote(
-      firstStatementFacts({
-        joinedOn: new Date(Date.UTC(2026, 8, 5)),
-        period: { start: period.start, end: period.end },
-      }),
-      september,
-    );
+    const note = firstStatementNote({ isPartMonth: true });
     expect(note.length).toBeGreaterThan(1);
     const buf = await render([tx()], [], [], { firstStatementNote: note });
     expect(isPdf(buf)).toBe(true);

@@ -224,9 +224,22 @@ describe("assembleStatement first-statement note", () => {
       period: PERIOD,
     });
 
-    expect(note.join(" ")).toContain(
-      "You joined Goldstay on 5 September, so this statement covers 26 of September 2026's 30 days",
-    );
+    expect(note.join(" ")).toContain("You joined partway through the month");
+    expect(note.join(" ")).toContain("no reviews");
+  });
+
+  it("leaves out the part-month line for a client who had the whole month", async () => {
+    const { prisma } = makePrisma({
+      transactions: [tx()],
+      joinedOn: new Date("2026-06-11T00:00:00.000Z"),
+    });
+    const { firstStatementNote: note } = await assembleStatement({
+      prisma,
+      client: { id: "client-1" },
+      period: PERIOD,
+    });
+
+    expect(note.join(" ")).not.toContain("partway through");
     expect(note.join(" ")).toContain("no reviews");
   });
 

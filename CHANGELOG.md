@@ -21,6 +21,18 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.80.1] - 2026-10-05
+
+### Changed
+- The first-statement note no longer names the date a client joined or
+  counts the days it covers. It reads "You joined partway through the
+  month, so this statement covers a part month rather than a full one",
+  which is one wording that serves every client instead of a sentence
+  assembled per statement. Whether that sentence appears at all still
+  depends on when they joined, so nobody who had the whole month is told
+  otherwise. A test fails the build if a date or a figure reappears in
+  the copy.
+
 ## [1.80.0] - 2026-10-05
 
 ### Added
@@ -3350,7 +3362,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.80.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.80.1...HEAD
+[1.80.1]: https://github.com/tasiamah/goldstay/compare/v1.80.0...v1.80.1
 [1.80.0]: https://github.com/tasiamah/goldstay/compare/v1.79.0...v1.80.0
 [1.79.0]: https://github.com/tasiamah/goldstay/compare/v1.78.0...v1.79.0
 [1.78.0]: https://github.com/tasiamah/goldstay/compare/v1.77.0...v1.78.0

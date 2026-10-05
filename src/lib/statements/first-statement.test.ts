@@ -1,124 +1,97 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  firstStatementFacts,
-  firstStatementNote,
-} from "./first-statement";
+import { firstStatementNote, joinedPartWayThrough } from "./first-statement";
 
 const SEPTEMBER = {
   start: new Date(Date.UTC(2026, 8, 1)),
   end: new Date(Date.UTC(2026, 9, 1)),
 };
-const PERIOD = { year: 2026, month: 9 };
 
-describe("firstStatementFacts", () => {
-  it("counts the days a mid-month joiner was actually with us", () => {
-    // Yar joined on 5 September, so 26 of September's 30 days.
-    const f = firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 8, 5)),
-      period: SEPTEMBER,
-    });
-    expect(f).toEqual({
-      daysLive: 26,
-      daysInPeriod: 30,
-      joinedOn: new Date(Date.UTC(2026, 8, 5)),
-    });
+describe("joinedPartWayThrough", () => {
+  it("is true for someone who joined mid-month", () => {
+    expect(
+      joinedPartWayThrough({
+        joinedOn: new Date("2026-09-05T14:23:47.000Z"),
+        period: SEPTEMBER,
+      }),
+    ).toBe(true);
   });
 
-  it("counts the join day as a whole day whatever time they signed up", () => {
-    // The stored createdAt carries a time. Counting from the
-    // timestamp gives 25, which sits next to a sentence naming the
-    // 5th — and anyone counting the 5th to the 30th gets 26.
-    const f = firstStatementFacts({
-      joinedOn: new Date("2026-09-05T14:23:47.000Z"),
-      period: SEPTEMBER,
-    });
-    expect(f.daysLive).toBe(26);
-    expect(f.joinedOn).toEqual(new Date(Date.UTC(2026, 8, 5)));
+  it("is false for someone who was with us before it started", () => {
+    // Their month was a full one. Telling them otherwise is an
+    // excuse they can disprove from their own records.
+    expect(
+      joinedPartWayThrough({
+        joinedOn: new Date(Date.UTC(2026, 7, 20)),
+        period: SEPTEMBER,
+      }),
+    ).toBe(false);
   });
 
-  it("reports no part month for someone who joined before it started", () => {
-    // The month was a full one for them, and claiming otherwise is
-    // the kind of excuse a client can disprove from their own records.
-    const f = firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 7, 20)),
-      period: SEPTEMBER,
-    });
-    expect(f.daysLive).toBeNull();
+  it("does not call a month short over a few hours", () => {
+    // Joined at two in the afternoon on the 1st. They had the month.
+    expect(
+      joinedPartWayThrough({
+        joinedOn: new Date("2026-09-01T14:00:00.000Z"),
+        period: SEPTEMBER,
+      }),
+    ).toBe(false);
   });
 
-  it("treats joining on the first as a full month", () => {
-    const f = firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 8, 1)),
-      period: SEPTEMBER,
-    });
-    expect(f.daysLive).toBeNull();
+  it("is true on the last day of the month", () => {
+    expect(
+      joinedPartWayThrough({
+        joinedOn: new Date("2026-09-30T09:00:00.000Z"),
+        period: SEPTEMBER,
+      }),
+    ).toBe(true);
   });
 
-  it("gets the length of a 31-day month right", () => {
-    const f = firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 9, 10)),
-      period: {
-        start: new Date(Date.UTC(2026, 9, 1)),
-        end: new Date(Date.UTC(2026, 10, 1)),
-      },
-    });
-    expect(f.daysInPeriod).toBe(31);
-    expect(f.daysLive).toBe(22);
-  });
-
-  it("survives a missing join date", () => {
-    const f = firstStatementFacts({ joinedOn: null, period: SEPTEMBER });
-    expect(f.daysLive).toBeNull();
-    expect(f.daysInPeriod).toBe(30);
-  });
-
-  it("never reports more days than the month has", () => {
-    const f = firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 10, 4)),
-      period: SEPTEMBER,
-    });
-    expect(f.daysLive).toBe(0);
+  it("is false for a date after the period and for no date at all", () => {
+    expect(
+      joinedPartWayThrough({
+        joinedOn: new Date(Date.UTC(2026, 9, 4)),
+        period: SEPTEMBER,
+      }),
+    ).toBe(false);
+    expect(joinedPartWayThrough({ joinedOn: null, period: SEPTEMBER })).toBe(
+      false,
+    );
   });
 });
 
 describe("firstStatementNote", () => {
-  it("states the real dates rather than claiming a partial month", () => {
-    const note = firstStatementNote(
-      firstStatementFacts({
-        joinedOn: new Date(Date.UTC(2026, 8, 5)),
-        period: SEPTEMBER,
-      }),
-      PERIOD,
+  it("names no dates or figures, so one wording serves every client", () => {
+    for (const isPartMonth of [true, false]) {
+      const text = firstStatementNote({ isPartMonth }).join(" ");
+      expect(text).not.toMatch(/\d/);
+      expect(text).not.toMatch(
+        /January|February|March|April|May|June|July|August|September|October|November|December/,
+      );
+    }
+  });
+
+  it("mentions the part month only when there was one", () => {
+    expect(firstStatementNote({ isPartMonth: true }).join(" ")).toContain(
+      "You joined partway through the month",
     );
-    expect(note[0]).toBe(
-      "You joined Goldstay on 5 September, so this statement covers 26 of September 2026's 30 days rather than a full month.",
+    expect(firstStatementNote({ isPartMonth: false }).join(" ")).not.toContain(
+      "partway through",
     );
   });
 
-  it("omits the part-month sentence when the month was not short", () => {
-    const note = firstStatementNote(
-      firstStatementFacts({
-        joinedOn: new Date(Date.UTC(2026, 7, 1)),
-        period: SEPTEMBER,
-      }),
-      PERIOD,
+  it("drops the 'also' when there is no preceding sentence to follow on from", () => {
+    expect(firstStatementNote({ isPartMonth: true })[1]).toContain(
+      "A new listing also starts with no reviews",
     );
-    expect(note.join(" ")).not.toContain("rather than a full month");
-    expect(note.join(" ")).not.toContain("joined Goldstay");
+    expect(firstStatementNote({ isPartMonth: false })[0]).toContain(
+      "A new listing starts with no reviews",
+    );
   });
 
   it("always explains the review ramp and frames the month as a baseline", () => {
-    for (const joinedOn of [
-      new Date(Date.UTC(2026, 8, 5)),
-      new Date(Date.UTC(2026, 7, 1)),
-      null,
-    ]) {
-      const note = firstStatementNote(
-        firstStatementFacts({ joinedOn, period: SEPTEMBER }),
-        PERIOD,
-      );
-      const text = note.join(" ");
+    for (const isPartMonth of [true, false]) {
+      const text = firstStatementNote({ isPartMonth }).join(" ");
       expect(text).toContain("no reviews");
       expect(text).toContain("starting point rather than a run rate");
     }
@@ -127,10 +100,7 @@ describe("firstStatementNote", () => {
   it("promises nothing about future earnings", () => {
     // A statement is a financial document. "Usually climb" is a
     // description; "will climb" is a forecast we cannot honour.
-    const text = firstStatementNote(
-      firstStatementFacts({ joinedOn: null, period: SEPTEMBER }),
-      PERIOD,
-    ).join(" ");
+    const text = firstStatementNote({ isPartMonth: true }).join(" ");
     expect(text).toContain("usually climb");
     expect(text).not.toMatch(/will (climb|increase|rise|grow)/);
     expect(text).not.toMatch(/guarantee/i);

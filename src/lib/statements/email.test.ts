@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { copiedLine, renderEmailBody, renderEmailHtml } from "./email";
-import { firstStatementFacts, firstStatementNote } from "./first-statement";
+import { firstStatementNote } from "./first-statement";
 
 // The statement is the only client email that reaches anybody other
 // than the account holder, so the line disclosing that is worth
@@ -101,16 +101,7 @@ describe("renderEmailBody", () => {
 // the one they read on their phone, and the attachment is opened
 // later if at all.
 describe("first-statement note in the email", () => {
-  const note = firstStatementNote(
-    firstStatementFacts({
-      joinedOn: new Date(Date.UTC(2026, 7, 5)),
-      period: {
-        start: new Date(Date.UTC(2026, 7, 1)),
-        end: new Date(Date.UTC(2026, 8, 1)),
-      },
-    }),
-    PERIOD,
-  );
+  const note = firstStatementNote({ isPartMonth: true });
 
   function withNote(render: typeof renderEmailBody | typeof renderEmailHtml) {
     return render({

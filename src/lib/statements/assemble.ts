@@ -32,7 +32,7 @@ import {
 } from "./short-term";
 import { periodRange, type Period } from "./period";
 import { earningCurrencyByProperty, normaliseCosts } from "./fx-normalise";
-import { firstStatementFacts, firstStatementNote } from "./first-statement";
+import { firstStatementNote, joinedPartWayThrough } from "./first-statement";
 import {
   convert,
   monthlyRate,
@@ -244,13 +244,12 @@ export async function assembleStatement({
     firstStatementNote:
       earlierSend || isEmpty
         ? []
-        : firstStatementNote(
-            firstStatementFacts({
+        : firstStatementNote({
+            isPartMonth: joinedPartWayThrough({
               joinedOn: clientRow?.createdAt ?? null,
               period: { start, end },
             }),
-            period,
-          ),
+          }),
     isEmpty,
   };
 }
