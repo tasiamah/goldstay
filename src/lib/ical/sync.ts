@@ -10,6 +10,22 @@
 // financial data on a Booking that already has it — meaning, once
 // the operator has typed in real numbers, subsequent iCal polls
 // only refresh the dates / status, not the gross / fees / payout.
+//
+// A property can be fed by both a calendar feed and the Hostaway
+// webhook at once, and the two describe the same reservations. The
+// webhook is the better source because it carries the money, so this
+// engine stands down on any stay a PMS booking already holds rather
+// than writing a second, zero-value row beside it. What it keeps
+// doing is the thing the webhook cannot: a feed is re-read in full
+// every 15 minutes, so anything the webhook never delivered, after
+// Hostaway's three retries have run out, still reaches the calendar
+// here.
+//
+// It does not delete a placeholder that a PMS booking has since
+// superseded. A Booking id is the sourceRef of the client's
+// notification row, which is the bell item they can see and not only
+// an idempotency lock (see bookings/notify.ts), so retiring one is an
+// operator's call and not a cron's.
 
 import type { BookingSource, PrismaClient } from "@prisma/client";
 import { isCalendarBlock, type ParsedEvent } from "./parse";
@@ -20,6 +36,11 @@ export type IcalSyncResult = {
   refreshed: number;
   skippedBlocks: number;
   skippedExisting: number;
+  // Stays the feed describes that a PMS-sourced booking already
+  // holds, so we left them alone. Expected to be the majority on a
+  // property wired to the Hostaway webhook, and expected to be zero
+  // on one that only has calendar feeds.
+  skippedPmsCovered: number;
   // Bookings created by this run, in creation order. Returned rather
   // than acted on because notifying the client is the orchestrator's
   // job (run.ts): this engine takes an injected prisma so it can be
@@ -31,8 +52,10 @@ export type IcalSyncResult = {
 // Prefix the iCal UID with the source so we never clash with manual
 // or Hostaway-sourced bookings, even on the off chance the same UID
 // shows up in two channels.
+const ICAL_PREFIX = "ical:";
+
 function externalIdFor(source: BookingSource, uid: string): string {
-  return `ical:${source}:${uid}`;
+  return `${ICAL_PREFIX}${source}:${uid}`;
 }
 
 export async function syncIcalEvents({
@@ -53,6 +76,7 @@ export async function syncIcalEvents({
     refreshed: 0,
     skippedBlocks: 0,
     skippedExisting: 0,
+    skippedPmsCovered: 0,
     createdBookingIds: [],
   };
 
@@ -93,6 +117,48 @@ export async function syncIcalEvents({
       } else {
         result.refreshed++;
       }
+      continue;
+    }
+
+    // Nothing of ours covers this stay, so we are about to import it.
+    // Before we do, check whether a PMS-sourced booking already holds
+    // it. On a property wired to the Hostaway webhook the answer is
+    // normally yes: Hostaway sends the same reservation the feed
+    // describes, seconds after it is made, with the money attached.
+    //
+    // (source, externalId) cannot see that collision. Airbnb's iCal
+    // UID and Hostaway's reservation id are unrelated values, so the
+    // stay itself is the only join available.
+    //
+    // Exact dates rather than an overlap test, because back-to-back
+    // stays share a date: one guest's checkout is the next one's
+    // check-in, and an overlap test would suppress a real booking.
+    // Both sides anchor to UTC midnight (parse.ts and the Hostaway
+    // mapper), so the equality holds.
+    const pmsHeld = await prisma.booking.findFirst({
+      where: {
+        propertyId,
+        source,
+        checkIn: event.start,
+        checkOut: event.end,
+        // A cancelled booking does not hold the dates. If the feed
+        // still lists the stay, the calendar is the better authority
+        // and we want the placeholder.
+        status: { not: "CANCELLED" },
+        // Anything this engine did not import. A Hostaway webhook row
+        // carries the bare reservation id; a manually entered one
+        // carries null, which needs saying explicitly because
+        // `NOT (null LIKE 'ical:%')` is null in Postgres, not true.
+        OR: [
+          { externalId: null },
+          { externalId: { not: { startsWith: ICAL_PREFIX } } },
+        ],
+      },
+      select: { id: true },
+    });
+
+    if (pmsHeld) {
+      result.skippedPmsCovered++;
       continue;
     }
 

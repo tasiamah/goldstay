@@ -21,6 +21,43 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.68.0] - 2026-10-05
+
+### Added
+- A property can now be fed by a calendar feed and the Hostaway
+  webhook at the same time without producing two bookings per stay.
+  The iCal sync checks whether a PMS-sourced booking already holds the
+  same stay before importing, and stands down if one does.
+
+  This mattered because the two sources describe the same
+  reservations, and nothing could see the overlap: the sync keys on
+  `(source, externalId)` with an `ical:` prefix, and an Airbnb iCal
+  UID has no relationship to a Hostaway reservation id, so the same
+  Airbnb stay arriving by both routes produced two calendar rows and
+  two "you have a booking" emails to the owner. Matching is on
+  property, channel and exact check-in and checkout dates. Exact
+  rather than overlapping, because back-to-back stays share a date and
+  an overlap test would suppress a real booking.
+
+  The feed still does the one thing the webhook cannot. A webhook is
+  fire-and-forget and Hostaway gives up after three failed deliveries,
+  whereas a feed is re-read in full every 15 minutes, so a reservation
+  that never arrived still reaches the calendar. Keeping both means a
+  missed delivery is recovered rather than lost.
+
+  A placeholder that a PMS booking has since superseded is left in
+  place rather than deleted. A booking id is the `sourceRef` of the
+  client's notification row, which is the bell item they can see and
+  not only an idempotency lock, so retiring one is an operator's call.
+- `skippedPmsCovered` on the sync result, so the count is visible
+  rather than looking like the feed silently stopped importing.
+
+### Fixed
+- The iCal sync engine had no tests, despite its own comment saying it
+  was split from the HTTP fetch so the upsert logic could be tested.
+  It now has seven, covering the coverage guard, the refusal to
+  overwrite financials an operator backfilled, and calendar blocks.
+
 ## [1.67.2] - 2026-10-05
 
 ### Fixed
@@ -2954,6 +2991,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.67.0...HEAD
+[1.68.0]: https://github.com/tasiamah/goldstay/compare/v1.67.2...v1.68.0
 [1.67.2]: https://github.com/tasiamah/goldstay/compare/v1.67.1...v1.67.2
 [1.67.1]: https://github.com/tasiamah/goldstay/compare/v1.67.0...v1.67.1
 [1.67.0]: https://github.com/tasiamah/goldstay/compare/v1.66.3...v1.67.0
