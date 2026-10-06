@@ -29,6 +29,7 @@ import Link from "next/link";
 import type { Prisma } from "@prisma/client";
 import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { EXCLUDE_SETTLEMENTS } from "@/lib/transactions/settlement";
 import {
   formatPeriod,
   isValidPeriod,
@@ -81,6 +82,9 @@ export default async function ClientStatementsPage({
         archivedAt: null,
         property: { clientId: client.id },
         occurredOn: { gte: horizon },
+        // Settling a balance is not earning or spending. See
+        // lib/transactions/settlement.
+        ...EXCLUDE_SETTLEMENTS,
       },
       select: {
         occurredOn: true,
@@ -621,6 +625,10 @@ function buildWhere(
     property: propertyId
       ? { clientId, id: propertyId }
       : { clientId },
+    // The same reason, for the same reason: this table has to agree
+    // with the PDF for the month it is showing, and the PDF leaves
+    // settlements out of the arithmetic.
+    ...EXCLUDE_SETTLEMENTS,
   };
   if (period) {
     const start = new Date(Date.UTC(period.year, period.month - 1, 1));

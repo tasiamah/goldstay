@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { EXCLUDE_SETTLEMENTS } from "@/lib/transactions/settlement";
 import {
   aggregateTransactionsByCurrency,
   occupancyPercent,
@@ -99,6 +100,11 @@ export default async function ClientDashboardPage() {
         archivedAt: null,
         property: { clientId: client.id },
         occurredOn: { gte: thirteenMonthsAgo },
+        // A payout is money we sent this landlord, not a deduction
+        // from what they earned. Netted in, the first one turned a
+        // dashboard that should have read plus three hundred dollars
+        // into minus thirty-nine thousand shillings.
+        ...EXCLUDE_SETTLEMENTS,
       },
       select: {
         occurredOn: true,
@@ -109,7 +115,11 @@ export default async function ClientDashboardPage() {
       },
     }),
     prisma.transaction.findMany({
-      where: { archivedAt: null, property: { clientId: client.id } },
+      where: {
+        archivedAt: null,
+        property: { clientId: client.id },
+        ...EXCLUDE_SETTLEMENTS,
+      },
       orderBy: { occurredOn: "desc" },
       take: 10,
       include: {

@@ -21,6 +21,20 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.81.1] - 2026-10-06
+
+### Fixed
+- A payout showed up as a deduction everywhere except the statement
+  PDF. Recording the first one gave Yar's own portal a KES 39,159
+  outflow with no shilling inflow to set against it, so the dashboard
+  figure she sees first read minus 47,159 rather than minus 8,000, and
+  the costs card on her flat counted the money she had been paid as a
+  cost of running the place. The statement PDF was already correct;
+  the client dashboard, the client statements list and the per-unit
+  costs card each ran their own query and each had to be told
+  separately. All four now share one definition of what a settlement
+  is.
+
 ## [1.81.0] - 2026-10-05
 
 ### Fixed
@@ -3380,6 +3394,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.81.1]: https://github.com/tasiamah/goldstay/compare/v1.81.0...v1.81.1
 [1.81.0]: https://github.com/tasiamah/goldstay/compare/v1.80.1...v1.81.0
 [1.80.1]: https://github.com/tasiamah/goldstay/compare/v1.80.0...v1.80.1
 [1.80.0]: https://github.com/tasiamah/goldstay/compare/v1.79.0...v1.80.0

@@ -23,7 +23,7 @@
 // Takes an injected prisma, like the iCal sync engine, so the
 // assembly rules can be tested without a database.
 
-import type { PrismaClient, TransactionType } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 import { buildStatement, type Statement } from "./aggregate";
 import {
   buildShortTermSummary,
@@ -31,6 +31,7 @@ import {
   type ShortTermPropertyRow,
 } from "./short-term";
 import { periodRange, type Period } from "./period";
+import { isSettlement } from "@/lib/transactions/settlement";
 import { earningCurrencyByProperty, normaliseCosts } from "./fx-normalise";
 import { firstStatementNote, joinedPartWayThrough } from "./first-statement";
 import {
@@ -40,12 +41,6 @@ import {
   sameCurrency,
   type FxRate,
 } from "@/lib/fx/convert";
-
-// Money moving between us and the client to settle a balance the
-// statement has already reported, rather than money the property
-// earned or spent. Kept as a list because a reversal type will
-// belong here too the first time a payout is sent back.
-const SETTLEMENT_TYPES: readonly TransactionType[] = ["PAYOUT"];
 
 export type PayoutRateUsed = {
   from: string;
@@ -175,7 +170,7 @@ export async function assembleStatement({
     // (which only deducts commission and owner costs) would go on
     // showing the full figure. The statement would contradict itself
     // by exactly the amount we had just paid the owner.
-    .filter((t) => !SETTLEMENT_TYPES.includes(t.type))
+    .filter((t) => !isSettlement(t.type))
     .map((t) => ({
       id: t.id,
       occurredOn: t.occurredOn,

@@ -17,6 +17,7 @@
 import Link from "next/link";
 
 import { prisma } from "@/lib/db";
+import { EXCLUDE_SETTLEMENTS } from "@/lib/transactions/settlement";
 import {
   monthParam,
   summariseByCurrency,
@@ -44,6 +45,9 @@ export async function PropertyCostsCard({
       archivedAt: null,
       direction: "OUTFLOW",
       occurredOn: { gte: windowStart },
+      // Paying the owner is the largest outflow a unit will ever
+      // have and it is not a cost of running the unit.
+      ...EXCLUDE_SETTLEMENTS,
     },
     select: {
       occurredOn: true,
