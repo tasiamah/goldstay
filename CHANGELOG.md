@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.82.1] - 2026-10-23
+
+### Changed
+- "Resend welcome email" now picks its wording from whether the client
+  has ever signed in. Someone who never reached the portal gets the
+  note that takes the blame for the old link failing; everyone else
+  gets the ordinary welcome. Leaving that to whoever pressed the
+  button meant it would never have happened.
+
 ## [1.82.0] - 2026-10-23
 
 ### Changed
@@ -3421,6 +3430,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.82.1]: https://github.com/tasiamah/goldstay/compare/v1.82.0...v1.82.1
 [1.82.0]: https://github.com/tasiamah/goldstay/compare/v1.81.1...v1.82.0
 [1.81.1]: https://github.com/tasiamah/goldstay/compare/v1.81.0...v1.81.1
 [1.81.0]: https://github.com/tasiamah/goldstay/compare/v1.80.1...v1.81.0

@@ -115,6 +115,9 @@ export async function resendClientWelcomeAction(
       fullName: true,
       companyName: true,
       country: true,
+      // Set on first sign-in, so null means they have never reached
+      // the portal at all.
+      authUserId: true,
     },
   });
   if (!client) return { ok: false, error: "Client not found." };
@@ -122,10 +125,16 @@ export async function resendClientWelcomeAction(
   // sendClientWelcomeEmail owns the audit entry now, so a resend and
   // an initial send are recorded the same way rather than only the
   // resend being written from the call site.
+  const { authUserId, ...details } = client;
+
   const result = await sendClientWelcomeEmail({
-    ...client,
+    ...details,
     clientId,
     actor,
+    // Someone who has never signed in is not being welcomed again,
+    // they are being rescued. The warmer copy says the first link
+    // failing was our fault, which it was.
+    tone: authUserId ? "welcome" : "never-signed-in",
     auditAction: "client.welcomed.resent",
   });
   if (!result.ok) {
