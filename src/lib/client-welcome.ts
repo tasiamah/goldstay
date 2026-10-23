@@ -23,7 +23,7 @@
 //                          the link and just send a "your account is
 //                          ready, head to /login" note.
 
-import { mintCallbackLink } from "@/lib/supabase/magic-link";
+import { createInvite, INVITE_TTL_DAYS, inviteUrl } from "@/lib/clients/invite";
 import { logCommunication } from "@/lib/comms";
 import { recordAudit } from "@/lib/audit";
 import type { CurrentActor } from "@/lib/auth";
@@ -43,6 +43,10 @@ type WelcomeInput = {
   // initiated sends pass null and the audit trail attributes the
   // event to "system".
   actor?: CurrentActor | null;
+  // Why we are writing. A nudge to someone who never reached the
+  // portal opens differently to a first hello, and the invite row
+  // records the same reason so the two are distinguishable later.
+  tone?: "welcome" | "never-signed-in";
   // Which event this send represents on the client's audit timeline.
   // An operator reading the history needs to tell "we welcomed them"
   // apart from "we welcomed them again", so the two get distinct
@@ -79,26 +83,38 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
     DEFAULT_FROM;
   const siteUrl = process.env.PUBLIC_SITE_URL || DEFAULT_SITE;
 
-  // Always try to mint a "set your password" recovery link, but
-  // tolerate failure: if Supabase is misconfigured (missing service
-  // key in dev) we still want the welcome note to land. The fallback
-  // note tells the landlord to use /login, which is the same flow
-  // they'd land on anyway.
+  // A Goldstay invite link, not a Supabase one.
   //
-  // We deliberately use a recovery link rather than a one-shot magic
-  // link here: new clients should leave their first session with a
-  // password set so subsequent sign-ins are instant. The recovery
-  // landing page (/account/password) is gated on a valid session, so
-  // the same link both authenticates them and drops them into the
-  // form to choose credentials.
+  // We used to mint a magic link here and email it. It lasted an hour
+  // and could be used once, and because /auth/callback spends the
+  // token on a GET, any mail scanner that prefetched the URL burned
+  // it before the landlord clicked. Three of the first seventeen
+  // clients never completed login. See lib/clients/invite.
+  //
+  // Still best-effort: if this fails we send the note anyway, telling
+  // them to use /login, which is where they would end up regardless.
   let magicLink: string | null = null;
-  try {
-    magicLink = await mintSetPasswordLink(input.email, siteUrl);
-  } catch (err) {
-    console.warn("[client-welcome] set-password link generation failed", err);
+  if (input.clientId) {
+    try {
+      const token = await createInvite({
+        clientId: input.clientId,
+        reason:
+          input.tone === "never-signed-in"
+            ? "NEVER_SIGNED_IN"
+            : input.auditAction === "client.welcomed.resent"
+              ? "RESEND"
+              : "WELCOME",
+      });
+      magicLink = inviteUrl(token, siteUrl);
+    } catch (err) {
+      console.warn("[client-welcome] invite link generation failed", err);
+    }
   }
 
-  const subject = "Welcome to Goldstay";
+  const subject =
+    input.tone === "never-signed-in"
+      ? "Your Goldstay portal is waiting \u2014 here\u2019s a fresh link"
+      : "Welcome to Goldstay";
   const text = renderText({ ...input, magicLink, siteUrl });
   const html = renderHtml({ ...input, magicLink, siteUrl });
 
@@ -207,33 +223,11 @@ async function maybeRecordAudit(
   }
 }
 
-async function mintSetPasswordLink(
-  email: string,
-  siteUrl: string,
-): Promise<string | null> {
-  // We point the post-exchange redirect at /account/password so the
-  // first thing a brand-new client sees after clicking the link is
-  // the "choose a password" form. The form's onward redirect, in
-  // turn, puts them on /client once saved — same end state as the
-  // old magic-link flow but with credentials on file so future
-  // sign-ins are instant.
-  //
-  // We stick with type: "magiclink" rather than "recovery" because
-  // magiclink works for both existing and brand-new auth users
-  // (Supabase provisions on demand), whereas recovery requires the
-  // user to already exist. The first call from createClientAction is
-  // always for a fresh email, so this matters.
-  return mintCallbackLink({
-    email,
-    siteUrl,
-    next: "/account/password",
-  });
-}
-
 function renderText({
   fullName,
   companyName,
   country,
+  tone,
   magicLink,
   siteUrl,
 }: WelcomeInput & { magicLink: string | null; siteUrl: string }): string {
@@ -250,40 +244,71 @@ function renderText({
 
   const linkBlock = magicLink
     ? [
-        "Set your password and open your portal (link valid for 60 minutes):",
+        "Open your portal and set a password:",
         magicLink,
         "",
-        "If the link expires, request a fresh one at",
-        `${siteUrl}/login`,
-        "by entering your email and clicking \"Forgot password?\".",
+        `This link works for ${INVITE_TTL_DAYS} days and you can use it more than once —`,
+        "open it on your phone now and your laptop later.",
       ].join("\n")
-    : `Head to ${siteUrl}/login, enter ${"your email"} and click "Forgot password?" — we'll email you a link to set your password.`;
+    : `Head to ${siteUrl}/login, enter your email and click "Forgot password?" — we'll email you a link to set your password.`;
 
-  return [
-    greeting,
-    "",
-    accountLine,
-    `We've set you up for ${market}. From your portal you can:`,
-    "",
-    "  • See every property we manage for you, with live occupancy.",
-    "  • Download your monthly statement as a PDF.",
-    "  • Browse every transaction behind that statement.",
-    "  • Accept your management agreement in one click.",
-    "",
-    linkBlock,
-    "",
-    "Questions? Reply to this email and you'll reach a real person at",
-    "Goldstay. We answer within one business day.",
-    "",
-    "Best,",
-    "The Goldstay team",
-  ].join("\n");
+  // Someone who never reached the portal does not need telling what
+  // Goldstay is. They need to know we noticed, that it was our fault
+  // and not theirs, and that this link behaves differently.
+  const opening =
+    tone === "never-signed-in"
+      ? [
+          greeting,
+          "",
+          "We were going through our records and realised you have never",
+          "managed to get into your Goldstay portal — and that is on us, not",
+          "you. The first link we sent was only valid for an hour, and some",
+          "email providers quietly open links to scan them, which used a few",
+          "of them up before anyone had a chance to click.",
+          "",
+          "We have fixed that. Here is a new link that lasts a week and can be",
+          "used as many times as you like.",
+        ]
+      : [
+          greeting,
+          "",
+          accountLine,
+          `We've set you up for ${market}. From your portal you can:`,
+          "",
+          "  • See every property we manage for you, with live occupancy.",
+          "  • Download your monthly statement as a PDF.",
+          "  • Browse every transaction behind that statement.",
+          "  • Accept your management agreement in one click.",
+        ];
+
+  const closing =
+    tone === "never-signed-in"
+      ? [
+          "Everything that has happened on your property while you were locked",
+          "out is in there waiting for you — nothing has been missed.",
+          "",
+          "If it gives you any trouble at all, just reply to this email and a",
+          "real person will sort it out.",
+          "",
+          "Best,",
+          "The Goldstay team",
+        ]
+      : [
+          "Questions? Reply to this email and you'll reach a real person at",
+          "Goldstay. We answer within one business day.",
+          "",
+          "Best,",
+          "The Goldstay team",
+        ];
+
+  return [...opening, "", linkBlock, "", ...closing].join("\n");
 }
 
 function renderHtml({
   fullName,
   companyName,
   country,
+  tone,
   magicLink,
   siteUrl,
 }: WelcomeInput & { magicLink: string | null; siteUrl: string }): string {
@@ -295,8 +320,29 @@ function renderHtml({
     country === "KE" ? "Kenya (Nairobi)" : country === "GH" ? "Ghana (Accra)" : "your market";
 
   const cta = magicLink
-    ? `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(magicLink)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Set my password &amp; open my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">Link valid for 60 minutes. You\u2019ll set a password so future sign-ins are instant.</p>`
+    ? `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(magicLink)}" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Open my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">This link works for ${INVITE_TTL_DAYS} days and you can use it more than once.</p>`
     : `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(siteUrl)}/login" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Sign in to my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">Use \u201cForgot password?\u201d to set a password — sign-ins are instant after that.</p>`;
+
+  const headline =
+    tone === "never-signed-in"
+      ? `<h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Let\u2019s get you in, ${escapeHtml(firstName)}.</h1>`
+      : `<h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Welcome, ${escapeHtml(firstName)}.</h1>`;
+
+  const intro =
+    tone === "never-signed-in"
+      ? `<p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">We were going through our records and realised you have never managed to get into your Goldstay portal \u2014 and that is on us, not you. The first link we sent was only valid for an hour, and some email providers quietly open links to scan them, which used a few of them up before anyone had a chance to click.</p><p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">We have fixed that. The link below lasts ${INVITE_TTL_DAYS} days and can be used as many times as you like.</p>`
+      : `<p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${accountLine} We've set you up for <strong>${market}</strong>. From your portal you can:</p>
+                <ul style="color:#44403c;line-height:1.7;margin:16px 0 0 0;padding-left:20px">
+                  <li>See every property we manage for you, with live occupancy.</li>
+                  <li>Download your monthly statement as a PDF.</li>
+                  <li>Browse every transaction behind that statement.</li>
+                  <li>Accept your management agreement in one click.</li>
+                </ul>`;
+
+  const signoff =
+    tone === "never-signed-in"
+      ? "Everything that has happened on your property while you were locked out is in there waiting for you \u2014 nothing has been missed. If the link gives you any trouble at all, just reply to this email and it comes straight to a real person."
+      : "Questions? Reply to this email and you'll reach a real person at Goldstay. We answer within one business day.";
 
   return `<!doctype html>
 <html lang="en">
@@ -308,16 +354,10 @@ function renderHtml({
             <tr>
               <td>
                 <p style="font-size:18px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:0 0 4px 0">Goldstay<span style="color:#b91c1c">.</span></p>
-                <h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Welcome, ${escapeHtml(firstName)}.</h1>
-                <p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${accountLine} We've set you up for <strong>${market}</strong>. From your portal you can:</p>
-                <ul style="color:#44403c;line-height:1.7;margin:16px 0 0 0;padding-left:20px">
-                  <li>See every property we manage for you, with live occupancy.</li>
-                  <li>Download your monthly statement as a PDF.</li>
-                  <li>Browse every transaction behind that statement.</li>
-                  <li>Accept your management agreement in one click.</li>
-                </ul>
+                ${headline}
+                ${intro}
                 ${cta}
-                <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">Questions? Reply to this email and you'll reach a real person at Goldstay. We answer within one business day.</p>
+                <p style="color:#78716c;font-size:13px;line-height:1.55;margin:32px 0 0 0;border-top:1px solid #e7e5e4;padding-top:24px">${signoff}</p>
                 <p style="color:#a8a29e;font-size:12px;margin:24px 0 0 0">Goldstay · Premium property management in ${launchedCityPhrase()}</p>
               </td>
             </tr>

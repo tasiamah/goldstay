@@ -264,6 +264,7 @@ model Client {
   notifications  ClientNotification[]
   observers      ClientObserver[]
   referrals      Referral[]
+  invites        ClientInvite[]
 
   @@index([country])
   @@index([archivedAt])
@@ -292,60 +293,60 @@ enum SigningCapacity {
 }
 
 model Property {
-  id                  String          @id @default(cuid())
-  clientId            String          @map("ownerId")
-  client              Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  country             Country
-  city                String
-  neighbourhood       String?
-  address             String
-  name                String
+  id                 String          @id @default(cuid())
+  clientId           String          @map("ownerId")
+  client             Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  country            Country
+  city               String
+  neighbourhood      String?
+  address            String
+  name               String
   // Apartment / house / unit identifier within the building. Kept
   // separate from `name` so admins can't accidentally publish a
   // property called "Luminara" with no way to tell which apartment
   // is being managed. Optional because standalone houses don't
   // have one.
-  unitNumber          String?
-  description         String?
-  bedrooms            Int?
-  bathrooms           Int?
-  sizeSqm             Int?
-  acquiredOn          DateTime?
-  status              PropertyStatus  @default(ONBOARDING)
-  propertyType        PropertyType    @default(LONG_TERM)
+  unitNumber         String?
+  description        String?
+  bedrooms           Int?
+  bathrooms          Int?
+  sizeSqm            Int?
+  acquiredOn         DateTime?
+  status             PropertyStatus  @default(ONBOARDING)
+  propertyType       PropertyType    @default(LONG_TERM)
   // Capacity the client signs the management agreement in. Defaults to
   // REGISTERED_OWNER: it is the common case, and it leaves existing
   // rows on the warranty they were already signing under, so no
   // backfill is needed. Admins set it during onboarding when the
   // client is a rent-to-rent operator or signing for someone else.
-  signingCapacity     SigningCapacity @default(REGISTERED_OWNER)
+  signingCapacity    SigningCapacity @default(REGISTERED_OWNER)
   // Schedule 1 of the short-let agreement. Maximum occupancy is a
   // listing and house-rules input; the two money fields feed the
   // Schedule 1 table. All nullable — Schedule 1 permits them to be
   // confirmed through onboarding rather than before acceptance, and
   // the contract renders "to be confirmed" instead of inventing a
   // number.
-  maxOccupancy        Int?
-  startupCostsBudget  Decimal?        @db.Decimal(12, 2)
-  operatingReserve    Decimal?        @db.Decimal(12, 2)
+  maxOccupancy       Int?
+  startupCostsBudget Decimal?        @db.Decimal(12, 2)
+  operatingReserve   Decimal?        @db.Decimal(12, 2)
   // What one turnover costs on this property, in the currency its
   // bookings settle in. Null means the standard rate in
   // lib/bookings/cleaning applies; set it only where a unit genuinely
   // costs more or less to clean than the standard.
-  cleaningFeePerStay  Decimal?        @db.Decimal(12, 2)
+  cleaningFeePerStay Decimal?        @db.Decimal(12, 2)
   // "Launch Date" per clause 1.4: the date the Property is first
   // published and bookable on an approved Booking Channel. The
   // three-month Initial Commitment Period runs from here rather than
   // from the Start Date, so this is a commercially load-bearing
   // timestamp. System-recorded, hence null until the listing is live.
-  launchedAt          DateTime?
+  launchedAt         DateTime?
   // Hostaway listing id for SHORT_TERM properties. Used by the
   // webhook receiver to map external reservations back to a property.
-  hostawayListingId   String?         @unique
+  hostawayListingId  String?         @unique
   // Soft-delete column. See Client.archivedAt.
-  archivedAt          DateTime?
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  archivedAt         DateTime?
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
 
   units        Unit[]
   documents    Document[]
@@ -827,11 +828,11 @@ model AgreementReminder {
   step Int
   kind AgreementReminderKind @default(EMAIL)
 
-  status AgreementReminderStatus @default(QUEUED)
+  status   AgreementReminderStatus @default(QUEUED)
   // Bounded retries: a transient Resend outage should not cost the
   // client a reminder, and a permanently dead address should not be
   // retried every hour forever.
-  attempts Int @default(0)
+  attempts Int                     @default(0)
 
   // Resend message id, for tracing a specific nudge in their dashboard.
   providerId String?
@@ -1655,44 +1656,44 @@ model ClientNotification {
 // The two compose: a share is one document now, an observer is the
 // monthly numbers from here on.
 model ClientObserver {
-  id           String    @id @default(cuid())
-  clientId     String
-  client       Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  email        String
+  id               String    @id @default(cuid())
+  clientId         String
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  email            String
   // Both optional. An operator adding a co-owner mid-call has the
   // address and often not the spelling of the name, and a half-filled
   // row that works beats a required field that stalls the call.
-  name         String?
+  name             String?
   // Free text, shown back to the client so a list of three addresses
   // is legible a year later: "sister and co-owner", "accountant".
-  relationship String?
+  relationship     String?
   // Who put them here. The client's own address when they added the
   // observer themselves from /client/account, an operator's when it
   // was done in admin.
-  addedByEmail String?
+  addedByEmail     String?
   // The observer's own way off the list. They have no Goldstay
   // account and never asked to be added, so "reply and ask" is not
   // an adequate opt-out; this token is the credential for the
   // unsubscribe page and is the *only* thing it can do. Minted once
   // at creation and carried in the notice email.
-  unsubscribeToken String @unique
+  unsubscribeToken String    @unique
   // Set when the observer opts out via the link in their notice
   // email. Distinct from removedAt: this is the recipient's own
   // decision and the client must not be able to undo it by
   // re-adding, so addObserver reactivates a removed row but leaves
   // an unsubscribed one alone.
-  unsubscribedAt DateTime?
+  unsubscribedAt   DateTime?
   // Set when the client or an operator takes them off the list.
   // Soft, so the history of who could see the numbers when survives
   // a removal — the same reason AgreementShare keeps revoked rows.
-  removedAt      DateTime?
+  removedAt        DateTime?
   // Ops visibility: whether the copies are actually going out. A
   // co-owner who says "I never get these" is answered by looking
   // here rather than by reading Resend logs.
-  lastSentAt     DateTime?
-  sendCount      Int       @default(0)
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  lastSentAt       DateTime?
+  sendCount        Int       @default(0)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   // One row per address per client. Re-adding a previously removed
   // observer reactivates that row rather than creating a second,
@@ -1745,4 +1746,66 @@ enum ClientNotificationTone {
 
   // Physical enum name predates the owner -> client rename.
   @@map("OwnerNotificationTone")
+}
+
+// A welcome link we own, rather than a Supabase one we forward.
+//
+// We used to email the Supabase magic link directly. Two things went
+// wrong with that and only one of them was about time:
+//
+//   1. It lasted an hour, which is no use to a landlord who reads
+//      email in the evening.
+//   2. Supabase magic links are single use and our /auth/callback
+//      spends the token on a plain GET, so any mail scanner that
+//      prefetches links — Outlook Safe Links, Mimecast, most
+//      corporate gateways — burned the token before the human
+//      clicked. That failed instantly, no matter how long the
+//      expiry was.
+//
+// Three of the first seventeen clients never completed login.
+//
+// So the token in the email is now this row, pointing at a Goldstay
+// page that authenticates nobody when opened. Clicking the button on
+// that page mints a fresh Supabase link server-side and spends it
+// within seconds, which keeps password resets at a safe one hour
+// while the welcome link lasts a week and survives being opened more
+// than once.
+model ClientInvite {
+  id       String @id @default(cuid())
+  clientId String
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // sha256 of the token we emailed, hex encoded. The plaintext exists
+  // only in the email: a database leak must not hand over working
+  // sign-in links for every landlord.
+  tokenHash String @unique
+
+  expiresAt DateTime
+
+  // Reusable for its whole life, so this counts rather than flips.
+  // A number far above 1 means a mail scanner is walking the link and
+  // is worth knowing about.
+  useCount   Int       @default(0)
+  lastUsedAt DateTime?
+
+  // Set once the landlord has a password on file. The invite is a way
+  // in for someone who cannot get in yet, not a permanent spare key.
+  retiredAt DateTime?
+
+  // Which send this belongs to, so the admin timeline can tell an
+  // original welcome from a "you never got in" nudge.
+  reason    ClientInviteReason @default(WELCOME)
+  createdAt DateTime           @default(now())
+
+  @@index([clientId])
+  @@index([expiresAt])
+}
+
+enum ClientInviteReason {
+  WELCOME
+  // Sent to someone whose first link expired or was burned before
+  // they ever reached the portal.
+  NEVER_SIGNED_IN
+  // An operator pressed resend.
+  RESEND
 }

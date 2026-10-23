@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
+import { retireInvitesAction } from "./actions";
 
 // Server-side minimum length must match Supabase's project setting
 // (default 6, we lift to 8 here for our own UX). If you change the
@@ -56,6 +57,9 @@ export function SetPasswordForm({ next }: { next?: string }) {
       }
       return;
     }
+
+    // The password is saved; the welcome link has done its job.
+    await retireInvitesAction();
 
     setDone(true);
 

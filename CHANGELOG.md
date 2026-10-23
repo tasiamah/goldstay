@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.82.0] - 2026-10-23
+
+### Changed
+- The welcome link now lasts 7 days and can be used as many times as
+  the landlord likes, instead of 60 minutes and once. It is also a
+  Goldstay link rather than a forwarded Supabase one, which fixes a
+  second and quieter problem: our sign-in callback spent the token on
+  a plain GET, so any mail provider that opens links to scan them —
+  Outlook Safe Links, Mimecast, most corporate gateways — burned the
+  link before the landlord ever clicked it. That failed instantly
+  regardless of the expiry, and it is the likelier cause of "this link
+  can no longer be used". Three of the first seventeen clients never
+  completed sign-in. Opening the new link authenticates nobody;
+  pressing the button on it mints a Supabase link that is spent
+  seconds later in the landlord's own browser, so password resets keep
+  their safe one-hour window.
+- A landlord who follows a dead link now gets a page that greets them
+  by name and says what to do, rather than being bounced to the sign-in
+  screen with "We didn't receive a valid sign-in token."
+
+### Added
+- A warmer variant of the welcome email for someone who never reached
+  the portal, which says the failure was ours rather than implying
+  they never bothered.
+- Tests for the welcome email, which previously had none — the reason
+  the "valid for 60 minutes" copy survived a full suite for weeks.
+
 ## [1.81.1] - 2026-10-06
 
 ### Fixed
@@ -3394,6 +3421,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.82.0]: https://github.com/tasiamah/goldstay/compare/v1.81.1...v1.82.0
 [1.81.1]: https://github.com/tasiamah/goldstay/compare/v1.81.0...v1.81.1
 [1.81.0]: https://github.com/tasiamah/goldstay/compare/v1.80.1...v1.81.0
 [1.80.1]: https://github.com/tasiamah/goldstay/compare/v1.80.0...v1.80.1

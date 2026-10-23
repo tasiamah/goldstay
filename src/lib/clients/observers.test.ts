@@ -36,7 +36,7 @@ import {
 const SRC = join(process.cwd(), "src");
 
 // The two functions that turn an address into a working credential.
-const MINTERS = ["mintCallbackLink", "mintSetPasswordLink"];
+const MINTERS = ["mintCallbackLink", "createInvite", "inviteUrl"];
 
 // The modules that can put an observer on a send, as paths relative
 // to src/. Both are listed: recipients.ts is the intended chokepoint,
