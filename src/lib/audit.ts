@@ -131,6 +131,8 @@ const DEFAULT_SUMMARIES: Record<string, string> = {
   "payout.verified": "Payout method verified",
   "payout.archived": "Payout method archived",
   "payout.recorded": "Payout transaction recorded",
+  "property.coowner.added": "Co-owner added",
+  "property.coowner.removed": "Co-owner removed",
 };
 
 export function summariseAction(action: string): string {

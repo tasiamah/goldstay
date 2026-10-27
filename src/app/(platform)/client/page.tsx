@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { propertiesVisibleTo } from "@/lib/clients/visibility";
+import { groupByApartment } from "@/lib/clients/apartment-groups";
 import { EXCLUDE_SETTLEMENTS } from "@/lib/transactions/settlement";
 import {
   aggregateTransactionsByCurrency,
@@ -56,8 +58,11 @@ export default async function ClientDashboardPage() {
     latestStatement,
     latestPayout,
   ] = await Promise.all([
+    // Owned outright or co-owned. Only this query widens: every
+    // money query below stays keyed to the client's own id, because a
+    // co-owner is not the party being paid. See lib/clients/visibility.
     prisma.property.findMany({
-      where: { clientId: client.id },
+      where: propertiesVisibleTo(client.id),
       orderBy: { createdAt: "desc" },
       include: {
         units: {
@@ -68,6 +73,13 @@ export default async function ClientDashboardPage() {
             },
           },
         },
+        coOwners: {
+          where: { removedAt: null },
+          select: { clientId: true, relationship: true },
+        },
+        // Who the statement is addressed to, so a co-owner can see
+        // whose unit this is on their own dashboard.
+        client: { select: { id: true, fullName: true } },
       },
     }),
     // We pull the monthlyRent + currency for every active lease so the
@@ -237,14 +249,22 @@ export default async function ClientDashboardPage() {
     );
   }
 
-  const propertyOccupancy = properties.map((p) => ({
-    id: p.id,
-    occupied: p.units.some((u) => u.leases.length > 0),
+  // One apartment can hold two management agreements — a long-let and
+  // a short-let — and the schema has no way to say that except as two
+  // Property rows. Left ungrouped, a landlord sees the same flat
+  // twice and a count that says two properties when they own one.
+  // Everything below counts groups, so the list and the KPIs cannot
+  // disagree about how many flats there are.
+  const propertyGroups = groupByApartment(properties, client.id);
+
+  const propertyOccupancy = propertyGroups.map((g) => ({
+    id: g.primary.id,
+    occupied: g.occupied,
   }));
   const occupiedPropertyCount = propertyOccupancy.filter((p) => p.occupied)
     .length;
   const occupancyPct = occupancyPercent({
-    totalUnits: properties.length,
+    totalUnits: propertyGroups.length,
     occupiedUnits: occupiedPropertyCount,
   });
 
@@ -275,9 +295,7 @@ export default async function ClientDashboardPage() {
     ? pctChange(primary.thirtyDayNet, primary.prior30DayNet)
     : null;
   const otherCurrencyCount = Math.max(0, summaries.length - 1);
-  const activePropertyCount = properties.filter(
-    (p) => p.status === "ACTIVE",
-  ).length;
+  const activePropertyCount = propertyGroups.filter((g) => g.isActive).length;
 
   // "Expected this month" = sum of monthlyRent for the active leases
   // that bill in the dashboard's primary currency. We deliberately
@@ -435,7 +453,7 @@ export default async function ClientDashboardPage() {
             documents we hold for it.
           </HelpHint>
         </div>
-        {properties.length === 0 ? (
+        {propertyGroups.length === 0 ? (
           <p className="mt-4 text-sm text-stone-500">
             Goldstay has not attached any properties to your account yet.
             We&rsquo;ll be in touch as soon as your portfolio is live in the
@@ -443,19 +461,20 @@ export default async function ClientDashboardPage() {
           </p>
         ) : (
           <ul className="mt-4 divide-y divide-stone-100">
-            {properties.map((p) => {
-              const occupied = p.units.some((u) => u.leases.length > 0);
+            {propertyGroups.map((g) => {
+              const p = g.primary;
               // We have agreement-pending state client-wide; this
-              // narrows it to "is there one for *this* property".
-              const hasPendingAgreement = pendingAgreements.some(
-                (a) => a.property.id === p.id,
+              // narrows it to "is there one for *this* apartment",
+              // across every row that makes it up.
+              const hasPendingAgreement = pendingAgreements.some((a) =>
+                g.rows.some((r) => r.id === a.property.id),
               );
               const readiness = computePropertyReadiness({
                 propertyStatus: p.status,
                 hasPendingAgreement,
               });
               return (
-                <li key={p.id} className="py-3">
+                <li key={g.key} className="py-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <Link
@@ -468,9 +487,23 @@ export default async function ClientDashboardPage() {
                         {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
                         {p.city}
                         {readiness.isActive ? (
-                          <> · {occupied ? "Occupied" : "Vacant"}</>
+                          <> · {g.occupied ? "Occupied" : "Vacant"}</>
+                        ) : null}
+                        {g.rows.length > 1 ? (
+                          <> · {g.rows.length} agreements</>
                         ) : null}
                       </p>
+                      {g.isCoOwned ? (
+                        <p className="mt-1 text-xs text-stone-600">
+                          <span className="rounded bg-stone-100 px-1.5 py-0.5 font-medium">
+                            Co-owned
+                          </span>{" "}
+                          with {g.ownerOfRecord}
+                          {g.relationship ? ` (${g.relationship})` : ""} ·
+                          statements and payouts go to{" "}
+                          {g.ownerOfRecord?.split(/\s+/)[0]}
+                        </p>
+                      ) : null}
                     </div>
                     <PropertyReadinessBadge
                       status={p.status}

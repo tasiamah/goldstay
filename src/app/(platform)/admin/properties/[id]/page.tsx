@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
 import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
+import { CoOwnersCard } from "./CoOwnersCard";
 import {
   PropertyStatusBadge,
   PropertyTypeBadge,
@@ -558,6 +559,10 @@ export default async function PropertyDetailPage({
       <PropertyFinanceCard propertyId={property.id} />
 
       <section className="grid gap-8 lg:grid-cols-2">
+        <CoOwnersCard
+          propertyId={property.id}
+          ownerOfRecord={property.client.fullName}
+        />
         <NotesPanel
           entity="PROPERTY"
           entityId={property.id}

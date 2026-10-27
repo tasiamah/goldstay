@@ -24,6 +24,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireClient } from "@/lib/auth";
 import { prisma } from "@/lib/db";
+import { propertiesVisibleTo } from "@/lib/clients/visibility";
 import { PropertyTypeBadge } from "@/components/PropertyStatusBadge";
 import {
   PropertyReadinessBadge,
@@ -67,9 +68,21 @@ export default async function ClientPropertyDetailPage({
   const heatmapMonthsBack = clampHeatmapMonths(searchParams?.heatmap);
   const heatmapStart = heatmapWindowStart(new Date(), heatmapMonthsBack);
 
+  // Owned outright or co-owned. The line this page sits on: data
+  // scoped to the asset — occupancy, stays, what it earned and spent
+  // — belongs to everyone who owns the asset. Data scoped to the
+  // person — their statement, their payout method, their KYC — does
+  // not, and stays keyed to the client's own id elsewhere.
+  // Declared before the query so the co-ownership banner below can
+  // name the relationship the operator recorded.
   const property = await prisma.property.findFirst({
-    where: { id: params.id, clientId: client.id },
+    where: { id: params.id, ...propertiesVisibleTo(client.id) },
     include: {
+      coOwners: {
+        where: { removedAt: null },
+        select: { clientId: true, relationship: true },
+      },
+      client: { select: { id: true, fullName: true } },
       units: {
         orderBy: { createdAt: "asc" },
         include: {
@@ -169,6 +182,13 @@ export default async function ClientPropertyDetailPage({
   const handbook = handbookCompleteness(handbookValues);
 
   const latestAgreement = property.agreements[0] ?? null;
+  // What the operator wrote down about how these two are related,
+  // e.g. "mother". Shown so the banner reads like a sentence about
+  // people rather than a permissions notice.
+  const coOwnerRelationship =
+    property.coOwners.find((c) => c.clientId === client.id)?.relationship ??
+    null;
+
   const readiness = computePropertyReadiness({
     propertyStatus: property.status,
     hasPendingAgreement:
@@ -201,6 +221,23 @@ export default async function ClientPropertyDetailPage({
         </p>
         <PropertyReadinessSummary readiness={readiness} />
       </div>
+
+      {property.client.id !== client.id ? (
+        <section className="rounded-lg border border-stone-200 bg-stone-50 p-5">
+          <p className="text-sm text-stone-700">
+            You co-own this unit with{" "}
+            <strong>{property.client.fullName}</strong>
+            {coOwnerRelationship ? ` (${coOwnerRelationship})` : ""}. You can
+            see how it is performing here.
+          </p>
+          <p className="mt-2 text-sm text-stone-600">
+            The management agreement is in{" "}
+            {property.client.fullName.split(/\s+/)[0]}&rsquo;s name, so the
+            monthly statement and the payout for this unit go to them rather
+            than to you.
+          </p>
+        </section>
+      ) : null}
 
       {latestAgreement && latestAgreement.status === "SENT" ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">

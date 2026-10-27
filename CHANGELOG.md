@@ -21,6 +21,34 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.84.0] - 2026-10-27
+
+### Added
+- Co-owners. A second Goldstay client can be linked to a unit from the
+  admin property page and will see it in their own portal, alongside
+  who the owner of record is and a plain statement that the monthly
+  statement and the payout go to that person rather than to them.
+  Until now the only way to record a co-owner was as a statement
+  observer, which is an email address with no login — so Wesley Angulu,
+  who co-owns a Riverside flat with his mother, kept signing in and
+  seeing two stale copies of a flat that had been moved to her.
+- Co-ownership grants sight, not money. The property list and the
+  property page widen; statements, payout methods and KYC stay keyed
+  to the client's own id, because those describe a payment the
+  co-owner is not party to. A test asserts both halves of that
+  boundary rather than leaving it to a comment.
+
+### Changed
+- The portal now shows one card per apartment rather than one per
+  management agreement. A unit offered both long-let and short-let has
+  two agreements and therefore two Property rows, which meant four
+  landlords were being shown the same flat twice and a count that read
+  "2 properties" to someone who owns one. Both rows are kept; only the
+  display is grouped, and the card says how many agreements sit behind
+  it. Grouping is keyed on the owner of record as well as the address,
+  so two unrelated clients holding the same name and unit number are
+  never merged.
+
 ## [1.83.0] - 2026-10-27
 
 ### Added
@@ -3458,6 +3486,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.84.0]: https://github.com/tasiamah/goldstay/compare/v1.83.0...v1.84.0
 [1.83.0]: https://github.com/tasiamah/goldstay/compare/v1.82.1...v1.83.0
 [1.82.1]: https://github.com/tasiamah/goldstay/compare/v1.82.0...v1.82.1
 [1.82.0]: https://github.com/tasiamah/goldstay/compare/v1.81.1...v1.82.0

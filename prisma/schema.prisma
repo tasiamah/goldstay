@@ -256,15 +256,16 @@ model Client {
   createdAt                 DateTime         @default(now())
   updatedAt                 DateTime         @updatedAt
 
-  properties     Property[]
-  communications CommunicationLog[]
-  payoutMethods  ClientPayoutMethod[]
-  documents      Document[]
-  statementSends StatementSend[]
-  notifications  ClientNotification[]
-  observers      ClientObserver[]
-  referrals      Referral[]
-  invites        ClientInvite[]
+  properties        Property[]
+  communications    CommunicationLog[]
+  payoutMethods     ClientPayoutMethod[]
+  documents         Document[]
+  statementSends    StatementSend[]
+  notifications     ClientNotification[]
+  observers         ClientObserver[]
+  referrals         Referral[]
+  invites           ClientInvite[]
+  coOwnedProperties PropertyCoOwner[]
 
   @@index([country])
   @@index([archivedAt])
@@ -356,6 +357,7 @@ model Property {
   icalFeeds    PropertyIcalFeed[]
   agreements   ManagementAgreement[]
   handbook     PropertyHandbook?
+  coOwners     PropertyCoOwner[]
 
   @@index([clientId])
   @@index([country])
@@ -1813,4 +1815,55 @@ enum ClientInviteReason {
   // enough to come back, which is the strongest signal we get that
   // the account matters to them.
   SELF_REQUESTED
+}
+
+// A second landlord who owns a unit alongside the client of record.
+//
+// Property.clientId stays the single owner of record, and deliberately
+// so: it is who the statement is addressed to and whose payout method
+// the money leaves for. Making ownership many-to-many would make both
+// of those ambiguous, and an ambiguous payee is a much worse problem
+// than an invisible co-owner.
+//
+// What this grants is sight, not money. A co-owner sees the unit and
+// how it is performing in their own portal. They do not see the owner
+// of record's statements, payout methods or account settings, because
+// those describe a payment they are not party to.
+//
+// This exists because the alternative already happened. Wesley Angulu
+// co-owns a Riverside flat with his mother; the way that was recorded
+// was to archive him, create her as a new client, move the property to
+// her, and add him as a statement observer. Observers have no login,
+// so he kept signing in and seeing two stale copies of a flat that had
+// moved out from under him. A co-owner needs to be a real relationship
+// rather than a mailing list entry.
+model PropertyCoOwner {
+  id         String   @id @default(cuid())
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  clientId   String
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Shown back to both parties so a list of names is legible later:
+  // "mother", "business partner". Free text for the same reason
+  // ClientObserver.relationship is.
+  relationship String?
+
+  // Who linked them. An operator's address from admin, or the owner
+  // of record's if they ever do it themselves.
+  addedByEmail String?
+
+  // Soft, so the record of who could see the numbers when survives a
+  // removal. Same reasoning as ClientObserver.removedAt.
+  removedAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // One row per client per property. Re-adding someone previously
+  // removed clears removedAt rather than creating a second row, so
+  // the history stays in one place.
+  @@unique([propertyId, clientId])
+  @@index([clientId, removedAt])
+  @@index([propertyId])
 }
