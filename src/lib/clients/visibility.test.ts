@@ -11,6 +11,7 @@ import {
 describe("propertiesVisibleTo", () => {
   it("matches a property owned outright or co-owned", () => {
     expect(propertiesVisibleTo("c1")).toEqual({
+      archivedAt: null,
       OR: [
         { clientId: "c1" },
         { coOwners: { some: { clientId: "c1", removedAt: null } } },
@@ -124,5 +125,32 @@ describe("a co-owner neither signs nor is asked to", () => {
     expect(src).toContain("!isCoOwner && agreementPending");
     // And the readiness summary must not list it as their blocker.
     expect(src).toContain("hasPendingAgreement: !isCoOwner && agreementPending");
+  });
+});
+
+// Archiving a property is how an operator says it is not this
+// client's any more, and the admin UI promises it disappears from
+// their portal. Nothing enforced that, so an archived flat kept its
+// card, its detail page and its unsigned agreement.
+describe("an archived property leaves the portal", () => {
+  const root = join(process.cwd(), "src");
+  const read = (rel: string) => readFileSync(join(root, rel), "utf8");
+
+  it("is filtered by the shared fragment, so both pages get it", () => {
+    expect(propertiesVisibleTo("wes")).toMatchObject({ archivedAt: null });
+  });
+
+  it.each([
+    ["app/(platform)/client/agreements/[id]/page.tsx", "cannot be opened"],
+    ["app/(platform)/client/agreements/[id]/actions.ts", "cannot be signed"],
+  ])("an archived property's agreement %s (%s)", (rel) => {
+    expect(read(rel)).toContain("archivedAt");
+  });
+
+  it("does not nag the client to sign one", () => {
+    const src = read("app/(platform)/client/page.tsx");
+    expect(src).toContain(
+      "property: { clientId: client.id, archivedAt: null },",
+    );
   });
 });

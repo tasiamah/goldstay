@@ -22,14 +22,25 @@
 
 import type { Prisma } from "@prisma/client";
 
-// Properties this client owns outright, plus those they co-own.
+// Properties this client owns outright, plus those they co-own, and
+// not the ones we have archived.
 //
-// Spread into a `where` on Property. Archived rows are left to the
-// caller, since some admin surfaces legitimately want them.
+// Archiving is how an operator says a property is not this client's
+// any more, and the admin UI tells them it hides it "from the
+// client's own portal". That was not true: no client-facing query
+// filtered it, so an archived flat kept its card. Wesley was shown
+// two stale copies of a flat that had been moved to his mother for
+// five weeks. The filter belongs here rather than in each caller,
+// because "visible to" is exactly the question this answers, and a
+// caller that forgot it looked identical to one that did not.
+//
+// Only the client-facing pages use this. The admin property page
+// deliberately renders archived rows, and reaches them by id.
 export function propertiesVisibleTo(
   clientId: string,
 ): Prisma.PropertyWhereInput {
   return {
+    archivedAt: null,
     OR: [
       { clientId },
       { coOwners: { some: { clientId, removedAt: null } } },

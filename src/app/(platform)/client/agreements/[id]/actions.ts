@@ -65,9 +65,15 @@ export async function signAgreementAction(
 
   const agreement = await prisma.managementAgreement.findUnique({
     where: { id: agreementId },
-    include: { property: { select: { clientId: true } } },
+    include: { property: { select: { clientId: true, archivedAt: true } } },
   });
-  if (!agreement || agreement.property.clientId !== client.id) {
+  if (
+    !agreement ||
+    agreement.property.clientId !== client.id ||
+    // Signing a contract over a property we have archived would
+    // execute an agreement nobody intends to honour.
+    agreement.property.archivedAt !== null
+  ) {
     // Treat missing and not-yours identically so we never confirm
     // existence of an agreement to an unauthorised user.
     return { ok: false, error: "Agreement not found." };

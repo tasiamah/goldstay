@@ -21,6 +21,18 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.85.1] - 2026-10-27
+
+### Fixed
+- Archiving a property did not remove it from the client's portal,
+  although the admin screen said it would. No client-facing query
+  filtered archived rows, so the flat kept its dashboard card and its
+  detail page, its unsigned agreement stayed openable and signable,
+  and the dashboard kept asking the client to accept it. Wesley Angulu
+  was shown two stale copies of a flat that had been moved to his
+  mother five weeks earlier. The filter now lives in the shared
+  visibility fragment, so both client pages get it from one place.
+
 ## [1.85.0] - 2026-10-27
 
 ### Added
@@ -3526,6 +3538,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.85.1]: https://github.com/tasiamah/goldstay/compare/v1.85.0...v1.85.1
 [1.85.0]: https://github.com/tasiamah/goldstay/compare/v1.84.2...v1.85.0
 [1.84.2]: https://github.com/tasiamah/goldstay/compare/v1.84.1...v1.84.2
 [1.84.1]: https://github.com/tasiamah/goldstay/compare/v1.84.0...v1.84.1

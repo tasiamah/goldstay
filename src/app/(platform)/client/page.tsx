@@ -156,7 +156,10 @@ export default async function ClientDashboardPage() {
     // more than one to handle.
     prisma.managementAgreement.findMany({
       where: {
-        property: { clientId: client.id },
+        // Archived properties included here nagged Wesley to accept
+        // two agreements on rows that had been moved to his mother,
+        // and fed the same into his notification bell.
+        property: { clientId: client.id, archivedAt: null },
         status: "SENT",
       },
       orderBy: { sentAt: "asc" },

@@ -44,7 +44,13 @@ export default async function ClientAgreementPage({
   const { client } = await requireClient();
 
   const agreement = await prisma.managementAgreement.findFirst({
-    where: { id: params.id, property: { clientId: client.id } },
+    // Archived means the property is no longer theirs to contract
+    // over. Wesley still had two openable SENT agreements on rows
+    // that had been archived and moved to his mother.
+    where: {
+      id: params.id,
+      property: { clientId: client.id, archivedAt: null },
+    },
     include: {
       // Live read-only shares, for the "Shared with" panel. Only the
       // open ones: a client wants to know who can read their contract
