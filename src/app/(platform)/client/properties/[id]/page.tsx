@@ -195,11 +195,18 @@ export default async function ClientPropertyDetailPage({
   const coOwnerRelationship =
     property.coOwners.find((c) => c.clientId === client.id)?.relationship ??
     null;
+  const isCoOwner = property.client.id !== client.id;
+  const agreementPending = latestAgreement?.status === "SENT";
 
   const readiness = computePropertyReadiness({
     propertyStatus: property.status,
-    hasPendingAgreement:
-      latestAgreement != null && latestAgreement.status === "SENT",
+    // One apartment, one signature. The agreement is between Goldstay
+    // and the owner of record, and only they can accept it — the
+    // accept action refuses anyone else. So a co-owner must not be
+    // shown it as something waiting on them, here or in the banner
+    // below: it is not theirs to sign, and following the link would
+    // only reach a 404.
+    hasPendingAgreement: !isCoOwner && agreementPending,
   });
 
   return (
@@ -229,7 +236,7 @@ export default async function ClientPropertyDetailPage({
         <PropertyReadinessSummary readiness={readiness} />
       </div>
 
-      {property.client.id !== client.id ? (
+      {isCoOwner ? (
         <section className="rounded-lg border border-stone-200 bg-stone-50 p-5">
           <p className="text-sm text-stone-700">
             You co-own this unit with{" "}
@@ -241,12 +248,17 @@ export default async function ClientPropertyDetailPage({
             The management agreement is in{" "}
             {property.client.fullName.split(/\s+/)[0]}&rsquo;s name, so the
             monthly statement and the payout for this unit go to them rather
-            than to you.
+            than to you.{" "}
+            {agreementPending
+              ? `It is still waiting on ${
+                  property.client.fullName.split(/\s+/)[0]
+                } to accept it. There is nothing for you to sign.`
+              : "It is signed, and there is nothing for you to sign."}
           </p>
         </section>
       ) : null}
 
-      {latestAgreement && latestAgreement.status === "SENT" ? (
+      {!isCoOwner && agreementPending && latestAgreement ? (
         <section className="rounded-lg border border-amber-200 bg-amber-50 p-5">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>

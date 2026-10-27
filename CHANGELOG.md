@@ -21,6 +21,16 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.84.2] - 2026-10-27
+
+### Fixed
+- A co-owner was shown "Accept your management agreement" for a unit
+  whose agreement is in the owner of record's name, and the link went
+  to a 404 because accepting is owner-only. One apartment takes one
+  signature: once the owner of record has signed, there is nothing for
+  a co-owner to sign. The co-ownership note now says so, and says
+  whether the agreement is signed or still waiting on them.
+
 ## [1.84.1] - 2026-10-27
 
 ### Fixed
@@ -3495,6 +3505,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.84.2]: https://github.com/tasiamah/goldstay/compare/v1.84.1...v1.84.2
 [1.84.1]: https://github.com/tasiamah/goldstay/compare/v1.84.0...v1.84.1
 [1.84.0]: https://github.com/tasiamah/goldstay/compare/v1.83.0...v1.84.0
 [1.83.0]: https://github.com/tasiamah/goldstay/compare/v1.82.1...v1.83.0

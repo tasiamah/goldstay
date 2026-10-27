@@ -96,3 +96,33 @@ describe("co-ownership widens sight, not money", () => {
     expect(src).not.toContain("propertiesVisibleTo");
   });
 });
+
+// One apartment, one signature. Damary signed; Wesley co-owns the same
+// flat and must never be asked to sign it again, nor be able to — a
+// second acceptance would put the wrong name on an executed contract.
+// Both halves are asserted: that the accept path stays owner-only, and
+// that the one widened page does not prompt a co-owner to use it.
+describe("a co-owner neither signs nor is asked to", () => {
+  const root = join(process.cwd(), "src");
+  const read = (rel: string) => readFileSync(join(root, rel), "utf8");
+
+  it.each([
+    ["app/(platform)/client/agreements/[id]/page.tsx", "reading it"],
+    ["app/(platform)/client/agreements/[id]/actions.ts", "accepting it"],
+  ])("%s stays keyed to the owner of record (%s)", (rel) => {
+    const src = read(rel);
+    expect(src).toContain("clientId");
+    expect(src).not.toContain("propertiesVisibleTo");
+    expect(src).not.toContain("coOwners");
+  });
+
+  it("the property page gates the accept banner on not being a co-owner", () => {
+    const src = read("app/(platform)/client/properties/[id]/page.tsx");
+    // Without this the co-owner is shown "Accept your management
+    // agreement" and the link 404s, because the accept page is
+    // owner-only.
+    expect(src).toContain("!isCoOwner && agreementPending");
+    // And the readiness summary must not list it as their blocker.
+    expect(src).toContain("hasPendingAgreement: !isCoOwner && agreementPending");
+  });
+});
