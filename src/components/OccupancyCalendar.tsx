@@ -13,18 +13,22 @@
 // Each square shows a tooltip on hover with check-in/out info. No
 // client JS required — it's <span title="...">.
 
-type BookingForCalendar = {
-  source: string;
-  guestName: string;
-  checkIn: Date;
-  checkOut: Date;
-  status: string;
-};
+import {
+  buildOccupancyIndex,
+  dayKeyUTC,
+  type Occupant,
+  type OccupantBooking,
+  type OccupantLease,
+} from "@/lib/bookings/heatmap";
 
 // Colour per channel. Vrbo / Booking.com are kept in the map so
 // historical bookings still render if they exist, but they don't
 // appear in the legend until we re-enable them in
 // src/lib/booking-sources.ts.
+// A tenancy is not a channel, so it gets its own colour rather than
+// borrowing one and reading as a booking that never happened.
+const LEASE_COLOR = "bg-indigo-400";
+
 const SOURCE_COLOR: Record<string, string> = {
   AIRBNB: "bg-rose-400",
   BOOKING_COM: "bg-sky-500",
@@ -51,10 +55,6 @@ function daysInMonthUTC(d: Date): number {
   ).getUTCDate();
 }
 
-function dayKey(d: Date): string {
-  return `${d.getUTCFullYear()}-${d.getUTCMonth()}-${d.getUTCDate()}`;
-}
-
 function fmtMonth(d: Date): string {
   return d.toLocaleDateString("en-GB", {
     month: "short",
@@ -65,11 +65,15 @@ function fmtMonth(d: Date): string {
 
 export function OccupancyCalendar({
   bookings,
+  leases,
   monthsBack = 3,
   now = new Date(),
   loadMoreHref,
 }: {
-  bookings: BookingForCalendar[];
+  bookings?: OccupantBooking[];
+  // Long lets fill the board for the term of the tenancy. Passing
+  // neither is legitimate — a flat between tenants reads as vacant.
+  leases?: OccupantLease[];
   monthsBack?: number;
   now?: Date;
   // When set, renders a "Show 3 more months" link below the grid.
@@ -77,40 +81,26 @@ export function OccupancyCalendar({
   // bookings actually exist and the window hasn't hit its cap.
   loadMoreHref?: string | null;
 }) {
-  // Map of "YYYY-M-D" -> first matching booking, used to colour the
-  // square and source the tooltip.
-  const dayIndex = new Map<string, BookingForCalendar>();
-  for (const b of bookings) {
-    if (b.status === "CANCELLED") continue;
-    const cur = new Date(
-      Date.UTC(
-        b.checkIn.getUTCFullYear(),
-        b.checkIn.getUTCMonth(),
-        b.checkIn.getUTCDate(),
-      ),
-    );
-    while (cur < b.checkOut) {
-      dayIndex.set(dayKey(cur), b);
-      cur.setUTCDate(cur.getUTCDate() + 1);
-    }
-  }
-
   const thisMonth = startOfMonthUTC(now);
   const months: Date[] = [];
   for (let i = monthsBack - 1; i >= 0; i--) {
     months.push(addMonthsUTC(thisMonth, -i));
   }
 
+  // Last day the board draws, which is how far an open-ended lease
+  // is filled.
+  const windowEnd = new Date(
+    Date.UTC(thisMonth.getUTCFullYear(), thisMonth.getUTCMonth() + 1, 0),
+  );
+  const dayIndex = buildOccupancyIndex({ bookings, leases, windowEnd });
+  const showTenancy = [...dayIndex.values()].some((o) => o.kind === "lease");
+
   return (
     <div className="space-y-4">
-      <Legend />
+      <Legend showTenancy={showTenancy} />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {months.map((m) => (
-          <MonthGrid
-            key={m.toISOString()}
-            month={m}
-            dayIndex={dayIndex}
-          />
+          <MonthGrid key={m.toISOString()} month={m} dayIndex={dayIndex} />
         ))}
       </div>
       {loadMoreHref ? (
@@ -152,8 +142,7 @@ function mondayIndex(date: Date): number {
 // ~40px on a wide card and the heatmap takes up half the screen.
 // 16rem yields ~22px squares which read like a real heatmap.
 const CELL = "aspect-square w-full";
-const GRID_COLS =
-  "grid-cols-[1.5rem_repeat(7,minmax(0,1fr))]"; // [week#] [Mo..Su × 7]
+const GRID_COLS = "grid-cols-[1.5rem_repeat(7,minmax(0,1fr))]"; // [week#] [Mo..Su × 7]
 const GRID_MAX_WIDTH = "max-w-[16rem]";
 
 function MonthGrid({
@@ -161,7 +150,7 @@ function MonthGrid({
   dayIndex,
 }: {
   month: Date;
-  dayIndex: Map<string, BookingForCalendar>;
+  dayIndex: Map<string, Occupant>;
 }) {
   const days = daysInMonthUTC(month);
   const firstDate = new Date(
@@ -188,11 +177,7 @@ function MonthGrid({
     );
   }
 
-  for (
-    let weekStart = 1 - leadingBlanks;
-    weekStart <= days;
-    weekStart += 7
-  ) {
+  for (let weekStart = 1 - leadingBlanks; weekStart <= days; weekStart += 7) {
     const weekLabel =
       weekStart >= 1 ? String(weekStart) : String(prevDays + weekStart);
     const isLeadingWeek = weekStart < 1;
@@ -219,13 +204,17 @@ function MonthGrid({
       const date = new Date(
         Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), day),
       );
-      const booking = dayIndex.get(dayKey(date));
-      const colour = booking
-        ? (SOURCE_COLOR[booking.source] ?? "bg-stone-400")
-        : "bg-stone-100";
-      const tooltip = booking
-        ? `${day} ${monthShort} · ${booking.guestName} (${booking.source})`
-        : `${day} ${monthShort} · vacant`;
+      const occupant = dayIndex.get(dayKeyUTC(date));
+      const colour = !occupant
+        ? "bg-stone-100"
+        : occupant.kind === "lease"
+          ? LEASE_COLOR
+          : (SOURCE_COLOR[occupant.source] ?? "bg-stone-400");
+      const tooltip = !occupant
+        ? `${day} ${monthShort} · vacant`
+        : occupant.kind === "lease"
+          ? `${day} ${monthShort} · ${occupant.label} (tenancy)`
+          : `${day} ${monthShort} · ${occupant.label} (${occupant.source})`;
       elements.push(
         <span
           key={`d-${day}`}
@@ -250,12 +239,18 @@ function MonthGrid({
   );
 }
 
-function Legend() {
+function Legend({ showTenancy }: { showTenancy: boolean }) {
   return (
     <div className="flex flex-wrap items-center gap-3 text-xs text-stone-600">
       <span className="font-medium uppercase tracking-wider text-stone-500">
         Sources
       </span>
+      {showTenancy ? (
+        <span className="inline-flex items-center gap-1.5">
+          <span className={`h-3 w-3 rounded-sm ${LEASE_COLOR}`} />
+          Tenancy
+        </span>
+      ) : null}
       {LEGEND_SOURCES.map(({ src, label }) => (
         <span key={src} className="inline-flex items-center gap-1.5">
           <span className={`h-3 w-3 rounded-sm ${SOURCE_COLOR[src]}`} />

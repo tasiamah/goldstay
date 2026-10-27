@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.85.0] - 2026-10-27
+
+### Added
+- The occupancy board now covers both ways of letting a flat. A short
+  let is occupied for the nights of a stay, a long let for the term of
+  a tenancy, and the board answers the same question either way: who
+  was in the property. Tenanted nights get their own colour and a
+  legend entry, and the board is drawn for long lets too — previously
+  it was hidden from them entirely, so a landlord with a tenant saw no
+  board at all.
+- "Show 3 more months" now appears when there is an older tenancy to
+  reveal, not only an older booking.
+
+### Changed
+- A tenancy's end date counts as occupied, unlike a checkout date
+  where the guest is gone by that morning. Tenancies that have since
+  ended or been terminated still fill the nights they ran for, since
+  the board shows history; one agreed but not started does not.
+  Where a stay and a tenancy overlap, the stay wins, so a flat moving
+  from long let to short reads as what actually happened.
+
 ## [1.84.2] - 2026-10-27
 
 ### Fixed
@@ -3505,6 +3526,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.85.0]: https://github.com/tasiamah/goldstay/compare/v1.84.2...v1.85.0
 [1.84.2]: https://github.com/tasiamah/goldstay/compare/v1.84.1...v1.84.2
 [1.84.1]: https://github.com/tasiamah/goldstay/compare/v1.84.0...v1.84.1
 [1.84.0]: https://github.com/tasiamah/goldstay/compare/v1.83.0...v1.84.0

@@ -86,13 +86,22 @@ export default async function ClientPropertyDetailPage({
       units: {
         orderBy: { createdAt: "asc" },
         include: {
+          // Every tenancy overlapping the heatmap window, not just the
+          // live one: the board shows history, and a flat that was
+          // tenanted until August was not empty in August. The
+          // tenancy card below still picks the ACTIVE one.
           leases: {
-            where: { status: "ACTIVE" },
+            where: {
+              archivedAt: null,
+              OR: [{ endDate: null }, { endDate: { gte: heatmapStart } }],
+            },
+            orderBy: { startDate: "desc" },
             select: {
               id: true,
               tenantName: true,
               startDate: true,
               endDate: true,
+              status: true,
               monthlyRent: true,
               currency: true,
             },
@@ -135,23 +144,40 @@ export default async function ClientPropertyDetailPage({
   // checklist still lives on the dashboard, where it belongs: it is
   // about getting the client paid, not about getting the flat let.
 
-  const olderBookingCount =
+  // Is there anything before the window worth widening it for? Both
+  // kinds of occupancy count: a long let whose tenancy ended before
+  // the window has history to show, and counting only bookings meant
+  // the link never appeared for a tenanted flat.
+  const olderOccupancyCount =
     heatmapMonthsBack < HEATMAP_MAX_MONTHS
-      ? await prisma.booking.count({
-          where: {
-            propertyId: params.id,
-            checkOut: { lt: heatmapStart },
-            status: { not: "CANCELLED" },
-          },
-        })
+      ? (
+          await Promise.all([
+            prisma.booking.count({
+              where: {
+                propertyId: params.id,
+                checkOut: { lt: heatmapStart },
+                status: { not: "CANCELLED" },
+              },
+            }),
+            prisma.lease.count({
+              where: {
+                unit: { propertyId: params.id },
+                archivedAt: null,
+                status: { not: "PENDING" },
+                endDate: { lt: heatmapStart },
+              },
+            }),
+          ])
+        ).reduce((a, b) => a + b, 0)
       : 0;
   const heatmapLoadMoreHref =
-    olderBookingCount > 0
+    olderOccupancyCount > 0
       ? `?heatmap=${heatmapMonthsBack + HEATMAP_STEP}`
       : null;
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
-  const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
+  const leases = property.units.flatMap((u) => u.leases);
+  const activeLease = leases.find((l) => l.status === "ACTIVE") ?? null;
 
   // Short-term occupancy and gross revenue for the last 30 days, used
   // both in the stat row and to colour the calendar.
@@ -230,8 +256,7 @@ export default async function ClientPropertyDetailPage({
         </div>
         <p className="mt-1 text-sm text-stone-500">
           {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
-          {property.city} ·{" "}
-          {property.country === "KE" ? "Kenya" : "Ghana"}
+          {property.city} · {property.country === "KE" ? "Kenya" : "Ghana"}
         </p>
         <PropertyReadinessSummary readiness={readiness} />
       </div>
@@ -317,17 +342,20 @@ export default async function ClientPropertyDetailPage({
         )}
       </section>
 
-      {isShortTerm ? (
-        <Card title={`Last ${heatmapMonthsBack} months`}>
-          <div className="mt-4">
-            <OccupancyCalendar
-              bookings={property.bookings}
-              monthsBack={heatmapMonthsBack}
-              loadMoreHref={heatmapLoadMoreHref}
-            />
-          </div>
-        </Card>
-      ) : null}
+      {/* Drawn for both ways of letting a flat. A short let is
+          occupied for the nights of a stay, a long let for the term
+          of a tenancy, and the board is the same question either
+          way: who was in the property. */}
+      <Card title={`Last ${heatmapMonthsBack} months`}>
+        <div className="mt-4">
+          <OccupancyCalendar
+            bookings={property.bookings}
+            leases={leases}
+            monthsBack={heatmapMonthsBack}
+            loadMoreHref={heatmapLoadMoreHref}
+          />
+        </div>
+      </Card>
 
       {/* Short-let and long-let answer the same question — who is in
           the property — and only one ever renders. Full width rather
@@ -364,8 +392,7 @@ export default async function ClientPropertyDetailPage({
                           month: "short",
                           year: "numeric",
                         })}{" "}
-                        · {b.nights}{" "}
-                        {b.nights === 1 ? "night" : "nights"}
+                        · {b.nights} {b.nights === 1 ? "night" : "nights"}
                       </p>
                     </div>
                     <p className="shrink-0 text-right text-sm tabular-nums text-stone-900">
@@ -384,8 +411,8 @@ export default async function ClientPropertyDetailPage({
                   {activeLease.tenantName}
                 </p>
                 <p className="text-sm text-stone-500">
-                  {activeLease.currency}{" "}
-                  {fmt(Number(activeLease.monthlyRent))}/mo · since{" "}
+                  {activeLease.currency} {fmt(Number(activeLease.monthlyRent))}
+                  /mo · since{" "}
                   {activeLease.startDate.toLocaleDateString("en-GB", {
                     day: "2-digit",
                     month: "short",
@@ -402,8 +429,8 @@ export default async function ClientPropertyDetailPage({
               </div>
             ) : (
               <p className="mt-4 text-sm text-stone-500">
-                No active tenant. Goldstay will update this once the next
-                lease is in place.
+                No active tenant. Goldstay will update this once the next lease
+                is in place.
               </p>
             )}
           </Card>
@@ -418,9 +445,9 @@ export default async function ClientPropertyDetailPage({
       {isShortTerm ? (
         <Card title="Property handbook">
           <p className="mt-1 text-sm text-stone-500">
-            The things only you know about this unit. Our operations team,
-            the cleaners and the people meeting your guests all work from
-            this, so it is worth a few minutes now.{" "}
+            The things only you know about this unit. Our operations team, the
+            cleaners and the people meeting your guests all work from this, so
+            it is worth a few minutes now.{" "}
             {handbook.essentialsDone
               ? "The essentials are all filled in."
               : `Still needed: ${handbook.missingEssentialLabels.join(", ")}.`}
@@ -448,8 +475,8 @@ export default async function ClientPropertyDetailPage({
 
       <Card title="Transaction history">
         <p className="mt-1 text-sm text-stone-500">
-          Up to the last 100 transactions for this property. Need a
-          formal record? Download the{" "}
+          Up to the last 100 transactions for this property. Need a formal
+          record? Download the{" "}
           <Link
             href="/client/statements"
             className="text-stone-900 underline-offset-2 hover:underline"
@@ -516,18 +543,10 @@ export default async function ClientPropertyDetailPage({
   );
 }
 
-function Stat({
-  label,
-  value,
-}: {
-  label: string;
-  value: number | string;
-}) {
+function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="rounded-lg border border-stone-200 bg-white p-5">
-      <p className="text-xs uppercase tracking-wider text-stone-500">
-        {label}
-      </p>
+      <p className="text-xs uppercase tracking-wider text-stone-500">{label}</p>
       <p className="mt-2 text-xl font-serif text-stone-900">{value}</p>
     </div>
   );
@@ -570,4 +589,3 @@ function fmt(n: number): string {
     maximumFractionDigits: 2,
   });
 }
-

@@ -91,15 +91,22 @@ export default async function PropertyDetailPage({
       units: {
         orderBy: { createdAt: "asc" },
         include: {
+          // Every tenancy overlapping the heatmap window rather than
+          // just the live one, so the board can show the nights a
+          // past tenant was in the flat. The tenancy card below still
+          // picks the ACTIVE one.
           leases: {
-            where: { status: "ACTIVE" },
+            where: {
+              archivedAt: null,
+              OR: [{ endDate: null }, { endDate: { gte: heatmapStart } }],
+            },
             orderBy: { startDate: "desc" },
-            take: 1,
             select: {
               id: true,
               tenantName: true,
               startDate: true,
               endDate: true,
+              status: true,
               monthlyRent: true,
               currency: true,
             },
@@ -153,23 +160,38 @@ export default async function PropertyDetailPage({
   // Only surface the "Show 3 more months" link when both conditions
   // hold: there's actually older data to reveal AND the window hasn't
   // already hit its cap. Cheap count, scoped by property.
-  const olderBookingCount =
+  // Both kinds of occupancy count, or the link never appears for a
+  // flat that was tenanted rather than let by the night.
+  const olderOccupancyCount =
     heatmapMonthsBack < HEATMAP_MAX_MONTHS
-      ? await prisma.booking.count({
-          where: {
-            propertyId: params.id,
-            checkOut: { lt: heatmapStart },
-            status: { not: "CANCELLED" },
-          },
-        })
+      ? (
+          await Promise.all([
+            prisma.booking.count({
+              where: {
+                propertyId: params.id,
+                checkOut: { lt: heatmapStart },
+                status: { not: "CANCELLED" },
+              },
+            }),
+            prisma.lease.count({
+              where: {
+                unit: { propertyId: params.id },
+                archivedAt: null,
+                status: { not: "PENDING" },
+                endDate: { lt: heatmapStart },
+              },
+            }),
+          ])
+        ).reduce((a, b) => a + b, 0)
       : 0;
   const heatmapLoadMoreHref =
-    olderBookingCount > 0
+    olderOccupancyCount > 0
       ? `?heatmap=${heatmapMonthsBack + HEATMAP_STEP}`
       : null;
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
-  const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
+  const leases = property.units.flatMap((u) => u.leases);
+  const activeLease = leases.find((l) => l.status === "ACTIVE") ?? null;
 
   const handbookValues = handbookValuesFrom(property.handbook);
   const handbook = handbookCompleteness(handbookValues);
@@ -239,20 +261,18 @@ export default async function PropertyDetailPage({
                 {formatPropertyDisplayName(property.name, property.unitNumber)}
               </h2>
               <Tip term={<PropertyStatusBadge status={property.status} />}>
-                ONBOARDING: verifying documents.
-                ACTIVE: under management; statements run.
-                EXITED: left the portfolio; data retained.
+                ONBOARDING: verifying documents. ACTIVE: under management;
+                statements run. EXITED: left the portfolio; data retained.
               </Tip>
               <Tip term={<PropertyTypeBadge type={property.propertyType} />}>
-                LONG_TERM rents to a single tenant under a Lease.
-                SHORT_TERM lights up the calendar from Bookings
-                (Airbnb, Booking.com, direct).
+                LONG_TERM rents to a single tenant under a Lease. SHORT_TERM
+                lights up the calendar from Bookings (Airbnb, Booking.com,
+                direct).
               </Tip>
             </div>
             <p className="mt-1 text-sm text-stone-500">
               {property.neighbourhood ? `${property.neighbourhood}, ` : ""}
-              {property.city} ·{" "}
-              {property.country === "KE" ? "Kenya" : "Ghana"}
+              {property.city} · {property.country === "KE" ? "Kenya" : "Ghana"}
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-start justify-end gap-2">
@@ -302,20 +322,25 @@ export default async function PropertyDetailPage({
               </>
             ) : (
               <>
-                It is past the {ARCHIVE_RESTORE_WINDOW_DAYS} day restore
-                window, so the archive no longer offers a restore button.
+                It is past the {ARCHIVE_RESTORE_WINDOW_DAYS} day restore window,
+                so the archive no longer offers a restore button.
               </>
             )}
           </p>
         </div>
       ) : null}
 
-      {isShortTerm ? (
-        <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
-          <div className="flex flex-wrap items-baseline justify-between gap-4">
-            <h3 className="text-base font-medium text-stone-900">
-              Last {heatmapMonthsBack} months
-            </h3>
+      {/* Drawn for both ways of letting a flat: a short let is
+          occupied for the nights of a stay, a long let for the term
+          of a tenancy. The percentage and gross beside it stay
+          short-let only — they are derived from bookings, and rent
+          does not arrive a night at a time. */}
+      <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
+        <div className="flex flex-wrap items-baseline justify-between gap-4">
+          <h3 className="text-base font-medium text-stone-900">
+            Last {heatmapMonthsBack} months
+          </h3>
+          {isShortTerm ? (
             <div className="flex flex-wrap items-baseline gap-6 text-sm">
               <span className="text-stone-500">
                 Occupancy (30d){" "}
@@ -340,14 +365,15 @@ export default async function PropertyDetailPage({
                 </span>
               ))}
             </div>
-          </div>
-          <OccupancyCalendar
-            bookings={property.bookings}
-            monthsBack={heatmapMonthsBack}
-            loadMoreHref={heatmapLoadMoreHref}
-          />
-        </section>
-      ) : null}
+          ) : null}
+        </div>
+        <OccupancyCalendar
+          bookings={property.bookings}
+          leases={leases}
+          monthsBack={heatmapMonthsBack}
+          loadMoreHref={heatmapLoadMoreHref}
+        />
+      </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
         <div className="rounded-lg border border-stone-200 bg-white p-6">
@@ -405,8 +431,8 @@ export default async function PropertyDetailPage({
                 <p className="mt-1 text-sm text-stone-500">
                   Connect this property&rsquo;s public iCal feeds so the
                   occupancy calendar updates automatically every 15 minutes.
-                  Free alternative to a paid PMS: dates only, no guest data
-                  or money. Operators backfill financials manually.
+                  Free alternative to a paid PMS: dates only, no guest data or
+                  money. Operators backfill financials manually.
                 </p>
                 <div className="mt-5">
                   <IcalFeedManager
@@ -446,8 +472,8 @@ export default async function PropertyDetailPage({
                   </span>
                 </div>
                 <p className="mt-1 text-sm text-stone-500">
-                  Access, WiFi, tokens, water, security and building rules.
-                  The client edits the same row from their portal.{" "}
+                  Access, WiFi, tokens, water, security and building rules. The
+                  client edits the same row from their portal.{" "}
                   {handbook.essentialsDone
                     ? null
                     : `Missing: ${handbook.missingEssentialLabels.join(", ")}.`}
@@ -519,7 +545,9 @@ export default async function PropertyDetailPage({
               ) : (
                 <p className="mt-4 text-sm text-stone-500">
                   No active lease. Click{" "}
-                  <span className="font-medium text-stone-700">Start lease</span>{" "}
+                  <span className="font-medium text-stone-700">
+                    Start lease
+                  </span>{" "}
                   to record a new tenant.
                 </p>
               )}
@@ -616,9 +644,9 @@ function BookingsCard({
       </div>
       <p className="mt-1 text-sm text-stone-500">
         Bookings synced from Hostaway land here automatically. You can also
-        record direct bookings manually. Importing pulls the last 12 months
-        of reservations with their real figures, and replaces any
-        calendar-only rows an iCal feed left behind for the same stay.
+        record direct bookings manually. Importing pulls the last 12 months of
+        reservations with their real figures, and replaces any calendar-only
+        rows an iCal feed left behind for the same stay.
       </p>
       <HostawayImportButton
         action={importHostawayAction.bind(null, propertyId)}
@@ -663,9 +691,7 @@ function BookingsCard({
                   </div>
                   <p
                     className={`shrink-0 text-right text-sm tabular-nums ${
-                      isPlaceholder
-                        ? "italic text-amber-700"
-                        : "text-stone-900"
+                      isPlaceholder ? "italic text-amber-700" : "text-stone-900"
                     }`}
                   >
                     {isPlaceholder
@@ -728,8 +754,7 @@ function AgreementCard({
     agreements.find((a) => a.status !== "CANCELLED") ?? agreements[0] ?? null;
   const cancelledHistory = agreements.filter((a) => a.status === "CANCELLED");
   const hasOpen =
-    !!current &&
-    (current.status === "DRAFT" || current.status === "SENT");
+    !!current && (current.status === "DRAFT" || current.status === "SENT");
 
   return (
     <div className="rounded-lg border border-stone-200 bg-white p-6">
@@ -741,8 +766,8 @@ function AgreementCard({
               : "Management agreement"}
           </h3>
           <p className="mt-1 text-sm text-stone-500">
-            Auto-issued on verification; the client accepts it in one
-            click through their portal.
+            Auto-issued on verification; the client accepts it in one click
+            through their portal.
             {current?.reference ? ` Reference ${current.reference}.` : ""}
           </p>
         </div>
@@ -755,8 +780,8 @@ function AgreementCard({
       {!current ? (
         <p className="mt-5 text-sm text-stone-500">
           No agreement on file. Properties now get one automatically at
-          creation, so this one predates that — click reissue above, or
-          “Mark as live”, to send the client an agreement.
+          creation, so this one predates that — click reissue above, or “Mark as
+          live”, to send the client an agreement.
         </p>
       ) : (
         <div className="mt-5 space-y-4">
@@ -851,8 +876,8 @@ function AgreementCard({
       {cancelledHistory.length > 0 ? (
         <p className="mt-4 border-t border-stone-100 pt-3 text-xs text-stone-500">
           {cancelledHistory.length} earlier{" "}
-          {cancelledHistory.length === 1 ? "version" : "versions"} cancelled
-          and superseded.
+          {cancelledHistory.length === 1 ? "version" : "versions"} cancelled and
+          superseded.
         </p>
       ) : null}
     </div>
