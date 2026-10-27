@@ -73,6 +73,16 @@ export default async function ClientDashboardPage() {
             },
           },
         },
+        // A guest in the flat right now. Short lets have no lease, so
+        // without this every short-let apartment reads as vacant.
+        bookings: {
+          where: {
+            status: "CONFIRMED",
+            checkIn: { lte: now },
+            checkOut: { gt: now },
+          },
+          select: { id: true },
+        },
         coOwners: {
           where: { removedAt: null },
           select: { clientId: true, relationship: true },

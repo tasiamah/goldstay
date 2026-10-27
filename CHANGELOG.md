@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.84.1] - 2026-10-27
+
+### Fixed
+- The portal called every short-let apartment "Vacant", including two
+  with a guest in the flat at the time. Occupancy was read from active
+  leases only, and no active property on the platform has a lease —
+  short lets are let by the night, not by tenancy. It now counts a
+  confirmed stay spanning today as well.
+
 ## [1.84.0] - 2026-10-27
 
 ### Added
@@ -3486,6 +3495,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.84.1]: https://github.com/tasiamah/goldstay/compare/v1.84.0...v1.84.1
 [1.84.0]: https://github.com/tasiamah/goldstay/compare/v1.83.0...v1.84.0
 [1.83.0]: https://github.com/tasiamah/goldstay/compare/v1.82.1...v1.83.0
 [1.82.1]: https://github.com/tasiamah/goldstay/compare/v1.82.0...v1.82.1

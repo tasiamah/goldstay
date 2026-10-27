@@ -9,6 +9,7 @@ function prop(over: Partial<GroupableProperty> = {}): GroupableProperty {
     unitNumber: "AM01",
     status: "ACTIVE",
     units: [{ leases: [] }],
+    bookings: [],
     coOwners: [],
     client: { id: "damary", fullName: "Damary Masakhwe Ayuku" },
     ...over,
@@ -124,5 +125,38 @@ describe("grouping is insensitive to how the address was typed", () => {
       "damary",
     );
     expect(groups.map((g) => g.primary.id)).toEqual(["x", "y", "z"]);
+  });
+});
+
+describe("whether the flat has someone in it", () => {
+  it("is occupied when a lease is active", () => {
+    const groups = groupByApartment(
+      [prop({ units: [{ leases: [{ id: "l1" }] }] })],
+      "damary",
+    );
+    expect(groups[0]!.occupied).toBe(true);
+  });
+
+  it("is occupied when a guest is staying, with no lease at all", () => {
+    // Every active property on the platform had zero leases, so a
+    // lease-only test of this would have passed while the portal told
+    // two landlords their occupied flat was vacant.
+    const groups = groupByApartment([prop({ bookings: [{ id: "b1" }] })], "damary");
+    expect(groups[0]!.occupied).toBe(true);
+  });
+
+  it("is occupied when either row of the pair has the stay on it", () => {
+    // The stay lands on whichever row holds the Hostaway listing —
+    // the short-let one — and the group must still read as occupied.
+    const groups = groupByApartment(
+      [prop({ id: "long" }), prop({ id: "short", bookings: [{ id: "b1" }] })],
+      "damary",
+    );
+    expect(groups).toHaveLength(1);
+    expect(groups[0]!.occupied).toBe(true);
+  });
+
+  it("is vacant with neither", () => {
+    expect(groupByApartment([prop()], "damary")[0]!.occupied).toBe(false);
   });
 });

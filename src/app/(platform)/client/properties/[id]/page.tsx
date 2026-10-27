@@ -152,11 +152,18 @@ export default async function ClientPropertyDetailPage({
 
   const isShortTerm = property.propertyType === "SHORT_TERM";
   const activeLease = property.units.flatMap((u) => u.leases)[0] ?? null;
-  const occupancyLabel = activeLease ? "Occupied" : "Vacant";
 
   // Short-term occupancy and gross revenue for the last 30 days, used
   // both in the stat row and to colour the calendar.
   const now = new Date();
+
+  // A short let has no lease, so a lease-only label called an
+  // occupied flat vacant — which was every short let we manage.
+  const currentStay =
+    property.bookings.find(
+      (b) => b.status === "CONFIRMED" && b.checkIn <= now && b.checkOut > now,
+    ) ?? null;
+  const occupancyLabel = activeLease || currentStay ? "Occupied" : "Vacant";
   const thirtyDaysAgo = new Date(now);
   thirtyDaysAgo.setUTCDate(thirtyDaysAgo.getUTCDate() - 30);
   const period = { start: thirtyDaysAgo, end: now };

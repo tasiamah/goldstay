@@ -10,6 +10,10 @@
 // both rows stay, both agreements stay, and the group keeps a handle
 // on every row so a caller can still reach them.
 //
+// "Occupied" means a tenant or a guest is in the flat now: an active
+// lease for a long let, a confirmed stay spanning today for a short
+// let. The caller narrows the bookings; this only counts them.
+//
 // Grouping is keyed on the owner of record as well as the address,
 // because two unrelated clients can hold rows with the same name and
 // unit number — Purple haze B804 is recorded against two different
@@ -22,6 +26,11 @@ export type GroupableProperty = {
   unitNumber: string | null;
   status: string;
   units: { leases: { id: string }[] }[];
+  // Confirmed stays covering "now". A short-let flat has no lease, so
+  // leases alone report every short-let apartment as vacant — which
+  // was true of every active property on the platform, two of them
+  // with a guest in the flat at the time.
+  bookings: { id: string }[];
   coOwners: { clientId: string; relationship: string | null }[];
   client: { id: string; fullName: string };
 };
@@ -76,7 +85,10 @@ export function groupByApartment<T extends GroupableProperty>(
       key,
       primary,
       rows,
-      occupied: rows.some((r) => r.units.some((u) => u.leases.length > 0)),
+      occupied: rows.some(
+        (r) =>
+          r.units.some((u) => u.leases.length > 0) || r.bookings.length > 0,
+      ),
       isActive: rows.some((r) => r.status === "ACTIVE"),
       isCoOwned,
       ownerOfRecord: isCoOwned ? primary.client.fullName : null,
