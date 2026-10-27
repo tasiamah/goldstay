@@ -75,6 +75,15 @@ export async function importPropertyReservations({
     fetchImpl,
   });
 
+  // Stamped on the strength of a successful fetch, not on finding
+  // something. A listing with no stays in the window has still been
+  // reached, and that is the fact an operator needs: the difference
+  // between "nobody has booked it" and "nothing has ever asked".
+  await prisma.property.updateMany({
+    where: { hostawayListingId: listingId },
+    data: { hostawaySyncedAt: new Date() },
+  });
+
   const summary: ImportSummary = {
     fetched: reservations.length,
     created: 0,

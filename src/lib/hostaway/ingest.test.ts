@@ -1,3 +1,6 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import type { PrismaClient } from "@prisma/client";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -204,5 +207,28 @@ describe("ingestHostawayReservation", () => {
       notify: false,
     });
     expect(result).toEqual({ status: "unmappable" });
+  });
+});
+
+// The not-syncing bucket is only as truthful as this column. If a
+// sync path stops stamping it, the bucket starts accusing healthy
+// listings — and an alert that cries wolf gets ignored, which is
+// worse than the silence it replaced.
+describe("every sync path records that it ran", () => {
+  const root = process.cwd();
+
+  it.each([
+    [
+      "src/lib/hostaway/import.ts",
+      "the backfill, once per listing, even when the window held no stays",
+    ],
+    [
+      "src/app/api/webhooks/hostaway/route.ts",
+      "a reservation arriving on the webhook",
+    ],
+  ])("%s stamps hostawaySyncedAt (%s)", (file) => {
+    expect(readFileSync(join(root, file), "utf8")).toContain(
+      "hostawaySyncedAt: new Date()",
+    );
   });
 });

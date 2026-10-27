@@ -105,6 +105,15 @@ export async function POST(request: Request) {
     );
   }
 
+  // A reservation arriving proves the link works. Stamped here
+  // rather than inside ingest because the backfill calls ingest once
+  // per reservation and would rewrite the same column twenty times
+  // for one import; that path stamps itself, once per listing.
+  await prisma.property.update({
+    where: { id: result.propertyId },
+    data: { hostawaySyncedAt: new Date() },
+  });
+
   return NextResponse.json({
     ok: true,
     bookingId: result.bookingId,

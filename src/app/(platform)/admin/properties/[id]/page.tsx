@@ -422,6 +422,8 @@ export default async function PropertyDetailPage({
               <BookingsCard
                 propertyId={property.id}
                 hostawayListingId={property.hostawayListingId}
+                hostawaySyncedAt={property.hostawaySyncedAt}
+                isLive={property.status === "ACTIVE"}
                 bookings={property.bookings.slice(0, 25)}
               />
               <div className="rounded-lg border border-stone-200 bg-white p-6">
@@ -611,13 +613,86 @@ export default async function PropertyDetailPage({
   );
 }
 
+// Says out loud whether reservations are actually reaching us.
+//
+// Two different mistakes produce the same silence — a listing id
+// nobody entered, and one entered against which nothing ever ran —
+// and both look identical to "this flat has no bookings yet". Six
+// live units were in the second state at once, which is why this is
+// stated on the page rather than left to be inferred from an empty
+// list.
+function SyncState({
+  hostawayListingId,
+  hostawaySyncedAt,
+  isLive,
+}: {
+  hostawayListingId: string | null;
+  hostawaySyncedAt: Date | null;
+  isLive: boolean;
+}) {
+  if (!hostawayListingId) {
+    return (
+      <p
+        className={`mt-3 rounded-md border p-3 text-sm ${
+          isLive
+            ? "border-red-200 bg-red-50 text-red-900"
+            : "border-stone-200 bg-stone-50 text-stone-600"
+        }`}
+      >
+        <strong className="font-medium">No Hostaway listing ID.</strong>{" "}
+        {isLive
+          ? "This unit is live, so bookings are being taken that will never reach Goldstay: no stays, no occupancy, and no booking email to the owner. Add the ID in Details."
+          : "Add it in Details before this unit goes live."}
+      </p>
+    );
+  }
+
+  if (!hostawaySyncedAt) {
+    return (
+      <p
+        className={`mt-3 rounded-md border p-3 text-sm ${
+          isLive
+            ? "border-amber-200 bg-amber-50 text-amber-900"
+            : "border-stone-200 bg-stone-50 text-stone-600"
+        }`}
+      >
+        <strong className="font-medium">
+          Listing {hostawayListingId} is set, but nothing has ever synced.
+        </strong>{" "}
+        The ID alone does not pull anything. Run the import below for past
+        stays, and check the webhook is registered so new ones arrive on
+        their own.
+      </p>
+    );
+  }
+
+  return (
+    <p className="mt-3 text-xs text-stone-500">
+      Listing {hostawayListingId} · last synced{" "}
+      {hostawaySyncedAt.toLocaleString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        timeZone: "UTC",
+      })}{" "}
+      UTC
+    </p>
+  );
+}
+
 function BookingsCard({
   propertyId,
   hostawayListingId,
+  hostawaySyncedAt,
+  isLive,
   bookings,
 }: {
   propertyId: string;
   hostawayListingId: string | null;
+  hostawaySyncedAt: Date | null;
+  isLive: boolean;
   bookings: Array<{
     id: string;
     source: string;
@@ -648,6 +723,11 @@ function BookingsCard({
         reservations with their real figures, and replaces any calendar-only
         rows an iCal feed left behind for the same stay.
       </p>
+      <SyncState
+        hostawayListingId={hostawayListingId}
+        hostawaySyncedAt={hostawaySyncedAt}
+        isLive={isLive}
+      />
       <HostawayImportButton
         action={importHostawayAction.bind(null, propertyId)}
         disabled={!hostawayListingId}

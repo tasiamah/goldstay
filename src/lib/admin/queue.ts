@@ -14,13 +14,17 @@
 //   3. Bookings missing financials     → calendar holds we imported
 //                                        from iCal that still need
 //                                        gross / net entered
-//   4. Failed iCal feeds               → silent breakage of occupancy
-//   5. Clients missing payout method    → can't actually pay them when
+//   4. Short-lets not syncing          → live on Hostaway but no
+//                                        reservations reaching us, so
+//                                        no bookings, no occupancy and
+//                                        no "your unit is booked" mail
+//   5. Failed iCal feeds               → silent breakage of occupancy
+//   6. Clients missing payout method    → can't actually pay them when
 //                                        the next statement runs
-//   6. Leases expiring soon            → renewal radar (next 60 days)
-//   7. Stale welcomes                  → clients we created days ago
+//   7. Leases expiring soon            → renewal radar (next 60 days)
+//   8. Stale welcomes                  → clients we created days ago
 //                                        who never logged in
-//   8. My overdue tasks                → personal queue
+//   9. My overdue tasks                → personal queue
 //
 // All Prisma queries filter `archivedAt: null` so soft-deleted rows
 // never surface in the queue.
@@ -28,7 +32,7 @@
 import { prisma } from "@/lib/db";
 import { formatClientDisplayName } from "@/lib/format-client";
 import { formatPropertyDisplayName } from "@/lib/format-property";
-import type { AdminUser } from "@prisma/client";
+import type { AdminUser, Prisma } from "@prisma/client";
 
 export type QueueItem = {
   id: string;
@@ -73,6 +77,28 @@ const STALE_WELCOME_DAYS = 3;
 // thinking about it yet. This number falls neatly between the two.
 const LEASE_EXPIRING_WINDOW_DAYS = 60;
 
+// Live short-lets that are not producing reservations. Declared once
+// because the bucket needs both the rows and a total, and a count
+// that disagreed with its own list would be worse than no bucket.
+// Exported for unit testing, the same way computeDelta and daysUntil
+// are — this one decides whether an operator is told at all.
+//
+// Long lets are excluded: they are let by tenancy, not through a
+// channel, and flagging them would bury the real cases in noise.
+export function unsyncedShortLetWhere(
+  countryFilter: Record<string, unknown>,
+): Prisma.PropertyWhereInput {
+  // Country filter spread first, so it can narrow the bucket but
+  // never widen it past the rule.
+  return {
+    ...countryFilter,
+    archivedAt: null,
+    status: "ACTIVE",
+    propertyType: "SHORT_TERM",
+    OR: [{ hostawayListingId: null }, { hostawaySyncedAt: null }],
+  };
+}
+
 export async function getAttentionQueue(
   admin: AdminUser,
 ): Promise<AttentionQueue> {
@@ -94,6 +120,8 @@ export async function getAttentionQueue(
     unsignedAgreementsTotal,
     bookingsMissingFinancials,
     bookingsMissingFinancialsTotal,
+    unsyncedShortLets,
+    unsyncedShortLetsTotal,
     failedFeeds,
     failedFeedsTotal,
     clientsMissingPayoutMethod,
@@ -185,6 +213,24 @@ export async function getAttentionQueue(
         property: { archivedAt: null, ...countryFilter },
       },
     }),
+    // Live short-lets that are not bringing in reservations, for
+    // either of the two reasons that produce the same silence: the
+    // Hostaway listing id was never entered, or it was entered and
+    // nothing has ever synced against it. Both end with an owner
+    // asking why their booked flat shows no stays.
+    prisma.property.findMany({
+      where: unsyncedShortLetWhere(countryFilter),
+      orderBy: { launchedAt: "asc" },
+      take: PER_BUCKET_LIMIT,
+      select: {
+        id: true,
+        name: true,
+        unitNumber: true,
+        city: true,
+        hostawayListingId: true,
+      },
+    }),
+    prisma.property.count({ where: unsyncedShortLetWhere(countryFilter) }),
     prisma.propertyIcalFeed.findMany({
       where: {
         lastError: { not: null },
@@ -397,6 +443,22 @@ export async function getAttentionQueue(
       label: `${b.guestName || "Guest"} · ${b.checkIn.toLocaleDateString("en-GB", { day: "2-digit", month: "short" })}`,
       href: `/admin/bookings/${b.id}`,
       hint: `${formatPropertyDisplayName(b.property.name, b.property.unitNumber)} · ${b.property.city}`,
+    })),
+  });
+
+  buckets.push({
+    key: "short-lets-not-syncing",
+    title: "Live short-lets not syncing from Hostaway",
+    description:
+      "No reservations are reaching us for these, so they have no bookings, no occupancy and their owners get no booking emails. Add the listing id, or run the import if one is already set.",
+    total: unsyncedShortLetsTotal,
+    items: unsyncedShortLets.map((p) => ({
+      id: p.id,
+      label: formatPropertyDisplayName(p.name, p.unitNumber),
+      href: `/admin/properties/${p.id}`,
+      hint: p.hostawayListingId
+        ? `${p.city} · listing ${p.hostawayListingId} set but never synced`
+        : `${p.city} · no Hostaway listing id`,
     })),
   });
 

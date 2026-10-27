@@ -344,6 +344,13 @@ model Property {
   // Hostaway listing id for SHORT_TERM properties. Used by the
   // webhook receiver to map external reservations back to a property.
   hostawayListingId  String?         @unique
+  // When we last successfully pulled or received reservations for
+  // that listing. Null means the id was entered and nothing has ever
+  // come back, which looks exactly like a listing with no bookings
+  // yet — six live units sat in that state, their owners wondering
+  // why no stay ever appeared. Distinguishing the two is the whole
+  // reason this column exists.
+  hostawaySyncedAt   DateTime?
   // Soft-delete column. See Client.archivedAt.
   archivedAt         DateTime?
   createdAt          DateTime        @default(now())

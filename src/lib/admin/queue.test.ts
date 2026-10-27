@@ -1,9 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { computeDelta, daysAgo, daysUntil, meanDaysBetween } from "./queue";
+import {
+  computeDelta,
+  daysAgo,
+  daysUntil,
+  meanDaysBetween,
+  unsyncedShortLetWhere,
+} from "./queue";
 
 // daysAgo is the only pure helper in queue.ts beyond computeDelta.
 // The rest of the file is Prisma I/O, exercised via integration
-// tests against a real DB.
+// tests against a real DB — except the where clause for the
+// not-syncing bucket, which is a rule rather than a query and is
+// asserted directly below.
 
 describe("daysAgo", () => {
   it("subtracts whole days from the anchor and returns the anchor for 0", () => {
@@ -104,5 +112,41 @@ describe("daysUntil", () => {
     const now = new Date("2026-05-01T12:00:00.000Z");
     const yesterday = new Date("2026-04-30T12:00:00.000Z");
     expect(daysUntil(yesterday, now)).toBe(0);
+  });
+});
+
+describe("unsyncedShortLetWhere", () => {
+  it("catches both ways a short-let goes quiet", () => {
+    const where = unsyncedShortLetWhere({});
+    // A listing id nobody entered, and one entered against which
+    // nothing has ever run. Different mistakes, identical silence.
+    expect(where.OR).toEqual([
+      { hostawayListingId: null },
+      { hostawaySyncedAt: null },
+    ]);
+  });
+
+  it("only looks at live short-lets", () => {
+    const where = unsyncedShortLetWhere({});
+    expect(where).toMatchObject({
+      archivedAt: null,
+      status: "ACTIVE",
+      // A long let is let by tenancy, not through a channel. Flagging
+      // those would bury the real cases in noise.
+      propertyType: "SHORT_TERM",
+    });
+  });
+
+  it("respects a country manager's scope", () => {
+    expect(unsyncedShortLetWhere({ country: "KE" })).toMatchObject({
+      country: "KE",
+    });
+  });
+
+  it("does not let a country filter overwrite the rule", () => {
+    // Spread order matters: a filter spread after status could
+    // silently widen the bucket to every property in the country.
+    const where = unsyncedShortLetWhere({ status: "ONBOARDING" } as never);
+    expect(where.status).toBe("ACTIVE");
   });
 });

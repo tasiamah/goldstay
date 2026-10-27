@@ -21,6 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.86.0] - 2026-10-27
+
+### Added
+- A "Live short-lets not syncing from Hostaway" bucket on the admin
+  overview, so a unit that is taking bookings nobody at Goldstay can
+  see gets noticed the next morning rather than when the owner asks.
+  It catches both mistakes that produce the same silence: a listing id
+  that was never entered, and one that was entered but has never
+  pulled anything. Seven of our nine live short-lets are in it today.
+- The bookings card on a property now says whether reservations are
+  actually reaching us — missing id, set but never synced, or the date
+  it last synced. Previously an empty booking list looked identical
+  whether the link was broken or the flat simply had no stays yet.
+
+### Changed
+- `Property.hostawaySyncedAt` records when a listing last produced
+  reservations. The backfill stamps it once per listing on a
+  successful fetch, whether or not the window held any stays, and the
+  webhook stamps it when a reservation arrives. Reaching the listing
+  is the fact worth recording; finding something in it is not.
+
+### Fixed
+- Backfilled the new column from existing bookings, so the bucket does
+  not open by accusing the two listings that are working.
+
 ## [1.85.1] - 2026-10-27
 
 ### Fixed
@@ -3538,6 +3563,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.86.0]: https://github.com/tasiamah/goldstay/compare/v1.85.1...v1.86.0
 [1.85.1]: https://github.com/tasiamah/goldstay/compare/v1.85.0...v1.85.1
 [1.85.0]: https://github.com/tasiamah/goldstay/compare/v1.84.2...v1.85.0
 [1.84.2]: https://github.com/tasiamah/goldstay/compare/v1.84.1...v1.84.2
