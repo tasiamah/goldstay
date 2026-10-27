@@ -1808,4 +1808,9 @@ enum ClientInviteReason {
   NEVER_SIGNED_IN
   // An operator pressed resend.
   RESEND
+  // The landlord clicked an expired link and asked for a new one
+  // themselves. Worth telling apart: it means they were motivated
+  // enough to come back, which is the strongest signal we get that
+  // the account matters to them.
+  SELF_REQUESTED
 }

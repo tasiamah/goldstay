@@ -63,9 +63,14 @@ export type InviteLookup =
       inviteId: string;
       client: { id: string; email: string; fullName: string };
     }
-  // Separated from "unknown" so the page can offer to send a new link
-  // to a known person rather than asking them to type their email.
-  | { status: "expired" | "retired"; client: { fullName: string } }
+  // An expired invite still identifies its owner, which is what lets
+  // the page offer "send me a new one" with no email box: we already
+  // know where to send it. The id is needed to mint the replacement.
+  | { status: "expired"; client: { id: string; fullName: string } }
+  // No id on this branch on purpose. A retired invite means there is
+  // a password on file, so the answer is to sign in, not to mint
+  // another way in.
+  | { status: "retired"; client: { fullName: string } }
   | { status: "unknown" };
 
 export async function lookupInvite(
@@ -93,7 +98,10 @@ export async function lookupInvite(
     return { status: "retired", client: { fullName: invite.client.fullName } };
   }
   if (invite.expiresAt.getTime() <= now.getTime()) {
-    return { status: "expired", client: { fullName: invite.client.fullName } };
+    return {
+      status: "expired",
+      client: { id: invite.client.id, fullName: invite.client.fullName },
+    };
   }
   return { status: "valid", inviteId: invite.id, client: invite.client };
 }
@@ -118,3 +126,32 @@ export async function retireInvitesForClient(clientId: string): Promise<void> {
     data: { retiredAt: new Date() },
   });
 }
+
+// Whether we have already minted an invite for this client very
+// recently.
+//
+// This is the spam guard for the self-service "send me a new link"
+// button, and it is deliberately not the IP rate limiter: that one is
+// Upstash-backed and no-ops when Upstash is unconfigured, and it
+// counts the wrong thing anyway. What needs protecting is the
+// landlord's inbox, so the limit belongs per client.
+//
+// It also makes a double-click harmless: the second press finds the
+// invite the first one made and sends nothing.
+export async function mintedRecentlyFor(
+  clientId: string,
+  withinMs: number,
+  now: Date = new Date(),
+): Promise<boolean> {
+  const since = new Date(now.getTime() - withinMs);
+  const recent = await prisma.clientInvite.findFirst({
+    where: { clientId, createdAt: { gte: since } },
+    select: { id: true },
+  });
+  return Boolean(recent);
+}
+
+// Long enough that a second press of the button sends nothing, short
+// enough that someone who genuinely did not receive the first one is
+// not left waiting.
+export const RESEND_COOLDOWN_MS = 10 * 60 * 1000;

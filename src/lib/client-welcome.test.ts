@@ -152,6 +152,45 @@ describe("the nudge to someone who never signed in", () => {
   });
 });
 
+describe("the link someone asked for themselves", () => {
+  const asked = { ...BASE, tone: "self-requested" as const };
+
+  it("reads as a reply to a request, not as a discovery", async () => {
+    await sendClientWelcomeEmail(asked);
+    const { text, html } = sent();
+    for (const body of [text, html]) {
+      expect(body).toMatch(/you just asked for/i);
+      // The apologetic copy would be absurd three seconds after they
+      // pressed a button.
+      expect(body).not.toMatch(/going through our records/i);
+    }
+  });
+
+  it("gets its own subject", async () => {
+    await sendClientWelcomeEmail(asked);
+    expect(sent().subject).toMatch(/new Goldstay sign-in link/i);
+  });
+
+  it("still says how long the new one lasts", async () => {
+    await sendClientWelcomeEmail(asked);
+    for (const body of [sent().text, sent().html]) {
+      expect(body).toMatch(/7 days/);
+    }
+  });
+
+  it("is recorded as self-requested, not as an operator resend", async () => {
+    await sendClientWelcomeEmail(asked);
+    expect(createInvite).toHaveBeenCalledWith(
+      expect.objectContaining({ reason: "SELF_REQUESTED" }),
+    );
+  });
+
+  it("skips the tour, like the other rescue note", async () => {
+    await sendClientWelcomeEmail(asked);
+    expect(sent().text).not.toMatch(/From your portal you can/);
+  });
+});
+
 describe("delivery reporting", () => {
   it("separates 'nothing went wrong' from 'it actually went out'", async () => {
     delete process.env.RESEND_API_KEY;

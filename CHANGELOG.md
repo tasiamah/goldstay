@@ -21,6 +21,34 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.83.0] - 2026-10-27
+
+### Added
+- An expired welcome link now offers to email a new one, in one press
+  and with nothing to type. The expired link still identifies its
+  owner, so the page knows where to send it; previously it told the
+  landlord to go to the sign-in page and use "Forgot password?", which
+  asks someone locked out of a brand-new account to reset a password
+  they never set. The replacement is marked as self-requested, which
+  is worth knowing — it means they cared enough to come back.
+- A confirmation screen after the request, rather than a silent
+  reload that leaves them wondering whether it worked.
+
+### Changed
+- A welcome token we cannot match to an account now says so, instead
+  of claiming it expired. Saying "expired" to someone whose link was
+  truncated by their mail client sends them looking for the wrong
+  problem.
+
+### Security
+- Requesting a replacement sends it to the address on the client
+  record and never to anything supplied with the request, so holding
+  someone's expired link cannot redirect their mail. Repeat requests
+  inside ten minutes send nothing, which also makes a double-click
+  harmless. The limit is per client rather than per IP because the
+  thing being protected is a landlord's inbox, and because the
+  IP limiter silently does nothing when Upstash is unconfigured.
+
 ## [1.82.1] - 2026-10-23
 
 ### Changed
@@ -3430,6 +3458,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[1.83.0]: https://github.com/tasiamah/goldstay/compare/v1.82.1...v1.83.0
 [1.82.1]: https://github.com/tasiamah/goldstay/compare/v1.82.0...v1.82.1
 [1.82.0]: https://github.com/tasiamah/goldstay/compare/v1.81.1...v1.82.0
 [1.81.1]: https://github.com/tasiamah/goldstay/compare/v1.81.0...v1.81.1

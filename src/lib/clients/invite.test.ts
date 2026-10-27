@@ -2,15 +2,20 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
-const { findUnique, create, update, updateMany } = vi.hoisted(() => ({
-  findUnique: vi.fn(),
-  create: vi.fn(),
-  update: vi.fn(),
-  updateMany: vi.fn(),
-}));
+const { findUnique, findFirst, create, update, updateMany } = vi.hoisted(
+  () => ({
+    findUnique: vi.fn(),
+    findFirst: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    updateMany: vi.fn(),
+  }),
+);
 
 vi.mock("@/lib/db", () => ({
-  prisma: { clientInvite: { findUnique, create, update, updateMany } },
+  prisma: {
+    clientInvite: { findUnique, findFirst, create, update, updateMany },
+  },
 }));
 
 const {
@@ -20,6 +25,8 @@ const {
   inviteUrl,
   INVITE_TTL_DAYS,
   lookupInvite,
+  mintedRecentlyFor,
+  RESEND_COOLDOWN_MS,
   recordInviteUse,
   retireInvitesForClient,
 } = await import("./invite");
@@ -28,6 +35,7 @@ const CLIENT = { id: "c1", email: "a@b.com", fullName: "Lucy Odhoch" };
 
 beforeEach(() => {
   findUnique.mockReset();
+  findFirst.mockReset();
   create.mockReset();
   update.mockReset();
   updateMany.mockReset();
@@ -112,8 +120,18 @@ describe("lookupInvite", () => {
     });
     const got = await lookupInvite("a-token-long-enough-to-pass", NOW);
     expect(got.status).toBe("expired");
-    // So the page can greet them rather than asking who they are.
-    expect(got).toMatchObject({ client: { fullName: "Lucy Odhoch" } });
+    // The id is what lets the expired page offer "send me a new one"
+    // with no email box; the name is what lets it greet them.
+    expect(got).toMatchObject({
+      client: { id: "c1", fullName: "Lucy Odhoch" },
+    });
+  });
+
+  it("gives a retired invite no client id to mint against", async () => {
+    findUnique.mockResolvedValue({ ...live, retiredAt: new Date() });
+    const got = await lookupInvite("a-token-long-enough-to-pass", NOW);
+    // Someone with a password does not get offered another way in.
+    expect(got).not.toMatchObject({ client: { id: expect.anything() } });
   });
 
   it("treats the exact expiry instant as expired", async () => {
@@ -160,6 +178,36 @@ describe("use and retirement", () => {
     const call = updateMany.mock.calls[0]![0];
     expect(call.where).toEqual({ clientId: "c1", retiredAt: null });
     expect(call.data.retiredAt).toBeInstanceOf(Date);
+  });
+});
+
+describe("the resend cooldown", () => {
+  it("reports a recent invite, which is what makes a double-click harmless", async () => {
+    findFirst.mockResolvedValue({ id: "i9" });
+    expect(await mintedRecentlyFor("c1", RESEND_COOLDOWN_MS)).toBe(true);
+  });
+
+  it("reports nothing when the window is clear", async () => {
+    findFirst.mockResolvedValue(null);
+    expect(await mintedRecentlyFor("c1", RESEND_COOLDOWN_MS)).toBe(false);
+  });
+
+  it("limits per client rather than per IP, because it is an inbox we are protecting", async () => {
+    findFirst.mockResolvedValue(null);
+    const now = new Date("2026-10-27T12:00:00Z");
+    await mintedRecentlyFor("c1", RESEND_COOLDOWN_MS, now);
+    const where = findFirst.mock.calls[0]![0].where;
+    expect(where.clientId).toBe("c1");
+    expect(where.createdAt.gte.getTime()).toBe(
+      now.getTime() - RESEND_COOLDOWN_MS,
+    );
+  });
+
+  it("uses a cooldown measured in minutes, not hours", async () => {
+    // Long enough to swallow a double-click, short enough that
+    // someone who really did not get the mail is not stuck.
+    expect(RESEND_COOLDOWN_MS).toBeGreaterThanOrEqual(60_000);
+    expect(RESEND_COOLDOWN_MS).toBeLessThanOrEqual(30 * 60_000);
   });
 });
 

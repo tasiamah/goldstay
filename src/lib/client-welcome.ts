@@ -46,7 +46,7 @@ type WelcomeInput = {
   // Why we are writing. A nudge to someone who never reached the
   // portal opens differently to a first hello, and the invite row
   // records the same reason so the two are distinguishable later.
-  tone?: "welcome" | "never-signed-in";
+  tone?: "welcome" | "never-signed-in" | "self-requested";
   // Which event this send represents on the client's audit timeline.
   // An operator reading the history needs to tell "we welcomed them"
   // apart from "we welcomed them again", so the two get distinct
@@ -101,9 +101,11 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
         reason:
           input.tone === "never-signed-in"
             ? "NEVER_SIGNED_IN"
-            : input.auditAction === "client.welcomed.resent"
-              ? "RESEND"
-              : "WELCOME",
+            : input.tone === "self-requested"
+              ? "SELF_REQUESTED"
+              : input.auditAction === "client.welcomed.resent"
+                ? "RESEND"
+                : "WELCOME",
       });
       magicLink = inviteUrl(token, siteUrl);
     } catch (err) {
@@ -114,7 +116,9 @@ export async function sendClientWelcomeEmail(input: WelcomeInput): Promise<{
   const subject =
     input.tone === "never-signed-in"
       ? "Your Goldstay portal is waiting \u2014 here\u2019s a fresh link"
-      : "Welcome to Goldstay";
+      : input.tone === "self-requested"
+        ? "Your new Goldstay sign-in link"
+        : "Welcome to Goldstay";
   const text = renderText({ ...input, magicLink, siteUrl });
   const html = renderHtml({ ...input, magicLink, siteUrl });
 
@@ -256,7 +260,13 @@ function renderText({
   // Goldstay is. They need to know we noticed, that it was our fault
   // and not theirs, and that this link behaves differently.
   const opening =
-    tone === "never-signed-in"
+    tone === "self-requested"
+      ? [
+          greeting,
+          "",
+          "Here is the fresh link you just asked for.",
+        ]
+      : tone === "never-signed-in"
       ? [
           greeting,
           "",
@@ -282,7 +292,7 @@ function renderText({
         ];
 
   const closing =
-    tone === "never-signed-in"
+    tone === "never-signed-in" || tone === "self-requested"
       ? [
           "Everything that has happened on your property while you were locked",
           "out is in there waiting for you — nothing has been missed.",
@@ -324,12 +334,16 @@ function renderHtml({
     : `<p style="margin:32px 0;text-align:center"><a href="${escapeAttr(siteUrl)}/login" style="background:#1c1917;color:#ffffff;text-decoration:none;padding:14px 28px;border-radius:6px;font-weight:600;font-size:15px;display:inline-block">Sign in to my portal &rarr;</a></p><p style="color:#78716c;font-size:13px;margin:0;text-align:center">Use \u201cForgot password?\u201d to set a password — sign-ins are instant after that.</p>`;
 
   const headline =
-    tone === "never-signed-in"
+    tone === "self-requested"
+      ? `<h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Here you go, ${escapeHtml(firstName)}.</h1>`
+      : tone === "never-signed-in"
       ? `<h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Let\u2019s get you in, ${escapeHtml(firstName)}.</h1>`
       : `<h1 style="font-size:24px;font-family:Georgia,'Times New Roman',serif;color:#1c1917;margin:24px 0 0 0;font-weight:normal">Welcome, ${escapeHtml(firstName)}.</h1>`;
 
   const intro =
-    tone === "never-signed-in"
+    tone === "self-requested"
+      ? `<p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">Here is the fresh link you just asked for. It works for ${INVITE_TTL_DAYS} days and you can use it more than once.</p>`
+      : tone === "never-signed-in"
       ? `<p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">We were going through our records and realised you have never managed to get into your Goldstay portal \u2014 and that is on us, not you. The first link we sent was only valid for an hour, and some email providers quietly open links to scan them, which used a few of them up before anyone had a chance to click.</p><p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">We have fixed that. The link below lasts ${INVITE_TTL_DAYS} days and can be used as many times as you like.</p>`
       : `<p style="color:#44403c;line-height:1.55;margin:16px 0 0 0">${accountLine} We've set you up for <strong>${market}</strong>. From your portal you can:</p>
                 <ul style="color:#44403c;line-height:1.7;margin:16px 0 0 0;padding-left:20px">
@@ -340,7 +354,7 @@ function renderHtml({
                 </ul>`;
 
   const signoff =
-    tone === "never-signed-in"
+    tone === "never-signed-in" || tone === "self-requested"
       ? "Everything that has happened on your property while you were locked out is in there waiting for you \u2014 nothing has been missed. If the link gives you any trouble at all, just reply to this email and it comes straight to a real person."
       : "Questions? Reply to this email and you'll reach a real person at Goldstay. We answer within one business day.";
 
