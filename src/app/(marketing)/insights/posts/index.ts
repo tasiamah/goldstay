@@ -735,6 +735,12 @@ import MistySpringsWestlandsOwnersGuide, {
 import PolarisResidencyKilimaniOwnersGuide, {
   meta as polarisResidencyKilimaniOwnersGuideMeta,
 } from "./polaris-residency-kilimani-owners-guide";
+import VersaillesGardenKileleshwaOwnersGuide, {
+  meta as versaillesGardenKileleshwaOwnersGuideMeta,
+} from "./versailles-garden-kileleshwa-owners-guide";
+import WinchesterGardensRiversideOwnersGuide, {
+  meta as winchesterGardensRiversideOwnersGuideMeta,
+} from "./winchester-gardens-riverside-owners-guide";
 import StMichaelGardenApartmentsWestlandsOwnersGuide, {
   meta as stMichaelGardenApartmentsWestlandsOwnersGuideMeta,
 } from "./st-michael-garden-apartments-westlands-owners-guide";
@@ -1662,6 +1668,14 @@ export const posts: readonly Post[] = [
   {
     meta: stMichaelGardenApartmentsWestlandsOwnersGuideMeta,
     Component: StMichaelGardenApartmentsWestlandsOwnersGuide,
+  },
+  {
+    meta: versaillesGardenKileleshwaOwnersGuideMeta,
+    Component: VersaillesGardenKileleshwaOwnersGuide,
+  },
+  {
+    meta: winchesterGardensRiversideOwnersGuideMeta,
+    Component: WinchesterGardensRiversideOwnersGuide,
   },
   {
     meta: gtcResidencesPanPacificWestlandsOwnersGuideMeta,
