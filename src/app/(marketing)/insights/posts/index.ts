@@ -726,6 +726,18 @@ import EnrogueKileleshwaHandoverGuide, {
 import CocoBrooksideWestlandsHandoverGuide, {
   meta as cocoBrooksideWestlandsHandoverGuideMeta,
 } from "./coco-brookside-westlands-handover-guide";
+import KindarumaHomesApartmentsKilimaniOwnersGuide, {
+  meta as kindarumaHomesApartmentsKilimaniOwnersGuideMeta,
+} from "./kindaruma-homes-apartments-kilimani-owners-guide";
+import MistySpringsWestlandsOwnersGuide, {
+  meta as mistySpringsWestlandsOwnersGuideMeta,
+} from "./misty-springs-westlands-owners-guide";
+import PolarisResidencyKilimaniOwnersGuide, {
+  meta as polarisResidencyKilimaniOwnersGuideMeta,
+} from "./polaris-residency-kilimani-owners-guide";
+import StMichaelGardenApartmentsWestlandsOwnersGuide, {
+  meta as stMichaelGardenApartmentsWestlandsOwnersGuideMeta,
+} from "./st-michael-garden-apartments-westlands-owners-guide";
 import ShangriLaResidencyWestlandsLettingGuide, {
   meta as shangriLaResidencyWestlandsLettingGuideMeta,
 } from "./shangri-la-residency-westlands-letting-guide";
@@ -1634,6 +1646,22 @@ export const posts: readonly Post[] = [
   {
     meta: shangriLaResidencyWestlandsLettingGuideMeta,
     Component: ShangriLaResidencyWestlandsLettingGuide,
+  },
+  {
+    meta: polarisResidencyKilimaniOwnersGuideMeta,
+    Component: PolarisResidencyKilimaniOwnersGuide,
+  },
+  {
+    meta: kindarumaHomesApartmentsKilimaniOwnersGuideMeta,
+    Component: KindarumaHomesApartmentsKilimaniOwnersGuide,
+  },
+  {
+    meta: mistySpringsWestlandsOwnersGuideMeta,
+    Component: MistySpringsWestlandsOwnersGuide,
+  },
+  {
+    meta: stMichaelGardenApartmentsWestlandsOwnersGuideMeta,
+    Component: StMichaelGardenApartmentsWestlandsOwnersGuide,
   },
   {
     meta: gtcResidencesPanPacificWestlandsOwnersGuideMeta,
