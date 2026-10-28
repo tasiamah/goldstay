@@ -21,6 +21,24 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.87.0] - 2026-10-27
+
+### Added
+- Owner guides for the thirteen buildings we manage in that did not have
+  one: Polaris Residency, Kindaruma Homes, Denis Gardens, Heartland Homes,
+  Serenity Residency and Purple Haze in Kilimani; Misty Springs and
+  St Michael Garden Apartments in Westlands; Winchester Gardens and
+  108 Riverside on Riverside Drive; Versailles Garden in Kileleshwa;
+  Grand Premier in Lavington; and Unity East at Tatu City. Someone
+  searching the name of their own building is the owner most likely to
+  need a manager, and until now eleven of our seventeen buildings
+  returned nothing of ours.
+- Each guide is written from published listings for that building rather
+  than from our own booking data, which for these units is too thin and
+  too unreconciled to publish. Where the published figures do not
+  reconcile, as with the tower advertising a 15 percent yield against
+  its own rate card, the guides say so rather than repeating them.
+
 ## [1.86.1] - 2026-10-27
 
 ### Changed
@@ -3571,7 +3589,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.86.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.87.0...HEAD
+[1.87.0]: https://github.com/tasiamah/goldstay/compare/v1.86.1...v1.87.0
 [1.86.1]: https://github.com/tasiamah/goldstay/compare/v1.86.0...v1.86.1
 [1.86.0]: https://github.com/tasiamah/goldstay/compare/v1.85.1...v1.86.0
 [1.85.1]: https://github.com/tasiamah/goldstay/compare/v1.85.0...v1.85.1

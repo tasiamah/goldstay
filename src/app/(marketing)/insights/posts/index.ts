@@ -735,6 +735,21 @@ import MistySpringsWestlandsOwnersGuide, {
 import PolarisResidencyKilimaniOwnersGuide, {
   meta as polarisResidencyKilimaniOwnersGuideMeta,
 } from "./polaris-residency-kilimani-owners-guide";
+import DenisGardensKilimaniOwnersGuide, {
+  meta as denisGardensKilimaniOwnersGuideMeta,
+} from "./denis-gardens-kilimani-owners-guide";
+import GrandPremierLavingtonOwnersGuide, {
+  meta as grandPremierLavingtonOwnersGuideMeta,
+} from "./grand-premier-lavington-owners-guide";
+import HeartlandHomesKilimaniOwnersGuide, {
+  meta as heartlandHomesKilimaniOwnersGuideMeta,
+} from "./heartland-homes-kilimani-owners-guide";
+import PurpleHazeKilimaniOwnersGuide, {
+  meta as purpleHazeKilimaniOwnersGuideMeta,
+} from "./purple-haze-kilimani-owners-guide";
+import SerenityResidencyKilimaniOwnersGuide, {
+  meta as serenityResidencyKilimaniOwnersGuideMeta,
+} from "./serenity-residency-kilimani-owners-guide";
 import OneZeroEightRiversideNairobiOwnersGuide, {
   meta as oneZeroEightRiversideNairobiOwnersGuideMeta,
 } from "./108-riverside-nairobi-owners-guide";
@@ -1690,6 +1705,26 @@ export const posts: readonly Post[] = [
   {
     meta: unityEastTatuCityOwnersGuideMeta,
     Component: UnityEastTatuCityOwnersGuide,
+  },
+  {
+    meta: denisGardensKilimaniOwnersGuideMeta,
+    Component: DenisGardensKilimaniOwnersGuide,
+  },
+  {
+    meta: heartlandHomesKilimaniOwnersGuideMeta,
+    Component: HeartlandHomesKilimaniOwnersGuide,
+  },
+  {
+    meta: serenityResidencyKilimaniOwnersGuideMeta,
+    Component: SerenityResidencyKilimaniOwnersGuide,
+  },
+  {
+    meta: purpleHazeKilimaniOwnersGuideMeta,
+    Component: PurpleHazeKilimaniOwnersGuide,
+  },
+  {
+    meta: grandPremierLavingtonOwnersGuideMeta,
+    Component: GrandPremierLavingtonOwnersGuide,
   },
   {
     meta: gtcResidencesPanPacificWestlandsOwnersGuideMeta,

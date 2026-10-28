@@ -19,7 +19,7 @@ export const meta: PostMeta = {
     "Unity East, Tatu City: a two bedroom at KES 55,000 with the service charge already in it",
   metaTitle: "Unity East Tatu City: an owner's guide to letting",
   description:
-    "Two bedrooms here let from KES 52,500 to 62,500 a month, and almost uniquely in Kenya the quoted rent includes the service charge. That changes how you should advertise it, and it tells you plainly what kind of letting business this is.",
+    "Two bedrooms here let from KES 52,500 to 62,500 a month, and unusually for Kenya the quoted rent includes the service charge. That changes how you should advertise it, and it tells you plainly what kind of letting business this is.",
   metaDescription:
     "Unity East Tatu City lets at KES 52,500 to 62,500 a month including service charge. What an owner should expect.",
   publishedAt: "2026-10-28",
@@ -163,10 +163,10 @@ export default function Article() {
 
       <P>
         Most of the published listings here quote a two bedroom at KES 55,000 or
-        KES 58,500 inclusive of service charge. In Nairobi that is rare. The
-        standard practice is to advertise the rent and then add a levy of KES
-        8,000 to 15,000 a month, which the tenant discovers somewhere between
-        the viewing and the lease.
+        KES 58,500 inclusive of service charge. That is the minority practice in
+        Nairobi. The usual arrangement is to advertise the rent and then add a
+        levy of KES 8,000 to 15,000 a month, which the tenant discovers
+        somewhere between the viewing and the lease.
       </P>
 
       <Pullquote>
