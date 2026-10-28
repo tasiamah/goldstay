@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.86.1] - 2026-10-27
+
+### Changed
+- The occupancy board now opens on last month, this month and next
+  month rather than three months of history. An owner looking at it
+  wants to know who is arriving, and the arrivals were all off the
+  right-hand edge. "Show 3 more months" still walks backwards through
+  the past; the forward edge stays at the end of next month.
+
 ## [1.86.0] - 2026-10-27
 
 ### Added
@@ -3562,7 +3571,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.81.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.86.1...HEAD
+[1.86.1]: https://github.com/tasiamah/goldstay/compare/v1.86.0...v1.86.1
 [1.86.0]: https://github.com/tasiamah/goldstay/compare/v1.85.1...v1.86.0
 [1.85.1]: https://github.com/tasiamah/goldstay/compare/v1.85.0...v1.85.1
 [1.85.0]: https://github.com/tasiamah/goldstay/compare/v1.84.2...v1.85.0

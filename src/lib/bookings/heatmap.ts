@@ -21,20 +21,49 @@ export function clampHeatmapMonths(raw: unknown): number {
   return Math.min(HEATMAP_MAX_MONTHS, Math.max(HEATMAP_MIN_MONTHS, rounded));
 }
 
-// First UTC day of (now − (monthsBack − 1) months). The window is
-// inclusive of the current month, so monthsBack=1 returns the start
-// of the current month.
-export function heatmapWindowStart(now: Date, monthsBack: number): Date {
-  const thisMonth = new Date(
-    Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1),
-  );
+// The board always ends one month ahead. A landlord looking at
+// occupancy mostly wants to know who is coming, and a board that
+// stopped at today could only ever show what they had already been
+// paid for. So the three default blocks are last month, this month
+// and next.
+export const HEATMAP_MONTHS_AHEAD = 1;
+
+// First UTC day of the window. `months` counts every block drawn,
+// one of which is next month, so months=3 starts one month back.
+export function heatmapWindowStart(now: Date, months: number): Date {
   return new Date(
     Date.UTC(
-      thisMonth.getUTCFullYear(),
-      thisMonth.getUTCMonth() - (monthsBack - 1),
+      now.getUTCFullYear(),
+      now.getUTCMonth() - (months - 1 - HEATMAP_MONTHS_AHEAD),
       1,
     ),
   );
+}
+
+// Last UTC day of the window — the end of next month. Day 0 of the
+// month after gives the last day of the one before it.
+export function heatmapWindowEnd(now: Date): Date {
+  return new Date(
+    Date.UTC(
+      now.getUTCFullYear(),
+      now.getUTCMonth() + HEATMAP_MONTHS_AHEAD + 1,
+      0,
+    ),
+  );
+}
+
+// Names the span the board covers, e.g. "Sep – Nov 2026". The old
+// headings said "Last 3 months", which stopped being true the moment
+// the board started drawing next month.
+export function heatmapWindowLabel(now: Date, months: number): string {
+  const start = heatmapWindowStart(now, months);
+  const end = heatmapWindowEnd(now);
+  const mon = (d: Date) =>
+    d.toLocaleDateString("en-GB", { month: "short", timeZone: "UTC" });
+  const year = (d: Date) => d.getUTCFullYear();
+  return year(start) === year(end)
+    ? `${mon(start)} – ${mon(end)} ${year(end)}`
+    : `${mon(start)} ${year(start)} – ${mon(end)} ${year(end)}`;
 }
 
 // ---------- What is in the property on a given night ----------

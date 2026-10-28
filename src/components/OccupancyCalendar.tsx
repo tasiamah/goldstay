@@ -16,6 +16,8 @@
 import {
   buildOccupancyIndex,
   dayKeyUTC,
+  heatmapWindowEnd,
+  HEATMAP_MONTHS_AHEAD,
   type Occupant,
   type OccupantBooking,
   type OccupantLease,
@@ -81,17 +83,21 @@ export function OccupancyCalendar({
   // bookings actually exist and the window hasn't hit its cap.
   loadMoreHref?: string | null;
 }) {
+  // Last month, this month and next, for the default three blocks.
+  // Widening reveals more history; next month stays at the far end,
+  // because the point of drawing it is that it is always the edge of
+  // what is known.
   const thisMonth = startOfMonthUTC(now);
   const months: Date[] = [];
-  for (let i = monthsBack - 1; i >= 0; i--) {
+  for (let i = monthsBack - 1 - HEATMAP_MONTHS_AHEAD; i >= 0; i--) {
     months.push(addMonthsUTC(thisMonth, -i));
   }
+  for (let i = 1; i <= HEATMAP_MONTHS_AHEAD; i++) {
+    months.push(addMonthsUTC(thisMonth, i));
+  }
 
-  // Last day the board draws, which is how far an open-ended lease
-  // is filled.
-  const windowEnd = new Date(
-    Date.UTC(thisMonth.getUTCFullYear(), thisMonth.getUTCMonth() + 1, 0),
-  );
+  // How far an open-ended lease is filled: the last day drawn.
+  const windowEnd = heatmapWindowEnd(now);
   const dayIndex = buildOccupancyIndex({ bookings, leases, windowEnd });
   const showTenancy = [...dayIndex.values()].some((o) => o.kind === "lease");
 
@@ -100,7 +106,12 @@ export function OccupancyCalendar({
       <Legend showTenancy={showTenancy} />
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {months.map((m) => (
-          <MonthGrid key={m.toISOString()} month={m} dayIndex={dayIndex} />
+          <MonthGrid
+            key={m.toISOString()}
+            month={m}
+            dayIndex={dayIndex}
+            todayKey={dayKeyUTC(now)}
+          />
         ))}
       </div>
       {loadMoreHref ? (
@@ -123,6 +134,8 @@ export function OccupancyCalendar({
 export {
   clampHeatmapMonths,
   heatmapWindowStart,
+  heatmapWindowEnd,
+  heatmapWindowLabel,
   HEATMAP_MIN_MONTHS,
   HEATMAP_MAX_MONTHS,
   HEATMAP_STEP,
@@ -148,9 +161,11 @@ const GRID_MAX_WIDTH = "max-w-[16rem]";
 function MonthGrid({
   month,
   dayIndex,
+  todayKey,
 }: {
   month: Date;
   dayIndex: Map<string, Occupant>;
+  todayKey: string;
 }) {
   const days = daysInMonthUTC(month);
   const firstDate = new Date(
@@ -204,6 +219,7 @@ function MonthGrid({
       const date = new Date(
         Date.UTC(month.getUTCFullYear(), month.getUTCMonth(), day),
       );
+      const isToday = dayKeyUTC(date) === todayKey;
       const occupant = dayIndex.get(dayKeyUTC(date));
       const colour = !occupant
         ? "bg-stone-100"
@@ -218,8 +234,13 @@ function MonthGrid({
       elements.push(
         <span
           key={`d-${day}`}
-          title={tooltip}
-          className={`block rounded-[4px] ${CELL} ${colour}`}
+          title={isToday ? `${tooltip} · today` : tooltip}
+          className={`block rounded-[4px] ${CELL} ${colour}${
+            // Now that the board runs into next month, "where am I"
+            // is a real question. A ring rather than a colour so it
+            // reads on an occupied square and a vacant one alike.
+            isToday ? " ring-2 ring-stone-900 ring-offset-1" : ""
+          }`}
         />,
       );
     }

@@ -16,6 +16,8 @@ import {
   OccupancyCalendar,
   clampHeatmapMonths,
   heatmapWindowStart,
+  heatmapWindowEnd,
+  heatmapWindowLabel,
   HEATMAP_MAX_MONTHS,
   HEATMAP_STEP,
 } from "@/components/OccupancyCalendar";
@@ -117,7 +119,12 @@ export default async function PropertyDetailPage({
       // BookingsCard then takes the most recent slice for display,
       // so one query feeds both views.
       bookings: {
-        where: { checkOut: { gte: heatmapStart } },
+        where: {
+          checkOut: { gte: heatmapStart },
+          // Bounded at the far end too, now the board runs forward: a
+          // reservation two years out is real but not on this grid.
+          checkIn: { lte: heatmapWindowEnd(new Date()) },
+        },
         orderBy: { checkIn: "desc" },
       },
       icalFeeds: {
@@ -338,7 +345,7 @@ export default async function PropertyDetailPage({
       <section className="space-y-4 rounded-lg border border-stone-200 bg-white p-6">
         <div className="flex flex-wrap items-baseline justify-between gap-4">
           <h3 className="text-base font-medium text-stone-900">
-            Last {heatmapMonthsBack} months
+            Occupancy · {heatmapWindowLabel(new Date(), heatmapMonthsBack)}
           </h3>
           {isShortTerm ? (
             <div className="flex flex-wrap items-baseline gap-6 text-sm">
@@ -660,8 +667,8 @@ function SyncState({
           Listing {hostawayListingId} is set, but nothing has ever synced.
         </strong>{" "}
         The ID alone does not pull anything. Run the import below for past
-        stays, and check the webhook is registered so new ones arrive on
-        their own.
+        stays, and check the webhook is registered so new ones arrive on their
+        own.
       </p>
     );
   }

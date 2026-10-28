@@ -4,6 +4,8 @@ import {
   HEATMAP_MIN_MONTHS,
   buildOccupancyIndex,
   clampHeatmapMonths,
+  heatmapWindowEnd,
+  heatmapWindowLabel,
   heatmapWindowStart,
 } from "./heatmap";
 
@@ -21,14 +23,40 @@ describe("clampHeatmapMonths", () => {
   });
 });
 
-describe("heatmapWindowStart", () => {
-  it("returns the first day of the month N-1 months back, in UTC, across year boundaries", () => {
+describe("the window the board draws", () => {
+  // The default three blocks are last month, this month and next, so
+  // a landlord sees who is coming rather than only who has been.
+  it("starts one month back for the default window", () => {
     expect(
       heatmapWindowStart(new Date(Date.UTC(2026, 3, 15)), 3).toISOString(),
-    ).toBe("2026-02-01T00:00:00.000Z");
+    ).toBe("2026-03-01T00:00:00.000Z");
+  });
+
+  it("ends on the last day of next month", () => {
+    expect(
+      heatmapWindowEnd(new Date(Date.UTC(2026, 3, 15))).toISOString(),
+    ).toBe("2026-05-31T00:00:00.000Z");
+  });
+
+  it("crosses a year boundary at both ends", () => {
     expect(
       heatmapWindowStart(new Date(Date.UTC(2026, 0, 5)), 12).toISOString(),
-    ).toBe("2025-02-01T00:00:00.000Z");
+    ).toBe("2025-03-01T00:00:00.000Z");
+    expect(
+      heatmapWindowEnd(new Date(Date.UTC(2026, 11, 5))).toISOString(),
+    ).toBe("2027-01-31T00:00:00.000Z");
+  });
+
+  it("widens backwards, keeping next month at the far end", () => {
+    const now = new Date(Date.UTC(2026, 9, 27));
+    const three = heatmapWindowStart(now, 3);
+    const six = heatmapWindowStart(now, 6);
+    expect(three.toISOString()).toBe("2026-09-01T00:00:00.000Z");
+    expect(six.toISOString()).toBe("2026-06-01T00:00:00.000Z");
+    // "Show 3 more months" reveals history; the future end is fixed.
+    expect(heatmapWindowEnd(now).toISOString()).toBe(
+      "2026-11-30T00:00:00.000Z",
+    );
   });
 });
 
@@ -160,5 +188,19 @@ describe("who is in the flat on a given night", () => {
 
   it("is empty for a flat between tenants", () => {
     expect(buildOccupancyIndex({ windowEnd }).size).toBe(0);
+  });
+});
+
+describe("heatmapWindowLabel", () => {
+  it("names the span, including the month ahead", () => {
+    expect(heatmapWindowLabel(new Date(Date.UTC(2026, 9, 27)), 3)).toBe(
+      "Sept – Nov 2026",
+    );
+  });
+
+  it("spells out both years when the span crosses one", () => {
+    expect(heatmapWindowLabel(new Date(Date.UTC(2026, 11, 5)), 3)).toBe(
+      "Nov 2026 – Jan 2027",
+    );
   });
 });

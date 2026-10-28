@@ -35,6 +35,8 @@ import {
   OccupancyCalendar,
   clampHeatmapMonths,
   heatmapWindowStart,
+  heatmapWindowEnd,
+  heatmapWindowLabel,
   HEATMAP_MAX_MONTHS,
   HEATMAP_STEP,
 } from "@/components/OccupancyCalendar";
@@ -118,7 +120,12 @@ export default async function ClientPropertyDetailPage({
       // Bookings overlapping the heatmap window — same query feeds the
       // calendar and the recent stays card.
       bookings: {
-        where: { checkOut: { gte: heatmapStart } },
+        where: {
+          checkOut: { gte: heatmapStart },
+          // Bounded at the far end too, now the board runs forward: a
+          // reservation two years out is real but not on this grid.
+          checkIn: { lte: heatmapWindowEnd(new Date()) },
+        },
         orderBy: { checkIn: "desc" },
       },
       // Most recent management agreement, if any. We highlight the
@@ -346,7 +353,9 @@ export default async function ClientPropertyDetailPage({
           occupied for the nights of a stay, a long let for the term
           of a tenancy, and the board is the same question either
           way: who was in the property. */}
-      <Card title={`Last ${heatmapMonthsBack} months`}>
+      <Card
+        title={`Occupancy · ${heatmapWindowLabel(new Date(), heatmapMonthsBack)}`}
+      >
         <div className="mt-4">
           <OccupancyCalendar
             bookings={property.bookings}
@@ -363,7 +372,7 @@ export default async function ClientPropertyDetailPage({
           card, and a lone half-width card looks like a load failure. */}
       <section>
         {isShortTerm ? (
-          <Card title="Recent stays">
+          <Card title="Stays">
             {property.bookings.length === 0 ? (
               <p className="mt-4 text-sm text-stone-500">
                 No bookings recorded yet for this property.
@@ -378,6 +387,14 @@ export default async function ClientPropertyDetailPage({
                     <div className="min-w-0">
                       <p className="font-medium text-stone-900">
                         {b.guestName}
+                        {b.checkIn > now ? (
+                          // The list is newest-first and the window
+                          // now reaches into next month, so a guest
+                          // who has not arrived sits at the top.
+                          <span className="ml-2 rounded-sm bg-stone-100 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-wider text-stone-600">
+                            Upcoming
+                          </span>
+                        ) : null}
                       </p>
                       <p className="mt-0.5 text-xs text-stone-500">
                         {SOURCE_LABEL[b.source]}
