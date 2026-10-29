@@ -28,6 +28,20 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Land registry documents for registering a lease in Kenya",
+  faq: [
+    {
+      q: "How do you register a lease with the land registry in Kenya?",
+      a: "Four stages. First, a lease in registrable form, drawn by an advocate in the prescribed form and executed and attested as the registration regime requires: a two page tenancy agreement will not do. Second, any consents that apply, which depending on tenure and property may mean land control board consent, consent of the head lessor on leasehold land, or county consent. Third, valuation, assessment of duty, payment and franking of the instrument. Fourth, lodgement at the relevant registry and registration against the title, after which the lease shows on a search. The second stage causes most of the delay, because a required consent discovered late stops everything. Budget weeks rather than days, and real money in duty and fees.",
+    },
+    {
+      q: "Who pays to register a lease in Kenya?",
+      a: "It is negotiable and worth negotiating. The common position is that the tenant bears the stamp duty and registration costs on a lease granted for their benefit, and each party bears its own legal fees, but none of that is automatic. Whatever you agree belongs in the lease itself rather than in an email, because it is exactly the kind of term the parties later remember differently. Settle it before terms are agreed, too: a tenant presented with an unexpected duty bill will want to reopen the rent.",
+    },
+    {
+      q: "Does a residential tenancy in Kenya need to be registered?",
+      a: "Ordinarily no. Under the Land Registration Act a lease for a term exceeding a short statutory period must be registered against the title to take effect as a registered interest, while shorter leases, which covers essentially all ordinary residential letting, take effect without registration as overriding interests that bind a subsequent buyer even though nothing appears on the register. A residential letting of a year or two, renewable, does not need registering. Anything where the tenant is investing their own money on the strength of a long term, or where five years or more is contemplated, needs an advocate before signing. The exact threshold depends on the regime applying to the particular title, so confirm it rather than taking it from an article, including this one.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -60,6 +74,11 @@ export default function Article() {
       </P>
 
       <H2 id="where-the-line-falls">Where the line falls</H2>
+
+      <H3 id="does-a-residential-tenancy-need-registering">
+        Does a residential tenancy in Kenya need to
+        be registered?
+      </H3>
 
       <P>
         Under the Land Registration Act, a lease
@@ -163,6 +182,16 @@ export default function Article() {
 
       <H2 id="what-registration-involves">What registration involves</H2>
 
+      <H3 id="how-to-register-a-lease">
+        How do you register a lease with the land
+        registry in Kenya?
+      </H3>
+
+      <P>
+        Four stages, in order, and the delay
+        almost always comes from the second.
+      </P>
+
       <UL>
         <LI>
           <strong>A lease in registrable
@@ -207,6 +236,10 @@ export default function Article() {
       </P>
 
       <H2 id="who-pays">Who pays</H2>
+
+      <H3 id="who-pays-to-register-a-lease">
+        Who pays to register a lease in Kenya?
+      </H3>
 
       <P>
         Negotiable and worth negotiating. The

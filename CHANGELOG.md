@@ -21,6 +21,48 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.89.0] - 2026-10-29
+
+### Fixed
+- The homepage and every city page asked "What happens if a tenant
+  doesn't pay?" twice, showed "Do I need to be in Kenya **or Ghana** to
+  sign you on?" directly beneath its own Kenya-only rewrite of the same
+  question, and silently dropped two answers entirely: "How do you vet
+  tenants?" and "Do you manage Airbnb properties?". `localizedFaq`
+  selected shared entries by position, and inserting "What is your
+  management fee?" at index 1 shifted every later reference by one
+  without failing anything. Entries are now looked up by question, so
+  inserting one cannot move the selection and renaming one throws
+  instead of quietly changing the page. The duplicate also sat in the
+  FAQPage structured data, where a repeated question risks the rich
+  result on our single most important page.
+- Restored to the homepage as a result: the management fee answer and
+  "Do you manage Airbnb properties?", both of which answer commercial
+  searches we already appear for ("airbnb management fee", "how much
+  does airbnb management cost") and neither of which was rendering.
+- "How do I choose a property management company in Nairobi?" hardcoded
+  Nairobi, so an Accra reader would have been asked about Nairobi. It
+  now takes the city like every other localised entry.
+
+### Added
+- FAQ blocks and FAQPage data on two more of the biggest articles:
+  registering a lease in Kenya (373 impressions, average position 4.4)
+  and evicting a tenant (214 impressions). Both answer question queries
+  the data shows we already appear for and take no clicks on, including
+  "how to register a lease with land registry" at position 2.2.
+- `src/lib/site.faq.test.ts` asserts no duplicate questions in either
+  the visible list or the FAQPage schema, that a Nairobi reader is never
+  shown Ghanaian wording or the reverse, and that no shared entry is
+  dropped. These are the properties the positional bug violated.
+
+### Changed
+- The eviction article now carries a `metaTitle` and a description that
+  gives the timeline and cost rather than repeating the first sentence.
+- The schools article, our highest-traffic page that linked to nothing
+  we sell, now links to the area rent comparison where it is genuinely
+  useful: the school fixes the commute radius, the rent decides where
+  inside it you can afford to live.
+
 ## [1.88.0] - 2026-10-29
 
 ### Added
@@ -3632,7 +3674,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.88.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.0...HEAD
+[1.89.0]: https://github.com/tasiamah/goldstay/compare/v1.88.0...v1.89.0
 [1.88.0]: https://github.com/tasiamah/goldstay/compare/v1.87.1...v1.88.0
 [1.87.1]: https://github.com/tasiamah/goldstay/compare/v1.87.0...v1.87.1
 [1.87.0]: https://github.com/tasiamah/goldstay/compare/v1.86.1...v1.87.0

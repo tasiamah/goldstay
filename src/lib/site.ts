@@ -1552,6 +1552,30 @@ export const faq = [
 // a reader on /nairobi only sees Nairobi/Kenya phrasing and a reader on
 // /accra only sees Accra/Ghana phrasing. The homepage still uses the
 // unscoped `faq` because it serves both markets.
+// Pick a shared entry by its question rather than its position.
+//
+// These were positional — faq[4], faq[6], faq[7] — until "What is your
+// management fee?" was inserted at index 1 and shifted every reference
+// after it by one. The selection drifted silently: every city page, and
+// the homepage that rewrites to /nairobi, then rendered "Do I need to
+// be in Kenya or Ghana to sign you on?" directly beneath its own
+// Kenya-only rewrite of the same question, asked "What happens if a
+// tenant doesn't pay?" twice in both the visible list and the FAQPage
+// schema, and dropped the tenant-vetting and Airbnb answers entirely.
+//
+// Looking entries up by question means inserting one cannot move the
+// selection, and renaming one fails loudly here instead of quietly
+// changing what the page says.
+function shared(question: string) {
+  const entry = faq.find((f) => f.q === question);
+  if (!entry) {
+    throw new Error(
+      `localizedFaq: no shared FAQ entry asks "${question}". It was renamed or removed; update this reference.`,
+    );
+  }
+  return entry;
+}
+
 export function localizedFaq(city: "nairobi" | "accra") {
   const cityName = city === "nairobi" ? "Nairobi" : "Accra";
   const country = city === "nairobi" ? "Kenya" : "Ghana";
@@ -1562,7 +1586,11 @@ export function localizedFaq(city: "nairobi" | "accra") {
     city === "nairobi" ? "Kenyan shillings (KES)" : "Ghanaian cedis (GHS)";
 
   return [
-    faq[0],
+    {
+      q: `How do I choose a property management company in ${cityName}?`,
+      a: `Ask four questions and the field narrows fast. What is the fee, and what gets added to it later? Will you send an itemised monthly statement with receipts, or a figure on WhatsApp? Do you take commission from contractors or listing platforms, because that decides whether a repair quote is in your interest or theirs? And what does leaving cost, since a company confident in the service does not need an exit fee to keep you. Any property management company in ${cityName} should answer all four in writing before you sign. Ours are answered on our pricing page.`,
+    },
+    shared("What is your management fee?"),
     {
       q: "How do you remit rent to my foreign account?",
       a: `We collect rent in ${cityName} in ${currency}, convert at a transparent wholesale FX rate, and wire USD to your bank account in Europe, the UK, USA, UAE or Canada. You receive a statement every month showing every ${currencyWord} collected and every cent remitted.`,
@@ -1575,13 +1603,13 @@ export function localizedFaq(city: "nairobi" | "accra") {
       q: `Do I need to be in ${country} to sign you on?`,
       a: `No. Everything from the first call to contract signing happens remotely. Documents are signed electronically and witnessed under ${countryAdj} law where required. Your first visit to the property can be long after you've started earning.`,
     },
-    faq[4],
+    shared("How do you vet tenants?"),
     {
       q: "What happens if a tenant doesn't pay?",
       a: `We chase on day one, not day thirty. Our lease agreements are enforceable and we have ${countryAdj} legal partners in ${cityName} who can serve notice and begin eviction proceedings within the statutory window. You'll know within 48 hours of the first missed payment.`,
     },
-    faq[6],
-    faq[7],
+    shared("What happens to my property if Goldstay closes?"),
+    shared("Do you manage Airbnb properties?"),
     {
       q: `Can Goldstay help me buy a property in ${cityName}?`,
       a: `Yes. Our Property Sourcing service is built for diaspora buyers who want to buy in ${cityName} remotely without getting burned. We search to your brief, run in-person inspections, negotiate the price, verify the title with our ${countryAdj} property lawyers, and hand you a turnkey asset at completion. The service is free for you as the buyer.`,

@@ -377,6 +377,21 @@ export default function Article() {
       </P>
 
       <P>
+        What a two bedroom actually lets for in each of
+        the suburbs inside those catchments is set out
+        in{" "}
+        <Link
+          href="/nairobi/areas"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          the area by area rent comparison
+        </Link>
+        , which is the other half of this decision: the
+        school fixes the radius, the rent decides where
+        inside it you can actually afford to live.
+      </P>
+
+      <P>
         The school-suburb pairings that work most
         consistently:
       </P>

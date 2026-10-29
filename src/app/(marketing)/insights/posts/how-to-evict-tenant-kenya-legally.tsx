@@ -19,8 +19,9 @@ export const meta: PostMeta = {
     "How to evict a tenant in Kenya, legally and as quickly as possible",
   description:
     "The exact legal process for evicting a non-paying or breaching tenant in Nairobi in 2026. Notice periods, the right court, the four common mistakes that add six months to a case, and how to avoid ever needing the process at all.",
+  metaTitle: "How to evict a tenant in Kenya legally: the 2026 process",
   metaDescription:
-    "The exact legal process for evicting a non-paying or breaching tenant in Nairobi in 2026.",
+    "Notice, plaint, summons, judgment, warrant. Roughly 90 to 120 days uncontested and 9 to 18 months contested. Self-help eviction is unlawful.",
   publishedAt: "2025-03-22",
   updatedAt: "2026-07-27",
   readingMinutes: 9,
@@ -29,6 +30,20 @@ export const meta: PostMeta = {
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Nairobi apartment block, how to legally evict a tenant in Kenya",
+  faq: [
+    {
+      q: "How do you evict a stubborn tenant in Kenya?",
+      a: "Through the court, in five steps, and never by self-help. Serve a written notice to remedy, typically 14 days to pay arrears or vacate, dated, signed and properly served. If the breach is not remedied, serve a notice to terminate, one month for a monthly tenancy or whatever the lease breach clause provides. File a plaint at the court with jurisdiction over the property, usually Milimani Commercial Courts for Nairobi, seeking vacant possession, arrears, mesne profits, interest and costs. Serve summons personally; the tenant has 14 days to enter appearance and 21 to file a defence, and most in arrears file none, which allows judgment in default. Then apply for a warrant of eviction, executed by a court bailiff or licensed auctioneer in daylight hours after about 7 days notice.",
+    },
+    {
+      q: "How long does an eviction take in Kenya?",
+      a: "Best case for an uncontested eviction in Nairobi is roughly 90 to 120 days from the first written notice to an executed warrant. A contested case routinely runs 9 to 18 months, with adjournments, judge availability and tenant counsel tactics driving most of the variance. Court costs for a typical Nairobi one or two bedroom eviction come to around KES 12,000 to KES 25,000, with filing fees scaling against the amount claimed. The single biggest avoidable delay is going to court without a properly served written notice, which gets the case dismissed or stayed and costs four to eight weeks.",
+    },
+    {
+      q: "Can a landlord change the locks or cut the power in Kenya?",
+      a: "No. Changing locks, cutting power or water, removing the tenant's belongings without a warrant and physically removing the tenant are all unlawful in Kenya, and they expose the landlord to counter-claims for damages and potentially to criminal charges. We have seen otherwise winnable cases collapse over it: a landlord three months into non-payment cut the power for two days, and the tenant's counter-claim ate the original arrears and added another six months to the case. If a tenant is not paying, the slow lawful route is genuinely faster than the fast unlawful one.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -127,6 +142,18 @@ export default function Article() {
 
       <H2 id="step-by-step">The process, step by step</H2>
 
+      <H3 id="how-to-evict-a-stubborn-tenant">
+        How do you evict a stubborn tenant in Kenya?
+      </H3>
+
+      <P>
+        Through the court, in the five steps below, and never
+        by self-help. A tenant who will not leave is not a
+        reason to depart from the process; it is the reason
+        the process exists, and departing from it is what
+        hands them a defence.
+      </P>
+
       <H3 id="step-1">Step 1: Issue a written notice to remedy</H3>
 
       <P>
@@ -203,6 +230,10 @@ export default function Article() {
         public auction to recover arrears.
       </P>
 
+      <H3 id="how-long-does-an-eviction-take">
+        How long does an eviction take in Kenya?
+      </H3>
+
       <Callout title="Realistic timelines">
         Best case for an uncontested eviction in Nairobi is
         roughly 90 to 120 days from first written notice to
@@ -212,6 +243,16 @@ export default function Article() {
       </Callout>
 
       <H2 id="four-mistakes">Four mistakes that wreck timelines</H2>
+
+      <H3 id="can-a-landlord-change-the-locks">
+        Can a landlord change the locks or cut the power in
+        Kenya?
+      </H3>
+
+      <P>
+        No. This is the mistake that costs the most and feels
+        the most justified at the time.
+      </P>
 
       <H3 id="mistake-1">1. Self-help eviction</H3>
 
