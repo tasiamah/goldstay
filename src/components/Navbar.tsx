@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
 import { Logo } from "./Logo";
-import { launchedCities, waLink } from "@/lib/site";
+import { launchedCities, site, soleLiveDomain, waLink } from "@/lib/site";
 import { useCurrentCity } from "@/lib/useCurrentCity";
 import clsx from "./clsx";
 
@@ -50,11 +50,25 @@ type NavLink = { href: string; label: string };
 // links, you are already in a city context, and retarget Services, Buy and
 // FAQ at the current city so those verbs always mean "this city" for the
 // reader. On the neutral .com homepage we keep the city picker.
-function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
+export function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
   if (city) {
     const base = `/${city}`;
+    // Where the city's own homepage lives. On that city's domain it is
+    // the root: "/" is a rewrite of /{city}, and /{city} 308s back. So
+    // anchoring Services and FAQ at /{city}#… sent two nav links on
+    // every /nairobi/* page through a redirect. Sub-routes like
+    // /{city}/buy are real pages on both hosts and stay as they are.
+    //
+    // soleLiveDomain is config rather than a request header, so this
+    // resolves identically in the server HTML Googlebot reads and in
+    // the client render — unlike the host check in useCurrentCity,
+    // which only lands after hydration.
+    const cityDomain =
+      city === "nairobi" ? site.domains.nairobi : site.domains.accra;
+    const home = soleLiveDomain() === cityDomain ? "/" : base;
+    const anchor = (id: string) => `${home}#${id}`;
     return [
-      { href: `${base}#services`, label: "Services" },
+      { href: anchor("services"), label: "Services" },
       // Fees sits in the nav on purpose. A manager willing to put the
       // number one click from every page is making a claim the ones who
       // quote on enquiry cannot, and it gives /pricing an inbound link
@@ -63,7 +77,7 @@ function getNavLinks(city: "nairobi" | "accra" | null): NavLink[] {
       { href: `${base}/buy`, label: "Buy" },
       { href: "/find-a-home", label: "Rent" },
       { href: "/yield-calculator", label: "Yield" },
-      { href: `${base}#faq`, label: "FAQ" },
+      { href: anchor("faq"), label: "FAQ" },
     ];
   }
 

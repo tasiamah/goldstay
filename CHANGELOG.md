@@ -21,6 +21,31 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.89.2] - 2026-10-29
+
+### Fixed
+- The navbar anchored Services and FAQ at `/nairobi#services` and
+  `/nairobi#faq` on every `/nairobi/*` page. `/nairobi` 308s to the root
+  on goldstay.co.ke, so roughly twenty five pages sent two nav links
+  each through a redirect. They now anchor at `/` when the serving
+  domain belongs to that city, and keep the `/{city}` prefix where it is
+  a real page. `/{city}/buy` is unchanged, since that is a real page on
+  both hosts.
+- The host check in `useCurrentCity` only resolves after hydration, so
+  the server HTML Googlebot reads fell back to the path and always saw
+  the `/{city}` form. The fix reads `soleLiveDomain`, which is config
+  rather than a request header and so gives the same answer in both
+  renders.
+
+### Added
+- `src/components/Navbar.navlinks.test.ts`. This bug class has now
+  appeared three times: the city picker in 1.63.0, the neighbourhood
+  "back to city" link in 1.89.1, and these anchors. The shape is always
+  that `/{city}` looks like the city's address while on that city's own
+  domain the address is `/`. The test asserts no nav link resolves to
+  the city root, that sub-routes keep their prefix, and that the other
+  city still anchors at `/{city}`.
+
 ## [1.89.1] - 2026-10-29
 
 ### Fixed
@@ -3703,7 +3728,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.2...HEAD
+[1.89.2]: https://github.com/tasiamah/goldstay/compare/v1.89.1...v1.89.2
 [1.89.1]: https://github.com/tasiamah/goldstay/compare/v1.89.0...v1.89.1
 [1.89.0]: https://github.com/tasiamah/goldstay/compare/v1.88.0...v1.89.0
 [1.88.0]: https://github.com/tasiamah/goldstay/compare/v1.87.1...v1.88.0
