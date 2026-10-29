@@ -21,6 +21,34 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.90.0] - 2026-10-29
+
+### Changed
+- The building pages that earn our most qualified search traffic now lead
+  somewhere. Someone searching "gemland residence westlands" or "aura
+  riverside" owns or is buying in that exact building, which is precisely who
+  we want, but five of those pages carried 992 impressions a month between
+  them while linking to almost nothing we sell. Aura Riverside linked to no
+  service at all. Each now closes with what the building's units realistically
+  let for, which of long letting or nightly letting suits them, and what each
+  route costs.
+- Our highest-traffic article, the explainer on Kenyan land rates, now makes
+  the point its readers actually need: rates have to be paid in person against
+  the right plot number, a tenant will not do it, and arrears attach to the
+  property rather than to whoever let them accrue. That is the whole reason
+  diaspora owners find arrears only when they try to sell, and it is work we
+  do as part of management.
+- The auction and distressed-property guides described our sourcing pipeline
+  in prose without ever linking to it.
+
+### Added
+- FAQ sections, and so FAQPage structured data, on the GTC Residences and
+  Emerald Springs guides. Both rank on page one and earned no clicks, because
+  queries like "gtc nairobi apartments for rent price" were answered inside
+  our prose where Google could not surface them as a result.
+- A page title for the Emerald Springs guide, which had been falling back to
+  its headline.
+
 ## [1.89.3] - 2026-10-29
 
 ### Fixed
@@ -3738,6 +3766,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.3...HEAD
+[1.90.0]: https://github.com/tasiamah/goldstay/compare/v1.89.3...v1.90.0
 [1.89.3]: https://github.com/tasiamah/goldstay/compare/v1.89.2...v1.89.3
 [1.89.2]: https://github.com/tasiamah/goldstay/compare/v1.89.1...v1.89.2
 [1.89.1]: https://github.com/tasiamah/goldstay/compare/v1.89.0...v1.89.1

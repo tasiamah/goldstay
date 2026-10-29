@@ -105,12 +105,12 @@ export default function Article() {
       </H3>
 
       <P>
-        One bedroom units from about KES 6.8m and two bedrooms from roughly
-        KES 9.5m on the published marketing, with higher floors and larger
-        layouts running materially above those entry figures. Payment is
-        marketed at a 20 percent deposit with the balance in instalments to
-        completion. Nairobi off plan pricing moves, so confirm the current
-        price and the payment schedule in writing before you pay anything.
+        One bedroom units from about KES 6.8m and two bedrooms from roughly KES
+        9.5m on the published marketing, with higher floors and larger layouts
+        running materially above those entry figures. Payment is marketed at a
+        20 percent deposit with the balance in instalments to completion.
+        Nairobi off plan pricing moves, so confirm the current price and the
+        payment schedule in writing before you pay anything.
       </P>
 
       <H3 id="what-are-the-apartment-sizes">
@@ -120,10 +120,9 @@ export default function Article() {
       <P>
         One beds are published at roughly 51 to 61 square metres, the one bed
         plus study at around 74, and two beds at roughly 76 to 80. For a
-        landlord the 74 square metre unit is the most interesting of the
-        three, because it suits a professional working from home or a
-        relocating single tenant and there is considerably less of it in this
-        corridor.
+        landlord the 74 square metre unit is the most interesting of the three,
+        because it suits a professional working from home or a relocating single
+        tenant and there is considerably less of it in this corridor.
       </P>
 
       <H2 id="location">The location is the strongest part of the case</H2>
@@ -187,9 +186,9 @@ export default function Article() {
           remedy is a marketing statement, not an obligation
         </LI>
         <LI>
-          Visit the site. A structure at finishing stage and a structure at
-          slab stage are not the same investment and the difference is visible
-          in ten minutes
+          Visit the site. A structure at finishing stage and a structure at slab
+          stage are not the same investment and the difference is visible in ten
+          minutes
         </LI>
         <LI>
           If units are genuinely ready, buy a finished unit and inspect it.
@@ -218,9 +217,8 @@ export default function Article() {
       <H2 id="rental">How it reads as a rental proposition</H2>
 
       <P>
-        The unit mix is aimed squarely at the rental market rather than at
-        owner occupiers, which is fine as long as you price the competition
-        honestly.
+        The unit mix is aimed squarely at the rental market rather than at owner
+        occupiers, which is fine as long as you price the competition honestly.
       </P>
 
       <UL>
@@ -282,8 +280,8 @@ export default function Article() {
           is the number that quietly ruins yields in new towers
         </LI>
         <LI>
-          Whether the building will permit short lets, if that is your plan.
-          Get it in writing from the outset
+          Whether the building will permit short lets, if that is your plan. Get
+          it in writing from the outset
         </LI>
         <LI>
           Water and power specification in detail, and lift capacity relative to
@@ -297,8 +295,8 @@ export default function Article() {
         A well located building at an accessible entry price, in a corridor with
         the deepest rental demand in the city, offering a compact unit mix into
         the most competitive segment of that market. That combination can work
-        well for a buyer who does the diligence and is realistic about
-        competing with a lot of similar one beds.
+        well for a buyer who does the diligence and is realistic about competing
+        with a lot of similar one beds.
       </P>
 
       <P>
@@ -313,15 +311,53 @@ export default function Article() {
       <P>
         For sourcing clients we verify title, approvals and the developer’s
         delivered record, and we visit the site rather than reading the
-        brochure. If you have already bought here and want a view on letting
-        it,{" "}
+        brochure. We sold nothing in this building, which is why we can say
+        plainly that three published completion dates is a reason to slow down.
+      </P>
+
+      <P>
+        If you have already bought here, the decision that matters is which
+        letting route a compact one bed in this corridor actually supports. The
+        unit mix is aimed at the rental market and the one beds compete with a
+        great deal of near identical stock, so finish and building services
+        decide the rent rather than the address. The one bed plus study at 74
+        square metres is a different proposition and usually prices above what
+        its floor area suggests.
+      </P>
+
+      <P>
+        Send us the floor, the layout and whether it is furnished through{" "}
         <Link
           href="/list-your-property"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           list your property
-        </Link>
-        .
+        </Link>{" "}
+        and we will come back with an achievable rent and how long it should
+        take to let.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        on its own is one month rent, ongoing{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long term management
+        </Link>{" "}
+        is 10 percent of rent collected, and if the unit suits nightly letting
+        instead that is{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management
+        </Link>{" "}
+        at 20 percent of revenue collected. Confirm the building permits short
+        lets before counting on the third one.
       </P>
 
       <P>

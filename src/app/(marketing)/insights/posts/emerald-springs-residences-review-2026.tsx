@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   P,
@@ -30,6 +31,21 @@ export const meta: PostMeta = {
   ],
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
+  metaTitle: "Emerald Springs Residences Westlands: prices and the supply risk",
+  faq: [
+    {
+      q: "How much is an apartment at Emerald Springs Residences?",
+      a: "Agent listings quote one bedrooms of around 58 square metres from roughly KES 9.1m and two bedrooms of around 94 square metres from roughly KES 15m, with entry pricing advertised as low as KES 6.5m to 7.9m in earlier off plan releases. The development is marketed as fully sold out during 2026, so those are release figures rather than what a unit costs today, and a resale is priced by the seller. These come from the developer's and agents' published marketing rather than from an inspection by us.",
+    },
+    {
+      q: "What is Emerald Springs Residences in Westlands?",
+      a: "Two 25 storey towers of one and two bedroom apartments on Westlands Road, opposite the Pride Inn and the Westlands Banquet Centre, published at around nine units per floor, which puts the development in the region of several hundred apartments. It is also searched as Emerald Spring Residency. Amenities include a heated pool, gym, yoga studio, sauna, landscaped garden, rooftop leisure space, a residents' cafe and restaurant, three high speed lifts per block, smart access, borehole and backup generator. The location is genuinely central and walkable.",
+    },
+    {
+      q: "Is Emerald Springs a good rental investment?",
+      a: "The location is excellent and the developer has delivered before, so the risk is not the building. It is the scale. Several hundred near identical one and two bedroom units reach the market in the same few months, all competing for the same Westlands tenant, and that compresses rents exactly when you are trying to let for the first time. The owners who do well here are the ones who furnish properly, photograph properly and list the week the unit is released rather than in month three. Also read the projected service charge before you model a yield, because in a tower with this amenity list it is the number that quietly decides your return.",
+    },
+  ],
   heroAlt: "Emerald Springs Residences Westlands honest buyer review 2026",
 };
 
@@ -54,6 +70,14 @@ export default function Article() {
       </Callout>
 
       <H2 id="what-it-is">What is being sold</H2>
+
+      <H3 id="what-is-emerald-springs">
+        What is Emerald Springs Residences in Westlands?
+      </H3>
+
+      <H3 id="how-much-is-emerald-springs">
+        How much is an apartment at Emerald Springs Residences?
+      </H3>
 
       <UL>
         <LI>
@@ -124,11 +148,11 @@ export default function Article() {
       <H2 id="supply">The supply question is the real story</H2>
 
       <P>
-        Several hundred apartments, almost entirely one and two beds,
-        completing in a single development, in the suburb that already has the
-        most one bed supply in Nairobi. That is a lot of near identical stock
-        hitting the market at once, and a meaningful share of it was bought by
-        investors who will all be looking for a tenant in the same quarter.
+        Several hundred apartments, almost entirely one and two beds, completing
+        in a single development, in the suburb that already has the most one bed
+        supply in Nairobi. That is a lot of near identical stock hitting the
+        market at once, and a meaningful share of it was bought by investors who
+        will all be looking for a tenant in the same quarter.
       </P>
 
       <P>
@@ -248,6 +272,10 @@ export default function Article() {
 
       <H2 id="verdict">The honest read</H2>
 
+      <H3 id="is-emerald-springs-a-good-investment">
+        Is Emerald Springs a good rental investment?
+      </H3>
+
       <P>
         A well located, well specified building from a team with completed
         projects you can inspect, which is more than can be said for a lot of
@@ -260,8 +288,8 @@ export default function Article() {
       <P>
         Buy it if you are clear eyed about a soft first year, intend to furnish
         and let properly rather than list an empty flat and hope, and have
-        confirmed which entity you are contracting with. Do not buy it on the
-        13 percent number.
+        confirmed which entity you are contracting with. Do not buy it on the 13
+        percent number.
       </P>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
@@ -277,6 +305,34 @@ export default function Article() {
           list your property
         </Link>{" "}
         and we will give you a realistic rent rather than the brochure one.
+      </P>
+
+      <P>
+        Which route that rent comes from matters as much as the number.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        on its own is one month rent if you would rather manage the unit
+        yourself afterwards. Ongoing{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long term management
+        </Link>{" "}
+        is 10 percent of rent collected, and{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management
+        </Link>{" "}
+        is 20 percent of revenue collected where the unit and the building both
+        suit nightly letting. There is no setup fee and no exit fee on any of
+        the three.
       </P>
 
       <P>

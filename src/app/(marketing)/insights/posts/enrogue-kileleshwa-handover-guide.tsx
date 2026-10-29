@@ -68,9 +68,7 @@ export default function Article() {
 
       <H2 id="what-it-is">What Enrogue is</H2>
 
-      <H3 id="what-is-enrogue-in-kileleshwa">
-        What is Enrogue in Kileleshwa?
-      </H3>
+      <H3 id="what-is-enrogue-in-kileleshwa">What is Enrogue in Kileleshwa?</H3>
 
       <UL>
         <LI>
@@ -125,9 +123,7 @@ export default function Article() {
         simply how large residential projects run here.
       </P>
 
-      <P>
-        What it should change is your planning, in one specific way:
-      </P>
+      <P>What it should change is your planning, in one specific way:</P>
 
       <Pullquote>
         Do not sign a tenant, accept a booking or promise anyone a move-in date
@@ -146,8 +142,8 @@ export default function Article() {
       <H2 id="developer-agent">Your developer is also an estate agent</H2>
 
       <P>
-        This is the part specific to Enrogue, and it is the decision most
-        owners here will actually face in the handover meeting.
+        This is the part specific to Enrogue, and it is the decision most owners
+        here will actually face in the handover meeting.
       </P>
 
       <P>
@@ -179,7 +175,9 @@ export default function Article() {
           bring in anyone else while the unit sits empty
         </LI>
         <LI>
-          <strong>How many units in this same building they will be letting.</strong>{" "}
+          <strong>
+            How many units in this same building they will be letting.
+          </strong>{" "}
           If one agent holds the mandate on many apartments in one development,
           your unit competes with their other listings for the same tenant, and
           you have no way of knowing which one they show first
@@ -251,22 +249,24 @@ export default function Article() {
 
       <OL>
         <LI>
-          <strong>Book your snagging inspection for handover day itself,</strong>{" "}
+          <strong>
+            Book your snagging inspection for handover day itself,
+          </strong>{" "}
           not for a fortnight later. Bring somebody who does this for a living.
           Defects you record on the day are the developer’s problem; defects you
           find in month two become an argument
         </LI>
         <LI>
           <strong>Get the defects liability period in writing,</strong> with its
-          start date and what it covers. This is the window in which the
-          builder fixes things at their cost, and it starts running whether or
-          not you use it
+          start date and what it covers. This is the window in which the builder
+          fixes things at their cost, and it starts running whether or not you
+          use it
         </LI>
         <LI>
           <strong>Ask for the service charge figure per square metre,</strong>{" "}
-          what it assumes about collection rates, and what happens when
-          investor owners do not pay. In an amenity heavy building this is the
-          most reliable source of unpleasant surprises
+          what it assumes about collection rates, and what happens when investor
+          owners do not pay. In an amenity heavy building this is the most
+          reliable source of unpleasant surprises
         </LI>
         <LI>
           <strong>Sort the utilities and the meter transfer early.</strong> A
@@ -274,9 +274,10 @@ export default function Article() {
           weeks at exactly the moment every other owner is also trying to let
         </LI>
         <LI>
-          <strong>Register for rental income tax before the first shilling
-          arrives.</strong> It is far easier to start correctly than to
-          regularise later
+          <strong>
+            Register for rental income tax before the first shilling arrives.
+          </strong>{" "}
+          It is far easier to start correctly than to regularise later
         </LI>
         <LI>
           <strong>Order furniture now if you intend to furnish.</strong> Lead
@@ -310,10 +311,10 @@ export default function Article() {
       <P>
         Your competition in the first quarter is not Kileleshwa. It is the other
         apartments in your own building, several of which have the identical
-        layout, the identical finish and an owner under the same pressure to
-        get someone in. The ones that let first are furnished, properly
-        photographed and priced against what is actually being achieved rather
-        than what the brochure projected.
+        layout, the identical finish and an owner under the same pressure to get
+        someone in. The ones that let first are furnished, properly photographed
+        and priced against what is actually being achieved rather than what the
+        brochure projected.
       </P>
 
       <P>
@@ -340,10 +341,24 @@ export default function Article() {
         We let and manage units in Kileleshwa, long term and short stay, and we
         are independent of any developer, which means we have no interest in
         telling you the building is better or worse than it is. We charge 10
-        percent of rent collected on a long let and 20 percent of revenue on a
-        short stay, with no setup fee and no exit fee, and we will tell you
-        before you commit which of the two your specific unit is actually
-        suited to.
+        percent of rent collected on{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a long let
+        </Link>{" "}
+        and 20 percent of revenue on{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a short stay
+        </Link>
+        , with no setup fee and no exit fee, and we will tell you before you
+        commit which of the two your specific unit is actually suited to. For a
+        one bedroom on this road that answer is usually furnished, and it is not
+        always nightly.
       </P>
 
       <P>

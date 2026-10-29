@@ -41,20 +41,20 @@ export default function Article() {
   return (
     <>
       <Lede>
-        Coco is an eighteen storey development of one and two bedroom
-        apartments in Brookside, Westlands, conceptualised by HassConsult and
-        priced from KES 8.9 million. If you bought one, the months before you
-        take keys are the ones that decide what the unit earns in its first
-        year, and almost all of the work that matters happens before the keys
-        are in your hand rather than after.
+        Coco is an eighteen storey development of one and two bedroom apartments
+        in Brookside, Westlands, conceptualised by HassConsult and priced from
+        KES 8.9 million. If you bought one, the months before you take keys are
+        the ones that decide what the unit earns in its first year, and almost
+        all of the work that matters happens before the keys are in your hand
+        rather than after.
       </Lede>
 
       <Callout title="Where these numbers come from">
         Drawn from HassConsult’s published material for the project, as at
-        September 2026, and from our own letting data for Westlands. We have
-        not inspected the building and we are not acting for the developer.
-        Confirm anything that affects money against your own sale agreement,
-        including the completion date and the payment schedule.
+        September 2026, and from our own letting data for Westlands. We have not
+        inspected the building and we are not acting for the developer. Confirm
+        anything that affects money against your own sale agreement, including
+        the completion date and the payment schedule.
       </Callout>
 
       <KeySummary
@@ -75,10 +75,9 @@ export default function Article() {
 
       <UL>
         <LI>
-          <strong>Location:</strong> Brookside, Westlands, within reach of
-          Sarit Centre, Westlands’ office cluster and Waiyaki Way, and close
-          enough to Parklands, Lavington and Spring Valley to draw tenants
-          from all three
+          <strong>Location:</strong> Brookside, Westlands, within reach of Sarit
+          Centre, Westlands’ office cluster and Waiyaki Way, and close enough to
+          Parklands, Lavington and Spring Valley to draw tenants from all three
         </LI>
         <LI>
           <strong>Scale:</strong> eighteen floors of one and two bedroom
@@ -91,14 +90,13 @@ export default function Article() {
         </LI>
         <LI>
           <strong>Developer:</strong> HassConsult, one of the longest
-          established property firms in Kenya and the publisher of the
-          property index most of the market quotes
+          established property firms in Kenya and the publisher of the property
+          index most of the market quotes
         </LI>
         <LI>
           <strong>Amenities:</strong> heated infinity pool, rooftop terrace,
-          outdoor deck and forested lounge, fire pits, indoor residents
-          lounge, fully fitted gym, video intercom, access control and manned
-          security
+          outdoor deck and forested lounge, fire pits, indoor residents lounge,
+          fully fitted gym, video intercom, access control and manned security
         </LI>
         <LI>
           <strong>Published completion:</strong> the first quarter of 2027
@@ -106,8 +104,8 @@ export default function Article() {
       </UL>
 
       <P>
-        On the developer question this is a more comfortable position than
-        most Nairobi off plan buyers are in. There is no dispute about who is
+        On the developer question this is a more comfortable position than most
+        Nairobi off plan buyers are in. There is no dispute about who is
         building it and no ambiguity about whether the firm will still exist
         next year, which is not something you can say about every project in{" "}
         <Link
@@ -131,13 +129,13 @@ export default function Article() {
       </P>
 
       <P>
-        We flag this not because either date is implausible but because the
-        gap between them is exactly the size that costs owners money. A
-        quarter is long enough to have furnished a unit, agreed a tenancy and
-        started paying a service charge on an empty apartment. The published
-        payment schedule is worth the same treatment: it has appeared on
-        HassConsult’s own page as both five months and twelve, so confirm
-        which applies to your unit rather than assuming.
+        We flag this not because either date is implausible but because the gap
+        between them is exactly the size that costs owners money. A quarter is
+        long enough to have furnished a unit, agreed a tenancy and started
+        paying a service charge on an empty apartment. The published payment
+        schedule is worth the same treatment: it has appeared on HassConsult’s
+        own page as both five months and twelve, so confirm which applies to
+        your unit rather than assuming.
       </P>
 
       <P>
@@ -146,8 +144,8 @@ export default function Article() {
       </P>
 
       <Pullquote>
-        Do not sign a tenant, accept a booking or promise anyone a move-in
-        date until the keys are physically in your hand. A handover date is a
+        Do not sign a tenant, accept a booking or promise anyone a move-in date
+        until the keys are physically in your hand. A handover date is a
         forecast. A tenant with a signed lease and nowhere to live is a
         liability.
       </Pullquote>
@@ -155,37 +153,37 @@ export default function Article() {
       <P>
         Owners lose real money at this exact point every year, usually by
         agreeing a lease start in good faith off a projected date and then
-        having to house the tenant somewhere else, refund them, or pay to
-        store their furniture when the date slips by six weeks. Large
-        residential projects in Nairobi routinely run past their original
-        programme, and that is a fact about the market rather than a mark
-        against any particular builder.
+        having to house the tenant somewhere else, refund them, or pay to store
+        their furniture when the date slips by six weeks. Large residential
+        projects in Nairobi routinely run past their original programme, and
+        that is a fact about the market rather than a mark against any
+        particular builder.
       </P>
 
       <H2 id="developer-agent">Your developer is also an estate agent</H2>
 
       <P>
         HassConsult is not only the developer here. It is one of the largest
-        estate agencies in the country, with its own letting and management
-        arm. There is a very good chance that at or shortly after handover you
-        will be offered a letting or management service by the same firm that
-        sold you the apartment, and it will be a convenient offer, made at the
-        exact moment you are holding a set of keys and no tenant.
+        estate agencies in the country, with its own letting and management arm.
+        There is a very good chance that at or shortly after handover you will
+        be offered a letting or management service by the same firm that sold
+        you the apartment, and it will be a convenient offer, made at the exact
+        moment you are holding a set of keys and no tenant.
       </P>
 
       <P>
         That offer may well be a good one. It is not automatically the right
-        one, and it deserves the same scrutiny as any other. Convenience at
-        the handover desk is not the same thing as the best net return over
-        three years. Things worth establishing in writing before you agree to
+        one, and it deserves the same scrutiny as any other. Convenience at the
+        handover desk is not the same thing as the best net return over three
+        years. Things worth establishing in writing before you agree to
         anything:
       </P>
 
       <UL>
         <LI>
-          <strong>The fee, and what is inside it.</strong> A letting fee and
-          an ongoing management fee are different money. Ask which you are
-          being quoted, and what is billed separately on top
+          <strong>The fee, and what is inside it.</strong> A letting fee and an
+          ongoing management fee are different money. Ask which you are being
+          quoted, and what is billed separately on top
         </LI>
         <LI>
           <strong>Whether the mandate is exclusive, and for how long.</strong>{" "}
@@ -196,24 +194,22 @@ export default function Article() {
           <strong>
             How many units in this same building they will be letting.
           </strong>{" "}
-          If one agent holds the mandate on many apartments in one
-          development, your unit competes with their other listings for the
-          same tenant, and you have no way of knowing which one they show
-          first
+          If one agent holds the mandate on many apartments in one development,
+          your unit competes with their other listings for the same tenant, and
+          you have no way of knowing which one they show first
         </LI>
         <LI>
           <strong>What happens if you want to leave.</strong> Notice period,
-          exit fee, who holds the deposit, and how quickly keys and records
-          come back
+          exit fee, who holds the deposit, and how quickly keys and records come
+          back
         </LI>
       </UL>
 
       <Callout title="The question that gets the most honest answer">
-        Ask what the last three comparable units they let in Westlands
-        actually achieved, how long each sat empty first, and whether those
-        were furnished or unfurnished. Achieved rents and void periods
-        together tell you something. An asking rent on its own tells you
-        nothing.
+        Ask what the last three comparable units they let in Westlands actually
+        achieved, how long each sat empty first, and whether those were
+        furnished or unfurnished. Achieved rents and void periods together tell
+        you something. An asking rent on its own tells you nothing.
       </Callout>
 
       <P>
@@ -238,28 +234,28 @@ export default function Article() {
 
       <P>
         Westlands is the strongest short-stay market in Nairobi, and not by a
-        small margin. It is the only part of the city where a guest can walk
-        to offices, Sarit Centre and Village Market without touching a car.
-        Our own letting data for the area puts a well presented one or two bed
-        at USD 100 to 150 a night at 65 to 75 percent occupancy across a full
-        year, on demand that is corporate, UN and NGO rather than tourist.
-        That distinction is the whole point: corporate demand holds midweek
-        and through the low season, which is what makes occupancy here
-        steadier than anywhere else in Nairobi.
+        small margin. It is the only part of the city where a guest can walk to
+        offices, Sarit Centre and Village Market without touching a car. Our own
+        letting data for the area puts a well presented one or two bed at USD
+        100 to 150 a night at 65 to 75 percent occupancy across a full year, on
+        demand that is corporate, UN and NGO rather than tourist. That
+        distinction is the whole point: corporate demand holds midweek and
+        through the low season, which is what makes occupancy here steadier than
+        anywhere else in Nairobi.
       </P>
 
       <P>
-        HassConsult has also, quite openly, built for this. The marketing
-        leads on hotel-like interiors and an amenity deck, and it is pitched
-        at investors as much as at occupiers. That is useful information about
-        the building and about who your neighbours will be.
+        HassConsult has also, quite openly, built for this. The marketing leads
+        on hotel-like interiors and an amenity deck, and it is pitched at
+        investors as much as at occupiers. That is useful information about the
+        building and about who your neighbours will be.
       </P>
 
       <P>
         The long let case is still perfectly sound and considerably less work.
-        Westlands has deep professional tenant demand, and a one or two bed
-        here lets without heroics. It is lower effort, lower return and far
-        more predictable. The arithmetic on both sits in{" "}
+        Westlands has deep professional tenant demand, and a one or two bed here
+        lets without heroics. It is lower effort, lower return and far more
+        predictable. The arithmetic on both sits in{" "}
         <Link
           href="/insights/airbnb-vs-long-term-rental-nairobi"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
@@ -277,13 +273,13 @@ export default function Article() {
       </P>
 
       <Callout title="Confirm the short stay position before you furnish">
-        Get the position on short letting in writing from the management
-        company or the by-laws before you spend anything on furniture. A new
-        building with a residents’ association that has not met yet can change
-        its mind in month four, and a furnished unit in a building that has
-        just banned nightly guests is an expensive way to learn this. In a
-        development marketed this heavily to investors, the association’s
-        first vote on short lets is worth attending.
+        Get the position on short letting in writing from the management company
+        or the by-laws before you spend anything on furniture. A new building
+        with a residents’ association that has not met yet can change its mind
+        in month four, and a furnished unit in a building that has just banned
+        nightly guests is an expensive way to learn this. In a development
+        marketed this heavily to investors, the association’s first vote on
+        short lets is worth attending.
       </Callout>
 
       <H2 id="service-charge">The amenities are a monthly bill</H2>
@@ -292,48 +288,48 @@ export default function Article() {
         A heated infinity pool, a rooftop terrace, fire pits, a residents
         lounge, a fully fitted gym, access control and a manned security
         entrance are the reason the brochure is attractive. They are also a
-        running cost, and somebody pays it every month whether or not your
-        unit is let.
+        running cost, and somebody pays it every month whether or not your unit
+        is let.
       </P>
 
       <P>
         What makes this sharper at Coco than at a typical amenity heavy
         development is the unit mix. There are no three or four bedroom
-        apartments here to carry a larger share. Eighteen floors of one and
-        two bedroom units are funding a heated pool, and the cost per square
-        metre of doing that is higher than it would be in a building with
-        bigger homes in it.
+        apartments here to carry a larger share. Eighteen floors of one and two
+        bedroom units are funding a heated pool, and the cost per square metre
+        of doing that is higher than it would be in a building with bigger homes
+        in it.
       </P>
 
       <P>
         So ask for the service charge figure per square metre, what it assumes
-        about the collection rate, and what happens when investor owners do
-        not pay. A scheme that budgets on full collection in a building where
-        most owners are landlords rather than residents is budgeting on
-        something that does not happen. Heated water is the line item to ask
-        about specifically, because it is the one that moves with the fuel
-        price rather than staying where the budget put it.
+        about the collection rate, and what happens when investor owners do not
+        pay. A scheme that budgets on full collection in a building where most
+        owners are landlords rather than residents is budgeting on something
+        that does not happen. Heated water is the line item to ask about
+        specifically, because it is the one that moves with the fuel price
+        rather than staying where the budget put it.
       </P>
 
       <H2 id="supply">The thing nobody at the handover desk will mention</H2>
 
       <P>
-        Eighteen floors of one and two bedroom apartments complete at once,
-        and a meaningful share of them were bought by investors rather than
+        Eighteen floors of one and two bedroom apartments complete at once, and
+        a meaningful share of them were bought by investors rather than
         occupiers. Those owners all receive keys in the same few weeks, and a
         large number of them will list within the same month.
       </P>
 
       <P>
-        Your competition in the first quarter is not Westlands. It is the
-        other apartments in your own building, several of which have the
-        identical layout, the identical finish and an owner under the same
-        pressure to get someone in. Westlands is also where most of Nairobi’s
-        new apartment supply has landed, so a unit with generic furniture and
-        phone photography discounts hard against a hundred near-identical
-        neighbours. The ones that let first are furnished properly,
-        photographed properly, and priced against what is actually being
-        achieved rather than what the brochure projected.
+        Your competition in the first quarter is not Westlands. It is the other
+        apartments in your own building, several of which have the identical
+        layout, the identical finish and an owner under the same pressure to get
+        someone in. Westlands is also where most of Nairobi’s new apartment
+        supply has landed, so a unit with generic furniture and phone
+        photography discounts hard against a hundred near-identical neighbours.
+        The ones that let first are furnished properly, photographed properly,
+        and priced against what is actually being achieved rather than what the
+        brochure projected.
       </P>
 
       <P>
@@ -368,15 +364,15 @@ export default function Article() {
           <strong>
             Book your snagging inspection for handover day itself,
           </strong>{" "}
-          not for a fortnight later. Bring somebody who does this for a
-          living. Defects you record on the day are the developer’s problem;
-          defects you find in month two become an argument
+          not for a fortnight later. Bring somebody who does this for a living.
+          Defects you record on the day are the developer’s problem; defects you
+          find in month two become an argument
         </LI>
         <LI>
-          <strong>Get the defects liability period in writing,</strong> with
-          its start date and what it covers. This is the window in which the
-          builder fixes things at their cost, and it starts running whether or
-          not you use it
+          <strong>Get the defects liability period in writing,</strong> with its
+          start date and what it covers. This is the window in which the builder
+          fixes things at their cost, and it starts running whether or not you
+          use it
         </LI>
         <LI>
           <strong>Ask for the service charge figure per square metre,</strong>{" "}
@@ -387,9 +383,9 @@ export default function Article() {
         <LI>
           <strong>Decide furnished or unfurnished now,</strong> because the
           answer changes what you order, what you photograph and which market
-          you are letting into. In Westlands the furnished case is stronger
-          than in most of Nairobi, which is exactly why more of your
-          neighbours will also furnish
+          you are letting into. In Westlands the furnished case is stronger than
+          in most of Nairobi, which is exactly why more of your neighbours will
+          also furnish
         </LI>
         <LI>
           <strong>Sort the utilities and the meter transfer early.</strong> A
@@ -410,8 +406,8 @@ export default function Article() {
       </OL>
 
       <P>
-        The tax position, including what is deductible and when the
-        simplified regime applies, is in{" "}
+        The tax position, including what is deductible and when the simplified
+        regime applies, is in{" "}
         <Link
           href="/insights/airbnb-tax-kenya-2026-host-guide"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
@@ -427,11 +423,24 @@ export default function Article() {
         We let and manage units in Westlands, long term and short stay, and we
         are independent of any developer, which means we have no interest in
         telling you the building is better or worse than it is. We charge 10
-        percent of rent collected on a long let and 20 percent of revenue on a
-        short stay, with no setup fee and no exit fee, and we will tell you
-        before you commit which of the two your specific unit is actually
-        suited to. What the short stay side looks like on this side of
-        Westlands is set out under{" "}
+        percent of rent collected on{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a long let
+        </Link>{" "}
+        and 20 percent of revenue on{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          a short stay
+        </Link>
+        , with no setup fee and no exit fee, and we will tell you before you
+        commit which of the two your specific unit is actually suited to. What
+        the short stay side looks like on this side of Westlands is set out
+        under{" "}
         <Link
           href="/nairobi/brookside/airbnb-management"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
@@ -442,11 +451,11 @@ export default function Article() {
       </P>
 
       <P>
-        Because completion is still some way off, there is more you can do
-        here than at a building already handing over. A unit that is furnished,
+        Because completion is still some way off, there is more you can do here
+        than at a building already handing over. A unit that is furnished,
         photographed and listed the week it is released lets at a better rate
-        than one that starts competing in month three, and that only happens
-        if the decisions are made now.
+        than one that starts competing in month three, and that only happens if
+        the decisions are made now.
       </P>
 
       <P>

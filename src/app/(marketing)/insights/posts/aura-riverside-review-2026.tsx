@@ -84,9 +84,9 @@ export default function Article() {
           duplexes, with double height ceilings and full height glazing
         </LI>
         <LI>
-          <strong>Pricing:</strong> from around USD 95,000 for the entry
-          duplex, with a two bedroom duplex of about 121 square metres listed
-          around USD 200,000
+          <strong>Pricing:</strong> from around USD 95,000 for the entry duplex,
+          with a two bedroom duplex of about 121 square metres listed around USD
+          200,000
         </LI>
         <LI>
           <strong>Amenities:</strong> rooftop infinity pool, gym, mini cinema,
@@ -104,10 +104,10 @@ export default function Article() {
 
       <P>
         From around USD 95,000 for the entry one bedroom duplex, with a two
-        bedroom duplex of about 121 square metres listed at roughly USD
-        200,000. In shillings the entry unit is approximately KES 12m to
-        12.5m depending on the rate you use, which is the figure the yield
-        arithmetic below works from.
+        bedroom duplex of about 121 square metres listed at roughly USD 200,000.
+        In shillings the entry unit is approximately KES 12m to 12.5m depending
+        on the rate you use, which is the figure the yield arithmetic below
+        works from.
       </P>
 
       <H2 id="differentiation">The product genuinely is different</H2>
@@ -132,11 +132,11 @@ export default function Article() {
       </H3>
 
       <P>
-        The format, and the scarcity of it. That is the whole of the
-        commercial case: a tenant who wants a split level duplex with a
-        double height living room cannot easily find one cheaper elsewhere in
-        this corridor, which is the opposite of the position a standard one
-        bed in Kilimani occupies.
+        The format, and the scarcity of it. That is the whole of the commercial
+        case: a tenant who wants a split level duplex with a double height
+        living room cannot easily find one cheaper elsewhere in this corridor,
+        which is the opposite of the position a standard one bed in Kilimani
+        occupies.
       </P>
 
       <P>
@@ -257,9 +257,7 @@ export default function Article() {
           detail, it is the difference between a premium building and a
           frustrating one
         </LI>
-        <LI>
-          Water and full power backup specification, in writing
-        </LI>
+        <LI>Water and full power backup specification, in writing</LI>
         <LI>
           Whether short lets are permitted, if that is your model. A building
           selling itself on rental yield should have a clear answer
@@ -303,11 +301,50 @@ export default function Article() {
       <P>
         We rebuild developer yield projections from actual achieved rents in the
         same corridor, and we tell sourcing clients when the gap is large. Often
-        it is.
+        it is. We sold nothing in this building and we are not the appointed
+        agent, so there is no projection of ours to defend here.
       </P>
 
       <P>
-        You can run your own numbers on this in{" "}
+        If you already own a duplex at Aura, the question the brochure does not
+        answer is the one that decides your return: furnished long let, or
+        nightly. A double height one bedroom is an unusually good short stay
+        product and a fairly ordinary long let, so the gap between the two is
+        wider here than in most Riverside buildings. It is worth deciding on
+        your actual unit, floor and aspect rather than on the format in general.
+      </P>
+
+      <P>
+        Send us the floor and the layout through{" "}
+        <Link
+          href="/list-your-property"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          list your property
+        </Link>{" "}
+        and we will come back with an achievable figure for each, net of the
+        full cost stack rather than gross. What each route involves is set out
+        under{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          long term management
+        </Link>{" "}
+        at 10 percent of rent collected and{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management
+        </Link>{" "}
+        at 20 percent of revenue collected. If the honest answer is that the
+        duplex lets better than it short lets, we will say so, because the lower
+        fee is the one we would be quoting.
+      </P>
+
+      <P>
+        You can also run the numbers yourself in{" "}
         <Link
           href="/yield-calculator"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
