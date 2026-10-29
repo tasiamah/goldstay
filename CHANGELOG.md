@@ -21,6 +21,15 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.89.3] - 2026-10-29
+
+### Fixed
+- The last internal link pointing at a redirect. `/nairobi/areas` had
+  the same `/{city}` link in its hero as the neighbourhood pages. A
+  re-crawl of all 419 sitemap URLs after 1.89.2 found it and nothing
+  else, so no internal link on the site now resolves to a redirect or a
+  404.
+
 ## [1.89.2] - 2026-10-29
 
 ### Fixed
@@ -3728,7 +3737,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.2...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.3...HEAD
+[1.89.3]: https://github.com/tasiamah/goldstay/compare/v1.89.2...v1.89.3
 [1.89.2]: https://github.com/tasiamah/goldstay/compare/v1.89.1...v1.89.2
 [1.89.1]: https://github.com/tasiamah/goldstay/compare/v1.89.0...v1.89.1
 [1.89.0]: https://github.com/tasiamah/goldstay/compare/v1.88.0...v1.89.0

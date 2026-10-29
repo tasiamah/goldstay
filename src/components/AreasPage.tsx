@@ -84,7 +84,9 @@ export function AreasPage({ city }: { city: City }) {
           <Reveal>
             <div className="max-w-3xl">
               <Link
-                href={`/${city}`}
+                // Same as NeighbourhoodPage: on the city's own domain
+                // the city page is the root, and /{city} 308s to it.
+                href={domainCity === city ? "/" : `/${city}`}
                 className="inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-widest-xl text-gold-400 hover:text-gold-300"
               >
                 {c.country} · {cityName}
