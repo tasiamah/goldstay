@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   P,
@@ -34,6 +35,16 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Lower Kabete Nairobi premium hidden suburb property guide 2026",
+  faq: [
+    {
+      q: "Is Lower Kabete in Nairobi?",
+      a: "Partly, and the split matters more than most buyers realise. Lower Kabete straddles the Nairobi and Kiambu county boundary. The larger portion sits in Kiambu County, in Kabete Ward of Kabete Constituency, with the boundary running near Kabete Shopping Centre. A smaller portion falls inside Nairobi County's Westlands constituency, which is where Lower Kabete Primary School, Farasi Lane Primary School and the Lower Kabete Dispensary sit. Two houses on the same road can therefore be in different counties, so always confirm from the title which county a specific plot falls in.",
+    },
+    {
+      q: "Does it matter which county a Lower Kabete property is in?",
+      a: "Yes, on three practical counts. Land rates are a county charge, so the county on the title decides whether you pay Nairobi City County or Kiambu County, and the percentage and valuation roll differ between them. Development approvals go to that same county, so which planning office handles an extension or a change of use follows the boundary. And buyers price a Nairobi County address above a Kiambu one even where the houses are identical, so the county line shows up in the resale figure. Check the title rather than the postal address, because the two do not always agree here.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -62,6 +73,60 @@ export default function Article() {
         are senior corporate professionals,
         diplomats and academic staff with long
         connections to the area.
+      </P>
+
+      <H3 id="is-lower-kabete-in-nairobi">
+        Is Lower Kabete in Nairobi?
+      </H3>
+
+      <P>
+        Partly, and the split matters more than
+        most buyers realise. Lower Kabete
+        straddles the Nairobi and Kiambu county
+        boundary. The larger portion sits in
+        Kiambu County, in Kabete Ward of Kabete
+        Constituency, with the boundary running
+        near Kabete Shopping Centre. The smaller
+        portion falls inside Nairobi
+        County&apos;s Westlands constituency,
+        which is where Lower Kabete Primary
+        School, Farasi Lane Primary School and
+        the Lower Kabete Dispensary sit.
+      </P>
+
+      <P>
+        Two houses on the same road can sit in
+        different counties. Confirm from the
+        title which county a specific plot falls
+        in, because the postal address and the
+        title do not always agree here.
+      </P>
+
+      <H3 id="does-the-county-matter">
+        Does it matter which county a Lower
+        Kabete property is in?
+      </H3>
+
+      <P>
+        Yes, on three practical counts. Land
+        rates are a county charge, so the county
+        on the title decides whether you pay
+        Nairobi City County or Kiambu County, and
+        the percentage and the valuation roll
+        differ between them. Development
+        approvals go to that same county, so
+        which planning office handles an
+        extension or a change of use follows the
+        boundary.
+      </P>
+
+      <P>
+        Then there is price. Buyers pay more for
+        a Nairobi County address than a Kiambu
+        one even where the houses are identical,
+        so the boundary shows up in the resale
+        figure whether or not it shows up in the
+        listing.
       </P>
 
       <H2 id="prices">Prices in 2026</H2>

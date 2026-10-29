@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   KeySummary,
   LI,
   Lede,
@@ -35,6 +36,24 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Land rates and council rates Kenya 2026 honest guide",
+  faq: [
+    {
+      q: "What is land rates in Kenya?",
+      a: "Land rates are an annual county government tax on the unimproved site value of land, charged under the Rating Act and each county's finance act. Unimproved means the land only: the county values the plot as though nothing were built on it, so a bare plot and the same plot carrying a block of flats attract the same rates. They are a general tax rather than a payment for services, which is why paying them does not entitle you to road repairs or refuse collection, and why they are separate from both ground rent and any service charge your development charges.",
+    },
+    {
+      q: "Who pays land rates in Kenya?",
+      a: "The registered owner of the land pays, not the tenant or the occupier. For an apartment on a single title, the rates are levied on the whole parcel and the management company usually settles them, then recovers each owner's share through the service charge. For a unit on its own title, the owner is billed directly. A tenant never becomes liable, even on a long lease, and a buyer should insist on a rates clearance certificate before completion because arrears attach to the land rather than the person, so an unpaid balance follows the title to whoever owns it next.",
+    },
+    {
+      q: "How much is land rates in Kenya?",
+      a: "It depends on the county and the valuation roll, not on what you paid for the property. Nairobi City County typically charges 0.115 percent of the unimproved site value a year, so a plot valued at KES 10m on the roll attracts roughly KES 11,500. Other counties set their own percentage and run their own rolls, and many of those rolls are decades out of date, which is why the figure can look unrelated to current market value. Payment falls due by 31 March in most counties, and interest runs at 2 to 3 percent a month after that.",
+    },
+    {
+      q: "How are land rates calculated?",
+      a: "The county multiplies the unimproved site value of your parcel, as recorded in its valuation roll, by the rate struck in its finance act. Both halves matter. If the roll carries an old or wrong value you can object through the county valuation court rather than simply paying the bill, and objections are worth making on parcels where the recorded value plainly exceeds the land's worth. Because buildings are excluded, improving a property does not raise the rates on it, and a revaluation of the roll rather than anything you have built is what usually moves the bill.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -109,6 +128,100 @@ export default function Article() {
           month
         </LI>
       </UL>
+
+      <H3 id="what-is-land-rates">
+        What is land rates in Kenya?
+      </H3>
+
+      <P>
+        Land rates are an annual county tax on
+        the <em>unimproved</em> site value of
+        land. Unimproved means the land only: the
+        county values the plot as though nothing
+        were built on it. A bare plot and the
+        same plot carrying a block of flats
+        attract the same rates, which is why
+        building on land does not raise the rates
+        charged on it.
+      </P>
+
+      <P>
+        They are a general tax, not a payment for
+        services. Paying them does not entitle
+        you to road repairs or refuse collection,
+        and they are separate from both ground
+        rent and whatever service charge your
+        development levies.
+      </P>
+
+      <H3 id="who-pays-land-rates">
+        Who pays land rates in Kenya?
+      </H3>
+
+      <P>
+        The registered owner, not the tenant or
+        the occupier. Where an apartment block
+        sits on a single title, the rates are
+        levied on the whole parcel and the
+        management company settles them, then
+        recovers each owner&apos;s share through
+        the service charge. Where a unit has its
+        own title, the owner is billed directly.
+      </P>
+
+      <P>
+        A tenant never becomes liable, even on a
+        long lease. A buyer, though, should
+        insist on a rates clearance certificate
+        before completion, because arrears attach
+        to the land rather than to the person. An
+        unpaid balance follows the title to
+        whoever owns it next, which in practice
+        means you.
+      </P>
+
+      <H3 id="how-much-is-land-rates">
+        How much is land rates in Kenya?
+      </H3>
+
+      <P>
+        It depends on the county and its
+        valuation roll, not on what you paid for
+        the property. Nairobi City County
+        typically charges 0.115 percent of the
+        unimproved site value a year, so a plot
+        the roll values at KES 10m attracts
+        roughly KES 11,500. Other counties set
+        their own percentage and run their own
+        rolls.
+      </P>
+
+      <P>
+        Many of those rolls are decades out of
+        date, which is why the figure can look
+        unrelated to current market value.
+        Payment falls due by 31 March in most
+        counties, and interest runs at 2 to 3
+        percent a month after that.
+      </P>
+
+      <H3 id="how-are-land-rates-calculated">
+        How are land rates calculated?
+      </H3>
+
+      <P>
+        The county multiplies the unimproved site
+        value recorded in its valuation roll by
+        the rate struck in its finance act. Both
+        halves matter, and only one of them is
+        fixed. If the roll carries an old or
+        plainly wrong value, you can object
+        through the county valuation court rather
+        than simply paying the bill. On parcels
+        where the recorded value exceeds what the
+        land is worth, that objection is worth
+        making.
+      </P>
 
       <H2 id="ground-rent">Ground rent (land rent)</H2>
 

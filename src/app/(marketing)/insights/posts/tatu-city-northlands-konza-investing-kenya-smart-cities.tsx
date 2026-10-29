@@ -29,6 +29,20 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Tatu City Northlands Konza Technopolis smart cities Kenya, master-planned diaspora investment",
+  faq: [
+    {
+      q: "Is Tatu City in Ruiru?",
+      a: "Administratively yes. Tatu City sits in Gitothua Ward, Ruiru Sub-County and Ruiru Constituency, in Kiambu County, and the Ruiru Municipality boundary touches Tatu City Phase 1. It is not, however, part of Ruiru town: it is a separate 5,000 acre master-planned development about 5km west of the town centre, along the Ruiru to Kamiti road. The distinction matters for a buyer because county level matters such as land rates, development approvals and the valuation roll go to Kiambu County, while Tatu City Limited runs the internal estate management and development control.",
+    },
+    {
+      q: "How far is Tatu City from Ruiru?",
+      a: "About 5km west of Ruiru Town, and roughly 6.5km east of Kiambu Town, which places it between the two rather than inside either. From Nairobi's central business district it is around 20 to 24km north, commonly quoted as a 30 minute drive outside peak hours, with access from Thika Road, the Eastern and Northern bypasses, which sit about 2km away, and Kamiti Road. The southerly tip of the development touches the Nairobi County boundary at the Kamiti River, which is why it is sometimes marketed as being in Nairobi when it is not.",
+    },
+    {
+      q: "Is Ruiru a city?",
+      a: "No. Ruiru holds municipality status under the Urban Areas and Cities Act, not city status, despite being one of the fastest growing urban areas in Kenya by population. Kenya's formally conferred cities are Nairobi, Mombasa, Kisumu, Nakuru and Eldoret. The naming is a frequent source of confusion because Tatu City carries the word city in its brand while sitting inside Ruiru Municipality in Kiambu County, so neither Tatu City nor Ruiru is a city in the statutory sense.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -59,6 +73,54 @@ export default function Article() {
         Bidco, Kim-Fay, Davis & Shirtliff and others), schools
         (Crawford International, Nova Pioneer), retail
         (Tatu Central) and a growing office cluster.
+      </P>
+
+      <H3 id="is-tatu-city-in-ruiru">Is Tatu City in Ruiru?</H3>
+
+      <P>
+        Administratively yes. Tatu City sits in Gitothua
+        Ward, Ruiru Sub-County and Ruiru Constituency, in
+        Kiambu County, and the Ruiru Municipality boundary
+        touches Tatu City Phase 1. It is not part of Ruiru
+        town, though. It is a separate 5,000 acre
+        master-planned development west of the town centre.
+      </P>
+
+      <P>
+        The distinction matters to a buyer: county level
+        matters such as land rates, development approvals
+        and the valuation roll go to Kiambu County, while
+        Tatu City Limited runs the internal estate
+        management and development control.
+      </P>
+
+      <H3 id="how-far-is-tatu-city-from-ruiru">
+        How far is Tatu City from Ruiru?
+      </H3>
+
+      <P>
+        About 5km west of Ruiru Town and roughly 6.5km east
+        of Kiambu Town, which places it between the two
+        rather than inside either. Access is from Thika
+        Road, the Eastern and Northern bypasses about 2km
+        away, and Kamiti Road. The southerly tip of the
+        development touches the Nairobi County boundary at
+        the Kamiti River, which is why it is sometimes
+        marketed as being in Nairobi when it is not.
+      </P>
+
+      <H3 id="is-ruiru-a-city">Is Ruiru a city?</H3>
+
+      <P>
+        No. Ruiru holds municipality status under the Urban
+        Areas and Cities Act rather than city status,
+        despite being one of the fastest growing urban
+        areas in Kenya. The cities formally conferred in
+        Kenya are Nairobi, Mombasa, Kisumu, Nakuru and
+        Eldoret. Tatu City carries the word city in its
+        brand while sitting inside Ruiru Municipality, so
+        neither it nor Ruiru is a city in the statutory
+        sense.
       </P>
 
       <H3 id="tatu-residential">The residential investment case</H3>

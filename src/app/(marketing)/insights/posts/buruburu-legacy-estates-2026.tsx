@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   P,
@@ -14,6 +15,7 @@ export const meta: PostMeta = {
   slug: "buruburu-legacy-estates-2026",
   title:
     "Buruburu: legacy estates and 2026 reality",
+  metaTitle: "Buruburu estate, Nairobi: prices, rents and 2026 reality",
   description:
     "Buruburu was the National Housing Corporation’s flagship middle-class estate of the 1970s and 80s, and the legacy still shapes the neighbourhood today. Here is the honest 2026 guide on Buruburu property, who lives there now and how the market actually works.",
   metaDescription:
@@ -33,6 +35,16 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Buruburu Nairobi 2026 legacy estate property guide",
+  faq: [
+    {
+      q: "Is Buruburu in Embakasi?",
+      a: "Partly. Buruburu is not a single ward and it straddles two constituencies. Phase 1 sits in Kariobangi South Ward, which is in Embakasi West constituency. Phases 2 and 3 are in Harambee Ward, Phase 4 is in Viwandani Ward and Phase 5 is in Maringo/Hamza Ward, all three of which are in Makadara constituency. So if someone tells you Buruburu is in Embakasi they are right about Phase 1 and wrong about the other four, which matters when you are checking which constituency office or ward administration handles a given plot.",
+    },
+    {
+      q: "Which county is Buruburu in?",
+      a: "Nairobi County. All five Buruburu phases fall inside Nairobi City County, roughly 7.5km east of the central business district. The confusion usually comes from the constituency split rather than the county: Buruburu spans Makadara and Embakasi West constituencies, both of which are Nairobi County sub-counties. For anything county level, such as land rates, the valuation roll or a rates clearance certificate, Nairobi City County is the office you are dealing with regardless of which phase the property sits in.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -62,6 +74,47 @@ export default function Article() {
         sits at the edges; the core remains
         dominated by the original maisonette
         stock.
+      </P>
+
+      <H3 id="is-buruburu-in-embakasi">
+        Is Buruburu in Embakasi?
+      </H3>
+
+      <P>
+        Partly, and this catches people out.
+        Buruburu is not a single ward: it
+        straddles two constituencies. Phase 1
+        sits in Kariobangi South Ward, which is
+        in Embakasi West. Phases 2 and 3 are in
+        Harambee Ward, Phase 4 in Viwandani Ward
+        and Phase 5 in Maringo/Hamza Ward, all
+        three of those being Makadara.
+      </P>
+
+      <P>
+        So anyone who tells you Buruburu is in
+        Embakasi is right about Phase 1 and wrong
+        about the other four. It matters when you
+        are working out which ward administration
+        or constituency office handles a
+        particular plot.
+      </P>
+
+      <H3 id="which-county-is-buruburu-in">
+        Which county is Buruburu in?
+      </H3>
+
+      <P>
+        Nairobi County. All five phases fall
+        inside Nairobi City County, about 7.5km
+        east of the central business district.
+        The confusion comes from the constituency
+        split rather than the county line. For
+        anything county level, which means land
+        rates, the valuation roll and a rates
+        clearance certificate, Nairobi City
+        County is the office you are dealing
+        with whichever phase the property is in.
       </P>
 
       <H2 id="prices">Prices in 2026</H2>

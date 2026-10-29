@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   P,
@@ -13,10 +14,11 @@ import {
 export const meta: PostMeta = {
   slug: "gemland-residence-westlands-review-2026",
   title: "Gemland Residence, Westlands: an honest 2026 buyer review",
+  metaTitle: "Gemland Residence Westlands: prices, sizes and 2026 review",
   description:
     "Gemland Residence on Ring Road near Riverside Drive offers one and two bedroom apartments from around KES 6.8m. Here is what the marketing says, where the published information disagrees with itself, and how the unit mix reads as a rental proposition.",
   metaDescription:
-    "Gemland Residence on Ring Road near Riverside Drive offers one and two bedroom apartments from around KES 6.8m.",
+    "One beds from about KES 6.8m, two beds from KES 9.5m, on Ring Road near Riverside. Agents publish three different completion dates.",
   publishedAt: "2026-08-04",
   readingMinutes: 8,
   author: authors.research,
@@ -31,6 +33,20 @@ export const meta: PostMeta = {
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Gemland Residence Westlands honest buyer review 2026",
+  faq: [
+    {
+      q: "How much is an apartment at Gemland Residence?",
+      a: "Published marketing as at mid 2026 puts one bedroom units from about KES 6.8m and two bedrooms from roughly KES 9.5m, with higher floors and larger layouts running materially above those entry figures. Payment is marketed at a 20 percent deposit with the balance in instalments to completion. These are the developer's and agents' own published figures rather than anything we have verified by inspection, and Nairobi off plan pricing moves, so confirm the current price and the payment schedule in writing before you pay a deposit.",
+    },
+    {
+      q: "When does Gemland Residence complete?",
+      a: "There is no single published answer, which is the main reason to read carefully before buying here. Across agent listings for the same development we found completion given as December 2025, as Q1 2026 and as June 2027, while some listings separately describe units as ready for occupation. Those statements cannot all be true. The innocent explanations are phased delivery or agents recycling old copy, but the practical position is the same either way: ignore any date on an agent site and insist on a completion date in the sale agreement with a consequence attached if it is missed.",
+    },
+    {
+      q: "What are the apartment sizes at Gemland Residence?",
+      a: "One bedroom units are published at roughly 51 to 61 square metres, a one bedroom plus study at around 74, and two bedrooms at roughly 76 to 80. For a landlord the one bed plus study at 74 square metres is the most interesting of the three, because it suits a professional working from home or a relocating single tenant and there is considerably less of it in this corridor. The compact one beds sit in the most heavily supplied format in this part of Nairobi, so finish and building services rather than floor area will decide the rent.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -84,6 +100,32 @@ export default function Article() {
         </LI>
       </UL>
 
+      <H3 id="how-much-is-an-apartment">
+        How much is an apartment at Gemland Residence?
+      </H3>
+
+      <P>
+        One bedroom units from about KES 6.8m and two bedrooms from roughly
+        KES 9.5m on the published marketing, with higher floors and larger
+        layouts running materially above those entry figures. Payment is
+        marketed at a 20 percent deposit with the balance in instalments to
+        completion. Nairobi off plan pricing moves, so confirm the current
+        price and the payment schedule in writing before you pay anything.
+      </P>
+
+      <H3 id="what-are-the-apartment-sizes">
+        What are the apartment sizes at Gemland Residence?
+      </H3>
+
+      <P>
+        One beds are published at roughly 51 to 61 square metres, the one bed
+        plus study at around 74, and two beds at roughly 76 to 80. For a
+        landlord the 74 square metre unit is the most interesting of the
+        three, because it suits a professional working from home or a
+        relocating single tenant and there is considerably less of it in this
+        corridor.
+      </P>
+
       <H2 id="location">The location is the strongest part of the case</H2>
 
       <P>
@@ -116,6 +158,10 @@ export default function Article() {
       </P>
 
       <H2 id="dates">The completion date problem</H2>
+
+      <H3 id="when-does-gemland-residence-complete">
+        When does Gemland Residence complete?
+      </H3>
 
       <P>
         This is the part that should slow you down. Across agent listings

@@ -21,6 +21,36 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.88.0] - 2026-10-29
+
+### Added
+- Ten of the highest-traffic insights articles now carry an FAQ block, so
+  they emit FAQPage structured data and answer the question verbatim in a
+  heading. Search Console for the 28 days to 27 October records 150
+  question-form queries ("who pays land rates in kenya", "is buruburu in
+  embakasi", "how to remove a caveat on land in kenya") drawing 368
+  impressions and **zero** clicks between them. The articles already
+  answered every one of those questions in prose; nothing was marked up as
+  a question, so Google answered them in the result page and we got
+  nothing. The pages are land rates, estate agent commission, Buruburu,
+  Lower Kabete, Tatu City, Gemland Residence, Aura Riverside, 1870 West,
+  Enrogue and caveats on title.
+- Buruburu and Lower Kabete now answer which county and constituency they
+  are actually in, because both straddle a boundary and the searches show
+  people are confused. Buruburu Phase 1 is in Embakasi West and Phases 2 to
+  5 are in Makadara, all within Nairobi County. Lower Kabete is mostly
+  Kiambu County with a smaller part in Nairobi County's Westlands, which
+  decides who you pay land rates to and which planning office handles an
+  extension. Both were verified against the constituency and ward orders
+  rather than written from memory.
+
+### Changed
+- `metaTitle` added to Buruburu, Gemland Residence, Aura Riverside and
+  Enrogue, which had none, so each now leads with the name people search
+  rather than an editorial phrasing. Gemland's description now carries the
+  entry prices and the fact that agents publish three different completion
+  dates, which is the thing a buyer needs and nobody else is saying.
+
 ## [1.87.1] - 2026-10-29
 
 ### Fixed
@@ -3602,7 +3632,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.87.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.88.0...HEAD
+[1.88.0]: https://github.com/tasiamah/goldstay/compare/v1.87.1...v1.88.0
 [1.87.1]: https://github.com/tasiamah/goldstay/compare/v1.87.0...v1.87.1
 [1.87.0]: https://github.com/tasiamah/goldstay/compare/v1.86.1...v1.87.0
 [1.86.1]: https://github.com/tasiamah/goldstay/compare/v1.86.0...v1.86.1

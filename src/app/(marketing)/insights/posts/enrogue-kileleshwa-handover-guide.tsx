@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   OL,
@@ -14,6 +15,7 @@ import {
 export const meta: PostMeta = {
   slug: "enrogue-kileleshwa-handover-guide",
   title: "Enrogue Kileleshwa: what to do before your handover",
+  metaTitle: "Enrogue Kileleshwa: prices, completion and handover checks",
   description:
     "Enrogue in Kileleshwa is due to complete in the last quarter of 2026. What to check in the weeks before you take keys, why the handover date is worth treating as a range rather than a promise, and how to weigh the letting offer your developer will make you against an independent manager.",
   metaDescription:
@@ -33,6 +35,16 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Enrogue Kileleshwa handover guide for owners taking keys in late 2026",
+  faq: [
+    {
+      q: "What is Enrogue in Kileleshwa?",
+      a: "Enrogue is an eighteen storey development of one and two bedroom apartments on Kileleshwa's main road, fronting the Kirichwa River, built by HassConsult. It sits close to Yaya Centre, Valley Arcade and Lavington Mall and within a few minutes of Westlands, Lavington and Kilimani. Pricing was advertised from around KES 6.9m. A total unit count has not been published that we can find, which is itself worth asking about before handover, because the number of units handing over at once determines how much competing supply you will be letting against in your first year.",
+    },
+    {
+      q: "When does Enrogue Kileleshwa complete?",
+      a: "HassConsult's current published completion is the fourth quarter of 2026. An independent construction project record for the same development logged the original programme as running to the first quarter of 2026, so roughly three quarters of movement has already happened. Treat the stated date as a range rather than a promise and plan your cash flow against the later end of it. On the developer question you are in a more comfortable position than most Nairobi off plan buyers, because there is no dispute about who is building it or whether the firm will still exist next year.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -55,6 +67,10 @@ export default function Article() {
       </Callout>
 
       <H2 id="what-it-is">What Enrogue is</H2>
+
+      <H3 id="what-is-enrogue-in-kileleshwa">
+        What is Enrogue in Kileleshwa?
+      </H3>
 
       <UL>
         <LI>
@@ -95,6 +111,10 @@ export default function Article() {
       </P>
 
       <H2 id="the-date">Treat the date as a range</H2>
+
+      <H3 id="when-does-enrogue-complete">
+        When does Enrogue Kileleshwa complete?
+      </H3>
 
       <P>
         The developer’s current published completion is the fourth quarter of

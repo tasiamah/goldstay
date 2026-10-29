@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   KeySummary,
   LI,
   Lede,
@@ -36,6 +37,20 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "1870 West, Lower Kabete and Peponi Road, Westlands, handover guide for owners",
+  faq: [
+    {
+      q: "How much is an apartment at 1870 West?",
+      a: "HassConsult published one bedrooms between 570 and 829 square feet from KES 9.4 million, and two bedrooms from KES 16.3 million, sold on a three year plan of twenty percent down with instalments after that. The mix runs from studios through one bedroom, one bedroom and study, two bedroom, two bedroom and study and three bedroom units. The development is now listed as sold out, so these are the original launch figures rather than what a unit would cost you today: a resale is priced by the seller, and in this building may also be subject to whatever the sale agreement says about who handles resales.",
+    },
+    {
+      q: "When does 1870 West complete?",
+      a: "HassConsult now publishes completion for the fourth quarter of 2026, where the original thirty six month programme targeted the fourth quarter of 2025. Owners are therefore roughly a year past the date they budgeted against, which matters in two ways: there is a year of rent that was modelled and never earned, and there may be a delay clause in your sale agreement providing for compensation or an instalment credit. Read that clause rather than assuming it is absent, because a completion date with no remedy attached is a marketing statement rather than an obligation.",
+    },
+    {
+      q: "Can I let my own apartment at 1870 West?",
+      a: "That depends on your sale agreement and it is the first thing to establish before handover. Published analysis of the scheme describes a dedicated company, 1870 West Residences Ltd, handling letting and resale exclusively, on the stated rationale of standardising tenant quality. What a brochure or trade article describes is not necessarily what binds you, though. An exclusive letting mandate is a contractual obligation that either appears in your agreement and the management company documents or does not. Ask in writing whether the appointment is exclusive or optional, how long it runs, and whether it covers short stays as well as long lets, because if it is binding it decides your fee, your tenant and your rent rather than you deciding them.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -80,7 +95,39 @@ export default function Article() {
         ]}
       />
 
+      <H3 id="how-much-is-an-apartment">
+        How much is an apartment at 1870 West?
+      </H3>
+
+      <P>
+        One bedrooms between 570 and 829 square feet were published from KES
+        9.4 million and two bedrooms from KES 16.3 million, on a three year
+        plan of twenty percent down with instalments after that. The building
+        is now listed as sold out, so those are launch figures rather than
+        what a unit costs today. A resale is priced by the seller, and in this
+        building may also be subject to whatever your agreement says about who
+        handles resales, which is the subject of the next section.
+      </P>
+
+      <H3 id="when-does-1870-west-complete">
+        When does 1870 West complete?
+      </H3>
+
+      <P>
+        HassConsult now publishes the fourth quarter of 2026, against an
+        original thirty six month programme that targeted the fourth quarter
+        of 2025. Owners are roughly a year past the date they budgeted
+        against. That matters twice over: there is a year of rent that was
+        modelled and never earned, and there may be a delay clause providing
+        for compensation or an instalment credit. Read it rather than assuming
+        it is absent.
+      </P>
+
       <H2 id="the-clause">The clause to find before anything else</H2>
+
+      <H3 id="can-i-let-my-own-apartment">
+        Can I let my own apartment at 1870 West?
+      </H3>
 
       <P>
         Published analysis of 1870 West describes a management structure

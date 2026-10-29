@@ -36,6 +36,16 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Caveats and cautions Kenyan title 2026 land registration removal guide",
+  faq: [
+    {
+      q: "How do you remove a caveat on land in Kenya?",
+      a: "By one of four routes. By agreement, where the caveator lodges a withdrawal application at the lands registry once the underlying claim is settled, which is the simplest and most common. By lapse, where a time limited caveat expires unless renewed. By court order, where the caveator refuses to withdraw and the registered owner applies to court, which will order removal and may award costs against the caveator if the claim is baseless. Or by substituting security, lodging a bond in place of the caveat so the transaction can proceed while the dispute continues. Start by establishing what the claim actually is, because that decides which route is open to you.",
+    },
+    {
+      q: "Can a property be sold if it has a caveat?",
+      a: "Not freely. The registrar cannot register any subsequent dealing without notifying the caveator and complying with the caveat's terms, so a sale can be agreed but the transfer cannot be registered while the entry stands. A buyer can therefore sign and even pay, then find the title will not move into their name. The caveat has to be cleared before completion rather than after, which is why an official title search on the day before completion is not optional: a caveat can be registered at any time, including after your diligence is finished and before you have paid.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -87,6 +97,32 @@ export default function Article() {
         cautions on a Kenyan title mean: there is
         a claim outstanding, and the title cannot
         transact freely until it is dealt with.
+      </P>
+
+      <H3 id="can-a-property-be-sold-with-a-caveat">
+        Can a property be sold if it has a caveat?
+      </H3>
+
+      <P>
+        Not freely. The registrar cannot register
+        a subsequent dealing without notifying
+        the caveator and complying with the
+        caveat&apos;s terms, so a sale can be
+        agreed but the transfer cannot be
+        registered while the entry stands. In
+        practice that means a buyer can sign and
+        even pay, and then find the title will
+        not move into their name.
+      </P>
+
+      <P>
+        This is why the caveat has to be removed
+        before completion rather than after, and
+        why an official title search on the day
+        before completion is not optional. A
+        caveat can be registered at any point,
+        including after you have done your
+        diligence and before you have paid.
       </P>
 
       <H2 id="why">Why they get registered</H2>
@@ -167,6 +203,31 @@ export default function Article() {
       </OL>
 
       <H2 id="removal">How to remove</H2>
+
+      <H3 id="how-to-remove-a-caveat">
+        How do you remove a caveat on land in
+        Kenya?
+      </H3>
+
+      <P>
+        There are four routes, and which one
+        applies depends entirely on whether the
+        caveator will cooperate and whether their
+        underlying claim has merit. By agreement,
+        by lapse, by court order, or by
+        substituting security. Each is set out
+        below.
+      </P>
+
+      <P>
+        The ordering matters in practice. Start
+        by establishing what the claim actually
+        is, because a caveat lodged over an
+        unpaid debt is removed by settling it,
+        while one lodged to frustrate a sale is
+        removed by a court that can also award
+        costs against the person who lodged it.
+      </P>
 
       <H3 id="agreement">By agreement</H3>
 

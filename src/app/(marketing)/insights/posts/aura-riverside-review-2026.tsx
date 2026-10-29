@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   LI,
   Lede,
   P,
@@ -13,6 +14,7 @@ import {
 export const meta: PostMeta = {
   slug: "aura-riverside-review-2026",
   title: "Aura Riverside: an honest look at the numbers behind the duplexes",
+  metaTitle: "Aura Riverside Nairobi: prices, duplexes and the yield claim",
   description:
     "Aura Riverside by Canaan Developers is a 20 storey Riverside tower of one and two bedroom duplexes from around USD 95,000, marketed on yields of 9 to 13 percent. We test that yield claim against what Riverside rents actually are.",
   metaDescription:
@@ -31,6 +33,20 @@ export const meta: PostMeta = {
   country: "kenya",
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt: "Aura Riverside Nairobi honest buyer review 2026",
+  faq: [
+    {
+      q: "How much is an apartment at Aura Riverside?",
+      a: "Published pricing as at mid 2026 starts at around USD 95,000 for the entry one bedroom duplex, with a two bedroom duplex of about 121 square metres listed at roughly USD 200,000. In shillings the entry unit works out at approximately KES 12m to 12.5m depending on the rate used. The development is by Canaan Developers on Riverside Lane, 20 storeys of split level duplexes, with the structure reported complete and finishing works running through 2025 into 2026. These are the developer's and agents' own figures rather than ours, so verify them in writing before paying anything.",
+    },
+    {
+      q: "Is the 9 to 13 percent yield at Aura Riverside realistic?",
+      a: "Not as a long let rental yield. Work backwards from the entry duplex at about KES 12m to 12.5m and a 9 percent gross yield requires roughly KES 92,000 a month, while 13 percent requires about KES 135,000 a month, every month, all year. An unfurnished long let of a one bedroom in the Riverside corridor does not reach those figures. You only get there furnished, serviced or on short let at high occupancy, and that is a gross turnover number rather than a yield: out of it come cleaning, laundry, consumables, higher utilities, platform commission, soft goods replacement, management and void nights. Compare net to net.",
+    },
+    {
+      q: "What makes Aura Riverside different from other Nairobi towers?",
+      a: "The format. Most Nairobi tower stock is a flat plate apartment repeated twenty times, whereas Aura Riverside is split level duplexes with double height living rooms and full height glazing, of which there is very little in this part of the city. That scarcity is a genuine commercial defence against the oversupply compressing rents in the ordinary tower segment, because a tenant who wants this cannot easily find it cheaper elsewhere. The trade off is that double height volume costs a lot per usable square metre. You are paying for air, which is reasonable if you are living there and harder to justify if you are letting it, because a tenant pays for rooms.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -82,6 +98,18 @@ export default function Article() {
         </LI>
       </UL>
 
+      <H3 id="how-much-is-an-apartment">
+        How much is an apartment at Aura Riverside?
+      </H3>
+
+      <P>
+        From around USD 95,000 for the entry one bedroom duplex, with a two
+        bedroom duplex of about 121 square metres listed at roughly USD
+        200,000. In shillings the entry unit is approximately KES 12m to
+        12.5m depending on the rate you use, which is the figure the yield
+        arithmetic below works from.
+      </P>
+
       <H2 id="differentiation">The product genuinely is different</H2>
 
       <P>
@@ -99,6 +127,18 @@ export default function Article() {
         one bed in Kilimani is in.
       </P>
 
+      <H3 id="what-makes-aura-riverside-different">
+        What makes Aura Riverside different from other Nairobi towers?
+      </H3>
+
+      <P>
+        The format, and the scarcity of it. That is the whole of the
+        commercial case: a tenant who wants a split level duplex with a
+        double height living room cannot easily find one cheaper elsewhere in
+        this corridor, which is the opposite of the position a standard one
+        bed in Kilimani occupies.
+      </P>
+
       <P>
         The trade off is that double height volume is expensive to buy per
         usable square metre. You are paying for air. That is a perfectly
@@ -108,6 +148,10 @@ export default function Article() {
       </P>
 
       <H2 id="yield">Testing the 9 to 13 percent yield claim</H2>
+
+      <H3 id="is-the-yield-realistic">
+        Is the 9 to 13 percent yield at Aura Riverside realistic?
+      </H3>
 
       <P>
         The marketing quotes yields averaging 9 to 13 percent and capital

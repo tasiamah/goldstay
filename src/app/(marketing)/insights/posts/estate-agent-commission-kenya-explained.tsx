@@ -3,6 +3,7 @@ import { authors, type PostMeta } from "./_shared";
 import {
   Callout,
   H2,
+  H3,
   KeySummary,
   LI,
   Lede,
@@ -35,6 +36,20 @@ export const meta: PostMeta = {
   heroImage: "/images/locations/nairobi.jpg",
   heroAlt:
     "Estate agent commission Kenya 2026 honest guide rates and rules",
+  faq: [
+    {
+      q: "What is the standard commission for a real estate agent in Kenya?",
+      a: "On a residential sale, 1.25 to 3 percent of the sale price, with sole agencies at the lower end and multiple agencies at the upper. On a letting, the statutory scale is 7.5 percent of the annual gross rent for a lease of up to a year, or one month's rent for anything longer, though most Nairobi agents ask for one month either way. Commercial lettings run 7.5 percent on a sole agency and 10 percent on a general agency. These come from the 1987 scale under the Estate Agents Act, which is guidance rather than a cap, so the rate is negotiable and the quoted figure is an opening position.",
+    },
+    {
+      q: "How much commission do rental agents take in Kenya?",
+      a: "For finding a tenant, expect one month's rent or 7.5 percent of the annual rent, which on a twelve month tenancy are close to the same number. Where the agent also manages the property, the scale sets a floor of half the letting commission rather than a second full fee, because an agent collecting the rent already earns from the same tenancy twice. That clause is the one almost no quote mentions. If you are quoted a full month's rent to let plus a full management percentage on top, ask which part of the scale that is drawn from.",
+    },
+    {
+      q: "How much do house agents get paid in Kenya?",
+      a: "A house agent's income is almost entirely commission on completed transactions rather than a salary, which is what drives the behaviour owners complain about. On a KES 15m sale at 2 percent the agent's firm earns KES 300,000, usually split with the salesperson. On a KES 80,000 a month letting the fee is one month, so KES 80,000 for work that might take two weeks. Because nothing is earned until a deal closes, agents push for completion and resist exclusivity periods expiring, and an agent asking for money before any tenant or buyer appears is charging something the scale does not recognise.",
+    },
+  ],
 };
 
 export default function Article() {
@@ -121,6 +136,77 @@ export default function Article() {
           percent
         </LI>
       </UL>
+
+      <H3 id="standard-commission">
+        What is the standard commission for a real
+        estate agent in Kenya?
+      </H3>
+
+      <P>
+        On a residential sale, 1.25 to 3 percent,
+        with sole agencies at the lower end and
+        multiple agencies at the upper. On a
+        letting, 7.5 percent of annual gross rent
+        for a lease of up to a year, or one
+        month rent for anything longer. The
+        figures come from the 1987 scale under
+        the Estate Agents Act, which is guidance
+        rather than a cap. The rate is
+        negotiable, and the quoted figure is an
+        opening position rather than a tariff.
+      </P>
+
+      <H3 id="rental-agent-commission">
+        How much commission do rental agents take
+        in Kenya?
+      </H3>
+
+      <P>
+        For finding a tenant, expect one month
+        rent or 7.5 percent of the annual rent,
+        which on a twelve month tenancy come to
+        much the same number. Where the agent
+        also manages the property, the scale sets
+        a floor of half the letting commission
+        rather than a second full fee, because an
+        agent collecting the rent already earns
+        from the same tenancy twice.
+      </P>
+
+      <P>
+        If you are quoted a full month rent to
+        let plus a full management percentage on
+        top, ask which part of the scale that is
+        drawn from. The answer is usually that it
+        is not.
+      </P>
+
+      <H3 id="what-agents-earn">
+        How much do house agents get paid in
+        Kenya?
+      </H3>
+
+      <P>
+        Almost entirely commission on completed
+        transactions rather than salary, which is
+        what drives the behaviour owners
+        complain about. On a KES 15m sale at 2
+        percent the firm earns KES 300,000,
+        usually split with the salesperson. On a
+        KES 80,000 a month letting the fee is one
+        month, so KES 80,000 for work that might
+        take a fortnight.
+      </P>
+
+      <P>
+        Because nothing is earned until a deal
+        closes, agents push hard for completion
+        and resist letting an exclusivity period
+        lapse. It also means an agent asking for
+        money before any tenant or buyer has
+        appeared is charging for something the
+        scale does not recognise.
+      </P>
 
       <H2 id="who-pays">Who actually pays</H2>
 
