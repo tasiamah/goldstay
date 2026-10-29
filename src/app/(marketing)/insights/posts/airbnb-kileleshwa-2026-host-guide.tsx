@@ -212,6 +212,13 @@ export default function Article() {
         >
           Goldstay’s Airbnb management in Kileleshwa
         </Link>
+        , or across the city under{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management in Nairobi
+        </Link>
         .
       </P>
 

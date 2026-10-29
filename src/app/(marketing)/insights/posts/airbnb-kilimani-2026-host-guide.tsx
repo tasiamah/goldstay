@@ -221,6 +221,13 @@ export default function Article() {
         >
           Airbnb management in Kilimani
         </Link>
+        , and what the service covers across the city is set out under{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management in Nairobi
+        </Link>
         .
       </P>
 

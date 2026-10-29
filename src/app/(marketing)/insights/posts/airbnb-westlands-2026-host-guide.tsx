@@ -223,7 +223,15 @@ export default function Article() {
         >
           Airbnb management service in Westlands
         </Link>{" "}
-        exists to do.
+        exists to do, and the city-wide terms, fee and payout arrangement are
+        on{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management in Nairobi
+        </Link>
+        .
       </P>
 
       <P>

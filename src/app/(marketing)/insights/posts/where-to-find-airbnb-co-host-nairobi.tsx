@@ -302,6 +302,19 @@ export default function Article() {
         on fee bases, listing ownership and eight questions that work on us
         too.
       </P>
+      <P>
+        If co-hosting is what you actually want rather than handing the listing
+        over, that is the arrangement we run by default: our{" "}
+        <Link
+          href="/airbnb-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Airbnb management
+        </Link>{" "}
+        is 20 percent of revenue collected with no onboarding or exit fee, and
+        where you are already hosting the unit we co-host on your account so
+        the reviews and any Superhost status stay yours.
+      </P>
     </>
   );
 }

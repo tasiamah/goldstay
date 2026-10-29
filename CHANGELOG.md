@@ -21,6 +21,19 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.87.1] - 2026-10-29
+
+### Fixed
+- Six articles that rank for short-stay searches now link to
+  /airbnb-management. Search Console shows that page took zero
+  impressions in the 28 days to 27 October while all nine of its
+  neighbourhood siblings took some, so Google is not indexing it. The
+  four neighbourhood host guides linked only to their own area page and
+  never to the parent, the co-host article sent readers to the
+  comparison page instead, and the estate agent commission article,
+  which draws 1,464 impressions a month, linked to no management
+  service at all.
+
 ## [1.87.0] - 2026-10-27
 
 ### Added
@@ -3589,7 +3602,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.87.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.87.1...HEAD
+[1.87.1]: https://github.com/tasiamah/goldstay/compare/v1.87.0...v1.87.1
 [1.87.0]: https://github.com/tasiamah/goldstay/compare/v1.86.1...v1.87.0
 [1.86.1]: https://github.com/tasiamah/goldstay/compare/v1.86.0...v1.86.1
 [1.86.0]: https://github.com/tasiamah/goldstay/compare/v1.85.1...v1.86.0
