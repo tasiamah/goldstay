@@ -59,7 +59,11 @@ export function NeighbourhoodPage({
       : domainCity === "accra"
         ? `https://${site.domains.accra}`
         : `https://${site.domain}`;
-  const cityHref = `/${city}`;
+  // On the city's own domain the city page *is* the root: "/" rewrites
+  // to /{city} and /{city} 308s back to "/". Linking /{city} from here
+  // put a redirect on the "back to city" link of all ten neighbourhood
+  // pages. Elsewhere /{city} is a page in its own right.
+  const cityHref = domainCity === city ? "/" : `/${city}`;
   const slug = neighbourhoodSlug(neighbourhood.name);
   const selfUrl = `${baseUrl}/${city}/${slug}`;
 

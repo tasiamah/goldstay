@@ -20,6 +20,7 @@ import { BreadcrumbJsonLd, FaqJsonLd, ServiceJsonLd } from "./JsonLd";
 import {
   cityTrail,
   neighbourhoodSlug,
+  profiledNeighbourhoods,
   shortLetNeighbourhoods,
   site,
   waLink,
@@ -121,6 +122,16 @@ export function NeighbourhoodShortLetPage({
       : `https://${site.domain}`;
   const selfUrl = `${baseUrl}/nairobi/${slug}/airbnb-management`;
 
+  // Where "Kenya · Nairobi · <name>" points. Only profiled areas have a
+  // page of their own; the rest 301 to /nairobi/areas, and Parklands and
+  // Rosslyn have short-stay data without a profile, so both pages were
+  // sending their one link to the parent area through a redirect.
+  const areaHref = profiledNeighbourhoods("nairobi").some(
+    (n) => neighbourhoodSlug(n.name) === slug,
+  )
+    ? `/nairobi/${slug}`
+    : "/nairobi/areas";
+
   // Gross revenue implied by the nightly and occupancy bands. Stated as
   // a band and labelled as gross, because the honest comparison against
   // a long lease is gross-to-gross: our 20% and the operating costs come
@@ -201,7 +212,7 @@ export function NeighbourhoodShortLetPage({
           <Reveal>
             <div className="max-w-3xl">
               <Link
-                href={`/nairobi/${slug}`}
+                href={areaHref}
                 className="inline-flex items-center gap-2 font-mono text-[0.7rem] uppercase tracking-widest-xl text-gold-400 hover:text-gold-300"
               >
                 <MapPin className="h-3.5 w-3.5" />
@@ -322,7 +333,7 @@ export function NeighbourhoodShortLetPage({
                 happy to say a long lease, because a badly matched short let
                 earns less than a good tenant and takes far more work. See{" "}
                 <Link
-                  href={`/nairobi/${slug}`}
+                  href={areaHref}
                   className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
                 >
                   long-term management in {name}

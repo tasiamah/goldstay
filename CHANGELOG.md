@@ -21,6 +21,35 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.89.1] - 2026-10-29
+
+### Fixed
+- The "back to city" link on all ten Nairobi neighbourhood pages pointed
+  at `/nairobi`, which 308s to the root on goldstay.co.ke because `/` is
+  a rewrite of `/nairobi`. Every one of those pages spent its most
+  prominent link on a redirect. It now points at `/` when the host is
+  the city's own domain, and at `/{city}` elsewhere, where that is a
+  real page.
+- The Parklands and Rosslyn short-let pages linked to `/nairobi/parklands`
+  and `/nairobi/rosslyn`, neither of which exists: both areas carry
+  short-stay data without a neighbourhood profile, so the parent 301s to
+  `/nairobi/areas`. They now link straight there. The check is against
+  `profiledNeighbourhoods`, the same list that drives the sitemap and
+  `generateStaticParams`, so adding a profile later moves the link back
+  on its own.
+
+### Notes
+- Crawled all 419 sitemap URLs and all 458 internally linked paths
+  against the live site. Every sitemap URL returns 200 with no redirect,
+  and after the two fixes above no internal link points at a redirect or
+  a 404. The 20 "Not found" URLs in the Coverage report are therefore
+  addresses Google remembers rather than anything we still link to.
+- Coverage shows indexed pages falling from 418 to 408 since 22
+  September. That is the 30 articles noindexed in 1.47.0 working
+  through, not a problem: the bank mortgage reviews, REIT comparisons
+  and school league tables were deliberately removed from what we ask
+  Google to weigh when deciding what this company does.
+
 ## [1.89.0] - 2026-10-29
 
 ### Fixed
@@ -3674,7 +3703,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.1...HEAD
+[1.89.1]: https://github.com/tasiamah/goldstay/compare/v1.89.0...v1.89.1
 [1.89.0]: https://github.com/tasiamah/goldstay/compare/v1.88.0...v1.89.0
 [1.88.0]: https://github.com/tasiamah/goldstay/compare/v1.87.1...v1.88.0
 [1.87.1]: https://github.com/tasiamah/goldstay/compare/v1.87.0...v1.87.1
