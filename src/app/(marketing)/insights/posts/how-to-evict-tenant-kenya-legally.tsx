@@ -344,6 +344,20 @@ export default function Article() {
         the tenants you want to remove anyway.
       </P>
 
+      <P>
+        The cheaper intervention happens earlier than any of
+        this. An eviction in Kenya realistically runs six to
+        eighteen months of unpaid rent, legal costs and a
+        unit you cannot relet, and the decision that produced
+        it was made on the day the lease was signed, usually
+        by a landlord who liked the applicant and took the
+        deposit in cash. Employment verification, a landlord
+        reference actually telephoned rather than read, and
+        bank statements checked against the stated income
+        take an afternoon and remove most of this article
+        from your life.
+      </P>
+
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
 
       <P>
@@ -376,6 +390,22 @@ export default function Article() {
         . We will assess where the case actually stands, what
         documentation exists, and what the realistic path to
         recovery is.
+      </P>
+      <P>
+        For the next tenancy rather than this one, we also
+        do the vetting on its own.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        is one month’s rent, charged once and only if someone
+        moves in, and it ends at handover, so a landlord who
+        intends to keep self-managing can buy the part that
+        prevents evictions without buying management. If the
+        tenant we place leaves for cause inside six months we
+        replace them at no further fee.
       </P>
       <P>
         See what else is covered by{" "}

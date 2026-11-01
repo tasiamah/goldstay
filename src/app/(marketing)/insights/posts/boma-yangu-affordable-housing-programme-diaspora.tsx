@@ -425,7 +425,17 @@ export default function Article() {
         >
           mortgage rates piece
         </Link>{" "}
-        for the wider funding context.
+        for the wider funding context. Where the
+        queue or the deposit makes Boma Yangu
+        unworkable,{" "}
+        <Link
+          href="/insights/rent-to-own-kenya-2026-realistic"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          rent to own in Kenya
+        </Link>{" "}
+        sets out the private alternative and what
+        it actually costs.
       </P>
       <P>
         We do the legwork on this for buying clients under{" "}

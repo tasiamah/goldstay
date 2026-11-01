@@ -248,14 +248,38 @@ export default function Article() {
         .
       </P>
       <P>
-        What a managed home here actually earns is set out under{" "}
+        A family standalone here lets at KES 200,000 to 500,000 a
+        month, which changes what letting it badly costs you. The
+        tenant pool at that rent is narrow, mostly expatriate,
+        diplomatic and senior corporate, it moves on a posting
+        calendar rather than on demand, and a house sitting empty
+        waiting for the right one burns a quarter of a million
+        shillings a month.{" "}
         <Link
           href="/long-term-management"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          our long-term management
-        </Link>
-        .
+          Long-term management
+        </Link>{" "}
+        is 10 percent of rent collected and covers the letting,
+        the rent, the repairs and the reporting.
+      </P>
+      <P>
+        If you would rather run the house yourself and only need
+        the tenant,{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        stops at handover: marketing, accompanied viewings,
+        employment and income checks, references and a drafted
+        lease, for one month&rsquo;s rent charged once and
+        nothing at all if we do not place anyone. At this rent
+        the vetting is the part that matters, so a placed tenant
+        who leaves for cause inside six months is replaced at no
+        further fee.
       </P>
     </>
   );

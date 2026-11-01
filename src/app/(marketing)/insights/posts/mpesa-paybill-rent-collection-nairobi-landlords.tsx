@@ -362,6 +362,25 @@ export default function Article() {
         </Link>{" "}
         instead.
       </P>
+      <P>
+        If you are setting a paybill up you have already decided
+        to collect your own rent, and nothing here argues you out
+        of it. The part that is genuinely worth buying separately
+        is the tenant.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        covers the marketing, the viewings, the employment and
+        income checks and a drafted lease, then ends at handover
+        and leaves the paybill, the reconciliation and the
+        relationship to you. One month&rsquo;s rent, charged once
+        and only if someone moves in. A paybill makes arrears
+        visible on day one; vetting is what stops you needing to
+        look.
+      </P>
     </>
   );
 }

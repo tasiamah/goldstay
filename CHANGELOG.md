@@ -21,6 +21,39 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.93.0] - 2026-11-01
+
+### Added
+
+- Tenant finding now has somewhere to come from. The landlord guides that rank
+  for lease, tenancy, eviction and rent collection queries carry about 1,400
+  impressions a month between them, and every one of them pointed only at
+  long-term management, which asks a landlord for a multi-year relationship and
+  10% of rent forever. A landlord reading how to terminate a tenancy or how to
+  register a lease usually wants one thing, a vetted tenant, and now we offer
+  it to them: the lease registration, tenancy termination, tenancy agreement,
+  eviction, residential lease and M-Pesa paybill guides each explain where
+  placement stops and what it costs.
+- The Buruburu and Lower Kabete guides, 637 impressions a month and four clicks
+  between them, replaced a one-line closer that offered management to everyone
+  with the arithmetic for that suburb. Management at 10% of a Buruburu rent is
+  about four thousand shillings a month and those landlords are resident and
+  self-managing, so tenant finding is the honest recommendation. In Lower
+  Kabete, where a house lets at KES 200,000 to 500,000, the cost of a slow
+  letting is the argument instead.
+- The schools guide, which had 198 impressions and no commercial link at all,
+  now points relocating families at the home search and waitlist, and at
+  letting out the house they are keeping.
+
+### Fixed
+
+- The internal link graph was inverted: our two largest pages by search
+  impressions, land rates and estate agent commission, had one inbound link
+  each, while a Karen and Runda comparison with a tenth of the traffic had
+  sixteen. Lease registration and rent to own had none at all despite ranking.
+  Those four now have four, four, two and two, placed where the text already
+  discussed the subject rather than appended as a related-reading list.
+
 ## [1.92.0] - 2026-11-01
 
 ### Added
@@ -4018,7 +4051,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.92.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.93.0...HEAD
+[1.93.0]: https://github.com/tasiamah/goldstay/compare/v1.92.0...v1.93.0
 [1.92.0]: https://github.com/tasiamah/goldstay/compare/v1.91.0...v1.92.0
 [1.91.0]: https://github.com/tasiamah/goldstay/compare/v1.90.0...v1.91.0
 [1.90.0]: https://github.com/tasiamah/goldstay/compare/v1.89.3...v1.90.0

@@ -267,7 +267,18 @@ export default function Article() {
         >
           Kenyan mortgage rates in 2026
         </Link>{" "}
-        for the linked tax and finance picture.
+        for the linked tax and finance picture. If
+        you are paying the levy and still cannot
+        raise a deposit,{" "}
+        <Link
+          href="/insights/rent-to-own-kenya-2026-realistic"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          rent to own
+        </Link>{" "}
+        is the route most often suggested, and the
+        piece is honest about when it is a bad
+        deal.
       </P>
     </>
   );

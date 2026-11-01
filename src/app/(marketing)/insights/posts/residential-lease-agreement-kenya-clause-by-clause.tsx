@@ -399,6 +399,22 @@ export default function Article() {
       </P>
 
       <P>
+        If you would rather not draft it yourself,{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        includes this agreement, signed and witnessed with a
+        photographed inventory attached, along with the
+        marketing, the viewings and the vetting that precede it.
+        One month&rsquo;s rent, charged once and only if a tenant
+        moves in, and the engagement ends at handover so you
+        carry on running the tenancy yourself.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/lease-vs-licence-kenya-landlords"
@@ -413,12 +429,19 @@ export default function Article() {
         >
           deposit disputes
         </Link>
-        , and{" "}
+        ,{" "}
         <Link
           href="/insights/rent-arrears-kenya-30-60-90-day-landlord-playbook"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
           the arrears playbook
+        </Link>
+        , and{" "}
+        <Link
+          href="/insights/registering-a-lease-in-kenya"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          when a lease has to be registered
         </Link>
         .
       </P>

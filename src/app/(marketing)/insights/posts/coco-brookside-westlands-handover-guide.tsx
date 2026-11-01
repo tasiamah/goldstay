@@ -183,7 +183,14 @@ export default function Article() {
         <LI>
           <strong>The fee, and what is inside it.</strong> A letting fee and an
           ongoing management fee are different money. Ask which you are being
-          quoted, and what is billed separately on top
+          quoted, and what is billed separately on top. The published scale for
+          both is in{" "}
+          <Link
+            href="/insights/estate-agent-commission-kenya-explained"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            estate agent commission in Kenya
+          </Link>
         </LI>
         <LI>
           <strong>Whether the mandate is exclusive, and for how long.</strong>{" "}

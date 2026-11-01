@@ -323,6 +323,38 @@ export default function Article() {
       </P>
 
       <P>
+        The question a termination actually raises
+        is who fills the unit next, and the cost of
+        answering it slowly is larger than most
+        landlords price in. A month empty on a
+        150,000 unit is 150,000 gone and never
+        recovered, which is the whole of a letting
+        fee. Lining the next tenant up during the
+        notice period rather than after the keys
+        come back is usually worth more than
+        anything you negotiate over the deposit.
+      </P>
+
+      <P>
+        We do that as a standalone job for
+        landlords who self-manage and have no
+        intention of stopping.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        is one month&rsquo;s rent, charged once and
+        only if someone actually moves in, and the
+        engagement ends at handover. If the tenant
+        we place leaves for cause inside six months
+        we replace them at no further fee, which is
+        the part that makes the vetting worth
+        doing.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/tenancy-agreement-kenya-landlord-guide"

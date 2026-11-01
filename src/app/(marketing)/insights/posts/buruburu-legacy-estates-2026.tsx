@@ -234,14 +234,35 @@ export default function Article() {
         .
       </P>
       <P>
-        What a managed home here actually earns is set out under{" "}
+        Letting one out here is a different decision from letting
+        one out in Westlands, and the rent is why. At KES 35,000
+        to 65,000 a month,{" "}
         <Link
           href="/long-term-management"
           className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
         >
-          our long-term management
+          full long-term management
+        </Link>{" "}
+        at 10 percent comes to three and a half to six and a half
+        thousand shillings a month, and most Buruburu landlords
+        are resident, nearby and perfectly capable of collecting
+        their own rent. What they usually want is not a manager
+        but a tenant, vetted, with a lease that holds.
+      </P>
+      <P>
+        That is{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
         </Link>
-        .
+        : we market the unit, run the viewings, check employment
+        and income, draft and sign the lease and hand you the
+        keys. One month&rsquo;s rent, charged once and only if
+        someone moves in, and nothing monthly afterwards. If the
+        tenant leaves for cause inside six months we replace them
+        at no further fee.
       </P>
     </>
   );

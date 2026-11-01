@@ -392,6 +392,24 @@ export default function Article() {
           an advocate whether yours needs it rather
           than assuming it does not.
         </LI>
+        <LI>
+          <strong>Check whether it has to be
+          registered.</strong> A lease over a
+          certain term stops being a tenancy
+          agreement in the eyes of the registry and
+          becomes a registrable instrument, which
+          is an advocate&rsquo;s job rather than a
+          template&rsquo;s. Where the threshold
+          sits and what registration involves is
+          in{" "}
+          <Link
+            href="/insights/registering-a-lease-in-kenya"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            registering a lease in Kenya
+          </Link>
+          .
+        </LI>
       </UL>
 
       <H2 id="how-goldstay-handles-it">How Goldstay handles it</H2>
@@ -425,6 +443,25 @@ export default function Article() {
         rather than an extra, and there is no fee
         for drafting the agreement on a property
         we manage.
+      </P>
+
+      <P>
+        You do not have to hand the property over
+        to get the agreement done properly.{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Tenant finding
+        </Link>{" "}
+        covers the marketing, the viewings, the
+        vetting and this agreement, signed and
+        witnessed with the inventory attached, and
+        then stops. One month&rsquo;s rent, charged
+        once and only if a tenant moves in. After
+        handover you collect the rent and run the
+        tenancy yourself on a document that will
+        hold up if you ever need it to.
       </P>
 
       <P>

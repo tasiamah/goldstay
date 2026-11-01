@@ -308,6 +308,48 @@ export default function Article() {
       </P>
 
       <P>
+        One consequence of lease length that owners
+        rarely see coming is what it does to the
+        letting fee. The Estate Agents
+        (Remuneration) Rules scale a residential
+        letting at 7.5 percent of the annual gross
+        rent where the lease runs up to a year, and
+        at one month&rsquo;s rent where it runs
+        longer. On a unit at KES 150,000 a month
+        that is about 135,000 against 150,000, so
+        the gap is small, but the basis changes and
+        an agent quoting one month on a nine month
+        lease is quoting above scale. The rest of
+        the scale, including what it says about
+        sales, is in{" "}
+        <Link
+          href="/insights/estate-agent-commission-kenya-explained"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          estate agent commission in Kenya
+        </Link>
+        .
+      </P>
+
+      <P>
+        If you want the lease done properly and
+        intend to run the unit yourself after that,{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        is the narrower engagement: we market the
+        unit, vet the applicants, draft and sign
+        the lease and hand you the keys and the
+        file. One month&rsquo;s rent, charged once,
+        nothing at all if we do not place anyone,
+        and no monthly percentage afterwards
+        because we are not managing it.
+      </P>
+
+      <P>
         Related reading:{" "}
         <Link
           href="/insights/residential-lease-agreement-kenya-clause-by-clause"

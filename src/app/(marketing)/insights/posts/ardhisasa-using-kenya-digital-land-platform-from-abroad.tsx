@@ -80,9 +80,17 @@ export default function Article() {
           buyers running their own preliminary diligence.
         </LI>
         <LI>
-          <strong>Land rates payments and clearance
-          certificates</strong> for Nairobi County rates. No
-          more queueing at City Hall.
+          <strong>
+            <Link
+              href="/insights/land-rates-council-rates-kenya-explained"
+              className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+            >
+              Land rates
+            </Link>{" "}
+            payments and clearance certificates
+          </strong>{" "}
+          for Nairobi County rates. No more queueing at City
+          Hall.
         </LI>
         <LI>
           <strong>Lodgement of transfer documents</strong> in

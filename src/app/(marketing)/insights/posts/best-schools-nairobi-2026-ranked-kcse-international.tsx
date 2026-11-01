@@ -481,6 +481,47 @@ export default function Article() {
       </P>
 
       <P>
+        In practice that means two things. If you
+        need somewhere to live within a catchment,{" "}
+        <Link
+          href="/find-a-home"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          our available homes and the tenant waitlist
+        </Link>{" "}
+        are the place to start, and the waitlist is
+        the more useful of the two on a relocation
+        timetable because the good units in Gigiri,
+        Runda and Lavington rarely reach a public
+        listing. Tell us the school and the term you
+        are arriving for and we will match against
+        what is coming up.
+      </P>
+
+      <P>
+        And if you are moving to a catchment while
+        keeping the house you already own in Nairobi,
+        that unit needs a tenant and someone to deal
+        with it.{" "}
+        <Link
+          href="/long-term-management"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          Long-term management
+        </Link>{" "}
+        is 10 percent of rent collected and covers
+        the whole of it, or{" "}
+        <Link
+          href="/tenant-finding"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          tenant finding
+        </Link>{" "}
+        places a vetted tenant for one month’s rent,
+        once, and leaves the running of it to you.
+      </P>
+
+      <P>
         Read also our pieces on{" "}
         <Link
           href="/insights/international-schools-nairobi-rent-premium-isk-brookhouse-banda"

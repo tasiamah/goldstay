@@ -128,7 +128,14 @@ export default function Article() {
           for what that involves.)
         </LI>
         <LI>
-          Annual land rates, service charge to the management
+          Annual{" "}
+          <Link
+            href="/insights/land-rates-council-rates-kenya-explained"
+            className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+          >
+            land rates
+          </Link>
+          , service charge to the management
           committee, SRA levies where applicable, paid from
           collected rent and itemised on the statement.
         </LI>

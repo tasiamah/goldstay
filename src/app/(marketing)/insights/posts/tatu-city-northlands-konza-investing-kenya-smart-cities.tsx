@@ -88,7 +88,14 @@ export default function Article() {
 
       <P>
         The distinction matters to a buyer: county level
-        matters such as land rates, development approvals
+        matters such as{" "}
+        <Link
+          href="/insights/land-rates-council-rates-kenya-explained"
+          className="underline decoration-gold-500 underline-offset-4 hover:text-gold-700"
+        >
+          land rates
+        </Link>
+        , development approvals
         and the valuation roll go to Kiambu County, while
         Tatu City Limited runs the internal estate
         management and development control.
