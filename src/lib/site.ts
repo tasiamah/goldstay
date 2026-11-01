@@ -1509,7 +1509,7 @@ export const faq = [
   },
   {
     q: "What currency do you collect and remit in?",
-    a: "We collect in local currency (KES in Nairobi, GHS in Accra) and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement.",
+    a: "We collect in local currency (KES in Nairobi, GHS in Accra) and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement. If you live in the same country as the property there is no need to convert at all: we pay you in local currency, to a bank account or to mobile money, and you avoid the FX cost entirely.",
   },
   {
     q: "Do I need to be in Kenya or Ghana to sign you on?",
@@ -1597,7 +1597,7 @@ export function localizedFaq(city: "nairobi" | "accra") {
     },
     {
       q: "What currency do you collect and remit in?",
-      a: `In ${cityName} we collect in ${currencyFull} and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement.`,
+      a: `In ${cityName} we collect in ${currencyFull} and remit in US dollars by default. We can also remit in EUR, GBP or AED on request. FX is done at wholesale interbank rate with the spread disclosed on every statement. If you live in ${cityName} yourself there is no need to convert at all: we pay you in ${currencyFull}, to a bank account or to mobile money, and you avoid the FX cost entirely.`,
     },
     {
       q: `Do I need to be in ${country} to sign you on?`,

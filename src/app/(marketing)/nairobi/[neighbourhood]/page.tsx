@@ -35,7 +35,7 @@ export function generateMetadata({ params }: Props): Metadata {
 
   const path = `/nairobi/${neighbourhoodSlug(n.name)}`;
   const title = `Property Management in ${n.name}, Nairobi`;
-  const description = `Premium property management in ${n.name}, Nairobi for diaspora landlords. We let to ${n.tenant.toLowerCase()}, collect rent in KES and remit in USD to your foreign account every month.`;
+  const description = `Premium property management in ${n.name}, Nairobi. We let to ${n.tenant.toLowerCase()}, collect the rent and pay you in USD, to a local bank or to M-Pesa.`;
 
   return {
     title,

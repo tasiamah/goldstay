@@ -10,7 +10,7 @@ import {
 export const metadata: Metadata = {
   title: "Property Management Accra",
   description:
-    "Premium property management for Accra landlords abroad. We vet tenants, collect rent in GHS and remit in USD to your foreign account every month.",
+    "Premium property management for Accra landlords, at home and abroad. We vet tenants and collect rent, paid in USD or to a local account.",
   alternates: {
     // Root of .com.gh once that domain is live; the /accra URL on the
     // fallback host until then. See cityCanonical.

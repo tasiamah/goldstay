@@ -59,7 +59,7 @@ export function generateMetadata(): Metadata {
 
   return {
     title,
-    description: `Full long-term property management in ${cityPhrase} for landlords abroad. Tenant vetting, lease drafting, rent collection. 10% of collected rent.`,
+    description: `Long-term property management in ${cityPhrase}, for landlords at home and abroad. Tenant vetting, leases, rent collection. 10% of rent collected.`,
     alternates: {
       canonical: "/long-term-management",
       languages: alternateLanguagesFor("/long-term-management"),
@@ -81,8 +81,8 @@ const pillars = [
   },
   {
     icon: Banknote,
-    title: "Rent collection & USD payout",
-    body: "We collect locally, deduct what is due, and wire the balance to your foreign account on the 5th of each month. You never chase a tenant.",
+    title: "Rent collection & payout",
+    body: "We collect locally, deduct what is due, and send the balance on the 5th of each month: in USD to an account abroad, or to a local bank or M-Pesa. You never chase a tenant.",
   },
   {
     icon: Wrench,
@@ -126,7 +126,7 @@ export default function Page() {
     },
     {
       q: "How and when do I get paid?",
-      a: `We collect rent in ${c.currency}, deduct the management fee and any approved expenses, and remit the balance in USD to your foreign account on the 5th of each month, with a statement showing every line.`,
+      a: `We collect rent in ${c.currency}, deduct the management fee and any approved expenses, and send the balance on the 5th of each month, with a statement showing every line. If you are abroad that is remitted in USD to your overseas account; if you are here it goes to a local bank account or to M-Pesa, which costs you less in fees.`,
     },
     {
       q: "What happens if the tenant stops paying?",
@@ -138,7 +138,7 @@ export default function Page() {
     },
     {
       q: `Do you handle ${taxAuthority} and the statutory side?`,
-      a: `Yes. ${taxAuthority} returns on rental income, service charge, land rates and any estate levies are paid from collected rent and shown separately on the statement, so nothing accrues quietly while you are abroad.`,
+      a: `Yes. ${taxAuthority} returns on rental income, service charge, land rates and any estate levies are paid from collected rent and shown separately on the statement, so nothing accrues quietly in the background.`,
     },
     {
       q: "Am I locked in?",
@@ -164,7 +164,7 @@ export default function Page() {
       <ReviewJsonLd />
       <ServiceJsonLd
         name="Long-Term Property Management"
-        description={`End-to-end long-term residential management in ${areaServed.join(" and ")}: tenant sourcing and vetting, lease drafting, rent collection, maintenance coordination and monthly USD remittance to the landlord's foreign account.`}
+        description={`End-to-end long-term residential management in ${areaServed.join(" and ")}: tenant sourcing and vetting, lease drafting, rent collection, maintenance coordination and monthly payout to the landlord, in USD overseas or to a local bank or mobile money account.`}
         url={`${baseUrl}/long-term-management`}
         serviceType="Residential property management"
         areaServed={areaServed}
@@ -225,7 +225,7 @@ export default function Page() {
           be quotable standing alone, not to introduce the page. */}
       <KeyFacts
         question={`What does long-term property management in ${cityPhrase} cost, and what is included?`}
-        answer={`Long-term rental management, also called buy-to-let or residential letting management, is what a letting agent, managing agent or property management company does for a landlord: tenant sourcing and vetting, the lease, rent collection and arrears chasing, repairs and vendor coordination, statutory compliance and monthly reporting. Goldstay charges 10% of the rent actually collected for this in ${cityPhrase}, with no setup fee, no renewal fee and no commission taken from contractors, and remits the net to your overseas account in USD on the 5th of each month with withholding tax already deducted and paid to ${taxAuthority}.`}
+        answer={`Long-term rental management, also called buy-to-let or residential letting management, is what a letting agent, managing agent or property management company does for a landlord: tenant sourcing and vetting, the lease, rent collection and arrears chasing, repairs and vendor coordination, statutory compliance and monthly reporting. Goldstay charges 10% of the rent actually collected for this in ${cityPhrase}, with no setup fee, no renewal fee and no commission taken from contractors, and pays the net out on the 5th of each month, in USD to an overseas account or to a local bank or M-Pesa, with withholding tax already deducted and paid to ${taxAuthority}.`}
         facts={[
           { label: "Management fee", value: "10% of rent collected" },
           {
@@ -273,7 +273,7 @@ export default function Page() {
         <div className="container-gs grid gap-12 lg:grid-cols-2 lg:items-center">
           <Reveal>
             <div>
-              <div className="eyebrow">Why landlords abroad choose it</div>
+              <div className="eyebrow">Why landlords choose it</div>
               <h2 className="mt-4 font-serif text-display-md balance">
                 The point of a long lease is that nothing happens.
               </h2>
@@ -426,7 +426,7 @@ export default function Page() {
       <FAQSection
         items={faqs}
         eyebrow="Long-term management FAQ"
-        title="The questions landlords abroad actually ask."
+        title="The questions landlords actually ask."
       />
       <TestimonialsSection />
       <CTABanner city={city ?? undefined} />

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   // on a preposition.
   title: "Property Management Nairobi",
   description:
-    "Premium property management for Nairobi landlords abroad. We vet tenants, collect rent in KES and remit in USD to your foreign account every month.",
+    "Premium property management for Nairobi landlords, at home and abroad. We vet tenants and collect rent, paid in USD, to a local bank or M-Pesa.",
   alternates: {
     // The .co.ke root serves this page, so the root is the canonical
     // URL and /nairobi is the duplicate. This metadata is what the root

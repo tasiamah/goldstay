@@ -21,6 +21,20 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.91.0] - 2026-11-01
+
+### Changed
+- The site no longer tells landlords who live in Nairobi that it is not for
+  them. The homepage, `/long-term-management`, and all eleven neighbourhood
+  pages described the service as being "for landlords abroad" and promised
+  rent remitted "to your foreign account", while 84% of our search traffic
+  comes from inside Kenya. Diaspora owners are still the lead audience; they
+  are just no longer the only one named.
+- Payouts to a local bank account or to M-Pesa are now mentioned on the
+  pages that describe how you get paid. The platform has supported both
+  since the payout methods were built, and a landlord living in Kenya pays
+  no FX cost at all, but nothing on the site said so.
+
 ## [1.90.0] - 2026-10-29
 
 ### Changed
@@ -3766,6 +3780,7 @@ today rather than reconstructing that history.
   every message sent to a client.
 
 [Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.3...HEAD
+[1.91.0]: https://github.com/tasiamah/goldstay/compare/v1.90.0...v1.91.0
 [1.90.0]: https://github.com/tasiamah/goldstay/compare/v1.89.3...v1.90.0
 [1.89.3]: https://github.com/tasiamah/goldstay/compare/v1.89.2...v1.89.3
 [1.89.2]: https://github.com/tasiamah/goldstay/compare/v1.89.1...v1.89.2
