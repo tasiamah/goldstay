@@ -5,6 +5,8 @@
 // can paste filtered URLs into Slack. Each helper returns the data
 // the page needs without leaking Prisma into the URL layer.
 
+import { isPropertyType } from "@/lib/property-type";
+import type { PropertyType } from "@prisma/client";
 import {
   parseClientAgreementFilter,
   type ClientAgreementFilter,
@@ -82,7 +84,7 @@ export type PropertyListFilters = {
   q: string;
   country: "KE" | "GH" | null;
   status: "ONBOARDING" | "ACTIVE" | "EXITED" | null;
-  type: "LONG_TERM" | "SHORT_TERM" | null;
+  type: PropertyType | null;
   // Whether the property has any vacant unit ("vacant"), is fully
   // let ("let"), or unfiltered (null). Powers the Vacant-units
   // KPI drill-in. Property-level filter that aggregates across the
@@ -104,7 +106,7 @@ export function parsePropertyListFilters(
       status === "ONBOARDING" || status === "ACTIVE" || status === "EXITED"
         ? status
         : null,
-    type: type === "LONG_TERM" || type === "SHORT_TERM" ? type : null,
+    type: isPropertyType(type) ? type : null,
     vacancy: vacancy === "vacant" || vacancy === "let" ? vacancy : null,
   };
 }

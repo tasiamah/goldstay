@@ -20,6 +20,9 @@ describe("templateFor", () => {
     expect(templateFor({ country: "KE", propertyType: "LONG_TERM" })).toBe(
       "LONG_LET_KE_V1",
     );
+    expect(templateFor({ country: "KE", propertyType: "TENANT_FINDING" })).toBe(
+      "TENANT_FINDING_KE_V1",
+    );
   });
 
   it("falls back to the generic agreement for Ghana", () => {

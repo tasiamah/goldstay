@@ -1,5 +1,10 @@
 "use client";
 
+import type { PropertyType } from "@prisma/client";
+import {
+  PROPERTY_TYPE_FORM_LABEL,
+  PROPERTY_TYPE_OPTIONS,
+} from "@/lib/property-type";
 import { useState } from "react";
 import { useFormState, useFormStatus } from "react-dom";
 import type { SigningCapacity } from "@prisma/client";
@@ -35,7 +40,7 @@ type Defaults = {
   bathrooms?: number | null;
   sizeSqm?: number | null;
   status?: "ACTIVE" | "ONBOARDING" | "EXITED";
-  propertyType?: "LONG_TERM" | "SHORT_TERM";
+  propertyType?: PropertyType;
   signingCapacity?: SigningCapacity;
   // Schedule 1 of the short-let agreement. Dates arrive as
   // yyyy-mm-dd strings so they can go straight into a date input.
@@ -174,10 +179,7 @@ export function PropertyForm({
             name="propertyType"
             defaultValue={defaults.propertyType ?? "LONG_TERM"}
             required
-            options={[
-              { value: "LONG_TERM", label: "Long-term lease" },
-              { value: "SHORT_TERM", label: "Short-term (Airbnb)" },
-            ]}
+            options={PROPERTY_TYPE_OPTIONS}
             error={fieldError("propertyType")}
           />
         )}
@@ -453,13 +455,8 @@ function SigningCapacityField({
   );
 }
 
-function RentalModelLocked({
-  value,
-}: {
-  value: "LONG_TERM" | "SHORT_TERM";
-}) {
-  const label =
-    value === "SHORT_TERM" ? "Short-term (Airbnb)" : "Long-term lease";
+function RentalModelLocked({ value }: { value: PropertyType }) {
+  const label = PROPERTY_TYPE_FORM_LABEL[value];
   return (
     <div>
       <span className="block text-sm font-medium text-stone-700">

@@ -8,6 +8,8 @@
 // Revenue (what we earn):
 //   * MANAGEMENT_FEE      — long-term commission on a tenancy
 //   * GOLDSTAY_COMMISSION — short-stay commission per booking
+//   * TENANT_FINDING_FEE  — one month's rent for placing a tenant,
+//     booked once, on a tenant-finding engagement we do not manage
 //
 // Cost we book against ourselves (what comes out of our pocket
 // before it ever lands on a landlord statement):
@@ -39,6 +41,11 @@ export type GoldstayTxn = {
 export const GOLDSTAY_REVENUE_TYPES: readonly TransactionType[] = [
   "MANAGEMENT_FEE",
   "GOLDSTAY_COMMISSION",
+  // One month's rent for placing a tenant. Revenue like the other
+  // two, and OUTFLOW from the client's column for the same reason,
+  // but worth its own type: placement is a different business from
+  // management and mixing them hides which one is actually earning.
+  "TENANT_FINDING_FEE",
 ];
 
 export const GOLDSTAY_COST_TYPES: readonly TransactionType[] = [

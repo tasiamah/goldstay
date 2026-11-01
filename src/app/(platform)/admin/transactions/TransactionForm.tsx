@@ -1,5 +1,6 @@
 "use client";
 
+import type { PropertyType } from "@prisma/client";
 import { useFormState, useFormStatus } from "react-dom";
 import { useState } from "react";
 import type { TransactionActionResult } from "./actions";
@@ -14,7 +15,7 @@ type PropertyOption = {
   name: string;
   city: string;
   clientName: string;
-  propertyType: "LONG_TERM" | "SHORT_TERM";
+  propertyType: PropertyType;
   defaultCurrency: string;
   leases: { id: string; tenantName: string }[];
   bookings: { id: string; label: string }[];
@@ -57,6 +58,14 @@ const TYPES: { value: string; label: string; direction: "INFLOW" | "OUTFLOW" }[]
       direction: "OUTFLOW",
     },
     { value: "CLEANING_FEE", label: "Cleaning fee", direction: "OUTFLOW" },
+    {
+      // One month's rent, booked once when a tenant is placed under a
+      // tenant-finding engagement. OUTFLOW like the other two fee
+      // types: out of the client's column is in for us.
+      value: "TENANT_FINDING_FEE",
+      label: "Tenant-finding fee (one month's rent)",
+      direction: "OUTFLOW",
+    },
     { value: "GUEST_REFUND", label: "Guest refund", direction: "OUTFLOW" },
     {
       value: "GOLDSTAY_COMMISSION",

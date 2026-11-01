@@ -66,9 +66,29 @@ describe("agreementTermSummary", () => {
       "GENERIC_MANAGEMENT_V1",
       "SHORT_LET_KE_V1",
       "LONG_LET_KE_V1",
+      "TENANT_FINDING_KE_V1",
     ] as const) {
       expect(agreementTermSummary({ ...base, template })).toHaveLength(4);
     }
+  });
+
+  it("never quotes a management percentage for tenant finding", () => {
+    // base.commissionPct is "10%". A placement fee is one month's
+    // rent, not a rate, and the row carries no rate for this
+    // template, so printing one would be inventing a term.
+    const terms = agreementTermSummary({
+      ...base,
+      template: "TENANT_FINDING_KE_V1",
+    });
+    expect(terms.map((t) => t.value)).not.toContain(base.commissionPct);
+    expect(terms).toContainEqual({
+      label: "Tenant-finding fee",
+      value: "One month\u2019s rent, once",
+    });
+    expect(terms).toContainEqual({
+      label: "If no tenant is placed",
+      value: "Nothing payable",
+    });
   });
 });
 

@@ -36,9 +36,27 @@ enum PropertyStatus {
 // SHORT_TERM: nightly stays via Airbnb / Booking.com / Vrbo / direct,
 // modelled by Booking. A property is one or the other for now; the
 // schema permits both relations to coexist if we add mixed-mode later.
+// TENANT_FINDING: we place a tenant and stop. Modelled by Lease like
+// LONG_TERM, because the tenancy is a real tenancy and the client
+// wants its terms recorded, but we do not collect the rent after
+// placement and there is no recurring fee. The engagement earns one
+// month's rent, once, and the property leaves the monthly statement
+// run the moment that fee is booked.
+//
+// It is a value here rather than a separate `serviceLevel` column
+// because a property moves between the three: the commonest upgrade
+// path is tenant finding first, then full management when the first
+// inconvenient thing happens. One column that changes is easier to
+// reason about than two that have to agree.
+//
+// Beware the binary `propertyType === "SHORT_TERM" ? a : b`. Those
+// ternaries predate this value and silently treat it as LONG_TERM,
+// which is right for anything asking "is this a tenancy" and wrong
+// for anything asking "what do we charge" or "which contract".
 enum PropertyType {
   LONG_TERM
   SHORT_TERM
+  TENANT_FINDING
 }
 
 enum BookingSource {
@@ -89,6 +107,12 @@ enum TransactionType {
   CLEANING_FEE // paid out to cleaner (or absorbed)
   GUEST_REFUND // chargeback / discount returned to a guest
   GOLDSTAY_COMMISSION // our cut on a short-term booking
+  // Our fee for placing a tenant under a tenant-finding engagement:
+  // one month's rent, booked once, never recurring. Separate from
+  // MANAGEMENT_FEE so the P&L can tell placement income from
+  // management income, which are different businesses with different
+  // margins.
+  TENANT_FINDING_FEE
   OTHER
 }
 
@@ -663,6 +687,12 @@ enum AgreementTemplate {
   // KE + LONG_TERM. Unlike the other two it has no minimum term: it
   // is terminable on 30 days' notice with no exit fee.
   LONG_LET_KE_V1
+  // GoldStay Tenant Finding Agreement, Kenya. KE + TENANT_FINDING.
+  // The only one of the four that is not a management agreement: the
+  // engagement ends at handover, the fee is one month's rent charged
+  // once, and nothing is due if no tenant is placed. Carries the
+  // six-month replacement guarantee published on /tenant-finding.
+  TENANT_FINDING_KE_V1
 }
 
 model ManagementAgreement {

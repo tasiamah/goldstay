@@ -38,6 +38,7 @@ import type { Country, PropertyType } from "@prisma/client";
 import {
   LONG_TERM_COMMISSION_RATE,
   SHORT_TERM_COMMISSION_RATE,
+  TENANT_FINDING_COMMISSION_RATE,
 } from "@/lib/commission";
 import { templateFor } from "./template";
 
@@ -67,10 +68,20 @@ const EARLY_EXIT_FEE_BY_COUNTRY_TYPE: Record<
   KE: {
     SHORT_TERM: 75_000,
     LONG_TERM: 50_000,
+    // Never read: a Kenyan TENANT_FINDING property is always issued
+    // under TENANT_FINDING_KE_V1, which is handled above and has no
+    // exit fee because there is nothing to exit from. Present because
+    // the Record is exhaustive over PropertyType.
+    TENANT_FINDING: 0,
   },
   GH: {
     SHORT_TERM: 7_500,
     LONG_TERM: 5_000,
+    // Tenant finding is a Kenya-only engagement for now; see
+    // templateFor. Ghana would fall through to the generic agreement,
+    // which is not drafted for a placement-only scope, so the admin
+    // does not offer the combination.
+    TENANT_FINDING: 0,
   },
 };
 
@@ -104,6 +115,23 @@ export function defaultAgreementTerms(input: {
       earlyExitFee: 0,
       earlyExitFeeCurrency: COUNTRY_TO_CURRENCY[input.country],
       noticePeriodDays: 30,
+      governingLaw: COUNTRY_TO_LAW[input.country],
+    };
+  }
+
+  if (templateFor(input) === AgreementTemplate.TENANT_FINDING_KE_V1) {
+    return {
+      // No term at all: the engagement ends at handover, not after a
+      // period. One for the same display reason as the long-let case.
+      termMonths: 1,
+      // No recurring percentage. See TENANT_FINDING_COMMISSION_RATE.
+      commissionRate: TENANT_FINDING_COMMISSION_RATE,
+      earlyExitFee: 0,
+      earlyExitFeeCurrency: COUNTRY_TO_CURRENCY[input.country],
+      // Shorter than the management contracts' 30: before a tenant is
+      // placed there is nothing to wind down, so a long notice period
+      // would only trap a client who has changed their mind.
+      noticePeriodDays: 14,
       governingLaw: COUNTRY_TO_LAW[input.country],
     };
   }

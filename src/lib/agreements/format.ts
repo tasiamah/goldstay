@@ -82,6 +82,16 @@ export function agreementTermSummary(input: {
         notice,
         { label: "Early exit", value: "No exit fee" },
       ];
+    case "TENANT_FINDING_KE_V1":
+      return [
+        { label: "Engagement", value: "Ends at handover" },
+        // Not input.commissionPct: a percentage of collected rent is
+        // the wrong shape for a one-off placement fee, and the row
+        // carries no rate for this template. See ../commission.ts.
+        { label: "Tenant-finding fee", value: "One month\u2019s rent, once" },
+        { label: "If no tenant is placed", value: "Nothing payable" },
+        { label: "Replacement guarantee", value: "Six months" },
+      ];
     case "GENERIC_MANAGEMENT_V1":
       return [
         { label: "Term", value: `${input.termMonths} months` },

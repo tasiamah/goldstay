@@ -3,8 +3,13 @@
 // rather than a buried uppercase string. Kept dependency-light: just
 // Tailwind classes, no client JS.
 
+import type { PropertyType } from "@prisma/client";
+import { PROPERTY_TYPE_LABEL } from "@/lib/property-type";
+
 type Status = "ONBOARDING" | "ACTIVE" | "EXITED";
-type Type = "LONG_TERM" | "SHORT_TERM";
+// Mirrors Prisma's PropertyType rather than restating it, so a new
+// rental model is a compile error here instead of a silent gap.
+type Type = PropertyType;
 
 const STYLES: Record<Status, { label: string; className: string }> = {
   ONBOARDING: {
@@ -61,12 +66,16 @@ function VerifiedCheckIcon() {
 
 const TYPE_STYLES: Record<Type, { label: string; className: string }> = {
   LONG_TERM: {
-    label: "Long-term",
+    label: PROPERTY_TYPE_LABEL.LONG_TERM,
     className: "border-stone-200 bg-stone-50 text-stone-700",
   },
   SHORT_TERM: {
-    label: "Short-term",
+    label: PROPERTY_TYPE_LABEL.SHORT_TERM,
     className: "border-violet-200 bg-violet-50 text-violet-900",
+  },
+  TENANT_FINDING: {
+    label: PROPERTY_TYPE_LABEL.TENANT_FINDING,
+    className: "border-amber-200 bg-amber-50 text-amber-900",
   },
 };
 

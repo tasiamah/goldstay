@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PROPERTY_TYPE_LABEL } from "@/lib/property-type";
 import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { formatPropertyDisplayName } from "@/lib/format-property";
@@ -140,7 +141,7 @@ export default async function PropertiesListPage({
   if (filters.type)
     chips.push({
       key: "type",
-      label: filters.type === "SHORT_TERM" ? "Short-term" : "Long-term",
+      label: PROPERTY_TYPE_LABEL[filters.type],
     });
   if (filters.vacancy)
     chips.push({

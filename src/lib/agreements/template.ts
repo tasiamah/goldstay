@@ -15,6 +15,10 @@ import {
   SHORT_LET_KE_VERSION,
 } from "./short-let-ke";
 import { buildLongLetKeSections, LONG_LET_KE_VERSION } from "./long-let-ke";
+import {
+  buildTenantFindingKeSections,
+  TENANT_FINDING_KE_VERSION,
+} from "./tenant-finding-ke";
 
 export const GENERIC_MANAGEMENT_VERSION = "generic-management-v1";
 
@@ -22,12 +26,14 @@ export const AGREEMENT_TEMPLATE_VERSION: Record<AgreementTemplate, string> = {
   GENERIC_MANAGEMENT_V1: GENERIC_MANAGEMENT_VERSION,
   SHORT_LET_KE_V1: SHORT_LET_KE_VERSION,
   LONG_LET_KE_V1: LONG_LET_KE_VERSION,
+  TENANT_FINDING_KE_V1: TENANT_FINDING_KE_VERSION,
 };
 
 export const AGREEMENT_TEMPLATE_TITLE: Record<AgreementTemplate, string> = {
   GENERIC_MANAGEMENT_V1: "Property management agreement",
   SHORT_LET_KE_V1: "Short-let property management agreement",
   LONG_LET_KE_V1: "Long-term property management agreement",
+  TENANT_FINDING_KE_V1: "Tenant finding agreement",
 };
 
 // Both Kenyan contracts are drafted around Kenyan law and a KRA PIN,
@@ -44,9 +50,14 @@ export function templateFor(input: {
   propertyType: PropertyType;
 }): AgreementTemplate {
   if (input.country !== "KE") return AgreementTemplate.GENERIC_MANAGEMENT_V1;
-  return input.propertyType === "SHORT_TERM"
-    ? AgreementTemplate.SHORT_LET_KE_V1
-    : AgreementTemplate.LONG_LET_KE_V1;
+  switch (input.propertyType) {
+    case "SHORT_TERM":
+      return AgreementTemplate.SHORT_LET_KE_V1;
+    case "TENANT_FINDING":
+      return AgreementTemplate.TENANT_FINDING_KE_V1;
+    case "LONG_TERM":
+      return AgreementTemplate.LONG_LET_KE_V1;
+  }
 }
 
 // Everything either contract could need. The two clause modules read
@@ -113,6 +124,24 @@ export function renderAgreement(
       startupCostsBudgetFormatted: input.startupCostsBudgetFormatted,
       operatingReserveFormatted: input.operatingReserveFormatted,
       reference: input.reference,
+    });
+  }
+
+  if (input.template === AgreementTemplate.TENANT_FINDING_KE_V1) {
+    return buildTenantFindingKeSections({
+      clientLegalName: input.clientCompany
+        ? `${input.clientCompany} (acting through ${input.clientName})`
+        : input.clientName,
+      clientIdNumber: input.clientIdNumber,
+      clientKraPin: input.clientKraPin,
+      clientAddress: input.clientAddress,
+      signingCapacity: input.signingCapacity,
+      propertyDescription: `${input.propertyName}, ${input.propertyAddress}, ${input.propertyCity}`,
+      bedrooms: input.bedrooms,
+      noticePeriodDays: input.noticePeriodDays,
+      payoutCurrency: input.payoutCurrency,
+      reference: input.reference,
+      startDate: input.startDate,
     });
   }
 

@@ -5,6 +5,7 @@
 // data through a single, typed surface. Pure logic (codes, payouts)
 // lives in sibling modules and is unit-tested.
 
+
 import { Prisma } from "@prisma/client";
 import type {
   Referral,
@@ -489,6 +490,14 @@ export async function suggestedTermsForReferral(
     where: {
       clientId: referral.clientId,
       agreements: { some: { status: "SIGNED" } },
+      // The programme pays a referrer a share of the management fee
+      // every month the property earns one. A tenant-finding
+      // property never earns one: we take a single placement fee and
+      // leave. Suggesting terms for it would prefill a schedule that
+      // computes to zero at every step, which reads as a bug rather
+      // than as the honest answer. Referring a tenant-finding client
+      // needs its own arrangement, so offer nothing until it exists.
+      propertyType: { not: "TENANT_FINDING" },
     },
     orderBy: { createdAt: "asc" },
     select: {
@@ -526,8 +535,7 @@ export async function suggestedTermsForReferral(
 
   return {
     propertyName: property.name,
-    strategy:
-      property.propertyType === "SHORT_TERM" ? "short-stay" : "long-term",
+    strategy: property.propertyType === "SHORT_TERM" ? "short-stay" : "long-term",
     managementFeePct: rate,
     leaseRent,
     monthlyRentUsd:

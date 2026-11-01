@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PROPERTY_TYPE_LABEL } from "@/lib/property-type";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { isEmailDeliveryConfigured } from "@/lib/client-welcome";
@@ -195,9 +196,7 @@ export default async function ClientDetailPage({
                     <p className="text-xs text-stone-500">
                       {p.neighbourhood ? `${p.neighbourhood}, ` : ""}
                       {p.city} ·{" "}
-                      {p.propertyType === "SHORT_TERM"
-                        ? "Short-term"
-                        : "Long-term"}
+                      {PROPERTY_TYPE_LABEL[p.propertyType]}
                     </p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">

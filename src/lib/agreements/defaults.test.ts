@@ -51,6 +51,22 @@ describe("defaultAgreementTerms", () => {
     });
   });
 
+  it("gives KE tenant finding no recurring fee and no term", () => {
+    const terms = defaultAgreementTerms({
+      country: "KE",
+      propertyType: "TENANT_FINDING",
+    });
+    // Zero is the term, not a placeholder: the engagement earns one
+    // month's rent once and nothing recurring. See
+    // TENANT_FINDING_COMMISSION_RATE.
+    expect(terms.commissionRate).toBe(0);
+    expect(terms.earlyExitFee).toBe(0);
+    // Shorter than the management contracts: before a tenant is
+    // placed there is nothing to wind down.
+    expect(terms.noticePeriodDays).toBe(14);
+    expect(terms.governingLaw).toBe("Kenya");
+  });
+
   it("keeps the generic contract's rate card for Ghana", () => {
     // Short-term, but Ghana: the generic contract, because both
     // Kenyan agreements are written to Kenyan law.

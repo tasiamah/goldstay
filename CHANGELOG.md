@@ -21,9 +21,41 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.92.0] - 2026-11-01
+
+### Added
+
+- Tenant finding as a third rental model, alongside long-term and short-term.
+  Some owners want a tenant placed and nothing after that: we market the unit,
+  vet applicants and put a signed lease in place, charge one month's rent for
+  it, and hand the property back. There is no ongoing management and no
+  percentage of rent. Kenyan long-term residential only for now, because the
+  agreement is drafted against Kenyan law; the admin refuses the model on a
+  Ghanaian property rather than quietly issuing a management contract.
+- A tenant-finding agreement (`TENANT_FINDING_KE_V1`), with the terms the
+  management contracts have no place for: that the fee is earned on the tenant
+  taking occupation and nothing is payable if no one is placed, that we collect
+  the first month's rent and the deposit from the tenant, keep our month as the
+  fee and remit the deposit to the owner, that a tenant who leaves inside six
+  months is replaced at no further charge, and that rent collection, deposit
+  holding, repairs, statements and tax filing pass to the owner at handover.
+- A `TENANT_FINDING_FEE` transaction type, counted as Goldstay revenue in the
+  P&L. Placement is a different business from management and mixing the two
+  into the commission line would have hidden which one is actually earning.
+
+### Changed
+
+- The owner gets a single statement, for the month the tenant moves in, showing
+  the rent and deposit collected, our fee deducted and the balance paid over.
+  After that a tenant-finding property has no transactions, so it stops
+  appearing — which is the point of the product.
+- The referral programme no longer suggests tenant-finding properties. It
+  shares a slice of the recurring fee, and there isn't one.
+
 ## [1.91.0] - 2026-11-01
 
 ### Changed
+
 - The site no longer tells landlords who live in Nairobi that it is not for
   them. The homepage, `/long-term-management`, and all eleven neighbourhood
   pages described the service as being "for landlords abroad" and promised
@@ -38,6 +70,7 @@ Which part to bump:
 ## [1.90.0] - 2026-10-29
 
 ### Changed
+
 - The building pages that earn our most qualified search traffic now lead
   somewhere. Someone searching "gemland residence westlands" or "aura
   riverside" owns or is buying in that exact building, which is precisely who
@@ -56,6 +89,7 @@ Which part to bump:
   in prose without ever linking to it.
 
 ### Added
+
 - FAQ sections, and so FAQPage structured data, on the GTC Residences and
   Emerald Springs guides. Both rank on page one and earned no clicks, because
   queries like "gtc nairobi apartments for rent price" were answered inside
@@ -66,15 +100,16 @@ Which part to bump:
 ## [1.89.3] - 2026-10-29
 
 ### Fixed
+
 - The last internal link pointing at a redirect. `/nairobi/areas` had
   the same `/{city}` link in its hero as the neighbourhood pages. A
   re-crawl of all 419 sitemap URLs after 1.89.2 found it and nothing
-  else, so no internal link on the site now resolves to a redirect or a
-  404.
+  else, so no internal link on the site now resolves to a redirect or a 404.
 
 ## [1.89.2] - 2026-10-29
 
 ### Fixed
+
 - The navbar anchored Services and FAQ at `/nairobi#services` and
   `/nairobi#faq` on every `/nairobi/*` page. `/nairobi` 308s to the root
   on goldstay.co.ke, so roughly twenty five pages sent two nav links
@@ -89,6 +124,7 @@ Which part to bump:
   renders.
 
 ### Added
+
 - `src/components/Navbar.navlinks.test.ts`. This bug class has now
   appeared three times: the city picker in 1.63.0, the neighbourhood
   "back to city" link in 1.89.1, and these anchors. The shape is always
@@ -100,6 +136,7 @@ Which part to bump:
 ## [1.89.1] - 2026-10-29
 
 ### Fixed
+
 - The "back to city" link on all ten Nairobi neighbourhood pages pointed
   at `/nairobi`, which 308s to the root on goldstay.co.ke because `/` is
   a rewrite of `/nairobi`. Every one of those pages spent its most
@@ -115,6 +152,7 @@ Which part to bump:
   on its own.
 
 ### Notes
+
 - Crawled all 419 sitemap URLs and all 458 internally linked paths
   against the live site. Every sitemap URL returns 200 with no redirect,
   and after the two fixes above no internal link points at a redirect or
@@ -129,6 +167,7 @@ Which part to bump:
 ## [1.89.0] - 2026-10-29
 
 ### Fixed
+
 - The homepage and every city page asked "What happens if a tenant
   doesn't pay?" twice, showed "Do I need to be in Kenya **or Ghana** to
   sign you on?" directly beneath its own Kenya-only rewrite of the same
@@ -150,6 +189,7 @@ Which part to bump:
   now takes the city like every other localised entry.
 
 ### Added
+
 - FAQ blocks and FAQPage data on two more of the biggest articles:
   registering a lease in Kenya (373 impressions, average position 4.4)
   and evicting a tenant (214 impressions). Both answer question queries
@@ -161,6 +201,7 @@ Which part to bump:
   dropped. These are the properties the positional bug violated.
 
 ### Changed
+
 - The eviction article now carries a `metaTitle` and a description that
   gives the timeline and cost rather than repeating the first sentence.
 - The schools article, our highest-traffic page that linked to nothing
@@ -171,6 +212,7 @@ Which part to bump:
 ## [1.88.0] - 2026-10-29
 
 ### Added
+
 - Ten of the highest-traffic insights articles now carry an FAQ block, so
   they emit FAQPage structured data and answer the question verbatim in a
   heading. Search Console for the 28 days to 27 October records 150
@@ -192,6 +234,7 @@ Which part to bump:
   rather than written from memory.
 
 ### Changed
+
 - `metaTitle` added to Buruburu, Gemland Residence, Aura Riverside and
   Enrogue, which had none, so each now leads with the name people search
   rather than an editorial phrasing. Gemland's description now carries the
@@ -201,6 +244,7 @@ Which part to bump:
 ## [1.87.1] - 2026-10-29
 
 ### Fixed
+
 - Six articles that rank for short-stay searches now link to
   /airbnb-management. Search Console shows that page took zero
   impressions in the 28 days to 27 October while all nine of its
@@ -214,6 +258,7 @@ Which part to bump:
 ## [1.87.0] - 2026-10-27
 
 ### Added
+
 - Owner guides for the thirteen buildings we manage in that did not have
   one: Polaris Residency, Kindaruma Homes, Denis Gardens, Heartland Homes,
   Serenity Residency and Purple Haze in Kilimani; Misty Springs and
@@ -232,6 +277,7 @@ Which part to bump:
 ## [1.86.1] - 2026-10-27
 
 ### Changed
+
 - The occupancy board now opens on last month, this month and next
   month rather than three months of history. An owner looking at it
   wants to know who is arriving, and the arrivals were all off the
@@ -241,6 +287,7 @@ Which part to bump:
 ## [1.86.0] - 2026-10-27
 
 ### Added
+
 - A "Live short-lets not syncing from Hostaway" bucket on the admin
   overview, so a unit that is taking bookings nobody at Goldstay can
   see gets noticed the next morning rather than when the owner asks.
@@ -253,6 +300,7 @@ Which part to bump:
   whether the link was broken or the flat simply had no stays yet.
 
 ### Changed
+
 - `Property.hostawaySyncedAt` records when a listing last produced
   reservations. The backfill stamps it once per listing on a
   successful fetch, whether or not the window held any stays, and the
@@ -260,12 +308,14 @@ Which part to bump:
   is the fact worth recording; finding something in it is not.
 
 ### Fixed
+
 - Backfilled the new column from existing bookings, so the bucket does
   not open by accusing the two listings that are working.
 
 ## [1.85.1] - 2026-10-27
 
 ### Fixed
+
 - Archiving a property did not remove it from the client's portal,
   although the admin screen said it would. No client-facing query
   filtered archived rows, so the flat kept its dashboard card and its
@@ -278,6 +328,7 @@ Which part to bump:
 ## [1.85.0] - 2026-10-27
 
 ### Added
+
 - The occupancy board now covers both ways of letting a flat. A short
   let is occupied for the nights of a stay, a long let for the term of
   a tenancy, and the board answers the same question either way: who
@@ -289,6 +340,7 @@ Which part to bump:
   reveal, not only an older booking.
 
 ### Changed
+
 - A tenancy's end date counts as occupied, unlike a checkout date
   where the guest is gone by that morning. Tenancies that have since
   ended or been terminated still fill the nights they ran for, since
@@ -299,6 +351,7 @@ Which part to bump:
 ## [1.84.2] - 2026-10-27
 
 ### Fixed
+
 - A co-owner was shown "Accept your management agreement" for a unit
   whose agreement is in the owner of record's name, and the link went
   to a 404 because accepting is owner-only. One apartment takes one
@@ -309,6 +362,7 @@ Which part to bump:
 ## [1.84.1] - 2026-10-27
 
 ### Fixed
+
 - The portal called every short-let apartment "Vacant", including two
   with a guest in the flat at the time. Occupancy was read from active
   leases only, and no active property on the platform has a lease —
@@ -318,6 +372,7 @@ Which part to bump:
 ## [1.84.0] - 2026-10-27
 
 ### Added
+
 - Co-owners. A second Goldstay client can be linked to a unit from the
   admin property page and will see it in their own portal, alongside
   who the owner of record is and a plain statement that the monthly
@@ -333,6 +388,7 @@ Which part to bump:
   boundary rather than leaving it to a comment.
 
 ### Changed
+
 - The portal now shows one card per apartment rather than one per
   management agreement. A unit offered both long-let and short-let has
   two agreements and therefore two Property rows, which meant four
@@ -346,6 +402,7 @@ Which part to bump:
 ## [1.83.0] - 2026-10-27
 
 ### Added
+
 - An expired welcome link now offers to email a new one, in one press
   and with nothing to type. The expired link still identifies its
   owner, so the page knows where to send it; previously it told the
@@ -357,12 +414,14 @@ Which part to bump:
   reload that leaves them wondering whether it worked.
 
 ### Changed
+
 - A welcome token we cannot match to an account now says so, instead
   of claiming it expired. Saying "expired" to someone whose link was
   truncated by their mail client sends them looking for the wrong
   problem.
 
 ### Security
+
 - Requesting a replacement sends it to the address on the client
   record and never to anything supplied with the request, so holding
   someone's expired link cannot redirect their mail. Repeat requests
@@ -374,6 +433,7 @@ Which part to bump:
 ## [1.82.1] - 2026-10-23
 
 ### Changed
+
 - "Resend welcome email" now picks its wording from whether the client
   has ever signed in. Someone who never reached the portal gets the
   note that takes the blame for the old link failing; everyone else
@@ -383,6 +443,7 @@ Which part to bump:
 ## [1.82.0] - 2026-10-23
 
 ### Changed
+
 - The welcome link now lasts 7 days and can be used as many times as
   the landlord likes, instead of 60 minutes and once. It is also a
   Goldstay link rather than a forwarded Supabase one, which fixes a
@@ -401,6 +462,7 @@ Which part to bump:
   screen with "We didn't receive a valid sign-in token."
 
 ### Added
+
 - A warmer variant of the welcome email for someone who never reached
   the portal, which says the failure was ours rather than implying
   they never bothered.
@@ -410,6 +472,7 @@ Which part to bump:
 ## [1.81.1] - 2026-10-06
 
 ### Fixed
+
 - A payout showed up as a deduction everywhere except the statement
   PDF. Recording the first one gave Yar's own portal a KES 39,159
   outflow with no shilling inflow to set against it, so the dashboard
@@ -424,6 +487,7 @@ Which part to bump:
 ## [1.81.0] - 2026-10-05
 
 ### Fixed
+
 - A payout to a client no longer appears in that client's own statement
   arithmetic. Paying someone is us settling a balance an earlier statement
   already reported, not a cost of running their property, but the statement
@@ -436,11 +500,13 @@ Which part to bump:
   was affected.
 
 ### Changed
+
 - Settlement transaction types are now named in one place in the statement
   assembler rather than assumed, so a reversal type can be added to the
   same list when one is needed. - 2026-10-05
 
 ### Changed
+
 - The first-statement note no longer names the date a client joined or
   counts the days it covers. It reads "You joined partway through the
   month, so this statement covers a part month rather than a full one",
@@ -453,6 +519,7 @@ Which part to bump:
 ## [1.80.0] - 2026-10-05
 
 ### Added
+
 - A client's first statement now carries a short note under the payout
   explaining the two things that make a first month low and that both
   correct themselves: it usually covers a part month, and a listing with
@@ -476,6 +543,7 @@ Which part to bump:
 ## [1.79.0] - 2026-10-05
 
 ### Changed
+
 - A statement now converts everything at a single rate for the month,
   rather than at the rate published on each cost's own day. A September
   statement quoting 129.748 on one line and 128.4 on another was accurate
@@ -494,6 +562,7 @@ Which part to bump:
   so.
 
 ### Fixed
+
 - Yar's September electricity top-up was recorded as the USD 15.41 someone
   had converted by hand, with the rate typed into the description. It is now
   recorded as the KES 2,000 that was actually paid, so it converts like
@@ -503,6 +572,7 @@ Which part to bump:
 ## [1.78.0] - 2026-10-05
 
 ### Added
+
 - Statements now convert a cost into the currency the property earns in, so a
   shilling repair on a dollar-earning apartment no longer appears as a separate
   negative KES line the owner cannot add to their dollar payout. The conversion
@@ -521,6 +591,7 @@ Which part to bump:
   rather than being converted at a guess.
 
 ### Changed
+
 - The payout conversion uses the month's rate that hands over the fewest units
   of the owner's currency. We buy the foreign currency on the day we pay, so
   without this a rate that moved against us between the stay and the payout
@@ -529,6 +600,7 @@ Which part to bump:
 ## [1.77.0] - 2026-10-05
 
 ### Added
+
 - Tests can now import `.tsx` files. `tsconfig.json` sets `"jsx": "preserve"`
   because Next does its own transform, Vite honoured that and then could not
   parse the result, so no component, page or PDF template could be tested at
@@ -550,6 +622,7 @@ Which part to bump:
 ## [1.76.0] - 2026-10-05
 
 ### Changed
+
 - An owner's statement now opens with their payout, in large type, before any
   of the working. It used to be the last figure on the page, reached by
   reading down a column of deductions — the same number, but discovered by
@@ -565,6 +638,7 @@ Which part to bump:
   never said.
 
 ### Fixed
+
 - A month could lead with "Your payout — KES −6,000.00". A cost paid in
   shillings on a unit that bills guests in dollars nets that currency
   negative, and the heading claimed it as a payout. Those are now stated
@@ -573,10 +647,12 @@ Which part to bump:
 ## [1.75.0] - 2026-10-05
 
 ### Added
+
 - "Utilities" is now its own cost type, covering prepaid electricity tokens,
   water and internet. Which one it was goes in the description.
 
 ### Changed
+
 - An owner's statement now names each cost on its own line instead of
   totalling them as "Costs on the property". A lump sum told the owner money
   had left without saying what for, which is the one question a deduction
@@ -585,6 +661,7 @@ Which part to bump:
   figure. Costs recorded without a description fall back to naming the type.
 
 ### Fixed
+
 - The September electricity top-up on Polaris Residency was dated 30
   September; it was paid on the 16th. Corrected, and recorded as Utilities
   rather than a generic Expense.
@@ -592,6 +669,7 @@ Which part to bump:
 ## [1.74.0] - 2026-10-05
 
 ### Added
+
 - "Repair" is now its own cost type when recording a transaction. Repairs are
   the most frequent thing spent on a unit and were going in as a generic
   Expense with the detail buried in the description, so they could not be
@@ -599,6 +677,7 @@ Which part to bump:
   Existing Expense entries are untouched and keep their meaning.
 
 ### Changed
+
 - The pass-through cost types a statement deducts from an owner's payout are
   now declared in one place rather than spelled out separately in the
   aggregator and the assembler. The two had already drifted apart once, which
@@ -607,6 +686,7 @@ Which part to bump:
 ## [1.73.3] - 2026-10-05
 
 ### Fixed
+
 - A monthly statement showed two different final figures. The Short-term
   rentals block led with a bold "Net payout" that subtracted Airbnb's fees,
   cleaning and our commission but not the month's costs on the property,
@@ -617,6 +697,7 @@ Which part to bump:
   the two figures agree.
 
 ### Changed
+
 - The statement line "Airbnb fees" is now "Airbnb fees & withheld tax".
   Airbnb's deduction is its host service fee plus tax it withholds at source,
   which together run closer to 24% than the ~15% an owner expects to see, so
@@ -625,6 +706,7 @@ Which part to bump:
 ## [1.73.2] - 2026-10-05
 
 ### Fixed
+
 - Opening a short-term property in the admin portal showed "something went
   wrong" instead of the property. The Bookings card called `useActionState`,
   a React 19 hook that does not exist in the React 18 this project runs, so
@@ -633,6 +715,7 @@ Which part to bump:
   same way and would have failed the moment either page was opened.
 
 ### Added
+
 - A test that fails if any source file uses `useActionState` or
   `useOptimistic`. Next pulls in React's canary type definitions, which
   declare both hooks, so `tsc`, `next lint` and `next build` all pass while
@@ -641,6 +724,7 @@ Which part to bump:
 ## [1.73.1] - 2026-10-05
 
 ### Changed
+
 - The standard cleaning charge is now KES 1,000 / USD 7.70, from
   KES 1,030 / USD 7. The two halves of the old pair implied a rate of
   147 KES to the dollar, where the actual rate is about 130, so a
@@ -654,12 +738,13 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.73.0] - 2026-10-05
 
 ### Fixed
+
 - Hostaway enquiries were being stored as confirmed bookings.
   `inquiry` and `inquiryPreapproved` both mapped to `CONFIRMED`, and
   Hostaway returns enquiries from the same endpoint as real
   reservations with a price attached. Because an enquiry usually
   covers the dates the guest went on to book, importing them invented
-  revenue *on top of* the booking they turned into. On Polaris alone
+  revenue _on top of_ the booking they turned into. On Polaris alone
   that was USD 1,052 of September income for stays nobody ever
   booked. Enquiries, declined and lapsed requests are now recognised
   as non-bookings and no row is written at all; the webhook
@@ -679,6 +764,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.72.1] - 2026-10-05
 
 ### Fixed
+
 - A stay spanning the end of a month had its **full** revenue counted
   in both months' statements. A guest staying 28 September to 5
   October produced the same gross, the same fees and the same payout
@@ -698,6 +784,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.72.0] - 2026-10-05
 
 ### Added
+
 - **Import from Hostaway** on short-stay property pages. The webhook
   only ever hears about bookings made after it was registered, so a
   property that has been running on an iCal feed has months of stays
@@ -715,6 +802,7 @@ were backfilled at the old USD 7 and are unchanged.
   those by hand, and deleting them would discard that work.
 
 ### Changed
+
 - Client statements now lead with the short-stay section, which runs
   gross down through each deduction to the net payout in bold. The
   inflow and outflow summary follows it. The figure an owner is
@@ -729,6 +817,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.71.0] - 2026-10-05
 
 ### Added
+
 - A stay that arrives without a cleaning fee of its own now picks up
   the standard turnover charge automatically — KES 1,030 or USD 7,
   cleaner's time plus consumables — so nobody has to enter a clean by
@@ -740,6 +829,7 @@ were backfilled at the old USD 7 and are unchanged.
   Left blank, the property stays on the standard rate.
 
 ### Changed
+
 - The charge is never stacked. A booking that already carries a
   cleaning fee from the channel keeps it, and because the figure is
   derived from the reservation rather than remembered, a Hostaway
@@ -753,6 +843,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.70.0] - 2026-10-05
 
 ### Added
+
 - The admin transactions list can now be filtered by property and by
   month, and shows the inflow, outflow and net for whatever is
   filtered rather than only for the page in front of you. Answering
@@ -768,6 +859,7 @@ were backfilled at the old USD 7 and are unchanged.
   property and the expense type already filled in.
 
 ### Fixed
+
 - Archived transactions were still counted in six places: the client
   dashboard, the client statements list, the Goldstay P&L page, the
   executive KPI strip and the per-property P&L card. Deleting a
@@ -778,6 +870,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.69.0] - 2026-10-05
 
 ### Fixed
+
 - The admin statement preview did not show the same statement the
   client gets, which made it unusable for the one thing it is for.
   Three code paths each built a statement from their own pair of
@@ -792,15 +885,16 @@ were backfilled at the old USD 7 and are unchanged.
   - The preview never loaded bookings, so it had no short-stay
     section. On a short-let client that is most of the statement, and
     it was the half nobody could check.
-  All three now call one `assembleStatement`, so the preview, the PDF
-  and the email cannot disagree again.
+    All three now call one `assembleStatement`, so the preview, the PDF
+    and the email cannot disagree again.
 - The preview's "Download PDF" button pointed at
-  `/client/statements/<year>/<month>`, which resolves the *signed-in*
+  `/client/statements/<year>/<month>`, which resolves the _signed-in_
   user's client record. An operator clicking it got their own
   statement, or a redirect to `/client/pending`, but never the
   statement of the client whose page they were on.
 
 ### Added
+
 - `/admin/clients/<id>/statement/pdf?month=YYYY-MM` renders any
   client's statement PDF for an operator, which is what the preview's
   "Open PDF" button now uses. Opens inline so it can sit in a tab
@@ -813,6 +907,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.68.0] - 2026-10-05
 
 ### Added
+
 - A property can now be fed by a calendar feed and the Hostaway
   webhook at the same time without producing two bookings per stay.
   The iCal sync checks whether a PMS-sourced booking already holds the
@@ -838,10 +933,12 @@ were backfilled at the old USD 7 and are unchanged.
   place rather than deleted. A booking id is the `sourceRef` of the
   client's notification row, which is the bell item they can see and
   not only an idempotency lock, so retiring one is an operator's call.
+
 - `skippedPmsCovered` on the sync result, so the count is visible
   rather than looking like the feed silently stopped importing.
 
 ### Fixed
+
 - The iCal sync engine had no tests, despite its own comment saying it
   was split from the HTTP fetch so the upsert logic could be tested.
   It now has seven, covering the coverage guard, the refusal to
@@ -850,6 +947,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.67.2] - 2026-10-05
 
 ### Fixed
+
 - The Hostaway webhook could never have accepted a real Hostaway
   request. It verified an HMAC-SHA256 digest in an `X-Hostaway-Signature`
   header, and Hostaway does not sign webhook bodies at all: the only
@@ -870,12 +968,14 @@ were backfilled at the old USD 7 and are unchanged.
   email addresses.
 
 ### Changed
+
 - The webhook reads the request body after authenticating rather than
   before, so an unauthenticated caller cannot make us buffer a body.
 
 ## [1.67.1] - 2026-09-22
 
 ### Changed
+
 - 58 articles now link to the service they are about. 44 of them previously
   linked only to other articles, so a reader who arrived on a guide about
   building costs or rent arrears had no route to the thing we would charge
@@ -897,6 +997,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.67.0] - 2026-09-22
 
 ### Added
+
 - An **Archive property** button on the admin property page. A property
   attached to the wrong client could only be left there: the archive
   machinery already supported `PROPERTY`, and `ArchiveButton` already
@@ -909,6 +1010,7 @@ were backfilled at the old USD 7 and are unchanged.
   always that it belongs to somebody else.
 
 ### Fixed
+
 - The admin property page rendered an archived property exactly as if it
   were live. The page is a `findUnique` on the id with no `archivedAt`
   filter and `/admin/archive` links straight to it, so an operator could
@@ -919,6 +1021,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.66.3] - 2026-09-18
 
 ### Fixed
+
 - "The Nairobi Expressway five years on" was published while the road was
   four years old. It opened for public trials on 14 May 2022 and was
   commissioned on 31 July 2022, so five years does not arrive until
@@ -937,6 +1040,7 @@ were backfilled at the old USD 7 and are unchanged.
   of four subsections of one. They are now `H3`.
 
 ### Changed
+
 - Three articles named after a service we sell linked to each other and to
   a dozen other articles but never to the service page itself: the
   short-term rental management guide, the serviced apartment management
@@ -949,12 +1053,14 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.66.2] - 2026-09-15
 
 ### Removed
+
 - The meta keywords tag, which the marketing layout put on 346 pages. Google
   stopped reading it in 2009 and Bing treats it as a spam signal at worst, so it
   bought nothing. Removed rather than varied per page, because a unique
   keywords tag is worth exactly as much as a duplicate one.
 
 ### Changed
+
 - Optimised images now carry a year-long cache lifetime instead of
   `max-age=0, must-revalidate`, so a returning visitor no longer revalidates
   every hero on the page before seeing it. Vercel's edge cached them regardless,
@@ -965,6 +1071,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.66.1] - 2026-09-15
 
 ### Changed
+
 - Hero photographs are served as AVIF where the browser takes it. Next defaults
   to WebP alone unless you name the formats, so AVIF was never offered to
   anyone: a September crawl found the Nairobi hero arriving at 160KB when AVIF
@@ -981,6 +1088,7 @@ were backfilled at the old USD 7 and are unchanged.
   download it. The skyline stays centred, so the framing is unchanged.
 
 ### Fixed
+
 - `/find-a-home`, `/list-your-property` and `/refer/signup` had an `h1` and no
   `h2` at all, so the page outline stopped at the title. `/find-a-home` also
   skipped a level, because the next heading down was an `h3` inside the search
@@ -992,6 +1100,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.66.0] - 2026-09-14
 
 ### Added
+
 - A property handbook on every short-stay unit: the operating notes only the
   owner knows on day one. Getting in, the WiFi network and password,
   electricity and token top-ups, water and where the pump switch is, the
@@ -1011,12 +1120,14 @@ were backfilled at the old USD 7 and are unchanged.
   moves every time a booking lands, so the handbook carries its own timestamp.
 
 ### Changed
+
 - `PropertyHandbook` is a new table rather than ten more columns on `Property`,
   which already carries thirty-odd fields that would all have been null on
   every long-let row. Migration `20260914090000_property_handbook` is additive
   only: one table, no change to any existing column.
 
 ### Security
+
 - Handbook audit entries record field names only, never values. The audit log
   is read by every operator and exported, so writing a WiFi password or a
   caretaker's phone number into it would copy both into a second, wider-read
@@ -1029,6 +1140,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.65.1] - 2026-09-13
 
 ### Fixed
+
 - `/furnishing` and the furnishing packages article were titled on "apartment
   furnishing", which is the in-house name for the service and not what anyone
   searches. Every established firm ranking for this work in Nairobi is
@@ -1041,6 +1153,7 @@ were backfilled at the old USD 7 and are unchanged.
   title and changing one buys a permanent redirect for very little.
 
 ### Added
+
 - A section on `/furnishing` answering the strongest competing pitch in this
   market. Several Nairobi firms invoice the furniture at cost and take their
   margin as a visible flat fee, marketed as transparency. It is a good pitch
@@ -1053,6 +1166,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.65.0] - 2026-09-13
 
 ### Added
+
 - A furnishing service page at `/furnishing`, so the fixed-price packages have a
   page rather than only an article. The prices, the two tiers, the five steps of
   the work, the delivery time for each sourcing route and the exclusions are all
@@ -1067,6 +1181,7 @@ were backfilled at the old USD 7 and are unchanged.
   still show sourcing, long-term and short-stay.
 
 ### Changed
+
 - The `/furnishing` page is deliberately not city-switched, unlike the other
   service pages. Its prices are in shillings and the goods are imported into
   Kenya, so interpolating "Accra" into it would quote a currency and a supply
@@ -1074,6 +1189,7 @@ were backfilled at the old USD 7 and are unchanged.
   page.
 
 ### Fixed
+
 - Two places promised furnishing would be billed as a pass-through with no
   Goldstay margin, which the fixed-price package contradicts. The
   `/pricing` answer on what the management fee excludes listed furnishing
@@ -1087,6 +1203,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.64.0] - 2026-09-13
 
 ### Added
+
 - Published furnishing package prices, at
   `/insights/apartment-furnishing-packages-nairobi`. Two tiers, from KES 700,000
   for a short-let ready studio to KES 2.75m for a premium three bedroom, with
@@ -1099,6 +1216,7 @@ were backfilled at the old USD 7 and are unchanged.
   quietly convert a furnishing spend into a notice period.
 
 ### Changed
+
 - The cost to furnish a Nairobi apartment guide now separates unit size from
   specification tier. It previously indexed its three tiers by both at once,
   "mid-market 1 to 2-bed" through "premium 3 to 4-bed", so it had no answer to
@@ -1112,6 +1230,7 @@ were backfilled at the old USD 7 and are unchanged.
   published on the site.
 
 ### Fixed
+
 - Thirteen places on the site told owners that their Airbnb listing stays on
   their own account. The short-let agreement defaults the other way: clause 4.5
   puts a listing we build on a GoldStay-controlled account, with co-hosting on
@@ -1137,6 +1256,7 @@ were backfilled at the old USD 7 and are unchanged.
   was right and the copy was wrong.
 
 ### Fixed
+
 - The privacy notice and the terms of use now declare hreflang alternates. Both
   are indexable and both say a materially different thing per domain — Kenyan
   data protection law on one, Ghanaian on the other — while otherwise reading
@@ -1150,6 +1270,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.63.1] - 2026-09-13
 
 ### Fixed
+
 - Corrects the reasoning recorded against the homepage title in 1.63.0, in the
   changelog entry below and in the comment in the marketing layout. That entry
   said Google had discarded the title outright and substituted "Goldstay:
@@ -1170,6 +1291,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.63.0] - 2026-09-13
 
 ### Changed
+
 - The homepage title is now "Property Management Nairobi & Airbnb Co-Hosting |
   Goldstay" rather than the full trading name. The trading name went in as the
   title in 1.51.0 to corroborate the Business Profile name while it sat in
@@ -1190,6 +1312,7 @@ were backfilled at the old USD 7 and are unchanged.
   reader can check, and the superlative rests on them.
 
 ### Fixed
+
 - `scripts/check-snippets.mjs` could not see the homepage at all, which is why
   an 826px title survived an audit that measured 25 other routes. Two separate
   blind spots: it skipped any page with no metadata export, so a title set as
@@ -1202,6 +1325,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.62.0] - 2026-09-13
 
 ### Added
+
 - Articles can now publish their question and answer sections as FAQPage
   schema, via a `faq` field on `PostMeta`. `FaqJsonLd` has been live on 28
   commercial and neighbourhood URLs for a while but no article could emit it,
@@ -1225,6 +1349,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.61.1] - 2026-09-13
 
 ### Fixed
+
 - Twelve service and city pages had search descriptions too wide for the space
   Google gives them, `/tenant-finding` at 1.7 times the limit and `/accra/buy`,
   `/nairobi/buy`, `/pricing` and `/long-term-management` among the rest. Google
@@ -1247,6 +1372,7 @@ were backfilled at the old USD 7 and are unchanged.
   other 371 until there is a coast photograph to put there.
 
 ### Changed
+
 - `scripts/check-snippets.mjs` now measures the routes under `src/app` as well
   as the article catalogue, which is how the fourteen above went unnoticed: it
   read only `insights/posts`, so it covered 387 articles and none of the pages
@@ -1264,6 +1390,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.61.0] - 2026-09-13
 
 ### Added
+
 - An owners' guide to Riverside One Residency, the completed fifteen floor
   Oasis Development building on Riverside Drive, two and three bedrooms only.
   It is the first of these building guides where we manage in the building, so
@@ -1306,6 +1433,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.60.0] - 2026-09-13
 
 ### Added
+
 - A handover guide for 1870 West, HassConsult's tower at Lower Kabete and
   Peponi beside Sarit Centre: twenty nine residential floors under a thirtieth
   floor amenity level, nine floors of parking, sold out, published for
@@ -1349,6 +1477,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.59.0] - 2026-09-13
 
 ### Added
+
 - An owners' guide to Skynest Residences on Mkungu Close, Westlands, the 249
   unit furnished building next to the Movenpick. It substantiates the claim
   that Skynest is one of the strongest short stay addresses in Nairobi rather
@@ -1387,6 +1516,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.58.0] - 2026-09-13
 
 ### Added
+
 - An owners' guide to GTC Residences, inside the gated Global Trade Centre on
   Westlands Road at Chiromo Lane. It leads on the nightly rate, which really
   is among the highest in Nairobi: agents quote roughly KES 16,000 to 22,000,
@@ -1420,6 +1550,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.57.0] - 2026-09-13
 
 ### Added
+
 - A letting guide for Shangri-La Residency on 25 Westlands Road. It is not a
   handover guide like Coco or Enrogue, because the building has already handed
   over: it sold out off plan, largely to investors, and around eighty units
@@ -1454,6 +1585,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.56.0] - 2026-09-13
 
 ### Added
+
 - A handover guide for Coco in Brookside, Westlands, the sibling of the
   Enrogue piece and aimed at the same moment: owners who have bought off plan
   and have not yet taken keys, which is when the letting decision is actually
@@ -1480,6 +1612,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.55.0] - 2026-09-13
 
 ### Added
+
 - A page for Airbnb management companies in Kenya, at
   `/airbnb-management-companies-kenya`. The site's own query harvest already
   recorded that "airbnb management companies in kenya" is the heaviest
@@ -1500,6 +1633,7 @@ were backfilled at the old USD 7 and are unchanged.
   articles and no service page at all.
 
 ### Changed
+
 - The eight articles that rank on page one of Google and get almost no clicks
   now lead their search-result snippets with the answer instead of the topic.
   The estate agent commission article draws 214 impressions a week at
@@ -1512,6 +1646,7 @@ were backfilled at the old USD 7 and are unchanged.
   positions, against 47 clicks for the whole site.
 
 ### Fixed
+
 - Both comparison pages' titles were being truncated in search results. With
   the " | Goldstay" the layout appends, "Property Management Companies in
   Nairobi: How to Choose" came to 638px against the roughly 600px Google
@@ -1525,6 +1660,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.54.0] - 2026-09-11
 
 ### Added
+
 - A final reminder on day 30 that says a month has passed, moving the
   handover to day 31. The sequence is now 24h, 48h, 72h, day 7, day 14, day
   21, day 30. At a month the elapsed time is the message rather than
@@ -1536,6 +1672,7 @@ were backfilled at the old USD 7 and are unchanged.
   invites a plain no, which took over from day 21's previous sign-off role.
 
 ### Changed
+
 - `reminder-email.test.ts` pins the month claim to a ladder step that really
   is 28 to 31 days out, and fails if any earlier email borrows the phrase.
   The rule that copy must not name a duration stands — it was broken once
@@ -1546,9 +1683,9 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.53.0] - 2026-09-11
 
 ### Added
+
 - Two more reminder emails, on day 14 and day 21, so the sequence now runs
-  24h, 48h, 72h, day 7, day 14, day 21 before handing over to a human on day
-  22. A management agreement is a multi-year relationship, so a client who
+  24h, 48h, 72h, day 7, day 14, day 21 before handing over to a human on day 22. A management agreement is a multi-year relationship, so a client who
   goes quiet for a fortnight and then signs is a good outcome rather than a
   nuisance, and the earlier version gave up emailing on day 7. What keeps
   this off the sending domain's reputation is that the sequence still ends —
@@ -1557,6 +1694,7 @@ were backfilled at the old USD 7 and are unchanged.
   contract, since talking is usually faster than reading one.
 
 ### Changed
+
 - Step numbers are now deliberately out of chronological order: the ladder
   reads 1, 2, 3, 4, 7, 8 with the handover at 5 sitting between two emails.
   They are persisted and form half of the unique index the runner claims
@@ -1569,6 +1707,7 @@ were backfilled at the old USD 7 and are unchanged.
   gentle check-in rather than a sign-off.
 
 ### Fixed
+
 - Two places decided what a step was by comparing it to a threshold, which
   breaks now that the handover sits numerically between two emails: the
   escalation email would have counted the handover itself as a client email
@@ -1580,6 +1719,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.52.1] - 2026-09-11
 
 ### Changed
+
 - Rewrote the four agreement reminders to nudge rather than tally. The third
   one opened "This is the third time we have written about your management
   agreement and we have not heard back", which is accurate and reads as a
@@ -1593,6 +1733,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.52.0] - 2026-09-11
 
 ### Changed
+
 - Unsigned agreements are now chased at 24h, 48h, 72h and day 7, then handed
   to a human on day 8. It was 1, 3, 7 and 14 days with the handover on day 21.
   Signature intent decays fast — someone who has not signed by day two has
@@ -1611,16 +1752,17 @@ were backfilled at the old USD 7 and are unchanged.
   `reminder-email.test.ts` now fails if any step names an elapsed duration.
 
 ### Added
+
 - A weekly follow-up task after the handover, repeating until someone closes
   it, titled by week number so three of them in a queue do not look like one
-  task duplicated. Tasks rather than the weekly *email* originally proposed:
+  task duplicated. Tasks rather than the weekly _email_ originally proposed:
   this domain also sends statements and payout confirmations, and repeated
   unopened mail to a non-responder is what degrades reputation at Gmail and
   Outlook. An unsigned agreement costs one onboarding; statements in spam
   costs every client's confidence in the platform. A task keeps the pressure
   and lets a human decide the client has gone quiet for a reason, which a
   cron will never do.
-- `wa-contact.ts` builds a wa.me deeplink to a *client's* number, returning
+- `wa-contact.ts` builds a wa.me deeplink to a _client's_ number, returning
   null rather than guessing when it cannot tell which country the number
   belongs to. Most of these landlords are diaspora with a Kenyan property and
   a foreign mobile, and a UK number in national form ("07700 900123") turned
@@ -1629,6 +1771,7 @@ were backfilled at the old USD 7 and are unchanged.
   Callers fall back to showing the raw number.
 
 ### Fixed
+
 - When several ladder steps came due at once — a stalled cron, or a backlog —
   the planner took the most advanced one, which with weekly follow-ups in
   play would have raised "Week 3: still has not signed" for a client nobody
@@ -1640,6 +1783,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.51.0] - 2026-09-10
 
 ### Added
+
 - "Nairobi's highest-rated property manager" now appears under the calls to
   action on the homepage hero and on `/list-your-property`, each time beside
   a link to the Google Business Profile where a reader can check it in one
@@ -1659,6 +1803,7 @@ were backfilled at the old USD 7 and are unchanged.
   persuades nobody and still has to be defended.
 
 ### Changed
+
 - The homepage title and the footer's bottom legal line now carry the full
   trading name — "Goldstay | Property Management, Airbnb Co-Hosting & Short
   Let Consultancy Nairobi, Kenya" — and the Nairobi `LocalBusiness` schema
@@ -1677,6 +1822,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.50.0] - 2026-09-10
 
 ### Added
+
 - The new-property form takes an Airbnb listing URL and fills itself in from
   what Airbnb publishes: property name, description, bedrooms, bathrooms,
   maximum occupancy, city and neighbourhood, with the rental model set to
@@ -1690,6 +1836,7 @@ were backfilled at the old USD 7 and are unchanged.
   but not saved, because there is nowhere to put them yet.
 
 ### Notes
+
 - Reads the schema.org data Airbnb publishes for search engines rather than
   scraping the page, so a redesign does not silently start returning empty
   fields. It never fetches the URL it is handed: it takes the numeric room
@@ -1706,6 +1853,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.49.1] - 2026-09-10
 
 ### Fixed
+
 - The homepage on goldstay.co.ke was telling Google it was a child page
   of itself. Its breadcrumb read "Home" then "Nairobi", with Nairobi
   pointing at `/nairobi`, which redirects straight back to the homepage.
@@ -1726,6 +1874,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.49.0] - 2026-09-10
 
 ### Added
+
 - The yield calculator now describes itself to Google as a free tool
   rather than as an unlabelled document. It had no page-level structured
   data at all, only the organisation block every page carries, which is a
@@ -1738,6 +1887,7 @@ were backfilled at the old USD 7 and are unchanged.
   more on these than on the service pages that already had it.
 
 ### Changed
+
 - Nothing was added to the pricing page or property sourcing, despite
   both showing as gaps in the audit. Pricing would have needed a Service
   entity that competes with the real service pages for the same identity,
@@ -1748,6 +1898,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.48.1] - 2026-09-10
 
 ### Fixed
+
 - Nineteen articles that no other article linked to now have a link from
   one that does, written into the prose rather than appended as a "related
   reading" line. Three of them were the site's best performers: the guides
@@ -1762,6 +1913,7 @@ were backfilled at the old USD 7 and are unchanged.
   of link anybody actually clicks.
 
 ### Added
+
 - `scripts/find-link-anchors.mjs`, which finds prose that is already on
   the subject of an unlinked article and reports it as a candidate anchor.
   Reports only, because choosing the anchor phrase needs judgement, and
@@ -1771,6 +1923,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.48.0] - 2026-09-10
 
 ### Added
+
 - A new insight, "Airbnb agents in Nairobi: hiring one, or becoming one",
   covering a word the site never used. Owners here say agent at least as
   often as co-host or management company, and nothing on the site ranked
@@ -1785,6 +1938,7 @@ were backfilled at the old USD 7 and are unchanged.
   to management for operators rather than treating it as waste.
 
 ### Changed
+
 - The two co-host articles now link across to the agent article. Neither
   used the word agent anywhere, so an owner who searched the term and
   landed on either had no route to the other half of the vocabulary.
@@ -1792,6 +1946,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.47.0] - 2026-09-10
 
 ### Changed
+
 - A property now goes live the moment its client accepts the management
   agreement, instead of waiting for someone to open the property in admin
   and press a button. The rule itself has not moved: acceptance was always
@@ -1809,12 +1964,14 @@ were backfilled at the old USD 7 and are unchanged.
   an empty flat that could have been earning.
 
 ### Removed
+
 - Two database queries per client property page. They existed only to work
   out account-setup completeness for a badge that no longer depends on it.
 
 ## [1.46.0] - 2026-09-10
 
 ### Added
+
 - A booking notification that was deliberately not sent now says so on the
   client's activity timeline, with the reason in plain words. Cancelling a
   booking the client was never told about sends nothing on purpose, since
@@ -1831,6 +1988,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.45.1] - 2026-09-10
 
 ### Fixed
+
 - Agreement reminders now say which agreement they are chasing. A single
   unit can carry two agreements at once, a short-let at 20% and a long-let
   at 10%, and both reminders read identically down to the unit number, so a
@@ -1842,6 +2000,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.45.0] - 2026-09-10
 
 ### Added
+
 - Expedia is now a booking channel the platform understands. Until now the
   only channels that existed were Airbnb, Booking.com, Vrbo and direct, so an
   Expedia stay could not be recorded at all and would have had to be filed
@@ -1853,10 +2012,12 @@ were backfilled at the old USD 7 and are unchanged.
   majeure clause that can override a strict cancellation policy.
 
 ### Changed
+
 - Airbnb management and short-term rental management now list Expedia among
   the channels a property can be launched on.
 
 ### Fixed
+
 - The platforms guide stated we do not list on Expedia, which stopped being
   true when the agreement was signed. It now says Expedia is signed but that
   no unit is live there yet, rather than quietly dropping the old claim.
@@ -1869,6 +2030,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.44.0] - 2026-09-10
 
 ### Added
+
 - The Airbnb management page now answers the question "are you an
   Airbnb agent or a management company", because "agent" is the word
   a good share of Nairobi owners use and it appeared nowhere on the
@@ -1879,6 +2041,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.43.1] - 2026-09-10
 
 ### Fixed
+
 - The page for landlords replacing their manager had no links from
   any of the 379 articles, only the sitewide footer, so the two
   articles read by exactly that person led nowhere useful. Both now
@@ -1888,12 +2051,14 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.43.0] - 2026-09-10
 
 ### Added
+
 - "In short" summaries on six more articles that already rank: rental
   income tax, tenant rights, tenant screening, entry without notice,
   HOA and estate fees, and property auctions. Ten of the thirty-eight
   top-ten articles now carry one.
 
 ### Fixed
+
 - The tenant screening guide's summary first said a large share of pay
   slips are fake. The article says around 5 percent, which is a
   different claim and the one supported by what we actually see.
@@ -1901,6 +2066,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.42.0] - 2026-09-10
 
 ### Added
+
 - Articles can now carry an "In short" summary at the top: a
   self-contained answer to the question the article is named after,
   with the key numbers beside it. Thirty-eight articles were ranking
@@ -1917,6 +2083,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.41.0] - 2026-09-10
 
 ### Changed
+
 - The tenant-finding page now calls itself a letting agent, which is
   what landlords in Nairobi search for. It was titled "Tenant Finding
   & Vetting", the name this company uses internally, and the phrase
@@ -1929,6 +2096,7 @@ were backfilled at the old USD 7 and are unchanged.
   but those ended up only in a source comment and never in the copy.
 
 ### Fixed
+
 - The estate agent commission guide gave the residential letting fee
   as "one month rent, sometimes 8 to 10 percent". The published scale
   turns on the lease: 7.5% of annual gross rent up to a year, one
@@ -1939,6 +2107,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.40.0] - 2026-09-10
 
 ### Changed
+
 - The Airbnb management page now says what it sells in its own headline.
   It opened with "Turn your Nairobi apartment into a five-star short-stay",
   which named the city but never the service, so the largest text on the
@@ -1954,6 +2123,7 @@ were backfilled at the old USD 7 and are unchanged.
   the better-ranking articles on the site.
 
 ### Fixed
+
 - The footer and the search-engine data said the Nairobi office opens
   at 08:00 and closes for the weekend. It opens at 09:00 and is open
   on Saturday, which is what the Google Business Profile has been
@@ -1967,6 +2137,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.39.0] - 2026-09-10
 
 ### Added
+
 - The site now tells search engines that the Goldstay on Google Maps
   is this Goldstay. The profile turned out to be claimed and holding
   reviews, which is the confirmation the schema had been waiting for
@@ -1977,6 +2148,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.38.1] - 2026-09-10
 
 ### Fixed
+
 - Booking notifications could not reach clients on their own. The
   emails added in 1.37.0 are sent when a booking is imported, but
   the job that imports them from a channel calendar was switched
@@ -1987,6 +2159,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.38.0] - 2026-09-09
 
 ### Added
+
 - Enquiries are now reported to Google Ads as conversions, so paid
   spend can be judged on leads rather than on clicks.
 
@@ -2011,6 +2184,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.37.0] - 2026-09-09
 
 ### Added
+
 - Clients are now emailed when a booking lands on one of their units,
   and when one is cancelled. Until now a booking was visible only if
   the client thought to open the portal, so an owner could have a
@@ -2041,6 +2215,7 @@ were backfilled at the old USD 7 and are unchanged.
   than as nothing having happened.
 
 ### Fixed
+
 - Scheduled jobs have never run. `CRON_SECRET` was set in neither
   GitHub Actions nor Vercel, and the routes fail closed, so all five
   — agreement reminders, monthly statements, iCal sync, vacancy
@@ -2065,6 +2240,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.36.0] - 2026-09-09
 
 ### Fixed
+
 - The "Keep reading" row was leaving most of the catalogue unlinked.
   It scored every other article by shared tags and took the top two,
   which reads sensibly and distributes links badly: 116 of 379 articles
@@ -2090,6 +2266,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.35.0] - 2026-09-09
 
 ### Added
+
 - "Enrogue Kileleshwa: what to do before your handover." Enrogue is eighteen
   floors of one and two beds on Kileleshwa's main road from HassConsult,
   completing in the last quarter of 2026, so a few hundred owners take keys
@@ -2113,6 +2290,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.34.0] - 2026-09-09
 
 ### Added
+
 - "Airbnb management in Nairobi: which platforms your unit should be on."
   Owners search for Airbnb management, co-hosting, short-let management and
   serviced apartment management as if they were different services, so the
@@ -2130,6 +2308,7 @@ were backfilled at the old USD 7 and are unchanged.
   an iCal feed attached.
 
 ### Changed
+
 - `src/lib/booking-sources.ts` said Booking.com was unsupported "until we
   have the ops bandwidth", which had been untrue since those listings
   started being managed by hand outside the platform. Staff could not record
@@ -2140,6 +2319,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.33.0] - 2026-09-09
 
 ### Added
+
 - "Airbnb or Booking.com for a Nairobi short stay: which one actually
   pays more?" The comparison owners ask for, answered on the parts that
   matter rather than the fee. Covers the different guest each platform
@@ -2155,6 +2335,7 @@ were backfilled at the old USD 7 and are unchanged.
   Hostaway to the head term.
 
 ### Fixed
+
 - Two articles carried fee arithmetic that Airbnb's pricing change has
   overtaken. `how-much-can-you-earn-airbnb-nairobi-2026` said
   Booking.com "generally takes more", which stopped being true when
@@ -2167,6 +2348,7 @@ were backfilled at the old USD 7 and are unchanged.
 ## [1.32.1] - 2026-09-09
 
 ### Added
+
 - The Airbnb trademark disclosure their brand guidelines ask for:
   "Goldstay is an independent third party and is not endorsed by or
   associated with Airbnb, Inc. or its affiliates." It sits in the footer
@@ -2316,10 +2498,9 @@ Apply `20260909180000_whatsapp_click_tracking` with
   that include California licensing and Queensland Form 5. Candidates
   were therefore ranked on Kenyan specificity and intent rather than
   yield.
-
   - **The property management agreement in Kenya, clause by clause.**
     Targets `property management agreement between landlord and agent in
-    kenya`, one of only 27 explicitly Kenyan queries in the harvest and
+kenya`, one of only 27 explicitly Kenyan queries in the harvest and
     the highest-intent moment there is, because the reader is holding a
     contract they are about to sign. The catalogue had articles on the
     tenancy agreement and the operator sublease but nothing on the
@@ -2328,7 +2509,7 @@ Apply `20260909180000_whatsapp_click_tracking` with
   - **How to terminate a property management agreement in Kenya.** A
     landlord terminating is by definition shopping for a successor. The
     cluster is template-hungry (`notice to terminate`, `letter to
-    terminate`, `how do i switch property managers`), so the piece
+terminate`, `how do i switch property managers`), so the piece
     carries an adaptable notice letter and the handover list: deposit,
     unremitted rent, MRI receipts, tenant contact details, keys against
     inventory. `should-i-fire-my-nairobi-property-manager-2026` covered
@@ -2433,7 +2614,7 @@ Apply `20260909180000_whatsapp_click_tracking` with
   suggestions for `airbnb arbitrage kenya`, `rental arbitrage kenya`,
   `can i sublet my apartment kenya`, `is subletting illegal in kenya`
   and `landlord permission airbnb kenya`, and four for `rent to rent
-  kenya`. Google only suggests strings enough people have searched, so
+kenya`. Google only suggests strings enough people have searched, so
   the cluster was ranking for terms with negligible demand. Meanwhile
   `rental arbitrage` returned 293 suggestions, `rent to rent agreement`
   285 and `airbnb without owning property` 257 — and "without owning
@@ -2521,6 +2702,7 @@ Two findings from a technical and content audit of the site, one of
 them a regression introduced earlier today.
 
 ### Fixed
+
 - **The sitemap's real dates went too far back.** 1.24.1 replaced a
   fake "everything changed today" `lastmod` with each article's own
   publication date. But 150 of the 361 articles are backdated to 2024
@@ -2549,6 +2731,7 @@ them a regression introduced earlier today.
   city to pick.
 
 ### Notes
+
 - The backdated `publishedAt` values themselves are untouched. They
   are visible in bylines and in `datePublished`, and whether to keep a
   publication history the domain cannot support is an editorial call,
@@ -2557,6 +2740,7 @@ them a regression introduced earlier today.
 ## [1.24.2] - 2026-09-09
 
 ### Changed
+
 - The short-stay service was named "Airbnb & short-stay management"
   everywhere, which does not contain the phrase "Airbnb management" —
   the words are split by "& short-stay". Reordered to "Airbnb
@@ -2572,6 +2756,7 @@ them a regression introduced earlier today.
 ## [1.24.1] - 2026-09-09
 
 ### Fixed
+
 - The sitemap gave every one of its 377 URLs a `lastmod` of the moment
   it was requested, so all of them claimed to have changed today — and
   would claim it again after the next deploy. Google uses `lastmod`
@@ -2601,6 +2786,7 @@ phrase on a page and this was the page we most want ranking for
 has not opened.
 
 ### Added
+
 - `launchedCityPhrase()` and `launchedCities()`, deriving the phrase
   from `site.launchedMarkets` rather than repeating a literal. Used by
   the article author bio, hero eyebrow, footer, OG description and
@@ -2608,6 +2794,7 @@ has not opened.
   follows the flag instead of needing to be found again.
 
 ### Changed
+
 - The default H1 and hero eyebrow name Nairobi only.
 - The Insights author bio no longer claims two offices, on 88 pages.
 - The "Based On The Ground" claim said we are physically present in
@@ -2621,6 +2808,7 @@ has not opened.
   share) name Nairobi only.
 
 ### Fixed
+
 - The homepage H1 was line-broken across two lines in JSX, so it
   survived a single-line search of the other thirty occurrences. The
   test is whitespace-tolerant for exactly this reason.
@@ -2645,6 +2833,7 @@ hostname resolves and whether we trade somewhere are different
 questions.
 
 ### Added
+
 - `site.launchedMarkets`, the single source of truth for where the
   business actually trades, deliberately separate from
   `site.liveDomains`. With `isLaunchedMarket`, `isUnlaunchedCity` and
@@ -2655,6 +2844,7 @@ questions.
   filter over-reaches and starts suppressing Nairobi.
 
 ### Changed
+
 - The Kenyan sitemap drops all nineteen Accra URLs: `/accra`,
   `/accra/buy`, `/accra/areas`, ten `/from/<origin>/accra` pages and
   six Accra articles.
@@ -2667,6 +2857,7 @@ questions.
   USD remittance.
 
 ### Notes
+
 - Existing sitemap tests asserted the old behaviour and were inverted
   rather than deleted, each with a note on why, so the reasoning
   survives and re-launching Ghana restores the original expectations.
@@ -2678,12 +2869,14 @@ questions.
 ## [1.22.1] - 2026-09-09
 
 ### Added
+
 - The Nairobi office schema now carries `hasMap`, pointing at the
   Google Maps place for the same address. Google previously had to
   join our address string to that place by inference; now it is
   stated.
 
 ### Notes
+
 - The place ID is recorded in `site.ts` but deliberately kept out of
   `sameAs`. A place existing on Maps is not the same as a Business
   Profile claimed and verified by us: Google generates unclaimed
@@ -2712,6 +2905,7 @@ The site sold the service well and said nothing to a person still
 choosing.
 
 ### Added
+
 - `/property-management-companies-nairobi`, written for the comparison
   stage rather than the buying stage: the fee models and why a quote
   of 8% can cost more than one of 10%, the full remit of a letting or
@@ -2724,13 +2918,15 @@ choosing.
   missed them, so the gap cannot silently return.
 
 ### Changed
+
 - The long-term management summary now names the service the way
   landlords do — what a letting agent, managing agent or property
   management company does — rather than only in our own words.
-- The pricing FAQ asks what a reasonable management fee is *in Kenya*,
+- The pricing FAQ asks what a reasonable management fee is _in Kenya_,
   which is how the question is actually typed.
 
 ### Notes
+
 - Deliberately not covered: the "house agents" and "rental agents"
   clusters, which read as tenant-side ("house agents in nairobi for
   rent", "house hunting agents"). Chasing them would repeat the
@@ -2744,6 +2940,7 @@ choosing.
 ## [1.21.1] - 2026-09-09
 
 ### Changed
+
 - The Airbnb management hero no longer quotes the fee, and names the
   service the way people search for it instead. "Short-term rental
   management" appeared nowhere on the site — not on one service page —
@@ -2772,6 +2969,7 @@ operational work a landlord is actually buying appeared only inside
 prose, never declared.
 
 ### Added
+
 - A "what we do with your property, every month" section on the city
   pages, which is what the `.co.ke` root serves. Six plain statements
   in the verbs a landlord uses: we find and vet the tenant, collect
@@ -2789,6 +2987,7 @@ prose, never declared.
   `noindex, follow` and the sitemap filtering on it.
 
 ### Changed
+
 - Thirty articles are out of the index: ten bank mortgage reviews,
   five on lending mechanics, five written for tenants rather than
   landlords, three on REITs and crypto, and seven off-topic or
@@ -2802,6 +3001,7 @@ prose, never declared.
 ## [1.20.1] - 2026-09-09
 
 ### Fixed
+
 - The footer linked every area in the cities map, which was correct
   until 1.16.0 gave the areas without a profile a 301 to the areas
   comparison page. Since the footer renders on all 424 pages, that
@@ -2821,6 +3021,7 @@ Nairobi; Lavington has the broadest tenant base of any premium area.
 Both were redirecting to `/nairobi/areas`.
 
 ### Added
+
 - Area pages for Gigiri and Lavington. Gigiri's covers the residential
   security standards that UN and embassy tenants have to house within,
   which are assessed property by property and quietly decide whether a
@@ -2834,19 +3035,21 @@ Both were redirecting to `/nairobi/areas`.
   and only Parklands and Rosslyn still consolidate.
 
 ### Changed
+
 - Gigiri quotes its rent band as apartments and compound cottages
   rather than plain 2-bed apartments, since its stock leans to larger
   family housing. Lavington keeps the apartment framing, which is
   accurate there.
 
-1.16.0 consolidated eight Nairobi area pages into `/nairobi/areas`
-because they were 88% boilerplate, which was the right call for the
-areas that had nothing specific to say and the wrong outcome for the
-ones that did. Karen and Runda are where diaspora landlords buy, and
-they had no page at all. Kileleshwa and Brookside had short-let pages
-but no parent.
+  1.16.0 consolidated eight Nairobi area pages into `/nairobi/areas`
+  because they were 88% boilerplate, which was the right call for the
+  areas that had nothing specific to say and the wrong outcome for the
+  ones that did. Karen and Runda are where diaspora landlords buy, and
+  they had no page at all. Kileleshwa and Brookside had short-let pages
+  but no parent.
 
 ### Added
+
 - Area pages for Kileleshwa, Brookside, Karen and Runda, each written
   to the same rule as Westlands, Kilimani and Riverside: it gets a URL
   only if there is something true about letting there that no other
@@ -2862,6 +3065,7 @@ but no parent.
   overlap of 0.07% against the 73% the consolidated pages carried.
 
 ### Changed
+
 - Karen and Runda quote their rent band as cottages and guest wings,
   and as apartments on the estate fringes, rather than as "2-bed
   apartments" — those two suburbs have almost no apartment stock, so
@@ -2879,6 +3083,7 @@ mostly do not use. The one-to-two enquiries a week arrive on WhatsApp,
 and the two surfaces that serve them had no such question.
 
 ### Added
+
 - `/start` — the intake link ops paste into a WhatsApp thread — now
   asks how the landlord found us, and what they searched for when the
   answer is Google. This is the one that matters: for a WhatsApp lead
@@ -2893,6 +3098,7 @@ and the two surfaces that serve them had no such question.
   forced into a bucket.
 
 ### Note
+
 - Both mechanisms for logging an off-platform enquiry already existed
   before this release: `/admin/leads/new` and the intake-link button
   on `/admin/leads`, which have been on that page and unused. One lead
@@ -2913,6 +3119,7 @@ table held one row. The customers themselves were the last surviving
 copy of the answer and had to be asked by hand.
 
 ### Added
+
 - The enquiry form now asks "How did you find us?", and adds a second
   question — "What did you search for?" — when the answer is Google.
   This is the only way an organic search term can ever be recorded:
@@ -2934,6 +3141,7 @@ copy of the answer and had to be asked by hand.
   field on the record.
 
 ### Note
+
 - Leads from before this release have none of these fields, and the
   block is hidden rather than shown as empty. Manual logs and outbound
   scrapes have no browser behind them, so absent stays a normal state.
@@ -2946,6 +3154,7 @@ copy of the answer and had to be asked by hand.
 ## [1.16.1] - 2026-09-09
 
 ### Changed
+
 - The `/airbnb-management` search snippet no longer closes on "20% of revenue".
   On the results page for "nairobi airbnb management" that number sat directly
   beneath a competitor's snippet quoting 18%, so a landlord comparing the two
@@ -2967,6 +3176,7 @@ breaks. Recording the reasoning so a future reader can disagree with it rather
 than assume it was an oversight.
 
 ### Fixed
+
 - The Nairobi and Accra neighbourhood pages were near-duplicates of each
   other and had almost certainly been collapsed by Google, which is why they
   never ranked for the area terms they were built for. Measured across eight
@@ -2989,6 +3199,7 @@ than assume it was an oversight.
   from 84.9% similar to 13.2%.
 
 ### Added
+
 - `/nairobi/areas` and `/accra/areas`, comparing every area we manage in:
   two-bed rent bands, who rents in each, and where nightly letting earns more
   than a lease. The per-area rent and tenant data was always the good part of
@@ -3004,6 +3215,7 @@ than assume it was an oversight.
   problem this release fixes.
 
 ### Changed
+
 - Eight Nairobi areas and all five Accra ones no longer have a page of their
   own and redirect to their city's comparison page. Redirected there rather
   than to the city homepage on purpose: a thin page pointed at a homepage
@@ -3023,6 +3235,7 @@ than assume it was an oversight.
 ## [1.15.0] - 2026-09-09
 
 ### Added
+
 - An operator side to the referral programme, at `/admin/referrals`. The
   programme has had a public page, a working signup form, an attribution
   cookie and a per-referrer dashboard for months, but nothing at Goldstay
@@ -3046,6 +3259,7 @@ than assume it was an oversight.
   cluster had.
 
 ### Changed
+
 - The referral programme's page title now leads with what an agent would
   actually search for rather than with our brand. "Earn with Goldstay:
   Referral Programme" describes the page accurately and matches nothing
@@ -3061,6 +3275,7 @@ than assume it was an oversight.
   that judgement decides who receives a year of commission.
 
 ### Fixed
+
 - Terminating a referrer now actually cancels their unpaid commissions, in
   the same transaction as the status change, which is what the schema has
   always said termination means. A referrer could previously be terminated
@@ -3076,6 +3291,7 @@ than assume it was an oversight.
 ## [1.14.0] - 2026-09-07
 
 ### Added
+
 - A client can now copy other people on their monthly statement. Co-ownership
   turns out to be common — two sisters running one unit, a couple where only
   one of them signed, an owner whose accountant does the reconciling — and
@@ -3096,7 +3312,7 @@ than assume it was an oversight.
 
   Deliberately not built as "a second email address on the account", which is
   the obvious shape and is unsafe. Three of the four emails a client receives
-  carry a sign-in link that signs the clicker in *as the client*, with the
+  carry a sign-in link that signs the clicker in _as the client_, with the
   accept button on a management agreement, and a second address on the
   account row would have been indistinguishable from the first at every send
   site — so the first email to copy it would have handed a co-owner the whole
@@ -3110,6 +3326,7 @@ than assume it was an oversight.
   instead of shipping.
 
 ### Changed
+
 - The statement email now names anyone copied on it, in a line after the
   sign-off, so a landlord can see who is reading their income without going
   to look and a co-owner knows why it arrived. Statements for clients who
@@ -3118,6 +3335,7 @@ than assume it was an oversight.
 ## [1.13.1] - 2026-09-07
 
 ### Fixed
+
 - Stopped telling Google that the Goldstay organisation is also a LinkedIn
   person. The `sameAs` array on the `RealEstateAgent` node, which is how
   search engines resolve scattered mentions of a business into one entity,
@@ -3136,6 +3354,7 @@ than assume it was an oversight.
 ## [1.13.0] - 2026-09-07
 
 ### Added
+
 - A service page and five articles for short-let operators, meaning people who
   lease a unit and re-let it on nightly stays rather than owning it. Four of
   the five short-let properties on the platform are held by authorised
@@ -3165,6 +3384,7 @@ than assume it was an oversight.
   landlords.
 
 ### Changed
+
 - Retargeted the search titles on the two existing articles that were already
   aimed at this reader. Neither had a `metaTitle`, so both inherited an
   editorial headline that spent its width on "the realistic 2026 guide" and
@@ -3173,6 +3393,7 @@ than assume it was an oversight.
 ## [1.12.0] - 2026-09-07
 
 ### Added
+
 - Agreements can be shared read-only with someone who is not the client,
   which is what a landlord is asking for when they want their advocate to
   read the contract before they accept it. Issue a share from the agreement
@@ -3202,6 +3423,7 @@ than assume it was an oversight.
 ## [1.11.2] - 2026-09-07
 
 ### Changed
+
 - Lint and typecheck moved out of the deploy and into CI. `next build` ran
   both on every deploy, which cost 38 seconds of a 158 second build to
   re-check what the person pushing had already run locally, and it held the
@@ -3231,6 +3453,7 @@ than assume it was an oversight.
 ## [1.11.1] - 2026-09-07
 
 ### Fixed
+
 - Deploys were spending time on Sentry source maps that were thrown away.
   The webpack plugin generates a map for every client chunk and rewrites the
   bundle with release metadata on every build, and it does that whether or not
@@ -3252,9 +3475,11 @@ than assume it was an oversight.
   Sentry is off. Nothing in the app referenced that route.
 
 ### Changed
+
 - Nothing user-facing. This is a build-time change only.
 
 ### Added
+
 - Six articles on tenancy and lease agreements, written for the landlord
   rather than the occupant: what a tenancy agreement must contain, lease
   versus licence, the residential lease clause by clause, when a lease has to
@@ -3279,9 +3504,11 @@ than assume it was an oversight.
   wrong: they hold the internal link equity and the service pages do not.
 
 ### Changed
+
 - Nothing. The six articles are additions and no existing page changed.
 
 ### Added
+
 - `scripts/harvest-queries.mjs`, which pulls real search queries from Google's
   autocomplete endpoint geo-targeted to Kenya. Every keyword list on this
   project until now has been somebody's judgement about what landlords
@@ -3298,6 +3525,7 @@ than assume it was an oversight.
   which is somebody suspecting they are being charged for nothing.
 
 ### Changed
+
 - `/airbnb-management` is now titled "Airbnb Management Company Nairobi,
   Kenya". Typing "airbnb management" in Kenya completes first to "airbnb
   management companies in kenya", so on this service the country term
@@ -3310,6 +3538,7 @@ than assume it was an oversight.
   only fits about seven words, on a phrase nobody types.
 
 ### Fixed
+
 - Article structured data no longer claims our editorial desks are people.
   Every one of the 350 posts emitted `author: {"@type": "Person"}` regardless
   of byline, so 324 of them asserted that "Goldstay Editors", "Goldstay
@@ -3325,6 +3554,7 @@ than assume it was an oversight.
 ## [1.9.0] - 2026-09-07
 
 ### Added
+
 - An answer-first summary block at the top of `/airbnb-management` and
   `/long-term-management`, stating in one self-contained paragraph what the
   service is, what it costs and what it includes, followed by the eight facts
@@ -3339,6 +3569,7 @@ than assume it was an oversight.
   with it. No pronouns pointing at earlier copy and no "as described above".
 
 ### Changed
+
 - The `/pricing` page no longer claims that most Nairobi managers will not
   publish a fee. Checking it against the market found that untrue: at least
   one competitor publishes its short-stay percentage on the page and argues
@@ -3351,6 +3582,7 @@ than assume it was an oversight.
   are alone in disclosing ours.
 
 ### Added
+
 - A page at `/change-property-manager` for the highest-intent cluster on the
   site and the one nobody was serving. "agent not paying rent", "change
   property manager", "agent not remitting rent", "bad property manager" and
@@ -3376,6 +3608,7 @@ than assume it was an oversight.
   shopping for a firm types.
 
 ### Changed
+
 - FAQ questions now render as `h3` rather than `span`. The question is the most
   query-shaped text on most of these pages and it was the one part carrying no
   heading weight: the `FAQPage` schema declared it while the document structure
@@ -3411,6 +3644,7 @@ than assume it was an oversight.
 ## [1.7.0] - 2026-09-07
 
 ### Added
+
 - A pricing page at `/pricing`, targeting the fee queries the site had no page
   for. The fees were already public but spread across four service pages and a
   handful of FAQ answers, so nothing answered "what does property management
@@ -3423,7 +3657,7 @@ than assume it was an oversight.
 - Every figure on it reads from the `services` array in `site.ts` or restates a
   commitment already made in `GuaranteesSection`, so a number cannot drift from
   the same number on a service page. Nothing was invented for it. It also
-  states what the fee is *not*: no setup or onboarding fee, no contractor or
+  states what the fee is _not_: no setup or onboarding fee, no contractor or
   platform commission, no maintenance markup, no exit fee or claw-back.
 - The FAQ is written close to verbatim query phrasing, so the `FAQPage` schema
   can be what an AI summary or featured snippet quotes rather than something it
@@ -3440,6 +3674,7 @@ than assume it was an oversight.
 ## [1.6.0] - 2026-09-07
 
 ### Added
+
 - WhatsApp enquiries are now attributed to the page and the button that
   produced them. Every CTA on the site is a `wa.me` deep link, so the
   conversation happened off-platform and nothing about its origin survived the
@@ -3468,6 +3703,7 @@ than assume it was an oversight.
   the enclosing section id.
 
 ### Notes
+
 - **This reports nothing until `NEXT_PUBLIC_GA_MEASUREMENT_ID` is set in
   Vercel.** `Analytics.tsx` has been wired and mounted in both layouts for some
   time, but the variable is unset, so the live site has never loaded gtag and no
@@ -3482,6 +3718,7 @@ than assume it was an oversight.
 ## [1.5.0] - 2026-09-07
 
 ### Added
+
 - A testimonials section on the homepage, the Nairobi and Accra city pages, and
   the Airbnb management, long-term management and tenant finding pages. Nothing
   on the site currently has a landlord vouching for it, which is the one thing
@@ -3511,6 +3748,7 @@ than assume it was an oversight.
 ## [1.4.1] - 2026-09-07
 
 ### Fixed
+
 - The sitemap left out 28 URLs the site was asking Google to index. Every
   Accra route — the 11 Ghana articles, `/accra`, `/accra/buy`, the five Accra
   neighbourhoods and the ten `/from/{origin}/accra` pages — returns 200 on
@@ -3518,13 +3756,14 @@ than assume it was an oversight.
   appeared in no sitemap at all. The sitemap scoped itself by hostname, which
   was right for the three-domain plan and wrong for the present: goldstay.com.gh
   does not resolve, so there is no Ghana sitemap for those URLs to be in. A host
-  now advertises a market when it is that market's domain *or* when that
+  now advertises a market when it is that market's domain _or_ when that
   market's domain is dark and this host is standing in for it, which is the rule
   the canonicals have used all along. Nothing needs changing when the Ghana
   domain goes live; adding it to `liveDomains` moves those routes to their own
   sitemap.
 
 ### Changed
+
 - The sitemap's route-selection moved to `src/lib/sitemap-routes.ts` so it can
   be tested. The bug survived because the sitemap route imports the whole
   350-article catalogue and therefore cannot be loaded by a JSX-free test
@@ -3779,7 +4018,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.89.3...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.92.0...HEAD
+[1.92.0]: https://github.com/tasiamah/goldstay/compare/v1.91.0...v1.92.0
 [1.91.0]: https://github.com/tasiamah/goldstay/compare/v1.90.0...v1.91.0
 [1.90.0]: https://github.com/tasiamah/goldstay/compare/v1.89.3...v1.90.0
 [1.89.3]: https://github.com/tasiamah/goldstay/compare/v1.89.2...v1.89.3

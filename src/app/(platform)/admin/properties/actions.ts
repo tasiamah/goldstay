@@ -1,5 +1,6 @@
 "use server";
 
+import { isPropertyTypeAvailableIn } from "@/lib/property-type";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -73,6 +74,24 @@ export async function createPropertyAction(
   });
   if (!client) {
     return { ok: false, error: "Client not found." };
+  }
+
+  // Tenant finding is drafted against Kenyan law and has no Ghanaian
+  // equivalent; see isPropertyTypeAvailableIn. Caught here rather
+  // than in the Zod schema because the rule depends on the client's
+  // country, which the form does not carry.
+  if (
+    !isPropertyTypeAvailableIn(
+      parsed.data.propertyType,
+      client.country as "KE" | "GH",
+    )
+  ) {
+    return {
+      ok: false,
+      error:
+        "Tenant finding is only available for Kenyan clients. Ghana has no tenant-finding agreement yet.",
+      fieldErrors: { propertyType: "Not available in this market." },
+    };
   }
 
   try {
