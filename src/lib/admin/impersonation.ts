@@ -7,11 +7,15 @@
 //   2. A server action mints a Supabase magic link for the client's
 //      email via supabase.auth.admin.generateLink, writes an audit
 //      event, sets a same-site cookie with the metadata we need to
-//      render an ImpersonationBanner, and returns the magic link URL.
-//   3. The client opens the magic link in a new tab. That tab signs
-//      the admin in as the client (cookies are shared), and the
-//      ImpersonationBanner reads the metadata cookie to show the
-//      "you're acting as <client>" warning + stop-impersonating action.
+//      render an ImpersonationBanner, and redirects to a launcher
+//      page carrying the link.
+//   3. The admin clicks through from that page. The link signs this
+//      browser in as the client, and because Supabase keeps one
+//      session per domain that replaces the admin's own session
+//      rather than sitting beside it — the launcher page says so.
+//      The ImpersonationBanner then reads the metadata cookie to show
+//      the "you're acting as <client>" warning + stop-impersonating
+//      action.
 //
 // The cookie is intentionally `httpOnly: false` so we can flag the
 // banner client-side too if needed; nothing about it is a credential.

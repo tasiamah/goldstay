@@ -72,9 +72,10 @@ export async function startImpersonationAction(
     metadata: { clientEmail: client.email },
   });
 
-  // Hand off to a tiny launcher page that pops the magic link in a
-  // new tab. We use a query param rather than a redirect so the URL
-  // never lands in the admin's browser history as an action.
+  // Hand off to a launcher page that offers the magic link as a
+  // button. It must be the admin's own click that opens the tab:
+  // anything this page tries on load has already lost the user
+  // activation spent getting here, and the browser blocks it.
   redirect(
     `/admin/clients/${client.id}/impersonate/launch?token=${encodeURIComponent(
       actionLink,

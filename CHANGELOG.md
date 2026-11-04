@@ -21,6 +21,26 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.93.1] - 2026-11-04
+
+### Fixed
+
+- "Open as client" appeared to do nothing. The launcher page opened the
+  client portal itself, on load, which browsers only allow for a few seconds
+  after a real click. Minting the sign-in link takes three database round
+  trips and a call to Supabase, so that budget was often gone by the time the
+  page rendered and the tab was blocked with no dialog and no error. It worked
+  when the round trip happened to be fast, which is why it looked
+  intermittent. The page now offers the link as a button and the admin's own
+  click opens it, which cannot be blocked. The page also no longer claims a
+  tab is opening when none is.
+- The launcher now warns that opening the portal signs you out of the admin.
+  Supabase keeps one session per domain, so the client's session replaces the
+  admin's in every tab rather than sitting beside it. That was always true and
+  nothing said so, which left admins to discover it as an admin page that had
+  silently become a login screen. The note explains how to keep both, by
+  opening the link in a private window.
+
 ## [1.93.0] - 2026-11-01
 
 ### Added
@@ -4051,7 +4071,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.93.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.93.1...HEAD
+[1.93.1]: https://github.com/tasiamah/goldstay/compare/v1.93.0...v1.93.1
 [1.93.0]: https://github.com/tasiamah/goldstay/compare/v1.92.0...v1.93.0
 [1.92.0]: https://github.com/tasiamah/goldstay/compare/v1.91.0...v1.92.0
 [1.91.0]: https://github.com/tasiamah/goldstay/compare/v1.90.0...v1.91.0
