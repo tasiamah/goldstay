@@ -21,6 +21,27 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.94.0] - 2026-11-05
+
+### Added
+
+- A unit linked to Hostaway now has its history pulled automatically on the
+  next calendar sync, instead of waiting for somebody to press "Import from
+  Hostaway" on that property. Any property holding a listing id that has never
+  been reached is imported once, with the real nightly figures, commission and
+  cleaning, and then left alone.
+
+### Fixed
+
+- Units that got a calendar feed after they had already been letting showed no
+  history, so an owner signing in saw a property that appeared to have earned
+  nothing before the day we connected it. Misty Springs showed one booking
+  against the nine Hostaway held; Kindaruma showed one against fifteen. An
+  iCal feed is the cause rather than the cure here: Airbnb drops a reservation
+  out of the calendar once the guest checks out, so a feed added in November
+  cannot describe October no matter how often it is polled. The backfill above
+  is what supplies those months.
+
 ## [1.93.1] - 2026-11-04
 
 ### Fixed
@@ -4071,7 +4092,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.93.1...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.94.0...HEAD
+[1.94.0]: https://github.com/tasiamah/goldstay/compare/v1.93.1...v1.94.0
 [1.93.1]: https://github.com/tasiamah/goldstay/compare/v1.93.0...v1.93.1
 [1.93.0]: https://github.com/tasiamah/goldstay/compare/v1.92.0...v1.93.0
 [1.92.0]: https://github.com/tasiamah/goldstay/compare/v1.91.0...v1.92.0

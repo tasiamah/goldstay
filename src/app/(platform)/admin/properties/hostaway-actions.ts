@@ -6,17 +6,15 @@ import { prisma } from "@/lib/db";
 import { currentAuditActor, requireAdmin } from "@/lib/auth";
 import { recordAudit } from "@/lib/audit";
 import { hostawayCredentials } from "@/lib/hostaway/client";
+import { HOSTAWAY_BACKFILL_MONTHS } from "@/lib/hostaway/backfill";
 import { importPropertyReservations } from "@/lib/hostaway/import";
 
 export type HostawayImportResult =
   | { ok: false; error: string }
   | { ok: true; message: string };
 
-// How far back a single import reaches. Long enough to cover a
-// property that has been running on an iCal feed for a while,
-// short enough that one click cannot rewrite years of settled
-// statements by accident.
-const DEFAULT_MONTHS_BACK = 12;
+// Same window the automatic backfill uses, shared so a re-import by
+// hand cannot reach back further than the first one did.
 
 export async function importHostawayAction(
   propertyId: string,
@@ -49,7 +47,7 @@ export async function importHostawayAction(
 
   const to = new Date();
   const from = new Date(to);
-  from.setUTCMonth(from.getUTCMonth() - DEFAULT_MONTHS_BACK);
+  from.setUTCMonth(from.getUTCMonth() - HOSTAWAY_BACKFILL_MONTHS);
 
   try {
     const summary = await importPropertyReservations({

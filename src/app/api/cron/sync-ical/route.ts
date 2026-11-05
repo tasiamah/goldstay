@@ -8,7 +8,9 @@
 // also works for ad-hoc syncs from your terminal.
 
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/db";
 import { runAllFeedsSync } from "@/lib/ical/run";
+import { runPendingHostawayBackfills } from "@/lib/hostaway/backfill";
 import { wrapJob } from "@/lib/admin/job-run";
 
 export const runtime = "nodejs";
@@ -40,9 +42,18 @@ export async function GET(request: Request) {
   const startedAt = Date.now();
   const result = await wrapJob("sync-ical", async () => {
     const summary = await runAllFeedsSync();
+    // Feeds first. They are the every-15-minutes job and must not be
+    // delayed by a backfill, which on nearly every run finds nothing
+    // to do and on the run after a listing is linked is the only
+    // thing that can supply that unit's history.
+    const backfill = await runPendingHostawayBackfills({ prisma });
     return {
-      summary: `feeds=${summary.total} ok=${summary.succeeded} fail=${summary.failed}`,
-      _extras: summary,
+      summary:
+        `feeds=${summary.total} ok=${summary.succeeded} fail=${summary.failed}` +
+        (backfill.attempted > 0
+          ? ` backfilled=${backfill.succeeded}/${backfill.attempted} bookings=${backfill.bookingsCreated}`
+          : ""),
+      _extras: { ...summary, backfill },
     } as const;
   });
   return NextResponse.json({
