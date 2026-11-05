@@ -1,29 +1,43 @@
-// GET /api/cron/send-statements — monthly statement push.
+// GET /api/cron/send-statements — monthly statement review.
 //
-// Configured in vercel.json to run on the 5th of every month at
-// 07:00 UTC (≈ 10:00 EAT, 10:00 GMT/WAT). For each non-archived
-// client with at least one ACTIVE property:
-//   • compute the previous calendar month
-//   • skip if a StatementSend row already exists for that period
-//   • render the statement PDF + email it through Resend
-//   • record StatementSend + CommunicationLog rows
+// Runs on the 5th of every month at 07:00 UTC (≈ 10:00 EAT), as
+// configured in vercel.json.
 //
-// Idempotent: any subsequent invocation (Vercel retry, manual hit
-// from a terminal with the right Bearer token) skips already-sent
-// clients. Failures per client are recorded but never abort the run.
+// This used to render every statement and email it to the landlord.
+// It no longer sends anything to anyone outside Goldstay. A statement
+// is only as right as what reached the platform that month, and a
+// channel that quietly stops delivering booking revenue does not
+// produce an obviously broken statement — it produces a plausible
+// quiet month, with real stays and no money against them. Sending
+// first and discovering that afterwards is the wrong order.
+//
+// So the job now assembles every statement, emails the team a digest
+// of what it found, and stops. Sending is a person pressing a button
+// on /admin/statements once the figures have been checked.
+//
+// The route keeps its name because vercel.json and the deploy
+// history point at it, and because what it governs is still the
+// monthly statement run.
+//
+// Idempotent and side-effect free with respect to clients: it writes
+// no StatementSend rows, so running it twice costs two digests and
+// nothing else.
 //
 // Auth: identical to the iCal cron — Bearer token via CRON_SECRET.
 
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
 import { wrapJob } from "@/lib/admin/job-run";
-import { sendStatementForClient } from "@/lib/statements/send";
+import {
+  buildStatementReview,
+  sendStatementReviewEmail,
+} from "@/lib/statements/review";
 import { previousPeriod } from "@/lib/statements/period";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-// Pro-tier ceiling. The render+send loop is sequential, so a
-// portfolio of 100 clients * ~2s/client = 200s, comfortably inside.
+// Pro-tier ceiling. Assembling is cheaper than the old render-and-
+// send loop, but it is still one pass per client.
 export const maxDuration = 300;
 
 function isAuthorized(request: Request): boolean {
@@ -34,7 +48,7 @@ function isAuthorized(request: Request): boolean {
 }
 
 export async function GET(request: Request) {
-  // Allow override for ad-hoc replays: ?period=YYYY-MM picks an
+  // Allow override for ad-hoc replays: ?period=YYYY-MM reviews an
   // older month. Defaults to the calendar month we just left.
   const url = new URL(request.url);
   const periodParam = url.searchParams.get("period");
@@ -47,52 +61,23 @@ export async function GET(request: Request) {
     );
   }
 
-  const summary = await wrapJob("send-monthly-statements", async () => {
-    const clients = await prisma.client.findMany({
-      where: {
-        archivedAt: null,
-        // Restrict to clients with at least one non-archived
-        // property: empty clients (just-converted leads, paused
-        // accounts) get no statement.
-        properties: { some: { archivedAt: null } },
-      },
-      select: {
-        id: true,
-        email: true,
-        fullName: true,
-        companyName: true,
-        preferredCurrency: true,
-      },
-    });
-
-    let sent = 0;
-    let skipped = 0;
-    let failed = 0;
-    const failures: Array<{ clientId: string; error: string }> = [];
-
-    for (const client of clients) {
-      const result = await sendStatementForClient(client, period);
-      if (!result.ok) {
-        failed++;
-        failures.push({ clientId: client.id, error: result.error });
-      } else if (result.status === "skipped") {
-        skipped++;
-      } else {
-        sent++;
-      }
-    }
+  const summary = await wrapJob("review-monthly-statements", async () => {
+    const review = await buildStatementReview({ prisma, period });
+    const notified = await sendStatementReviewEmail(review);
 
     return {
-      summary: `period=${period.year}-${String(period.month).padStart(2, "0")} clients=${clients.length} sent=${sent} skipped=${skipped} failed=${failed}`,
-      // Returning extras through the wrap layer (currently unused
-      // by JobRun.summary, but the route returns them in the JSON).
+      summary:
+        `period=${period.year}-${String(period.month).padStart(2, "0")} ` +
+        `clients=${review.rows.length} ready=${review.awaitingReview} ` +
+        `empty=${review.empty} alreadySent=${review.alreadySent} ` +
+        `digest=${notified.delivered ? "sent" : (notified.reason ?? "failed")}`,
       _extras: {
         period,
-        clientsConsidered: clients.length,
-        sent,
-        skipped,
-        failed,
-        failures: failures.slice(0, 10),
+        clientsConsidered: review.rows.length,
+        awaitingReview: review.awaitingReview,
+        empty: review.empty,
+        alreadySent: review.alreadySent,
+        digestDelivered: notified.delivered,
       },
     } as const;
   });

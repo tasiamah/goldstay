@@ -49,6 +49,9 @@ const ITEMS: readonly NavItem[] = [
   { href: "/admin/leases", label: "Leases" },
   { href: "/admin/bookings", label: "Bookings" },
   { href: "/admin/transactions", label: "Transactions" },
+  // Month-end review. Statements are not emailed by the cron any
+  // more, so this is the only way one reaches a landlord.
+  { href: "/admin/statements", label: "Statements" },
   { href: "/admin/tasks", label: "Tasks" },
   // No role gate: every role holds referral.read, because "who
   // introduced this landlord" and "has this agent been paid" are

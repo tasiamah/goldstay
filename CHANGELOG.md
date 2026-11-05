@@ -21,6 +21,36 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.95.0] - 2026-11-05
+
+### Changed
+
+- **Statements are no longer emailed to landlords automatically.** The monthly
+  job on the 5th now assembles every statement, emails the team a digest of
+  what it found, and stops. Nothing reaches a client until somebody presses
+  send. A statement is only as right as what reached the platform that month,
+  and a channel that quietly stops reporting revenue does not produce an
+  obviously broken statement — it produces a plausible quiet month, with real
+  stays and no money against them. Sending first and finding that out
+  afterwards is the wrong order.
+
+### Added
+
+- A month-end review screen at **Statements** in the admin nav. It lists every
+  client due a statement for the period with their transaction count and net
+  by currency, taken from the same assembly the PDF uses, so what the table
+  says is what the document says. Each row links to the full per-client
+  breakdown and has its own send button, and there is a "send all" for when
+  the figures have been checked.
+- Clients whose month came back empty are marked "Empty, check first" rather
+  than being listed alongside the rest, and the digest calls them out
+  separately. An empty month and a feed that has stopped delivering revenue
+  look identical on a statement, and that is the case worth catching before an
+  owner reads it as a quiet month. "Send all" skips them; they can still be
+  sent one at a time.
+- `STATEMENTS_INBOX` controls where the digest lands, falling back to
+  `CONTACT_INBOX` and then `hello@goldstay.co.ke`.
+
 ## [1.94.0] - 2026-11-05
 
 ### Added
@@ -4092,7 +4122,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.94.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.95.0...HEAD
+[1.95.0]: https://github.com/tasiamah/goldstay/compare/v1.94.0...v1.95.0
 [1.94.0]: https://github.com/tasiamah/goldstay/compare/v1.93.1...v1.94.0
 [1.93.1]: https://github.com/tasiamah/goldstay/compare/v1.93.0...v1.93.1
 [1.93.0]: https://github.com/tasiamah/goldstay/compare/v1.92.0...v1.93.0
