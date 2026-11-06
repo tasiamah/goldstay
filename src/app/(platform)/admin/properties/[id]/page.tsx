@@ -1,10 +1,17 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import type { AgreementTemplate, SigningCapacity } from "@prisma/client";
+import type {
+  AgreementTemplate,
+  PropertyType,
+  SigningCapacity,
+} from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { PropertyForm } from "../PropertyForm";
 import { updatePropertyAction } from "../actions";
 import { PropertyLifecycleActions } from "./PropertyLifecycleActions";
+import { ChangeRentalModelCard } from "./ChangeRentalModelCard";
+import { PROPERTY_TYPE_ORDER } from "@/lib/property-type";
+import { checkRentalModelChange } from "@/lib/properties/rental-model-change";
 import { CoOwnersCard } from "./CoOwnersCard";
 import {
   PropertyStatusBadge,
@@ -159,10 +166,19 @@ export default async function PropertyDetailPage({
       },
       // Null until the owner or an operator has saved one.
       handbook: true,
+      // Unwindowed totals. `bookings` and `units.leases` above are both
+      // clipped to the heatmap window, so neither answers "has this
+      // property ever let", which is what the rental-model switch
+      // needs to warn about.
+      _count: { select: { bookings: true } },
     },
   });
 
   if (!property) notFound();
+
+  const leaseCount = await prisma.lease.count({
+    where: { unit: { propertyId: property.id } },
+  });
 
   // Only surface the "Show 3 more months" link when both conditions
   // hold: there's actually older data to reveal AND the window hasn't
@@ -216,6 +232,24 @@ export default async function PropertyDetailPage({
       : liveAgreements.some((a) => a.status === "SIGNED")
         ? "accepted"
         : "awaiting_acceptance";
+
+  // What switching to each other model would mean, worked out here so
+  // the dialog shows the same thing changeRentalModelAction enforces
+  // rather than its own copy of the rules. Models the market does not
+  // offer are left out, which is how the card knows not to list them.
+  const rentalModelConsequences: Partial<Record<PropertyType, string[]>> = {};
+  for (const candidate of PROPERTY_TYPE_ORDER) {
+    const check = checkRentalModelChange({
+      from: property.propertyType,
+      to: candidate,
+      country: property.country,
+      bookingCount: property._count.bookings,
+      leaseCount,
+      agreementStage,
+      status: property.status,
+    });
+    if (check.allowed) rentalModelConsequences[candidate] = check.consequences;
+  }
 
   // Last-30-day occupancy stat for short-term properties. Anchored to
   // UTC midnight so it lines up with the booking aggregation.
@@ -383,44 +417,52 @@ export default async function PropertyDetailPage({
       </section>
 
       <section className="grid gap-8 lg:grid-cols-2">
-        <div className="rounded-lg border border-stone-200 bg-white p-6">
-          <h3 className="text-base font-medium text-stone-900">Details</h3>
-          <p className="mt-1 text-sm text-stone-500">
-            Updates are visible to the client on next page load.
-          </p>
-          <div className="mt-5">
-            <PropertyForm
-              action={boundUpdate}
-              clientCountry={property.client.country}
-              isEditing
-              defaults={{
-                clientId: property.client.id,
-                name: property.name,
-                unitNumber: property.unitNumber,
-                city: property.city,
-                neighbourhood: property.neighbourhood,
-                address: property.address,
-                description: property.description,
-                bedrooms: property.bedrooms,
-                bathrooms: property.bathrooms,
-                sizeSqm: property.sizeSqm,
-                status: property.status,
-                propertyType: property.propertyType,
-                signingCapacity: property.signingCapacity,
-                maxOccupancy: property.maxOccupancy,
-                startupCostsBudget: property.startupCostsBudget?.toString(),
-                cleaningFeePerStay: property.cleaningFeePerStay?.toString(),
-                operatingReserve: property.operatingReserve?.toString(),
-                // A date input needs yyyy-mm-dd, and the column is a
-                // calendar date rather than an instant, so slice off
-                // the UTC time rather than going through local time.
-                launchedAt:
-                  property.launchedAt?.toISOString().slice(0, 10) ?? null,
-                hostawayListingId: property.hostawayListingId,
-              }}
-              submitLabel="Save changes"
-            />
+        <div className="space-y-6">
+          <div className="rounded-lg border border-stone-200 bg-white p-6">
+            <h3 className="text-base font-medium text-stone-900">Details</h3>
+            <p className="mt-1 text-sm text-stone-500">
+              Updates are visible to the client on next page load.
+            </p>
+            <div className="mt-5">
+              <PropertyForm
+                action={boundUpdate}
+                clientCountry={property.client.country}
+                isEditing
+                defaults={{
+                  clientId: property.client.id,
+                  name: property.name,
+                  unitNumber: property.unitNumber,
+                  city: property.city,
+                  neighbourhood: property.neighbourhood,
+                  address: property.address,
+                  description: property.description,
+                  bedrooms: property.bedrooms,
+                  bathrooms: property.bathrooms,
+                  sizeSqm: property.sizeSqm,
+                  status: property.status,
+                  propertyType: property.propertyType,
+                  signingCapacity: property.signingCapacity,
+                  maxOccupancy: property.maxOccupancy,
+                  startupCostsBudget: property.startupCostsBudget?.toString(),
+                  cleaningFeePerStay: property.cleaningFeePerStay?.toString(),
+                  operatingReserve: property.operatingReserve?.toString(),
+                  // A date input needs yyyy-mm-dd, and the column is a
+                  // calendar date rather than an instant, so slice off
+                  // the UTC time rather than going through local time.
+                  launchedAt:
+                    property.launchedAt?.toISOString().slice(0, 10) ?? null,
+                  hostawayListingId: property.hostawayListingId,
+                }}
+                submitLabel="Save changes"
+              />
+            </div>
           </div>
+          <ChangeRentalModelCard
+            propertyId={property.id}
+            current={property.propertyType}
+            country={property.country}
+            consequences={rentalModelConsequences}
+          />
         </div>
 
         <div className="space-y-6">

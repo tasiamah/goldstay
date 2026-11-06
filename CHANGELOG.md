@@ -21,6 +21,33 @@ Which part to bump:
 
 ## [Unreleased]
 
+## [1.96.0] - 2026-11-06
+
+### Added
+- The rental model can now be changed on an existing property. A **Rental
+  model** panel on the property page switches between long-let, short-let and
+  tenant finding, and reissues the management agreement on the new commercial
+  terms as part of the switch, so a property can never sit on a model its
+  contract does not describe.
+- Before committing, the panel lists what the switch moves: whether a signed
+  agreement is about to be superseded and need re-accepting, how many bookings
+  or leases stay on the property but drop off future statements, which
+  commission starts or stops applying, and that a short-let needs a Hostaway
+  listing ID to ever report a stay. Those lines are computed by the same
+  function the action enforces, so the dialog cannot promise something
+  different from what happens.
+
+### Changed
+- The rental model was previously fixed at creation. The edit form showed it
+  as "Locked" and told the operator to email support, which inside an internal
+  tool meant nobody could change it, so correcting a wrong pick meant creating
+  the property a second time. Denis Gardens D601 is in the database twice for
+  exactly that reason. The field is still read-only on the edit form, but it
+  now points at the panel that can change it instead of at an inbox.
+- Changing the model on a live property leaves it live and earning rather than
+  dropping it back to onboarding. It shows an unaccepted agreement until the
+  client accepts, which the existing reminder job already chases.
+
 ## [1.95.0] - 2026-11-05
 
 ### Changed
@@ -4122,7 +4149,8 @@ today rather than reconstructing that history.
 - Audit log recording every mutating action, and a communication log recording
   every message sent to a client.
 
-[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.95.0...HEAD
+[Unreleased]: https://github.com/tasiamah/goldstay/compare/v1.96.0...HEAD
+[1.96.0]: https://github.com/tasiamah/goldstay/compare/v1.95.0...v1.96.0
 [1.95.0]: https://github.com/tasiamah/goldstay/compare/v1.94.0...v1.95.0
 [1.94.0]: https://github.com/tasiamah/goldstay/compare/v1.93.1...v1.94.0
 [1.93.1]: https://github.com/tasiamah/goldstay/compare/v1.93.0...v1.93.1

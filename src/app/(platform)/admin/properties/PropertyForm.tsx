@@ -115,122 +115,120 @@ export function PropertyForm({
       )}
 
       <div key={importCount} className="space-y-6">
-
-      {/* Building name and unit number sit side-by-side so it's visually
+        {/* Building name and unit number sit side-by-side so it's visually
           obvious that "Pinetree Plaza" alone isn't a complete address.
           Operators were leaving the apartment number out and we couldn't
           tell which unit a statement referred to. Unit number is
           optional because standalone houses don't have one. */}
-      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <div className="sm:col-span-2">
+        <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <div className="sm:col-span-2">
+            <Field
+              label="Building / property name"
+              name="name"
+              defaultValue={defaults.name ?? ""}
+              placeholder="Pinetree Plaza"
+              required
+              error={fieldError("name")}
+            />
+          </div>
           <Field
-            label="Building / property name"
-            name="name"
-            defaultValue={defaults.name ?? ""}
-            placeholder="Pinetree Plaza"
-            required
-            error={fieldError("name")}
+            label="Unit / house no."
+            name="unitNumber"
+            defaultValue={defaults.unitNumber ?? ""}
+            placeholder="A4B"
+            error={fieldError("unitNumber")}
           />
-        </div>
-        <Field
-          label="Unit / house no."
-          name="unitNumber"
-          defaultValue={defaults.unitNumber ?? ""}
-          placeholder="A4B"
-          error={fieldError("unitNumber")}
+        </fieldset>
+
+        <LocationFields
+          defaults={{
+            city:
+              defaults.city ?? (clientCountry === "KE" ? "Nairobi" : "Accra"),
+            neighbourhood: defaults.neighbourhood ?? "",
+          }}
+          clientCountry={clientCountry}
+          cityError={fieldError("city")}
+          neighbourhoodError={fieldError("neighbourhood")}
         />
-      </fieldset>
 
-      <LocationFields
-        defaults={{
-          city: defaults.city ?? (clientCountry === "KE" ? "Nairobi" : "Accra"),
-          neighbourhood: defaults.neighbourhood ?? "",
-        }}
-        clientCountry={clientCountry}
-        cityError={fieldError("city")}
-        neighbourhoodError={fieldError("neighbourhood")}
-      />
+        <Field
+          label="Address"
+          name="address"
+          defaultValue={defaults.address ?? ""}
+          placeholder="Street, plot, postal address"
+          required
+          error={fieldError("address")}
+        />
 
-      <Field
-        label="Address"
-        name="address"
-        defaultValue={defaults.address ?? ""}
-        placeholder="Street, plot, postal address"
-        required
-        error={fieldError("address")}
-      />
+        <TextArea
+          label="Description"
+          name="description"
+          defaultValue={defaults.description ?? ""}
+          placeholder="Internal notes for ops. Not visible to the client."
+          error={fieldError("description")}
+        />
 
-      <TextArea
-        label="Description"
-        name="description"
-        defaultValue={defaults.description ?? ""}
-        placeholder="Internal notes for ops. Not visible to the client."
-        error={fieldError("description")}
-      />
-
-      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {isEditing ? (
-          <RentalModelLocked
-            value={defaults.propertyType ?? "LONG_TERM"}
+        <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          {isEditing ? (
+            <RentalModelLocked value={defaults.propertyType ?? "LONG_TERM"} />
+          ) : (
+            <Select
+              label="Rental model"
+              name="propertyType"
+              defaultValue={defaults.propertyType ?? "LONG_TERM"}
+              required
+              options={PROPERTY_TYPE_OPTIONS}
+              error={fieldError("propertyType")}
+            />
+          )}
+          <Field
+            label="Hostaway listing ID"
+            name="hostawayListingId"
+            defaultValue={defaults.hostawayListingId ?? ""}
+            placeholder="e.g. 12345678"
+            error={fieldError("hostawayListingId")}
           />
-        ) : (
-          <Select
-            label="Rental model"
-            name="propertyType"
-            defaultValue={defaults.propertyType ?? "LONG_TERM"}
-            required
-            options={PROPERTY_TYPE_OPTIONS}
-            error={fieldError("propertyType")}
+        </fieldset>
+
+        <SigningCapacityField
+          defaultValue={defaults.signingCapacity ?? "REGISTERED_OWNER"}
+          error={fieldError("signingCapacity")}
+        />
+
+        <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+          <Field
+            label="Bedrooms"
+            name="bedrooms"
+            type="number"
+            defaultValue={defaults.bedrooms ?? ""}
+            min={0}
+            error={fieldError("bedrooms")}
           />
-        )}
-        <Field
-          label="Hostaway listing ID"
-          name="hostawayListingId"
-          defaultValue={defaults.hostawayListingId ?? ""}
-          placeholder="e.g. 12345678"
-          error={fieldError("hostawayListingId")}
-        />
-      </fieldset>
+          <Field
+            label="Bathrooms"
+            name="bathrooms"
+            type="number"
+            defaultValue={defaults.bathrooms ?? ""}
+            min={0}
+            error={fieldError("bathrooms")}
+          />
+          <Field
+            label="Size (sqm)"
+            name="sizeSqm"
+            type="number"
+            defaultValue={defaults.sizeSqm ?? ""}
+            min={0}
+            error={fieldError("sizeSqm")}
+          />
+        </fieldset>
 
-      <SigningCapacityField
-        defaultValue={defaults.signingCapacity ?? "REGISTERED_OWNER"}
-        error={fieldError("signingCapacity")}
-      />
-
-      <fieldset className="grid grid-cols-1 gap-5 sm:grid-cols-3">
-        <Field
-          label="Bedrooms"
-          name="bedrooms"
-          type="number"
-          defaultValue={defaults.bedrooms ?? ""}
-          min={0}
-          error={fieldError("bedrooms")}
+        <ScheduleOneFields
+          defaults={defaults}
+          clientCountry={clientCountry}
+          fieldError={fieldError}
         />
-        <Field
-          label="Bathrooms"
-          name="bathrooms"
-          type="number"
-          defaultValue={defaults.bathrooms ?? ""}
-          min={0}
-          error={fieldError("bathrooms")}
-        />
-        <Field
-          label="Size (sqm)"
-          name="sizeSqm"
-          type="number"
-          defaultValue={defaults.sizeSqm ?? ""}
-          min={0}
-          error={fieldError("sizeSqm")}
-        />
-      </fieldset>
 
-      <ScheduleOneFields
-        defaults={defaults}
-        clientCountry={clientCountry}
-        fieldError={fieldError}
-      />
-
-      {/*
+        {/*
         Status used to be editable here. It's now driven by lifecycle
         actions on the property detail page, so we lock the value via
         a hidden input that just echoes whatever was already on the row
@@ -238,11 +236,11 @@ export function PropertyForm({
         round-trip safe while removing it from the admin's mental
         model of "fields I can change".
       */}
-      <input
-        type="hidden"
-        name="status"
-        value={defaults.status ?? "ONBOARDING"}
-      />
+        <input
+          type="hidden"
+          name="status"
+          value={defaults.status ?? "ONBOARDING"}
+        />
       </div>
 
       {state && !state.ok ? (
@@ -282,9 +280,7 @@ function LocationFields({
   const showsDropdown = isNairobiCity(city);
   const canonical = findCanonicalNairobiNeighbourhood(neighbourhood);
   const isOther = neighbourhood !== "" && canonical === null;
-  const selectValue = isOther
-    ? OTHER_NEIGHBOURHOOD_VALUE
-    : (canonical ?? "");
+  const selectValue = isOther ? OTHER_NEIGHBOURHOOD_VALUE : (canonical ?? "");
 
   function handleSelectChange(value: string) {
     if (value === OTHER_NEIGHBOURHOOD_VALUE) {
@@ -421,8 +417,8 @@ function SigningCapacityField({
         Who signs the management agreement?
       </legend>
       <p className="mt-1 text-xs text-stone-500">
-        Sets the authority clause in the agreement. Pick the option that
-        matches the paperwork — not every client owns what they let to us.
+        Sets the authority clause in the agreement. Pick the option that matches
+        the paperwork — not every client owns what they let to us.
       </p>
       <div className="mt-3 space-y-2">
         {SIGNING_CAPACITIES.map((capacity) => (
@@ -464,20 +460,12 @@ function RentalModelLocked({ value }: { value: PropertyType }) {
       </span>
       <div className="mt-1 flex items-center gap-2 rounded-md border border-stone-200 bg-stone-50 px-3 py-2 text-sm text-stone-700">
         <span className="font-medium text-stone-900">{label}</span>
-        <span className="text-xs uppercase tracking-wider text-stone-500">
-          Locked
-        </span>
       </div>
       <p className="mt-1 text-xs text-stone-500">
-        Switching the rental model rewrites commission terms and
-        statement structure. Email{" "}
-        <a
-          href="mailto:hello@goldstay.co.ke"
-          className="underline-offset-2 hover:underline"
-        >
-          hello@goldstay.co.ke
-        </a>{" "}
-        to make the change.
+        Not changed from here, because switching it reissues the management
+        agreement on new commission terms. Use{" "}
+        <span className="font-medium text-stone-700">Rental model</span> below,
+        which shows what moves before you commit.
       </p>
       <input type="hidden" name="propertyType" value={value} />
     </div>
@@ -530,8 +518,8 @@ function ScheduleOneFields({
         Short-let agreement terms
       </legend>
       <p className="mb-4 text-xs text-stone-500">
-        Printed on Schedule 1 of the short-let management agreement.
-        Anything left blank reads &ldquo;to be confirmed through GoldStay
+        Printed on Schedule 1 of the short-let management agreement. Anything
+        left blank reads &ldquo;to be confirmed through GoldStay
         onboarding&rdquo; on the contract, so fill in what you know.
       </p>
 

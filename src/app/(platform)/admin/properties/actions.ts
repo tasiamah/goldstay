@@ -1,12 +1,17 @@
 "use server";
 
-import { isPropertyTypeAvailableIn } from "@/lib/property-type";
+import {
+  isPropertyType,
+  isPropertyTypeAvailableIn,
+  PROPERTY_TYPE_LABEL,
+} from "@/lib/property-type";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   AgreementStatus,
   Country,
   PropertyStatus,
+  type PropertyType,
 } from "@prisma/client";
 import { prisma } from "@/lib/db";
 import { currentAuditActor } from "@/lib/auth";
@@ -18,6 +23,7 @@ import {
 } from "@/lib/agreements/issue";
 import { notifyClientOfAgreement } from "@/lib/agreements/notify";
 import { decidePropertyGoLive } from "@/lib/properties/go-live";
+import { checkRentalModelChange } from "@/lib/properties/rental-model-change";
 import { recordAudit } from "@/lib/audit";
 import { formatPropertyDisplayName } from "@/lib/format-property";
 
@@ -194,15 +200,14 @@ export async function updatePropertyAction(
   }
 
   try {
-    // Rental model is locked once a property exists. Switching it
-    // mid-life would silently rewrite the snapshotted commission
-    // rate on any open management agreement and change how every
-    // future booking is treated by the statement aggregator. The
-    // form already renders a read-only display in edit mode, but
-    // we also defend server-side so a direct POST or stale form
-    // payload can't slip a switch through. Updates require an
-    // explicit back-office action (changeRentalModelAction) that
-    // hasn't been built yet — the placeholder is intentional.
+    // Rental model does not move through this form. Switching it
+    // rewrites the snapshotted commission rate on any open management
+    // agreement and changes how every future booking is treated by
+    // the statement aggregator, so it goes through
+    // changeRentalModelAction below, which reissues the agreement as
+    // part of the switch. The form renders a read-only display in
+    // edit mode, and we pin it server-side too so a direct POST or a
+    // stale form payload can't slip a switch past the reissue.
     const existing = await prisma.property.findUnique({
       where: { id: propertyId },
       select: { propertyType: true, status: true },
@@ -387,4 +392,133 @@ export async function markPropertyExitedAction(
   });
   revalidateAfterLifecycle(propertyId, property.clientId);
   return { ok: true, stage: "exited" };
+}
+
+// ──────────────────────────────────────────────────────────────────
+// Rental model
+//
+// Its own action rather than a field on the edit form, for the same
+// reason status is: switching it is not an edit, it is a change of
+// contract. The agreement is reissued on the new terms as part of the
+// switch, so a property can never sit on a model its contract does
+// not describe.
+//
+// Before this existed the model was fixed at creation and the only
+// way to correct a wrong pick was to create the property again, which
+// is why Denis Gardens D601 is in the database twice.
+// ──────────────────────────────────────────────────────────────────
+
+export type RentalModelResult =
+  | { ok: true; propertyId: string; from: PropertyType; to: PropertyType }
+  | { ok: false; error: string };
+
+export async function changeRentalModelAction(
+  propertyId: string,
+  nextType: string,
+): Promise<RentalModelResult> {
+  const actor = await currentAuditActor();
+
+  if (!isPropertyType(nextType)) {
+    return { ok: false, error: "Unknown rental model." };
+  }
+
+  const property = await prisma.property.findUnique({
+    where: { id: propertyId },
+    select: {
+      ...AGREEMENT_ISSUE_PROPERTY_SELECT,
+      clientId: true,
+      status: true,
+      name: true,
+      unitNumber: true,
+      agreements: { select: { status: true } },
+      _count: { select: { bookings: true } },
+      units: { select: { _count: { select: { leases: true } } } },
+    },
+  });
+  if (!property) return { ok: false, error: "Property not found." };
+
+  // Same derivation the detail page and the go-live guard use, so the
+  // consequences quoted in the dialog match what actually happens.
+  const liveAgreements = property.agreements.filter(
+    (a) => a.status !== AgreementStatus.CANCELLED,
+  );
+  const agreementStage =
+    liveAgreements.length === 0
+      ? ("none" as const)
+      : liveAgreements.some((a) => a.status === AgreementStatus.SIGNED)
+        ? ("accepted" as const)
+        : ("awaiting_acceptance" as const);
+
+  const check = checkRentalModelChange({
+    from: property.propertyType,
+    to: nextType,
+    country: property.country,
+    bookingCount: property._count.bookings,
+    leaseCount: property.units.reduce((n, u) => n + u._count.leases, 0),
+    agreementStage,
+    status: property.status,
+  });
+  if (!check.allowed) return { ok: false, error: check.reason };
+
+  const from = property.propertyType;
+
+  // One transaction: the property must never be readable on the new
+  // model while its agreement still quotes the old terms.
+  const agreement = await prisma.$transaction(async (tx) => {
+    await tx.property.update({
+      where: { id: propertyId },
+      data: { propertyType: nextType },
+    });
+    await tx.managementAgreement.updateMany({
+      where: {
+        propertyId,
+        status: { in: [AgreementStatus.DRAFT, AgreementStatus.SENT] },
+      },
+      data: { status: AgreementStatus.CANCELLED },
+    });
+    // Issued off the new model, not the row we read above. A SIGNED
+    // agreement is deliberately left SIGNED: it is the record of what
+    // was actually agreed, and this new one supersedes it rather than
+    // pretending it never happened.
+    return issueAgreementForProperty(tx, {
+      ...property,
+      propertyType: nextType,
+    });
+  });
+
+  await recordAudit({
+    actor,
+    entity: "PROPERTY",
+    entityId: propertyId,
+    action: "property.rental_model_changed",
+    summary: `Rental model changed from ${PROPERTY_TYPE_LABEL[from]} to ${PROPERTY_TYPE_LABEL[nextType]}`,
+    metadata: {
+      clientId: property.clientId,
+      from,
+      to: nextType,
+      agreementId: agreement.id,
+      supersededSignedAgreement: agreementStage === "accepted",
+    },
+  });
+  await recordAudit({
+    actor,
+    entity: "AGREEMENT",
+    entityId: agreement.id,
+    action: "agreement.reissued",
+    summary: `Management agreement reissued for ${PROPERTY_TYPE_LABEL[nextType]}`,
+    metadata: { propertyId, reason: "rental-model-changed" },
+  });
+
+  // The client is holding a contract we have just cancelled, so this
+  // is not optional. Never throws; see notifyClientOfAgreement.
+  await notifyClientOfAgreement({
+    agreementId: agreement.id,
+    reference: agreement.reference,
+    propertyId,
+    actor,
+  });
+
+  revalidateAfterLifecycle(propertyId, property.clientId);
+  revalidatePath(`/client/properties/${propertyId}`);
+  return { ok: true, propertyId, from, to: nextType };
 }
